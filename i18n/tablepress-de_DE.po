@@ -1,0 +1,383 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TablePress v1.0-alpha\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-01-05 00:09+0000\n"
+"Last-Translator: TobiasBg <wordpress@tobias.baethge.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: controllers/controller-admin.php:63
+#: libraries/view-base.php:286
+#: libraries/view-base.php:331
+#@ tablepress
+msgid "List Tables"
+msgstr "Liste der Tabellen"
+
+#: controllers/controller-admin.php:64
+#, php-format
+#@ tablepress
+msgid "Add new Table &lsaquo; %s"
+msgstr "Neue Tabelle erstellen &lsaquo; %s"
+
+#: controllers/controller-admin.php:64
+#: libraries/view-base.php:287
+#: libraries/view-base.php:332
+#: views/view-add.php:27
+#@ tablepress
+msgid "Add new Table"
+msgstr "Neue Tabelle erstellen"
+
+#: controllers/controller-admin.php:65
+#, php-format
+#@ tablepress
+msgid "Import a Table &lsaquo; %s"
+msgstr ""
+
+#: controllers/controller-admin.php:65
+#: libraries/view-base.php:288
+#: libraries/view-base.php:333
+#@ tablepress
+msgid "Import a Table"
+msgstr ""
+
+#: controllers/controller-admin.php:66
+#, php-format
+#@ tablepress
+msgid "Export a Table &lsaquo; %s"
+msgstr ""
+
+#: controllers/controller-admin.php:66
+#: libraries/view-base.php:289
+#: libraries/view-base.php:334
+#@ tablepress
+msgid "Export a Table"
+msgstr ""
+
+#: controllers/controller-admin.php:67
+#, php-format
+#@ tablepress
+msgid "Plugin Options &lsaquo; %s"
+msgstr ""
+
+#: controllers/controller-admin.php:67
+#: libraries/view-base.php:303
+#: libraries/view-base.php:346
+#@ tablepress
+msgid "Plugin Options"
+msgstr "Plugin-Einstellungen"
+
+#: controllers/controller-admin.php:68
+#, php-format
+#@ tablepress
+msgid "About the plugin &lsaquo; %s"
+msgstr ""
+
+#: controllers/controller-admin.php:68
+#@ tablepress
+msgid "About"
+msgstr "Über"
+
+#: controllers/controller-admin.php:147
+#@ tablepress
+msgid "English"
+msgstr "Englisch"
+
+#: controllers/controller-admin.php:147
+#@ tablepress
+msgid "German"
+msgstr "Deutsch"
+
+#: libraries/class-tablepress.php:135
+#@ default
+msgid "Cheatin&#8217; uh?"
+msgstr ""
+
+#: libraries/helper-admin-page.php:38
+#@ tablepress
+msgid "Thank you for using <a href=\"http://tobias.baethge.com/wordpress/plugins/tablepress/\">TablePress</a>."
+msgstr ""
+
+#: libraries/helper-admin-page.php:39
+#, php-format
+#@ tablepress
+msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
+msgstr ""
+
+#: libraries/view-base.php:68
+#@ tablepress
+msgid "TablePress Help"
+msgstr ""
+
+#: libraries/view-base.php:72
+#@ tablepress
+msgid "For more information:"
+msgstr ""
+
+#: libraries/view-base.php:304
+#: libraries/view-base.php:347
+#: views/view-about.php:25
+#@ tablepress
+msgid "About TablePress"
+msgstr "Über TablePress"
+
+#: libraries/view-base.php:305
+#: libraries/view-base.php:348
+#: views/view-debug.php:25
+#@ tablepress
+msgid "Debug"
+msgstr ""
+
+#. translators: plugin header field 'Name'
+#: libraries/view-base.php:328
+#: tablepress.php:0
+#@ tablepress
+msgid "TablePress"
+msgstr ""
+
+#: libraries/view-base.php:366
+#@ tablepress
+msgid "Save Changes"
+msgstr ""
+
+#. translators: plugin header field 'PluginURI'
+#: tablepress.php:0
+#@ tablepress
+msgid "http://tobias.baethge.com/wordpress/plugins/tablepress/"
+msgstr ""
+
+#. translators: plugin header field 'Description'
+#: tablepress.php:0
+#@ tablepress
+msgid "..."
+msgstr ""
+
+#. translators: plugin header field 'Author'
+#: tablepress.php:0
+#@ tablepress
+msgid "Tobias Bäthge"
+msgstr ""
+
+#. translators: plugin header field 'AuthorURI'
+#: tablepress.php:0
+#@ tablepress
+msgid "http://tobias.baethge.com/"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: tablepress.php:0
+#@ tablepress
+msgid "1.0-alpha"
+msgstr ""
+
+#: views/view-about.php:27
+#: views/view-add.php:29
+#: views/view-edit.php:31
+#: views/view-export.php:27
+#: views/view-import.php:27
+#: views/view-options.php:36
+#@ tablepress
+msgid "Table Information"
+msgstr ""
+
+#: views/view-about.php:35
+#: views/view-add.php:37
+#: views/view-edit.php:39
+#: views/view-export.php:35
+#: views/view-import.php:35
+#: views/view-options.php:46
+#@ tablepress
+msgid "Table Information:"
+msgstr ""
+
+#: views/view-about.php:43
+#: views/view-add.php:45
+#: views/view-debug.php:44
+#: views/view-edit.php:47
+#: views/view-export.php:43
+#: views/view-import.php:43
+#: views/view-options.php:54
+#@ tablepress
+msgid "head text box"
+msgstr ""
+
+#: views/view-debug.php:27
+#@ tablepress
+msgid "TablePress Options"
+msgstr ""
+
+#: views/view-edit.php:29
+#@ tablepress
+msgid "Edit table"
+msgstr ""
+
+#: views/view-export.php:25
+#@ tablepress
+msgid "Export Table"
+msgstr ""
+
+#: views/view-import.php:25
+#@ tablepress
+msgid "Import Table"
+msgstr ""
+
+#: views/view-list.php:30
+#@ tablepress
+msgid "List of Tables &lsaquo; TablePress"
+msgstr ""
+
+#: views/view-list.php:35
+#: views/view-list.php:41
+#@ tablepress
+msgid "Hide"
+msgstr ""
+
+#: views/view-list.php:44
+#@ tablepress
+msgid "Support"
+msgstr ""
+
+#: views/view-list.php:61
+#@ tablepress
+msgid "These people are proud supporters of TablePress:"
+msgstr ""
+
+#: views/view-list.php:68
+#: views/view-list.php:90
+#@ tablepress
+msgid "Edit"
+msgstr ""
+
+#: views/view-list.php:70
+#@ tablepress
+msgid "This is a list of all available tables."
+msgstr ""
+
+#: views/view-list.php:70
+#@ tablepress
+msgid "You may add, edit, copy, delete or preview tables here."
+msgstr ""
+
+#: views/view-list.php:79
+#, php-format
+#@ tablepress
+msgid "To insert the table into a page, post or text-widget, copy the shortcode <strong>[table id=%s /]</strong> and paste it into the corresponding place in the editor."
+msgstr ""
+
+#: views/view-list.php:79
+#@ tablepress
+msgid "Each table has a unique ID that needs to be adjusted in that shortcode."
+msgstr ""
+
+#: views/view-list.php:79
+#, php-format
+#@ tablepress
+msgid "You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table."
+msgstr ""
+
+#: views/view-list.php:79
+#@ tablepress
+msgid "Table"
+msgstr ""
+
+#: views/view-list.php:91
+#@ tablepress
+msgid "Delete"
+msgstr ""
+
+#: views/view-list.php:92
+#@ tablepress
+msgid "Export"
+msgstr ""
+
+#: views/view-list.php:107
+#@ tablepress
+msgid "No tables were found."
+msgstr ""
+
+#: views/view-list.php:108
+#, php-format
+#@ tablepress
+msgid "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to get started!"
+msgstr ""
+
+#: views/view-options.php:25
+#@ tablepress
+msgid "Plugin Options &lsaquo; TablePress"
+msgstr ""
+
+#: views/view-options.php:28
+#@ tablepress
+msgid "Options saved successfully."
+msgstr ""
+
+#: views/view-options.php:29
+#@ tablepress
+msgid "Error: Options could not be saved."
+msgstr ""
+
+#: views/view-options.php:38
+#@ tablepress
+msgid "User Options"
+msgstr ""
+
+#: views/view-options.php:80
+#@ tablepress
+msgid "---"
+msgstr ""
+
+#: views/view-options.php:81
+#@ tablepress
+msgid "Top-Level (top)"
+msgstr ""
+
+#: views/view-options.php:82
+#@ tablepress
+msgid "Top-Level (middle)"
+msgstr ""
+
+#: views/view-options.php:83
+#@ tablepress
+msgid "Top-Level (bottom)"
+msgstr ""
+
+#: views/view-options.php:94
+#@ tablepress
+msgid "Admin menu entry"
+msgstr ""
+
+#: views/view-options.php:95
+#, php-format
+#@ tablepress
+msgid "TablePress shall be shown in this section of the admin menu: %s"
+msgstr ""
+
+#: views/view-options.php:99
+#, php-format
+#@ tablepress
+msgid "WordPress Default (currently %s)"
+msgstr ""
+
+#: views/view-options.php:107
+#@ tablepress
+msgid "Plugin Language"
+msgstr ""
+
+#: views/view-options.php:108
+#, php-format
+#@ tablepress
+msgid "TablePress shall be shown in this language: %s"
+msgstr ""
+

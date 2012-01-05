@@ -1,0 +1,162 @@
+body {
+	font-family: HelveticaNeue;
+	font-size: 12px;
+}
+
+body.wait * {
+	cursor: wait!important;
+}
+
+.tp-manipulation,
+#tp-table-information {
+	margin-bottom: 5px;
+}
+
+.tp-hidden-container {
+	display: none;
+}
+
+#tp-visual-editor-content {
+	width: 392px;
+	height: 100px;
+}
+
+#tp-visual-editor-confirm,
+#tp-visual-editor-cancel {
+	float: right;
+}
+
+#tp-rows-append-num,
+#tp-columns-append-num {
+	width: 30px;
+}
+
+.tp-animation-saving,
+.tp-animation-preview {
+	display: inline-block;
+	background: url(img/loading.gif);
+	height: 16px;
+	width: 16px;
+	margin: 2px 0 0 5px;
+	vertical-align: top;
+}
+
+.tp-save-changes-success {
+	margin-left: 5px;
+	background-color: #00ff00;
+}
+
+.tp-save-changes-error,
+.tp-preview-error {
+	margin-left: 5px;
+	background-color: #ff0000;
+}
+
+#tp-edit-body td {
+	padding: 2px 2px 2px 0px;
+	height: 32px;
+}
+
+#tp-edit-body input[type="checkbox"] {
+	margin: 3px 3px 3px 0px;
+}
+
+#tp-edit-body textarea {
+	display: block;
+	width: 150px;
+	height: 100%;
+}
+
+#tp-edit-body textarea:focus {
+	outline: none;
+	border: 1px solid #000000;
+}
+
+#tp-edit-body .focus td {
+	height: 60px;
+}
+
+#tp-edit {
+	border-collapse: collapse;
+	margin: 10px 0;
+}
+
+#tp-edit .move-handle {
+	display: block;
+	margin: auto;
+	width: 16px;
+	height: 16px;
+	cursor: move;
+	text-align: center;
+	font-weight: bold;
+}
+
+#tp-edit-body .move-handle {
+	margin: auto 3px;
+	min-width: 16px;
+	width: auto;
+}
+
+#tp-edit .move-hover {
+	position: absolute;
+	z-index: 1000;
+	height: 26px; /* height of "#tp-edit-body td" - 6px */
+}
+
+#tp-edit .focus .move-hover {
+	height: 54px; /* height of "#tp-edit-body .focus td" - 6px */
+}
+
+#tp-edit-body .odd {
+	background-color: #eeeeee;
+}
+
+#tp-edit-body .head-row,
+#tp-edit-body .foot-row {
+	background-color: #c0dddd;
+}
+
+#tp-edit-head th {
+	height: 16px;
+	vertical-align: top;
+}
+
+#tp-edit-head .sort-control {
+	display: none;
+	float: right;
+	width: 12px;
+	height: 12px;
+	cursor: pointer;
+	margin: 2px 3px 0 0;
+}
+
+#tp-edit-head .head:hover .sort-control {
+	display: block;
+}
+
+#tp-edit-head .ui-sortable-helper:hover .sort-control {
+	display: none;
+}
+
+#tp-edit-head .sort-asc {
+	background: url(img/sort-asc.gif) no-repeat center center;
+}
+
+#tp-edit-head .sort-desc {
+	background: url(img/sort-desc.gif) no-repeat center center;
+}
+
+#tp-edit .row-hidden td,
+/* #tp-edit .row-hidden th, */
+#tp-edit .row-hidden textarea,
+#tp-edit .column-hidden,
+#tp-edit .column-hidden textarea {
+	background-color: #FFE0E0;
+}
+
+#tp-preview-iframe {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	border: none;
+}

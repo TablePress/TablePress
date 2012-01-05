@@ -1,0 +1,32 @@
+#icon-tablepress {
+	background: transparent url( 'tablepress-icon.png' ) no-repeat;
+}
+
+/*
+#tablepress-page #poststuff {
+	padding-top: 0px;
+}
+
+#tablepress-page .submenu-plugin-actions {
+	margin-left: 50px;
+}
+*/
+
+#tablepress-nav .separator {
+	margin: 6px;
+}
+
+#tablepress-nav .nav-tab {
+	color: #21759B;
+}
+#tablepress-nav .nav-tab:hover {
+	color: #d54e21;
+}
+#tablepress-nav .nav-tab-active {
+	padding-bottom: 5px;
+	text-shadow: 1px 1px 1px white;
+	color: #333;
+}
+#tablepress-nav .nav-tab-active:hover {
+	color: #464646;
+}
