@@ -37,11 +37,8 @@ Donate URI: http://tobias.baethge.com/donate/
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// Check whether TablePress is already loaded somehow
-if ( defined( 'TABLEPRESS_ABSPATH' ) ) {
-	// do self-deactivation here
-	die( 'TablePress loaded twice!' );
-}
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 // Define certain plugin variables as constants
 define( 'TABLEPRESS_ABSPATH', plugin_dir_path( __FILE__ ) );

@@ -7,6 +7,9 @@
  * @since 1.0
  */
 
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
 /**
  * TablePress class
  */
@@ -16,6 +19,11 @@ abstract class TablePress {
 	 * @const string TablePress version
 	 */
 	const version = '1.0-alpha';
+
+	/*
+	 * @const int TablePress "data scheme" version
+	 */
+	const db_version = 2;
 
 	/*
 	 * @var object Instance of the controller object

@@ -8,6 +8,9 @@
  * @since 1.0
  */
 
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
 /**
  * Base Controller class
  */
@@ -43,7 +46,7 @@ abstract class TablePress_Controller {
 	 */
 	public function __construct() {
 		$this->model_options = TablePress::load_model( 'options' );
-		$this->plugin_update_check();
+		$this->plugin_update_check(); // should be done very early
 
 		// Admin Page Menu entry, needed for construction of plugin URLs
 		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $this->model_options->get( 'admin_menu_parent_page' ) );
@@ -54,17 +57,20 @@ abstract class TablePress_Controller {
 	 * Check if the plugin was updated and perform necessary actions, like updating the options
 	 */
 	private function plugin_update_check() {
-		if ( version_compare( $this->model_options->get( 'plugin_options_version', '0' ), TablePress::version, '<' ) ) {
+		// Update Plugin Options, if necessary
+		if ( $this->model_options->get( 'plugin_options_db_version', 0 ) < TablePress::db_version ) {
 			$this->model_options->merge_plugin_options_defaults();
 			$this->model_options->update( array(
-				'plugin_options_version' => TablePress::version
+				'plugin_options_db_version' => TablePress::db_version,
+				'tablepress_version' => TablePress::version
 			) );
 		}
 
-		if ( is_user_logged_in() &&	version_compare( $this->model_options->get( 'user_options_version', '0' ), TablePress::version, '<' ) ) {
+		// Update User Options, if necessary
+		if ( is_user_logged_in() &&	( $this->model_options->get( 'user_options_db_version', 0 ) < TablePress::db_version ) ) {
 			$this->model_options->merge_user_options_defaults();
 			$this->model_options->update( array(
-				'user_options_version' => TablePress::version
+				'user_options_db_version' => TablePress::db_version
 			) );			
 		}
 	}

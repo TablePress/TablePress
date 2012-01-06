@@ -8,6 +8,9 @@
  * @since 1.0
  */
 
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
 /**
  * Options Model class
  */
@@ -27,7 +30,9 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @var array Default Plugin Options (on plugin installation)
 	 */
 	private $default_plugin_options = array(
-		'plugin_options_version' => TablePress::version,
+		'plugin_options_db_version' => TablePress::db_version,
+		'tablepress_version' => TablePress::version,
+		'first_activation' => 0,
 		'message_123' => true,
 		'message_456' => true
 	);
@@ -36,7 +41,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @var array Default User Options (on plugin installation)
 	 */
 	private $default_user_options = array(
-		'user_options_version' => TablePress::version,
+		'user_options_db_version' => TablePress::db_version,
 		'admin_menu_parent_page' => 'tools.php',
 		'plugin_language' => 'auto'
 	);
@@ -67,6 +72,8 @@ class TablePress_Options_Model extends TablePress_Model {
 	private function _retrieve_plugin_options() {
 		$this->plugin_options = get_option( $this->plugin_options_option_name );
 		if ( false === $this->plugin_options ) {
+			// Adjust default Plugin Options that need to be set at run time
+			$this->default_plugin_options['first_activation'] = time();
 			$this->plugin_options = $this->default_plugin_options;
 			$this->_store_plugin_options();
 		} else {

@@ -8,6 +8,9 @@
  * @since 1.0
  */
 
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
 /**
  * Edit Table View class
  */
