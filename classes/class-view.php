@@ -5,7 +5,7 @@
  * @package TablePress
  * @subpackage TablePress Base View
  * @author Tobias Bäthge
- * @since 1.0
+ * @since 1.0.0
  */
 
 // Prohibit direct script loading
@@ -13,51 +13,71 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Base View class
+ *
+ * @since 1.0.0
  */
 abstract class TablePress_View {
 
-	/*
+	/**
 	 * @var array Data for the view
+	 *
+	 * @since 1.0.0
 	 */
 	protected $data = array();
 
-	/*
+	/**
 	 * @var int Number of screen columns for post boxes
+	 *
+	 * @since 1.0.0
 	 */
 	protected $screen_columns = 0;
 
-	/*
+	/**
 	 * @var string User action for this screen
+	 *
+	 * @since 1.0.0
 	 */	
 	protected $action = '';
 
-	/*
+	/**
 	 * @var string Title for this screen (next to the screen icon)
+	 *
+	 * @since 1.0.0
 	 */	
 	protected $page_title = '';
 
-	/*
+	/**
 	 * @var object Instance of the Admin Page Helper Class, with necessary functions
+	 *
+	 * @since 1.0.0
 	 */	
 	protected $admin_page;
 
-	/*
+	/**
 	 * @var array List of text boxes (similar to post boxes, but just with text and without extra functionality)
+	 *
+	 * @since 1.0.0
 	 */	
 	protected $textboxes = array();
 
-	/*
+	/**
 	 * @var List of messages that are to be displayed as boxes below the page title
+	 *
+	 * @since 1.0.0
 	 */	
 	protected $header_messages = array();
 
-	/*
+	/**
 	 * @var bool Whether there are post boxes registered for this screen
+	 *
+	 * @since 1.0.0
 	 */	
 	protected $has_meta_boxes = false; // is automatically set to true, when a meta box is added
 
-	/*
+	/**
 	 * Initialize the View class, by setting the correct screen columns and adding help texts 
+	 *
+	 * @since 1.0.0
 	 */	
 	public function __construct() {
 		$screen = get_current_screen();
@@ -75,20 +95,28 @@ abstract class TablePress_View {
 		$screen->set_help_sidebar( '<p><strong>' . __( 'For more information:', 'tablepress' ) . '</strong></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/" target="_blank">TablePress Website</a></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/faq/" target="_blank">TablePress FAQ</a></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/documentation/" target="_blank">TablePress Documentation</a></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/support/" target="_blank">TablePress Support</a></p>' );
 	}
 
-	/*
+	/**
 	 * Change the value of the user option "screen_layout_{$screen->id}" through a filter
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param int|bool Current value of the user option
 	 * @return int New value for the user option
 	 */	
 	public function set_current_screen_layout_columns( $result ) {
-		if ( false === $result || $result > $this->screen_columns )
+		if ( false === $result )
+			// the user option does not yet exist
+			$result = $this->screen_columns;
+		elseif ( $result > $this->screen_columns )
+			// the value of the user option is bigger than what is possible on this screen (e.g. because the number of columns was reduced in an update)
 			$result = $this->screen_columns;
 		return $result;
 	}
 
-	/*
+	/**
 	 * Set up the view with data and do things that are necessary for all views
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
@@ -109,8 +137,10 @@ abstract class TablePress_View {
 		$this->add_text_box( 'action_field', array( &$this, 'action_field' ), 'header', false );
 	}
 
-	/*
+	/**
 	 * Register a header message for the view
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string $text Text for the header message
 	 * @param string $class (optional) Additional CSS class for the header message
@@ -119,8 +149,10 @@ abstract class TablePress_View {
 		$this->header_messages[] = "<div class=\"{$class}\"><p>{$text}</p></div>\n";
 	}
 
-	/*
+	/**
 	 * Register a text box for the view
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string $id Unique HTML ID for the text box container (only visible with $wrap = true)
 	 * @param string $callback Callback that prints the contents of the text box
@@ -140,8 +172,11 @@ abstract class TablePress_View {
 		);
 	}
 
-	/*
+	/**
 	 * Register a post meta box for the view, that is drag/droppable with WordPress functionality
+	 *
+	 * @since 1.0.0
+	 * @uses add_meta_box()
 	 *
 	 * @param string $id Unique ID for the meta box
 	 * @param string $title Title for the meta box
@@ -149,15 +184,16 @@ abstract class TablePress_View {
 	 * @param string $context (optional) Context/position of the post meta box (normal, side, additional)
 	 * @param string $priority (optional) Order of the post meta box for the $context position (high, default, low) 
 	 * @param bool $callback_args (optional) Additional data for the callback function (e.g. useful when in different class)
-	 * @uses add_meta_box()
 	 */
 	public function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
 		$this->has_meta_boxes = true;
 		add_meta_box( "tablepress_{$this->action}-{$id}", $title, $callback, null, $context, $priority, $callback_args );
 	}
 
-	/*
+	/**
 	 * Render all text boxes for the given context
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string $context Context (normal, side, additional, header, submit) for which registered text boxes shall be rendered
 	 */
@@ -174,11 +210,13 @@ abstract class TablePress_View {
 		}
 	}
 
-	/*
+	/**
 	 * Render all post meta boxes for the given context, if there are post meta boxes
 	 *
-	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered#
+	 * @since 1.0.0
 	 * @uses do_meta_boxes()
+	 *
+	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered#
 	 */
 	protected function do_meta_boxes( $context ) {
 		if ( ! $this->has_meta_boxes )
@@ -186,13 +224,15 @@ abstract class TablePress_View {
 		do_meta_boxes( null, $context, $this->data );
 	}
 
-	/*
+	/**
 	 * Print hidden fields with nonces for post meta box AJAX handling, if there are post meta boxes on the screen
 	 * (check is possible as this function is executed after post meta boxes have to be registered)
 	 *
+	 * @since 1.0.0
+	 * @uses wp_nonce_field()
+	 *
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
-	 * @uses wp_nonce_field()
 	 */
 	protected function default_nonce_fields( $data, $box ) {
 		if ( ! $this->has_meta_boxes )
@@ -201,48 +241,49 @@ abstract class TablePress_View {
 		wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); echo "\n";
 	}
 
-	/*
+	/**
 	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests
+	 *
+	 * @since 1.0.0
+	 * @uses wp_nonce_field()
 	 *
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
-	 * @uses wp_nonce_field()
 	 */
 	protected function action_nonce_field( $data, $box ) {
 		wp_nonce_field( TablePress::nonce( $this->action ) ); echo "\n";
 	}
 
-	/*
+	/**
 	 * Print hidden field with the screen action
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
-	 * @uses wp_nonce_field()
 	 */
 	protected function action_field( $data, $box ) {
-		echo "<input type=\"hidden\" name=\"action\" value=\"tablepress_{$this->action}\" />\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"" . TablePress::$controller->slug . "_{$this->action}\" />\n";
 	}
 
-	/*
+	/**
 	 * Render the current view
 	 *
-	 * @param string|bool $form_action Target for the form submission, default: admin-post.php
+	 * @since 1.0.0
 	 */
-	public function render( $form_action = false ) {
-		if ( ! $form_action )
-			$form_action = admin_url( 'admin-post.php' );
+	public function render() {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php screen_icon( 'tablepress' ); ?>
 		<!--<h2><?php echo esc_html( $this->page_title ); ?></h2>-->
 		<?php
-			$this->print_navigation();
+			$this->print_nav_tab_menu();
 			// print all header messages
 			foreach ( $this->header_messages as $message ) {
 				echo $message;
 			}
 		?>
-		<form action="<?php echo $form_action; ?>" method="post" enctype="multipart/form-data">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post" enctype="multipart/form-data">
 			<?php
 			$this->do_text_boxes( 'header' );
 
@@ -280,8 +321,12 @@ abstract class TablePress_View {
 	/**
 	 * Render the submenu navigation with links to the possible actions, highlighting the current one,
 	 * separated into table actions (List, Add, Import, Export) and plugin actions (Options, About, Debug)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @TODO: remove in favor of print_nav_tab_menu()? If so, $page_title can go (from all views), too, also clean up render()
 	 */
-	protected function print_submenu_navigation() {
+/*	protected function print_submenu_navigation() {
 		?>
 		<ul class="subsubsub submenu-table-actions">
 			<?php
@@ -293,7 +338,7 @@ abstract class TablePress_View {
 			);
 			$table_actions = apply_filters( 'tablepress_admin_table_actions', $table_actions );
 			foreach ( $table_actions as $action => $name ) {
-				$url = esc_url( TablePress::url( array( 'action' => $action ), false ) );
+				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
 				$class = ( $action == $this->action ) ? ' class="current"' : '';
 				$bar = ( end( $table_actions ) != $name ) ? ' | ' : '';
 				echo "<li><a{$class} href=\"{$url}\">{$name}</a>{$bar}</li>";
@@ -309,7 +354,7 @@ abstract class TablePress_View {
 			);
 			$plugin_actions = apply_filters( 'tablepress_admin_plugin_actions', $plugin_actions );
 			foreach ( $plugin_actions as $action => $name ) {
-				$url = esc_url( TablePress::url( array( 'action' => $action ), false ) );
+				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
 				$class = ( $action == $this->action ) ? ' class="current"' : '';
 				$bar = ( end( $plugin_actions ) != $name ) ? ' | ' : '';
 				echo "<li><a{$class} href=\"{$url}\">{$name}</a>{$bar}</li>";
@@ -319,51 +364,40 @@ abstract class TablePress_View {
 		<br class="clear" />
 		<?php
 	}
-
+*/
 	/**
 	 * Render the navigation menu with links to the possible actions, highlighting the current one,
-	 * separated into table actions (List, Add, Import, Export) and plugin actions (Options, About, Debug)
+	 *
+	 * @since 1.0.0
 	 */
-	protected function print_navigation() {
+	protected function print_nav_tab_menu() {
 		?>
 		<h2 id="tablepress-nav" class="nav-tab-wrapper">
 			<?php
-			echo __( 'TablePress', 'tablepress' );
-			echo '<span class="separator"></span>';
-			$table_actions = array(
-				'list' =>  __( 'List Tables', 'tablepress' ),
-				'add' =>  __( 'Add new Table', 'tablepress' ),
-				'import' => __( 'Import a Table', 'tablepress' ),
-				'export' => __( 'Export a Table', 'tablepress' )
-			);
-			$table_actions = apply_filters( 'tablepress_admin_table_actions', $table_actions );
-			foreach ( $table_actions as $action => $name ) {
-				$url = esc_url( TablePress::url( array( 'action' => $action ), false ) );
-				$class = ( $action == $this->action ) ? ' nav-tab-active' : '';
-				$bar = ( end( $table_actions ) != $name ) ? ' | ' : '';
-				echo "<a class=\"nav-tab{$class}\" href=\"{$url}\">{$name}</a>";
-			}
-			echo '<span class="separator"></span>';
-			echo '<span class="separator"></span>';
-			$plugin_actions = array(
-				'options' => __( 'Plugin Options', 'tablepress' ),
-				'about' => __( 'About TablePress', 'tablepress' ),
-				'debug' => __( 'Debug', 'tablepress' ) // temporary
-			);
-			$plugin_actions = apply_filters( 'tablepress_admin_plugin_actions', $plugin_actions );
-			foreach ( $plugin_actions as $action => $name ) {
-				$url = esc_url( TablePress::url( array( 'action' => $action ), false ) );
-				$class = ( $action == $this->action ) ? ' nav-tab-active' : '';
-				$bar = ( end( $plugin_actions ) != $name ) ? ' | ' : '';
-				echo "<a class=\"nav-tab{$class}\" href=\"{$url}\">{$name}</a>";
+			echo __( 'TablePress', 'tablepress' ) . '<span class="separator"></span>';
+			foreach ( $this->data['view_actions'] as $action => $entry ) {
+				if ( '' == $entry['nav_tab_title'] )
+					continue;
+				if ( ! current_user_can( $entry['min_access_cap'] ) )
+					continue;
+				
+				// special case: Add separators before "Plugin Options" for some spacing
+				if ( 'options' == $action )
+					echo '<span class="separator"></span><span class="separator"></span>';
+
+				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
+				$active = ( $action == $this->action ) ? ' nav-tab-active' : '';
+				echo "<a class=\"nav-tab{$active}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
 			}
 			?>
 		</h2>
 		<?php
 	}
 
-	/*
+	/**
 	 * Print a submit button (only done when function is used as a callback for a text box)
+	 *
+	 * @since 1.0.0
 	 */
 	protected function textbox_submit_button( $data, $box ) {
 		$caption = isset( $data['submit_button_caption'] ) ? $data['submit_button_caption'] : __( 'Save Changes', 'tablepress' );
@@ -372,24 +406,27 @@ abstract class TablePress_View {
 		<?php
 	}
 
-	/*
+	/**
 	 * Create HTML code for an AJAXified link
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param array $params Parameters for the URL
 	 * @param string $text Text for the link
 	 * @return string HTML code for the link
 	 */
 	protected function ajax_link( $params = array( 'action' => 'list', 'item' => '' ), $text ) {
+		$url = TablePress::url( $params, true, 'admin-post.php' );
 		$action = esc_attr( $params['action'] );
-		$item = esc_attr( $params['item'] );
-		$url = esc_url( TablePress::url( $params, true, 'admin-post.php' ) );
-		return "<a id=\"{$action}-{$item}\" class=\"ajax-link {$action}\" href=\"{$url}\">{$text}</a>";
+		return "<a class=\"ajax-link {$action}\" href=\"{$url}\">{$text}</a>";
 	}
 
-	/*
+	/**
 	 * Return the content for the help tab for this screen
 	 *
-	 * To be implemented in every derived class of this base class
+	 * Has to be implemented in every derived class of this base class!
+	 *
+	 * @since 1.0.0
 	 */
 	abstract protected function help_tab_content();
 	

@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @since 1.0.0
+ */
+
 jQuery(document).ready( function( $ ) {
 	var tp = {
 		made_changes: false,

@@ -1,47 +1,46 @@
+/**
+ *
+ *
+ * @since 1.0.0
+ */
+
 jQuery(document).ready( function($) {
 
 	// tablepress_common object will contain all localized strings and options that influence JavaScript
 
-	/*
+	/**
 	 * Enable toggle/order functionality for post meta boxes
+	 * For TablePress, pagenow has the form "tablepress_{$action}"
+	 *
+	 * @since 1.0.0
 	 */
 	postboxes.add_postbox_toggles( pagenow );
 
-	/*
+	/**
 	 * AJAX functionality
 	 */
 
-	/*
+	/**
+	 * Process links with a class "ajax-link" with AJAX
 	 *
-	 */
-	function tablepress_ajax_link_success( link, action, result ) {
-		if ( '1' != result )
-			return false;
-
-		switch ( action ) {
-			case 'tablepress_hide_message':
-				$( link ).closest( 'div' ).remove();
-				break;
-			default:
-				return false;
-		}
-	}
-
-	/*
-	 *
+	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' ).on( 'click', '.ajax-link', function() {
 		var link = this,
-			link_action = link.className.replace(/^.*ajax-link /, '');
-		$.post( ajaxurl,
-				{
-					action: link_action,
-					item: link.id.replace( new RegExp( '^.*' + link_action + '-' ), '' ),
-					_ajax_nonce : link.href.replace(/^.*wpnonce=/, '')
-				},
-				function( result ) {
-					tablepress_ajax_link_success( link, link_action, result );
+			action = link.className.replace(/^.*ajax-link /, '');
+		$.get(
+			ajaxurl,
+			link.href.split('?')['1'], /* query string of the link */
+			function( result ) {
+				if ( '1' != result )
+					return;
+		
+				switch ( action ) {
+					case 'hide_message':
+						$( link ).closest( 'div' ).remove();
+						break;
 				}
+			}
 		);
 		return false;
 	} );

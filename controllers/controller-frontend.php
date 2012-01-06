@@ -5,7 +5,7 @@
  * @package TablePress
  * @subpackage Frontend Controller
  * @author Tobias Bäthge
- * @since 1.0
+ * @since 1.0.0
  */
 
 // Prohibit direct script loading
@@ -13,11 +13,15 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Frontend Controller class, extends Base Controller Class
+ *
+ * @since 1.0.0
  */
 class TablePress_Frontend_Controller extends TablePress_Controller {
 
 	/**
 	 * Initiate Frontend functionality
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();

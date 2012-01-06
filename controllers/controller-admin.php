@@ -5,7 +5,7 @@
  * @package TablePress
  * @subpackage Admin Controller
  * @author Tobias Bäthge
- * @since 1.0
+ * @since 1.0.0
  */
 
 // Prohibit direct script loading
@@ -23,6 +23,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	private $page_hooks = array();
 
 	/**
+	 * @var array Actions that have a view and admin menu or nav tab menu entry
+	 */
+	private $view_actions = array();
+
+	/**
 	 * Initialize the Admin Controller, determine location the admin menu, set up actions
 	 */
 	public function __construct() {
@@ -37,15 +42,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Add admin screens to the correct place in the admin menu
 	 */
 	public function add_admin_menu_entries() {
-		$page_title = apply_filters( 'tablepress_admin_page_title', 'TablePress' );
-		$menu_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
+		// for all menu entries:
+		$tablepress_page_title = $tablepress_menu_title = apply_filters( 'tablepress_admin_page_title', 'TablePress' );
 		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'read' ); // make this a Plugin Option!
 		$callback = array( &$this, 'show_admin_page' );
 
-		if ($this->is_top_level_page ) {
+		if ( $this->is_top_level_page ) {
 			$this->init_i18n_support(); // done here as translated strings for admin menu are needed
+			$this->init_view_actions();
 	
-			$icon = plugins_url( 'admin/tablepress-icon-small.png', TABLEPRESS__FILE__ );	
+			$icon_url = plugins_url( 'admin/tablepress-icon-small.png', TABLEPRESS__FILE__ );	
 			switch ( $this->parent_page ) {
 				case 'top':
 					$position = 3; // position of Dashboard + 1
@@ -57,15 +63,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$position = ( ++$GLOBALS['_wp_last_utility_menu'] );
 					break;
 			}
-			add_menu_page( $page_title, $menu_name, $min_access_cap, $this->slug, $callback, $icon, $position );
-			$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( __( '%s', 'tablepress' ), $page_title ), __( 'List Tables', 'tablepress' ), $min_access_cap, $this->slug, $callback );
-			$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( __( 'Add new Table &lsaquo; %s', 'tablepress' ), $page_title ), __( 'Add new Table', 'tablepress' ), $min_access_cap, "{$this->slug}_add", $callback );
-			$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( __( 'Import a Table &lsaquo; %s', 'tablepress' ), $page_title ), __( 'Import a Table', 'tablepress' ), $min_access_cap, "{$this->slug}_import", $callback );
-			$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( __( 'Export a Table &lsaquo; %s', 'tablepress' ), $page_title ), __( 'Export a Table', 'tablepress' ), $min_access_cap, "{$this->slug}_export", $callback );
-			$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( __( 'Plugin Options &lsaquo; %s', 'tablepress' ), $page_title ), __( 'Plugin Options', 'tablepress' ), $min_access_cap, "{$this->slug}_options", $callback );
-			$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( __( 'About the plugin &lsaquo; %s', 'tablepress' ), $page_title ), __( 'About', 'tablepress' ), $min_access_cap, "{$this->slug}_about", $callback );
+			add_menu_page( $tablepress_page_title, $tablepress_menu_title, $min_access_cap, $this->slug, $callback, $icon_url, $position );
+			foreach ( $this->view_actions as $action => $entry ) {
+				if ( ! $entry['show_entry'] )
+					continue;
+				$slug = $this->slug;
+				if ( 'list' != $action )
+					$slug .= '_' . $action;
+				$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( $entry['page_title'], $tablepress_menu_title ), $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
+			}
 		} else {
-			$this->page_hooks[] = add_submenu_page( $this->parent_page, $page_title, $menu_name, $min_access_cap, $this->slug, $callback );
+			$this->page_hooks[] = add_submenu_page( $this->parent_page, $tablepress_page_title, $tablepress_menu_title, $min_access_cap, $this->slug, $callback );
 		}
 	}
 	
@@ -78,12 +86,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// register the callback being used if options of page have been submitted and needs to be processed
 		$post_actions = array( 'options', 'debug' );// array( 'list', 'edit', 'add', 'options', 'debug' ); // list und debug nur temporary
-		$get_actions = array();// array( 'delete', 'hide_message' ); // need special treatment regarding nonce checks
+		$get_actions = array( 'hide_message' );// array( 'delete_table', 'hide_message' ); // need special treatment regarding nonce checks
 		foreach ( $post_actions as $action ) {
-			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
+			add_action( "admin_post_{$this->slug}_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
 		foreach ( $get_actions as $action ) {
-			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_get_action_{$action}" ) );
+			add_action( "admin_post_{$this->slug}_{$action}", array( &$this, "handle_get_action_{$action}" ) );
 		}
 
 		// register callbacks to trigger load behavior for admin pages
@@ -97,48 +105,45 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Prepare the rendering of an admin screen, by determining the current action, loading necessary data and initializing the view
 	 */
 	 public function load_admin_page() {
-	 	// while list of actions that have a view as a result
-		$get_actions = array( 'list', 'edit', 'add', 'import', 'export', 'options', 'about', 'debug' );
-
-		$current_screen_id = get_current_screen()->id;
-
+		// determine the action from either the GET parameter or a top-level admin menu entry screen ID
 		if ( $this->is_top_level_page ) {
+			$screen_id = get_current_screen()->id;
 			// top-level menu entry: determining the action needs special treatment
-			if ( false !== strpos( $current_screen_id, 'toplevel_' ) ) {
+			if ( 0 === strpos( $screen_id, 'toplevel_' ) )
 				// actions that are top-level entries and have an action GET parameter
 				$action = ( ! empty( $_GET['action'] ) && in_array( $_GET['action'], array( 'edit', 'debug' ) ) ) ? $_GET['action'] : 'list';
-				$new_screen_id = "{$current_screen_id}_{$action}";
-			} else {
-				// actions that are top-level entries, but don't have an action GET parameter
-				$pos = strrpos( $current_screen_id, '_');
-				$action = substr( $current_screen_id, $pos + 1 );
-				$new_screen_id = $current_screen_id;
-			}
+			else
+				// actions that are top-level entries, but don't have an action GET parameter (action is after last _ in string)
+				$action = substr( $screen_id, strrpos( $screen_id, '_') + 1 );
 		} else {
 			// sub menu entry: action is transported as a GET parameter
-			$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list';
-			$new_screen_id = "{$current_screen_id}_{$action}";
-			
-			$this->init_i18n_support(); // done here as this is the first time trnaslated strings are needed
+			$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list';	
+			$this->init_i18n_support(); // done here as for sub menu admin pages, this is the first time translated strings are needed
+			$this->init_view_actions(); // for top-level menu entries, this has been done above, just like init_i18n_support()
 		}
 
-		// check if action is in white list
-		if ( ! in_array( $action, $get_actions ) ) {
-			$action = 'list';
-			$new_screen_id = $current_screen_id;
-		}
+		// check if action is a supported action, and whether the user is allowed to access this screen
+		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['min_access_cap'] ) )
+			wp_die( __('You do not have sufficient permissions to access this page.') );
 
-		// change current screen and pagenow, to enabled metaboxes depending on actions
-		set_current_screen( $new_screen_id );
+		// changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling
+		set_current_screen( "{$this->slug}_{$action}" );
 
 		// pre-define some table data
 		$data = array(
 			'action' => $action,
+			'view_actions' => $this->view_actions,
 			'message' => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false
 		);
 
 		// depending on action, load more necessary data for the corresponding view
 		switch ( $action ) {
+			case 'list':
+				//$data['tables'] = $this->model_table->load_all();
+				//$data['tables_count'] = $this->model_table->count_tables();
+				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
+				$data['messages']['plugin_update'] = $this->model_options->get( 'message_plugin_update' );
+				break;
 			case 'options':
 				$data['user_options']['parent_page'] = $this->parent_page;
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' ); //'en_US';
@@ -147,17 +152,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'debug':
 				$data['debug']['plugin_options'] = json_encode( $this->model_options->get_plugin_options() );
 				$data['debug']['user_options'] = json_encode( $this->model_options->get_user_options() );
+				// $data['tables'] = $this->model_table->_debug_retrieve_tables();
+				// $data['counts'] = $this->model_table->count_tables( false );
 				break;	
 		}
 		/*
 		// depending on action, load more necessary data for the corresponding view
 		switch ( $action ) {
-			case 'list':
-				$data['tables'] = $this->model_table->load_all();
-				$data['tables_count'] = $this->model_table->count_tables();
-				$data['options']['message_123'] = $this->model_options->get( 'message_123' );
-				$data['options']['message_456'] = $this->model_options->get( 'message_456' );
-				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
 					$data['table_id'] = (int)$_GET['table_id'];
@@ -182,10 +183,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
 				break;
-			case 'debug':
-				$data['tables'] = $this->model_table->_debug_retrieve_tables();
-				$data['counts'] = $this->model_table->count_tables( false );
-				break;
 		}
 */
 
@@ -209,7 +206,71 @@ class TablePress_Admin_Controller extends TablePress_Controller {
         load_plugin_textdomain( 'tablepress', false, $language_directory );
         remove_filter( 'locale', array( &$this, 'change_plugin_locale' ) );
     }
-    
+
+	/**
+	 * Init list of actions that have a view with their titles/names/caps
+	 */
+	private function init_view_actions() {
+		$this->view_actions = array(
+			'list' => array(
+				'show_entry' => true,
+				'page_title' => __( 'All Tables &lsaquo; %s', 'tablepress' ),
+				'admin_menu_title' => __( 'All Tables', 'tablepress' ),
+				'nav_tab_title' => __( 'All Tables', 'tablepress' ),
+				'min_access_cap' => 'read'
+			),
+			'add' => array(
+				'show_entry' => true,
+				'page_title' => __( 'Add new Table &lsaquo; %s', 'tablepress' ),
+				'admin_menu_title' => __( 'Add new Table', 'tablepress' ),
+				'nav_tab_title' => __( 'Add New', 'tablepress' ),
+				'min_access_cap' => 'read'
+			),
+			'edit' => array(
+				'show_entry' => false,
+				'page_title' => '',
+				'admin_menu_title' => '',
+				'nav_tab_title' => '',
+				'min_access_cap' => 'read'
+			),
+			'import' => array(
+				'show_entry' => true,
+				'page_title' => __( 'Import a Table &lsaquo; %s', 'tablepress' ),
+				'admin_menu_title' => __( 'Import a Table', 'tablepress' ),
+				'nav_tab_title' => __( 'Import', 'tablepress' ),
+				'min_access_cap' => 'read'
+			),
+			'export' => array(
+				'show_entry' => true,
+				'page_title' => __( 'Export a Table &lsaquo; %s', 'tablepress' ),
+				'admin_menu_title' => __( 'Export a Table', 'tablepress' ),
+				'nav_tab_title' => __( 'Export', 'tablepress' ),
+				'min_access_cap' => 'read'
+			),
+			'options' => array(
+				'show_entry' => true,
+				'page_title' => __( 'Plugin Options &lsaquo; %s', 'tablepress' ),
+				'admin_menu_title' => __( 'Plugin Options', 'tablepress' ),
+				'nav_tab_title' => __( 'Plugin Options', 'tablepress' ),
+				'min_access_cap' => 'read'
+			),
+			'about' => array(
+				'show_entry' => true,
+				'page_title' => __( 'About TablePress &lsaquo; %s', 'tablepress' ),
+				'admin_menu_title' => __( 'About TablePress', 'tablepress' ),
+				'nav_tab_title' => __( 'About', 'tablepress' ),
+				'min_access_cap' => 'read'
+			),
+			'debug' => array(
+				'show_entry' => false,
+				'page_title' => '',
+				'admin_menu_title' => '',
+				'nav_tab_title' => '',//__( 'Debug', 'tablepress' ),
+				'min_access_cap' => 'read'
+			)
+		);
+	}
+
     /**
      * Change the WordPress locale to the desired plugin locale, applied as a filter in get_locale(), while loading the plugin textdomain
 	 *
@@ -226,7 +287,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * HTTP POST actions
 	 */
 
-	/*
+	/**
 	 * List of Tables (button press), no real functionality, just temporary
 	 */
 /*	public function handle_post_action_list() {
@@ -238,7 +299,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_show_messages' ) );
 	}
 */
-	/*
+	/**
 	 * Save a table from the "Edit" screen
 	 */
 /*	public function handle_post_action_edit() {
@@ -261,7 +322,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_save' ) );
 	}
 */
-	/*
+	/**
 	 * Add a table, according to the parameters on the "Add a Table" screen
 	 */
 /*	public function handle_post_action_add() {
@@ -282,7 +343,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_add' ) );
 	}
 */
-	/*
+	/**
 	 * Save changed "Plugin Options"
 	 */
 	public function handle_post_action_options() {
@@ -314,7 +375,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
 
-	/*
+	/**
 	 * Save changes on the "Debug" screen
 	 */
 	public function handle_post_action_debug() {
@@ -349,26 +410,29 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Save GET actions
 	 */
 
-	/*
-	 * Hide a message on a screen
+	/**
+	 * Hide a header message on an admin screen
 	 */
-/*	public function handle_get_action_hide_message() {
-		$message_id = ! empty( $_GET['item'] ) ? $_GET['item'] : '0';
-		TablePress::check_nonce( 'TablePress_hide_message', $message_id );
+	public function handle_get_action_hide_message() {
+		$message_item = ! empty( $_GET['item'] ) ? $_GET['item'] : '';
+		TablePress::check_nonce( 'hide_message', $message_item );
 
-		$this->model_options->update( "message_{$message_id}", false );
+		$this->model_options->update( "message_{$message_item}", false );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
-		$return_item = ! empty( $_GET['return_item'] ) ? (int)$_GET['return_item'] : false;
-		TablePress::redirect( array( 'action' => $return, 'item' => $return_item ) );
+		TablePress::redirect( array( 'action' => $return ) );
 	}
-*/
-	/*
+
+	/**
 	 * Delete a table
 	 */	
-/*	public function handle_get_action_delete() {
+/*	public function handle_get_action_delete_table() {
 		$table_id = ( ! empty( $_GET['item'] ) && absint( $_GET['item'] ) ) ? absint( $_GET['item'] ) : false;
-		TablePress::check_nonce( 'TablePress_delete', $table_id );
+		TablePress::check_nonce( 'delete_table', $table_id );
+
+		// caps check with correct user caps
+		//if ( ! current_user_can( 'manage_options' ) )
+		//	wp_die( __('Cheatin&#8217; uh?') );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		$return_item = ! empty( $_GET['return_item'] ) ? (int)$_GET['return_item'] : false;

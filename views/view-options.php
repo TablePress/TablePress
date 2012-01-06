@@ -5,7 +5,7 @@
  * @package TablePress
  * @subpackage Plugin Options View
  * @author Tobias Bäthge
- * @since 1.0
+ * @since 1.0.0
  */
 
 // Prohibit direct script loading
@@ -13,11 +13,15 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Plugin Options View class
+ *
+ * @since 1.0.0
  */
 class TablePress_Options_View extends TablePress_View {
 
-	/*
+	/**
 	 * Set up the view with data and do things that are specific for this view
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
@@ -42,15 +46,19 @@ class TablePress_Options_View extends TablePress_View {
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
 	}
 
-	/*
+	/**
 	 *
+	 *
+	 * @since 1.0.0
 	 */
 	public function postbox_table_information( $data, $box ) {
 		_e( 'Table Information:', 'tablepress' );
 	}
 
-	/*
+	/**
 	 *
+	 *
+	 * @since 1.0.0
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
@@ -59,8 +67,10 @@ class TablePress_Options_View extends TablePress_View {
 		<?php
 	}
 
-	/*
+	/**
 	 * Render a form for user options
+	 *
+	 * @since 1.0.0
 	 */
 	public function postbox_user_options( $data, $box ) {
 		?>
@@ -112,8 +122,10 @@ class TablePress_Options_View extends TablePress_View {
 		<?php
 	}
 
-	/*
+	/**
 	 * Return the content for the help tab for this screen
+	 *
+	 * @since 1.0.0
 	 */
 	protected function help_tab_content() {
 		return 'Help for the Plugin Options screen';

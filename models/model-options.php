@@ -5,7 +5,7 @@
  * @package TablePress
  * @subpackage Options Model
  * @author Tobias Bäthge
- * @since 1.0
+ * @since 1.0.0
  */
 
 // Prohibit direct script loading
@@ -13,51 +13,67 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Options Model class
+ *
+ * @since 1.0.0
  */
 class TablePress_Options_Model extends TablePress_Model {
 
-	/*
+	/**
 	 * @var string Name of the option for the Plugin Options in the "wp_options" database table
+	 *
+	 * @since 1.0.0
 	 */
 	private $plugin_options_option_name = 'tablepress_plugin_options';
 
-	/*
+	/**
 	 * @var string Name of the option for the User Options in the "wp_usermeta" database table
+	 *
+	 * @since 1.0.0
 	 */
 	private $user_options_option_name = 'tablepress_user_options';
 
-	/*
+	/**
 	 * @var array Default Plugin Options (on plugin installation)
+	 *
+	 * @since 1.0.0
 	 */
 	private $default_plugin_options = array(
 		'plugin_options_db_version' => TablePress::db_version,
 		'tablepress_version' => TablePress::version,
 		'first_activation' => 0,
-		'message_123' => true,
-		'message_456' => true
+		'message_plugin_update' => true
 	);
 
-	/*
+	/**
 	 * @var array Default User Options (on plugin installation)
+	 *
+	 * @since 1.0.0
 	 */
 	private $default_user_options = array(
 		'user_options_db_version' => TablePress::db_version,
 		'admin_menu_parent_page' => 'tools.php',
-		'plugin_language' => 'auto'
+		'plugin_language' => 'auto',
+		'message_first_visit' => true
 	);
 
-	/*
+	/**
 	 * @var array Current set of Plugin Options
+	 *
+	 * @since 1.0.0
 	 */
 	private $plugin_options = array();
 
-	/*
+	/**
 	 * @var array Current set of User Options
+	 *
+	 * @since 1.0.0
 	 */
 	private $user_options = array();
 
-	/*
+	/**
 	 * Init Options Model
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -65,9 +81,11 @@ class TablePress_Options_Model extends TablePress_Model {
 		$this->_retrieve_user_options();
 	}
 
-	/*
+	/**
 	 * Load Plugin Options from the database, decoded from JSON to an associative array
 	 * If no options are stored in the database, return default options.
+	 *
+	 * @since 1.0.0
 	 */
 	private function _retrieve_plugin_options() {
 		$this->plugin_options = get_option( $this->plugin_options_option_name );
@@ -81,9 +99,11 @@ class TablePress_Options_Model extends TablePress_Model {
 		}
 	}
 
-	/*
+	/**
 	 * Load User Options from the database, decoded from JSON to an associative array
 	 * If no options are stored in the database, return default options.
+	 *
+	 * @since 1.0.0
 	 */
 	private function _retrieve_user_options() {
 		$this->user_options = get_user_option( $this->user_options_option_name );
@@ -95,25 +115,31 @@ class TablePress_Options_Model extends TablePress_Model {
 		}
 	}
 
-	/*
+	/**
 	 * Save current set of Plugin Options to the database, encoded as JSON
 	 * ($plugin_options_option_name field in "wp_options")
+	 *
+	 * @since 1.0.0
 	 */
 	private function _store_plugin_options() {
 		update_option( $this->plugin_options_option_name, json_encode( $this->plugin_options ) );
 	}
 	
-	/*
+	/**
 	 * Save current set of User Options to the database, encoded as JSON
 	 * ($user_options_option_name field in "wp_usermeta" for current user)
+	 *
+	 * @since 1.0.0
 	 */
 	private function _store_user_options() {
 		if ( is_user_logged_in() )
 			update_user_option( get_current_user_id(), $this->user_options_option_name, json_encode( $this->user_options ), false );
 	}
 
-	/*
+	/**
 	 * Update a single option or an array of options with new values
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param array|string $new_options Array of new options ( name => value ) or name of a single option
 	 * @param mixed $value New value for a single option (only if $new_options is a string)
@@ -137,8 +163,10 @@ class TablePress_Options_Model extends TablePress_Model {
 		$this->_store_user_options();
 	}
 
-	/*
+	/**
 	 * Get the value of a single option, or an array with all options
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string|bool $single_option Name of a single option to get, or false for all options
 	 * @param mixed $default Default value to return, if a $single_option does not exist
@@ -159,8 +187,10 @@ class TablePress_Options_Model extends TablePress_Model {
 		}
 	}
 
-	/*
+	/**
 	 * Get all Plugin Options
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return array Array of all Plugin Options
 	 */
@@ -168,8 +198,10 @@ class TablePress_Options_Model extends TablePress_Model {
 		return $this->plugin_options;
 	}
 
-	/*
+	/**
 	 * Get all User Options
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return array Array of all User Options
 	 */
@@ -177,9 +209,11 @@ class TablePress_Options_Model extends TablePress_Model {
 		return $this->user_options;
 	}
 
-	/*
+	/**
 	 * Merge existing Plugin Options with default Plugin Options,
 	 * remove (no longer) existing options, e.g. after a plugin update
+	 *
+	 * @since 1.0.0
 	 */
 	public function merge_plugin_options_defaults() {
 		// remove old Plugin Options
@@ -189,9 +223,11 @@ class TablePress_Options_Model extends TablePress_Model {
 
 		$this->_store_plugin_options();
 	}
-	/*
+	/**
 	 * Merge existing User Options with default User Options,
 	 * remove (no longer) existing options, e.g. after a plugin update
+	 *
+	 * @since 1.0.0
 	 */
 	public function merge_user_options_defaults() {
 		// remove old User Options
