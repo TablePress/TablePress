@@ -40,13 +40,6 @@ abstract class TablePress_View {
 	protected $action = '';
 
 	/**
-	 * @var string Title for this screen (next to the screen icon)
-	 *
-	 * @since 1.0.0
-	 */	
-	protected $page_title = '';
-
-	/**
 	 * @var object Instance of the Admin Page Helper Class, with necessary functions
 	 *
 	 * @since 1.0.0
@@ -124,6 +117,9 @@ abstract class TablePress_View {
 	public function setup( $action, $data ) {
 		$this->action = $action;
 		$this->data = $data;
+
+		// Set page <title>
+		$GLOBALS['title'] = sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $this->data['view_actions'][ $action ]['page_title'] );
 
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
@@ -263,7 +259,7 @@ abstract class TablePress_View {
 	 * @param array $box Information about the text box
 	 */
 	protected function action_field( $data, $box ) {
-		echo "<input type=\"hidden\" name=\"action\" value=\"" . TablePress::$controller->slug . "_{$this->action}\" />\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"tablepress_{$this->action}\" />\n";
 	}
 
 	/**
@@ -275,7 +271,6 @@ abstract class TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php screen_icon( 'tablepress' ); ?>
-		<!--<h2><?php echo esc_html( $this->page_title ); ?></h2>-->
 		<?php
 			$this->print_nav_tab_menu();
 			// print all header messages
@@ -286,8 +281,6 @@ abstract class TablePress_View {
 		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post" enctype="multipart/form-data">
 			<?php
 			$this->do_text_boxes( 'header' );
-
-			//$this->print_submenu_navigation();
 			?>
 			<div id="poststuff" class="metabox-holder<?php echo ( 2 == $GLOBALS['screen_layout_columns'] ) ? ' has-right-sidebar' : ''; ?>">
 				<div id="side-info-column" class="inner-sidebar">
@@ -318,53 +311,6 @@ abstract class TablePress_View {
 		<?php
 	}
 
-	/**
-	 * Render the submenu navigation with links to the possible actions, highlighting the current one,
-	 * separated into table actions (List, Add, Import, Export) and plugin actions (Options, About, Debug)
-	 *
-	 * @since 1.0.0
-	 *
-	 * @TODO: remove in favor of print_nav_tab_menu()? If so, $page_title can go (from all views), too, also clean up render()
-	 */
-/*	protected function print_submenu_navigation() {
-		?>
-		<ul class="subsubsub submenu-table-actions">
-			<?php
-			$table_actions = array(
-				'list' =>  __( 'List Tables', 'tablepress' ),
-				'add' =>  __( 'Add new Table', 'tablepress' ),
-				'import' => __( 'Import a Table', 'tablepress' ),
-				'export' => __( 'Export a Table', 'tablepress' )
-			);
-			$table_actions = apply_filters( 'tablepress_admin_table_actions', $table_actions );
-			foreach ( $table_actions as $action => $name ) {
-				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
-				$class = ( $action == $this->action ) ? ' class="current"' : '';
-				$bar = ( end( $table_actions ) != $name ) ? ' | ' : '';
-				echo "<li><a{$class} href=\"{$url}\">{$name}</a>{$bar}</li>";
-			}
-			?>
-		</ul>
-		<ul class="subsubsub submenu-plugin-actions">
-			<?php
-			$plugin_actions = array(
-				'options' => __( 'Plugin Options', 'tablepress' ),
-				'about' => __( 'About TablePress', 'tablepress' ),
-				'debug' => __( 'Debug', 'tablepress' ) // temporary
-			);
-			$plugin_actions = apply_filters( 'tablepress_admin_plugin_actions', $plugin_actions );
-			foreach ( $plugin_actions as $action => $name ) {
-				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
-				$class = ( $action == $this->action ) ? ' class="current"' : '';
-				$bar = ( end( $plugin_actions ) != $name ) ? ' | ' : '';
-				echo "<li><a{$class} href=\"{$url}\">{$name}</a>{$bar}</li>";
-			}
-			?>
-		</ul>
-		<br class="clear" />
-		<?php
-	}
-*/
 	/**
 	 * Render the navigation menu with links to the possible actions, highlighting the current one,
 	 *

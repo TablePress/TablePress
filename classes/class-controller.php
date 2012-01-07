@@ -33,14 +33,7 @@ abstract class TablePress_Controller {
 	protected $model_table;
 
 	/**
-	 * @var string TablePress slug, used in actions/links/URLs
-	 *
-	 * @since 1.0.0
-	 */
-	public $slug = 'tablepress';
-
-	/**
-	 * @var string Slug/file name of the admin screens' parent page in the admin menu
+	 * @var string File name of the admin screens's parent page in the admin menu
 	 *
 	 * @since 1.0.0
 	 */

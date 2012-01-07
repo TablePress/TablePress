@@ -29,8 +29,6 @@ class TablePress_Import_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->page_title = __( 'Import Table', 'tablepress' );
-
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 	}
@@ -52,7 +50,7 @@ class TablePress_Import_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p><?php _e( 'head text box', 'tablepress' ); ?></p>
-		<p><?php echo $this->page_title; ?></p>
+		<p><?php echo $this->action; ?></p>
 		<?php
 	}
 

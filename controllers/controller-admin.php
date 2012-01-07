@@ -43,7 +43,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_admin_menu_entries() {
 		// for all menu entries:
-		$tablepress_page_title = $tablepress_menu_title = apply_filters( 'tablepress_admin_page_title', 'TablePress' );
 		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'read' ); // make this a Plugin Option!
 		$callback = array( &$this, 'show_admin_page' );
 
@@ -63,17 +62,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$position = ( ++$GLOBALS['_wp_last_utility_menu'] );
 					break;
 			}
-			add_menu_page( $tablepress_page_title, $tablepress_menu_title, $min_access_cap, $this->slug, $callback, $icon_url, $position );
+			add_menu_page( 'TablePress', 'TablePress', $min_access_cap, 'tablepress', $callback, $icon_url, $position );
 			foreach ( $this->view_actions as $action => $entry ) {
 				if ( ! $entry['show_entry'] )
 					continue;
-				$slug = $this->slug;
+				$slug = 'tablepress';
 				if ( 'list' != $action )
 					$slug .= '_' . $action;
-				$this->page_hooks[] = add_submenu_page( $this->slug, sprintf( $entry['page_title'], $tablepress_menu_title ), $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
+				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $entry['page_title'] ) , $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
 			}
 		} else {
-			$this->page_hooks[] = add_submenu_page( $this->parent_page, $tablepress_page_title, $tablepress_menu_title, $min_access_cap, $this->slug, $callback );
+			$this->page_hooks[] = add_submenu_page( $this->parent_page, 'TablePress', 'TablePress', $min_access_cap, 'tablepress', $callback );
 		}
 	}
 	
@@ -88,10 +87,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$post_actions = array( 'options', 'debug' );// array( 'list', 'edit', 'add', 'options', 'debug' ); // list und debug nur temporary
 		$get_actions = array( 'hide_message' );// array( 'delete_table', 'hide_message' ); // need special treatment regarding nonce checks
 		foreach ( $post_actions as $action ) {
-			add_action( "admin_post_{$this->slug}_{$action}", array( &$this, "handle_post_action_{$action}" ) );
+			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
 		foreach ( $get_actions as $action ) {
-			add_action( "admin_post_{$this->slug}_{$action}", array( &$this, "handle_get_action_{$action}" ) );
+			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_get_action_{$action}" ) );
 		}
 
 		// register callbacks to trigger load behavior for admin pages
@@ -127,7 +126,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 
 		// changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling
-		set_current_screen( "{$this->slug}_{$action}" );
+		set_current_screen( "tablepress_{$action}" );
 
 		// pre-define some table data
 		$data = array(
@@ -214,58 +213,58 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->view_actions = array(
 			'list' => array(
 				'show_entry' => true,
-				'page_title' => __( 'All Tables &lsaquo; %s', 'tablepress' ),
+				'page_title' => __( 'All Tables', 'tablepress' ),
 				'admin_menu_title' => __( 'All Tables', 'tablepress' ),
 				'nav_tab_title' => __( 'All Tables', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),
 			'add' => array(
 				'show_entry' => true,
-				'page_title' => __( 'Add new Table &lsaquo; %s', 'tablepress' ),
+				'page_title' => __( 'Add new Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Add new Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Add New', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),
 			'edit' => array(
 				'show_entry' => false,
-				'page_title' => '',
+				'page_title' => __( 'Edit Table', 'tablepress' ),
 				'admin_menu_title' => '',
 				'nav_tab_title' => '',
 				'min_access_cap' => 'read'
 			),
 			'import' => array(
 				'show_entry' => true,
-				'page_title' => __( 'Import a Table &lsaquo; %s', 'tablepress' ),
+				'page_title' => __( 'Import a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Import a Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Import', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),
 			'export' => array(
 				'show_entry' => true,
-				'page_title' => __( 'Export a Table &lsaquo; %s', 'tablepress' ),
+				'page_title' => __( 'Export a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Export a Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Export', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),
 			'options' => array(
 				'show_entry' => true,
-				'page_title' => __( 'Plugin Options &lsaquo; %s', 'tablepress' ),
+				'page_title' => __( 'Plugin Options', 'tablepress' ),
 				'admin_menu_title' => __( 'Plugin Options', 'tablepress' ),
 				'nav_tab_title' => __( 'Plugin Options', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),
 			'about' => array(
 				'show_entry' => true,
-				'page_title' => __( 'About TablePress &lsaquo; %s', 'tablepress' ),
+				'page_title' => __( 'About', 'tablepress' ),
 				'admin_menu_title' => __( 'About TablePress', 'tablepress' ),
 				'nav_tab_title' => __( 'About', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),
 			'debug' => array(
 				'show_entry' => false,
-				'page_title' => '',
+				'page_title' => __( 'Debug TablePress', 'tablepress' ),
 				'admin_menu_title' => '',
-				'nav_tab_title' => '',//__( 'Debug', 'tablepress' ),
+				'nav_tab_title' => __( 'Debug', 'tablepress' ),
 				'min_access_cap' => 'read'
 			)
 		);

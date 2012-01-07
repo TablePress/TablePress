@@ -36,8 +36,6 @@ class TablePress_List_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->page_title = __( 'List of Tables &lsaquo; TablePress', 'tablepress' );
-
 		if ( $data['messages']['first_visit'] )
 			$this->add_header_message(
 				'<strong><em>Welcome!</em></strong><br />Thank you for using TablePress for the first time!<br/>'

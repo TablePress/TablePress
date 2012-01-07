@@ -129,7 +129,7 @@ abstract class TablePress {
 	 * @return string The resulting nonce string
 	 */
 	public static function nonce( $action, $item = false ) {
-		$nonce = self::$controller->slug . '_' . $action;
+		$nonce = "tablepress_{$action}";
 		if ( $item )
 			$nonce .= "_{$item}";
 		return $nonce;
@@ -210,9 +210,9 @@ abstract class TablePress {
 		$nonce_action = $params['action'];
 
 		if ( $target ) {
-			$params['action'] = self::$controller->slug . '_' . $params['action'];
+			$params['action'] = "tablepress_{$params['action']}";
 		} else {
-			$params['page'] = self::$controller->slug;
+			$params['page'] = 'tablepress';
 			// top-level parent page needs special treatment for better action strings
 			if ( self::$controller->is_top_level_page ) {
 				$target = 'admin.php';

@@ -29,8 +29,6 @@ class TablePress_Debug_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->page_title = __( 'Debug', 'tablepress' );
-
 		$action_messages = array(
 			'success_save' => __( 'Debug Changes saved successfully.', 'tablepress' ),
 			'error_save' => __( 'Error: Debug Changes could not be saved.', 'tablepress' )
@@ -72,7 +70,7 @@ class TablePress_Debug_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p><?php _e( 'head text box', 'tablepress' ); ?></p>
-		<p><?php echo $this->page_title; ?></p>
+		<p><?php echo $this->action; ?></p>
 		<?php
 	}
 

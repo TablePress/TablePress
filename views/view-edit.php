@@ -33,8 +33,6 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), false );
 
-		$this->page_title = __( 'Edit table', 'tablepress' );
-
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 	}
@@ -56,7 +54,7 @@ class TablePress_Edit_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p><?php _e( 'head text box', 'tablepress' ); ?></p>
-		<p><?php echo $this->page_title; ?></p>
+		<p><?php echo $this->action; ?></p>
 		<?php
 	}
 

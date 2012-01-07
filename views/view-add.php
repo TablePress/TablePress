@@ -31,8 +31,6 @@ class TablePress_Add_View extends TablePress_View {
 
 		//$this->admin_page->enqueue_script( 'add', array( 'jquery' ) );
 
-		$this->page_title = __( 'Add new Table', 'tablepress' );
-
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 	}
@@ -54,7 +52,7 @@ class TablePress_Add_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p><?php _e( 'head text box', 'tablepress' ); ?></p>
-		<p><?php echo $this->page_title; ?></p>
+		<p><?php echo $this->action; ?></p>
 		<?php
 	}
 
