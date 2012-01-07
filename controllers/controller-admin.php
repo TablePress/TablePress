@@ -20,12 +20,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Page hooks (i.e. names) WordPress uses for the TablePress admin screens, populated in add_admin_menu_entry()
 	 * @var array (of strings)
 	 */
-	private $page_hooks = array();
+	protected $page_hooks = array();
 
 	/**
 	 * @var array Actions that have a view and admin menu or nav tab menu entry
 	 */
-	private $view_actions = array();
+	protected $view_actions = array();
 
 	/**
 	 * Initialize the Admin Controller, determine location the admin menu, set up actions
@@ -192,7 +192,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
     /**
      * Initialize i18n support, load plugin's textdomain, to retrieve correct translations
      */
-    private function init_i18n_support() {
+    protected function init_i18n_support() {
     	add_filter( 'locale', array( &$this, 'change_plugin_locale' ) ); // allow changing the plugin language
         $language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
         load_plugin_textdomain( 'tablepress', false, $language_directory );
@@ -202,7 +202,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	/**
 	 * Init list of actions that have a view with their titles/names/caps
 	 */
-	private function init_view_actions() {
+	protected function init_view_actions() {
 		$this->view_actions = array(
 			'list' => array(
 				'show_entry' => true,

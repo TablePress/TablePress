@@ -23,21 +23,21 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private $plugin_options_option_name = 'tablepress_plugin_options';
+	protected $plugin_options_option_name = 'tablepress_plugin_options';
 
 	/**
 	 * @var string Name of the option for the User Options in the "wp_usermeta" database table
 	 *
 	 * @since 1.0.0
 	 */
-	private $user_options_option_name = 'tablepress_user_options';
+	protected $user_options_option_name = 'tablepress_user_options';
 
 	/**
 	 * @var array Default Plugin Options (on plugin installation)
 	 *
 	 * @since 1.0.0
 	 */
-	private $default_plugin_options = array(
+	protected $default_plugin_options = array(
 		'plugin_options_db_version' => TablePress::db_version,
 		'tablepress_version' => TablePress::version,
 		'first_activation' => 0,
@@ -49,7 +49,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private $default_user_options = array(
+	protected $default_user_options = array(
 		'user_options_db_version' => TablePress::db_version,
 		'admin_menu_parent_page' => 'tools.php',
 		'plugin_language' => 'auto',
@@ -61,14 +61,14 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private $plugin_options = array();
+	protected $plugin_options = array();
 
 	/**
 	 * @var array Current set of User Options
 	 *
 	 * @since 1.0.0
 	 */
-	private $user_options = array();
+	protected $user_options = array();
 
 	/**
 	 * Init Options Model
@@ -87,7 +87,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private function _retrieve_plugin_options() {
+	protected function _retrieve_plugin_options() {
 		$this->plugin_options = get_option( $this->plugin_options_option_name );
 		if ( false === $this->plugin_options ) {
 			// Adjust default Plugin Options that need to be set at run time
@@ -105,7 +105,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private function _retrieve_user_options() {
+	protected function _retrieve_user_options() {
 		$this->user_options = get_user_option( $this->user_options_option_name );
 		if ( false === $this->user_options ) {
 			$this->user_options = $this->default_user_options;
@@ -121,7 +121,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private function _store_plugin_options() {
+	protected function _store_plugin_options() {
 		update_option( $this->plugin_options_option_name, json_encode( $this->plugin_options ) );
 	}
 	
@@ -131,7 +131,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	private function _store_user_options() {
+	protected function _store_user_options() {
 		if ( is_user_logged_in() )
 			update_user_option( get_current_user_id(), $this->user_options_option_name, json_encode( $this->user_options ), false );
 	}

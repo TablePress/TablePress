@@ -18,8 +18,8 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  */
 class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
-/*	private $table = array();
-	private $known_ranges = array();
+/*	protected $table = array();
+	protected $known_ranges = array();
 */
 	/**
 	 * Initiate Admin AJAX functionality
@@ -219,7 +219,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		exit;
 	}
 
-	private function _render_table() {
+	protected function _render_table() {
 		foreach ( $this->table as $row_idx => $row ) {
 			foreach ( $row as $col_idx => $cell_dummy ) {
 				$this->table[$row_idx][$col_idx] = $this->_parse_evaluate( $this->table[$row_idx][$col_idx] );		
@@ -229,7 +229,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		return $this->_print_table();
 	}
 */
-/*	private function _parse_evaluate( $content, $parents = array() ) {
+/*	protected function _parse_evaluate( $content, $parents = array() ) {
 		if ( ( '' == $content ) || ( '=' != $content[0] ) )
 			return $content;
 	
@@ -316,7 +316,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	}
 */
 
-/*	private function _print_table() {
+/*	protected function _print_table() {
 		$output = '<table id="tp-preview-result"><thead><tr><th></th>';
 		foreach ( $this->table[0] as $col_idx => $dummy ) {
 			$column = $this->number_to_letter( $col_idx+1 );
@@ -347,7 +347,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 *
 	 * @param string $expression without leading =
 	 */
-/*	private function _evaluate( $expression ) {
+/*	protected function _evaluate( $expression ) {
 		$em = new EvalMath( true, false ); // ( $allowconstants (for pi and e), $allowimplicitmultiplication )
 		$em->suppress_errors = true; // don't raise PHP warnings
 	
