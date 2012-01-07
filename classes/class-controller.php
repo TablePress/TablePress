@@ -23,14 +23,14 @@ abstract class TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	protected $model_options;
+	public $model_options;
 
 	/**
 	 * @var object Instance of the Table Model
 	 *
 	 * @since 1.0.0
 	 */
-	protected $model_table;
+	public $model_table;
 
 	/**
 	 * @var string File name of the admin screens's parent page in the admin menu

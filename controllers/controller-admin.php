@@ -84,7 +84,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 
 		// register the callback being used if options of page have been submitted and needs to be processed
-		$post_actions = array( 'options', 'debug' );// array( 'list', 'edit', 'add', 'options', 'debug' ); // list und debug nur temporary
+		$post_actions = array( 'options' );// array( 'list', 'edit', 'add', 'options' ); // list nur temporary
 		$get_actions = array( 'hide_message' );// array( 'delete_table', 'hide_message' ); // need special treatment regarding nonce checks
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
@@ -110,7 +110,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			// top-level menu entry: determining the action needs special treatment
 			if ( 0 === strpos( $screen_id, 'toplevel_' ) )
 				// actions that are top-level entries and have an action GET parameter
-				$action = ( ! empty( $_GET['action'] ) && in_array( $_GET['action'], array( 'edit', 'debug' ) ) ) ? $_GET['action'] : 'list';
+				$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list'; // might make this more strict to only allow actions that are not shown in the admin submenu with an own entry
 			else
 				// actions that are top-level entries, but don't have an action GET parameter (action is after last _ in string)
 				$action = substr( $screen_id, strrpos( $screen_id, '_') + 1 );
@@ -148,13 +148,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' ); //'en_US';
 				$data['user_options']['available_plugin_languages'] = array( 'en_US' => __( 'English', 'tablepress' ), 'de_DE' => __( 'German', 'tablepress' ) );
 				break;
-			case 'debug':
-				$data['debug']['plugin_options'] = json_encode( $this->model_options->get_plugin_options() );
-				$data['debug']['user_options'] = json_encode( $this->model_options->get_user_options() );
-				// $data['tables'] = $this->model_table->_debug_retrieve_tables();
-				// $data['counts'] = $this->model_table->count_tables( false );
-				break;	
 		}
+
 		/*
 		// depending on action, load more necessary data for the corresponding view
 		switch ( $action ) {
@@ -184,6 +179,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 		}
 */
+
+		$data = apply_filters( 'tablepress_view_data', $data );
 
 		// prepare and initialize the view
 		$this->view = TablePress::load_view( $action, $data );
@@ -259,15 +256,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'admin_menu_title' => __( 'About TablePress', 'tablepress' ),
 				'nav_tab_title' => __( 'About', 'tablepress' ),
 				'min_access_cap' => 'read'
-			),
-			'debug' => array(
-				'show_entry' => false,
-				'page_title' => __( 'Debug TablePress', 'tablepress' ),
-				'admin_menu_title' => '',
-				'nav_tab_title' => __( 'Debug', 'tablepress' ),
-				'min_access_cap' => 'read'
 			)
 		);
+		
+		$this->view_actions = apply_filters( 'tablepress_admin_view_actions', $this->view_actions );
 	}
 
     /**
@@ -372,37 +364,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->model_options->update( $new_options );
 
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
-	}
-
-	/**
-	 * Save changes on the "Debug" screen
-	 */
-	public function handle_post_action_debug() {
-		TablePress::check_nonce( 'debug' );
-
-		if ( empty( $_POST['debug'] ) || ! is_array( $_POST['debug'] ) )
-			TablePress::redirect( array( 'action' => 'debug', 'message' => 'error_save' ) );
-		else
-			$debug = stripslashes_deep( $_POST['debug'] );
-
-		/*
-		$new_tables = array();
-		$new_tables['last_id'] = (int)$debug['last_id'];
-		$new_tables['table_post'] = array();
-		$count = count( $debug['table_post']['new_table_id'] );
-		for( $i = 0; $i < $count; $i++ ) {
-			if ( '' == $debug['table_post']['new_table_id'][ $i ] || '' == $debug['table_post']['new_post_id'][ $i ] )
-				continue;
-			$new_tables['table_post'][ (int)$debug['table_post']['new_table_id'][ $i ] ] = (int)$debug['table_post']['new_post_id'][ $i ];
-		}
-		$this->model_table->_debug_store_tables( $new_tables );
-		*/
-
-		// complete new options string, set directly with WordPress API
-		update_option( 'tablepress_plugin_options', $debug['plugin_options'] );
-		update_user_option( get_current_user_id(), 'tablepress_user_options', $debug['user_options'], false );
-
-		TablePress::redirect( array( 'action' => 'debug', 'message' => 'success_save' ) );
 	}
 
 	/**

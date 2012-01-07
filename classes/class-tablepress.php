@@ -52,7 +52,22 @@ abstract class TablePress {
 		} else {
 			$controller = 'frontend';
 		}
+		do_action( "tablepress_pre_load_controller-{$controller}" );
 		self::$controller = self::load_controller( $controller );
+	}
+
+	/**
+	 * Load a file with require_once(), after running it through a filter
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $file Name of the PHP file with the class
+	 * @param string $folder Name of the folder with $class's $file
+	 */
+	public static function load_file( $file, $folder ) {
+		$full_path = TABLEPRESS_ABSPATH . $folder . '/' . $file;
+		$full_path = apply_filters( 'tablepress_load_file_full_path', $full_path, $file, $folder );
+		require_once $full_path;
 	}
 
 	/**
@@ -67,7 +82,8 @@ abstract class TablePress {
 	 * @return object Initialized instance of the class
 	 */
 	public static function load_class( $class, $file, $folder ) {
-		require_once ( TABLEPRESS_ABSPATH . $folder . '/' . $file );
+		self::load_file( $file, $folder );
+		$class = apply_filters( 'tablepress_load_class_name', $class );
 		$the_class = new $class();
 		return $the_class;
 	}
@@ -82,7 +98,7 @@ abstract class TablePress {
 	 * @return object Instance of the initialized model
 	 */
 	public static function load_model( $model ) {
-		require_once ( TABLEPRESS_ABSPATH . 'classes/class-model.php' );
+		self::load_file( 'class-model.php', 'classes' ); // Model Base Class
 		$the_model = self::load_class( "TablePress_{$model}_Model", "model-{$model}.php", 'models' );
 		return $the_model;
 	}
@@ -98,7 +114,7 @@ abstract class TablePress {
 	 * @return object Instance of the initialized view, already set up, just needs to be render()ed
 	 */
 	public static function load_view( $view, $data = array() ) {
-		require_once ( TABLEPRESS_ABSPATH . 'classes/class-view.php' );
+		self::load_file( 'class-view.php', 'classes' ); // View Base Class
 		$the_view = self::load_class( "TablePress_{$view}_View", "view-{$view}.php", 'views' );
 		$the_view->setup( $view, $data );
 		return $the_view;
@@ -114,7 +130,7 @@ abstract class TablePress {
 	 * @return object Instance of the initialized controller
 	 */
 	public static function load_controller( $controller ) {
-		require_once ( TABLEPRESS_ABSPATH . 'classes/class-controller.php' );
+		self::load_file( 'class-controller.php', 'classes' ); // Controller Base Class
 		$the_controller = self::load_class( "TablePress_{$controller}_Controller", "controller-{$controller}.php", 'controllers' );
 		return $the_controller;
 	}
