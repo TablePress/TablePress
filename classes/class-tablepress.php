@@ -45,6 +45,7 @@ abstract class TablePress {
 	 * @uses load_controller()
 	 */
 	public static function run() {
+		do_action( 'tablepress_run' );
 		if ( is_admin() ) {
 			$controller = 'admin';
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
@@ -52,7 +53,6 @@ abstract class TablePress {
 		} else {
 			$controller = 'frontend';
 		}
-		do_action( "tablepress_pre_load_controller-{$controller}" );
 		self::$controller = self::load_controller( $controller );
 	}
 
@@ -67,7 +67,8 @@ abstract class TablePress {
 	public static function load_file( $file, $folder ) {
 		$full_path = TABLEPRESS_ABSPATH . $folder . '/' . $file;
 		$full_path = apply_filters( 'tablepress_load_file_full_path', $full_path, $file, $folder );
-		require_once $full_path;
+		if ( $full_path )
+			require_once $full_path;
 	}
 
 	/**

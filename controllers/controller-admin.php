@@ -148,11 +148,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' ); //'en_US';
 				$data['user_options']['available_plugin_languages'] = array( 'en_US' => __( 'English', 'tablepress' ), 'de_DE' => __( 'German', 'tablepress' ) );
 				break;
-		}
-
 		/*
-		// depending on action, load more necessary data for the corresponding view
-		switch ( $action ) {
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
 					$data['table_id'] = (int)$_GET['table_id'];
@@ -177,8 +173,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
 				break;
+		*/
 		}
-*/
 
 		$data = apply_filters( 'tablepress_view_data', $data );
 
