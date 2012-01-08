@@ -51,14 +51,11 @@ class TablePress_List_View extends TablePress_View {
 		$this->add_meta_box( 'support', __( 'Support', 'tablepress' ), array( &$this, 'postbox_support' ), 'side' );
 		$this->add_text_box( 'head1', array( &$this, 'textbox_head1' ), 'normal' );
 		$this->add_text_box( 'head2', array( &$this, 'textbox_head2' ), 'normal' );
-/*
+
 		if ( 0 < $data['tables_count'] )
 			$this->add_text_box( 'tables-list', array( &$this, 'textbox_list_of_tables' ), 'normal' );
 		else
 			$this->add_text_box( 'no-tables', array( &$this, 'textbox_no_tables' ), 'normal' );
-*/
-		// temporary
-		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'normal' );
 	}
 
 	/**
@@ -76,7 +73,6 @@ class TablePress_List_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function textbox_head1( $data, $box ) {
-		echo '<a href="' . TablePress::url( array( 'action' => 'edit', 'table_id' => 3 ) ) . '">' . __( 'Edit', 'tablepress' ) . '</a>';
 		?>
 		<p><?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may add, edit, copy, delete or preview tables here.', 'tablepress' ); ?></p>
 		<?php
@@ -99,14 +95,14 @@ class TablePress_List_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function textbox_list_of_tables( $data, $box ) {
-		echo "<table>\n";
+		echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n";
 		foreach ( $data['tables'] as $table ) {
 			$table['data'] = print_r( $table['data'], true );
 			$edit_link = '<a href="' . TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) ) . '">' . __( 'Edit', 'tablepress' ) . '</a>';
-			$delete_link = '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'] ), true, 'admin-post.php' ) . '">' . __( 'Delete', 'tablepress' ) . '</a>';
-			$export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>';
+			$delete_link = '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' ) . '">' . __( 'Delete', 'tablepress' ) . '</a>';
+			/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
 			echo "\t";
-			printf ( '<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td><td>%4$s</td><td>%5$s</td><td>%6$s</td><td>%7$s</td></tr>', $table['id'], $table['name'], $table['description'], $table['data'], $edit_link, $export_link, $delete_link );
+			printf ( '<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td><td>%4$s</td><td>%5$s</td><td>%6$s</td><td>%7$s</td></tr>', $table['id'], $table['name'], $table['description'], $table['data'], $edit_link, ''/*$export_link*/, $delete_link );
 			echo "\n";
 			}
 		echo "</table>\n";

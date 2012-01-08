@@ -45,6 +45,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entries' ) );
 		add_action( 'admin_init', array( &$this, 'add_admin_actions' ) );
+
+		// not sure if this is needed, and when to do it:
+		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
+		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 	}
 
 	/**
@@ -93,12 +97,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function add_admin_actions() {
-		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
-		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
-
-		// register the callback being used if options of page have been submitted and needs to be processed
-		$post_actions = array( 'options' );// array( 'edit', 'add' );
-		$get_actions = array( 'hide_message' );// array( 'delete_table' );
+		// register the callbacks for processing action requests
+		$post_actions = array( 'add', 'edit', 'options' );
+		$get_actions = array( 'hide_message', 'delete_table' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
@@ -149,8 +150,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// depending on action, load more necessary data for the corresponding view
 		switch ( $action ) {
 			case 'list':
-				//$data['tables'] = $this->model_table->load_all();
-				//$data['tables_count'] = $this->model_table->count_tables();
+				$data['tables'] = $this->model_table->load_all();
+				$data['tables_count'] = $this->model_table->count_tables();
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
 				$data['messages']['plugin_update'] = $this->model_options->get( 'message_plugin_update' );
 				break;
@@ -159,15 +160,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' ); //'en_US';
 				$data['user_options']['available_plugin_languages'] = array( 'en_US' => __( 'English', 'tablepress' ), 'de_DE' => __( 'German', 'tablepress' ) );
 				break;
-		/*
 			case 'edit':
-				if ( ! empty( $_GET['table_id'] ) ) {
-					$data['table_id'] = (int)$_GET['table_id'];
-					$data['table'] = $this->model_table->load( $data['table_id'] );
-				} else {
+				if ( ! empty( $_GET['table_id'] ) )
+					$data['table'] = $this->model_table->load( absint( $_GET['table_id'] ) );
+				else
+					// this error message still has to be added to the List View!
 					TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_table' ) );
-				}
 				break;
+		/*
 			case 'export':
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
@@ -291,6 +291,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * HTTP POST actions
+	 *
+	 * STILL REQUIRED:
+	 * caps check with correct user caps, like
+	 * // if ( ! current_user_can( 'manage_options' ) )
+	 * //	wp_die( __('Cheatin&#8217; uh?') );
 	 */
 
 	/**
@@ -298,40 +303,47 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-/*	public function handle_post_action_edit() {
-		$orig_table_id = ( !empty( $_POST['orig_table_id'] ) && absint( $_POST['orig_table_id'] )) ? absint( $_POST['orig_table_id'] ) : false;
+	public function handle_post_action_edit() {
+		$orig_table_id = ( ! empty( $_POST['orig_table_id'] ) && absint( $_POST['orig_table_id'] ) ) ? absint( $_POST['orig_table_id'] ) : false;
 		TablePress::check_nonce( 'edit', $orig_table_id );
 
-		$table = ( !empty( $_POST['table'] ) && is_array( $_POST['table'] )) ? stripslashes_deep( $_POST['table'] ) : false;
-
-		if ( false === $table || false === $orig_table_id )
+		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) || ( false === $orig_table_id ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
+		else
+			$edit_table = stripslashes_deep( $_POST['table'] );
+
+		$table = $this->model_table->load( $orig_table_id );
 
 		$table['id'] = $orig_table_id;
-		$table['data'] = array( array( 'a' ) );
+		$table['name'] = $edit_table['name'];
+		$table['description'] = $edit_table['description'];
+		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
 		$table['options'] = array( array( 'test_edit' ) );
 
 		$table_id = $this->model_table->save( $table );
 		if ( false === $table_id )
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'error_save' ) );
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'error_save' ) );
 
 		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_save' ) );
 	}
-*/
+
 	/**
 	 * Add a table, according to the parameters on the "Add new Table" screen
 	 *
 	 * @since 1.0.0
 	 */
-/*	public function handle_post_action_add() {
+	public function handle_post_action_add() {
 		TablePress::check_nonce( 'add' );
 
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 		else
-			$table = stripslashes_deep( $_POST['table'] );
+			$add_table = stripslashes_deep( $_POST['table'] );
 
-		$table['data'] = array( array( 'a' ) );
+		$table = array();
+		$table['name'] = $add_table['name'];
+		$table['description'] = $add_table['description'];
+		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
 		$table['options'] = array( array( 'test_add' ) );
 
 		$table_id = $this->model_table->add( $table );
@@ -340,7 +352,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_add' ) );
 	}
-*/
+
 	/**
 	 * Save changed "Plugin Options"
 	 *
@@ -377,6 +389,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Save GET actions
+	 *
+	 * STILL REQUIRED:
+	 * caps check with correct user caps, like
+	 * // if ( ! current_user_can( 'manage_options' ) )
+	 * //	wp_die( __('Cheatin&#8217; uh?') );
 	 */
 
 	/**
@@ -399,25 +416,21 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-/*	public function handle_get_action_delete_table() {
+	public function handle_get_action_delete_table() {
 		$table_id = ( ! empty( $_GET['item'] ) && absint( $_GET['item'] ) ) ? absint( $_GET['item'] ) : false;
 		TablePress::check_nonce( 'delete_table', $table_id );
-
-		// caps check with correct user caps
-		//if ( ! current_user_can( 'manage_options' ) )
-		//	wp_die( __('Cheatin&#8217; uh?') );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		$return_item = ! empty( $_GET['return_item'] ) ? (int)$_GET['return_item'] : false;
 
-		if ( false === $table_id )
+		if ( false === $table_id ) // nonce check should actually catch this already
 			TablePress::redirect( array( 'action' => $return, 'table_id' => $return_item, 'message' => 'error_delete' ) );
 
 		$deleted = $this->model_table->delete( $table_id );
 		if ( false === $deleted )
 			TablePress::redirect( array( 'action' => $return, 'table_id' => $return_item, 'message' => 'error_delete' ) );
 
-		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_delete' ) );
+		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ) );
 	}
-*/
+
 } // class TablePress_Admin_Controller

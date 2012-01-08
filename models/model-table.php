@@ -246,14 +246,16 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post_type->insert_post( $post );
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
-		if ( 0 != $new_post_id && !is_wp_error( $new_post_id ) ) { // post was successfully added
-			$table_id = $this->_get_new_table_id();
-			$this->_update_post_id( $table_id, $new_post_id );
-			$return = $table_id;
-		} else {
-			$return = false;
-		}
-		return $return;
+
+		if ( 0 == $new_post_id || is_wp_error( $new_post_id ) )
+			return false;
+
+		// check $options_saved?!?!
+
+		// at this point, post was successfully added
+		$table_id = $this->_get_new_table_id();
+		$this->_update_post_id( $table_id, $new_post_id );
+		return $table_id;
 	}
 	
 	/**

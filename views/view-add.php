@@ -63,22 +63,22 @@ class TablePress_Add_View extends TablePress_View {
 	 */
 	public function textbox_form_table( $data, $box ) {
 		?>
-		<table class="form-table">
-		<tr valign="top">
+		<table>
+		<tr>
 			<th scope="row"><label for="table_name"><?php esc_html_e( 'Table Name', 'tablepress' ); ?>:</label></th>
-			<td><input type="text" name="table[name]" id="table_name" class="large-text focus-blur-change" value="<?php esc_attr_e( 'Enter Table Name', 'tablepress' ); ?>" /></td>
+			<td><input type="text" name="table[name]" id="table_name" class="large-text" value="<?php esc_attr_e( 'Enter Table Name', 'tablepress' ); ?>" /></td>
 		</tr>
-		<tr valign="top">
+		<tr>
 			<th scope="row"><label for="table_description"><?php esc_html_e( 'Description', 'tablepress' ); ?>:</label></th>
-			<td><textarea name="table[description]" id="table_description" class="large-text focus-blur-change" rows="5" cols="50"><?php esc_html_e( 'Enter Description', 'tablepress' ); ?></textarea></td>
+			<td><textarea name="table[description]" id="table_description" class="large-text"><?php esc_textarea( __( 'Enter Description', 'tablepress' ) ); ?></textarea></td>
 		</tr>
-		<tr valign="top">
+		<tr>
 			<th scope="row"><label for="table_rows"><?php esc_html_e( 'Number of Rows', 'tablepress' ); ?>:</label></th>
 			<td><input type="text" name="table[rows]" id="table_rows" class="small-text" value="5" /></td>
 		</tr>
-		<tr valign="top">
+		<tr>
 			<th scope="row"><label for="table_cols"><?php esc_html_e( 'Number of Columns', 'tablepress' ); ?>:</label></th>
-			<td><input type="text" name="table[cols]" id="table_cols" class="small-text" value="5" /></td>
+			<td><input type="text" name="table[columns]" id="table_columns" class="small-text" value="5" /></td>
 		</tr>
 		</table>
 		<?php

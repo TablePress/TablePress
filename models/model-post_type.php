@@ -72,7 +72,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 			'post_author' => '',
-			'post_category' => '',
+			'post_category' => false,
 			'post_content' => '',
 			'post_date' => '',
 			'post_date_gmt' => '',
@@ -86,9 +86,9 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 			'tags_input' => '',
 			'to_ping' => ''
 		);
-		
+
 		$post = array_merge( $default_post, $post );
-		
+
 		$post_id = wp_insert_post( $post );
 		return $post_id;
 	}
@@ -102,6 +102,28 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @return int Post ID of the updated post
 	 */
 	public function update_post( $post ) {
+		$default_post = array(
+			'ID' => false, // false on new insert, post ID on update
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+			'post_author' => '',
+			'post_category' => false,
+			'post_content' => '',
+			'post_date' => '',
+			'post_date_gmt' => '',
+			'post_excerpt' => '',
+			'post_name' => '',
+			'post_parent' => 0,
+			'post_password' => '',
+			'post_status' => 'publish',
+			'post_title' => '',
+			'post_type' => $this->post_type,
+			'tags_input' => '',
+			'to_ping' => ''
+		);
+
+		$post = array_merge( $default_post, $post );
+
 		$post_id = wp_update_post( $post );
 		return $post_id;
 	}
