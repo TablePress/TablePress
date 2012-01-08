@@ -61,11 +61,12 @@ abstract class TablePress_View {
 	protected $header_messages = array();
 
 	/**
-	 * @var bool Whether there are post boxes registered for this screen
+	 * @var bool Whether there are post boxes registered for this screen,
+	 * is automatically set to true, when a meta box is added
 	 *
 	 * @since 1.0.0
 	 */	
-	protected $has_meta_boxes = false; // is automatically set to true, when a meta box is added
+	protected $has_meta_boxes = false;
 
 	/**
 	 * Initialize the View class, by setting the correct screen columns and adding help texts 
@@ -282,7 +283,7 @@ abstract class TablePress_View {
 			<?php
 			$this->do_text_boxes( 'header' );
 			?>
-			<div id="poststuff" class="metabox-holder<?php echo ( 2 == $GLOBALS['screen_layout_columns'] ) ? ' has-right-sidebar' : ''; ?>">
+			<div id="poststuff" class="metabox-holder<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? ' has-right-sidebar' : ''; ?>">
 				<div id="side-info-column" class="inner-sidebar">
 				<?php
 					// print all boxes in the sidebar

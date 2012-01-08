@@ -38,19 +38,12 @@ class TablePress_Options_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
+		$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( &$this, 'postbox_frontend_options' ), 'normal' );
+		$this->add_meta_box( 'backend-options', __( 'Backend Options', 'tablepress' ), array( &$this, 'postbox_backend_options' ), 'normal' );
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( &$this, 'postbox_user_options' ), 'normal' );
+		$this->data['submit_button_caption'] = __( 'Save Options', 'tablepress' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
-	}
-
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	public function postbox_table_information( $data, $box ) {
-		_e( 'Table Information:', 'tablepress' );
 	}
 
 	/**
@@ -60,8 +53,39 @@ class TablePress_Options_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'head text box', 'tablepress' ); ?></p>
-		<p><?php echo $this->action; ?></p>
+		<p><?php _e( 'TablePress has several options which affect the plugin behavior in different areas.', 'tablepress' ); ?><br/><?php _e( 'Frontend Options influence the output and used features of tables in pages, posts or text-widgets.', 'tablepress' ); ?> <?php printf( __( 'The Backend Options control the plugin\'s admin area, e.g. the &quot;%s&quot; screen.', 'tablepress' ), __( 'Edit Table', 'tablepress' ) ); ?> <?php _e( 'Administrators have access to further Admin Options.', 'tablepress' ); ?></p>
+		<?php
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	public function postbox_frontend_options( $data, $box ) {
+		?>
+		<table class="form-table">
+		<tr valign="top">
+			<th scope="row"><label for="field_id"><?php esc_html_e( 'Label', 'tablepress' ); ?>:</label></th>
+			<td><?php _e( 'Field', 'tablepress' ); ?></td>
+		</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	public function postbox_backend_options( $data, $box ) {
+		?>
+		<table class="form-table">
+		<tr valign="top">
+			<th scope="row"><label for="field_id"><?php esc_html_e( 'Label', 'tablepress' ); ?>:</label></th>
+			<td><?php _e( 'Field', 'tablepress' ); ?></td>
+		</tr>
+		</table>
 		<?php
 	}
 
