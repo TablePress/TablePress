@@ -100,7 +100,8 @@ abstract class TablePress {
 	 */
 	public static function load_model( $model ) {
 		self::load_file( 'class-model.php', 'classes' ); // Model Base Class
-		$the_model = self::load_class( "TablePress_{$model}_Model", "model-{$model}.php", 'models' );
+		$ucmodel = ucfirst( $model ); // make first letter uppercase for a better looking naming pattern
+		$the_model = self::load_class( "TablePress_{$ucmodel}_Model", "model-{$model}.php", 'models' );
 		return $the_model;
 	}
 
@@ -116,7 +117,8 @@ abstract class TablePress {
 	 */
 	public static function load_view( $view, $data = array() ) {
 		self::load_file( 'class-view.php', 'classes' ); // View Base Class
-		$the_view = self::load_class( "TablePress_{$view}_View", "view-{$view}.php", 'views' );
+		$ucview = ucfirst( $view ); // make first letter uppercase for a better looking naming pattern
+		$the_view = self::load_class( "TablePress_{$ucview}_View", "view-{$view}.php", 'views' );
 		$the_view->setup( $view, $data );
 		return $the_view;
 	}
@@ -132,7 +134,8 @@ abstract class TablePress {
 	 */
 	public static function load_controller( $controller ) {
 		self::load_file( 'class-controller.php', 'classes' ); // Controller Base Class
-		$the_controller = self::load_class( "TablePress_{$controller}_Controller", "controller-{$controller}.php", 'controllers' );
+		$uccontroller = ucfirst( $controller ); // make first letter uppercase for a better looking naming pattern
+		$the_controller = self::load_class( "TablePress_{$uccontroller}_Controller", "controller-{$controller}.php", 'controllers' );
 		return $the_controller;
 	}
 
