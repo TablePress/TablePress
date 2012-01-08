@@ -13,26 +13,35 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Admin Controller class, extends Base Controller Class
+ *
+ * @since 1.0.0
  */
 class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
-	 * Page hooks (i.e. names) WordPress uses for the TablePress admin screens, populated in add_admin_menu_entry()
-	 * @var array (of strings)
+	 *
+	 * @var array (of strings) Page hooks (i.e. names) WordPress uses for the TablePress admin screens,
+	 * populated in add_admin_menu_entry()
+	 *
+	 * @since 1.0.0
 	 */
 	protected $page_hooks = array();
 
 	/**
 	 * @var array Actions that have a view and admin menu or nav tab menu entry
+	 *
+	 * @since 1.0.0
 	 */
 	protected $view_actions = array();
 
 	/**
 	 * Initialize the Admin Controller, determine location the admin menu, set up actions
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
-		//$this->model_table = TablePress::load_model( 'table' ); // could be moved, if solution for register_post_type on init is found
+		$this->model_table = TablePress::load_model( 'table' ); // could be moved, if solution for register_post_type on init is found
 
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entries' ) );
 		add_action( 'admin_init', array( &$this, 'add_admin_actions' ) );
@@ -40,6 +49,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Add admin screens to the correct place in the admin menu
+	 *
+	 * @since 1.0.0
 	 */
 	public function add_admin_menu_entries() {
 		// for all menu entries:
@@ -78,14 +89,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	
 	/**
 	 * Set up handlers for user actions in the backend that exceed plain viewing
+	 *
+	 * @since 1.0.0
 	 */
 	public function add_admin_actions() {
 		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
 		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 
 		// register the callback being used if options of page have been submitted and needs to be processed
-		$post_actions = array( 'options' );// array( 'list', 'edit', 'add', 'options' ); // list nur temporary
-		$get_actions = array( 'hide_message' );// array( 'delete_table', 'hide_message' ); // need special treatment regarding nonce checks
+		$post_actions = array( 'options' );// array( 'edit', 'add' );
+		$get_actions = array( 'hide_message' );// array( 'delete_table' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
@@ -102,22 +115,20 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Prepare the rendering of an admin screen, by determining the current action, loading necessary data and initializing the view
+	 *
+	 * @since 1.0.0
 	 */
 	 public function load_admin_page() {
-		// determine the action from either the GET parameter or a top-level admin menu entry screen ID
+		// determine the action from either the GET parameter (for sub-menu entries, and the main admin menu entry)
+		$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list'; // default action is list
 		if ( $this->is_top_level_page ) {
-			$screen_id = get_current_screen()->id;
-			// top-level menu entry: determining the action needs special treatment
-			if ( 0 === strpos( $screen_id, 'toplevel_' ) )
-				// actions that are top-level entries and have an action GET parameter
-				$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list'; // might make this more strict to only allow actions that are not shown in the admin submenu with an own entry
-			else
+			// or for sub-menu entry of an admin menu "TablePress" entry, get it from the "page" GET parameter
+			if ( 'tablepress' !== $_GET['page'] )
 				// actions that are top-level entries, but don't have an action GET parameter (action is after last _ in string)
-				$action = substr( $screen_id, strrpos( $screen_id, '_') + 1 );
+				$action = substr( $_GET['page'], 11 ); // $_GET['page'] has the format 'tablepress_{$action}'
 		} else {
-			// sub menu entry: action is transported as a GET parameter
-			$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list';	
-			$this->init_i18n_support(); // done here as for sub menu admin pages, this is the first time translated strings are needed
+			// do this here in the else-part, instead of adding another if ( ! $this->is_top_level_page ) check
+			$this->init_i18n_support(); // done here, as for sub menu admin pages this is the first time translated strings are needed
 			$this->init_view_actions(); // for top-level menu entries, this has been done above, just like init_i18n_support()
 		}
 
@@ -184,6 +195,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Render the view that has been initialized in load_admin_page() (called by WordPress when the actual page content is needed)
+	 *
+	 * @since 1.0.0
 	 */
 	public function show_admin_page() {
 		$this->view->render();
@@ -191,6 +204,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
     /**
      * Initialize i18n support, load plugin's textdomain, to retrieve correct translations
+	 *
+	 * @since 1.0.0
      */
     protected function init_i18n_support() {
     	add_filter( 'locale', array( &$this, 'change_plugin_locale' ) ); // allow changing the plugin language
@@ -201,6 +216,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Init list of actions that have a view with their titles/names/caps
+	 *
+	 * @since 1.0.0
 	 */
 	protected function init_view_actions() {
 		$this->view_actions = array(
@@ -261,6 +278,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
     /**
      * Change the WordPress locale to the desired plugin locale, applied as a filter in get_locale(), while loading the plugin textdomain
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param string $locale Current WordPress locale
 	 * @return string TablePress locale
 	 */
@@ -275,19 +294,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 
 	/**
-	 * List of Tables (button press), no real functionality, just temporary
-	 */
-/*	public function handle_post_action_list() {
-		TablePress::check_nonce( 'list' );
-
-		//process here your on $_POST validation and / or option saving
-		$this->model_options->update( array( 'message_123' => true, 'message_456' => true ) );
-
-		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_show_messages' ) );
-	}
-*/
-	/**
 	 * Save a table from the "Edit" screen
+	 *
+	 * @since 1.0.0
 	 */
 /*	public function handle_post_action_edit() {
 		$orig_table_id = ( !empty( $_POST['orig_table_id'] ) && absint( $_POST['orig_table_id'] )) ? absint( $_POST['orig_table_id'] ) : false;
@@ -310,7 +319,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 */
 	/**
-	 * Add a table, according to the parameters on the "Add a Table" screen
+	 * Add a table, according to the parameters on the "Add new Table" screen
+	 *
+	 * @since 1.0.0
 	 */
 /*	public function handle_post_action_add() {
 		TablePress::check_nonce( 'add' );
@@ -332,6 +343,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 */
 	/**
 	 * Save changed "Plugin Options"
+	 *
+	 * @since 1.0.0
 	 */
 	public function handle_post_action_options() {
 		TablePress::check_nonce( 'options' );
@@ -368,6 +381,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Hide a header message on an admin screen
+	 *
+	 * @since 1.0.0
 	 */
 	public function handle_get_action_hide_message() {
 		$message_item = ! empty( $_GET['item'] ) ? $_GET['item'] : '';
@@ -381,7 +396,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Delete a table
-	 */	
+	 *
+	 * @since 1.0.0
+	 */
 /*	public function handle_get_action_delete_table() {
 		$table_id = ( ! empty( $_GET['item'] ) && absint( $_GET['item'] ) ) ? absint( $_GET['item'] ) : false;
 		TablePress::check_nonce( 'delete_table', $table_id );
