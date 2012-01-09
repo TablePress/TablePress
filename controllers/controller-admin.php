@@ -162,9 +162,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) )
-					$data['table'] = $this->model_table->load( absint( $_GET['table_id'] ) );
+					$data['table'] = $this->model_table->load( $_GET['table_id'] );
 				else
-					// this error message still has to be added to the List View!
 					TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_table' ) );
 				break;
 		/*
@@ -172,7 +171,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
 				if ( ! empty( $_GET['table_id'] ) ) {
-					$data['table_id'] = (int)$_GET['table_id'];
+					$data['table_id'] = $_GET['table_id'];
 					// this is actually done in the post_import handler function
 					$data['table'] = $this->model_table->load( $data['table_id'] );
 					$data['export_output'] = '<a href="http://test.com">ada</a>';
@@ -304,7 +303,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function handle_post_action_edit() {
-		$orig_table_id = ( ! empty( $_POST['orig_table_id'] ) && absint( $_POST['orig_table_id'] ) ) ? absint( $_POST['orig_table_id'] ) : false;
+		$orig_table_id = ( ! empty( $_POST['orig_table_id'] ) ) ? $_POST['orig_table_id'] : false;
 		TablePress::check_nonce( 'edit', $orig_table_id );
 
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) || ( false === $orig_table_id ) )
@@ -318,7 +317,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table['name'] = $edit_table['name'];
 		$table['description'] = $edit_table['description'];
 		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
-		$table['options'] = array( array( 'test_edit' ) );
+		$table['options'] = array( 'last_action' => 'edit', 'last_change' => time() );
 
 		$table_id = $this->model_table->save( $table );
 		if ( false === $table_id )
@@ -344,7 +343,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table['name'] = $add_table['name'];
 		$table['description'] = $add_table['description'];
 		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
-		$table['options'] = array( array( 'test_add' ) );
+		$table['options'] = array( 'last_action' => 'add', 'last_change' => time() );
 
 		$table_id = $this->model_table->add( $table );
 		if ( false === $table_id  )
@@ -417,18 +416,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function handle_get_action_delete_table() {
-		$table_id = ( ! empty( $_GET['item'] ) && absint( $_GET['item'] ) ) ? absint( $_GET['item'] ) : false;
+		$table_id = ( ! empty( $_GET['item'] ) ) ? $_GET['item'] : false;
 		TablePress::check_nonce( 'delete_table', $table_id );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
-		$return_item = ! empty( $_GET['return_item'] ) ? (int)$_GET['return_item'] : false;
+		$return_item = ! empty( $_GET['return_item'] ) ? $_GET['return_item'] : false;
 
 		if ( false === $table_id ) // nonce check should actually catch this already
-			TablePress::redirect( array( 'action' => $return, 'table_id' => $return_item, 'message' => 'error_delete' ) );
+			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
 
 		$deleted = $this->model_table->delete( $table_id );
 		if ( false === $deleted )
-			TablePress::redirect( array( 'action' => $return, 'table_id' => $return_item, 'message' => 'error_delete' ) );
+			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
 
 		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ) );
 	}

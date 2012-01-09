@@ -48,6 +48,16 @@ class TablePress_List_View extends TablePress_View {
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) )
 			);
 
+		$this->action_messages = array(
+			'success_delete' => __( 'The table was deleted successfully.', 'tablepress' ),
+			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'error_no_table' => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
+		);
+		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
+			$class = ( in_array( $data['message'], array( 'error_delete', 'error_no_table' ) ) ) ? 'error' : 'updated' ;
+			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
+		}
+
 		$this->add_meta_box( 'support', __( 'Support', 'tablepress' ), array( &$this, 'postbox_support' ), 'side' );
 		$this->add_text_box( 'head1', array( &$this, 'textbox_head1' ), 'normal' );
 		$this->add_text_box( 'head2', array( &$this, 'textbox_head2' ), 'normal' );
@@ -97,12 +107,13 @@ class TablePress_List_View extends TablePress_View {
 	public function textbox_list_of_tables( $data, $box ) {
 		echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n";
 		foreach ( $data['tables'] as $table ) {
-			$table['data'] = print_r( $table['data'], true );
+			$table['data'] = var_export( $table['data'], true );
+			$table['options'] = var_export( $table['options'], true );
 			$edit_link = '<a href="' . TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) ) . '">' . __( 'Edit', 'tablepress' ) . '</a>';
 			$delete_link = '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' ) . '">' . __( 'Delete', 'tablepress' ) . '</a>';
 			/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
 			echo "\t";
-			printf ( '<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td><td>%4$s</td><td>%5$s</td><td>%6$s</td><td>%7$s</td></tr>', $table['id'], $table['name'], $table['description'], $table['data'], $edit_link, ''/*$export_link*/, $delete_link );
+			printf ( '<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td><td>%4$s</td><td>%5$s</td><td>%6$s</td></tr>', $table['id'], $table['name'], $table['description'], $table['data'] . '<br/>' . $table['options'], $edit_link, $delete_link /*, $export_link*/ );
 			echo "\n";
 			}
 		echo "</table>\n";

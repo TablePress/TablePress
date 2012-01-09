@@ -36,7 +36,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->action_messages = array(
 			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
 			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
-			'success_import' => __( 'The table was imported successfully.', 'tablepress' ),
+		/*	'success_import' => __( 'The table was imported successfully.', 'tablepress' ), */
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
 		);
@@ -107,6 +107,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function postbox_content( $data, $box ) {
 		var_dump( $data['table']['data'] );
+		echo '<br/>';
 		var_dump( $data['table']['options'] );
 	}
 

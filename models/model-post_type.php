@@ -150,7 +150,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @return array Post
 	 */
 	public function delete_post( $post_id ) {
-		$post = wp_delete_post( $post_id, true ); // force delete
+		$post = wp_delete_post( $post_id, true ); // force delete, although for CPT this is automatic in this function
 		return $post;
 	}
 
@@ -191,7 +191,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @return int Number of posts
 	 */
 	public function count_posts() {
-		$count = (array)wp_count_posts( $this->post_type );
+		$count = array_sum( (array)wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
 		return $count;
 	}
 
@@ -224,8 +224,8 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param string $value
 	 * @return bool
 	 */
-	public function update_post_meta_field( $post_id, $field, $value ) {
-		$success = update_post_meta( $post_id, $field, $value );
+	public function update_post_meta_field( $post_id, $field, $value, $prev_value = '' ) {
+		$success = update_post_meta( $post_id, $field, $value, $prev_value );
 		return $success;
 	}
 

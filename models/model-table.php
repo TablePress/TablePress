@@ -26,18 +26,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	protected $model_post_type;
 
 	/**
-	 * @var string Name of the WP Option with the table/post relationship
-	 *
-	 * @since 1.0.0
-	 */
-	protected $option_name = 'tablepress_tables';
-
-	/**
 	 * @var string Name of the Post Meta Field for table options
 	 *
 	 * @since 1.0.0
 	 */
-	protected $table_options_name = '_tablepress_table_options';
+	protected $table_options_field_name = '_tablepress_table_options';
 
 	/**
 	 * @var array Default set of tables
@@ -46,15 +39,15 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected $default_tables = array(
 		'last_id' => 0,
-		'table_post' => array( 0 => 0 )
+		'table_post' => array()
 	);
 
 	/**
-	 * @var array Current set of tables
+	 * @var object Instance of WP_Option class for the list of tables
 	 *
 	 * @since 1.0.0
 	 */
-	protected $tables = false;
+	protected $tables;
 
 	/**
 	 *
@@ -64,32 +57,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function __construct() {
 		parent::__construct();
 		$this->model_post_type = TablePress::load_model( 'post_type' );
-		$this->_retrieve_tables();
-	}
 
-	/**
-	 * Option loading/storing
-	 */
-
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	protected function _retrieve_tables() {
-		// MAKE THIS JSON!
-		$this->tables = get_option( $this->option_name, $this->default_tables );
-	}
-
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	protected function _store_tables() {
-		// MAKE THIS JSON
-		ksort( $this->tables['table_post'] );
-		update_option( $this->option_name, $this->tables );
+		$params = array(
+			'option_name' => 'tablepress_tables',
+			'default_value' => $this->default_tables
+		);
+		$this->tables = TablePress::load_class( 'TablePress_WP_Option', 'class-wp_option.php', 'classes', $params );
 	}
 
 	/**
@@ -103,9 +76,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @return array Current set of tables
 	 */
-	public function _debug_retrieve_tables() {
-		$this->_retrieve_tables();
-		return $this->tables;
+	public function _debug_get_tables() {
+		return $this->tables->get();
 	}
 
 	/**
@@ -115,9 +87,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @var array $tables New set of tables
 	 */
-	public function _debug_store_tables( $tables ) {
-		$this->tables = $tables;
-		$this->_store_tables();
+	public function _debug_update_tables( $tables ) {
+		$this->tables->update( $tables );
 	}
 
 	/**
@@ -157,7 +128,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $post Post
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 * @return array Table
 	 */
 	protected function _post_to_table( $post, $table_id ) {
@@ -180,11 +151,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 * @return array Table
 	 */
 	public function load( $table_id ) {
-		$post_id = $this->_get_post_id( $table_id ); // to update table
+		$post_id = $this->_get_post_id( $table_id );
 		$post = $this->model_post_type->get_post( $post_id );
 		$table = $this->_post_to_table( $post, $table_id );
 		$table['options'] = $this->_get_table_options( $post_id );
@@ -203,7 +174,8 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// hacky approach, might consider function that returns array of table IDs to loop through with _get_post_id() in loop
 
-		foreach ( $this->tables['table_post'] as $table_id => $post_id ) {
+		$table_post = $this->tables->get( 'table_post' );
+		foreach ( $table_post as $table_id => $post_id ) {
 			if ( 0 == $table_id )
 				continue;
 			$tables[ $table_id ] = $this->load( $table_id );
@@ -223,13 +195,16 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post_id = $this->_get_post_id( $table['id'] );
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post_type->update_post( $post );
-		$options_saved = $this->_update_table_options( $post_id, $table['options'] );
-		if ( $post_id == $new_post_id && $options_saved ) {
-			// $this->_update_post_id( $table['id'], $new_post_id ); // unnecessary now, maybe useful for revisioning/draft feature later
-			$return = $table['id'];
-		} else {
-			$return = false;
+
+		$return = false;
+		if ( $post_id == $new_post_id ) {
+			$options_saved = $this->_update_table_options( $post_id, $table['options'] );
+			if ( $options_saved ) {
+				// $this->_update_post_id( $table['id'], $new_post_id ); // unnecessary now, maybe useful for revisioning/draft feature later
+				$return = $table['id'];
+			}
 		}
+
 		return $return;
 	}
 
@@ -263,7 +238,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 * @return bool False on error, true on success
 	 */
 	public function delete( $table_id ) {
@@ -290,11 +265,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 * @return bool Whether the table exists
 	 */
 	public function table_exists( $table_id ) {
-		return isset( $this->tables['table_post'][ $table_id ] );
+		$table_post = $this->tables->get( 'table_post' );
+		return isset( $table_post[ $table_id ] );
 	}
 
 	/**
@@ -306,11 +282,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool int|array Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value)
 	 */
 	public function count_tables( $single_value = true ) {
-		$count_list = count( $this->tables['table_post'] ) - 1; // offset for 0 => 0 entry
+		$count_list = count( $this->tables->get( 'table_post' ) );
 		if ( $single_value )
 			return $count_list;
 
-		$count_db = array_sum( $this->model_post_type->count_posts() ); // original return value is array
+		$count_db = $this->model_post_type->count_posts();
 		return array( 'list' => $count_list, 'db' => $count_db );
 	}
 
@@ -323,13 +299,14 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 * @return int Post ID
 	 */
 	protected function _get_post_id( $table_id ) {
 		$post_id = 0;
-		if ( isset( $this->tables['table_post'][ $table_id ] ) )
-			$post_id = $this->tables['table_post'][ $table_id ];
+		$table_post = $this->tables->get( 'table_post' );
+		if ( isset( $table_post[ $table_id ] ) )
+			$post_id = $table_post[ $table_id ];
 		return $post_id;
 	}
 
@@ -338,12 +315,16 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 * @param int $post_id Post ID
 	 */
 	protected function _update_post_id( $table_id, $post_id ) {
-		$this->tables['table_post'][ $table_id ] = $post_id;
-		$this->_store_tables();
+		$tables = $this->tables->get();
+
+		$tables['table_post'][ $table_id ] = $post_id;
+
+		ksort( $tables['table_post'] );
+		$this->tables->update( $tables );
 	}
 	
 	/**
@@ -351,12 +332,15 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $table_id Table ID
+	 * @param string $table_id Table ID
 	 */
 	protected function _remove_post_id( $table_id ) {
-		if ( isset( $this->tables['table_post'][ $table_id ] ) )
-			unset( $this->tables['table_post'][ $table_id ] );
-		$this->_store_tables();
+		$tables = $this->tables->get();
+
+		if ( isset( $tables['table_post'][ $table_id ] ) )
+			unset( $tables['table_post'][ $table_id ] );
+
+		$this->tables->update( $tables );
 	}
 	
 	/**
@@ -364,15 +348,16 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return int Unused ID (e.g. for a new table)
+	 * @return string Unused ID (e.g. for a new table)
 	 */
 	protected function _get_new_table_id() {
+		$tables = $this->tables->get();
 		// need to check new ID candidate, because a higher one might be in use, if a table ID was manually changed
 		do {
-			$this->tables['last_id'] ++;
-		} while ( $this->table_exists( $this->tables['last_id'] ) );
-		$this->_store_tables();
-		return $this->tables['last_id'];
+			$tables['last_id'] ++;
+		} while ( $this->table_exists( $tables['last_id'] ) );
+		$this->tables->update( $tables );
+		return (string) $tables['last_id'];
 	}
 
 	/**
@@ -389,8 +374,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool Whether this was successful
 	 */
 	protected function _add_table_options( $post_id, $options ) {
-		// MAKE THIS JSON
-		$success = $this->model_post_type->add_post_meta_field( $post_id, $this->table_options_name, $options );
+		$options = json_encode( $options );
+		$success = $this->model_post_type->add_post_meta_field( $post_id, $this->table_options_field_name, $options );
 		return $success;
 	}
 
@@ -404,8 +389,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool Whether this was successful
 	 */
 	protected function _update_table_options( $post_id, $options ) {
-		// MAKE THIS JSON
-		$success = $this->model_post_type->update_post_meta_field( $post_id, $this->table_options_name, $options );
+		$options = json_encode( $options );
+		// this is stupid, but necessary:
+		$prev_options = json_encode( $this->_get_table_options( $post_id ) );
+		$success = $this->model_post_type->update_post_meta_field( $post_id, $this->table_options_field_name, $options, $prev_options );
 		return $success;
 	}
 
@@ -418,8 +405,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array Array of Table Options
 	 */
 	protected function _get_table_options( $post_id ) {
-		// MAKE THIS JSON
-		$options = $this->model_post_type->get_post_meta_field( $post_id, $this->table_options_name );
+		$options = $this->model_post_type->get_post_meta_field( $post_id, $this->table_options_field_name );
+		$options = json_decode( $options, true );
 		return $options;
 	}
 

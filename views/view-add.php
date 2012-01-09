@@ -70,7 +70,7 @@ class TablePress_Add_View extends TablePress_View {
 		</tr>
 		<tr>
 			<th scope="row"><label for="table_description"><?php esc_html_e( 'Description', 'tablepress' ); ?>:</label></th>
-			<td><textarea name="table[description]" id="table_description" class="large-text"><?php esc_textarea( __( 'Enter Description', 'tablepress' ) ); ?></textarea></td>
+			<td><textarea name="table[description]" id="table_description" class="large-text"><?php echo esc_textarea( __( 'Enter Description', 'tablepress' ) ); ?></textarea></td>
 		</tr>
 		<tr>
 			<th scope="row"><label for="table_rows"><?php esc_html_e( 'Number of Rows', 'tablepress' ); ?>:</label></th>
