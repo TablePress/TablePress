@@ -83,6 +83,13 @@ abstract class TablePress_Controller {
 				'user_options_db_version' => TablePress::db_version
 			) );			
 		}
+
+		// Save time of first activation of the plugin in option
+		if ( 0 == $this->model_options->get( 'first_activation', 0 ) ) {
+			$this->model_options->update( array(
+				'first_activation' => time()
+			) );			
+		}
 	}
 
 } // class TablePress_Controller

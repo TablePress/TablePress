@@ -29,7 +29,7 @@ abstract class TablePress {
 	 *
 	 * @since 1.0.0
 	 */
-	const db_version = 6;
+	const db_version = 10;
 
 	/**
 	 * @var object Instance of the controller object
@@ -80,12 +80,13 @@ abstract class TablePress {
 	 * @param string $class Name of the class
 	 * @param string $file Name of the PHP file with the class
 	 * @param string $folder Name of the folder with $class's $file
+	 * @param mixed $params (optional) Parameters that are passed to the constructor of $class
 	 * @return object Initialized instance of the class
 	 */
-	public static function load_class( $class, $file, $folder ) {
+	public static function load_class( $class, $file, $folder, $params = null ) {
 		self::load_file( $file, $folder );
 		$class = apply_filters( 'tablepress_load_class_name', $class );
-		$the_class = new $class();
+		$the_class = new $class( $params );
 		return $the_class;
 	}
 
