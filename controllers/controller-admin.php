@@ -41,7 +41,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->model_table = TablePress::load_model( 'table' ); // could be moved, if solution for register_post_type on init is found
+		$this->model_table = TablePress::load_model( 'table' );
 
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entries' ) );
 		add_action( 'admin_init', array( &$this, 'add_admin_actions' ) );

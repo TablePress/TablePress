@@ -28,7 +28,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
-		// $this->model_table = TablePress::load_model( 'table' ); // add this where needed, actually rather here, for post_type support
+		// $this->model_table = TablePress::load_model( 'table' );
 
 		$ajax_actions = array( 'hide_message' ); //array( 'hide_message', 'save_table', 'preview_table' );
 		foreach ( $ajax_actions as $action ) {
