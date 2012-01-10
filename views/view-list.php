@@ -107,8 +107,8 @@ class TablePress_List_View extends TablePress_View {
 	public function textbox_list_of_tables( $data, $box ) {
 		echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n";
 		foreach ( $data['tables'] as $table ) {
-			$table['data'] = var_export( $table['data'], true );
-			$table['options'] = var_export( $table['options'], true );
+			$table['data'] = json_encode( $table['data'] );
+			$table['options'] = json_encode( $table['options'] );
 			$edit_link = '<a href="' . TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) ) . '">' . __( 'Edit', 'tablepress' ) . '</a>';
 			$delete_link = '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' ) . '">' . __( 'Delete', 'tablepress' ) . '</a>';
 			/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */

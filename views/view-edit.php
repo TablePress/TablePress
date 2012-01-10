@@ -106,9 +106,9 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	function postbox_content( $data, $box ) {
-		var_dump( $data['table']['data'] );
+		echo json_encode( $data['table']['data'] );
 		echo '<br/>';
-		var_dump( $data['table']['options'] );
+		echo json_encode( $data['table']['options'] );
 	}
 
 	/**
