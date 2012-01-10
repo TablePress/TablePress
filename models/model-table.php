@@ -23,7 +23,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	protected $model_post_type;
+	protected $model_post;
 
 	/**
 	 * @var string Name of the Post Meta Field for table options
@@ -56,7 +56,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->model_post_type = TablePress::load_model( 'post_type' );
+		$this->model_post = TablePress::load_model( 'post' );
 
 		$params = array(
 			'option_name' => 'tablepress_tables',
@@ -156,7 +156,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function load( $table_id ) {
 		$post_id = $this->_get_post_id( $table_id );
-		$post = $this->model_post_type->get_post( $post_id );
+		$post = $this->model_post->get( $post_id );
 		$table = $this->_post_to_table( $post, $table_id );
 		$table['options'] = $this->_get_table_options( $post_id );
 		return $table;
@@ -194,7 +194,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function save( $table ) {
 		$post_id = $this->_get_post_id( $table['id'] );
 		$post = $this->_table_to_post( $table, $post_id );
-		$new_post_id = $this->model_post_type->update_post( $post );
+		$new_post_id = $this->model_post->update( $post );
 
 		$return = false;
 		if ( $post_id == $new_post_id ) {
@@ -219,7 +219,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function add( $table ) { // no table['id']
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
-		$new_post_id = $this->model_post_type->insert_post( $post );
+		$new_post_id = $this->model_post->insert( $post );
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 
 		if ( 0 == $new_post_id || is_wp_error( $new_post_id ) )
@@ -246,7 +246,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			return false;
 	
 		$post_id = $this->_get_post_id( $table_id );
-		$deleted = $this->model_post_type->delete_post( $post_id );
+		$deleted = $this->model_post->delete( $post_id );
 		// Post Meta fields will be deleted automatically by that function
 		if ( $deleted ) {
 			$this->_remove_post_id( $table_id );
@@ -286,7 +286,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( $single_value )
 			return $count_list;
 
-		$count_db = $this->model_post_type->count_posts();
+		$count_db = $this->model_post->count_posts();
 		return array( 'list' => $count_list, 'db' => $count_db );
 	}
 
@@ -375,7 +375,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _add_table_options( $post_id, $options ) {
 		$options = json_encode( $options );
-		$success = $this->model_post_type->add_post_meta_field( $post_id, $this->table_options_field_name, $options );
+		$success = $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
 		return $success;
 	}
 
@@ -392,7 +392,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$options = json_encode( $options );
 		// this is stupid, but necessary:
 		$prev_options = json_encode( $this->_get_table_options( $post_id ) );
-		$success = $this->model_post_type->update_post_meta_field( $post_id, $this->table_options_field_name, $options, $prev_options );
+		$success = $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options, $prev_options );
 		return $success;
 	}
 
@@ -405,7 +405,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array Array of Table Options
 	 */
 	protected function _get_table_options( $post_id ) {
-		$options = $this->model_post_type->get_post_meta_field( $post_id, $this->table_options_field_name );
+		$options = $this->model_post->get_meta_field( $post_id, $this->table_options_field_name );
 		$options = json_decode( $options, true );
 		return $options;
 	}

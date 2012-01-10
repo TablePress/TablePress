@@ -1,9 +1,9 @@
 <?php
 /**
- * Post Type Model
+ * Post Model
  *
  * @package TablePress
- * @subpackage Post Type Model
+ * @subpackage Post Model
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -12,11 +12,11 @@
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
- * Post Type Model class
+ * Post Model class
  *
  * @since 1.0.0
  */
-class TablePress_Post_Type_Model extends TablePress_Model {
+class TablePress_Post_Model extends TablePress_Model {
 
 	/**
 	 * @var string Name of the "Custom Post Type" for the tables
@@ -66,7 +66,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param array $post Post
 	 * @return int Post ID of the new post
 	 */
-	public function insert_post( $post = array() ) {
+	public function insert( $post = array() ) {
 		$default_post = array(
 			'ID' => false, // false on new insert, post ID on update
 			'comment_status' => 'closed',
@@ -101,7 +101,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param array $post Post
 	 * @return int Post ID of the updated post
 	 */
-	public function update_post( $post ) {
+	public function update( $post ) {
 		$default_post = array(
 			'ID' => false, // false on new insert, post ID on update
 			'comment_status' => 'closed',
@@ -136,7 +136,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param int Post ID
 	 * @return array Post
 	 */
-	public function get_post( $post_id ) {
+	public function get( $post_id ) {
 		$post = get_post( $post_id, ARRAY_A ); // wp_get_single_post( $post_id, ARRAY_A );
 		return $post;
 	}
@@ -149,7 +149,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param int Post ID
 	 * @return array Post
 	 */
-	public function delete_post( $post_id ) {
+	public function delete( $post_id ) {
 		$post = wp_delete_post( $post_id, true ); // force delete, although for CPT this is automatic in this function
 		return $post;
 	}
@@ -163,7 +163,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param int Post ID
 	 * @return array Post
 	 */
-	public function trash_post( $post_id ) {
+	public function trash( $post_id ) {
 		$post = wp_trash_post( $post_id );
 		return $post;
 	}
@@ -177,7 +177,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param int Post ID
 	 * @return array Post
 	 */
-	public function restore_post( $post_id ) {
+	public function untrash( $post_id ) {
 		$post = wp_untrash_post( $post_id );
 		return $post;
 	}
@@ -209,7 +209,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param string $value
 	 * @return bool
 	 */
-	public function add_post_meta_field( $post_id, $field, $value ) {
+	public function add_meta_field( $post_id, $field, $value ) {
 		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique
 		return $success;
 	}
@@ -224,7 +224,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param string $value
 	 * @return bool
 	 */
-	public function update_post_meta_field( $post_id, $field, $value, $prev_value = '' ) {
+	public function update_meta_field( $post_id, $field, $value, $prev_value = '' ) {
 		$success = update_post_meta( $post_id, $field, $value, $prev_value );
 		return $success;
 	}
@@ -237,7 +237,7 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param string $field
 	 * @return string Value
 	 */
-	public function get_post_meta_field( $post_id, $field ) {
+	public function get_meta_field( $post_id, $field ) {
 		$value = get_post_meta( $post_id, $field, true ); // true means single value
 		return $value;
 	}
@@ -251,9 +251,9 @@ class TablePress_Post_Type_Model extends TablePress_Model {
 	 * @param string $field
 	 * @return bool
 	 */
-	public function delete_post_meta_field( $post_id, $field ) {
+	public function delete_meta_field( $post_id, $field ) {
 		$success = delete_post_meta( $post_id, $field, true ); // true means single value
 		return $success;
 	}
 
-} // class TablePress_Post_Type_Model
+} // class TablePress_Post_Model
