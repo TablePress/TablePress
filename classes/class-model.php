@@ -3,7 +3,7 @@
  * TablePress Base Model with members and methods for all models
  *
  * @package TablePress
- * @subpackage TablePress Base Model
+ * @subpackage Models
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Base Model class
- *
+ * @package TablePress
+ * @subpackage Models
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 abstract class TablePress_Model {

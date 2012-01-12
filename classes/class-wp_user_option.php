@@ -5,7 +5,7 @@
  * Wraps the WordPress Options API, so that (especially) arrays are stored as JSON, instead of being serialized by PHP
  *
  * @package TablePress
- * @subpackage TablePress WP User Option Wrapper class
+ * @subpackage Classes
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -18,7 +18,9 @@ TablePress::load_file( 'class-wp_option.php', 'classes' );
 
 /**
  * TablePress WP User Option Wrapper class
- *
+ * @package TablePress
+ * @subpackage Classes
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_WP_User_Option extends TablePress_WP_Option {

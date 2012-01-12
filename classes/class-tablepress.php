@@ -12,29 +12,36 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress class
- *
+ * @package TablePress
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 abstract class TablePress {
 
 	/**
-	 * @const string TablePress version
+	 * TablePress version
 	 *
 	 * @since 1.0.0
+	 *
+	 * @const string
 	 */
 	const version = '1.0-alpha';
 
 	/**
-	 * @const int TablePress "data scheme" version
+	 * TablePress "data scheme" version
 	 *
 	 * @since 1.0.0
+	 *
+	 * @const int
 	 */
 	const db_version = 10;
 
 	/**
-	 * @var object Instance of the controller object
+	 * Instance of the controller object
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	public static $controller;
 

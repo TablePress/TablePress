@@ -3,7 +3,7 @@
  * Plugin Options View
  *
  * @package TablePress
- * @subpackage Plugin Options View
+ * @subpackage Views
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Plugin Options View class
- *
+ * @package TablePress
+ * @subpackage Views
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Options_View extends TablePress_View {

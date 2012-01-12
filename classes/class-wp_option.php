@@ -5,7 +5,7 @@
  * Wraps the WordPress Options API, so that (especially) arrays are stored as JSON, instead of being serialized by PHP
  *
  * @package TablePress
- * @subpackage TablePress WP Option Wrapper class
+ * @subpackage Classes
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -15,22 +15,28 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress WP Option Wrapper class
- *
+ * @package TablePress
+ * @subpackage Classes
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_WP_Option {
 
 	/**
-	 * @var string Name/Key of the Option (in its location in the database)
+	 * Name/Key of the Option (in its location in the database)
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var string
 	 */
 	protected $option_name;
 
 	/**
-	 * @var array Current value of the option
+	 * Current value of the option
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $option_value;
 

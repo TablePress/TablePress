@@ -3,7 +3,7 @@
  * Admin Controller for TablePress with the functionality for the non-AJAX backend
  *
  * @package TablePress
- * @subpackage Admin Controller
+ * @subpackage Controllers
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,24 +13,29 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Admin Controller class, extends Base Controller Class
- *
+ * @package TablePress
+ * @subpackage Controllers
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
-	 *
-	 * @var array (of strings) Page hooks (i.e. names) WordPress uses for the TablePress admin screens,
+	 * Page hooks (i.e. names) WordPress uses for the TablePress admin screens,
 	 * populated in add_admin_menu_entry()
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $page_hooks = array();
 
 	/**
-	 * @var array Actions that have a view and admin menu or nav tab menu entry
+	 * Actions that have a view and admin menu or nav tab menu entry
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $view_actions = array();
 

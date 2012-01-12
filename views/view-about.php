@@ -3,7 +3,7 @@
  * About TablePress View
  *
  * @package TablePress
- * @subpackage About TablePress View
+ * @subpackage Views
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,15 +13,19 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * About TablePress View class
- *
+ * @package TablePress
+ * @subpackage Views
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_About_View extends TablePress_View {
 
 	/**
-	 * @var int Number of screen columns for post boxes on this screen
+	 * Number of screen columns for post boxes on this screen
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var int
 	 */
 	protected $screen_columns = 2;
 

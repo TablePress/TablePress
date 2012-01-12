@@ -3,7 +3,7 @@
  * Admin AJAX Controller for TablePress with functionality for the AJAX backend
  *
  * @package TablePress
- * @subpackage Admin AJAX Controller
+ * @subpackage Controllers
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Admin AJAX Controller class, extends Base Controller Class
- *
+ * @package TablePress
+ * @subpackage Controllers
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Admin_AJAX_Controller extends TablePress_Controller {

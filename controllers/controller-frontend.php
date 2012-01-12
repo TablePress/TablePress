@@ -3,7 +3,7 @@
  * Frontend Controller for TablePress with functionality for the frontend
  *
  * @package TablePress
- * @subpackage Frontend Controller
+ * @subpackage Controllers
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Frontend Controller class, extends Base Controller Class
- *
+ * @package TablePress
+ * @subpackage Controllers
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Frontend_Controller extends TablePress_Controller {

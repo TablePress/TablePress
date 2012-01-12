@@ -3,7 +3,7 @@
  * TablePress Base Controller with members and methods for all controllers
  *
  * @package TablePress
- * @subpackage Base Controller
+ * @subpackage Controllers
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,36 +13,46 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Base Controller class
- *
+ * @package TablePress
+ * @subpackage Controllers
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 abstract class TablePress_Controller {
 
 	/**
-	 * @var object Instance of the Options Model
+	 * Instance of the Options Model
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	public $model_options;
 
 	/**
-	 * @var object Instance of the Table Model
+	 * Instance of the Table Model
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	public $model_table;
 
 	/**
-	 * @var string File name of the admin screens's parent page in the admin menu
+	 * File name of the admin screens's parent page in the admin menu
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var string
 	 */
 	public $parent_page = 'tools.php';
 
 	/**
-	 * @var bool Whether TablePress admin screens are a top-level menu item in the admin menu
+	 * Whether TablePress admin screens are a top-level menu item in the admin menu
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var bool
 	 */ 
 	public $is_top_level_page = false;
 

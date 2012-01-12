@@ -3,7 +3,7 @@
  * Table Model
  *
  * @package TablePress
- * @subpackage Table Model
+ * @subpackage Models
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,29 +13,37 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Table Model class
- *
+ * @package TablePress
+ * @subpackage Models
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Table_Model extends TablePress_Model {
 
 	/**
-	 * @var object Instance of the Post Type Model
+	 * Instance of the Post Type Model
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	protected $model_post;
 
 	/**
-	 * @var string Name of the Post Meta Field for table options
+	 * Name of the Post Meta Field for table options
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var string
 	 */
 	protected $table_options_field_name = '_tablepress_table_options';
 
 	/**
-	 * @var array Default set of tables
+	 * Default set of tables
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $default_tables = array(
 		'last_id' => 0,
@@ -43,9 +51,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	);
 
 	/**
-	 * @var object Instance of WP_Option class for the list of tables
+	 * Instance of WP_Option class for the list of tables
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	protected $tables;
 
@@ -85,7 +95,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var array $tables New set of tables
+	 * @param array $tables New set of tables
 	 */
 	public function _debug_update_tables( $tables ) {
 		$this->tables->update( $tables );

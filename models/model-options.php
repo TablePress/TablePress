@@ -3,7 +3,7 @@
  * Options Model
  *
  * @package TablePress
- * @subpackage Options Model
+ * @subpackage Models
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,15 +13,19 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Options Model class
- *
+ * @package TablePress
+ * @subpackage Models
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Options_Model extends TablePress_Model {
 
 	/**
-	 * @var array Default Plugin Options (on plugin installation)
+	 * Default Plugin Options
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $default_plugin_options = array(
 		'plugin_options_db_version' => TablePress::db_version,
@@ -31,9 +35,11 @@ class TablePress_Options_Model extends TablePress_Model {
 	);
 
 	/**
-	 * @var array Default User Options (on plugin installation)
+	 * Default User Options
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $default_user_options = array(
 		'user_options_db_version' => TablePress::db_version,
@@ -43,16 +49,20 @@ class TablePress_Options_Model extends TablePress_Model {
 	);
 
 	/**
-	 * @var object Instance of WP_Option class for Plugin Options
+	 * Instance of WP_Option class for Plugin Options
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	protected $plugin_options;
 
 	/**
-	 * @var object Instance of WP_User_Option class for User Options
+	 * Instance of WP_User_Option class for User Options
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */
 	protected $user_options;
 

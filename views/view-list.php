@@ -3,7 +3,7 @@
  * List Tables View
  *
  * @package TablePress
- * @subpackage List Tables View
+ * @subpackage Views
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,15 +13,19 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * List Tables View class
- *
+ * @package TablePress
+ * @subpackage Views
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_List_View extends TablePress_View {
 
 	/**
-	 * @var int Number of screen columns for the List View
+	 * Number of screen columns for the List View
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var int
 	 */
 	protected $screen_columns = 2;
 

@@ -3,7 +3,7 @@
  * Post Model
  *
  * @package TablePress
- * @subpackage Post Model
+ * @subpackage Models
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,15 +13,19 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Post Model class
- *
+ * @package TablePress
+ * @subpackage Models
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Post_Model extends TablePress_Model {
 
 	/**
-	 * @var string Name of the "Custom Post Type" for the tables
+	 * Name of the "Custom Post Type" for the tables
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var string
 	 */
 	protected $post_type = 'tablepress_table';
 
@@ -222,6 +226,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param int $post_id
 	 * @param string $field
 	 * @param string $value
+	 * @param string $prev_value (optional)
 	 * @return bool
 	 */
 	public function update_meta_field( $post_id, $field, $value, $prev_value = '' ) {

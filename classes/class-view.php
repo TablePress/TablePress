@@ -3,7 +3,7 @@
  * TablePress Base View with members and methods for all views
  *
  * @package TablePress
- * @subpackage TablePress Base View
+ * @subpackage Views
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,58 +13,74 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Base View class
- *
+ * @package TablePress
+ * @subpackage Views
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 abstract class TablePress_View {
 
 	/**
-	 * @var array Data for the view
+	 * Data for the view
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */
 	protected $data = array();
 
 	/**
-	 * @var int Number of screen columns for post boxes
+	 * Number of screen columns for post boxes
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var int
 	 */
 	protected $screen_columns = 0;
 
 	/**
-	 * @var string User action for this screen
+	 * User action for this screen
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var string
 	 */	
 	protected $action = '';
 
 	/**
-	 * @var object Instance of the Admin Page Helper Class, with necessary functions
+	 * Instance of the Admin Page Helper Class, with necessary functions
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var object
 	 */	
 	protected $admin_page;
 
 	/**
-	 * @var array List of text boxes (similar to post boxes, but just with text and without extra functionality)
+	 * List of text boxes (similar to post boxes, but just with text and without extra functionality)
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */	
 	protected $textboxes = array();
 
 	/**
-	 * @var List of messages that are to be displayed as boxes below the page title
+	 * List of messages that are to be displayed as boxes below the page title
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var array
 	 */	
 	protected $header_messages = array();
 
 	/**
-	 * @var bool Whether there are post boxes registered for this screen,
+	 * Whether there are post boxes registered for this screen,
 	 * is automatically set to true, when a meta box is added
 	 *
 	 * @since 1.0.0
+	 *
+	 * @var bool
 	 */	
 	protected $has_meta_boxes = false;
 
@@ -213,7 +229,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 * @uses do_meta_boxes()
 	 *
-	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered#
+	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered
 	 */
 	protected function do_meta_boxes( $context ) {
 		if ( ! $this->has_meta_boxes )
@@ -345,6 +361,9 @@ abstract class TablePress_View {
 	 * Print a submit button (only done when function is used as a callback for a text box)
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen
+	 * @param array $box Information about the text box
 	 */
 	protected function textbox_submit_button( $data, $box ) {
 		$caption = isset( $data['submit_button_caption'] ) ? $data['submit_button_caption'] : __( 'Save Changes', 'tablepress' );

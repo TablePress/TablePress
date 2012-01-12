@@ -3,7 +3,7 @@
  * Admin Page Helper Class for TablePress with functions needed in the admin area
  *
  * @package TablePress
- * @subpackage Admin Page Helper
+ * @subpackage Views
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Admin Page class
- *
+ * @package TablePress
+ * @subpackage Views
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Admin_Page {

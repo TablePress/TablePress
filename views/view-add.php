@@ -3,7 +3,7 @@
  * Add Table View
  *
  * @package TablePress
- * @subpackage Add Table View
+ * @subpackage Views
  * @author Tobias Bäthge
  * @since 1.0.0
  */
@@ -13,7 +13,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Add Table View class
- *
+ * @package TablePress
+ * @subpackage Views
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 class TablePress_Add_View extends TablePress_View {
