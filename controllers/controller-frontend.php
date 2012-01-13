@@ -29,7 +29,6 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		parent::__construct();
 
 		//require_once ( TABLEPRESS_ABSPATH . 'libraries/template-tag-functions.php' );
-		//$this->model_table = TablePress::load_model( 'table' );
 	}
 
 } // class TablePress_Frontend_Controller

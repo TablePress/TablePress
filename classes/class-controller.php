@@ -63,6 +63,9 @@ abstract class TablePress_Controller {
 	 */
 	public function __construct() {
 		$this->model_options = TablePress::load_model( 'options' );
+		$this->model_table = TablePress::load_model( 'table' );
+
+		// update check, in all controllers (frontend and admin), to make sure we always have up-to-date options
 		$this->plugin_update_check(); // should be done very early
 
 		// Admin Page Menu entry, needed for construction of plugin URLs

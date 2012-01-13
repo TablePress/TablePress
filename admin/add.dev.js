@@ -7,16 +7,25 @@
 jQuery(document).ready( function($) {
 
 	/**
-	 * remove/add title to value on focus/blur of text fields "Table Name" and "Table Description" on "Add new Table" screen
+	 * Check, whether entered numbers for rows and columns are valid
+	 *
+	 * @since 1.0.0
 	 */
-	$( '#tablepress_add-form-table' ).find( '#table_name, #table_description' )
-	.focus( function() {
-		if ( $(this).attr( 'defaultValue' ) == $(this).val() )
-			$(this).val( '' );
-	} )
-	.blur( function() {
-		if ( '' == $(this).val() )
-			$(this).val( $(this).attr( 'defaultValue' ) );
+	$( '#tablepress-page' ).on( 'submit', 'form', function( /* event */ ) {
+		var num_rows = $( '#table-rows' ).val(),
+			num_columns = $( '#table-columns' ).val();
+
+		if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
+			alert( tablepress_strings.number_rows_invalid );
+			$( '#table-rows' ).focus().select();
+			return false;
+		}
+
+		if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
+			alert( tablepress_strings.number_columns_invalid );
+			$( '#table-columns' ).focus().select();
+			return false;
+		}
 	} );
-	
+
 } );

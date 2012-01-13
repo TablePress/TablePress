@@ -6,8 +6,6 @@
 
 jQuery(document).ready( function($) {
 
-	// tablepress_common object will contain all localized strings and options that influence JavaScript
-
 	/**
 	 * Enable toggle/order functionality for post meta boxes
 	 * For TablePress, pagenow has the form "tablepress_{$action}"
@@ -25,7 +23,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' ).on( 'click', '.ajax-link', function() {
+	$( '#tablepress-page' ).on( 'click', '.ajax-link', function( /* event */ ) {
 		var link = this,
 			action = link.className.replace(/^.*ajax-link /, '');
 		$.get(
@@ -43,6 +41,39 @@ jQuery(document).ready( function($) {
 			}
 		);
 		return false;
+	} );
+
+	/**
+	 * Remove/add title to value on focus/blur of text fields "Table Name" and "Table Description" on "Add new Table" screen
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' )
+	.on( 'focus', '.placeholder', function() {
+		if ( this.value == this.defaultValue ) {
+			this.value = '';
+			$(this).removeClass( 'placeholder-active' );
+		}
+	} )
+	.on( 'blur', '.placeholder', function() {
+		if ( '' == this.value ) {
+			this.value = this.defaultValue;
+			$(this).addClass( 'placeholder-active' );
+		}
+	} );
+
+	/**
+	 * Check that numerical fields (e.g. column/row number fields) only contain numbers
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' )
+	.on( 'keyup', '.numbers-only', function( event ) {
+		// allow navigation with left and right cursor key
+		if ( ( 37 == event.which ) || ( 39 == event.which ) )
+			return;
+		var $input = $(this);
+		$input.val( $input.val().replace( /[^0-9]/g, '' ) );
 	} );
 
 } );

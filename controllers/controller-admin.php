@@ -46,14 +46,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->model_table = TablePress::load_model( 'table' );
 
-		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entries' ) );
+		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entry' ) );
 		add_action( 'admin_init', array( &$this, 'add_admin_actions' ) );
-
-		// not sure if this is needed, and when to do it:
-		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
-		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 	}
 
 	/**
@@ -61,7 +56,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	public function add_admin_menu_entries() {
+	public function add_admin_menu_entry() {
 		// for all menu entries:
 		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'read' ); // make this a Plugin Option!
 		$callback = array( &$this, 'show_admin_page' );
@@ -116,7 +111,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		foreach ( $this->page_hooks as $page_hook ) {
 			add_action( "load-{$page_hook}", array( &$this, 'load_admin_page' ) );
 		}
-		//add_action( 'load-plugins.php', array( &$this, 'plugin_notification' ) );
+
+		// not sure if this is needed:
+		// add_action( 'load-plugins.php', array( &$this, 'plugin_notification' ) );
+		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
+		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 	}
 
 	/**
@@ -162,8 +161,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'options':
 				$data['user_options']['parent_page'] = $this->parent_page;
-				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' ); //'en_US';
-				$data['user_options']['available_plugin_languages'] = array( 'en_US' => __( 'English', 'tablepress' ), 'de_DE' => __( 'German', 'tablepress' ) );
+				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' );
+				$data['user_options']['available_plugin_languages'] = array(
+					'en_US' => __( 'English', 'tablepress' ),
+					'de_DE' => __( 'German', 'tablepress' )
+				); // make this a function or property
 				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
@@ -299,7 +301,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	/**
 	 * HTTP POST actions
 	 *
-	 * STILL REQUIRED:
+	 * @TODO: STILL REQUIRED:
 	 * caps check with correct user caps, like
 	 * // if ( ! current_user_can( 'manage_options' ) )
 	 * //	wp_die( __('Cheatin&#8217; uh?') );
@@ -332,7 +334,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		*/
 		$table['options'] = array(
 			'last_action' => 'edit',
-			'last_change' => time(),
+			'last_modified' => time(),
 			'last_editor' => get_current_user_id()
 		);
         //$table['visibility'] = $edit_table['visibility'];
@@ -366,7 +368,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// sanity checks
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
-		$description = ( isset( $add_table['desciption'] ) ) ? $add_table['description'] : '';
+		$description = ( isset( $add_table['description'] ) ) ? $add_table['description'] : '';
 		$num_rows = ( isset( $add_table['rows'] ) ) ? absint( $add_table['rows'] ) : 1;
 		if ( $num_rows < 1 )
 			$num_rows = 1;
@@ -381,7 +383,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table['data'] = array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) );
 		$table['options'] = array(
 			'last_action' => 'add',
-			'last_change' => time(),
+			'last_modified' => time(),
 			'last_editor' => get_current_user_id()
 		);
         $table['visibility'] = array(
@@ -433,7 +435,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	/**
 	 * Save GET actions
 	 *
-	 * STILL REQUIRED:
+	 * @TODO: STILL REQUIRED:
 	 * caps check with correct user caps, like
 	 * // if ( ! current_user_can( 'manage_options' ) )
 	 * //	wp_die( __('Cheatin&#8217; uh?') );

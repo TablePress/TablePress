@@ -4,18 +4,12 @@
  * @since 1.0.0
  */
 
-body {
-	font-family: HelveticaNeue;
-	font-size: 12px;
-}
-
 body.wait * {
 	cursor: wait!important;
 }
 
-.tp-manipulation,
-#tp-table-information {
-	margin-bottom: 5px;
+#tablepress_edit-table-data .inside {
+	overflow-x: scroll;
 }
 
 .tp-hidden-container {
@@ -30,11 +24,6 @@ body.wait * {
 #tp-visual-editor-confirm,
 #tp-visual-editor-cancel {
 	float: right;
-}
-
-#tp-rows-append-num,
-#tp-columns-append-num {
-	width: 30px;
 }
 
 .tp-animation-saving,
@@ -64,7 +53,7 @@ body.wait * {
 }
 
 #tp-edit-body input[type="checkbox"] {
-	margin: 3px 3px 3px 0px;
+	margin-right: 3px;
 }
 
 #tp-edit-body textarea {
@@ -84,7 +73,7 @@ body.wait * {
 
 #tp-edit {
 	border-collapse: collapse;
-	margin: 10px 0;
+	margin-bottom: 10px;
 }
 
 #tp-edit .move-handle {

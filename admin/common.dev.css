@@ -12,16 +12,12 @@
 #tablepress-page #poststuff {
 	padding-top: 0px;
 }
-
-#tablepress-page .submenu-plugin-actions {
-	margin-left: 50px;
-}
 */
 
+/* Nav Tab Menu */
 #tablepress-nav .separator {
 	margin: 6px;
 }
-
 #tablepress-nav .nav-tab {
 	color: #21759B;
 }
@@ -35,4 +31,23 @@
 }
 #tablepress-nav .nav-tab-active:hover {
 	color: #464646;
+}
+
+/* "Description" textarea on the "Add" screen */
+#tablepress-page textarea.regular-text {
+	width: 25em;
+	vertical-align: middle; /* for position of the span.description on the right of the textarea */
+}
+
+/* placeholder fields in gray text color */
+#tablepress-page .placeholder-active {
+	color: #bbb;
+}
+
+/* width and font weight of the ID column on the "All Tables" screen */
+#tablepress-all-tables thead .table-id {
+	width: 50px;
+}
+#tablepress-all-tables tbody .table-id {
+	font-weight: bold;
 }

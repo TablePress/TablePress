@@ -172,7 +172,7 @@ abstract class TablePress_View {
 	 * @param string $context (optional) Context/position of the text box (normal, side, additional, header, submit)
 	 * @param bool $wrap Whether the content of the text box shall be wrapped in a <div> container
 	 */
-	public function add_text_box( $id, $callback, $context = 'normal', $wrap = true ) {
+	public function add_text_box( $id, $callback, $context = 'normal', $wrap = false ) {
 		if ( ! isset( $this->textboxes[ $context ] ) )
 			$this->textboxes[ $context ] = array();
 

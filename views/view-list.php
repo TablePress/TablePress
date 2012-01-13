@@ -108,11 +108,11 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	public function textbox_tables_list( $data, $box ) {
 	?>
-<table class="wp-list-table widefat fixed" cellspacing="0">
+<table id="tablepress-all-tables" class="widefat fixed" cellspacing="0">
 <thead>
 	<tr>
 		<th scope="col" class="check-column"><input type="checkbox" /></th>
-		<th scope="col">ID<span></span></th>
+		<th scope="col" class="table-id">ID<span></span></th>
 		<th scope="col">Table Name<span></span></th>
 		<th scope="col">Description<span></span></th>
 		<th scope="col">Author<span></span></th>
@@ -129,7 +129,7 @@ class TablePress_List_View extends TablePress_View {
 		<th scope="col">Date<span></span></th>
 	</tr>
 </tfoot>
-<tbody id="the-list">
+<tbody>
 <?php
 
 if ( $data['tables_count'] < 1 ):
@@ -148,7 +148,7 @@ else:
 ?>
 	<tr<?php echo $row_class;?> valign="top">
 		<th scope="row" class="check-column"><input type="checkbox" name="post[]" value="1056" /></th>
-		<td><?php echo $table['id']; ?></td>
+		<td class="table-id"><?php echo $table['id']; ?></td>
 		<td><strong><a title="Edit &#8220;<?php echo $table['name']; ?>&#8221;" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
 			<div class="row-actions">
 				<span class="edit"><a href="<?php echo $edit_url; ?>" title="Edit this item">Edit</a> | </span>
@@ -157,7 +157,7 @@ else:
 		</td>
 		<td><?php echo $table['description']; ?></td>
 		<td><?php echo $table['options']['last_editor']; ?></td>
-		<td><?php echo $table['options']['last_change']; ?></td>
+		<td><?php echo $table['options']['last_modified']; ?></td>
 	</tr>
 <?php
 	endforeach;

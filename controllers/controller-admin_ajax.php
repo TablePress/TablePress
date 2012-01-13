@@ -30,9 +30,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
-		// $this->model_table = TablePress::load_model( 'table' );
 
-		$ajax_actions = array( 'hide_message' ); //array( 'hide_message', 'save_table', 'preview_table' );
+		$ajax_actions = array( 'hide_message' ); //array( 'save_table', 'preview_table' );
 		foreach ( $ajax_actions as $action ) {
 			add_action( "wp_ajax_tablepress_{$action}", array( &$this, "ajax_action_{$action}" ) );
 		}
@@ -50,6 +49,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$message_item =  $_GET['item'];
 
 		TablePress::check_nonce( 'hide_message', $message_item, true );
+
+		// @TODO Capability check!
 
 		$this->model_options->update( "message_{$message_item}", false );
 		die( '1' );

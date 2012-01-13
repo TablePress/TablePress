@@ -5,10 +5,12 @@
  */
 
 jQuery(document).ready( function( $ ) {
-	var tp = {
+	var tp_options = tablepress_options,
+		tp_strings = tablepress_strings,
+		tp = {
 		made_changes: false,
 		table: {
-			id: $( '#tp-table-id' ).val(),
+			id: $( '#table-id' ).val(),
 			rows: $( '#tp-rows' ).val(),
 			columns: $( '#tp-columns' ).val(),
 			head: $( '#tp-table-head' ).prop( 'checked' ),
@@ -34,7 +36,7 @@ jQuery(document).ready( function( $ ) {
 				
 				if ( confirm( tp_strings.ays_change_table_id ) ) {
 					tp.table.id = this.value;
-					$( '#tp-shortcode' ).val( '[table id=' + tp.table.id + ' /]' ).click(); // click() to focus and select
+					$( '#table-shortcode' ).val( '[table id=' + tp.table.id + ' /]' ).click(); // click() to focus and select
 					tp.table.set_table_changed();
 				} else {
 					$(this).val( tp.table.id );
@@ -186,7 +188,7 @@ jQuery(document).ready( function( $ ) {
 			append: function( /* event */ ) {
 				var num_rows = $( '#tp-rows-append-num' ).val();
 
-				if ( ! ( /^[1-9][0-9]{0,3}$/ ).test( num_rows ) ) {
+				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
 					alert( tp_strings.append_num_rows_invalid );
 					$( '#tp-rows-append-num' ).focus().select();
 					return;
@@ -368,7 +370,7 @@ jQuery(document).ready( function( $ ) {
 					num_columns = $( '#tp-columns-append-num' ).val(),
 					new_body_cells = new_head_cells = new_foot_cells = '';
 					
-				if ( ! ( /^[1-9][0-9]{0,3}$/ ).test( num_columns ) ) {
+				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
 					alert( tp_strings.append_num_columns_invalid );
 					$( '#tp-columns-append-num' ).focus().select();
 					return;
@@ -543,7 +545,7 @@ jQuery(document).ready( function( $ ) {
 					tp.columns.move.source_idx = tp.columns.move.target_idx;
 				},
 				sort: function( event, ui ) {
-					tp.columns.move.$helper.css( 'left', ui.offset.left );
+					tp.columns.move.$helper.css( 'left', ui.position.left );
 				},
 				stop: function( /* event, ui */ ) {
 					tp.columns.move.$helper.remove();
@@ -698,12 +700,6 @@ jQuery(document).ready( function( $ ) {
 			}
 		},		
 		check: {
-			append_num: function( event ) {
-				if ( ( 37 == event.which ) || ( 39 == event.which ) )
-					return;
-				var $input = $(this);
-				$input.val( $input.val().replace( /[^0-9]/g, '' ) );
-			},
 			table_id: function( event ) {
 				if ( ( 37 == event.which ) || ( 39 == event.which ) )
 					return;
@@ -835,7 +831,7 @@ jQuery(document).ready( function( $ ) {
 		init: function() {
 			var callbacks = {
 				'click': {
-					'#tp-shortcode':		function() { $(this).focus().select(); },
+					'#table-shortcode':		function() { $(this).focus().select(); },
 					'#tp-rows-insert':		tp.rows.insert,
 					'#tp-columns-insert':	tp.columns.insert,
 					'#tp-rows-remove':		tp.rows.remove,
@@ -854,15 +850,14 @@ jQuery(document).ready( function( $ ) {
 					'.tp-save-changes':		tp.save_changes.trigger
 				},
 				'keyup': {
-					'#tp-rows-append-num, #tp-columns-append-num': tp.check.append_num,
-					'#tp-table-id':			tp.check.table_id					
+					'#table-id':			tp.check.table_id					
 				},
 				'change': {
 					'#tp-table-head':		tp.table.change_table_head, 
 					'#tp-table-foot':		tp.table.change_table_foot
 				},
 				'blur': {
-					'#tp-table-id':			tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
+					'#table-id':			tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
 				}
 			},
 			$table = $( '#tp-edit-body' );
@@ -891,16 +886,7 @@ jQuery(document).ready( function( $ ) {
 
 			$( '#tp-edit-head' ).on( 'click', '.sort-control', tp.rows.sort );
 
-			$( '#tp-table-information' )
-				.on( 'focus', '.placeholder', function() {
-					if ( this.value == this.defaultValue )
-						this.value = '';
-				} )
-				.on( 'blur', '.placeholder', function() {
-					if ( '' == this.value )
-						this.value = this.defaultValue;
-				} )
-				.on( 'change', '.placeholder', tp.table.set_table_changed );
+			$( '#tp-table-information' ).on( 'change', '.placeholder', tp.table.set_table_changed );
 
 			$table.sortable( {
 				axis: 'y',

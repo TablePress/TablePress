@@ -31,7 +31,12 @@ class TablePress_Add_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		//$this->admin_page->enqueue_script( 'add', array( 'jquery' ) );
+		$this->admin_page->enqueue_script( 'add', array( 'jquery' ), array(
+			'strings' => array(
+				'number_rows_invalid' => __( 'The number of rows is invalid.', 'tablepress' ),
+				'number_columns_invalid' => __( 'The number of columns is invalid.', 'tablepress' )
+			)
+		) );
 
 		$this->action_messages = array(
 			'error_add' => __( 'Error: The table could not be added.', 'tablepress' ),
@@ -65,23 +70,27 @@ class TablePress_Add_View extends TablePress_View {
 	 */
 	public function textbox_form_table( $data, $box ) {
 		?>
-		<table>
-		<tr>
-			<th scope="row"><label for="table_name"><?php esc_html_e( 'Table Name', 'tablepress' ); ?>:</label></th>
-			<td><input type="text" name="table[name]" id="table_name" class="large-text" value="<?php esc_attr_e( 'Enter Table Name', 'tablepress' ); ?>" /></td>
+		<table class="form-table">
+		<tbody>
+		<tr valign="top">
+			<th scope="row"><label for="table-name"><?php esc_html_e( 'Table Name', 'tablepress' ); ?>:</label></th>
+			<td><input type="text" name="table[name]" id="table-name" class="regular-text placeholder placeholder-active" value="<?php esc_attr_e( 'Enter Table Name', 'tablepress' ); ?>" />
+			<span class="description">The name or title of your table.</span></td>
 		</tr>
-		<tr>
-			<th scope="row"><label for="table_description"><?php esc_html_e( 'Description', 'tablepress' ); ?>:</label></th>
-			<td><textarea name="table[description]" id="table_description" class="large-text"><?php echo esc_textarea( __( 'Enter Description', 'tablepress' ) ); ?></textarea></td>
+		<tr valign="top">
+			<th scope="row"><label for="table-description"><?php esc_html_e( 'Description', 'tablepress' ); ?>:</label></th>
+			<td><textarea name="table[description]" id="table-description" class="regular-text placeholder placeholder-active"><?php echo esc_textarea( __( 'Enter Description', 'tablepress' ) ); ?></textarea>
+			<span class="description">The description of your table.</span></td>
 		</tr>
-		<tr>
-			<th scope="row"><label for="table_rows"><?php esc_html_e( 'Number of Rows', 'tablepress' ); ?>:</label></th>
-			<td><input type="text" name="table[rows]" id="table_rows" class="small-text" value="5" /></td>
+		<tr valign="top">
+			<th scope="row"><label for="table-rows"><?php esc_html_e( 'Number of Rows', 'tablepress' ); ?>:</label></th>
+			<td><input type="text" name="table[rows]" id="table-rows" class="small-text numbers-only" value="5" maxlength="5" /></td>
 		</tr>
-		<tr>
-			<th scope="row"><label for="table_cols"><?php esc_html_e( 'Number of Columns', 'tablepress' ); ?>:</label></th>
-			<td><input type="text" name="table[columns]" id="table_columns" class="small-text" value="5" /></td>
+		<tr valign="top">
+			<th scope="row"><label for="table-columns"><?php esc_html_e( 'Number of Columns', 'tablepress' ); ?>:</label></th>
+			<td><input type="text" name="table[columns]" id="table-columns" class="small-text numbers-only" value="5" maxlength="5" /></td>
 		</tr>
+		</tbody>
 		</table>
 		<?php
 	}

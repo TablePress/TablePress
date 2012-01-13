@@ -48,8 +48,11 @@ class TablePress_Admin_Page {
 		$js_file = "admin/{$name}{$suffix}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		wp_enqueue_script( "tablepress-{$name}", $js_url, $dependencies, TablePress::version, true );
-		if ( $localize_script )
-			wp_localize_script( "tablepress-{$name}", "tablepress_{$name}", $localize_script );
+		if ( ! empty( $localize_script ) ) {
+			foreach ( $localize_script as $var_name => $var_data ) {
+				wp_localize_script( "tablepress-{$name}", "tablepress_{$var_name}", $var_data );
+			}
+		}
 	}
 
 	/**
