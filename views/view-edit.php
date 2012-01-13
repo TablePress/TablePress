@@ -41,9 +41,11 @@ class TablePress_Edit_View extends TablePress_View {
 		/*	'success_import' => __( 'The table was imported successfully.', 'tablepress' ), */
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
+			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( in_array( $data['message'], array( 'error_save', 'error_delete' ) ) ) ? 'error' : 'updated' ;
+			$class = ( in_array( $data['message'], array( 'error_save', 'error_delete', 'success_save_error_id_change' ) ) ) ? 'error' : 'updated' ;
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
@@ -66,7 +68,7 @@ class TablePress_Edit_View extends TablePress_View {
 		// use custom nonce field here, that includes the table ID
 		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ) ); echo "\n";
 		?>
-		<input type="hidden" name="orig_table_id" value="<?php echo $data['table']['id']; ?>" />
+		<input type="hidden" name="orig_table_id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
 		<?php
 	}
 

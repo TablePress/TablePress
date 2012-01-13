@@ -324,11 +324,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
 		$table['options'] = array( 'last_action' => 'edit', 'last_change' => time() );
 
-		$table_id = $this->model_table->save( $table );
-		if ( false === $table_id )
+		$saved = $this->model_table->save( $table );
+		if ( false === $saved )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'error_save' ) );
 
-		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_save' ) );
+		if ( $orig_table_id === $edit_table['id'] ) // check if table ID change is desired
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'success_save' ) );
+
+		$id_changed = $this->model_table->change_table_id( $orig_table_id, $edit_table['id'] );
+		if ( $id_changed )
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'success_save_success_id_change' ) );
+		else
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'success_save_error_id_change' ) );
 	}
 
 	/**
