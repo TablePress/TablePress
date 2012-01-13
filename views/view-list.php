@@ -56,20 +56,18 @@ class TablePress_List_View extends TablePress_View {
 			'success_delete' => __( 'The table was deleted successfully.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
 			'error_no_table' => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
+			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( in_array( $data['message'], array( 'error_delete', 'error_no_table' ) ) ) ? 'error' : 'updated' ;
+			$class = ( in_array( $data['message'], array( 'error_delete', 'error_no_table', 'error_load_table' ) ) ) ? 'error' : 'updated' ;
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
 		$this->add_meta_box( 'support', __( 'Support', 'tablepress' ), array( &$this, 'postbox_support' ), 'side' );
 		$this->add_text_box( 'head1', array( &$this, 'textbox_head1' ), 'normal' );
 		$this->add_text_box( 'head2', array( &$this, 'textbox_head2' ), 'normal' );
+		$this->add_text_box( 'tables-list', array( &$this, 'textbox_tables_list' ), 'normal' );
 
-		if ( 0 < $data['tables_count'] )
-			$this->add_text_box( 'tables-list', array( &$this, 'textbox_list_of_tables' ), 'normal' );
-		else
-			$this->add_text_box( 'no-tables', array( &$this, 'textbox_no_tables' ), 'normal' );
 	}
 
 	/**
@@ -108,34 +106,67 @@ class TablePress_List_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	public function textbox_list_of_tables( $data, $box ) {
-		echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n";
-		foreach ( $data['tables'] as $table ) {
-			$table['data'] = json_encode( $table['data'] );
-			$table['options'] = json_encode( $table['options'] );
-			$edit_link = '<a href="' . TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) ) . '">' . __( 'Edit', 'tablepress' ) . '</a>';
-			$delete_link = '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' ) . '">' . __( 'Delete', 'tablepress' ) . '</a>';
-			/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
-			echo "\t";
-			printf ( '<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td><td>%4$s</td><td>%5$s</td><td>%6$s</td></tr>', $table['id'], $table['name'], $table['description'], $table['data'] . '<br/>' . $table['options'], $edit_link, $delete_link /*, $export_link*/ );
-			echo "\n";
-			}
-		echo "</table>\n";
-	}
+	public function textbox_tables_list( $data, $box ) {
+	?>
+<table class="wp-list-table widefat fixed" cellspacing="0">
+<thead>
+	<tr>
+		<th scope="col" class="check-column"><input type="checkbox" /></th>
+		<th scope="col">ID<span></span></th>
+		<th scope="col">Table Name<span></span></th>
+		<th scope="col">Description<span></span></th>
+		<th scope="col">Author<span></span></th>
+		<th scope="col">Date<span></span></th>
+	</tr>
+</thead>
+<tfoot>
+	<tr>
+		<th scope="col" class="check-column"><input type="checkbox" /></th>
+		<th scope="col">ID<span></span></th>
+		<th scope="col">Table Name<span></span></th>
+		<th scope="col">Description<span></span></th>
+		<th scope="col">Author<span></span></th>
+		<th scope="col">Date<span></span></th>
+	</tr>
+</tfoot>
+<tbody id="the-list">
+<?php
 
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	public function textbox_no_tables( $data, $box ) {
-		$add_url = TablePress::url( array( 'action' => 'add' ) );
-		$import_url = TablePress::url( array( 'action' => 'import' ) );
-		?>
-		<p><?php _e( 'No tables were found.', 'tablepress' ); ?></p>
-		<p><?php printf( __( 'You should <a href="%s">add</a> or <a href="%s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url ); ?></p>
-		<?php
-	}
+if ( $data['tables_count'] < 1 ):
+	$add_url = TablePress::url( array( 'action' => 'add' ) );
+	$import_url = TablePress::url( array( 'action' => 'import' ) );
+	echo '<tr class="no-items"><td class="colspanchange" colspan="6">' . __( 'No tables found.', 'tablepress' ) . ' ' . sprintf( __( 'You should <a href="%s">add</a> or <a href="%s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url ) . '</td></tr>';
+else:
+	$table_count = 0;
+	foreach ( $data['tables'] as $table ) :
+		$edit_url = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
+		$delete_url = TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
+		/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
+
+		$table_count++;
+    	$row_class = ( 0 == ( $table_count % 2) ) ? ' class="alternate"' : '';
+?>
+	<tr<?php echo $row_class;?> valign="top">
+		<th scope="row" class="check-column"><input type="checkbox" name="post[]" value="1056" /></th>
+		<td><?php echo $table['id']; ?></td>
+		<td><strong><a title="Edit &#8220;<?php echo $table['name']; ?>&#8221;" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
+			<div class="row-actions">
+				<span class="edit"><a href="<?php echo $edit_url; ?>" title="Edit this item">Edit</a> | </span>
+				<span class="delete"><a class='submitdelete' title="Delete" href="<?php echo $delete_url; ?>">Delete</a></span>
+			</div>
+		</td>
+		<td><?php echo $table['description']; ?></td>
+		<td><?php echo $table['options']['last_editor']; ?></td>
+		<td><?php echo $table['options']['last_change']; ?></td>
+	</tr>
+<?php
+	endforeach;
+endif;
+?>
+</tbody>
+</table>
+	<?php
+	} // function
 
 	/**
 	 * Return the content for the help tab for this screen

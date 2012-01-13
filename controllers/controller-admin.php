@@ -166,10 +166,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['user_options']['available_plugin_languages'] = array( 'en_US' => __( 'English', 'tablepress' ), 'de_DE' => __( 'German', 'tablepress' ) );
 				break;
 			case 'edit':
-				if ( ! empty( $_GET['table_id'] ) )
+				if ( ! empty( $_GET['table_id'] ) ) {
 					$data['table'] = $this->model_table->load( $_GET['table_id'] );
-				else
+					if ( false === $data['table'] )
+						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
+				} else {
 					TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_table' ) );
+				}
 				break;
 		/*
 			case 'export':
@@ -303,7 +306,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 
 	/**
-	 * Save a table from the "Edit" screen
+	 * Save a table after the "Edit" screen was submitted
 	 *
 	 * @since 1.0.0
 	 */
@@ -311,31 +314,41 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$orig_table_id = ( ! empty( $_POST['orig_table_id'] ) ) ? $_POST['orig_table_id'] : false;
 		TablePress::check_nonce( 'edit', $orig_table_id );
 
-		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) || ( false === $orig_table_id ) )
+		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) || ( false === $orig_table_id ) ) // last check should have been caught by nonce check already
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
 		else
 			$edit_table = stripslashes_deep( $_POST['table'] );
 
 		$table = $this->model_table->load( $orig_table_id );
 
-		$table['id'] = $orig_table_id;
-		$table['name'] = $edit_table['name'];
-		$table['description'] = $edit_table['description'];
-		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
-		$table['options'] = array( 'last_action' => 'edit', 'last_change' => time() );
+		// replace original values with new ones from form fields, if they exist
+		if ( isset( $edit_table['name'] ) )
+			$table['name'] = $edit_table['name'];
+		if ( isset( $edit_table['description'] ) )
+			$table['description'] = $edit_table['description'];
+		/* // need to make this JSON first!
+		if ( isset( $edit_table['data'] ) )
+			$table['data'] = $edit_table['data'];
+		*/
+		$table['options'] = array(
+			'last_action' => 'edit',
+			'last_change' => time(),
+			'last_editor' => get_current_user_id()
+		);
+        //$table['visibility'] = $edit_table['visibility'];
 
 		$saved = $this->model_table->save( $table );
 		if ( false === $saved )
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'error_save' ) );
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'error_save' ) );
 
-		if ( $orig_table_id === $edit_table['id'] ) // check if table ID change is desired
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'success_save' ) );
+		if ( $table['id'] === $edit_table['id'] ) // if no table ID change necessary, we are done
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save' ) );
 
-		$id_changed = $this->model_table->change_table_id( $orig_table_id, $edit_table['id'] );
+		$id_changed = $this->model_table->change_table_id( $table['id'], $edit_table['id'] );
 		if ( $id_changed )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'success_save_success_id_change' ) );
 		else
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $orig_table_id, 'message' => 'success_save_error_id_change' ) );
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save_error_id_change' ) );
 	}
 
 	/**
@@ -351,11 +364,30 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$add_table = stripslashes_deep( $_POST['table'] );
 
+		// sanity checks
+		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
+		$description = ( isset( $add_table['desciption'] ) ) ? $add_table['description'] : '';
+		$num_rows = ( isset( $add_table['rows'] ) ) ? absint( $add_table['rows'] ) : 1;
+		if ( $num_rows < 1 )
+			$num_rows = 1;
+		$num_columns = ( isset( $add_table['columns'] ) ) ? absint( $add_table['columns'] ) : 1;
+		if ( $num_columns < 1 )
+			$num_columns = 1;
+
+		// create a new table array with default data
 		$table = array();
-		$table['name'] = $add_table['name'];
-		$table['description'] = $add_table['description'];
-		$table['data'] = array( array( 'A1', 'B1', 'C1' ), array( 'A2', 'B2', 'C2' ), array( 'A3', 'B3', 'C3' ) );
-		$table['options'] = array( 'last_action' => 'add', 'last_change' => time() );
+		$table['name'] = $name;
+		$table['description'] = $description;
+		$table['data'] = array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) );
+		$table['options'] = array(
+			'last_action' => 'add',
+			'last_change' => time(),
+			'last_editor' => get_current_user_id()
+		);
+        $table['visibility'] = array(
+        	'rows' => array_fill( 0, $num_rows, 1 ),
+        	'columns' => array_fill( 0, $num_columns, 1 )
+        );
 
 		$table_id = $this->model_table->add( $table );
 		if ( false === $table_id  )
