@@ -162,6 +162,7 @@ class TablePress_Post_Model extends TablePress_Model {
 
 	/**
 	 * Move a post to the trash (if trash is globally enabled), instead of directly deleting the post
+	 * (yet unused)
 	 *
 	 * @since 1.0.0
 	 * @uses wp_trash_post()
@@ -176,6 +177,7 @@ class TablePress_Post_Model extends TablePress_Model {
 
 	/**
 	 * Restore a post from the trash
+	 * (yet unused)
 	 *
 	 * @since 1.0.0
 	 * @uses wp_untrash_post()

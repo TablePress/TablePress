@@ -64,7 +64,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	protected $tables;
 
 	/**
-	 *
+	 * Init the Table model by instantiating a Post model and loading the list of tables option
 	 *
 	 * @since 1.0.0
 	 */
@@ -214,6 +214,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( 0 === $new_post_id || $post_id !== $new_post_id )
 			return false;
 
+		if ( ! isset( $table['options'] ) )
+			$table['options'] = array();
 		$options_saved = $this->_update_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved )
 			return false;
@@ -238,6 +240,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( 0 === $new_post_id )
 			return false;
 
+		if ( ! isset( $table['options'] ) )
+			$table['options'] = array();
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved )
 			return false;
