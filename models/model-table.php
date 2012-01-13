@@ -41,6 +41,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	/**
 	 * Default set of tables
 	 *
+	 * Array fields:
+	 * - last_id: last table ID that was given to a new table
+	 * - table_post: array of connections between table ID and post ID (key: table ID, value: post ID)
+	 *
 	 * @since 1.0.0
 	 *
 	 * @var array
@@ -76,11 +80,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Debug loading/storing
-	 */
-
-	/**
-	 *
+	 * Get the tables option, which holds the connection between table ID and post ID
 	 *
 	 * @since 1.0.0
 	 *
@@ -91,7 +91,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 *
+	 * Update the tables option, which holds the connection between table ID and post ID
 	 *
 	 * @since 1.0.0
 	 *
@@ -102,11 +102,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Table <-> Post conversion
-	 */
-
-	/**
-	 *
+	 * Convert a table to a post, which can be stored in the database
 	 *
 	 * @since 1.0.0
 	 *
@@ -133,7 +129,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 *
+	 * Convert a post (from the database) to a table
 	 *
 	 * @since 1.0.0
 	 *
@@ -146,6 +142,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'id' => $table_id,
 			'name' => $post['post_title'],
 			'description' => $post['post_excerpt'],
+			'author' => $post['post_author'],
 			'data' => json_decode( $post['post_content'], true ),
 		);
 
@@ -153,27 +150,34 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Table Handling
-	 */
-
-	/**
-	 *
+	 * Load a table
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
-	 * @return array Table
+	 * @return array|bool Table as an array on success, false on error
 	 */
 	public function load( $table_id ) {
+		if ( empty( $table_id ) )
+			return false;
+
 		$post_id = $this->_get_post_id( $table_id );
+		if ( 0 === $post_id )
+			return false;
+
 		$post = $this->model_post->get( $post_id );
+		if ( false === $post )
+			return false;
+
 		$table = $this->_post_to_table( $post, $table_id );
 		$table['options'] = $this->_get_table_options( $post_id );
 		return $table;
 	}
 
 	/**
+	 * Load all tables
 	 *
+	 * @TODO: Should be refactored to only make one database query to wp_posts, maybe with a query to prime the posts cache
 	 *
 	 * @since 1.0.0
 	 *
@@ -181,70 +185,71 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function load_all() {
 		$tables = array();
-
-		// hacky approach, might consider function that returns array of table IDs to loop through with _get_post_id() in loop
-
-		$table_post = $this->tables->get( 'table_post' );
-		foreach ( $table_post as $table_id => $post_id ) {
-			if ( 0 == $table_id )
-				continue;
+		$table_ids = array_keys( $this->tables->get( 'table_post' ) );
+		foreach ( $table_ids as $table_id ) {
 			$tables[ $table_id ] = $this->load( $table_id );
 		}
 		return $tables;
 	}
 
 	/**
-	 *
+	 * Save a table
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table (needs to include $table['id'])
-	 * @return mixed False on error, int Post ID on success
+	 * @return mixed False on error, int table ID on success
 	 */
 	public function save( $table ) {
+		if ( empty( $table['id'] ) )
+			return false;
+
 		$post_id = $this->_get_post_id( $table['id'] );
+		if ( 0 === $post_id )
+			return false;
+
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
 
-		$return = false;
-		if ( $post_id == $new_post_id ) {
-			$options_saved = $this->_update_table_options( $post_id, $table['options'] );
-			if ( $options_saved ) {
-				// $this->_update_post_id( $table['id'], $new_post_id ); // unnecessary now, maybe useful for revisioning/draft feature later
-				$return = $table['id'];
-			}
-		}
+		if ( 0 === $new_post_id || $post_id !== $new_post_id )
+			return false;
 
-		return $return;
+		$options_saved = $this->_update_table_options( $new_post_id, $table['options'] );
+		if ( ! $options_saved )
+			return false;
+
+		// at this point, post was successfully added
+		return $table['id'];
 	}
 
 	/**
-	 *
+	 * Add a new table
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table (without $table['id'])
-	 * @return mixed False on error, int Post ID on success
+	 * @return mixed False on error, int table ID of the new table on success
 	 */
 	public function add( $table ) { // no table['id']
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
-		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 
-		if ( 0 == $new_post_id || is_wp_error( $new_post_id ) )
+		if ( 0 === $new_post_id )
 			return false;
 
-		// check $options_saved?!?!
+		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
+		if ( ! $options_saved )
+			return false;
 
-		// at this point, post was successfully added
+		// at this point, post was successfully added, now get an unused table ID
 		$table_id = $this->_get_new_table_id();
 		$this->_update_post_id( $table_id, $new_post_id );
 		return $table_id;
 	}
 	
 	/**
-	 *
+	 * Delete a table (and its options)
 	 *
 	 * @since 1.0.0
 	 *
@@ -256,27 +261,23 @@ class TablePress_Table_Model extends TablePress_Model {
 			return false;
 	
 		$post_id = $this->_get_post_id( $table_id );
-		$deleted = $this->model_post->delete( $post_id );
-		// Post Meta fields will be deleted automatically by that function
-		if ( $deleted ) {
-			$this->_remove_post_id( $table_id );
-			return true;
-		}
-		
-		return false;
+		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
+
+		if ( false === $deleted )
+			return false;
+
+		// if post was deleted successfully, remove the table ID from the list of tables			
+		$this->_remove_post_id( $table_id );
+		return true;
 	}
 
 	/**
-	 * Helpers
-	 */
-
-	/**
-	 *
+	 * Check if a table ID exists in the list of tables (this does not guarantee that the post with the table data exists!)
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
-	 * @return bool Whether the table exists
+	 * @return bool Whether the table ID exists
 	 */
 	public function table_exists( $table_id ) {
 		$table_post = $this->tables->get( 'table_post' );
@@ -284,11 +285,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 *
+	 * Count the number of tables from either just the list, or by also counting the posts in the database
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param bool $single_value (optional) Whether to return just the number of tables from the list, or also count in the DB
+	 * @param bool $single_value (optional) Whether to return just the number of tables from the list, or also count in the database
 	 * @return bool int|array Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value)
 	 */
 	public function count_tables( $single_value = true ) {
@@ -301,16 +302,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * ID handling
-	 */
-
-	/**
-	 *
+	 * Get the post ID of a given table ID (if the table ID exists)
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
-	 * @return int Post ID
+	 * @return int Post ID on success, int 0 on error
 	 */
 	protected function _get_post_id( $table_id ) {
 		$post_id = 0;
@@ -321,7 +318,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 *
+	 * Update/Add a post ID for a given table ID, and sort the list of tables by their key in natural sort order
 	 *
 	 * @since 1.0.0
 	 *
@@ -333,12 +330,12 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$tables['table_post'][ $table_id ] = $post_id;
 
-		ksort( $tables['table_post'] );
+		uksort( $tables['table_post'], 'strnatcasecmp' );
 		$this->tables->update( $tables );
 	}
 	
 	/**
-	 *
+	 * Remove a table ID / post ID connection from the list of tables
 	 *
 	 * @since 1.0.0
 	 *
@@ -354,15 +351,37 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 	
 	/**
-	 *
+	 * Change the table ID of a table
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string Unused ID (e.g. for a new table)
+	 * @param int $old_id Old table ID
+	 * @param int $new_id New table ID
+	 * @return bool True on success, false on error
+	 */
+	public function change_table_id( $old_id, $new_id ) {
+		$post_id = $this->_get_post_id( $old_id );
+		if ( 0 === $post_id )
+			return false;
+
+		if ( $this->table_exists( $new_id ) )
+			return false;
+
+		$this->_update_post_id( $new_id, $post_id );
+		$this->_remove_post_id( $old_id );
+		return true;
+	}
+
+	/**
+	 * Get an unused table ID (e.g. for a new table)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string Unused table  ID (e.g. for a new table)
 	 */
 	protected function _get_new_table_id() {
 		$tables = $this->tables->get();
-		// need to check new ID candidate, because a higher one might be in use, if a table ID was manually changed
+		// need to check new ID candidate in a loop, because a higher ID might already be in use, if a table ID was changed manually
 		do {
 			$tables['last_id'] ++;
 		} while ( $this->table_exists( $tables['last_id'] ) );
@@ -371,17 +390,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Table Options functions
-	 */
-
-	/**
-	 *
+	 * Save the table options of a table (in a post meta field of the table's post)
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID
-	 * @param array $options Array of Table Options
-	 * @return bool Whether this was successful
+	 * @param array $options Table options
+	 * @return bool True on success, false on error
 	 */
 	protected function _add_table_options( $post_id, $options ) {
 		$options = json_encode( $options );
@@ -390,32 +405,34 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 *
+	 * Update the table options of a table (in a post meta field in the table's post)
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID
-	 * @param array $options Array of Table Options
-	 * @return bool Whether this was successful
+	 * @param array $options Table options
+	 * @return bool True on success, false on error
 	 */
 	protected function _update_table_options( $post_id, $options ) {
 		$options = json_encode( $options );
-		// this is stupid, but necessary:
+		// we need to pass the previous value to make sure that an update takes place, to really get a successful (true) return result from the WP API
 		$prev_options = json_encode( $this->_get_table_options( $post_id ) );
 		$success = $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options, $prev_options );
 		return $success;
 	}
 
 	/**
-	 *
+	 * Get the table options of a table (from a post meta field of the table's post)
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID
-	 * @return array Array of Table Options
+	 * @return array Table options on success, empty array on error
 	 */
 	protected function _get_table_options( $post_id ) {
 		$options = $this->model_post->get_meta_field( $post_id, $this->table_options_field_name );
+		if ( empty( $options ) )
+			return array();
 		$options = json_decode( $options, true );
 		return $options;
 	}
