@@ -5,12 +5,11 @@
  */
 
 jQuery(document).ready( function( $ ) {
-	var tp_options = tablepress_options,
-		tp_strings = tablepress_strings,
-		tp = {
+	var tp = {
 		made_changes: false,
 		table: {
 			id: $( '#table-id' ).val(),
+			orig_id: $( '#orig-table-id' ).val(),
 			rows: $( '#tp-rows' ).val(),
 			columns: $( '#tp-columns' ).val(),
 			head: $( '#tp-table-head' ).prop( 'checked' ),
@@ -20,7 +19,7 @@ jQuery(document).ready( function( $ ) {
 			body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" value="1" /></td>',
 			body_cells_post: '<td><span class="move-handle"></span></td></tr>',
 			body_cell: '<td><textarea></textarea></td>',
-			head_cell: '<th class="head"><span class="sort-control sort-desc" title="' + tp_strings.sort_desc + '"></span><span class="sort-control sort-asc" title="' + tp_strings.sort_asc + '"></span><span class="move-handle"></span></th>',
+			head_cell: '<th class="head"><span class="sort-control sort-desc" title="' + tablepress_strings.sort_desc + '"></span><span class="sort-control sort-asc" title="' + tablepress_strings.sort_asc + '"></span><span class="move-handle"></span></th>',
 			foot_cell: '<th><input type="checkbox" /><input type="hidden" class="visibility" value="1" /></th>',
 			set_table_changed: function() {
 				tp.made_changes = true;
@@ -34,7 +33,7 @@ jQuery(document).ready( function( $ ) {
 				if ( this.value == tp.table.id )
 					return;
 				
-				if ( confirm( tp_strings.ays_change_table_id ) ) {
+				if ( confirm( tablepress_strings.ays_change_table_id ) ) {
 					tp.table.id = this.value;
 					$( '#table-shortcode' ).val( '[table id=' + tp.table.id + ' /]' ).click(); // click() to focus and select
 					tp.table.set_table_changed();
@@ -51,58 +50,59 @@ jQuery(document).ready( function( $ ) {
 				tp.rows.stripe();
 			},
 			prepare_ajax_request: function( wp_action, wp_nonce ) {
-					var $table_body = $( '#tp-edit-body' ),
-						table_data = [],
-						table_options,
-						table_visibility = { rows: [], columns: [], hidden_rows: 0, hidden_columns: 0 };
-	
-					$table_body.children().each( function( idx, row ) {
-						table_data[idx] = $(row).find( 'textarea' )
-							.map( function() {
-								return $(this).val();
-							} )
-							.get();
-					} );
-					table_data = JSON.stringify( table_data );
-	
-					// evtl. für options-saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
-					table_options = {
-						table_head: tp.table.head,
-						table_foot: tp.table.foot
-					};
-					table_options = JSON.stringify( table_options );
-	
-					table_visibility.rows = $table_body.find( ':hidden' )
+				var $table_body = $( '#tp-edit-body' ),
+					table_data = [],
+					table_options,
+					table_visibility = { rows: [], columns: [], hidden_rows: 0, hidden_columns: 0 };
+
+				$table_body.children().each( function( idx, row ) {
+					table_data[idx] = $(row).find( 'textarea' )
 						.map( function() {
-							if ( '1' == $(this).val() )
-								return 1;
-							table_visibility.hidden_rows += 1;
-							return 0;
+							return $(this).val();
 						} )
 						.get();
-					table_visibility.columns = $( '#tp-edit-foot' ).find( ':hidden' )
-						.map( function() {
-							if ( '1' == $(this).val() )
-								return 1;
-							table_visibility.hidden_columns += 1;
-							return 0;
-						} )
-						.get();
-					table_visibility = JSON.stringify( table_visibility );
-	
-					// request_data =
-					return {
-						action: wp_action,
-						_ajax_nonce : $( wp_nonce ).val(),
-						tp: {
-							id: tp.table.id,
-							rows: tp.table.rows,
-							columns: tp.table.columns,
-							data: table_data,
-							options: table_options,
-							visibility: table_visibility
-						}
-					};
+				} );
+				table_data = JSON.stringify( table_data );
+
+				// evtl. für options-saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
+				table_options = {
+					table_head: tp.table.head,
+					table_foot: tp.table.foot
+				};
+				table_options = JSON.stringify( table_options );
+
+				table_visibility.rows = $table_body.find( ':hidden' )
+					.map( function() {
+						if ( '1' == $(this).val() )
+							return 1;
+						table_visibility.hidden_rows += 1;
+						return 0;
+					} )
+					.get();
+				table_visibility.columns = $( '#tp-edit-foot' ).find( ':hidden' )
+					.map( function() {
+						if ( '1' == $(this).val() )
+							return 1;
+						table_visibility.hidden_columns += 1;
+						return 0;
+					} )
+					.get();
+				table_visibility = JSON.stringify( table_visibility );
+
+				// request_data =
+				return {
+					action: wp_action,
+					_ajax_nonce : $( wp_nonce ).val(),
+					tp: {
+						id: tp.table.id,
+						orig_id: tp.table.orig_id,
+						rows: tp.table.rows,
+						columns: tp.table.columns,
+						data: table_data,
+						options: table_options,
+						visibility: table_visibility
+					}
+				};
 			},
 			preview: {
 				trigger: function( /* event */ ) {
@@ -111,13 +111,13 @@ jQuery(document).ready( function( $ ) {
 						return;
 					}
 
-					$(this).after( '<span class="tp-animation-preview" title="' + tp_strings.preparing_preview + '"/>' );
+					$(this).after( '<span class="tp-animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
 					$( '.tp-show-preview' ).prop( 'disabled', true );
 					$( 'body' ).addClass( 'wait' );
 					
 					$.post(
 							ajaxurl,
-							tp.table.prepare_ajax_request( 'TablePress_preview_table', '#tp-ajax-nonce-preview-table' ),
+							tp.table.prepare_ajax_request( 'tablepress_preview_table', '#tp-ajax-nonce-preview-table' ),
 							function() { /* done with .success() below */ },
 							'json'
 						)
@@ -149,7 +149,7 @@ jQuery(document).ready( function( $ ) {
 				},
 				error: function( message ) {
 					$( '.tp-animation-preview' )
-						.after( '<span class="tp-preview-error">' + tp_strings.preview_error + ' ' + message + '</span>' )
+						.after( '<span class="tp-preview-error">' + tablepress_strings.preview_error + ' ' + message + '</span>' )
 						.remove();
 					$( '.tp-preview-error' ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
 					$( '.tp-show-preview' ).prop( 'disabled', false );
@@ -160,7 +160,7 @@ jQuery(document).ready( function( $ ) {
 						height = $(window).height() - 120;
 					if ( $( 'body.admin-bar' ).length )
 						height -= 28;
-					tb_show( tp_strings.preview, '#TB_inline?height=' + height + '&width=' + width + '&inlineId=tp-preview-container', false );
+					tb_show( tablepress_strings.preview, '#TB_inline?height=' + height + '&width=' + width + '&inlineId=tp-preview-container', false );
 				}
 			}
 		},
@@ -189,7 +189,7 @@ jQuery(document).ready( function( $ ) {
 				var num_rows = $( '#tp-rows-append-num' ).val();
 
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
-					alert( tp_strings.append_num_rows_invalid );
+					alert( tablepress_strings.append_num_rows_invalid );
 					$( '#tp-rows-append-num' ).focus().select();
 					return;
 				}
@@ -204,7 +204,7 @@ jQuery(document).ready( function( $ ) {
 					.prop( 'checked', event.altKey ).closest( 'tr' );
 					
 				if ( 0 === $selected_rows.length ) {
-					alert( tp_strings.no_rows_selected );
+					alert( tablepress_strings.no_rows_selected );
 					return;
 				}
 
@@ -218,7 +218,7 @@ jQuery(document).ready( function( $ ) {
 					.prop( 'checked', event.altKey ).closest( 'tr' );
 					
 				if ( 0 === $selected_rows.length ) {
-					alert( tp_strings.no_rows_selected );
+					alert( tablepress_strings.no_rows_selected );
 					return;
 				}
 				
@@ -232,7 +232,7 @@ jQuery(document).ready( function( $ ) {
 					.prop( 'checked', event.altKey ).closest( 'tr' );
 					
 				if ( 0 === $selected_rows.length ) {
-					alert( tp_strings.no_rows_selected );
+					alert( tablepress_strings.no_rows_selected );
 					return;
 				}
 				
@@ -247,16 +247,16 @@ jQuery(document).ready( function( $ ) {
 				var $selected_rows = $( '#tp-edit-body' ).find( 'input:checked' ).closest( 'tr' );
 				
 				if ( 0 === $selected_rows.length ) {
-					alert( tp_strings.no_rows_selected );
+					alert( tablepress_strings.no_rows_selected );
 					return;
 				}
 				
 				if ( tp.table.rows === $selected_rows.length ) {
-					alert( tp_strings.no_remove_all_rows );
+					alert( tablepress_strings.no_remove_all_rows );
 					return;
 				}
 				
-				if ( ! confirm( tp_strings.ays_remove_rows ) )
+				if ( ! confirm( tablepress_strings.ays_remove_rows ) )
 					return;
 				
 				$selected_rows.remove();
@@ -371,7 +371,7 @@ jQuery(document).ready( function( $ ) {
 					new_body_cells = new_head_cells = new_foot_cells = '';
 					
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
-					alert( tp_strings.append_num_columns_invalid );
+					alert( tablepress_strings.append_num_columns_invalid );
 					$( '#tp-columns-append-num' ).focus().select();
 					return;
 				}
@@ -399,7 +399,7 @@ jQuery(document).ready( function( $ ) {
 						.prop( 'checked', event.altKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
-					alert( tp_strings.no_columns_selected );
+					alert( tablepress_strings.no_columns_selected );
 					return;
 				}		
 	
@@ -422,7 +422,7 @@ jQuery(document).ready( function( $ ) {
 						.prop( 'checked', event.altKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
-					alert( tp_strings.no_columns_selected );
+					alert( tablepress_strings.no_columns_selected );
 					return;
 				}		
 	
@@ -442,7 +442,7 @@ jQuery(document).ready( function( $ ) {
 						.prop( 'checked', event.altKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
-					alert( tp_strings.no_columns_selected );
+					alert( tablepress_strings.no_columns_selected );
 					return;
 				}		
 	
@@ -461,16 +461,16 @@ jQuery(document).ready( function( $ ) {
 					$selected_columns = $( '#tp-edit-foot' ).find( 'input:checked' ).closest( 'th' );
 					
 				if ( 0 === $selected_columns.length ) {
-					alert( tp_strings.no_columns_selected );
+					alert( tablepress_strings.no_columns_selected );
 					return;
 				}
 	
 				if ( tp.table.columns === $selected_columns.length ) {
-					alert( tp_strings.no_remove_all_columns );
+					alert( tablepress_strings.no_remove_all_columns );
 					return;
 				}		
 
-				if ( ! confirm( tp_strings.ays_remove_columns ) )
+				if ( ! confirm( tablepress_strings.ays_remove_columns ) )
 					return;
 			
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
@@ -645,19 +645,19 @@ jQuery(document).ready( function( $ ) {
 						target = '',
 						html;
 
-					link_url = prompt( tp_strings.link_url + ':', 'http://' );
+					link_url = prompt( tablepress_strings.link_url + ':', 'http://' );
 					if ( ! link_url )
 						return;
 
-					link_text = prompt( tp_strings.link_text + ':', tp_strings.link_text );
+					link_text = prompt( tablepress_strings.link_text + ':', tablepress_strings.link_text );
             		if ( ! link_text )
             			return;
 
-			        if ( tp_options.link_target_blank )
+			        if ( tablepress_options.link_target_blank )
 						target = ' target="_blank"';
 
                 	html = '<a href="' + link_url + '"' + target + '>' + link_text + '</a>';
-                	html = prompt( tp_strings.link_insert_explain, html );
+                	html = prompt( tablepress_strings.link_insert_explain, html );
                 	if ( ! html )
                 		return;
                 		
@@ -679,7 +679,7 @@ jQuery(document).ready( function( $ ) {
 			span: {
 				add: function( span ) {
 					// todo: Frage entsprechend des span-Typs
-					if ( ! confirm( tp_strings.span_add ) )
+					if ( ! confirm( tablepress_strings.span_add ) )
 						return;
 						
 					$( '#tp-edit-body' ).one( 'click', 'textarea', function() {
@@ -687,10 +687,10 @@ jQuery(document).ready( function( $ ) {
 							col_idx = $textarea.parent().index(),
 							row_idx = $textarea.closest( 'tr' ).index();
 						if ( ( '#rowspan#' == span ) && ( 0 == row_idx ) ) {
-							alert( tp_strings.no_rowspan_first_row );
+							alert( tablepress_strings.no_rowspan_first_row );
 							return;
 						} else if ( ( '#colspan#' == span ) && ( tp.table.no_data_columns_pre == col_idx ) ) {
-							alert( tp_strings.no_colspan_first_col );
+							alert( tablepress_strings.no_colspan_first_col );
 							return;				
 						}	
 						$textarea.val( span );
@@ -708,7 +708,7 @@ jQuery(document).ready( function( $ ) {
 			},			
 			changes_saved: function() {
 				if ( tp.made_changes )
-					return tp_strings.unsaved_changes_unload;
+					return tablepress_strings.unsaved_changes_unload;
 			}
 		},
 		reindex: function() {
@@ -783,13 +783,13 @@ jQuery(document).ready( function( $ ) {
 		},
 		save_changes: {
 			trigger: function( /* event */ ) {
-				$(this).after( '<span class="tp-animation-saving" title="' + tp_strings.saving_changes + '"/>' );
+				$(this).after( '<span class="tp-animation-saving" title="' + tablepress_strings.saving_changes + '"/>' );
 				$( '.tp-save-changes' ).prop( 'disabled', true );
 				$( 'body' ).addClass( 'wait' );
 
 				$.post(
 						ajaxurl,
-						tp.table.prepare_ajax_request( 'TablePress_save_table', '#tp-ajax-nonce-save-table' ),
+						tp.table.prepare_ajax_request( 'tablepress_save_table', '#tp-ajax-nonce-save-table' ),
 						function() { /* done with .success() below */ },
 						'json'
 					)
@@ -808,12 +808,15 @@ jQuery(document).ready( function( $ ) {
 				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown );
 			},
 			success: function( data ) {
+				// saving was successful, so the original ID has changed to the (maybe) new ID
+				tp.table.orig_id = tp.table.id;
+				$( '#orig-table-id' ).val( tp.table.orig_id );
 				tp.table.unset_table_changed();
 				tp.save_changes.after_saving_dialog( 'success' );
 			},
 			error: function( message ) {
 				tp.save_changes.after_saving_dialog( 'error', message );
-				//alert( tp_strings.save_changes_error );
+				//alert( tablepress_strings.save_changes_error );
 			},
 			after_saving_dialog: function( type, message ) {
 				if ( 'undefined' == typeof message )
@@ -821,7 +824,7 @@ jQuery(document).ready( function( $ ) {
 				else
 					message = ' ' + message;
 				$( '.tp-animation-saving' )
-					.after( '<span class="tp-save-changes-' + type + '">' + tp_strings['save_changes_' + type] + message + '</span>' )
+					.after( '<span class="tp-save-changes-' + type + '">' + tablepress_strings['save_changes_' + type] + message + '</span>' )
 					.remove();
 				$( '.tp-save-changes-' + type ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
 				$( '.tp-save-changes' ).prop( 'disabled', false );
@@ -872,13 +875,13 @@ jQuery(document).ready( function( $ ) {
 
 			$table.one( 'change', 'textarea', tp.table.set_table_changed ); // just once is enough, will be reset after saving
 
-			if ( tp_options.cells_visual_editor ) {
+			if ( tablepress_options.cells_visual_editor ) {
 				$table.on( 'click', 'textarea', tp.cells.visual_editor.open );
 				$( '#tp-visual-editor-confirm' ).on( 'click', tp.cells.visual_editor.save );
 				$( '#tp-visual-editor-cancel' ).on( 'click', tp.cells.visual_editor.close );
 			}
 
-			if ( tp_options.cells_auto_grow )
+			if ( tablepress_options.cells_auto_grow )
 				$table.on( 'focus', 'textarea', tp.cells.autogrow );
 
 			$( '#tp-edit-body' ).on( 'click', 'input:checkbox', { parent: '#tp-edit-body' }, tp.cells.checkboxes.multi_select );

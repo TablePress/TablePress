@@ -31,7 +31,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		$ajax_actions = array( 'hide_message' ); //array( 'save_table', 'preview_table' );
+		$ajax_actions = array( 'hide_message', 'save_table' ); //array( 'preview_table' );
 		foreach ( $ajax_actions as $action ) {
 			add_action( "wp_ajax_tablepress_{$action}", array( &$this, "ajax_action_{$action}" ) );
 		}
@@ -61,7 +61,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-/*	public function ajax_action_save_table() {
+	public function ajax_action_save_table() {
 		sleep( 3 ); // 3s Dummy Pause, zum Testen von AJAX-Sendeverhalten
 	
 		// check to see if the submitted nonce matches with the generated nonce we created earlier
@@ -74,6 +74,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	
 		$_POST['tp'] = stripslashes_deep( $_POST['tp'] );
 	
+		$table = array();
 		$table['id'] = $_POST['tp']['id'];
 		$table['rows'] = (int)$_POST['tp']['rows'];
 		$table['columns'] = (int)$_POST['tp']['columns'];
@@ -96,15 +97,27 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( $table['columns'] != count( $table['visibility']['columns'] ) )
 			$success = false;
 	
-		// Number of hidden and visible rows
+		// count hidden and visible rows
 		$visibility_rows = array_count_values( $table['visibility']['rows'] );
+		// set non-existing values to 0
+		if ( ! isset( $visibility_rows[ 0 ] ) )
+			$visibility_rows[ 0 ] = 0;
+		if ( ! isset( $visibility_rows[ 1 ] ) )
+			$visibility_rows[ 1 ] = 0;
+		// Check number of hidden and visible rows
 		if ( $table['visibility']['hidden_rows'] != $visibility_rows[ 0 ] )
 			$success = false;
 		if ( ( $table['rows'] - $table['visibility']['hidden_rows'] ) != $visibility_rows[ 1 ] )
 			$success = false;
 	
-		// Number of hidden and visible columns
+		// count hidden and visible columns
 		$visibility_columns = array_count_values( $table['visibility']['columns'] );
+		// set non-existing values to 0
+		if ( ! isset( $visibility_columns[ 0 ] ) )
+			$visibility_columns[ 0 ] = 0;
+		if ( ! isset( $visibility_columns[ 1 ] ) )
+			$visibility_columns[ 1 ] = 0;
+		// Check number of hidden and visible columns
 		if ( $table['visibility']['hidden_columns'] != $visibility_columns[ 0 ] )
 			$success = false;
 		if ( ( $table['columns'] - $table['visibility']['hidden_columns'] ) != $visibility_columns[ 1 ] )
@@ -124,7 +137,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		
 		exit;
 	}
-*/
+
 	/**
 	 *
 	 *
