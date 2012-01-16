@@ -31,6 +31,16 @@ class TablePress_Edit_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
+		$this->action_messages = array(
+			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
+			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
+		/*	'success_import' => __( 'The table was imported successfully.', 'tablepress' ), */
+			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
+			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
+			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
+		);
+
 		add_thickbox();
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
@@ -38,7 +48,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'cells_advanced_editor' => true,
 				'cells_auto_grow' => true
 			),
-			'strings' => array(
+			'strings' => array_merge( array(
 				'no_remove_all_rows' => 'Du kannst nicht alle Zeilen der Tabelle löschen!',
 				'no_remove_all_columns' => 'Du kannst nicht alle Spalten der Tabelle löschen!',
 				'no_rows_selected' => 'Du hast keine Zeilen ausgewählt!',
@@ -62,18 +72,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'sort_desc' => 'Absteigend sortieren',
 				'no_rowspan_first_row' => 'You can not add rowspan to the first row!',
 				'no_colspan_first_col' => 'You can not add colspan to the first column!'
-			)
+			), $this->action_messages )
 		) );
 
-		$this->action_messages = array(
-			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
-			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
-		/*	'success_import' => __( 'The table was imported successfully.', 'tablepress' ), */
-			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
-			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
-			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
-			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
-		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
 			$class = ( in_array( $data['message'], array( 'error_save', 'error_delete', 'success_save_error_id_change' ) ) ) ? 'error' : 'updated' ;
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
@@ -104,8 +105,8 @@ class TablePress_Edit_View extends TablePress_View {
 		// use custom nonce field here, that includes the table ID
 		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ) ); echo "\n";
 		// check if necessary:
-		wp_nonce_field( 'tp-save-table', 'tp-ajax-nonce-save-table', false, true );
-		wp_nonce_field( 'tp-preview-table', 'tp-ajax-nonce-preview-table', false, true );
+		wp_nonce_field( TablePress::nonce( 'save_table', $data['table']['id'] ), 'ajax-nonce-save-table', false, true );
+		wp_nonce_field( TablePress::nonce( 'preview_table', $data['table']['id'] ), 'ajax-nonce-preview-table', false, true );
 	}
 
 	/**
@@ -148,22 +149,13 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	function postbox_table_data( $data, $box ) {
-		$table = array(
-			array( '=[E1]',	'=5-4', '3', '=[C1]', '=[C1]+[D1]' ),
-			array( '1',	'2', '3', '4', '5' ),
-			array( '=2*([A2]+[B2]+[C2]+[D2]+[E2])', '=average([A2:E2],[A2:E2])', '=sum([A2:E2],[A2:E2])', '=    5 *   5', '=sin(pi()/2)' ),
-			array( '=poWer(3,2)', '=3^2', '=2*[C4]', '=TAN(64)', '=ceil(PI())' ),
-			array( '=[B4]', '=[A4]', '="[4]"', '=sqrt(77.3) / 99', '=[E4]' ),
-			array( '=log(100)', '=round(4.533)', '=pi+e', '=[C14]', '=[E1]' ),
-			array( '=rand_int(1,10)', '=average([B1],[C1],[D1])', '=sum([B1],[C1],[D1])', '=min([B1],[C1],[D1])', '=max([B1],[C1],[D1])' )
-		);
-		//$table = $data['table']['data'];
+		$table = $data['table']['data'];
 		$rows = count( $table );
 		$columns = count( $table[0] );
 ?>
-<table id="tp-edit">
+<table id="edit-form">
 	<thead>
-		<tr id="tp-edit-head">
+		<tr id="edit-form-head">
 			<th></th>
 			<th></th>
 <?php			
@@ -176,19 +168,19 @@ class TablePress_Edit_View extends TablePress_View {
 		</tr>	
 	</thead>
 	<tfoot>
-		<tr id="tp-edit-foot">
+		<tr id="edit-form-foot">
 			<th></th>
 			<th></th>
 <?php			
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		echo "\t\t\t<th><input type=\"checkbox\" />";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"tp[visibility][column][{$col_idx}]\" value=\"1\" /></th>\n";
+		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][column][{$col_idx}]\" value=\"1\" /></th>\n";
 	}
 ?>
 			<th></th>			
 		</tr>	
 	</tfoot>
-	<tbody id="tp-edit-body">
+	<tbody id="edit-form-body">
 <?php
 	foreach ( $table as $row_idx => $row_data ) {
 		$row = $row_idx + 1;
@@ -202,10 +194,10 @@ class TablePress_Edit_View extends TablePress_View {
 		$class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
 		echo "\t\t<tr{$class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"tp[visibility][row][{$row_idx}]\" value=\"1\" /></td>";
+		echo "<td><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][row][{$row_idx}]\" value=\"1\" /></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
-			echo "<td><textarea name=\"tp[data][{$row_idx}][{$col_idx}]\" id=\"tp-cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
+			echo "<td><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
 		}	
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
 		echo "\t\t</tr>\n";
@@ -213,8 +205,8 @@ class TablePress_Edit_View extends TablePress_View {
 ?>
 	</tbody>
 </table>
-<input type="hidden" id="tp-rows" value="<?php echo $rows; ?>" />
-<input type="hidden" id="tp-columns" value="<?php echo $columns; ?>" />
+<input type="hidden" id="number-rows" value="<?php echo $rows; ?>" />
+<input type="hidden" id="number-columns" value="<?php echo $columns; ?>" />
 <?php
 	}
 	
@@ -229,46 +221,46 @@ class TablePress_Edit_View extends TablePress_View {
 <tbody>
 	<tr class="bottom-border">
 		<td>
-			<input type="button" class="button-secondary" id="tp-link-add" value="<?php _e( 'Insert Link', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="tp-image-add" value="<?php _e( 'Insert Image', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="link-add" value="<?php _e( 'Insert Link', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="image-add" value="<?php _e( 'Insert Image', 'tablepress' ); ?>" />
 			<input type="button" class="button-secondary" id="advanced-editor-open" value="<?php _e( 'Advanced Editor', 'tablepress' ); ?>" />
 		</td>
 		<td>
 			<?php _e( 'Combine cells', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button-secondary" id="tp-span-add-rowspan" value="<?php _e( 'rowspan', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="tp-span-add-colspan" value="<?php _e( 'colspan', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="span-add-rowspan" value="<?php _e( 'rowspan', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="span-add-colspan" value="<?php _e( 'colspan', 'tablepress' ); ?>" />
 		</td>
 	</tr>
 	<tr class="top-border">
 		<td>
 			<?php _e( 'Selected rows', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button-secondary" id="tp-rows-hide" value="<?php _e( 'Hide', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="tp-rows-unhide" value="<?php _e( 'Show', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="rows-hide" value="<?php _e( 'Hide', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="rows-unhide" value="<?php _e( 'Show', 'tablepress' ); ?>" />
 		</td>
 		<td>
 			<?php _e( 'Selected columns', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button-secondary" id="tp-columns-hide" value="<?php _e( 'Hide', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="tp-columns-unhide" value="<?php _e( 'Show', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="columns-hide" value="<?php _e( 'Hide', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="columns-unhide" value="<?php _e( 'Show', 'tablepress' ); ?>" />
 		</td>
 	</tr>
 	<tr class="bottom-border">
 		<td>
 			<?php _e( 'Selected rows', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button-secondary" id="tp-rows-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="tp-rows-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="rows-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="rows-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
 		</td>
 		<td>
 			<?php _e( 'Selected columns', 'tablepress' ); ?>:
-			<input type="button" class="button-secondary" id="tp-columns-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="tp-columns-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="columns-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="columns-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
 		</td>
 	</tr>
 	<tr class="top-border">
 		<td>
-			<?php printf( __( 'Add %s row(s)', 'tablepress' ), '<input type="text" id="tp-rows-append-num" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="tp-rows-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
+			<?php printf( __( 'Add %s row(s)', 'tablepress' ), '<input type="text" id="rows-append-number" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="rows-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
 		</td>
 		<td>
-			<?php printf( __( 'Add %s column(s)', 'tablepress' ), '<input type="text" id="tp-columns-append-num" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="tp-columns-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
+			<?php printf( __( 'Add %s column(s)', 'tablepress' ), '<input type="text" id="columns-append-number" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="columns-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
 		</td>
 	</tr>
 </table>
@@ -283,8 +275,8 @@ class TablePress_Edit_View extends TablePress_View {
 	function textbox_buttons( $data, $box ) {
 		?>
 			<p class="submit">
-				<input type="button" class="button-secondary tp-show-preview" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
-				<input type="button" class="button-secondary tp-save-changes" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+				<input type="button" class="button-secondary show-preview-button" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
+				<input type="button" class="button-secondary save-changes-button" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 			</p>
 		<?php
 	}
@@ -311,7 +303,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function textbox_hidden_containers( $data, $box ) {
 ?>
-<div id="advanced-editor-container" class="tp-hidden-container">
+<div id="advanced-editor-container" class="hidden-container">
 	<div id="advanced-editor"><?php _e( 'Advanced Editor', 'tablepress' ); ?><br/>
 	<?php
 		wp_editor( '', 'advanced-editor-content', array(
@@ -326,8 +318,8 @@ class TablePress_Edit_View extends TablePress_View {
 	<input type="button" class="button-secondary advanced-editor-button" id="advanced-editor-confirm" value="<?php _e( 'OK', 'tablepress' ); ?>" /><input type="button" class="button-secondary advanced-editor-button" id="advanced-editor-cancel" value="<?php _e( 'Cancel', 'tablepress' ); ?>" />
 	</div>
 </div>
-<div id="tp-preview-container" class="tp-hidden-container">
-	<div id="tp-preview"></div>
+<div id="preview-container" class="hidden-container">
+	<div id="table-preview"></div>
 </div>
 <?php
 	}
@@ -342,15 +334,18 @@ class TablePress_Edit_View extends TablePress_View {
 <table class="tablepress-postbox-table">
 <tbody>
 	<tr>
-		<td class="column-1"><label for="tp-table-head"><?php _e( 'Tabellenkopf', 'tablepress' ); ?>:</label></td>
-		<td class="column-2"><input type="checkbox" id="tp-table-head" checked="checked" /></td>
+		<td class="column-1"><label for="option-table-head"><?php _e( 'Tabellenkopf', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-table-head" checked="checked" /></td>
 	</tr>
 	<tr class="bottom-border">
-		<td class="column-1"><label for="tp-table-foot"><?php _e( 'Tabellenfuß', 'tablepress' ); ?>:</label></td>
-		<td class="column-2"><input type="checkbox" id="tp-table-foot" checked="checked" /></td>
+		<td class="column-1"><label for="option-table-foot"><?php _e( 'Tabellenfuß', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-table-foot" checked="checked" /></td>
+	</tr>
+	<tr class="top-border bottom-border">
+		<td colspan="2"><?php echo json_encode( $data['table']['options'] ); ?></td>
 	</tr>
 	<tr class="top-border">
-		<td colspan="2"><?php echo json_encode( $data['table']['options'] ); ?></td>
+		<td colspan="2"><?php //echo json_encode( $data['table']['visibility'] ); ?></td>
 	</tr>
 </tbody>
 </table>

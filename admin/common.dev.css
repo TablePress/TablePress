@@ -19,15 +19,15 @@
 	margin: 6px;
 }
 #tablepress-nav .nav-tab {
-	color: #21759B;
+	color: #21759b;
 }
 #tablepress-nav .nav-tab:hover {
 	color: #d54e21;
 }
 #tablepress-nav .nav-tab-active {
 	padding-bottom: 5px;
-	text-shadow: 1px 1px 1px white;
-	color: #333;
+	text-shadow: 1px 1px 1px #ffffff;
+	color: #333333;
 }
 #tablepress-nav .nav-tab-active:hover {
 	color: #464646;
@@ -47,7 +47,7 @@
 
 /* placeholder fields in gray text color */
 #tablepress-page .placeholder-active {
-	color: #bbb;
+	color: #bbbbbb;
 }
 
 /* width and font weight of the ID column on the "All Tables" screen */
@@ -56,4 +56,9 @@
 }
 #tablepress-all-tables tbody .table-id {
 	font-weight: bold;
+}
+
+/* remove outlines from all textareas */
+#tablepress-page textarea:focus {
+	outline: none;
 }

@@ -62,79 +62,118 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_save_table() {
-		sleep( 3 ); // 3s Dummy Pause, zum Testen von AJAX-Sendeverhalten
-	
-		// check to see if the submitted nonce matches with the generated nonce we created earlier
-		if ( ! check_ajax_referer( 'tp-save-table', false, false ) )
+		if ( empty( $_POST['tablepress'] ) || ! isset( $_POST['tablepress']['orig_id'] ) )
 			die( '-1' );
-	 
+
+		$orig_table_id = $_POST['tablepress']['orig_id'];
+
+		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
+		TablePress::check_nonce( 'save_table', $orig_table_id, true );
+
 		// ignore the request if the current user doesn't have sufficient permissions
-		//if ( ! current_user_can( 'edit_tp_tables' ) )
-		//	die( '-1' );
-	
-		$_POST['tp'] = stripslashes_deep( $_POST['tp'] );
-	
-		$table = array();
-		$table['id'] = $_POST['tp']['id'];
-		$table['rows'] = (int)$_POST['tp']['rows'];
-		$table['columns'] = (int)$_POST['tp']['columns'];
-		$table['visibility'] = json_decode( $_POST['tp']['visibility'], true );
-		$table['options'] = json_decode( $_POST['tp']['options'], true );
-		$table['data'] = json_decode( $_POST['tp']['data'], true );
-	
+		// @TODO Capability check!
+
+		// table from POST request
+		$edit_table = stripslashes_deep( $_POST['tablepress'] );
+
+		$edit_table['rows'] = absint( $edit_table['rows'] );
+		$edit_table['columns'] = absint( $edit_table['columns'] );
+		$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
+		$edit_table['options'] = json_decode( $edit_table['options'], true );
+		$edit_table['data'] = json_decode( $edit_table['data'], true );
+
 		// make checks
 		$success = true;
-		
+
 		// Number of rows and columns
-		if ( $table['rows'] != count( $table['data'] ) )
+		if ( $edit_table['rows'] != count( $edit_table['data'] ) )
 			$success = false;
-		if ( $table['columns'] != count( $table['data'][0] ) )
+		if ( $edit_table['columns'] != count( $edit_table['data'][0] ) )
 			$success = false;
-	
+
 		// Number of rows and columns for visibility arrays
-		if ( $table['rows'] != count( $table['visibility']['rows'] ) )
+		if ( $edit_table['rows'] != count( $edit_table['visibility']['rows'] ) )
 			$success = false;
-		if ( $table['columns'] != count( $table['visibility']['columns'] ) )
+		if ( $edit_table['columns'] != count( $edit_table['visibility']['columns'] ) )
 			$success = false;
-	
+
 		// count hidden and visible rows
-		$visibility_rows = array_count_values( $table['visibility']['rows'] );
+		$visibility_rows = array_count_values( $edit_table['visibility']['rows'] );
 		// set non-existing values to 0
 		if ( ! isset( $visibility_rows[ 0 ] ) )
 			$visibility_rows[ 0 ] = 0;
 		if ( ! isset( $visibility_rows[ 1 ] ) )
 			$visibility_rows[ 1 ] = 0;
 		// Check number of hidden and visible rows
-		if ( $table['visibility']['hidden_rows'] != $visibility_rows[ 0 ] )
+		if ( $edit_table['visibility']['hidden_rows'] != $visibility_rows[ 0 ] )
 			$success = false;
-		if ( ( $table['rows'] - $table['visibility']['hidden_rows'] ) != $visibility_rows[ 1 ] )
+		if ( ( $edit_table['rows'] - $edit_table['visibility']['hidden_rows'] ) != $visibility_rows[ 1 ] )
 			$success = false;
-	
+
 		// count hidden and visible columns
-		$visibility_columns = array_count_values( $table['visibility']['columns'] );
+		$visibility_columns = array_count_values( $edit_table['visibility']['columns'] );
 		// set non-existing values to 0
 		if ( ! isset( $visibility_columns[ 0 ] ) )
 			$visibility_columns[ 0 ] = 0;
 		if ( ! isset( $visibility_columns[ 1 ] ) )
 			$visibility_columns[ 1 ] = 0;
 		// Check number of hidden and visible columns
-		if ( $table['visibility']['hidden_columns'] != $visibility_columns[ 0 ] )
+		if ( $edit_table['visibility']['hidden_columns'] != $visibility_columns[ 0 ] )
 			$success = false;
-		if ( ( $table['columns'] - $table['visibility']['hidden_columns'] ) != $visibility_columns[ 1 ] )
+		if ( ( $edit_table['columns'] - $edit_table['visibility']['hidden_columns'] ) != $visibility_columns[ 1 ] )
 			$success = false;
-	
-		// save stuff here
-	
+
+		if ( $success ) {
+
+			// original table
+			$table = $this->model_table->load( $orig_table_id );
+		
+			// replace original values with new ones from form fields, if they exist
+			if ( isset( $edit_table['name'] ) )
+				$table['name'] = $edit_table['name'];
+			if ( isset( $edit_table['description'] ) )
+				$table['description'] = $edit_table['description'];
+			$table['data'] = $edit_table['data'];
+			$table['options'] = array(
+				'last_action' => 'ajax_edit',
+				'last_modified' => time(),
+				'last_editor' => get_current_user_id()
+			);
+			$table['visibility']['rows'] = $edit_table['visibility']['rows'];
+        	$table['visibility']['columns'] = $edit_table['visibility']['columns'];
+
+			$saved = $this->model_table->save( $table );
+			if ( false === $saved ) {
+				$success = false;
+				$message = 'error_save';
+			} else {
+				$message = 'success_save';
+				if ( $table['id'] !== $edit_table['id'] ) { // if no table ID change necessary, we are done
+					$id_changed = $this->model_table->change_table_id( $table['id'], $edit_table['id'] );
+					if ( $id_changed ) {
+						$table['id'] = $edit_table['id'];
+						$message = 'success_save_success_id_change';
+					} else {
+						$message = 'success_save_error_id_change';
+					}
+				}
+			}
+		} else {
+			$message = 'error_save';
+		}
+
 		// generate the response
 		$response = array(
 			'success' => $success,
-			'table' => $table
+			'message' => $message,
+			'table_id' => $table['id'],
+			'new_nonce' => wp_create_nonce( TablePress::nonce( 'save_table', $table['id'] ) )
 		);
-	
+
 		// response output
 		header( 'Content-Type: application/json' );
 		echo json_encode( $response );
-		
+
 		exit;
 	}
 

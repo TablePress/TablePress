@@ -386,10 +386,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'last_modified' => time(),
 			'last_editor' => get_current_user_id()
 		);
-        $table['visibility'] = array(
-        	'rows' => array_fill( 0, $num_rows, 1 ),
-        	'columns' => array_fill( 0, $num_columns, 1 )
-        );
+		$table['visibility'] = array(
+			'rows' => array_fill( 0, $num_rows, 1 ),
+			'columns' => array_fill( 0, $num_columns, 1 )
+		);
 
 		$table_id = $this->model_table->add( $table );
 		if ( false === $table_id  )

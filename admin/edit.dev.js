@@ -10,10 +10,10 @@ jQuery(document).ready( function( $ ) {
 		table: {
 			id: $( '#table-id' ).val(),
 			orig_id: $( '#orig-table-id' ).val(),
-			rows: $( '#tp-rows' ).val(),
-			columns: $( '#tp-columns' ).val(),
-			head: $( '#tp-table-head' ).prop( 'checked' ),
-			foot: $( '#tp-table-foot' ).prop( 'checked' ),
+			rows: $( '#number-rows' ).val(),
+			columns: $( '#number-columns' ).val(),
+			head: $( '#option-table-head' ).prop( 'checked' ),
+			foot: $( '#option-table-foot' ).prop( 'checked' ),
 			no_data_columns_pre: 2,
 			no_data_columns_post: 1,
 			body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" value="1" /></td>',
@@ -26,8 +26,8 @@ jQuery(document).ready( function( $ ) {
 			},
 			unset_table_changed: function() {
 				tp.made_changes = false;
-				$( '#tp-preview' ).empty(); // clear preview
-				$( '#tp-edit-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
+				$( '#table-preview' ).empty(); // clear preview
+				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
 				if ( this.value == tp.table.id )
@@ -50,7 +50,7 @@ jQuery(document).ready( function( $ ) {
 				tp.rows.stripe();
 			},
 			prepare_ajax_request: function( wp_action, wp_nonce ) {
-				var $table_body = $( '#tp-edit-body' ),
+				var $table_body = $( '#edit-form-body' ),
 					table_data = [],
 					table_options,
 					table_visibility = { rows: [], columns: [], hidden_rows: 0, hidden_columns: 0 };
@@ -79,7 +79,7 @@ jQuery(document).ready( function( $ ) {
 						return 0;
 					} )
 					.get();
-				table_visibility.columns = $( '#tp-edit-foot' ).find( ':hidden' )
+				table_visibility.columns = $( '#edit-form-foot' ).find( ':hidden' )
 					.map( function() {
 						if ( '1' == $(this).val() )
 							return 1;
@@ -93,9 +93,11 @@ jQuery(document).ready( function( $ ) {
 				return {
 					action: wp_action,
 					_ajax_nonce : $( wp_nonce ).val(),
-					tp: {
+					tablepress: {
 						id: tp.table.id,
 						orig_id: tp.table.orig_id,
+						name: $( '#table-name' ).val(),
+						description: $( '#table-description' ).val(),
 						rows: tp.table.rows,
 						columns: tp.table.columns,
 						data: table_data,
@@ -106,18 +108,18 @@ jQuery(document).ready( function( $ ) {
 			},
 			preview: {
 				trigger: function( /* event */ ) {
-					if ( ! tp.made_changes && $( '#tp-preview' ).children().length ) {
+					if ( ! tp.made_changes && $( '#table-preview' ).children().length ) {
 						tp.table.preview.show();
 						return;
 					}
 
-					$(this).after( '<span class="tp-animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
-					$( '.tp-show-preview' ).prop( 'disabled', true );
+					$(this).after( '<span class="animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
+					$( '.show-preview-button' ).prop( 'disabled', true );
 					$( 'body' ).addClass( 'wait' );
 					
 					$.post(
 							ajaxurl,
-							tp.table.prepare_ajax_request( 'tablepress_preview_table', '#tp-ajax-nonce-preview-table' ),
+							tp.table.prepare_ajax_request( 'tablepress_preview_table', '#ajax-nonce-preview-table' ),
 							function() { /* done with .success() below */ },
 							'json'
 						)
@@ -136,23 +138,23 @@ jQuery(document).ready( function( $ ) {
 					tp.table.preview.error( 'AJAX call failed: ' + status + ' - ' + error_thrown );
 				},
 				success: function( data ) {
-					$( '#tp-preview' ).empty();
-					$( '<iframe id="tp-preview-iframe" />' ).load( function() {
+					$( '#table-preview' ).empty();
+					$( '<iframe id="table-preview-iframe" />' ).load( function() {
 					    var $iframe = $(this).contents();
 					    $iframe.find( 'head' ).append( data.head_html );
 					    $iframe.find( 'body' ).append( data.body_html );
-					} ).appendTo( '#tp-preview' );
-					$( '.tp-animation-preview' ).remove();
-					$( '.tp-show-preview' ).prop( 'disabled', false );
+					} ).appendTo( '#table-preview' );
+					$( '.animation-preview' ).remove();
+					$( '.show-preview-button' ).prop( 'disabled', false );
 					$( 'body' ).removeClass( 'wait' );
 					tp.table.preview.show();
 				},
 				error: function( message ) {
-					$( '.tp-animation-preview' )
-						.after( '<span class="tp-preview-error">' + tablepress_strings.preview_error + ' ' + message + '</span>' )
+					$( '.animation-preview' )
+						.after( '<span class="preview-error">' + tablepress_strings.preview_error + ' ' + message + '</span>' )
 						.remove();
-					$( '.tp-preview-error' ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
-					$( '.tp-show-preview' ).prop( 'disabled', false );
+					$( '.preview-error' ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
+					$( '.show-preview-button' ).prop( 'disabled', false );
 					$( 'body' ).removeClass( 'wait' );
 				},
 				show: function() {
@@ -160,7 +162,7 @@ jQuery(document).ready( function( $ ) {
 						height = $(window).height() - 120;
 					if ( $( 'body.admin-bar' ).length )
 						height -= 28;
-					tb_show( tablepress_strings.preview, '#TB_inline?height=' + height + '&width=' + width + '&inlineId=tp-preview-container', false );
+					tb_show( tablepress_strings.preview, '#TB_inline?height=' + height + '&width=' + width + '&inlineId=preview-container', false );
 				}
 			}
 		},
@@ -177,7 +179,7 @@ jQuery(document).ready( function( $ ) {
 					new_rows += tp.table.body_cells_post;
 				}
 				
-				column_idxs = $( '#tp-edit-foot' ).find( '.column-hidden' )
+				column_idxs = $( '#edit-form-foot' ).find( '.column-hidden' )
 					.map( function() { return $(this).index(); } ).get();
 				return $( new_rows ).each( function( row_idx, row ) {
 					$(row).children()
@@ -186,21 +188,21 @@ jQuery(document).ready( function( $ ) {
 				} );
 			},
 			append: function( /* event */ ) {
-				var num_rows = $( '#tp-rows-append-num' ).val();
+				var num_rows = $( '#rows-append-number' ).val();
 
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
 					alert( tablepress_strings.append_num_rows_invalid );
-					$( '#tp-rows-append-num' ).focus().select();
+					$( '#rows-append-number' ).focus().select();
 					return;
 				}
 				
-				$( '#tp-edit-body' ).append( tp.rows.create( num_rows ) );
+				$( '#edit-form-body' ).append( tp.rows.create( num_rows ) );
 	
 				tp.rows.stripe();
 				tp.reindex();
 			},
 			insert: function( event ) {
-				var $selected_rows = $( '#tp-edit-body' ).find( 'input:checked' )
+				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.altKey ).closest( 'tr' );
 					
 				if ( 0 === $selected_rows.length ) {
@@ -214,7 +216,7 @@ jQuery(document).ready( function( $ ) {
 				tp.reindex();
 			},
 			hide: function( event ) {
-				var $selected_rows = $( '#tp-edit-body' ).find( 'input:checked' )
+				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.altKey ).closest( 'tr' );
 					
 				if ( 0 === $selected_rows.length ) {
@@ -228,7 +230,7 @@ jQuery(document).ready( function( $ ) {
 				tp.table.set_table_changed();
 			},
 			unhide: function( event ) {
-				var $selected_rows = $( '#tp-edit-body' ).find( 'input:checked' )
+				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.altKey ).closest( 'tr' );
 					
 				if ( 0 === $selected_rows.length ) {
@@ -244,7 +246,7 @@ jQuery(document).ready( function( $ ) {
 				tp.table.set_table_changed();
 			},
 			remove: function( /* event */ ) {
-				var $selected_rows = $( '#tp-edit-body' ).find( 'input:checked' ).closest( 'tr' );
+				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' ).closest( 'tr' );
 				
 				if ( 0 === $selected_rows.length ) {
 					alert( tablepress_strings.no_rows_selected );
@@ -280,7 +282,7 @@ jQuery(document).ready( function( $ ) {
 			sort: function() {
 				var column_idx = $(this).parent().index(),
 					direction = ( $(this).hasClass( 'sort-asc' ) ) ? 1 : -1,
-					$table_body = $('#tp-edit-body'),
+					$table_body = $('#edit-form-body'),
 					$head_rows = $table_body.find( '.head-row' ).prevAll().andSelf(),
 					$foot_rows = $table_body.find( '.foot-row' ).nextAll().andSelf(),
 					rows = $table_body.children().not( $head_rows ).not( $foot_rows ).get(),
@@ -353,7 +355,7 @@ jQuery(document).ready( function( $ ) {
 				if ( 'undefined' == typeof helper )
 					helper = null;
 				helper = $( helper );
-				var $rows = $( '#tp-edit-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
+				var $rows = $( '#edit-form-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
 				$rows.filter( ':even' ).addClass( 'odd' );
 				$rows = $rows.not( '.row-hidden' );
 				if( helper.hasClass( 'row-hidden' ) )
@@ -367,12 +369,12 @@ jQuery(document).ready( function( $ ) {
 		columns: {
 			append: function( /* event */ ) {
 				var i,
-					num_columns = $( '#tp-columns-append-num' ).val(),
+					num_columns = $( '#columns-append-number' ).val(),
 					new_body_cells = new_head_cells = new_foot_cells = '';
 					
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
 					alert( tablepress_strings.append_num_columns_invalid );
-					$( '#tp-columns-append-num' ).focus().select();
+					$( '#columns-append-number' ).focus().select();
 					return;
 				}
 
@@ -382,20 +384,20 @@ jQuery(document).ready( function( $ ) {
 					new_foot_cells += tp.table.foot_cell;
 				}
 				
-				$( '#tp-edit-body' ).children().each( function( row_idx, row ) {
+				$( '#edit-form-body' ).children().each( function( row_idx, row ) {
 					$(row).children().slice( - tp.table.no_data_columns_post )
 						.before( new_body_cells );
 				} );
-				$( '#tp-edit-head' ).children().slice( - tp.table.no_data_columns_post )
+				$( '#edit-form-head' ).children().slice( - tp.table.no_data_columns_post )
 					.before( new_head_cells );
-				$( '#tp-edit-foot' ).children().slice( - tp.table.no_data_columns_post )
+				$( '#edit-form-foot' ).children().slice( - tp.table.no_data_columns_post )
 					.before( new_foot_cells );
 				
 				tp.reindex();
 			},
 			insert: function( event ) {
 				var column_idxs,
-					$selected_columns = $( '#tp-edit-foot' ).find( 'input:checked' )
+					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.altKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -404,12 +406,12 @@ jQuery(document).ready( function( $ ) {
 				}		
 	
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#tp-edit-body' ).children().each( function( row_idx, row ) {
+				$( '#edit-form-body' ).children().each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
 						.before( tp.table.body_cell );
 				} );
-				$( '#tp-edit-head' ).children()
+				$( '#edit-form-head' ).children()
 					.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
 					.before( tp.table.head_cell );
 				$selected_columns.before( tp.table.foot_cell );
@@ -418,7 +420,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			hide: function( event ) {	
 				var column_idxs,
-					$selected_columns = $( '#tp-edit-foot' ).find( 'input:checked' )
+					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.altKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -427,7 +429,7 @@ jQuery(document).ready( function( $ ) {
 				}		
 	
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#tp-edit-body' ).children().add( '#tp-edit-head' ).each( function( row_idx, row ) {
+				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
 						.addClass( 'column-hidden' );
@@ -438,7 +440,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			unhide: function( event ) {
 				var column_idxs,
-					$selected_columns = $( '#tp-edit-foot' ).find( 'input:checked' )
+					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.altKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -447,7 +449,7 @@ jQuery(document).ready( function( $ ) {
 				}		
 	
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#tp-edit-body' ).children().add( '#tp-edit-head' ).each( function( row_idx, row ) {
+				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
 						.removeClass( 'column-hidden' );
@@ -458,7 +460,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			remove: function( /* event */ ) {
 				var column_idxs,
-					$selected_columns = $( '#tp-edit-foot' ).find( 'input:checked' ).closest( 'th' );
+					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' ).closest( 'th' );
 					
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
@@ -474,7 +476,7 @@ jQuery(document).ready( function( $ ) {
 					return;
 			
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#tp-edit-body' ).children().add( '#tp-edit-head' ).each( function( row_idx, row ) {
+				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
 						.remove();
@@ -498,7 +500,7 @@ jQuery(document).ready( function( $ ) {
 
 					tp.columns.move.source_idx = $item.index();
 
-					tp.columns.move.$rows = $( '#tp-edit-body' ).children().add( '#tp-edit-foot' );
+					tp.columns.move.$rows = $( '#edit-form-body' ).children().add( '#edit-form-foot' );
 	
 					tp.columns.move.$cells = tp.columns.move.$rows
 						.find( ':nth-child(' + ( tp.columns.move.source_idx + 1 ) + ')' )
@@ -609,7 +611,7 @@ jQuery(document).ready( function( $ ) {
 					if ( ! confirm( tablepress_strings.advanced_editor_open ) )
 						return;
 
-					$( '#tp-edit-body' ).one( 'click', 'textarea', function() {
+					$( '#edit-form-body' ).one( 'click', 'textarea', function() {
 						var $advanced_editor = $( '#advanced-editor-content' );
 
 						tp.cells.$textarea = $(this).blur();
@@ -635,7 +637,7 @@ jQuery(document).ready( function( $ ) {
 				}
 			},
 			checkboxes: {
-				last_clicked: { '#tp-edit-body' : false, '#tp-edit-foot' : false },
+				last_clicked: { '#edit-form-body' : false, '#edit-form-foot' : false },
 				multi_select: function ( event ) {
 					if ( 'undefined' == event.shiftKey )
 						return true;
@@ -665,7 +667,7 @@ jQuery(document).ready( function( $ ) {
 					// mousedown instead of click to allow selection of text
 					// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 					// other approaches can lead to the wrong textarea being selected
-                    $( '#tp-edit-body' ).one( 'mousedown', 'textarea', function() {
+                    $( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
                     	wpActiveEditor = this.id;
                     	$( window ).one( 'mouseup', function() {
 							wpLink.open();
@@ -688,7 +690,7 @@ jQuery(document).ready( function( $ ) {
 					if ( ! confirm( tablepress_strings.span_add ) )
 						return;
 						
-					$( '#tp-edit-body' ).one( 'click', 'textarea', function() {
+					$( '#edit-form-body' ).one( 'click', 'textarea', function() {
 						var $textarea = $(this),
 							col_idx = $textarea.parent().index(),
 							row_idx = $textarea.closest( 'tr' ).index();
@@ -719,7 +721,7 @@ jQuery(document).ready( function( $ ) {
 		},
 		reindex: function() {
 			var $row,
-				$rows = $( '#tp-edit-body' ).children(),
+				$rows = $( '#edit-form-body' ).children(),
 				$cell, known_references = {};
 				
 			tp.table.rows = $rows.length;
@@ -742,7 +744,7 @@ jQuery(document).ready( function( $ ) {
 							// we will use full_match as our result variable, so that we don't need an extra one
 							
 							if ( ! known_references.hasOwnProperty( first_cell ) ) {
-								$cell = $( '#tp-cell-' + first_cell.toUpperCase() );
+								$cell = $( '#cell-' + first_cell.toUpperCase() );
 								if ( $cell.length )
 									known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 								else
@@ -752,7 +754,7 @@ jQuery(document).ready( function( $ ) {
 
 							if ( 'undefined' != typeof second_cell ) {
 								if ( ! known_references.hasOwnProperty( second_cell ) ) {
-									$cell = $( '#tp-cell-' + second_cell.toUpperCase() );
+									$cell = $( '#cell-' + second_cell.toUpperCase() );
 									if ( $cell.length )
 										known_references[ second_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 									else
@@ -773,29 +775,29 @@ jQuery(document).ready( function( $ ) {
 			} )
 			.each( function( row_idx, row ) {
 				$( row ).find( 'textarea' ).attr( 'id', function( column_idx /*, old_id */ ) {
-					return 'tp-cell-' + tp.columns.number_to_letter( column_idx + 1 ) + ( row_idx + 1 );
+					return 'cell-' + tp.columns.number_to_letter( column_idx + 1 ) + ( row_idx + 1 );
 				} );
 			});
-			$( '#tp-edit-head' ).find( '.move-handle' )
+			$( '#edit-form-head' ).find( '.move-handle' )
 				.html( function( idx ) { return tp.columns.number_to_letter( idx + 1 ); } );
-			$( '#tp-edit-foot' ).find( '.visibility' ).attr( 'name', function( column_idx /*, old_name */ ) {
+			$( '#edit-form-foot' ).find( '.visibility' ).attr( 'name', function( column_idx /*, old_name */ ) {
 				return 'tp[visibility][column][' + column_idx + ']';
 			} );
 
-			$( '#tp-rows' ).val( tp.table.rows );
-			$( '#tp-columns' ).val( tp.table.columns );
+			$( '#number-rows' ).val( tp.table.rows );
+			$( '#number-columns' ).val( tp.table.columns );
 
 			tp.table.set_table_changed();
 		},
 		save_changes: {
 			trigger: function( /* event */ ) {
-				$(this).after( '<span class="tp-animation-saving" title="' + tablepress_strings.saving_changes + '"/>' );
-				$( '.tp-save-changes' ).prop( 'disabled', true );
+				$(this).after( '<span class="animation-saving" title="' + tablepress_strings.saving_changes + '"/>' );
+				$( '.save-changes-button' ).prop( 'disabled', true );
 				$( 'body' ).addClass( 'wait' );
 
 				$.post(
 						ajaxurl,
-						tp.table.prepare_ajax_request( 'tablepress_save_table', '#tp-ajax-nonce-save-table' ),
+						tp.table.prepare_ajax_request( 'tablepress_save_table', '#ajax-nonce-save-table' ),
 						function() { /* done with .success() below */ },
 						'json'
 					)
@@ -814,11 +816,20 @@ jQuery(document).ready( function( $ ) {
 				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown );
 			},
 			success: function( data ) {
-				// saving was successful, so the original ID has changed to the (maybe) new ID
-				tp.table.orig_id = tp.table.id;
+				// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances
+				// update URL (for HTML5 browsers only)
+				if ( ( 'pushState' in window.history ) && null !== window.history['pushState'] )
+					window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
+				// update table ID in input fields (type text and hidden)
+				tp.table.orig_id = tp.table.id = data.table_id;
 				$( '#orig-table-id' ).val( tp.table.orig_id );
+				$( '#table-id' ).val( tp.table.id );
+				// update the Shortcode text field
+				$( '#table-shortcode' ).val( '[table id=' + tp.table.id + ' /]' );
+				// update the nonce
+				$( '#ajax-nonce-save-table' ).val( data.new_nonce );
 				tp.table.unset_table_changed();
-				tp.save_changes.after_saving_dialog( 'success' );
+				tp.save_changes.after_saving_dialog( 'success', tablepress_strings[ data.message ] );
 			},
 			error: function( message ) {
 				tp.save_changes.after_saving_dialog( 'error', message );
@@ -829,11 +840,11 @@ jQuery(document).ready( function( $ ) {
 					message = '';
 				else
 					message = ' ' + message;
-				$( '.tp-animation-saving' )
-					.after( '<span class="tp-save-changes-' + type + '">' + tablepress_strings['save_changes_' + type] + message + '</span>' )
+				$( '.animation-saving' )
+					.after( '<span class="save-changes-' + type + '">' + tablepress_strings['save_changes_' + type] + message + '</span>' )
 					.remove();
-				$( '.tp-save-changes-' + type ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
-				$( '.tp-save-changes' ).prop( 'disabled', false );
+				$( '.save-changes-' + type ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
+				$( '.save-changes-button' ).prop( 'disabled', false );
 				$( 'body' ).removeClass( 'wait' );
 			}
 		},
@@ -841,35 +852,35 @@ jQuery(document).ready( function( $ ) {
 			var callbacks = {
 				'click': {
 					'#table-shortcode':		function() { $(this).focus().select(); },
-					'#tp-rows-insert':		tp.rows.insert,
-					'#tp-columns-insert':	tp.columns.insert,
-					'#tp-rows-remove':		tp.rows.remove,
-					'#tp-columns-remove':	tp.columns.remove,
-					'#tp-rows-hide':		tp.rows.hide,
-					'#tp-columns-hide':		tp.columns.hide,
-					'#tp-rows-unhide':		tp.rows.unhide,
-					'#tp-columns-unhide':	tp.columns.unhide,	
-					'#tp-rows-append':		tp.rows.append,
-					'#tp-columns-append':	tp.columns.append,
-					'#tp-link-add':			tp.content.link.add,
-					'#tp-image-add':		tp.content.image.add,
-					'#tp-span-add-rowspan':	function() { tp.content.span.add( '#rowspan#' ); },
-					'#tp-span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
-					'.tp-show-preview':		tp.table.preview.trigger,
-					'.tp-save-changes':		tp.save_changes.trigger
+					'#rows-insert':			tp.rows.insert,
+					'#columns-insert':		tp.columns.insert,
+					'#rows-remove':			tp.rows.remove,
+					'#columns-remove':		tp.columns.remove,
+					'#rows-hide':			tp.rows.hide,
+					'#columns-hide':		tp.columns.hide,
+					'#rows-unhide':			tp.rows.unhide,
+					'#columns-unhide':		tp.columns.unhide,	
+					'#rows-append':			tp.rows.append,
+					'#columns-append':		tp.columns.append,
+					'#link-add':			tp.content.link.add,
+					'#image-add':			tp.content.image.add,
+					'#span-add-rowspan':	function() { tp.content.span.add( '#rowspan#' ); },
+					'#span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
+					'.show-preview-button':	tp.table.preview.trigger,
+					'.save-changes-button':	tp.save_changes.trigger
 				},
 				'keyup': {
 					'#table-id':			tp.check.table_id					
 				},
 				'change': {
-					'#tp-table-head':		tp.table.change_table_head, 
-					'#tp-table-foot':		tp.table.change_table_foot
+					'#option-table-head':		tp.table.change_table_head, 
+					'#option-table-foot':		tp.table.change_table_foot
 				},
 				'blur': {
 					'#table-id':			tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
 				}
 			},
-			$table = $( '#tp-edit-body' );
+			$table = $( '#edit-form-body' );
 
 			$.each( callbacks, function( event, event_callbacks ) {
 				$.each( event_callbacks, function( selector, callback ) {
@@ -891,16 +902,16 @@ jQuery(document).ready( function( $ ) {
 			if ( tablepress_options.cells_auto_grow )
 				$table.on( 'focus', 'textarea', tp.cells.autogrow );
 
-			$( '#tp-edit-body' ).on( 'click', 'input:checkbox', { parent: '#tp-edit-body' }, tp.cells.checkboxes.multi_select );
-			$( '#tp-edit-foot' ).on( 'click', 'input:checkbox', { parent: '#tp-edit-foot' }, tp.cells.checkboxes.multi_select );
+			$( '#edit-form-body' ).on( 'click', 'input:checkbox', { parent: '#edit-form-body' }, tp.cells.checkboxes.multi_select );
+			$( '#edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
 
-			$( '#tp-edit-head' ).on( 'click', '.sort-control', tp.rows.sort );
+			$( '#edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
 
-			$( '#tp-table-information' ).on( 'change', '.placeholder', tp.table.set_table_changed );
+			$( '#tablepress_edit-table-information' ).on( 'change', 'input, textarea', tp.table.set_table_changed );
 
 			$table.sortable( {
 				axis: 'y',
-				containment: $( '#tp-edit' ), // to get better behavior when dragging before/after the first/last row
+				containment: $( '#edit-form' ), // to get better behavior when dragging before/after the first/last row
 				forceHelperSize: true, // necessary?
 				handle: '.move-handle',
 				start: tp.rows.move.start,
@@ -909,7 +920,7 @@ jQuery(document).ready( function( $ ) {
 				update: tp.reindex
 			} ); // disableSelection() prohibits selection of text in textareas via keyboard
 
-			$( '#tp-edit-head' ).sortable( {
+			$( '#edit-form-head' ).sortable( {
 				axis: 'x',
 				items: '.head',
 				containment: 'parent',
