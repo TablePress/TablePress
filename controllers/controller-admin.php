@@ -239,8 +239,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			),
 			'add' => array(
 				'show_entry' => true,
-				'page_title' => __( 'Add new Table', 'tablepress' ),
-				'admin_menu_title' => __( 'Add new Table', 'tablepress' ),
+				'page_title' => __( 'Add New Table', 'tablepress' ),
+				'admin_menu_title' => __( 'Add New Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Add New', 'tablepress' ),
 				'min_access_cap' => 'read'
 			),

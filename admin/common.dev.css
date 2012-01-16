@@ -33,10 +33,16 @@
 	color: #464646;
 }
 
+/* Add New Table form */
+#tablepress-page .form-wrap {
+	width: 500px;
+}
+
 /* "Description" textarea on the "Add" screen */
-#tablepress-page textarea.regular-text {
-	width: 25em;
-	vertical-align: middle; /* for position of the span.description on the right of the textarea */
+#tablepress-page .form-field-small {
+	float: left;
+	width: 150px;
+	margin-right: 20px;
 }
 
 /* placeholder fields in gray text color */

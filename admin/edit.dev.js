@@ -590,26 +590,45 @@ jQuery(document).ready( function( $ ) {
 				tp.cells.$focus.removeClass( 'focus' );
 				tp.cells.$focus = $(this).closest( 'tr' ).addClass( 'focus' );
 			},
-			visual_editor: {
+			advanced_editor: {
 				$textarea: null,
-				open: function( event ) {
+				keyopen: function( event ) {
 					// evtl. lieber event.shiftKey oder event.ctrlKey
 					if ( ! event.altKey )
 						return;
 
+					var $advanced_editor = $( '#advanced-editor-content' );
+
 					tp.cells.$textarea = $(this).blur();
-					$( '#tp-visual-editor-content' ).val( tp.cells.$textarea.val() );
-					tb_show( 'Visual Editor', '#TB_inline?height=153&width=400&inlineId=tp-visual-editor-container&modal=true', false );
-					$( '#tp-visual-editor-content' ).focus();
+					$advanced_editor.val( tp.cells.$textarea.val() );
+					tb_show( 'Visual Editor', '#TB_inline?height=287&width=600&inlineId=advanced-editor-container&modal=true', false );
+					$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
+					$advanced_editor.focus();
+				},
+				buttonopen: function() {
+					if ( ! confirm( tablepress_strings.advanced_editor_open ) )
+						return;
+
+					$( '#tp-edit-body' ).one( 'click', 'textarea', function() {
+						var $advanced_editor = $( '#advanced-editor-content' );
+
+						tp.cells.$textarea = $(this).blur();
+						$advanced_editor.val( tp.cells.$textarea.val() );
+						tb_show( 'Visual Editor', '#TB_inline?height=287&width=600&inlineId=advanced-editor-container&modal=true', false );
+						$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
+						$advanced_editor.focus();				
+					} );
 				},
 				save: function() {
-					var $ve_content = $( '#tp-visual-editor-content' ).blur().val();
+					var $ve_content = $( '#advanced-editor-content' ).blur().val();
 					if ( tp.cells.$textarea.val() != $ve_content ) {
 						tp.cells.$textarea.val( $ve_content );
+						// position cursor at the end
+						tp.cells.$textarea.get(0).selectionStart = tp.cells.$textarea.get(0).selectionEnd = tp.cells.$textarea.val().length;
 						tp.table.set_table_changed();
 					}
 					tp.cells.$textarea.focus();
-					tp.cells.visual_editor.close();
+					tp.cells.advanced_editor.close();
 				},
 				close: function() {
 					tb_remove();
@@ -640,31 +659,18 @@ jQuery(document).ready( function( $ ) {
 		content: {
 			link: {
 				add: function( /* event */ ) {
-					var link_url,
-						link_text,
-						target = '',
-						html;
-
-					link_url = prompt( tablepress_strings.link_url + ':', 'http://' );
-					if ( ! link_url )
+					if ( ! confirm( tablepress_strings.link_add ) )
 						return;
 
-					link_text = prompt( tablepress_strings.link_text + ':', tablepress_strings.link_text );
-            		if ( ! link_text )
-            			return;
-
-			        if ( tablepress_options.link_target_blank )
-						target = ' target="_blank"';
-
-                	html = '<a href="' + link_url + '"' + target + '>' + link_text + '</a>';
-                	html = prompt( tablepress_strings.link_insert_explain, html );
-                	if ( ! html )
-                		return;
-                		
-                    $( '#tp-edit-body' ).one( 'click', 'textarea', function() {
-                		var $textarea = $(this);
-						$textarea.val( $textarea.val() + html );
-						tp.table.set_table_changed();
+					// mousedown instead of click to allow selection of text
+					// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
+					// other approaches can lead to the wrong textarea being selected
+                    $( '#tp-edit-body' ).one( 'mousedown', 'textarea', function() {
+                    	wpActiveEditor = this.id;
+                    	$( window ).one( 'mouseup', function() {
+							wpLink.open();
+							tp.table.set_table_changed();
+                		} );
                 	} );
                 }
 			},
@@ -875,10 +881,11 @@ jQuery(document).ready( function( $ ) {
 
 			$table.one( 'change', 'textarea', tp.table.set_table_changed ); // just once is enough, will be reset after saving
 
-			if ( tablepress_options.cells_visual_editor ) {
-				$table.on( 'click', 'textarea', tp.cells.visual_editor.open );
-				$( '#tp-visual-editor-confirm' ).on( 'click', tp.cells.visual_editor.save );
-				$( '#tp-visual-editor-cancel' ).on( 'click', tp.cells.visual_editor.close );
+			if ( tablepress_options.cells_advanced_editor ) {
+				$table.on( 'click', 'textarea', tp.cells.advanced_editor.keyopen );
+				$( '#advanced-editor-open' ).on( 'click', tp.cells.advanced_editor.buttonopen );
+				$( '#advanced-editor-confirm' ).on( 'click', tp.cells.advanced_editor.save );
+				$( '#advanced-editor-cancel' ).on( 'click', tp.cells.advanced_editor.close );
 			}
 
 			if ( tablepress_options.cells_auto_grow )
@@ -917,7 +924,10 @@ jQuery(document).ready( function( $ ) {
 	
 		}
 	};
-	
+
+	// do allow wide tables to scroll sideways
+	$( '#wpbody-content' ).css( 'overflow-x', 'scroll' );
+
 	tp.init();
 
 } );

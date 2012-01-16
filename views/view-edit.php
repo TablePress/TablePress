@@ -35,9 +35,8 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
 			'options' => array(
-				'cells_visual_editor' => true,
-				'cells_auto_grow' => true,
-				'link_target_blank' => true
+				'cells_advanced_editor' => true,
+				'cells_auto_grow' => true
 			),
 			'strings' => array(
 				'no_remove_all_rows' => 'Du kannst nicht alle Zeilen der Tabelle löschen!',
@@ -48,10 +47,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'append_num_columns_invalid' => 'Die Eingabe für die Spaltenanzahl ist ungültig!',
 				'ays_remove_rows' => 'Möchtest du die ausgewählten Zeilen wirklich löschen?',
 				'ays_remove_columns' => 'Möchtest du die ausgewählten Spalten wirklich löschen?',
+				'advanced_editor_open' => 'Bitte klicke in die Zelle, die du bearbeiten möchtest.',
 				'span_add' => 'Bitte klicke in die Zelle, die verbunden werden soll.',
-				'link_text' => 'Link-Text',
-				'link_url' => 'Link-URL',
-				'link_insert_explain' => 'explain, click into cell...',
+				'link_add' => 'Bitte klicke in die Zelle, in die du einen Link einfügen möchtest.',
 				'unsaved_changes_unload' => 'Seite ohne speichern verlassen?',
 				'preview' => 'Vorschau',
 				'preparing_preview' => 'Die Vorschau wird vorbereitet...',
@@ -83,10 +81,14 @@ class TablePress_Edit_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
+		$this->add_text_box( 'buttons-1', array( &$this, 'textbox_buttons' ), 'normal' );
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( &$this, 'postbox_table_data' ), 'normal' );
 		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( &$this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( &$this, 'postbox_table_options' ), 'normal' );
+		$this->add_text_box( 'hidden-containers', array( &$this, 'textbox_hidden_containers' ), 'additional' );
+		$this->add_text_box( 'buttons-2', array( &$this, 'textbox_buttons' ), 'additional' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+		$this->add_text_box( 'other-actions', array( &$this, 'textbox_other_actions' ), 'submit' );
 	}
 
 	/**
@@ -116,24 +118,23 @@ class TablePress_Edit_View extends TablePress_View {
 		<table class="form-table">
 		<tbody>
 		<tr valign="top">
-			<th scope="row"><label for="table-id"><?php esc_html_e( 'Table ID', 'tablepress' ); ?>:</label></th>
+			<th scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 			<td>
 				<input type="hidden" name="orig_table_id" id="orig-table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
 				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
 				<input type="text" id="table-shortcode" value="[table id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
-			<?php /* @TODO: move this -> */ echo ' <a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) . '">' . __( 'Delete', 'tablepress' ) . '</a>'; ?>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="table-name"><?php esc_html_e( 'Table Name', 'tablepress' ); ?>:</label></th>
+			<th scope="row"><label for="table-name"><?php _e( 'Table Name', 'tablepress' ); ?>:</label></th>
 			<td><input type="text" name="table[name]" id="table-name" class="large-text" value="<?php echo esc_attr( $data['table']['name'] ); ?>" /></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="table-description"><?php esc_html_e( 'Description', 'tablepress' ); ?>:</label></th>
-			<td><textarea name="table[description]" id="table-description" class="large-text" rows="5" cols="50"><?php echo esc_textarea( $data['table']['description'] ); ?></textarea></td>
+			<th scope="row"><label for="table-description"><?php _e( 'Description', 'tablepress' ); ?>:</label></th>
+			<td><textarea name="table[description]" id="table-description" class="large-text" rows="4"><?php echo esc_textarea( $data['table']['description'] ); ?></textarea></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><?php esc_html_e( 'Last Modified', 'tablepress' ); ?>:</th>
+			<th scope="row"><?php _e( 'Last Modified', 'tablepress' ); ?>:</th>
 			<td><?php printf( __( 'at %1$s by %2$s', 'tablepress' ), esc_html( $data['table']['options']['last_modified'] ), esc_html( $data['table']['options']['last_editor'] ) ); ?></td>
 		</tr>
 		</tbody>
@@ -204,7 +205,7 @@ class TablePress_Edit_View extends TablePress_View {
 		echo "<td><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"tp[visibility][row][{$row_idx}]\" value=\"1\" /></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
-			echo "<td><textarea name=\"tp[data][{$row_idx}][{$col_idx}]\" id=\"tp-cell-{$column}{$row}\">{$cell}</textarea></td>";
+			echo "<td><textarea name=\"tp[data][{$row_idx}][{$col_idx}]\" id=\"tp-cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
 		}	
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
 		echo "\t\t</tr>\n";
@@ -224,46 +225,109 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function postbox_table_manipulation( $data, $box ) {
 ?>
-<div class="tp-manipulation">
-Ausgewählte Zeilen: 
-	<button type="button" id="tp-rows-insert">Zeile einfügen</button>
-	<button type="button" id="tp-rows-remove">Löschen</button>
-	<button type="button" id="tp-rows-hide">Verstecken</button>
-	<button type="button" id="tp-rows-unhide">Zeigen</button>
-	&middot;
-	<input type="text" id="tp-rows-append-num" class="small-text numbers-only" value="" maxlength="5" /><button type="button" id="tp-rows-append">Zeilen anfügen</button>
-</div>
-<div class="tp-manipulation">
-Ausgewählte Spalten:
-	<button type="button" id="tp-columns-insert">Spalte einfügen</button>
-	<button type="button" id="tp-columns-remove">Löschen</button>
-	<button type="button" id="tp-columns-hide">Verstecken</button>
-	<button type="button" id="tp-columns-unhide">Zeigen</button>
-	&middot;
-	<input type="text" id="tp-columns-append-num" class="small-text numbers-only" value="" maxlength="5" /><button type="button" id="tp-columns-append">Spalten anfügen</button>
-</div>
-<div class="tp-manipulation">
-	<label for="tp-table-head">Tabellenkopf:</label> <input type="checkbox" id="tp-table-head" checked="checked" />
-	<label for="tp-table-foot">Tabellenfuß:</label> <input type="checkbox" id="tp-table-foot" checked="checked" />
-</div>
-<div class="tp-manipulation">
-	<button type="button" id="tp-link-add">Link einfügen</button>
-	<button type="button" id="tp-image-add">Bild einfügen</button>
-	<button type="button" id="tp-span-add-rowspan">rowspan</button>
-	<button type="button" id="tp-span-add-colspan">colspan</button>
-</div>
-<div class="tp-manipulation">
-	<button type="button" class="tp-show-preview">Vorschau</button><br/>
-	<button type="button" class="tp-save-changes">Tabelle speichern</button>
-</div>
-<div id="tp-visual-editor-container" class="tp-hidden-container">
-<div id="tp-visual-editor">Visual Editor<br/>
-<textarea id="tp-visual-editor-content"></textarea><br/>
-<button type="button" id="tp-visual-editor-confirm" >OK</button><button type="button" id="tp-visual-editor-cancel">Cancel</button>
-</div>
+<table class="tablepress-postbox-table">
+<tbody>
+	<tr class="bottom-border">
+		<td>
+			<input type="button" class="button-secondary" id="tp-link-add" value="<?php _e( 'Insert Link', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="tp-image-add" value="<?php _e( 'Insert Image', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="advanced-editor-open" value="<?php _e( 'Advanced Editor', 'tablepress' ); ?>" />
+		</td>
+		<td>
+			<?php _e( 'Combine cells', 'tablepress' ); ?>:&nbsp;
+			<input type="button" class="button-secondary" id="tp-span-add-rowspan" value="<?php _e( 'rowspan', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="tp-span-add-colspan" value="<?php _e( 'colspan', 'tablepress' ); ?>" />
+		</td>
+	</tr>
+	<tr class="top-border">
+		<td>
+			<?php _e( 'Selected rows', 'tablepress' ); ?>:&nbsp;
+			<input type="button" class="button-secondary" id="tp-rows-hide" value="<?php _e( 'Hide', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="tp-rows-unhide" value="<?php _e( 'Show', 'tablepress' ); ?>" />
+		</td>
+		<td>
+			<?php _e( 'Selected columns', 'tablepress' ); ?>:&nbsp;
+			<input type="button" class="button-secondary" id="tp-columns-hide" value="<?php _e( 'Hide', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="tp-columns-unhide" value="<?php _e( 'Show', 'tablepress' ); ?>" />
+		</td>
+	</tr>
+	<tr class="bottom-border">
+		<td>
+			<?php _e( 'Selected rows', 'tablepress' ); ?>:&nbsp;
+			<input type="button" class="button-secondary" id="tp-rows-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="tp-rows-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
+		</td>
+		<td>
+			<?php _e( 'Selected columns', 'tablepress' ); ?>:
+			<input type="button" class="button-secondary" id="tp-columns-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="tp-columns-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
+		</td>
+	</tr>
+	<tr class="top-border">
+		<td>
+			<?php printf( __( 'Add %s row(s)', 'tablepress' ), '<input type="text" id="tp-rows-append-num" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="tp-rows-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
+		</td>
+		<td>
+			<?php printf( __( 'Add %s column(s)', 'tablepress' ), '<input type="text" id="tp-columns-append-num" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="tp-columns-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
+		</td>
+	</tr>
+</table>
+<?php
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	function textbox_buttons( $data, $box ) {
+		?>
+			<p class="submit">
+				<input type="button" class="button-secondary tp-show-preview" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
+				<input type="button" class="button-secondary tp-save-changes" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+			</p>
+		<?php
+	}
+	
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	function textbox_other_actions( $data, $box ) {
+		?>
+			<p class="submit">
+				<?php _e( 'Other Actions' ); ?>:&nbsp;
+				<a href="<?php echo TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ); ?>" class="button-secondary"><?php _e( 'Delete Table', 'tablepress' ); ?></a>
+				<?php /* @TODO: Add Export button here */ ?>
+			</p>
+		<?php
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	function textbox_hidden_containers( $data, $box ) {
+?>
+<div id="advanced-editor-container" class="tp-hidden-container">
+	<div id="advanced-editor"><?php _e( 'Advanced Editor', 'tablepress' ); ?><br/>
+	<?php
+		wp_editor( '', 'advanced-editor-content', array(
+			'media_buttons' => false,
+			'textarea_rows' => 10,
+			'tinymce' => false,
+			'quicktags' => array(
+				'buttons' => 'strong,em,link,del,ins,img,code,spell,close'
+			)
+		) );
+	?>
+	<input type="button" class="button-secondary advanced-editor-button" id="advanced-editor-confirm" value="<?php _e( 'OK', 'tablepress' ); ?>" /><input type="button" class="button-secondary advanced-editor-button" id="advanced-editor-cancel" value="<?php _e( 'Cancel', 'tablepress' ); ?>" />
+	</div>
 </div>
 <div id="tp-preview-container" class="tp-hidden-container">
-<div id="tp-preview"></div>
+	<div id="tp-preview"></div>
 </div>
 <?php
 	}
@@ -274,7 +338,23 @@ Ausgewählte Spalten:
 	 * @since 1.0.0
 	 */
 	function postbox_table_options( $data, $box ) {
-		echo json_encode( $data['table']['options'] );
+?>
+<table class="tablepress-postbox-table">
+<tbody>
+	<tr>
+		<td class="column-1"><label for="tp-table-head"><?php _e( 'Tabellenkopf', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="tp-table-head" checked="checked" /></td>
+	</tr>
+	<tr class="bottom-border">
+		<td class="column-1"><label for="tp-table-foot"><?php _e( 'Tabellenfuß', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="tp-table-foot" checked="checked" /></td>
+	</tr>
+	<tr class="top-border">
+		<td colspan="2"><?php echo json_encode( $data['table']['options'] ); ?></td>
+	</tr>
+</tbody>
+</table>
+<?php
 	}
 
 	/**

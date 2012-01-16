@@ -68,7 +68,7 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' )
-	.on( 'keyup', '.numbers-only', function( event ) {
+	.on( 'keyup', '.numbers-only, .form-field-numbers-only input', function( event ) {
 		// allow navigation with left and right cursor key
 		if ( ( 37 == event.which ) || ( 39 == event.which ) )
 			return;

@@ -8,31 +8,22 @@ body.wait * {
 	cursor: wait!important;
 }
 
-#tablepress_edit-table-data .inside {
-	overflow-x: scroll;
-}
-
 .tp-hidden-container {
 	display: none;
 }
 
-#tp-visual-editor-content {
-	width: 392px;
-	height: 100px;
-}
-
-#tp-visual-editor-confirm,
-#tp-visual-editor-cancel {
+.advanced-editor-button {
+	margin-top: 3px;
 	float: right;
 }
 
 .tp-animation-saving,
 .tp-animation-preview {
 	display: inline-block;
-	background: url(img/loading.gif);
+	background: url(../../../../wp-admin/images/wpspin_light.gif);
 	height: 16px;
 	width: 16px;
-	margin: 2px 0 0 5px;
+	margin: 4px 0 0 5px;
 	vertical-align: top;
 }
 
@@ -56,6 +47,10 @@ body.wait * {
 	margin-right: 3px;
 }
 
+#tp-edit-foot input[type="checkbox"] {
+	margin-top: 4px;
+}
+
 #tp-edit-body textarea {
 	display: block;
 	width: 150px;
@@ -73,7 +68,6 @@ body.wait * {
 
 #tp-edit {
 	border-collapse: collapse;
-	margin-bottom: 10px;
 }
 
 #tp-edit .move-handle {
@@ -146,7 +140,7 @@ body.wait * {
 #tp-edit .row-hidden textarea,
 #tp-edit .column-hidden,
 #tp-edit .column-hidden textarea {
-	background-color: #FFE0E0;
+	background-color: #ffe0e0;
 }
 
 #tp-preview-iframe {
@@ -154,4 +148,30 @@ body.wait * {
 	height: 100%;
 	margin: 0;
 	border: none;
+}
+
+.tablepress-postbox-table {
+	border-spacing: 0px;
+	width: 800px;
+}
+.tablepress-postbox-table td {
+	padding: 5px 5px 2px;
+	border-spacing: 0px;
+}
+.tablepress-postbox-table .top-border td {
+	padding: 5px 5px 2px;
+	border-top: 1px solid #ffffff;
+}
+.tablepress-postbox-table .bottom-border td {
+	padding: 2px 5px 5px;
+	border-bottom: 1px solid #dfdfdf;
+}
+#tablepress_edit-table-manipulation td {
+	width: 50%;
+}
+#tablepress_edit-table-options .column-1 {
+	width: 150px;
+}
+#tablepress_edit-table-options .column-2 {
+	width: 650px;
 }
