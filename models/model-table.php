@@ -39,6 +39,15 @@ class TablePress_Table_Model extends TablePress_Model {
 	protected $table_options_field_name = '_tablepress_table_options';
 
 	/**
+	 * Name of the Post Meta Field for table visibility
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	protected $table_visibility_field_name = '_tablepress_table_visibility';
+
+	/**
 	 * Default set of tables
 	 *
 	 * Array fields:
@@ -171,13 +180,12 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$table = $this->_post_to_table( $post, $table_id );
 		$table['options'] = $this->_get_table_options( $post_id );
+		$table['visibility'] = $this->_get_table_visibility( $post_id );
 		return $table;
 	}
 
 	/**
 	 * Load all tables
-	 *
-	 * @TODO: Should be refactored to only make one database query to wp_posts, maybe with a query to prime the posts cache
 	 *
 	 * @since 1.0.0
 	 *
@@ -185,7 +193,26 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function load_all() {
 		$tables = array();
-		$table_ids = array_keys( $this->tables->get( 'table_post' ) );
+		$table_post = $this->tables->get( 'table_post' );
+		if ( empty( $table_post ) )
+			return array();
+
+		$table_ids = array_keys( $table_post );
+		$post_ids = array_values( $table_post );
+
+		// get all table posts with one query, @see get_post() in WordPress, to prime the cache
+		global $wpdb;
+		$post_ids_list = implode( ',', $post_ids );
+		$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
+		foreach ( $all_posts as $single_post ) {
+			_get_post_ancestors($single_post);
+			$single_post = sanitize_post( $single_post, 'raw' );
+			wp_cache_add( $single_post->ID, $single_post, 'posts' );
+		}
+		// get all post meta data for all table posts, @see get_post_meta()
+		update_meta_cache( 'post', $post_ids );
+
+		// this loop now uses the WP cache
 		foreach ( $table_ids as $table_id ) {
 			$tables[ $table_id ] = $this->load( $table_id );
 		}
@@ -220,6 +247,12 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( ! $options_saved )
 			return false;
 
+		if ( ! isset( $table['visibility'] ) )
+			$table['visibility'] = array();
+		$visibility_saved = $this->_update_table_visibility( $new_post_id, $table['visibility'] );
+		if ( ! $visibility_saved )
+			return false;
+
 		// at this point, post was successfully added
 		return $table['id'];
 	}
@@ -229,10 +262,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table Table (without $table['id'])
+	 * @param array $table Table (without $table['id'], otherwise it gets removed)
 	 * @return mixed False on error, int table ID of the new table on success
 	 */
-	public function add( $table ) { // no table['id']
+	public function add( $table ) {
+		if ( isset( $table['id'] ) )
+			unset( $table['id'] );
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
@@ -244,6 +279,12 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['options'] = array();
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved )
+			return false;
+
+		if ( ! isset( $table['visibility'] ) )
+			$table['visibility'] = array();
+		$visibility_saved = $this->_add_table_visibility( $new_post_id, $table['visibility'] );
+		if ( ! $visibility_saved )
 			return false;
 
 		// at this point, post was successfully added, now get an unused table ID
@@ -439,6 +480,54 @@ class TablePress_Table_Model extends TablePress_Model {
 			return array();
 		$options = json_decode( $options, true );
 		return $options;
+	}
+
+	/**
+	 * Save the table visibility of a table (in a post meta field of the table's post)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $post_id Post ID
+	 * @param array $visibility Table visibility
+	 * @return bool True on success, false on error
+	 */
+	protected function _add_table_visibility( $post_id, $visibility ) {
+		$visibility = json_encode( $visibility );
+		$success = $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
+		return $success;
+	}
+
+	/**
+	 * Update the table visibility of a table (in a post meta field in the table's post)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $post_id Post ID
+	 * @param array $visibility Table visibility
+	 * @return bool True on success, false on error
+	 */
+	protected function _update_table_visibility( $post_id, $visibility ) {
+		$visibility = json_encode( $visibility );
+		// we need to pass the previous value to make sure that an update takes place, to really get a successful (true) return result from the WP API
+		$prev_visibility = json_encode( $this->_get_table_visibility( $post_id ) );
+		$success = $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility, $prev_visibility );
+		return $success;
+	}
+
+	/**
+	 * Get the table visibility of a table (from a post meta field of the table's post)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $post_id Post ID
+	 * @return array Table visibility on success, empty array on error
+	 */
+	protected function _get_table_visibility( $post_id ) {
+		$visibility = $this->model_post->get_meta_field( $post_id, $this->table_visibility_field_name );
+		if ( empty( $visibility ) )
+			return array();
+		$visibility = json_decode( $visibility, true );
+		return $visibility;
 	}
 
 } // class TablePress_Table_Model

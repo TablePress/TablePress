@@ -141,7 +141,11 @@ abstract class TablePress_View {
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$this->admin_page->enqueue_style( 'common' );
-		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ) );
+		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ), array(
+			'common' => array(
+				'ays_delete_table' => 'Möchtest du die Tabelle wirklich löschen?'
+			)
+		) );
 		$this->admin_page->add_admin_footer_text();
 		
 		// necessary fields for all views
@@ -294,8 +298,10 @@ abstract class TablePress_View {
 			foreach ( $this->header_messages as $message ) {
 				echo $message;
 			}
+			
+			// form enctype:  enctype="multipart/form-data" for forms with file upload
 		?>
-		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post" enctype="multipart/form-data">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 			<?php
 			$this->do_text_boxes( 'header' );
 			?>

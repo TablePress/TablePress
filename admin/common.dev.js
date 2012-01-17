@@ -32,7 +32,7 @@ jQuery(document).ready( function($) {
 			function( result ) {
 				if ( '1' != result )
 					return;
-		
+
 				switch ( action ) {
 					case 'hide_message':
 						$( link ).closest( 'div' ).remove();
@@ -74,6 +74,27 @@ jQuery(document).ready( function($) {
 			return;
 		var $input = $(this);
 		$input.val( $input.val().replace( /[^0-9]/g, '' ) );
+	} );
+
+	/**
+	 * Show a AYS warning when a "Delete" link is clicked
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' )
+	.on( 'click', '.delete-link', function() {
+		if ( ! confirm( tablepress_common.ays_delete_table ) )
+			return false;
+	} );
+
+	/**
+	 * Select all text in the Shortcode (readonly) text fields, when clicked
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' )
+	.on( 'click', '.table-shortcode', function() {
+		$(this).focus().select();
 	} );
 
 } );

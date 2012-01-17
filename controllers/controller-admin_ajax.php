@@ -62,19 +62,16 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_save_table() {
-		if ( empty( $_POST['tablepress'] ) || ! isset( $_POST['tablepress']['orig_id'] ) )
+		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['orig_id'] ) )
 			die( '-1' );
 
-		$orig_table_id = $_POST['tablepress']['orig_id'];
+		$edit_table = stripslashes_deep( $_POST['tablepress'] );
 
 		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
-		TablePress::check_nonce( 'save_table', $orig_table_id, true );
+		TablePress::check_nonce( 'save_table', $edit_table['orig_id'], true );
 
 		// ignore the request if the current user doesn't have sufficient permissions
 		// @TODO Capability check!
-
-		// table from POST request
-		$edit_table = stripslashes_deep( $_POST['tablepress'] );
 
 		$edit_table['rows'] = absint( $edit_table['rows'] );
 		$edit_table['columns'] = absint( $edit_table['columns'] );
@@ -126,7 +123,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( $success ) {
 
 			// original table
-			$table = $this->model_table->load( $orig_table_id );
+			$table = $this->model_table->load( $edit_table['orig_id'] );
 		
 			// replace original values with new ones from form fields, if they exist
 			if ( isset( $edit_table['name'] ) )
@@ -136,8 +133,10 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$table['data'] = $edit_table['data'];
 			$table['options'] = array(
 				'last_action' => 'ajax_edit',
-				'last_modified' => time(),
-				'last_editor' => get_current_user_id()
+				'last_modified' => current_time( 'timestamp' ),
+				'last_editor' => get_current_user_id(),
+				'table_head' => $edit_table['options']['table_head'],
+				'table_foot' => $edit_table['options']['table_foot']
 			);
 			$table['visibility']['rows'] = $edit_table['visibility']['rows'];
         	$table['visibility']['columns'] = $edit_table['visibility']['columns'];
@@ -167,7 +166,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			'success' => $success,
 			'message' => $message,
 			'table_id' => $table['id'],
-			'new_nonce' => wp_create_nonce( TablePress::nonce( 'save_table', $table['id'] ) )
+			'new_nonce' => wp_create_nonce( TablePress::nonce( 'save_table', $table['id'] ) ),
+			'last_modified' => TablePress::format_datetime( $table['options']['last_modified'] ),
+			'last_editor' => TablePress::get_last_editor( $table['options']['last_editor'] )
 		);
 
 		// response output

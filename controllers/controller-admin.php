@@ -99,7 +99,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
 		$post_actions = array( 'add', 'edit', 'options' );
-		$get_actions = array( 'hide_message', 'delete_table' );
+		$get_actions = array( 'hide_message', 'delete_table', 'copy_table' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
@@ -313,15 +313,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function handle_post_action_edit() {
-		$orig_table_id = ( ! empty( $_POST['orig_table_id'] ) ) ? $_POST['orig_table_id'] : false;
-		TablePress::check_nonce( 'edit', $orig_table_id );
-
-		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) || ( false === $orig_table_id ) ) // last check should have been caught by nonce check already
+		if ( empty( $_POST['table'] ) || empty( $_POST['table']['orig_id'] ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
-		else
-			$edit_table = stripslashes_deep( $_POST['table'] );
 
-		$table = $this->model_table->load( $orig_table_id );
+		$edit_table = stripslashes_deep( $_POST['table'] );
+
+		TablePress::check_nonce( 'edit', $edit_table['orig_id'] );
+
+		$table = $this->model_table->load( $edit_table['orig_id'] );
 
 		// replace original values with new ones from form fields, if they exist
 		if ( isset( $edit_table['name'] ) )
@@ -334,10 +333,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		*/
 		$table['options'] = array(
 			'last_action' => 'edit',
-			'last_modified' => time(),
+			'last_modified' => current_time( 'timestamp' ),
 			'last_editor' => get_current_user_id()
+			// regular options are missing!
 		);
-        //$table['visibility'] = $edit_table['visibility'];
+		if ( isset( $edit_table['visibility']['rows'] ) )
+	        $table['visibility']['rows'] = $edit_table['visibility']['rows'];
+		if ( isset( $edit_table['visibility']['columns'] ) )
+	        $table['visibility']['columns'] = $edit_table['visibility']['columns'];
 
 		$saved = $this->model_table->save( $table );
 		if ( false === $saved )
@@ -383,8 +386,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table['data'] = array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) );
 		$table['options'] = array(
 			'last_action' => 'add',
-			'last_modified' => time(),
-			'last_editor' => get_current_user_id()
+			'last_modified' => current_time( 'timestamp' ),
+			'last_editor' => get_current_user_id(),
+			'table_head' => true,
+			'table_foot' => true
 		);
 		$table['visibility'] = array(
 			'rows' => array_fill( 0, $num_rows, 1 ),
@@ -476,6 +481,40 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
 
 		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ) );
+	}
+
+	/**
+	 * Copy a table
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_get_action_copy_table() {
+		$table_id = ( ! empty( $_GET['item'] ) ) ? $_GET['item'] : false;
+		TablePress::check_nonce( 'copy_table', $table_id );
+
+		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
+		$return_item = ! empty( $_GET['return_item'] ) ? $_GET['return_item'] : false;
+
+		if ( false === $table_id ) // nonce check should actually catch this already
+			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
+
+		// load table to copy
+		$table = $this->model_table->load( $table_id );
+
+		// adjust name and options of copied table
+    	$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
+		$updated_options = array(
+			'last_action' => 'copy',
+			'last_modified' => current_time( 'timestamp' ),
+			'last_editor' => get_current_user_id(),
+		);
+		$table['options'] = array_merge( $table['options'], $updated_options );
+
+		$table_id = $this->model_table->add( $table );
+		if ( false === $table_id  )
+			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
+
+		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
 	}
 
 } // class TablePress_Admin_Controller

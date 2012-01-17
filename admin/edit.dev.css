@@ -95,7 +95,9 @@ body.wait * {
 	text-align: center;
 	font-weight: bold;
 }
-
+.no-js #edit-form .move-handle {
+	cursor: auto;
+}
 #edit-form-body .move-handle {
 	margin: auto 3px;
 	min-width: 16px;
@@ -131,10 +133,10 @@ body.wait * {
 	cursor: pointer;
 	margin: 2px 3px 0 0;
 }
-#edit-form-head .head:hover .sort-control {
+.js #edit-form-head .head:hover .sort-control {
 	display: block;
 }
-#edit-form-head .ui-sortable-helper:hover .sort-control {
+.js #edit-form-head .ui-sortable-helper:hover .sort-control {
 	display: none;
 }
 #edit-form-head .sort-asc {

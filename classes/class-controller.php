@@ -100,7 +100,7 @@ abstract class TablePress_Controller {
 		// Save time of first activation of the plugin in option
 		if ( 0 == $this->model_options->get( 'first_activation', 0 ) ) {
 			$this->model_options->update( array(
-				'first_activation' => time()
+				'first_activation' => current_time( 'timestamp' )
 			) );			
 		}
 	}

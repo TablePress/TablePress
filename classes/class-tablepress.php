@@ -117,7 +117,7 @@ abstract class TablePress {
 	 * Create a new instance of the $view, which is stored in the "views" subfolder, and set it up with $data
 	 *
 	 * @since 1.0.0
- 	 * @uses load_class()
+	 * @uses load_class()
 	 *
 	 * @param string $view Name of the view to load
 	 * @param array $data (optional) Parameters/PHP variables that shall be available to the view
@@ -218,6 +218,32 @@ abstract class TablePress {
 			$number = floor( ($number-1) / 26 );
 		}
 		return $column;
+	}
+
+	/**
+	 * Get a nice looking date and time string from the mySQL format of datetime strings for output
+	 *
+	 * @param string $datetime DateTime string in mySQL format or a Unix timestamp
+	 * @param string $type (optional) Type of $datetime, 'mysql' or 'timestamp'
+	 * @param string $separator (optional) Separator between date and time
+	 * @return string Nice looking string with the date and time
+	 */
+	function format_datetime( $datetime, $type = 'timestamp', $separator = ' ' ) {
+		if ( 'mysql' == $type )
+			return mysql2date( get_option( 'date_format' ), $datetime ) . $separator . mysql2date( get_option( 'time_format' ), $datetime );
+		else
+			return date_i18n( get_option( 'date_format' ), $datetime ) . $separator . date_i18n( get_option( 'time_format' ), $datetime );
+	}
+
+	/**
+	 * Get the name from a WP user ID (used to store information on last editor of a table)
+	 *
+	 * @param int $user_id WP user ID
+	 * @return string Nickname of the WP user with the $user_id
+	 */
+	function get_last_editor( $user_id ) {
+		$user = get_userdata( $user_id );
+		return ( $user && isset( $user->nickname ) ) ? $user->nickname : '';
 	}
 
 	/**

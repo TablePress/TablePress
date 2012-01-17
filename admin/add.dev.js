@@ -12,9 +12,7 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' ).on( 'submit', 'form', function( /* event */ ) {
-		var num_rows = $( '#table-rows' ).val(),
-			num_columns = $( '#table-columns' ).val(),
-			valid_form = true;
+		var valid_form = true;
 
 		// remove default values from required placeholders, if no value was entered
 		$( '#tablepress-page' ).find( '.form-required' ).find( '.placeholder' ).each( function() {
@@ -28,21 +26,27 @@ jQuery(document).ready( function($) {
 		if ( ! validateForm( $(this) ) )
 			valid_form = false;
 
-		// custom validation functions
-		if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
-			$( '#table-rows' )
-			.one( 'change', function() { $(this).closest( '.form-invalid' ).removeClass( 'form-invalid' ); } )
-			.focus().select()
-			.closest( '.form-field' ).addClass( 'form-invalid' );
+		// validate numerical values (.form-field-numbers-only): only 1 < x < 9...9 (up to maxlength) are allowed
+		$( '#tablepress-page' ).find( '.form-field-numbers-only' ).find( 'input' ).each( function() {
+			var $field = $(this),
+				maxlength = parseInt( $field.attr( 'maxlength' ) ),
+				regexp_number;
+
+			if ( ! isNaN( maxlength ) )
+				maxlength += -1; // first number is handled already in RegExp
+			else
+				maxlength = '';
+
+			regexp_number = new RegExp( '^[1-9][0-9]{0,' + maxlength + '}$' );
+			if ( regexp_number.test( $field.val() ) )
+				return; // field is valid
+
+			$field
+				.one( 'change', function() { $(this).closest( '.form-invalid' ).removeClass( 'form-invalid' ); } )
+				.focus().select()
+				.closest( '.form-field' ).addClass( 'form-invalid' );
 			valid_form = false;
-		}
-		if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
-			$( '#table-columns' )
-			.one( 'change', function() { $(this).closest( '.form-invalid' ).removeClass( 'form-invalid' ); } )
-			.focus().select()
-			.closest( '.form-field' ).addClass( 'form-invalid' );
-			valid_form = false;
-		}
+		} );
 
 		if ( ! valid_form )
 			return false;

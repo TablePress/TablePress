@@ -45,8 +45,8 @@
 	margin-right: 20px;
 }
 
-/* placeholder fields in gray text color */
-#tablepress-page .placeholder-active {
+/* placeholder fields in gray text color, but only if JS is enabled */
+.js #tablepress-page .placeholder-active {
 	color: #bbbbbb;
 }
 
@@ -59,6 +59,31 @@
 }
 
 /* remove outlines from all textareas */
-#tablepress-page textarea:focus {
+#tablepress-page textarea {
 	outline: none;
+}
+
+/* inline Shortcodes, in texts */
+#tablepress-page .table-shortcode-inline {
+	background: transparent;
+	border: none;
+	color: #333333;
+	width: 90px;
+	margin: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+#tablepress-page .table-shortcode {
+	cursor: text;
+}
+
+/* fix non-JS styling of Post Boxes (might be able to remove this in future versions of WP) */
+.no-js .postbox:hover .handlediv {
+	background-image: none !important;
+	cursor: auto;
+}
+.no-js .postbox .hndle {
+	cursor: auto;
+	color: #464646;
 }

@@ -40,6 +40,12 @@ class TablePress_List_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
+		$this->admin_page->enqueue_script( 'list', array( 'jquery' ), array(
+			'list' => array(
+				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' )
+			)
+		) );
+
 		if ( $data['messages']['first_visit'] )
 			$this->add_header_message(
 				'<strong><em>Welcome!</em></strong><br />Thank you for using TablePress for the first time!<br/>'
@@ -55,6 +61,8 @@ class TablePress_List_View extends TablePress_View {
 		$this->action_messages = array(
 			'success_delete' => __( 'The table was deleted successfully.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'success_copy' => __( 'The table was copied successfully.', 'tablepress' ),
+			'error_copy' => __( 'Error: The table could not be copied.', 'tablepress' ),
 			'error_no_table' => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
 			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' )
 		);
@@ -97,7 +105,7 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	public function textbox_head2( $data, $box ) {
 		?>
-		<p><?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode <strong>[table id=%s /]</strong> and paste it into the corresponding place in the editor.', 'tablepress' ), '&lt;ID&gt;' ); ?> <?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?> <?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?></p>
+		<p><?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[table id=&lt;ID&gt; /]" readonly="readonly" />' ); ?> <?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?> <?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?></p>
 		<?php
 	}
 
@@ -111,22 +119,22 @@ class TablePress_List_View extends TablePress_View {
 <table id="tablepress-all-tables" class="widefat fixed" cellspacing="0">
 <thead>
 	<tr>
-		<th scope="col" class="check-column"><input type="checkbox" /></th>
+		<th scope="col" class="check-column"><input type="checkbox" class="hide-if-no-js" /></th>
 		<th scope="col" class="table-id">ID<span></span></th>
 		<th scope="col">Table Name<span></span></th>
 		<th scope="col">Description<span></span></th>
 		<th scope="col">Author<span></span></th>
-		<th scope="col">Date<span></span></th>
+		<th scope="col">Last Modified<span></span></th>
 	</tr>
 </thead>
 <tfoot>
 	<tr>
-		<th scope="col" class="check-column"><input type="checkbox" /></th>
+		<th scope="col" class="check-column"><input type="checkbox" class="hide-if-no-js" /></th>
 		<th scope="col">ID<span></span></th>
 		<th scope="col">Table Name<span></span></th>
 		<th scope="col">Description<span></span></th>
 		<th scope="col">Author<span></span></th>
-		<th scope="col">Date<span></span></th>
+		<th scope="col">Last Modified<span></span></th>
 	</tr>
 </tfoot>
 <tbody>
@@ -141,6 +149,8 @@ else:
 	foreach ( $data['tables'] as $table ) :
 		$edit_url = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
 		$delete_url = TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
+		$copy_url = TablePress::url( array( 'action' => 'copy_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
+
 		/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
 
 		$table_count++;
@@ -151,13 +161,15 @@ else:
 		<td class="table-id"><?php echo $table['id']; ?></td>
 		<td><strong><a title="Edit &#8220;<?php echo $table['name']; ?>&#8221;" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
 			<div class="row-actions">
-				<span class="edit"><a href="<?php echo $edit_url; ?>" title="Edit this item">Edit</a> | </span>
-				<span class="delete"><a class='submitdelete' title="Delete" href="<?php echo $delete_url; ?>">Delete</a></span>
+				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php _e( 'Edit this Table', 'tablepress' ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
+				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo "[table id={$table['id']} /]"; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
+				<span class="copy"><a href="<?php echo $copy_url; ?>" title="<?php _e( 'Copy Table', 'tablepress' ); ?>"><?php _e( 'Copy', 'tablepress' ); ?></a> | </span>
+				<span class="delete"><a href="<?php echo $delete_url; ?>" title="<?php _e( 'Delete', 'tablepress' ); ?>" class="delete-link"><?php _e( 'Delete', 'tablepress' ); ?></a></span>
 			</div>
 		</td>
 		<td><?php echo $table['description']; ?></td>
-		<td><?php echo $table['options']['last_editor']; ?></td>
-		<td><?php echo $table['options']['last_modified']; ?></td>
+		<td><?php echo TablePress::get_last_editor( $table['options']['last_editor'] ); ?></td>
+		<td><?php echo TablePress::format_datetime( $table['options']['last_modified'], 'timestamp', '<br/>' ); ?></td>
 	</tr>
 <?php
 	endforeach;

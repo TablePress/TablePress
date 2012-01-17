@@ -88,7 +88,6 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( &$this, 'postbox_table_options' ), 'normal' );
 		$this->add_text_box( 'hidden-containers', array( &$this, 'textbox_hidden_containers' ), 'additional' );
 		$this->add_text_box( 'buttons-2', array( &$this, 'textbox_buttons' ), 'additional' );
-		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
 		$this->add_text_box( 'other-actions', array( &$this, 'textbox_other_actions' ), 'submit' );
 	}
 
@@ -121,9 +120,9 @@ class TablePress_Edit_View extends TablePress_View {
 		<tr valign="top">
 			<th scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 			<td>
-				<input type="hidden" name="orig_table_id" id="orig-table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
+				<input type="hidden" name="table[orig_id]" id="table-orig-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
 				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
-				<input type="text" id="table-shortcode" value="[table id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
+				<input type="text" class="table-shortcode" value="[table id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -136,7 +135,7 @@ class TablePress_Edit_View extends TablePress_View {
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e( 'Last Modified', 'tablepress' ); ?>:</th>
-			<td><?php printf( __( 'at %1$s by %2$s', 'tablepress' ), esc_html( $data['table']['options']['last_modified'] ), esc_html( $data['table']['options']['last_editor'] ) ); ?></td>
+			<td><?php printf( __( '%1$s by %2$s', 'tablepress' ), '<span id="last-modified">' . TablePress::format_datetime( $data['table']['options']['last_modified'] ) . '</span>', '<span id="last-editor">' . TablePress::get_last_editor( $data['table']['options']['last_editor'] ) . '</span>' ); ?></td>
 		</tr>
 		</tbody>
 		</table>
@@ -150,6 +149,8 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function postbox_table_data( $data, $box ) {
 		$table = $data['table']['data'];
+		$options = $data['table']['options'];
+		$visibility = $data['table']['visibility'];
 		$rows = count( $table );
 		$columns = count( $table[0] );
 ?>
@@ -173,8 +174,8 @@ class TablePress_Edit_View extends TablePress_View {
 			<th></th>
 <?php			
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-		echo "\t\t\t<th><input type=\"checkbox\" />";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][column][{$col_idx}]\" value=\"1\" /></th>\n";
+		echo "\t\t\t<th><input type=\"checkbox\" class=\"hide-if-no-js\" />";
+		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][column][{$col_idx}]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
 	}
 ?>
 			<th></th>			
@@ -182,22 +183,48 @@ class TablePress_Edit_View extends TablePress_View {
 	</tfoot>
 	<tbody id="edit-form-body">
 <?php
+	$head_row_idx = $foot_row_idx = -1;
+	// determine row index of the table head row, by excluding all hidden rows from the beginning
+	if ( $options['table_head'] ) {
+		for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
+			if ( 1 === $visibility['rows'][$row_idx] ) {
+				$head_row_idx = $row_idx;
+				break;
+			}
+		}
+	}
+	// determine row index of the table foot row, by excluding all hidden rows from the end
+	if ( $options['table_foot'] ) {
+		for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
+			if ( 1 === $visibility['rows'][$row_idx] ) {
+				$foot_row_idx = $row_idx;
+				break;
+			}
+		}
+	}
+
 	foreach ( $table as $row_idx => $row_data ) {
 		$row = $row_idx + 1;
 		$classes = array();
 		if ( $row_idx % 2 == 0 )
 			$classes[] = 'odd';
-		if ( 0 == $row_idx )
+		if ( $head_row_idx == $row_idx )
 			$classes[] = 'head-row';
-		elseif ( ( $rows - 1 ) == $row_idx )
+		elseif ( $foot_row_idx == $row_idx )
 			$classes[] = 'foot-row';
-		$class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
-		echo "\t\t<tr{$class}>\n";
+		if ( 0 === $visibility['rows'][$row_idx] )
+			$classes[] = 'row-hidden';
+		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
+		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][row][{$row_idx}]\" value=\"1\" /></td>";
+		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][row][{$row_idx}]\" value=\"{$visibility['rows'][$row_idx]}\" /></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
-			echo "<td><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
+			$column_class = '';
+			if ( 0 === $visibility['columns'][$col_idx] )
+				$column_class = ' class="column-hidden"';
+			$cell = esc_textarea( $cell ); // sanitize, so that HTML is possible in table cells
+			echo "<td{$column_class}><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
 		}	
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
 		echo "\t\t</tr>\n";
@@ -205,8 +232,8 @@ class TablePress_Edit_View extends TablePress_View {
 ?>
 	</tbody>
 </table>
-<input type="hidden" id="number-rows" value="<?php echo $rows; ?>" />
-<input type="hidden" id="number-columns" value="<?php echo $columns; ?>" />
+<input type="hidden" id="number-rows" name="table[number][rows]" value="<?php echo $rows; ?>" />
+<input type="hidden" id="number-columns" name="table[number][columns]" value="<?php echo $columns; ?>" />
 <?php
 	}
 	
@@ -217,7 +244,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function postbox_table_manipulation( $data, $box ) {
 ?>
-<table class="tablepress-postbox-table">
+<table class="tablepress-postbox-table hide-if-no-js">
 <tbody>
 	<tr class="bottom-border">
 		<td>
@@ -264,6 +291,7 @@ class TablePress_Edit_View extends TablePress_View {
 		</td>
 	</tr>
 </table>
+<p class="hide-if-js"><?php _e( 'To use the Table Manipulation features, JavaScript needs to be enabled in your browser.', 'tablepress' ); ?></p>
 <?php
 	}
 
@@ -275,8 +303,8 @@ class TablePress_Edit_View extends TablePress_View {
 	function textbox_buttons( $data, $box ) {
 		?>
 			<p class="submit">
-				<input type="button" class="button-secondary show-preview-button" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
-				<input type="button" class="button-secondary save-changes-button" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+				<input type="button" class="button-secondary show-preview-button hide-if-no-js" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
+				<input type="submit" class="button-primary save-changes-button" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 			</p>
 		<?php
 	}
@@ -290,7 +318,7 @@ class TablePress_Edit_View extends TablePress_View {
 		?>
 			<p class="submit">
 				<?php _e( 'Other Actions' ); ?>:&nbsp;
-				<a href="<?php echo TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ); ?>" class="button-secondary"><?php _e( 'Delete Table', 'tablepress' ); ?></a>
+				<a href="<?php echo TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ); ?>" class="button-secondary delete-link"><?php _e( 'Delete Table', 'tablepress' ); ?></a>
 				<?php /* @TODO: Add Export button here */ ?>
 			</p>
 		<?php
@@ -330,22 +358,23 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	function postbox_table_options( $data, $box ) {
+		$options = $data['table']['options'];
 ?>
 <table class="tablepress-postbox-table">
 <tbody>
 	<tr>
 		<td class="column-1"><label for="option-table-head"><?php _e( 'Tabellenkopf', 'tablepress' ); ?>:</label></td>
-		<td class="column-2"><input type="checkbox" id="option-table-head" checked="checked" /></td>
+		<td class="column-2"><input type="checkbox" id="option-table-head" name="table[options][table_head]"<?php checked( $options['table_head'] ); ?> /></td>
 	</tr>
 	<tr class="bottom-border">
 		<td class="column-1"><label for="option-table-foot"><?php _e( 'Tabellenfuß', 'tablepress' ); ?>:</label></td>
-		<td class="column-2"><input type="checkbox" id="option-table-foot" checked="checked" /></td>
+		<td class="column-2"><input type="checkbox" id="option-table-foot" name="table[options][table_foot]"<?php checked( $options['table_foot'] ); ?> /></td>
 	</tr>
 	<tr class="top-border bottom-border">
-		<td colspan="2"><?php echo json_encode( $data['table']['options'] ); ?></td>
+		<td colspan="2"><?php echo json_encode( $options ); ?></td>
 	</tr>
 	<tr class="top-border">
-		<td colspan="2"><?php //echo json_encode( $data['table']['visibility'] ); ?></td>
+		<td colspan="2"><?php echo json_encode( $data['table']['visibility'] ); ?></td>
 	</tr>
 </tbody>
 </table>
@@ -359,8 +388,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'On this page, you can edit the content of the table.', 'tablepress' ); ?> <?php _e( 'It is also possible to change the table structure by inserting, deleting, moving, and swapping columns and rows.', 'tablepress' ); ?><br />
-		<?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode <strong>[table id=%s /]</strong> and paste it into the corresponding place in the editor.', 'tablepress' ), esc_html( $data['table']['id'] ) ); ?></p>
+		<p>
+		<?php _e( 'On this page, you can edit the content of the table.', 'tablepress' ); ?> <?php _e( 'It is also possible to change the table structure by inserting, deleting, moving, and swapping columns and rows.', 'tablepress' ); ?><br />
+		<?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[table id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' );?>
+		</p>
 		<?php
 	}
 
