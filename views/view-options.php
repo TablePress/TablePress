@@ -99,14 +99,14 @@ class TablePress_Options_View extends TablePress_View {
 	public function postbox_user_options( $data, $box ) {
 		?>
 		<table class="form-table">
-		<?php	
+		<?php
 		// get list of current admin menu entries
 		$entries = array();
 		foreach ( $GLOBALS['menu'] as $entry ) {
 			if ( false !== strpos( $entry[2], '.php' ) )
 				$entries[ $entry[2] ] = $entry[0];
 		}
-		
+
 		// remove <span> elements with notification bubbles (e.g. update or comment count)
 		if ( isset( $entries['plugins.php'] ) )
 			$entries['plugins.php'] = preg_replace( '/ <span.*span>/', '', $entries['plugins.php'] );
@@ -118,7 +118,7 @@ class TablePress_Options_View extends TablePress_View {
 		$entries['top'] = __( 'Top-Level (top)', 'tablepress' );
 		$entries['middle'] = __( 'Top-Level (middle)', 'tablepress' );
 		$entries['bottom'] = __( 'Top-Level (bottom)', 'tablepress' );
-	
+
 		$select_box = '<select id="options_admin_menu_parent_page" name="options[admin_menu_parent_page]">' . "\n";
 		foreach ( $entries as $page => $entry ) {
 			$select_box .= '<option' . selected( $page, $data['user_options']['parent_page'], false ) . disabled( $page, '-', false ) .' value="' . $page . '">' . $entry . "</option>\n";

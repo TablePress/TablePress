@@ -212,7 +212,7 @@ jQuery(document).ready( function( $ ) {
 
 				$selected_rows.before( tp.rows.create( 1 ) );
 
-				tp.rows.stripe();	
+				tp.rows.stripe();
 				tp.reindex();
 			},
 			hide: function( event ) {
@@ -242,7 +242,7 @@ jQuery(document).ready( function( $ ) {
 					.removeClass( 'row-hidden' )
 					.find( '.visibility' ).val( '1' );
 
-				tp.rows.stripe();	
+				tp.rows.stripe();
 				tp.table.set_table_changed();
 			},
 			remove: function( /* event */ ) {
@@ -318,11 +318,11 @@ jQuery(document).ready( function( $ ) {
 							oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
 							oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
 							// handle numeric vs string comparison - number < string - (Kyle Adams)
-							if (isNaN(oFxNcL) !== isNaN(oFyNcL)) return (isNaN(oFxNcL)) ? 1 : -1; 
+							if (isNaN(oFxNcL) !== isNaN(oFyNcL)) return (isNaN(oFxNcL)) ? 1 : -1;
 							// rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
 							else if (typeof oFxNcL !== typeof oFyNcL) {
-								oFxNcL += ''; 
-								oFyNcL += ''; 
+								oFxNcL += '';
+								oFyNcL += '';
 							}
 							if (oFxNcL < oFyNcL) return -1;
 							if (oFxNcL > oFyNcL) return 1;
@@ -348,8 +348,8 @@ jQuery(document).ready( function( $ ) {
 				$table_body.append( rows );
 				$table_body.append( $foot_rows );
 
-				tp.rows.stripe();	
-				tp.reindex();	
+				tp.rows.stripe();
+				tp.reindex();
 			},
 			stripe: function( helper ) {
 				if ( 'undefined' == typeof helper )
@@ -359,7 +359,7 @@ jQuery(document).ready( function( $ ) {
 				$rows.filter( ':even' ).addClass( 'odd' );
 				$rows = $rows.not( '.row-hidden' );
 				if( helper.hasClass( 'row-hidden' ) )
-					$rows = $rows.not( '.ui-sortable-placeholder' );				
+					$rows = $rows.not( '.ui-sortable-placeholder' );
 				if ( tp.table.head )
 					$rows.first().addClass( 'head-row' );
 				if ( tp.table.foot )
@@ -403,7 +403,7 @@ jQuery(document).ready( function( $ ) {
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
 					return;
-				}		
+				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().each( function( row_idx, row ) {
@@ -418,7 +418,7 @@ jQuery(document).ready( function( $ ) {
 
 				tp.reindex();
 			},
-			hide: function( event ) {	
+			hide: function( event ) {
 				var column_idxs,
 					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.altKey ).closest( 'th' );
@@ -426,7 +426,7 @@ jQuery(document).ready( function( $ ) {
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
 					return;
-				}		
+				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
@@ -446,7 +446,7 @@ jQuery(document).ready( function( $ ) {
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
 					return;
-				}		
+				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
@@ -470,7 +470,7 @@ jQuery(document).ready( function( $ ) {
 				if ( tp.table.columns == $selected_columns.length ) {
 					alert( tablepress_strings.no_remove_all_columns );
 					return;
-				}		
+				}
 
 				if ( ! confirm( tablepress_strings.ays_remove_columns ) )
 					return;
@@ -480,7 +480,7 @@ jQuery(document).ready( function( $ ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
 						.remove();
-				} );		
+				} );
 				$selected_columns.remove();
 
 				tp.reindex();
@@ -506,7 +506,7 @@ jQuery(document).ready( function( $ ) {
 						.find( ':nth-child(' + ( tp.columns.move.source_idx + 1 ) + ')' )
 						.each( function() {
 							tp.columns.move.$cell = $(this);
-							$( '<td class="move-placeholder"><div/></td>' ).insertBefore( tp.columns.move.$cell );				
+							$( '<td class="move-placeholder"><div/></td>' ).insertBefore( tp.columns.move.$cell );
 							tp.columns.move.$cell.insertAfter( tp.columns.move.$cell.nextAll().last() )
 								.clone().addClass( 'move-hover' ).insertAfter( tp.columns.move.$cell )
 								.find( 'textarea' ).val( tp.columns.move.$cell.find( 'textarea' ).val() );
@@ -554,11 +554,11 @@ jQuery(document).ready( function( $ ) {
 					tp.columns.move.$cells
 						.each( function() {
 							tp.columns.move.$cell = $(this);
-							tp.columns.move.$cell.insertBefore( tp.columns.move.$cell.parent().find( '.move-placeholder' ) );	
+							tp.columns.move.$cell.insertBefore( tp.columns.move.$cell.parent().find( '.move-placeholder' ) );
 						} )
 						.show();
 					tp.columns.move.$placeholder.remove();
-	
+
 					tp.columns.move.source_idx = tp.columns.move.target_idx = -1;
 					tp.columns.move.$rows = tp.columns.move.$row_children = tp.columns.move.$cell
 					= tp.columns.move.$cells = tp.columns.move.$placeholder = tp.columns.move.$helper
@@ -618,7 +618,7 @@ jQuery(document).ready( function( $ ) {
 						$advanced_editor.val( tp.cells.$textarea.val() );
 						tb_show( 'Visual Editor', '#TB_inline?height=287&width=600&inlineId=advanced-editor-container&modal=true', false );
 						$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
-						$advanced_editor.focus();				
+						$advanced_editor.focus();
 					} );
 				},
 				save: function() {
@@ -682,7 +682,7 @@ jQuery(document).ready( function( $ ) {
 				},
 				add: function( /* event */ ) {
 
-				}				
+				}
 			},
 			span: {
 				add: function( span ) {
@@ -699,21 +699,21 @@ jQuery(document).ready( function( $ ) {
 							return;
 						} else if ( ( '#colspan#' == span ) && ( tp.table.no_data_columns_pre == col_idx ) ) {
 							alert( tablepress_strings.no_colspan_first_col );
-							return;				
-						}	
+							return;
+						}
 						$textarea.val( span );
 						tp.table.set_table_changed();
 					} );
 				}
 			}
-		},		
+		},
 		check: {
 			table_id: function( event ) {
 				if ( ( 37 == event.which ) || ( 39 == event.which ) )
 					return;
 				var $input = $(this);
 				$input.val( $input.val().replace( /[^0-9a-zA-Z-_]/g, '' ) );
-			},			
+			},
 			changes_saved: function() {
 				if ( tp.made_changes )
 					return tablepress_strings.unsaved_changes_unload;
@@ -748,7 +748,7 @@ jQuery(document).ready( function( $ ) {
 								if ( $cell.length )
 									known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 								else
-									known_references[ first_cell ] = first_cell;					
+									known_references[ first_cell ] = first_cell;
 							}
 							full_match = '[' + known_references[ first_cell ];
 
@@ -830,7 +830,7 @@ jQuery(document).ready( function( $ ) {
 				$( '#ajax-nonce-save-table' ).val( data.new_nonce );
 				// update last modified date and user nickname
 				$( '#last-modified' ).text( data.last_modified );
-				$( '#last-editor' ).text( data.last_editor );				
+				$( '#last-editor' ).text( data.last_editor );
 				tp.table.unset_table_changed();
 				tp.save_changes.after_saving_dialog( 'success', tablepress_strings[ data.message ] );
 			},
@@ -861,7 +861,7 @@ jQuery(document).ready( function( $ ) {
 					'#rows-hide':			tp.rows.hide,
 					'#columns-hide':		tp.columns.hide,
 					'#rows-unhide':			tp.rows.unhide,
-					'#columns-unhide':		tp.columns.unhide,	
+					'#columns-unhide':		tp.columns.unhide,
 					'#rows-append':			tp.rows.append,
 					'#columns-append':		tp.columns.append,
 					'#link-add':			tp.content.link.add,
@@ -872,10 +872,10 @@ jQuery(document).ready( function( $ ) {
 					'.save-changes-button':	tp.save_changes.trigger
 				},
 				'keyup': {
-					'#table-id':			tp.check.table_id					
+					'#table-id':			tp.check.table_id
 				},
 				'change': {
-					'#option-table-head':	tp.table.change_table_head, 
+					'#option-table-head':	tp.table.change_table_head,
 					'#option-table-foot':	tp.table.change_table_foot
 				},
 				'blur': {
@@ -926,7 +926,7 @@ jQuery(document).ready( function( $ ) {
 				axis: 'x',
 				items: '.head',
 				containment: 'parent',
-				forceHelperSize: true, // necessary?		
+				forceHelperSize: true, // necessary?
 				helper: 'clone',
 				handle: '.move-handle',
 				start: tp.columns.move.start,

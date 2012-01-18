@@ -133,7 +133,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'post_excerpt' => $table['description'],
 			'post_content' => json_encode( $table['data'] ),
 		);
-		
+
 		return $post;
 	}
 
@@ -292,7 +292,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->_update_post_id( $table_id, $new_post_id );
 		return $table_id;
 	}
-	
+
 	/**
 	 * Delete a table (and its options)
 	 *
@@ -304,14 +304,14 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function delete( $table_id ) {
 		if ( ! $this->table_exists( $table_id ) )
 			return false;
-	
+
 		$post_id = $this->_get_post_id( $table_id );
 		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
 
 		if ( false === $deleted )
 			return false;
 
-		// if post was deleted successfully, remove the table ID from the list of tables			
+		// if post was deleted successfully, remove the table ID from the list of tables
 		$this->_remove_post_id( $table_id );
 		return true;
 	}
@@ -378,7 +378,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		uksort( $tables['table_post'], 'strnatcasecmp' );
 		$this->tables->update( $tables );
 	}
-	
+
 	/**
 	 * Remove a table ID / post ID connection from the list of tables
 	 *
@@ -394,7 +394,7 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$this->tables->update( $tables );
 	}
-	
+
 	/**
 	 * Change the table ID of a table
 	 *

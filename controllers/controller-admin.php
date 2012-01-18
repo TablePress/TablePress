@@ -64,8 +64,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $this->is_top_level_page ) {
 			$this->init_i18n_support(); // done here as translated strings for admin menu are needed
 			$this->init_view_actions();
-	
-			$icon_url = plugins_url( 'admin/tablepress-icon-small.png', TABLEPRESS__FILE__ );	
+
+			$icon_url = plugins_url( 'admin/tablepress-icon-small.png', TABLEPRESS__FILE__ );
 			switch ( $this->parent_page ) {
 				case 'top':
 					$position = 3; // position of Dashboard + 1
@@ -90,7 +90,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->page_hooks[] = add_submenu_page( $this->parent_page, 'TablePress', 'TablePress', $min_access_cap, 'tablepress', $callback );
 		}
 	}
-	
+
 	/**
 	 * Set up handlers for user actions in the backend that exceed plain viewing
 	 *
@@ -280,7 +280,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'min_access_cap' => 'read'
 			)
 		);
-		
+
 		$this->view_actions = apply_filters( 'tablepress_admin_view_actions', $this->view_actions );
 	}
 

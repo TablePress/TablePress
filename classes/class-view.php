@@ -44,7 +44,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @var string
-	 */	
+	 */
 	protected $action = '';
 
 	/**
@@ -53,7 +53,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @var object
-	 */	
+	 */
 	protected $admin_page;
 
 	/**
@@ -62,7 +62,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @var array
-	 */	
+	 */
 	protected $textboxes = array();
 
 	/**
@@ -71,7 +71,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @var array
-	 */	
+	 */
 	protected $header_messages = array();
 
 	/**
@@ -81,14 +81,14 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @var bool
-	 */	
+	 */
 	protected $has_meta_boxes = false;
 
 	/**
-	 * Initialize the View class, by setting the correct screen columns and adding help texts 
+	 * Initialize the View class, by setting the correct screen columns and adding help texts
 	 *
 	 * @since 1.0.0
-	 */	
+	 */
 	public function __construct() {
 		$screen = get_current_screen();
 		if ( 0 != $this->screen_columns )
@@ -112,7 +112,7 @@ abstract class TablePress_View {
 	 *
 	 * @param int|bool Current value of the user option
 	 * @return int New value for the user option
-	 */	
+	 */
 	public function set_current_screen_layout_columns( $result ) {
 		if ( false === $result )
 			// the user option does not yet exist
@@ -147,7 +147,7 @@ abstract class TablePress_View {
 			)
 		) );
 		$this->admin_page->add_admin_footer_text();
-		
+
 		// necessary fields for all views
 		$this->add_text_box( 'default_nonce_fields', array( &$this, 'default_nonce_fields' ), 'header', false );
 		$this->add_text_box( 'action_nonce_field', array( &$this, 'action_nonce_field' ), 'header', false );
@@ -161,7 +161,7 @@ abstract class TablePress_View {
 	 *
 	 * @param string $text Text for the header message
 	 * @param string $class (optional) Additional CSS class for the header message
-	 */	
+	 */
 	public function add_header_message( $text, $class = 'updated' ) {
 		$this->header_messages[] = "<div class=\"{$class}\"><p>{$text}</p></div>\n";
 	}
@@ -199,7 +199,7 @@ abstract class TablePress_View {
 	 * @param string $title Title for the meta box
 	 * @param string $callback Callback that prints the contents of the post meta box
 	 * @param string $context (optional) Context/position of the post meta box (normal, side, additional)
-	 * @param string $priority (optional) Order of the post meta box for the $context position (high, default, low) 
+	 * @param string $priority (optional) Order of the post meta box for the $context position (high, default, low)
 	 * @param bool $callback_args (optional) Additional data for the callback function (e.g. useful when in different class)
 	 */
 	public function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
@@ -298,7 +298,7 @@ abstract class TablePress_View {
 			foreach ( $this->header_messages as $message ) {
 				echo $message;
 			}
-			
+
 			// form enctype:  enctype="multipart/form-data" for forms with file upload
 		?>
 		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
@@ -349,7 +349,7 @@ abstract class TablePress_View {
 					continue;
 				if ( ! current_user_can( $entry['min_access_cap'] ) )
 					continue;
-				
+
 				// special case: Add separators before "Plugin Options" for some spacing
 				if ( 'options' == $action )
 					echo '<span class="separator"></span><span class="separator"></span>';
@@ -401,5 +401,5 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 */
 	abstract protected function help_tab_content();
-	
+
 } // class TablePress_View

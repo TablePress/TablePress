@@ -130,7 +130,7 @@ abstract class TablePress {
 		$the_view->setup( $view, $data );
 		return $the_view;
 	}
-	
+
 	/**
 	 * Create a new instance of the $controller, which is stored in the "controllers" subfolder
 	 *
@@ -284,7 +284,7 @@ abstract class TablePress {
 			'page' => false,
 			'action' => false,
 			'item' => false
-		);		
+		);
 		$params = array_merge( $default_params, $params );
 
 		$url = add_query_arg( $params, admin_url( $target ) );

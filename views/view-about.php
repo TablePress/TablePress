@@ -73,7 +73,7 @@ class TablePress_About_View extends TablePress_View {
 		<p><?php _e( 'Tables can be styled by changing and adding CSS commands.', 'tablepress' ); ?> <?php _e( 'The plugin ships with default CSS Stylesheets, which can be customized with own code or replaced with other Stylesheets.', 'tablepress' ); ?> <?php _e( 'For this, each table is given certain CSS classes that can be used as CSS selectors.', 'tablepress' ); ?> <?php printf ( __( 'Please see the <a href="%s">documentation</a> for a list of these selectors and for styling examples.', 'tablepress' ), 'http://tobias.baethge.com/go/TablePress/documentation/' ); ?></p>
 		<?php
 	}
-	
+
 	/**
 	 *
 	 *
@@ -126,7 +126,7 @@ class TablePress_About_View extends TablePress_View {
 		</p>
 		<?php
 	}
-	
+
 	/**
 	 *
 	 *

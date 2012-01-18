@@ -41,7 +41,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * Hide a header message on an admin screen
 	 *
 	 * @since 1.0.0
-	 */ 
+	 */
 	public function ajax_action_hide_message() {
 		if ( empty( $_GET['item'] ) )
 			die( '0' );
@@ -124,7 +124,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// original table
 			$table = $this->model_table->load( $edit_table['orig_id'] );
-		
+
 			// replace original values with new ones from form fields, if they exist
 			if ( isset( $edit_table['name'] ) )
 				$table['name'] = $edit_table['name'];
@@ -185,11 +185,11 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 */
 /*	public function ajax_action_preview_table() {
 		sleep( 3 ); // 3s Dummy Pause, zum Testen von AJAX-Sendeverhalten
-	
+
 		// check to see if the submitted nonce matches with the generated nonce we created earlier
 		if ( ! check_ajax_referer( 'tp-preview-table', false, false ) )
 			die( '-1' );
-	 
+	
 		// ignore the request if the current user doesn't have sufficient permissions
 		//if ( ! current_user_can( 'preview_tp_tables' ) )
 		//	die( '-1' );
@@ -197,7 +197,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$_POST['tp'] = stripslashes_deep( $_POST['tp'] );
 
 		require_once ( TABLEPRESS_ABSPATH . 'libraries/evalmath.class.php' );
-	
+
 		$table['id'] = $_POST['tp']['id'];
 		$table['rows'] = (int)$_POST['tp']['rows'];
 		$table['columns'] = (int)$_POST['tp']['columns'];
@@ -240,7 +240,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		} else {
 			$html = '';
 		}
-	
+
 		// generate the response
 		$response = array(
 			'success' => $success,
@@ -249,7 +249,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		border: 2px solid #000;
 		margin: 10px auto;
 	}
-	
+
 	#tp-preview-result td,
 	#tp-preview-result th {
 		box-sizing: border-box;
@@ -257,7 +257,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		border: 1px solid #ddd;
 		padding: 3px;
 	}
-	
+
 	#tp-preview-result td:first-child,
 	#tp-preview-result th:first-child {
 		font-weight: bold;
@@ -267,65 +267,65 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	<style>",
 			'body_html' => $html
 		);
-	
+
 		// response output
 		header( 'Content-Type: application/json' );
 		echo json_encode( $response );
-		
+
 		exit;
 	}
 
 	protected function _render_table() {
 		foreach ( $this->table as $row_idx => $row ) {
 			foreach ( $row as $col_idx => $cell_dummy ) {
-				$this->table[$row_idx][$col_idx] = $this->_parse_evaluate( $this->table[$row_idx][$col_idx] );		
+				$this->table[$row_idx][$col_idx] = $this->_parse_evaluate( $this->table[$row_idx][$col_idx] );
 			}
 		}
-		
+
 		return $this->_print_table();
 	}
 */
 /*	protected function _parse_evaluate( $content, $parents = array() ) {
 		if ( ( '' == $content ) || ( '=' != $content[0] ) )
 			return $content;
-	
+
 		$expression = substr( $content, 1 );
-	
+
 		if ( false !== strpos( $expression, '=' ) )
 			return '!ERROR! Too many "="';
-	
+
 		if ( false !== strpos( $expression, '][' ) )
 			return '!ERROR! Two cell references next to each other';
-	
+
 		$replaced_references = $replaced_ranges = array();
-	
+
 		$expression = preg_replace( '#\s#', '', $expression );
-	
+
 		// cell ranges (like [A3:B6]
 		if ( preg_match_all( '#\[([a-z]+)([0-9]+):([a-z]+)([0-9]+)\]#i', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
 			foreach ( $referenced_cell_ranges as $cell_range ) {
 				if ( in_array( $cell_range[0], $replaced_ranges ) )
 					continue;
-	
+
 				$replaced_ranges[] = $cell_range[0];
-	
+
 				if ( isset( $this->known_ranges[ $cell_range[0] ] ) ) {
 					$expression = str_replace( $cell_range[0], $this->known_ranges[ $cell_range[0] ], $expression );
 					continue;
 				}
-	
+
 				// no -1 necessary for this transformation, as we don't actually access the table
 				$first_col = $this->letter_to_number( $cell_range[1] );
 				$first_row = $cell_range[2];
 				$last_col = $this->letter_to_number( $cell_range[3] );
 				$last_row = $cell_range[4];
-	
+
 				$col_start = min( $first_col, $last_col );
 				$col_end = max( $first_col, $last_col ) + 1; // +1 for loop below
 				$row_start = min( $first_row, $last_row );
 				$row_end = max( $first_row, $last_row ) + 1; // +1 for loop below
-	
-	
+
+
 				$cell_list = array();
 				for ( $col = $col_start; $col < $col_end; $col++ ) {
 					for ( $row = $row_start; $row < $row_end; $row++ ) {
@@ -334,40 +334,40 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 					}
 				}
 				$cell_list = implode( ',', $cell_list );
-	
+
 				$expression = str_replace( $cell_range[0], $cell_list, $expression );
 				$this->known_ranges[ $cell_range[0] ] = $cell_list;
 			}
 		}
-	
+
 		// single cell references (like [A3] or [XY312]
 		if ( preg_match_all( '#\[([a-z]+)([0-9]+)\]#i', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
 			foreach ( $referenced_cells as $cell_reference ) {
 				if ( in_array( $cell_reference[0], $parents ) )
 					return '!ERROR! Circle Reference';
-					
+
 				if ( in_array( $cell_reference[0], $replaced_references ) )
 					continue;
-	
+
 				$replaced_references[] = $cell_reference[0];
-	
+
 				$ref_col = letter_to_number( $cell_reference[1] ) - 1;
 				$ref_row = $cell_reference[2] - 1;
-	
+
 				if ( ! ( isset( $this->table[$ref_row] ) && isset( $this->table[$ref_row][$ref_col] ) ) )
 					return '!ERROR! Non-Existing Cell';
-	
+
 				$ref_parents = $parents;
 				$ref_parents[] = $cell_reference[0];
-	
+
 				$result = $this->table[$ref_row][$ref_col] = $this->_parse_evaluate( $this->table[$ref_row][$ref_col], $ref_parents );
 				if ( false !== strpos( $result, '!ERROR!' ) )
 					return $result;
-	
+
 				$expression = str_replace( $cell_reference[0], $result, $expression );
 			}
 		}
-	
+
 		return $this->_evaluate( $expression );
 	}
 */
@@ -390,7 +390,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				if ( strlen( $cell) > 2 && "'=" == substr( $cell, 0, 2 ) )
 					$cell = substr( $cell, 1 );
 				$output .= "<td>{$cell}</td>";
-			}	
+			}
 			$output .= "\t\t</tr>\n";
 		}
 
@@ -406,12 +406,12 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 /*	protected function _evaluate( $expression ) {
 		$em = new EvalMath( true, false ); // ( $allowconstants (for pi and e), $allowimplicitmultiplication )
 		$em->suppress_errors = true; // don't raise PHP warnings
-	
+
 		// straight up evaluation, without parsing of variable or function assignments
 		$result = $em->pfx( $em->nfx( $expression ) );
 		if ( false === $result )
 			return '!ERROR! ' . $em->last_error;
-	
+
 		return $result;
 	}
 */

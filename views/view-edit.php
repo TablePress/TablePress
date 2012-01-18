@@ -159,27 +159,27 @@ class TablePress_Edit_View extends TablePress_View {
 		<tr id="edit-form-head">
 			<th></th>
 			<th></th>
-<?php			
+<?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column = TablePress::number_to_letter( $col_idx + 1 );
 		echo "\t\t\t<th class=\"head\"><span class=\"sort-control sort-desc\" title=\"Absteigend sortieren\"></span><span class=\"sort-control sort-asc\" title=\"Aufsteigend sortieren\"></span><span class=\"move-handle\">{$column}</span></th>\n";
 	}
 ?>
-			<th></th>			
-		</tr>	
+			<th></th>
+		</tr>
 	</thead>
 	<tfoot>
 		<tr id="edit-form-foot">
 			<th></th>
 			<th></th>
-<?php			
+<?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		echo "\t\t\t<th><input type=\"checkbox\" class=\"hide-if-no-js\" />";
 		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][column][{$col_idx}]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
 	}
 ?>
-			<th></th>			
-		</tr>	
+			<th></th>
+		</tr>
 	</tfoot>
 	<tbody id="edit-form-body">
 <?php
@@ -225,7 +225,7 @@ class TablePress_Edit_View extends TablePress_View {
 				$column_class = ' class="column-hidden"';
 			$cell = esc_textarea( $cell ); // sanitize, so that HTML is possible in table cells
 			echo "<td{$column_class}><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
-		}	
+		}
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
 		echo "\t\t</tr>\n";
 	}
@@ -236,7 +236,7 @@ class TablePress_Edit_View extends TablePress_View {
 <input type="hidden" id="number-columns" name="table[number][columns]" value="<?php echo $columns; ?>" />
 <?php
 	}
-	
+
 	/**
 	 *
 	 *
@@ -308,7 +308,7 @@ class TablePress_Edit_View extends TablePress_View {
 			</p>
 		<?php
 	}
-	
+
 	/**
 	 *
 	 *

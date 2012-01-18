@@ -94,7 +94,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		$post_id = wp_insert_post( $post, false ); // false means: no WP_Error object on error, but int 0
 		return $post_id;
 	}
-	
+
 	/**
 	 * Update an existing post with the correct Custom Post Type and default values in the the wp_posts table in the database
 	 *
@@ -128,7 +128,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		$post_id = wp_update_post( $post );
 		return $post_id;
 	}
-	
+
 	/**
 	 * Get a post from the wp_posts table in the database
 	 *
