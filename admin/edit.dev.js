@@ -5,7 +5,13 @@
  */
 
 jQuery(document).ready( function( $ ) {
-	var tp = {
+
+	/**
+	 * TablePress object, mostly with functionality for the "Edit" screen
+	 *
+	 * @since 1.0.0
+	 */
+	window.tp = {
 		made_changes: false,
 		table: {
 			id: $( '#table-id' ).val(),
@@ -689,7 +695,6 @@ jQuery(document).ready( function( $ ) {
 								H -= 28;
 							tb_show( $link.attr( 'title' ), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
 							$(this).blur();
-							tp.table.set_table_changed(); // this should actually be done in send_to_editor()
 						} );
 
 					return false;
@@ -952,26 +957,27 @@ jQuery(document).ready( function( $ ) {
 		}
 	};
 
-	// do allow wide tables to scroll sideways
+	// do allow wide tables to scroll sideways, only on "Edit" screen
 	$( '#wpbody-content' ).css( 'overflow-x', 'scroll' );
 
+	// run TablePress initialization
 	tp.init();
 
-} );
+	/**
+	 * On click on "Insert into Post" in the Media Library, this function is called by WordPress
+	 *
+	 * @see media-upload.dev.js
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string new_html HTML code that gets appended to the cell content of the cell that has been marked as active editor
+	 */
+	window.send_to_editor = function( new_html ) {
+		wpActiveEditor.value += new_html;
+		wpActiveEditor.selectionStart = wpActiveEditor.selectionEnd = wpActiveEditor.value.length;
+		jQuery( wpActiveEditor ).focus();
+		tp.table.set_table_changed();
+		tb_remove();
+	}
 
-/**
- * On click on "Insert into Post" in the Media Library, this function is called by WordPress
- *
- * @see media-upload.dev.js
- *
- * @since 1.0.0
- *
- * @param string new_html HTML code that gets appended to the cell content of the cell that has been marked as active editor
- */
-function send_to_editor( new_html ) {
-	wpActiveEditor.value += new_html;
-	wpActiveEditor.selectionStart = wpActiveEditor.selectionEnd = wpActiveEditor.value.length;
-	jQuery( wpActiveEditor ).focus();
-	// tp.table.set_changed(); // @TODO: make this work by making the object available
-	tb_remove();
-}
+} );
