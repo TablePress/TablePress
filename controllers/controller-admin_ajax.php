@@ -73,25 +73,23 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		// ignore the request if the current user doesn't have sufficient permissions
 		// @TODO Capability check!
 
-		$edit_table['rows'] = absint( $edit_table['rows'] );
-		$edit_table['columns'] = absint( $edit_table['columns'] );
+		$edit_table['rows'] = intval( $edit_table['rows'] );
+		$edit_table['columns'] = intval( $edit_table['columns'] );
 		$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
 		$edit_table['options'] = json_decode( $edit_table['options'], true );
 		$edit_table['data'] = json_decode( $edit_table['data'], true );
 
-		// make checks
+		// consistency checks
+		// we will go without isset() checks for now, as these variables are set in JS, and not as form elements
 		$success = true;
-
 		// Number of rows and columns
-		if ( $edit_table['rows'] != count( $edit_table['data'] ) )
-			$success = false;
-		if ( $edit_table['columns'] != count( $edit_table['data'][0] ) )
+		if ( $edit_table['rows'] !== count( $edit_table['data'] )
+		|| $edit_table['columns'] !== count( $edit_table['data'][0] ) )
 			$success = false;
 
 		// Number of rows and columns for visibility arrays
-		if ( $edit_table['rows'] != count( $edit_table['visibility']['rows'] ) )
-			$success = false;
-		if ( $edit_table['columns'] != count( $edit_table['visibility']['columns'] ) )
+		if ( $edit_table['rows'] !== count( $edit_table['visibility']['rows'] )
+		|| $edit_table['columns'] !== count( $edit_table['visibility']['columns'] ) )
 			$success = false;
 
 		// count hidden and visible rows
@@ -102,9 +100,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( ! isset( $visibility_rows[ 1 ] ) )
 			$visibility_rows[ 1 ] = 0;
 		// Check number of hidden and visible rows
-		if ( $edit_table['visibility']['hidden_rows'] != $visibility_rows[ 0 ] )
-			$success = false;
-		if ( ( $edit_table['rows'] - $edit_table['visibility']['hidden_rows'] ) != $visibility_rows[ 1 ] )
+		if ( $edit_table['visibility']['hidden_rows'] !== $visibility_rows[ 0 ]
+		|| ( $edit_table['rows'] - $edit_table['visibility']['hidden_rows'] ) !== $visibility_rows[ 1 ] )
 			$success = false;
 
 		// count hidden and visible columns
@@ -115,9 +112,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( ! isset( $visibility_columns[ 1 ] ) )
 			$visibility_columns[ 1 ] = 0;
 		// Check number of hidden and visible columns
-		if ( $edit_table['visibility']['hidden_columns'] != $visibility_columns[ 0 ] )
-			$success = false;
-		if ( ( $edit_table['columns'] - $edit_table['visibility']['hidden_columns'] ) != $visibility_columns[ 1 ] )
+		if ( $edit_table['visibility']['hidden_columns'] !== $visibility_columns[ 0 ]
+		|| ( $edit_table['columns'] - $edit_table['visibility']['hidden_columns'] ) !== $visibility_columns[ 1 ] )
 			$success = false;
 
 		if ( $success ) {

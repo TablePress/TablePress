@@ -320,28 +320,46 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		TablePress::check_nonce( 'edit', $edit_table['orig_id'] );
 
-		$table = $this->model_table->load( $edit_table['orig_id'] );
+		// consistency checks
+		$success = true;
+		if ( ! isset( $edit_table['name'] )
+		|| ! isset( $edit_table['description'] )
+		|| ! isset( $edit_table['number'] ) )
+			$success = false;
+		$edit_table['number']['rows'] = intval( $edit_table['number']['rows'] );
+		$edit_table['number']['columns'] = intval( $edit_table['number']['columns'] );
+		if ( ! isset( $edit_table['data'] )
+		|| $edit_table['number']['rows'] !== count( $edit_table['data'] )
+		|| $edit_table['number']['columns'] !== count( $edit_table['data'][0] ) )
+			$success = false;
+		if ( ! isset( $edit_table['visibility'] )
+		|| $edit_table['number']['rows'] !== count( $edit_table['visibility']['rows'] )
+		|| $edit_table['number']['columns'] !== count( $edit_table['visibility']['columns'] ) )
+			$success = false;
 
-		// replace original values with new ones from form fields, if they exist
-		if ( isset( $edit_table['name'] ) )
-			$table['name'] = $edit_table['name'];
-		if ( isset( $edit_table['description'] ) )
-			$table['description'] = $edit_table['description'];
-		/* // need to make this JSON first!
-		if ( isset( $edit_table['data'] ) )
-			$table['data'] = $edit_table['data'];
-		*/
-		$table['options'] = array(
+		if ( false === $success )
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['orig_id'], 'message' => 'error_save' ) );
+
+		$table = $this->model_table->load( $edit_table['orig_id'] );
+		// replace original values with new ones from form fields
+		$table['name'] = $edit_table['name'];
+		$table['description'] = $edit_table['description'];
+		// Table Data
+		$table['data'] = $edit_table['data'];
+		// Table Options
+		$updated_options = array(
 			'last_action' => 'edit',
 			'last_modified' => current_time( 'timestamp' ),
 			'last_editor' => get_current_user_id()
-			// regular options are missing!
 		);
-		if ( isset( $edit_table['visibility']['rows'] ) )
-			$table['visibility']['rows'] = $edit_table['visibility']['rows'];
-		if ( isset( $edit_table['visibility']['columns'] ) )
-			$table['visibility']['columns'] = $edit_table['visibility']['columns'];
+		$table['options'] = array_merge( $table['options'], $updated_options );
+		$table['options']['table_head'] = ( isset( $edit_table['options']['table_head'] ) && 'true' == $edit_table['options']['table_head'] );
+		$table['options']['table_foot'] = ( isset( $edit_table['options']['table_foot'] ) && 'true' == $edit_table['options']['table_foot'] );
+		// Table Visibility
+		$table['visibility']['rows'] = array_map( 'intval', $edit_table['visibility']['rows'] );
+		$table['visibility']['columns'] = array_map( 'intval', $edit_table['visibility']['columns'] );
 
+		// Save updated Table
 		$saved = $this->model_table->save( $table );
 		if ( false === $saved )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'error_save' ) );

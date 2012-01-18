@@ -16,11 +16,11 @@ jQuery(document).ready( function( $ ) {
 			foot: $( '#option-table-foot' ).prop( 'checked' ),
 			no_data_columns_pre: 2,
 			no_data_columns_post: 1,
-			body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" value="1" /></td>',
+			body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][rows][]" value="1" /></td>',
 			body_cells_post: '<td><span class="move-handle"></span></td></tr>',
-			body_cell: '<td><textarea></textarea></td>',
+			body_cell: '<td><textarea rows="1"></textarea></td>',
 			head_cell: '<th class="head"><span class="sort-control sort-desc" title="' + tablepress_strings.sort_desc + '"></span><span class="sort-control sort-asc" title="' + tablepress_strings.sort_asc + '"></span><span class="move-handle"></span></th>',
-			foot_cell: '<th><input type="checkbox" /><input type="hidden" class="visibility" value="1" /></th>',
+			foot_cell: '<th><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][columns][]" value="1" /></th>',
 			set_table_changed: function() {
 				tp.made_changes = true;
 			},
@@ -767,11 +767,10 @@ jQuery(document).ready( function( $ ) {
 						} );
 					} )
 					.attr( 'name', function( column_idx /*, old_name */ ) {
-						return 'tp[data][' + row_idx + '][' + column_idx + ']';
+						return 'table[data][' + row_idx + '][' + column_idx + ']';
 					} );
 
 				$row.find( '.move-handle' ).html( row_idx + 1 );
-				$row.find( '.visibility' ).attr( 'name', 'tp[visibility][row][' + row_idx + ']' );
 			} )
 			.each( function( row_idx, row ) {
 				$( row ).find( 'textarea' ).attr( 'id', function( column_idx /*, old_id */ ) {
@@ -780,9 +779,6 @@ jQuery(document).ready( function( $ ) {
 			});
 			$( '#edit-form-head' ).find( '.move-handle' )
 				.html( function( idx ) { return tp.columns.number_to_letter( idx + 1 ); } );
-			$( '#edit-form-foot' ).find( '.visibility' ).attr( 'name', function( column_idx /*, old_name */ ) {
-				return 'tp[visibility][column][' + column_idx + ']';
-			} );
 
 			$( '#number-rows' ).val( tp.table.rows );
 			$( '#number-columns' ).val( tp.table.columns );
@@ -790,7 +786,13 @@ jQuery(document).ready( function( $ ) {
 			tp.table.set_table_changed();
 		},
 		save_changes: {
-			trigger: function( /* event */ ) {
+			trigger: function( event ) {
+				if ( event.altKey ) {
+					tp.made_changes = false; // to prevent onunload warning
+					$(this).closest( 'form' ).submit();
+					return;
+				}
+
 				$(this).after( '<span class="animation-saving" title="' + tablepress_strings.saving_changes + '"/>' );
 				$( '.save-changes-button' ).prop( 'disabled', true );
 				$( 'body' ).addClass( 'wait' );

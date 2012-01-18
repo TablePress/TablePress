@@ -68,8 +68,8 @@ class TablePress_Edit_View extends TablePress_View {
 				'save_changes_error' => 'Speichern fehlgeschlagen',
 				'saving_changes' => 'Speichere Änderungen...',
 				'ays_change_table_id' => 'Willst du die Tabellen-ID wirklich ändern? Alle Shortcodes für diese Tabelle müssen angepasst werden!',
-				'sort_asc' => 'Aufsteigend sortieren',
-				'sort_desc' => 'Absteigend sortieren',
+				'sort_asc' => __( 'Sort ascending', 'tablepress' ),
+				'sort_desc' => __( 'Sort descending', 'tablepress' ),
 				'no_rowspan_first_row' => 'You can not add rowspan to the first row!',
 				'no_colspan_first_col' => 'You can not add colspan to the first column!'
 			), $this->action_messages )
@@ -153,6 +153,26 @@ class TablePress_Edit_View extends TablePress_View {
 		$visibility = $data['table']['visibility'];
 		$rows = count( $table );
 		$columns = count( $table[0] );
+
+		$head_row_idx = $foot_row_idx = -1;
+		// determine row index of the table head row, by excluding all hidden rows from the beginning
+		if ( $options['table_head'] ) {
+			for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
+				if ( 1 === $visibility['rows'][$row_idx] ) {
+					$head_row_idx = $row_idx;
+					break;
+				}
+			}
+		}
+		// determine row index of the table foot row, by excluding all hidden rows from the end
+		if ( $options['table_foot'] ) {
+			for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
+				if ( 1 === $visibility['rows'][$row_idx] ) {
+					$foot_row_idx = $row_idx;
+					break;
+				}
+			}
+		}
 ?>
 <table id="edit-form">
 	<thead>
@@ -161,8 +181,11 @@ class TablePress_Edit_View extends TablePress_View {
 			<th></th>
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
+		$column_class = '';
+		if ( 0 === $visibility['columns'][$col_idx] )
+			$column_class = ' column-hidden';
 		$column = TablePress::number_to_letter( $col_idx + 1 );
-		echo "\t\t\t<th class=\"head\"><span class=\"sort-control sort-desc\" title=\"Absteigend sortieren\"></span><span class=\"sort-control sort-asc\" title=\"Aufsteigend sortieren\"></span><span class=\"move-handle\">{$column}</span></th>\n";
+		echo "\t\t\t<th class=\"head{$column_class}\"><span class=\"sort-control sort-desc\" title=\"" . __( 'Sort descending', 'tablepress' ) . "\"></span><span class=\"sort-control sort-asc\" title=\"" . __( 'Sort ascending', 'tablepress' ) . "\"></span><span class=\"move-handle\">{$column}</span></th>\n";
 	}
 ?>
 			<th></th>
@@ -174,8 +197,11 @@ class TablePress_Edit_View extends TablePress_View {
 			<th></th>
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-		echo "\t\t\t<th><input type=\"checkbox\" class=\"hide-if-no-js\" />";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][column][{$col_idx}]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
+		$column_class = '';
+		if ( 0 === $visibility['columns'][$col_idx] )
+			$column_class = ' class="column-hidden"';
+		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
+		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
 	}
 ?>
 			<th></th>
@@ -183,26 +209,6 @@ class TablePress_Edit_View extends TablePress_View {
 	</tfoot>
 	<tbody id="edit-form-body">
 <?php
-	$head_row_idx = $foot_row_idx = -1;
-	// determine row index of the table head row, by excluding all hidden rows from the beginning
-	if ( $options['table_head'] ) {
-		for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
-			if ( 1 === $visibility['rows'][$row_idx] ) {
-				$head_row_idx = $row_idx;
-				break;
-			}
-		}
-	}
-	// determine row index of the table foot row, by excluding all hidden rows from the end
-	if ( $options['table_foot'] ) {
-		for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
-			if ( 1 === $visibility['rows'][$row_idx] ) {
-				$foot_row_idx = $row_idx;
-				break;
-			}
-		}
-	}
-
 	foreach ( $table as $row_idx => $row_data ) {
 		$row = $row_idx + 1;
 		$classes = array();
@@ -217,7 +223,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][row][{$row_idx}]\" value=\"{$visibility['rows'][$row_idx]}\" /></td>";
+		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][$row_idx]}\" /></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
 			$column_class = '';
@@ -304,7 +310,8 @@ class TablePress_Edit_View extends TablePress_View {
 		?>
 			<p class="submit">
 				<input type="button" class="button-secondary show-preview-button hide-if-no-js" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
-				<input type="submit" class="button-primary save-changes-button" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+				<input type="button" class="button-primary save-changes-button hide-if-no-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+				<input type="submit" class="button-primary hide-if-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 			</p>
 		<?php
 	}
@@ -364,11 +371,11 @@ class TablePress_Edit_View extends TablePress_View {
 <tbody>
 	<tr>
 		<td class="column-1"><label for="option-table-head"><?php _e( 'Tabellenkopf', 'tablepress' ); ?>:</label></td>
-		<td class="column-2"><input type="checkbox" id="option-table-head" name="table[options][table_head]"<?php checked( $options['table_head'] ); ?> /></td>
+		<td class="column-2"><input type="checkbox" id="option-table-head" name="table[options][table_head]" value="true"<?php checked( $options['table_head'] ); ?> /></td>
 	</tr>
 	<tr class="bottom-border">
 		<td class="column-1"><label for="option-table-foot"><?php _e( 'Tabellenfuß', 'tablepress' ); ?>:</label></td>
-		<td class="column-2"><input type="checkbox" id="option-table-foot" name="table[options][table_foot]"<?php checked( $options['table_foot'] ); ?> /></td>
+		<td class="column-2"><input type="checkbox" id="option-table-foot" name="table[options][table_foot]" value="true"<?php checked( $options['table_foot'] ); ?> /></td>
 	</tr>
 	<tr class="top-border bottom-border">
 		<td colspan="2"><?php echo json_encode( $options ); ?></td>
