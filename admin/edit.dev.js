@@ -677,11 +677,22 @@ jQuery(document).ready( function( $ ) {
 				}
 			},
 			image: {
-				insert: function( /* event */ ) {
-
-				},
 				add: function( /* event */ ) {
+					if ( confirm( tablepress_strings.image_add ) )
+						$( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
+							wpActiveEditor = this;
+							var $link = $( '#image-add' ),
+								width = $(window).width(),
+								W = ( 720 < width ) ? 720 : width,
+								H = $(window).height();
+							if ( $( 'body.admin-bar' ).length )
+								H -= 28;
+							tb_show( $link.attr( 'title' ), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
+							$(this).blur();
+							tp.table.set_table_changed(); // this should actually be done in send_to_editor()
+						} );
 
+					return false;
 				}
 			},
 			span: {
@@ -947,3 +958,20 @@ jQuery(document).ready( function( $ ) {
 	tp.init();
 
 } );
+
+/**
+ * On click on "Insert into Post" in the Media Library, this function is called by WordPress
+ *
+ * @see media-upload.dev.js
+ *
+ * @since 1.0.0
+ *
+ * @param string new_html HTML code that gets appended to the cell content of the cell that has been marked as active editor
+ */
+function send_to_editor( new_html ) {
+	wpActiveEditor.value += new_html;
+	wpActiveEditor.selectionStart = wpActiveEditor.selectionEnd = wpActiveEditor.value.length;
+	jQuery( wpActiveEditor ).focus();
+	// tp.table.set_changed(); // @TODO: make this work by making the object available
+	tb_remove();
+}

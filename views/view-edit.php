@@ -60,6 +60,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'advanced_editor_open' => 'Bitte klicke in die Zelle, die du bearbeiten möchtest.',
 				'span_add' => 'Bitte klicke in die Zelle, die verbunden werden soll.',
 				'link_add' => 'Bitte klicke in die Zelle, in die du einen Link einfügen möchtest.',
+				'image_add' => 'Bitte klicke in die Zelle, in die du ein Bild einfügen möchtest.' . "\n" .
+								__( 'The Media Library will open, from which you can select the desired image or insert the image URL.', 'tablepress' ) . "\n" .
+								sprintf( __( 'Click the &quot;%s&quot; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ) ,				
 				'unsaved_changes_unload' => 'Seite ohne speichern verlassen?',
 				'preview' => 'Vorschau',
 				'preparing_preview' => 'Die Vorschau wird vorbereitet...',
@@ -247,13 +250,14 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	function postbox_table_manipulation( $data, $box ) {
+		$media_library_url = esc_url( add_query_arg( array( 'post_id' => '0', 'type' => 'image', 'tab' => 'library'), admin_url( 'media-upload.php' ) ) );
 ?>
 <table class="tablepress-postbox-table hide-if-no-js">
 <tbody>
 	<tr class="bottom-border">
 		<td>
 			<input type="button" class="button-secondary" id="link-add" value="<?php _e( 'Insert Link', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="image-add" value="<?php _e( 'Insert Image', 'tablepress' ); ?>" />
+			<a href="<?php echo $media_library_url; ?>" class="button-secondary" id="image-add" title="<?php _e( 'Insert Image', 'tablepress' ); ?>"><?php _e( 'Insert Image', 'tablepress' ); ?></a>
 			<input type="button" class="button-secondary" id="advanced-editor-open" value="<?php _e( 'Advanced Editor', 'tablepress' ); ?>" />
 		</td>
 		<td>

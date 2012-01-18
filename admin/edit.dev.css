@@ -181,3 +181,11 @@ body.wait * {
 #tablepress_edit-table-options .column-2 {
 	width: 650px;
 }
+
+/* adjust size of a.button-secondary to input.button-secondary */
+#tablepress_edit-table-manipulation a.button-secondary {
+	padding: 3px 8px;
+	display: inline-block;
+	margin: 1px;
+	line-height: 13px;
+}
