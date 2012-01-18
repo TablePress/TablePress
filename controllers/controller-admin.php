@@ -176,7 +176,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_table' ) );
 				}
 				break;
-		/*
 			case 'export':
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
@@ -193,7 +192,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
 				break;
-		*/
 		}
 
 		$data = apply_filters( 'tablepress_view_data', $data );
