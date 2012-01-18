@@ -69,7 +69,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 * Delete a WP User Option with the WP API
 	 *
 	 * @since 1.0.0
-  	 * @uses is_user_logged_in(), delete_user_option()
+	 * @uses is_user_logged_in(), delete_user_option()
 	 *
 	 * @param string $option_name Name of the WP User Option
 	 * @return bool True on success, false on failure

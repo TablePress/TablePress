@@ -422,7 +422,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string Unused table  ID (e.g. for a new table)
+	 * @return string Unused table ID (e.g. for a new table)
 	 */
 	protected function _get_new_table_id() {
 		$tables = $this->tables->get();

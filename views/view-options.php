@@ -134,14 +134,14 @@ class TablePress_Options_View extends TablePress_View {
 		$select_box .= '<option' . selected( $data['user_options']['plugin_language'], 'auto', false ) . ' value="auto">' . sprintf( __( 'WordPress Default (currently %s)', 'tablepress' ), get_locale() ) . "</option>\n";
 		$select_box .= '<option value="-" disabled="disabled">---</option>' . "\n";
 		foreach ( $data['user_options']['available_plugin_languages'] as $lang_abbr => $language ) {
-        	$select_box .= '<option' . selected( $data['user_options']['plugin_language'], $lang_abbr, false ) . ' value="' . $lang_abbr . '">' . "{$language} ({$lang_abbr})</option>\n";
+			$select_box .= '<option' . selected( $data['user_options']['plugin_language'], $lang_abbr, false ) . ' value="' . $lang_abbr . '">' . "{$language} ({$lang_abbr})</option>\n";
 		}
 		$select_box .= "</select>\n";
 		?>
-        <tr>
-            <th scope="row"><label for="options_plugin_language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
+		<tr>
+			<th scope="row"><label for="options_plugin_language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
 			<td><?php printf( __( 'TablePress shall be shown in this language: %s', 'tablepress' ), $select_box ); ?></td>
-        </tr>
+		</tr>
 		</table>
 		<?php
 	}

@@ -140,9 +140,9 @@ jQuery(document).ready( function( $ ) {
 				success: function( data ) {
 					$( '#table-preview' ).empty();
 					$( '<iframe id="table-preview-iframe" />' ).load( function() {
-					    var $iframe = $(this).contents();
-					    $iframe.find( 'head' ).append( data.head_html );
-					    $iframe.find( 'body' ).append( data.body_html );
+						var $iframe = $(this).contents();
+						$iframe.find( 'head' ).append( data.head_html );
+						$iframe.find( 'body' ).append( data.body_html );
 					} ).appendTo( '#table-preview' );
 					$( '.animation-preview' ).remove();
 					$( '.show-preview-button' ).prop( 'disabled', false );
@@ -667,14 +667,14 @@ jQuery(document).ready( function( $ ) {
 					// mousedown instead of click to allow selection of text
 					// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 					// other approaches can lead to the wrong textarea being selected
-                    $( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
-                    	wpActiveEditor = this.id;
-                    	$( window ).one( 'mouseup', function() {
+					$( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
+						wpActiveEditor = this.id;
+						$( window ).one( 'mouseup', function() {
 							wpLink.open();
 							tp.table.set_table_changed();
-                		} );
-                	} );
-                }
+						} );
+					} );
+				}
 			},
 			image: {
 				insert: function( /* event */ ) {

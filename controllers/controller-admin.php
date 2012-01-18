@@ -211,17 +211,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->view->render();
 	}
 
-    /**
-     * Initialize i18n support, load plugin's textdomain, to retrieve correct translations
+	/**
+	 * Initialize i18n support, load plugin's textdomain, to retrieve correct translations
 	 *
 	 * @since 1.0.0
-     */
-    protected function init_i18n_support() {
-    	add_filter( 'locale', array( &$this, 'change_plugin_locale' ) ); // allow changing the plugin language
-        $language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
-        load_plugin_textdomain( 'tablepress', false, $language_directory );
-        remove_filter( 'locale', array( &$this, 'change_plugin_locale' ) );
-    }
+	 */
+	protected function init_i18n_support() {
+		add_filter( 'locale', array( &$this, 'change_plugin_locale' ) ); // allow changing the plugin language
+		$language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
+		load_plugin_textdomain( 'tablepress', false, $language_directory );
+		remove_filter( 'locale', array( &$this, 'change_plugin_locale' ) );
+	}
 
 	/**
 	 * Init list of actions that have a view with their titles/names/caps
@@ -284,19 +284,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->view_actions = apply_filters( 'tablepress_admin_view_actions', $this->view_actions );
 	}
 
-    /**
-     * Change the WordPress locale to the desired plugin locale, applied as a filter in get_locale(), while loading the plugin textdomain
+	/**
+	 * Change the WordPress locale to the desired plugin locale, applied as a filter in get_locale(), while loading the plugin textdomain
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $locale Current WordPress locale
 	 * @return string TablePress locale
 	 */
-    public function change_plugin_locale( $locale ) {
-    	$new_locale = $this->model_options->get( 'plugin_language' );
+	public function change_plugin_locale( $locale ) {
+		$new_locale = $this->model_options->get( 'plugin_language' );
 		$locale = ( ! empty( $new_locale ) && 'auto' != $new_locale ) ? $new_locale : $locale;
 		return $locale;
-    }
+	}
 
 	/**
 	 * HTTP POST actions
@@ -338,9 +338,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			// regular options are missing!
 		);
 		if ( isset( $edit_table['visibility']['rows'] ) )
-	        $table['visibility']['rows'] = $edit_table['visibility']['rows'];
+			$table['visibility']['rows'] = $edit_table['visibility']['rows'];
 		if ( isset( $edit_table['visibility']['columns'] ) )
-	        $table['visibility']['columns'] = $edit_table['visibility']['columns'];
+			$table['visibility']['columns'] = $edit_table['visibility']['columns'];
 
 		$saved = $this->model_table->save( $table );
 		if ( false === $saved )
@@ -397,7 +397,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		);
 
 		$table_id = $this->model_table->add( $table );
-		if ( false === $table_id  )
+		if ( false === $table_id )
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 
 		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_add' ) );
@@ -502,7 +502,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table = $this->model_table->load( $table_id );
 
 		// adjust name and options of copied table
-    	$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
+		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
 		$updated_options = array(
 			'last_action' => 'copy',
 			'last_modified' => current_time( 'timestamp' ),
@@ -511,7 +511,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table['options'] = array_merge( $table['options'], $updated_options );
 
 		$table_id = $this->model_table->add( $table );
-		if ( false === $table_id  )
+		if ( false === $table_id )
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
 		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );

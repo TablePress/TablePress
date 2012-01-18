@@ -154,7 +154,7 @@ else:
 		/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
 
 		$table_count++;
-    	$row_class = ( 0 == ( $table_count % 2) ) ? ' class="alternate"' : '';
+		$row_class = ( 0 == ( $table_count % 2) ) ? ' class="alternate"' : '';
 ?>
 	<tr<?php echo $row_class;?> valign="top">
 		<th scope="row" class="check-column"><input type="checkbox" name="post[]" value="1056" /></th>

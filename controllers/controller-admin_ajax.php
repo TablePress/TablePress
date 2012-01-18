@@ -46,7 +46,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( empty( $_GET['item'] ) )
 			die( '0' );
 		else
-			$message_item =  $_GET['item'];
+			$message_item = $_GET['item'];
 
 		TablePress::check_nonce( 'hide_message', $message_item, true );
 
@@ -139,7 +139,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				'table_foot' => $edit_table['options']['table_foot']
 			);
 			$table['visibility']['rows'] = $edit_table['visibility']['rows'];
-        	$table['visibility']['columns'] = $edit_table['visibility']['columns'];
+			$table['visibility']['columns'] = $edit_table['visibility']['columns'];
 
 			$saved = $this->model_table->save( $table );
 			if ( false === $saved ) {
