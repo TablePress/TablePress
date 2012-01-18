@@ -34,7 +34,7 @@ abstract class TablePress {
 	 *
 	 * @const int
 	 */
-	const db_version = 10;
+	const db_version = 15;
 
 	/**
 	 * Instance of the controller object
@@ -171,14 +171,15 @@ abstract class TablePress {
 	 *
 	 * @param string $action Action for which the nonce should be checked
 	 * @param string $item (optional) Item for which the action should be performed, like "table"
+	 * @param string $query_arg (optional) Name of the nonce query string argument in $_POST
 	 * @param bool $ajax Whether the nonce comes from an AJAX request
 	 */
-	public static function check_nonce( $action, $item = false, $ajax = false ) {
+	public static function check_nonce( $action, $item = false, $query_arg = '_wpnonce', $ajax = false ) {
 		$nonce_action = self::nonce( $action, $item );
 		if ( $ajax )
-			check_ajax_referer( $nonce_action );
+			check_ajax_referer( $nonce_action, $query_arg );
 		else
-			check_admin_referer( $nonce_action );
+			check_admin_referer( $nonce_action, $query_arg );
 	}
 
 	/**

@@ -102,10 +102,8 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	protected function action_nonce_field( $data, $box ) {
 		// use custom nonce field here, that includes the table ID
-		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ) ); echo "\n";
-		// check if necessary:
-		wp_nonce_field( TablePress::nonce( 'save_table', $data['table']['id'] ), 'ajax-nonce-save-table', false, true );
-		wp_nonce_field( TablePress::nonce( 'preview_table', $data['table']['id'] ), 'ajax-nonce-preview-table', false, true );
+		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ), 'nonce-edit-table' ); echo "\n";
+		wp_nonce_field( TablePress::nonce( 'preview', $data['table']['id'] ), 'nonce-preview-table', false, true );
 	}
 
 	/**

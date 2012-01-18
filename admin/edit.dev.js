@@ -119,7 +119,7 @@ jQuery(document).ready( function( $ ) {
 
 					$.post(
 							ajaxurl,
-							tp.table.prepare_ajax_request( 'tablepress_preview_table', '#ajax-nonce-preview-table' ),
+							tp.table.prepare_ajax_request( 'tablepress_preview_table', '#nonce-preview-table' ),
 							function() { /* done with .success() below */ },
 							'json'
 						)
@@ -799,7 +799,7 @@ jQuery(document).ready( function( $ ) {
 
 				$.post(
 						ajaxurl,
-						tp.table.prepare_ajax_request( 'tablepress_save_table', '#ajax-nonce-save-table' ),
+						tp.table.prepare_ajax_request( 'tablepress_save_table', '#nonce-edit-table' ),
 						function() { /* done with .success() below */ },
 						'json'
 					)
@@ -828,8 +828,9 @@ jQuery(document).ready( function( $ ) {
 				$( '#table-id' ).val( tp.table.id );
 				// update the Shortcode text field
 				$( '.table-shortcode' ).val( '[table id=' + tp.table.id + ' /]' );
-				// update the nonce
-				$( '#ajax-nonce-save-table' ).val( data.new_nonce );
+				// update the nonces
+				$( '#nonce-edit-table' ).val( data.new_edit_nonce );
+				$( '#nonce-preview-table' ).val( data.new_preview_nonce );
 				// update last modified date and user nickname
 				$( '#last-modified' ).text( data.last_modified );
 				$( '#last-editor' ).text( data.last_editor );

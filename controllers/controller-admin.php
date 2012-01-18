@@ -99,7 +99,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
 		$post_actions = array( 'add', 'edit', 'options' );
-		$get_actions = array( 'hide_message', 'delete_table', 'copy_table' );
+		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
@@ -318,7 +318,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$edit_table = stripslashes_deep( $_POST['table'] );
 
-		TablePress::check_nonce( 'edit', $edit_table['orig_id'] );
+		TablePress::check_nonce( 'edit', $edit_table['orig_id'], 'nonce-edit-table' );
 
 		// consistency checks
 		$success = true;
@@ -533,6 +533,42 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
 		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
+	}
+
+	/**
+	 * Preview a table
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_get_action_preview_table() {
+		$table_id = ( ! empty( $_GET['item'] ) ) ? $_GET['item'] : false;
+		TablePress::check_nonce( 'preview_table', $table_id );
+
+		if ( false === $table_id ) // nonce check should actually catch this already
+			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
+
+		$preview_table = $this->model_table->load( $table_id );
+
+		// create a render class instance
+		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
+		$_render->set_input( $preview_table );
+		$head_html = $_render->get_preview_css();
+		$body_html = $_render->get_output();
+		$title = __( 'Preview', 'tablepress' );
+
+		echo <<<HTML
+<!doctype html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>{$title}</title>
+		{$head_html}
+	</head>
+	<body>
+		{$body_html}
+	</body>
+</html>
+HTML;
 	}
 
 } // class TablePress_Admin_Controller

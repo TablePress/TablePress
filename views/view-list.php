@@ -40,6 +40,7 @@ class TablePress_List_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
+		add_thickbox();
 		$this->admin_page->enqueue_script( 'list', array( 'jquery' ), array(
 			'list' => array(
 				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' )
@@ -148,8 +149,9 @@ else:
 	$table_count = 0;
 	foreach ( $data['tables'] as $table ) :
 		$edit_url = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
-		$delete_url = TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
 		$copy_url = TablePress::url( array( 'action' => 'copy_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
+		$delete_url = TablePress::url( array( 'action' => 'delete_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
+		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $table['id'], 'return' => 'list', 'return_item' => $table['id'] ), true, 'admin-post.php' );
 
 		/* $export_link = '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $table['id'] ) ) . '">' . __( 'Export', 'tablepress' ) . '</a>'; */
 
@@ -164,7 +166,8 @@ else:
 				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php _e( 'Edit this Table', 'tablepress' ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
 				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo "[table id={$table['id']} /]"; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
 				<span class="copy"><a href="<?php echo $copy_url; ?>" title="<?php _e( 'Copy Table', 'tablepress' ); ?>"><?php _e( 'Copy', 'tablepress' ); ?></a> | </span>
-				<span class="delete"><a href="<?php echo $delete_url; ?>" title="<?php _e( 'Delete', 'tablepress' ); ?>" class="delete-link"><?php _e( 'Delete', 'tablepress' ); ?></a></span>
+				<span class="delete"><a href="<?php echo $delete_url; ?>" title="<?php _e( 'Delete Table', 'tablepress' ); ?>" class="delete-link"><?php _e( 'Delete', 'tablepress' ); ?></a> | </span>
+				<span class="table-preview"><a href="<?php echo $preview_url; ?>" title="<?php _e( 'Show a preview of this Table', 'tablepress' ); ?>"><?php _e( 'Preview', 'tablepress' ); ?></a></span>
 			</div>
 		</td>
 		<td><?php echo $table['description']; ?></td>

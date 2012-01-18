@@ -79,28 +79,30 @@ abstract class TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	protected function plugin_update_check() {
+		// Save initial set of plugin options, and time of first activation of the plugin, on first activation
+		if ( 0 == $this->model_options->get( 'first_activation' ) ) {
+			$this->model_options->update( array(
+				'first_activation' => current_time( 'timestamp' )
+			) );
+		}
+
 		// Update Plugin Options, if necessary
-		if ( $this->model_options->get( 'plugin_options_db_version', 0 ) < TablePress::db_version ) {
+		if ( $this->model_options->get( 'plugin_options_db_version' ) < TablePress::db_version ) {
 			$this->model_options->merge_plugin_options_defaults();
 			$this->model_options->update( array(
 				'plugin_options_db_version' => TablePress::db_version,
+				'prev_tablepress_version' => $this->model_options->get( 'tablepress_version' ),
 				'tablepress_version' => TablePress::version,
 				'message_plugin_update' => true
 			) );
 		}
 
 		// Update User Options, if necessary
-		if ( is_user_logged_in() &&	( $this->model_options->get( 'user_options_db_version', 0 ) < TablePress::db_version ) ) {
+		// User Options are not saved in DB until first change occurs
+		if ( is_user_logged_in() && ( $this->model_options->get( 'user_options_db_version' ) < TablePress::db_version ) ) {
 			$this->model_options->merge_user_options_defaults();
 			$this->model_options->update( array(
 				'user_options_db_version' => TablePress::db_version
-			) );
-		}
-
-		// Save time of first activation of the plugin in option
-		if ( 0 == $this->model_options->get( 'first_activation', 0 ) ) {
-			$this->model_options->update( array(
-				'first_activation' => current_time( 'timestamp' )
 			) );
 		}
 	}
