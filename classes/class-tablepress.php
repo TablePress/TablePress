@@ -46,6 +46,16 @@ abstract class TablePress {
 	public static $controller;
 
 	/**
+	 * Name of the Shortcode to show a TablePress
+	 * Should only be modified through the filter hook 'tablepress_table_shortcode'
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	public static $shortcode = 'table';
+
+	/**
 	 * Start-up TablePress (run on WordPress "init") and load the controller for the current state
 	 *
 	 * @since 1.0.0
@@ -53,6 +63,10 @@ abstract class TablePress {
 	 */
 	public static function run() {
 		do_action( 'tablepress_run' );
+
+		// some filtering of "global" class variables
+		self::$shortcode = apply_filters( 'tablepress_table_shortcode', self::$shortcode );
+
 		if ( is_admin() ) {
 			$controller = 'admin';
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX )

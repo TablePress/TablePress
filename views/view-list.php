@@ -106,7 +106,7 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	public function textbox_head2( $data, $box ) {
 		?>
-		<p><?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[table id=&lt;ID&gt; /]" readonly="readonly" />' ); ?> <?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?> <?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?></p>
+		<p><?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?> <?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?> <?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?></p>
 		<?php
 	}
 
@@ -163,10 +163,10 @@ else:
 	<tr<?php echo $row_class;?> valign="top">
 		<th scope="row" class="check-column"><input type="checkbox" name="post[]" value="1056" /></th>
 		<td class="table-id"><?php echo $table['id']; ?></td>
-		<td><strong><a title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $table['name'] ); ?>" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
+		<td><strong><a title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
 			<div class="row-actions">
-				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $table['name'] ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
-				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo "[table id={$table['id']} /]"; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
+				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
+				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo '[' . TablePress::$shortcode . ' id=' . esc_attr( $table['id'] ) . ' /]'; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
 				<span class="copy"><a href="<?php echo $copy_url; ?>" title="<?php _e( 'Copy Table', 'tablepress' ); ?>"><?php _e( 'Copy', 'tablepress' ); ?></a> | </span>
 				<span class="delete"><a href="<?php echo $delete_url; ?>" title="<?php _e( 'Delete Table', 'tablepress' ); ?>" class="delete-link"><?php _e( 'Delete', 'tablepress' ); ?></a> | </span>
 				<span class="table-preview"><a href="<?php echo $preview_url; ?>" title="<?php _e( 'Show a preview of this Table', 'tablepress' ); ?>" target="_blank"><?php _e( 'Preview', 'tablepress' ); ?></a></span>

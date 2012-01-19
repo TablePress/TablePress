@@ -49,7 +49,8 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
 			'options' => array(
 				'cells_advanced_editor' => true,
-				'cells_auto_grow' => true
+				'cells_auto_grow' => true,
+				'shortcode' => TablePress::$shortcode
 			),
 			'strings' => array_merge( array(
 				'no_remove_all_rows' => 'Du kannst nicht alle Zeilen der Tabelle löschen!',
@@ -137,7 +138,7 @@ class TablePress_Edit_View extends TablePress_View {
 			<td>
 				<input type="hidden" name="table[orig_id]" id="table-orig-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
 				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
-				<input type="text" class="table-shortcode" value="[table id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
+				<input type="text" class="table-shortcode" value="[<?php echo TablePress::$shortcode; ?> id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -416,7 +417,7 @@ class TablePress_Edit_View extends TablePress_View {
 		?>
 		<p>
 		<?php _e( 'On this page, you can edit the content of the table.', 'tablepress' ); ?> <?php _e( 'It is also possible to change the table structure by inserting, deleting, moving, and swapping columns and rows.', 'tablepress' ); ?><br />
-		<?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[table id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' );?>
+		<?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' );?>
 		</p>
 		<?php
 	}

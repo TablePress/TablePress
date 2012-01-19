@@ -40,7 +40,7 @@ jQuery(document).ready( function( $ ) {
 
 				if ( confirm( tablepress_strings.ays_change_table_id ) ) {
 					tp.table.id = this.value;
-					$( '.table-shortcode' ).val( '[table id=' + tp.table.id + ' /]' ).click(); // click() to focus and select
+					$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.id + ' /]' ).click(); // click() to focus and select
 					tp.table.set_table_changed();
 				} else {
 					$(this).val( tp.table.id );
@@ -871,7 +871,7 @@ jQuery(document).ready( function( $ ) {
 				$( '#table-orig-id' ).val( tp.table.orig_id );
 				$( '#table-id' ).val( tp.table.id );
 				// update the Shortcode text field
-				$( '.table-shortcode' ).val( '[table id=' + tp.table.id + ' /]' );
+				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.id + ' /]' );
 				// update the nonces
 				$( '#nonce-edit-table' ).val( data.new_edit_nonce );
 				$( '#nonce-preview-table' ).val( data.new_preview_nonce );
