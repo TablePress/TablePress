@@ -41,6 +41,9 @@ class TablePress_Edit_View extends TablePress_View {
 			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
 		);
 
+		// do this here to get CSS into <head>
+		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		add_action( 'admin_footer', array( &$this, 'dequeue_media_upload_js'), 2 );
 		add_thickbox();
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
@@ -92,6 +95,17 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->add_text_box( 'hidden-containers', array( &$this, 'textbox_hidden_containers' ), 'additional' );
 		$this->add_text_box( 'buttons-2', array( &$this, 'textbox_buttons' ), 'additional' );
 		$this->add_text_box( 'other-actions', array( &$this, 'textbox_other_actions' ), 'submit' );
+	}
+
+	/**
+	 * Dequeue 'media-upload' JavaScript, which gets added by the Media Library,
+	 * but is undesired here, as we have a custom function for this (send_to_editor()) and
+	 * don't want the tb_position() function for resizing
+	 *
+	 * @since 1.0.0
+	 */
+	public function dequeue_media_upload_js() {
+		wp_dequeue_script( 'media-upload' );
 	}
 
 	/**
@@ -257,7 +271,7 @@ class TablePress_Edit_View extends TablePress_View {
 	<tr class="bottom-border">
 		<td>
 			<input type="button" class="button-secondary" id="link-add" value="<?php _e( 'Insert Link', 'tablepress' ); ?>" />
-			<a href="<?php echo $media_library_url; ?>" class="button-secondary" id="image-add" title="<?php _e( 'Insert Image', 'tablepress' ); ?>"><?php _e( 'Insert Image', 'tablepress' ); ?></a>
+			<a href="<?php echo $media_library_url; ?>" class="button-secondary" id="image-add"><?php _e( 'Insert Image', 'tablepress' ); ?></a>
 			<input type="button" class="button-secondary" id="advanced-editor-open" value="<?php _e( 'Advanced Editor', 'tablepress' ); ?>" />
 		</td>
 		<td>
@@ -340,11 +354,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	function textbox_hidden_containers( $data, $box ) {
 ?>
-<div id="advanced-editor-container" class="hidden-container">
-	<div id="advanced-editor"><?php _e( 'Advanced Editor', 'tablepress' ); ?><br/>
+<div class="hidden-container">
+	<div id="advanced-editor">
 	<?php
 		wp_editor( '', 'advanced-editor-content', array(
-			'media_buttons' => false,
 			'textarea_rows' => 10,
 			'tinymce' => false,
 			'quicktags' => array(
@@ -352,7 +365,10 @@ class TablePress_Edit_View extends TablePress_View {
 			)
 		) );
 	?>
-	<input type="button" class="button-secondary advanced-editor-button" id="advanced-editor-confirm" value="<?php _e( 'OK', 'tablepress' ); ?>" /><input type="button" class="button-secondary advanced-editor-button" id="advanced-editor-cancel" value="<?php _e( 'Cancel', 'tablepress' ); ?>" />
+	<div class="submitbox">
+		<a href="#" class="submitdelete" id="advanced-editor-cancel"><?php _e( 'Cancel', 'tablepress' ); ?></a>
+		<input type="button" class="button-primary" id="advanced-editor-confirm" value="<?php _e( 'OK', 'tablepress' ); ?>" />
+	</div>
 	</div>
 </div>
 <div id="preview-container" class="hidden-container">

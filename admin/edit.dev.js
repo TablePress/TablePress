@@ -594,22 +594,22 @@ jQuery(document).ready( function( $ ) {
 		},
 		cells: {
 			$focus: $( null ),
+			$textarea: null,
 			autogrow: function( /* event */ ) {
 				tp.cells.$focus.removeClass( 'focus' );
 				tp.cells.$focus = $(this).closest( 'tr' ).addClass( 'focus' );
 			},
 			advanced_editor: {
-				$textarea: null,
 				keyopen: function( event ) {
 					// evtl. lieber event.shiftKey oder event.ctrlKey
 					if ( ! event.altKey )
 						return;
 
 					var $advanced_editor = $( '#advanced-editor-content' );
-
+					tp.cells.advanced_editor.thickbox_size();
 					tp.cells.$textarea = $(this).blur();
 					$advanced_editor.val( tp.cells.$textarea.val() );
-					tb_show( 'Visual Editor', '#TB_inline?height=287&width=600&inlineId=advanced-editor-container&modal=true', false );
+					$( '#advanced-editor' ).wpdialog( 'open' );
 					$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
 					$advanced_editor.focus();
 				},
@@ -619,10 +619,10 @@ jQuery(document).ready( function( $ ) {
 
 					$( '#edit-form-body' ).one( 'click', 'textarea', function() {
 						var $advanced_editor = $( '#advanced-editor-content' );
-
+						tp.cells.advanced_editor.thickbox_size();
 						tp.cells.$textarea = $(this).blur();
 						$advanced_editor.val( tp.cells.$textarea.val() );
-						tb_show( 'Visual Editor', '#TB_inline?height=287&width=600&inlineId=advanced-editor-container&modal=true', false );
+						$( '#advanced-editor' ).wpdialog( 'open' );
 						$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
 						$advanced_editor.focus();
 					} );
@@ -639,7 +639,23 @@ jQuery(document).ready( function( $ ) {
 					tp.cells.advanced_editor.close();
 				},
 				close: function() {
-					tb_remove();
+					$( '#advanced-editor' ).wpdialog( 'close' );
+					return false;
+				},
+				thickbox_size: function() {
+					var $link = $( '#advanced-editor-content-add_media' ),
+						url = $link.attr( 'href' ),
+						width = $(window).width(),
+						W = ( 720 < width ) ? 720 : width,
+						H = $(window).height();
+
+					if ( $( 'body.admin-bar' ).length )
+						H -= 28;
+
+					url = url.replace( /&width=[0-9]+/g, '' );
+					url = url.replace( /&height=[0-9]+/g, '' );
+					url += '&width=' + ( W - 80 ) + '&height=' + ( H - 85 );
+					$link.attr( 'href', url );
 				}
 			},
 			checkboxes: {
@@ -685,15 +701,17 @@ jQuery(document).ready( function( $ ) {
 			image: {
 				add: function( /* event */ ) {
 					if ( confirm( tablepress_strings.image_add ) )
-						$( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
-							wpActiveEditor = this;
+						$( '#edit-form-body' ).one( 'click', 'textarea', function() {
+							wpActiveEditor = this.id;
+							// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
+							this.selectionStart = this.selectionEnd = this.value.length;
 							var $link = $( '#image-add' ),
 								width = $(window).width(),
 								W = ( 720 < width ) ? 720 : width,
 								H = $(window).height();
 							if ( $( 'body.admin-bar' ).length )
 								H -= 28;
-							tb_show( $link.attr( 'title' ), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
+							tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
 							$(this).blur();
 						} );
 
@@ -918,6 +936,17 @@ jQuery(document).ready( function( $ ) {
 				$( '#advanced-editor-open' ).on( 'click', tp.cells.advanced_editor.buttonopen );
 				$( '#advanced-editor-confirm' ).on( 'click', tp.cells.advanced_editor.save );
 				$( '#advanced-editor-cancel' ).on( 'click', tp.cells.advanced_editor.close );
+				$( '#advanced-editor' ).wpdialog( {
+					autoOpen: false,
+					title: $( '#advanced-editor-open' ).val(),
+					width: 600,
+					height: 330,
+					modal: true,
+					dialogClass: 'wp-dialog',
+					resizable: false
+				} );
+			} else {
+				$( '#advanced-editor-open' ).hide();
 			}
 
 			if ( tablepress_options.cells_auto_grow )
@@ -965,6 +994,7 @@ jQuery(document).ready( function( $ ) {
 
 	/**
 	 * On click on "Insert into Post" in the Media Library, this function is called by WordPress
+	 * We need to override the original behavior to be able to set the table to changed
 	 *
 	 * @see media-upload.dev.js
 	 *
@@ -973,11 +1003,14 @@ jQuery(document).ready( function( $ ) {
 	 * @param string new_html HTML code that gets appended to the cell content of the cell that has been marked as active editor
 	 */
 	window.send_to_editor = function( new_html ) {
-		wpActiveEditor.value += new_html;
-		wpActiveEditor.selectionStart = wpActiveEditor.selectionEnd = wpActiveEditor.value.length;
-		jQuery( wpActiveEditor ).focus();
+		// Quicktags is usually used and does the same internally + caret position handling
+		if ( typeof( QTags ) != 'undefined' )
+			QTags.insertContent( new_html );
+		else
+			document.getElementById( wpActiveEditor ).value += new_html;
+
+		try { tb_remove(); } catch( e ) {};
 		tp.table.set_table_changed();
-		tb_remove();
 	}
 
 } );

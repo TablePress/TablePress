@@ -14,6 +14,21 @@ body.wait * {
 	display: none;
 }
 
+/* move Thickbox more to the front, so that it's always above a jQuery UI dialog */
+#TB_HideSelect {
+	z-index: 301099;
+}
+#TB_overlay {
+	z-index: 301100;
+}
+#TB_window {
+	z-index: 301102;
+}
+#TB_load {
+	z-index: 301103;
+}
+
+/* Table Preview (CSS for actual preview is directly in the preview HTML) */
 #table-preview-iframe {
 	width: 100%;
 	height: 100%;
@@ -21,10 +36,24 @@ body.wait * {
 	border: none;
 }
 
-/* Cancel and OK button in advanced editor */
-.advanced-editor-button {
-	margin-top: 3px;
+/* Content of the Advanced Editor jQueryUI dialog */
+#advanced-editor {
+	padding: 0px 3px 3px;
+}
+
+#advanced-editor .submitbox {
+	padding: 6px 6px 0px;
+	font-size: 11px;
+	overflow: auto;
+	height: 29px;
+}
+
+#advanced-editor-confirm {
 	float: right;
+}
+
+#advanced-editor-cancel {
+	line-height: 25px;
 }
 
 /* spinner/loading animation while saving/preview preparation */
