@@ -169,7 +169,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		);
 
 		// response output
-		header( 'Content-Type: application/json' );
+		header( 'Content-Type: application/json; charset=UTF-8' );
 		echo json_encode( $response );
 
 		exit;
@@ -219,7 +219,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		);
 
 		// response output
-		header( 'Content-Type: application/json' );
+		header( 'Content-Type: application/json; charset=UTF-8' );
 		echo json_encode( $response );
 
 		exit;
