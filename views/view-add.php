@@ -66,7 +66,7 @@ class TablePress_Add_View extends TablePress_View {
 	public function postbox_add_table( $data, $box ) {
 		?>
 		<div class="form-wrap">
-			<div class="form-field form-required">
+			<div class="form-field">
 				<label for="table-name"><?php _e( 'Table Name', 'tablepress' ); ?>:</label>
 				<input type="text" name="table[name]" id="table-name" class="placeholder placeholder-active" value="<?php esc_attr_e( 'Enter Table Name here', 'tablepress' ); ?>" />
 				<p><?php _e( 'The name or title of your table.', 'tablepress' ); ?></p>

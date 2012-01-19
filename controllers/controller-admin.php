@@ -320,6 +320,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// consistency checks
 		$success = true;
+		// Table ID can't be empty and must not contain illegal characters
+		if ( empty( $edit_table['id'] )
+		|| $edit_table['id'] != preg_replace( '/[^a-zA-Z0-9_-]/', '', $edit_table['id'] ) )
+			$success = false;
+		// Name, description, and number (rows/columns) array need to exist
 		if ( ! isset( $edit_table['name'] )
 		|| ! isset( $edit_table['description'] )
 		|| ! isset( $edit_table['number'] ) )

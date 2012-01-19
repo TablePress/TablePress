@@ -157,13 +157,15 @@ else:
 
 		$table_count++;
 		$row_class = ( 0 == ( $table_count % 2) ) ? ' class="alternate"' : '';
+		if ( '' == trim( $table['name'] ) )
+			$table['name'] = __( '(no name)', 'tablepress' );
 ?>
 	<tr<?php echo $row_class;?> valign="top">
 		<th scope="row" class="check-column"><input type="checkbox" name="post[]" value="1056" /></th>
 		<td class="table-id"><?php echo $table['id']; ?></td>
-		<td><strong><a title="Edit &#8220;<?php echo $table['name']; ?>&#8221;" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
+		<td><strong><a title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $table['name'] ); ?>" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
 			<div class="row-actions">
-				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php _e( 'Edit this Table', 'tablepress' ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
+				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $table['name'] ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
 				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo "[table id={$table['id']} /]"; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
 				<span class="copy"><a href="<?php echo $copy_url; ?>" title="<?php _e( 'Copy Table', 'tablepress' ); ?>"><?php _e( 'Copy', 'tablepress' ); ?></a> | </span>
 				<span class="delete"><a href="<?php echo $delete_url; ?>" title="<?php _e( 'Delete Table', 'tablepress' ); ?>" class="delete-link"><?php _e( 'Delete', 'tablepress' ); ?></a> | </span>

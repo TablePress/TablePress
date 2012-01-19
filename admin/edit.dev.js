@@ -821,6 +821,14 @@ jQuery(document).ready( function( $ ) {
 		},
 		save_changes: {
 			trigger: function( event ) {
+
+				// check for required fields, maybe do this like on the "Add Table" screen
+				if ( '' === $.trim( $( '#table-id' ).val() ) ) {
+					alert( tablepress_strings.table_id_not_empty );
+					$( '#table-id' ).focus().select();
+					return;
+				}
+
 				if ( event.altKey ) {
 					tp.made_changes = false; // to prevent onunload warning
 					$(this).closest( 'form' ).submit();

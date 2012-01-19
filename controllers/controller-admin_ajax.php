@@ -73,6 +73,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		// ignore the request if the current user doesn't have sufficient permissions
 		// @TODO Capability check!
 
+		// we will go without isset() checks for now, as these variables are set in JS, and not as form elements
 		$edit_table['rows'] = intval( $edit_table['rows'] );
 		$edit_table['columns'] = intval( $edit_table['columns'] );
 		$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
@@ -80,8 +81,17 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$edit_table['data'] = json_decode( $edit_table['data'], true );
 
 		// consistency checks
-		// we will go without isset() checks for now, as these variables are set in JS, and not as form elements
 		$success = true;
+
+		// Table ID can't be empty and must not contain illegal characters
+		if ( empty( $edit_table['id'] )
+		|| $edit_table['id'] != preg_replace( '/[^a-zA-Z0-9_-]/', '', $edit_table['id'] ) )
+			$success = false;
+
+		if ( ! isset( $edit_table['name'] )
+		|| ! isset( $edit_table['description'] ) )
+			$success = false;
+
 		// Number of rows and columns
 		if ( $edit_table['rows'] !== count( $edit_table['data'] )
 		|| $edit_table['columns'] !== count( $edit_table['data'][0] ) )
@@ -121,11 +131,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// original table
 			$table = $this->model_table->load( $edit_table['orig_id'] );
 
-			// replace original values with new ones from form fields, if they exist
-			if ( isset( $edit_table['name'] ) )
-				$table['name'] = $edit_table['name'];
-			if ( isset( $edit_table['description'] ) )
-				$table['description'] = $edit_table['description'];
+			// replace original values with new ones
+			$table['name'] = $edit_table['name'];
+			$table['description'] = $edit_table['description'];
 			$table['data'] = $edit_table['data'];
 			$table['options'] = array(
 				'last_action' => 'ajax_edit',
@@ -153,20 +161,24 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 					}
 				}
 			}
-		} else {
-			$message = 'error_save';
-		}
 
-		// generate the response
-		$response = array(
-			'success' => $success,
-			'message' => $message,
-			'table_id' => $table['id'],
-			'new_edit_nonce' => wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ),
-			'new_preview_nonce' => wp_create_nonce( TablePress::nonce( 'preview', $table['id'] ) ),
-			'last_modified' => TablePress::format_datetime( $table['options']['last_modified'] ),
-			'last_editor' => TablePress::get_last_editor( $table['options']['last_editor'] )
-		);
+			// generate the response
+			$response = array(
+				'success' => true,
+				'message' => $message,
+				'table_id' => $table['id'],
+				'new_edit_nonce' => wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ),
+				'new_preview_nonce' => wp_create_nonce( TablePress::nonce( 'preview', $table['id'] ) ),
+				'last_modified' => TablePress::format_datetime( $table['options']['last_modified'] ),
+				'last_editor' => TablePress::get_last_editor( $table['options']['last_editor'] )
+			);
+		} else {
+			// generate the response
+			$response = array(
+				'success' => false,
+				'message' => 'error_save'
+			);
+		}
 
 		// response output
 		header( 'Content-Type: application/json; charset=UTF-8' );
