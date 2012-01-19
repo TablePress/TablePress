@@ -65,7 +65,7 @@ class TablePress_Render {
 	 * @param array $table Table to be rendered
 	 */
 	public function set_input( $table ) {
-		$this->table = $table['data'];
+		$this->table = $table;
 	}
 
 	/**
@@ -87,9 +87,9 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 */
 	protected function _evaluate_table_data() {
-		foreach ( $this->table as $row_idx => $row ) {
+		foreach ( $this->table['data'] as $row_idx => $row ) {
 			foreach ( $row as $col_idx => $cell_dummy ) {
-				$this->table[$row_idx][$col_idx] = $this->_parse_evaluate( $this->table[$row_idx][$col_idx] );
+				$this->table['data'][$row_idx][$col_idx] = $this->_parse_evaluate( $this->table['data'][$row_idx][$col_idx] );
 			}
 		}
 	}
@@ -171,13 +171,13 @@ class TablePress_Render {
 				$ref_col = TablePress::letter_to_number( $cell_reference[1] ) - 1;
 				$ref_row = $cell_reference[2] - 1;
 
-				if ( ! ( isset( $this->table[$ref_row] ) && isset( $this->table[$ref_row][$ref_col] ) ) )
+				if ( ! ( isset( $this->table['data'][$ref_row] ) && isset( $this->table['data'][$ref_row][$ref_col] ) ) )
 					return '!ERROR! Non-Existing Cell';
 
 				$ref_parents = $parents;
 				$ref_parents[] = $cell_reference[0];
 
-				$result = $this->table[$ref_row][$ref_col] = $this->_parse_evaluate( $this->table[$ref_row][$ref_col], $ref_parents );
+				$result = $this->table['data'][$ref_row][$ref_col] = $this->_parse_evaluate( $this->table['data'][$ref_row][$ref_col], $ref_parents );
 				if ( false !== strpos( $result, '!ERROR!' ) )
 					return $result;
 
@@ -194,15 +194,16 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 */
 	protected function _render_table() {
-		$this->output = '<table id="preview-table"><thead><tr><th></th>';
-		foreach ( $this->table[0] as $col_idx => $dummy ) {
+		$this->output = "Table {$this->table['name']} (ID {$this->table['id']})<br/>";
+		$this->output .= '<table id="preview-table"><thead><tr><th></th>';
+		foreach ( $this->table['data'][0] as $col_idx => $dummy ) {
 			$column = TablePress::number_to_letter( $col_idx+1 );
 			$this->output .= "\t\t\t<th>{$column}</th>\n";
 		}
 
 		$this->output .= '</tr></thead><tbody>';
 
-		foreach ( $this->table as $row_idx => $row ) {
+		foreach ( $this->table['data'] as $row_idx => $row ) {
 			$row_number = $row_idx + 1;
 			$this->output .= "\t\t<tr>\n";
 			$this->output .= "\t\t\t<td>{$row_number}</td>";

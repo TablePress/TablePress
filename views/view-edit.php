@@ -121,8 +121,6 @@ class TablePress_Edit_View extends TablePress_View {
 		// use custom nonce field here, that includes the table ID
 		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ), 'nonce-edit-table' ); echo "\n";
 		wp_nonce_field( TablePress::nonce( 'preview_table', $data['table']['id'] ), 'nonce-preview-table', false, true );
-		$preview_base_url = TablePress::url( array( 'action' => 'preview_table', 'item' => '' ), false, 'admin-post.php' );
-		?><input type="hidden" id="table-preview-url" value="<?php echo esc_attr( $preview_base_url ); ?>" /><?php
 	}
 
 	/**
@@ -325,9 +323,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	function textbox_buttons( $data, $box ) {
+		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 		?>
 			<p class="submit">
-				<input type="button" class="button-secondary show-preview-button hide-if-no-js" value="<?php _e( 'Preview', 'tablepress' ); ?>" /><br/>
+				<a href="<?php echo $preview_url; ?>" class="button-secondary show-preview-button" target="_blank"><?php _e( 'Preview', 'tablepress' ); ?></a>
 				<input type="button" class="button-primary save-changes-button hide-if-no-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 				<input type="submit" class="button-primary hide-if-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 			</p>

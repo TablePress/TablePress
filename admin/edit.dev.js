@@ -114,8 +114,8 @@ jQuery(document).ready( function( $ ) {
 			preview: {
 				trigger: function( /* event */ ) {
 					if ( ! tp.made_changes ) {
-						tp.table.preview.show( $( '#table-preview-url' ).val() + '=' + tp.table.orig_id + '&_wpnonce=' + $( '#nonce-preview-table' ).val() );
-						return;
+						tp.table.preview.show( $(this).attr( 'href' ) + '&TB_iframe=true' );
+						return false;
 					}
 
 					$(this).after( '<span class="animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
@@ -132,6 +132,8 @@ jQuery(document).ready( function( $ ) {
 						)
 						.success( tp.table.preview.ajax_success )
 						.error( tp.table.preview.ajax_error );
+
+					return false;
 				},
 				ajax_success: function( data, status, jqXHR ) {
 					if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
@@ -653,8 +655,7 @@ jQuery(document).ready( function( $ ) {
 					if ( $( 'body.admin-bar' ).length )
 						H -= 28;
 
-					url = url.replace( /&width=[0-9]+/g, '' );
-					url = url.replace( /&height=[0-9]+/g, '' );
+					url = url.replace( /&width=[0-9]+/g, '' ).replace( /&height=[0-9]+/g, '' );
 					url += '&width=' + ( W - 80 ) + '&height=' + ( H - 85 );
 					$link.attr( 'href', url );
 				}
@@ -874,6 +875,12 @@ jQuery(document).ready( function( $ ) {
 				// update the nonces
 				$( '#nonce-edit-table' ).val( data.new_edit_nonce );
 				$( '#nonce-preview-table' ).val( data.new_preview_nonce );
+				// update URLs in Preview links
+				$( '.show-preview-button' ).attr( 'href',
+					$( '.show-preview-button' ).first().attr( 'href' )
+						.replace( /item=[a-zA-Z0-9_-]+/g, 'item=' + data.table_id )
+						.replace( /&_wpnonce=[a-z0-9]+/ig, '&_wpnonce=' + data.new_preview_nonce )
+				);
 				// update last modified date and user nickname
 				$( '#last-modified' ).text( data.last_modified );
 				$( '#last-editor' ).text( data.last_editor );

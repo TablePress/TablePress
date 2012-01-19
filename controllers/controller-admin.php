@@ -183,6 +183,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$data['table_id'] = $_GET['table_id'];
 					// this is actually done in the post_import handler function
 					$data['table'] = $this->model_table->load( $data['table_id'] );
+					if ( false === $data['table'] )
+						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
 					$data['export_output'] = '<a href="http://test.com">ada</a>';
 				} else {
 					// just show empty export form
@@ -344,6 +346,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['orig_id'], 'message' => 'error_save' ) );
 
 		$table = $this->model_table->load( $edit_table['orig_id'] );
+		if ( false === $table ) // maybe somehow load a new table here?
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['orig_id'], 'message' => 'error_save' ) );
+
 		// replace original values with new ones from form fields
 		$table['name'] = $edit_table['name'];
 		$table['description'] = $edit_table['description'];
@@ -521,6 +526,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// load table to copy
 		$table = $this->model_table->load( $table_id );
+		if ( false === $table )
+			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
 		// adjust name and options of copied table
 		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
@@ -550,11 +557,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false === $table_id ) // nonce check should actually catch this already
 			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 
-		$preview_table = $this->model_table->load( $table_id );
+		$table = $this->model_table->load( $table_id );
+		if ( false === $table )
+			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 
 		// create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
-		$_render->set_input( $preview_table );
+		$_render->set_input( $table );
 		$head_html = $_render->get_preview_css();
 		$body_html = $_render->get_output();
 		$title = __( 'Preview', 'tablepress' );

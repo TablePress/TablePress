@@ -169,7 +169,7 @@ else:
 				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo "[table id={$table['id']} /]"; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
 				<span class="copy"><a href="<?php echo $copy_url; ?>" title="<?php _e( 'Copy Table', 'tablepress' ); ?>"><?php _e( 'Copy', 'tablepress' ); ?></a> | </span>
 				<span class="delete"><a href="<?php echo $delete_url; ?>" title="<?php _e( 'Delete Table', 'tablepress' ); ?>" class="delete-link"><?php _e( 'Delete', 'tablepress' ); ?></a> | </span>
-				<span class="table-preview"><a href="<?php echo $preview_url; ?>" title="<?php _e( 'Show a preview of this Table', 'tablepress' ); ?>"><?php _e( 'Preview', 'tablepress' ); ?></a></span>
+				<span class="table-preview"><a href="<?php echo $preview_url; ?>" title="<?php _e( 'Show a preview of this Table', 'tablepress' ); ?>" target="_blank"><?php _e( 'Preview', 'tablepress' ); ?></a></span>
 			</div>
 		</td>
 		<td><?php echo $table['description']; ?></td>
