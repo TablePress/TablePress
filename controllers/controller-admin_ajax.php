@@ -168,7 +168,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				'message' => $message,
 				'table_id' => $table['id'],
 				'new_edit_nonce' => wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ),
-				'new_preview_nonce' => wp_create_nonce( TablePress::nonce( 'preview', $table['id'] ) ),
+				'new_preview_nonce' => wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) ),
 				'last_modified' => TablePress::format_datetime( $table['options']['last_modified'] ),
 				'last_editor' => TablePress::get_last_editor( $table['options']['last_editor'] )
 			);
@@ -199,7 +199,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$preview_table = stripslashes_deep( $_POST['tablepress'] );
 
 		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
-		TablePress::check_nonce( 'preview', $preview_table['orig_id'], '_ajax_nonce', true );
+		TablePress::check_nonce( 'preview_table', $preview_table['orig_id'], '_ajax_nonce', true );
 
 		// ignore the request if the current user doesn't have sufficient permissions
 		// @TODO Capability check!

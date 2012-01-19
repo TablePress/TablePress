@@ -32,7 +32,6 @@ jQuery(document).ready( function( $ ) {
 			},
 			unset_table_changed: function() {
 				tp.made_changes = false;
-				$( '#table-preview' ).empty(); // clear preview
 				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
@@ -114,14 +113,16 @@ jQuery(document).ready( function( $ ) {
 			},
 			preview: {
 				trigger: function( /* event */ ) {
-					if ( ! tp.made_changes && $( '#table-preview' ).children().length ) {
-						tp.table.preview.show();
+					if ( ! tp.made_changes ) {
+						tp.table.preview.show( $( '#table-preview-url' ).val() + '=' + tp.table.orig_id + '&_wpnonce=' + $( '#nonce-preview-table' ).val() );
 						return;
 					}
 
 					$(this).after( '<span class="animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
 					$( '.show-preview-button' ).prop( 'disabled', true );
 					$( 'body' ).addClass( 'wait' );
+
+					$( '#table-preview' ).empty(); // clear preview
 
 					$.post(
 							ajaxurl,
@@ -153,7 +154,7 @@ jQuery(document).ready( function( $ ) {
 					$( '.animation-preview' ).remove();
 					$( '.show-preview-button' ).prop( 'disabled', false );
 					$( 'body' ).removeClass( 'wait' );
-					tp.table.preview.show();
+					tp.table.preview.show( '#TB_inline?inlineId=preview-container' );
 				},
 				error: function( message ) {
 					$( '.animation-preview' )
@@ -163,12 +164,12 @@ jQuery(document).ready( function( $ ) {
 					$( '.show-preview-button' ).prop( 'disabled', false );
 					$( 'body' ).removeClass( 'wait' );
 				},
-				show: function() {
+				show: function( url ) {
 					var width = $(window).width() - 120,
 						height = $(window).height() - 120;
 					if ( $( 'body.admin-bar' ).length )
 						height -= 28;
-					tb_show( tablepress_strings.preview, '#TB_inline?height=' + height + '&width=' + width + '&inlineId=preview-container', false );
+					tb_show( $( '.show-preview-button' ).first().text(), url + '&height=' + height + '&width=' + width, false );
 				}
 			}
 		},

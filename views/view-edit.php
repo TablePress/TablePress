@@ -67,7 +67,6 @@ class TablePress_Edit_View extends TablePress_View {
 								__( 'The Media Library will open, from which you can select the desired image or insert the image URL.', 'tablepress' ) . "\n" .
 								sprintf( __( 'Click the &quot;%s&quot; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ) ,				
 				'unsaved_changes_unload' => 'Seite ohne speichern verlassen?',
-				'preview' => 'Vorschau',
 				'preparing_preview' => 'Die Vorschau wird vorbereitet...',
 				'preview_error' => 'Vorbereiten der Vorschau fehlgeschlagen',
 				'save_changes_success' => 'Speichern erfolgreich',
@@ -121,7 +120,9 @@ class TablePress_Edit_View extends TablePress_View {
 	protected function action_nonce_field( $data, $box ) {
 		// use custom nonce field here, that includes the table ID
 		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ), 'nonce-edit-table' ); echo "\n";
-		wp_nonce_field( TablePress::nonce( 'preview', $data['table']['id'] ), 'nonce-preview-table', false, true );
+		wp_nonce_field( TablePress::nonce( 'preview_table', $data['table']['id'] ), 'nonce-preview-table', false, true );
+		$preview_base_url = TablePress::url( array( 'action' => 'preview_table', 'item' => '' ), false, 'admin-post.php' );
+		?><input type="hidden" id="table-preview-url" value="<?php echo esc_attr( $preview_base_url ); ?>" /><?php
 	}
 
 	/**
