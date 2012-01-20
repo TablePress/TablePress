@@ -40,6 +40,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	protected $view_actions = array();
 
 	/**
+	 * Boolean to record whether language support has been loaded (to prevent to do it twice)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	protected $i18n_support_loaded = false;
+
+	/**
 	 * Initialize the Admin Controller, determine location the admin menu, set up actions
 	 *
 	 * @since 1.0.0
@@ -62,7 +71,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$callback = array( &$this, 'show_admin_page' );
 
 		if ( $this->is_top_level_page ) {
-			$this->init_i18n_support(); // done here as translated strings for admin menu are needed
+			$this->init_i18n_support(); // done here as translated strings for admin menu are needed already
 			$this->init_view_actions();
 
 			$icon_url = plugins_url( 'admin/tablepress-icon-small.png', TABLEPRESS__FILE__ );
@@ -99,7 +108,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
 		$post_actions = array( 'list', 'add', 'edit', 'options' );
-		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table' );
+		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
 		}
@@ -112,10 +121,60 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			add_action( "load-{$page_hook}", array( &$this, 'load_admin_page' ) );
 		}
 
+		$pages_with_editor_button = array( 'post.php', 'post-new.php' );
+		foreach ( $pages_with_editor_button as $editor_page ) {
+			add_action( "load-{$editor_page}", array( &$this, 'add_editor_buttons' ) );
+		}
+
 		// not sure if this is needed:
 		// add_action( 'load-plugins.php', array( &$this, 'plugin_notification' ) );
 		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
 		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
+	}
+
+	function add_editor_buttons() {
+		$this->init_i18n_support();
+		add_thickbox(); // usually already loaded by media upload functions
+		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
+		$admin_page->enqueue_script( 'quicktags-button', array( 'quicktags', 'media-upload' ), array(
+			'editor_button' => array(
+				'caption' => __( 'Table', 'tablepress' ),
+				'title' => __( 'Insert a Table from TablePress', 'tablepress' ),
+				'popup_title' => __( 'Insert a Table from TablePress', 'tablepress' ),
+				'popup_url' => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' )
+			)
+		) );
+
+		// TinyMCE integration
+		if ( user_can_richedit() ) {
+			add_filter( 'mce_external_plugins', array( &$this, 'add_tinymce_plugin' ) );
+			add_filter( 'mce_buttons', array( &$this, 'add_tinymce_button' ) );
+		}
+	}
+
+	/**
+	 * Add "Table" button and separator to the TinyMCE toolbar
+	 *
+	 * @param array $buttons Current set of buttons in the TinyMCE toolbar
+	 * @return array Current set of buttons in the TinyMCE toolbar, including "Table" button
+	 */
+	function add_tinymce_button( $buttons ) {
+		$buttons[] = '|';
+		$buttons[] = 'tablepress_insert_table';
+		return $buttons;
+	}
+
+	/**
+	 * Register "Table" button plugin to TinyMCE
+	 *
+	 * @param array $plugins Current set of registered TinyMCE plugins
+	 * @return array Current set of registered TinyMCE plugins, including "Table" button plugin
+	 */
+	function add_tinymce_plugin( $plugins ) {
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.dev' : '';
+		$js_file = "admin/tinymce-button{$suffix}.js";
+		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
+		return $plugins;
 	}
 
 	/**
@@ -217,10 +276,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	protected function init_i18n_support() {
+		if ( $this->i18n_support_loaded )
+			return;
 		add_filter( 'locale', array( &$this, 'change_plugin_locale' ) ); // allow changing the plugin language
 		$language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
 		load_plugin_textdomain( 'tablepress', false, $language_directory );
 		remove_filter( 'locale', array( &$this, 'change_plugin_locale' ) );
+		$this->i18n_support_loaded = true;
 	}
 
 	/**
@@ -510,7 +572,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$new_options = array();
 
 		if ( ! empty( $posted_options['admin_menu_parent_page'] ) && '-' != $posted_options['admin_menu_parent_page'] ) {
-		 	$new_options['admin_menu_parent_page'] = $posted_options['admin_menu_parent_page'];
+			$new_options['admin_menu_parent_page'] = $posted_options['admin_menu_parent_page'];
 			// re-init parent information, as TablePress::redirect() URL might be wrong otherwise
 			$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $posted_options['admin_menu_parent_page'] );
 			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ) );
@@ -643,6 +705,46 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	</head>
 	<body>
 		{$body_html}
+	</body>
+</html>
+HTML;
+	}
+
+	/**
+	 * Show a list of tables in the Editor toolbar Thickbox (opened by TinyMCE or Quicktags button)
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_get_action_editor_button_thickbox() {
+		TablePress::check_nonce( 'editor_button_thickbox' );
+
+		$tables = $this->model_table->load_all();
+		$tables_list = '';
+		foreach ( $tables as $table ) {
+			$tables_list .= $table['name'] . '<span>' . $table['id'] . '</span><br/>';
+		}
+		
+		$shortcode = TablePress::$shortcode;
+		echo <<<HTML
+<!doctype html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Popup</title>
+HTML;
+wp_print_scripts( 'jquery' );
+echo <<<HTML
+		<script>
+		jQuery(document).ready( function($) {
+			$( 'span' ).click(function() {
+				var win = window.dialogArguments || opener || parent || top;
+				win.send_to_editor( '[{$shortcode} id=' + $(this).text() + ' /]' );
+			} );
+		} );
+		</script>
+	</head>
+	<body>
+		{$tables_list}
 	</body>
 </html>
 HTML;
