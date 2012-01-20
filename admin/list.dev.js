@@ -30,4 +30,28 @@ jQuery(document).ready( function($) {
 		return false;
 	} );
 
+	/**
+	 * Submit Bulk Actions only if an action was selected an a table's checkbox was checked
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#doaction, #doaction2' ).on( 'click', function() {
+	console.log('click');
+		var bulk_action;
+		if ( 'doaction' == this.id )
+			bulk_action = 'top';
+		else
+			bulk_action = 'bottom';
+
+		if ( '-1' == $( '#bulk-action-' + bulk_action ).val() )
+			return false;
+
+		if ( ! $( '#tablepress-all-tables' ).find( 'tbody' ).find( 'input:checked' ).length )
+			return false;
+
+		// Show AYS prompt for deletion
+		if ( 'delete' == $( '#bulk-action-' + bulk_action ).val() && ! confirm( tablepress_common.ays_delete_table ) )
+			return false;
+	} );
+
 } );

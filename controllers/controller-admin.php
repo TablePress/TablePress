@@ -98,7 +98,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
-		$post_actions = array( 'add', 'edit', 'options' );
+		$post_actions = array( 'list', 'add', 'edit', 'options' );
 		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
@@ -306,6 +306,71 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * // if ( ! current_user_can( 'manage_options' ) )
 	 * //	wp_die( __('Cheatin&#8217; uh?') );
 	 */
+
+	/**
+	 * Handle Bulk Actions on "All Tables" list screen
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_post_action_list() {
+		TablePress::check_nonce( 'list' );
+
+		if ( isset( $_POST['bulk-action-top'] ) && '-1' != $_POST['bulk-action-top'] )
+			$bulk_action = $_POST['bulk-action-top'];
+		elseif ( isset( $_POST['bulk-action-bottom'] ) && '-1' != $_POST['bulk-action-bottom'] )
+			$bulk_action = $_POST['bulk-action-bottom'];
+		else
+			$bulk_action = false;
+
+		if ( ! in_array( $bulk_action, array( 'copy', 'delete' ) ) )		
+			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_bulk_action_invalid' ) );
+
+		// @TODO: caps check for selected bulk action
+
+		if ( ! empty( $_POST['table'] ) && is_array( $_POST['table'] ) )
+			$tables = stripslashes_deep( $_POST['table'] );
+		else
+			TablePress::redirect( array( 'action' => 'list', 'message' => "error_{$bulk_action}_no_selection" ) );
+
+		$no_success = array(); // to store table IDs that failed
+
+		switch( $bulk_action ) {
+			case 'copy':
+				foreach ( $tables as $table_id ) {
+					$table = $this->model_table->load( $table_id );
+					if ( false === $table ) {
+						$no_success[] = $table_id;
+						continue;
+					}
+
+					// adjust name and options of copied table
+					$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
+					$updated_options = array(
+						'last_action' => 'copy',
+						'last_modified' => current_time( 'timestamp' ),
+						'last_editor' => get_current_user_id(),
+					);
+					$table['options'] = array_merge( $table['options'], $updated_options );
+
+					$copy_table_id = $this->model_table->add( $table );
+					if ( false === $copy_table_id )
+						$no_success[] = $copy_table_id;
+				}
+				break;
+			case 'delete':
+				foreach ( $tables as $table_id ) {
+					$deleted = $this->model_table->delete( $table_id );
+					if ( false === $deleted )
+						$no_success[] = $table_id;
+				}
+				break;
+		}
+
+		if ( count( $no_success ) != 0 ) // maybe pass this information to the view?
+			TablePress::redirect( array( 'action' => 'list', 'message' => "error_{$bulk_action}_not_all_tables" ) );
+
+		TablePress::redirect( array( 'action' => 'list', 'message' => "success_{$bulk_action}" ) );
+	}
 
 	/**
 	 * Save a table after the "Edit" screen was submitted

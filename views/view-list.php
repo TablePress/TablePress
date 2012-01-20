@@ -116,7 +116,22 @@ class TablePress_List_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function textbox_tables_list( $data, $box ) {
+if ( $data['tables_count'] > 0 ):
 	?>
+<div class="tablenav top">
+	<div class="alignleft actions">
+		<select name="bulk-action-top" id="bulk-action-top">
+			<option value="-1" selected="selected">Bulk Actions</option>
+			<option value="copy">Copy</option>
+			<option value="delete">Delete</option>
+		</select>
+		<input type="submit" name="" id="doaction" class="button-secondary action" value="<?php _e( 'Apply', 'tablepress' ); ?>" />
+	</div>
+	<br class="clear" />
+</div>
+<?php
+endif; // count > 0
+?>
 <table id="tablepress-all-tables" class="widefat fixed" cellspacing="0">
 <thead>
 	<tr>
@@ -161,8 +176,8 @@ else:
 			$table['name'] = __( '(no name)', 'tablepress' );
 ?>
 	<tr<?php echo $row_class;?> valign="top">
-		<th scope="row" class="check-column"><input type="checkbox" name="post[]" value="1056" /></th>
-		<td class="table-id"><?php echo $table['id']; ?></td>
+		<th scope="row" class="check-column"><input type="checkbox" name="table[]" value="<?php echo esc_attr( $table['id'] ); ?>" /></th>
+		<td class="table-id"><?php echo esc_html( $table['id'] ); ?></td>
 		<td><strong><a title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
 			<div class="row-actions">
 				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
@@ -182,7 +197,22 @@ endif;
 ?>
 </tbody>
 </table>
+<?php
+if ( $data['tables_count'] > 0 ):
+?>
+<div class="tablenav bottom">
+	<div class="alignleft actions">
+		<select name="bulk-action-bottom" id="bulk-action-bottom">
+			<option value="-1" selected="selected">Bulk Actions</option>
+			<option value="copy">Copy</option>
+			<option value="delete">Delete</option>
+		</select>
+		<input type="submit" name="" id="doaction2" class="button-secondary action" value="<?php _e( 'Apply', 'tablepress' ); ?>" />
+	</div>
+	<br class="clear" />
+</div>
 	<?php
+endif; // count > 0
 	} // function
 
 	/**
