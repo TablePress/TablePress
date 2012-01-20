@@ -956,7 +956,6 @@ jQuery(document).ready( function( $ ) {
 					autoOpen: false,
 					title: $( '#advanced-editor-open' ).val(),
 					width: 600,
-					height: 330,
 					modal: true,
 					dialogClass: 'wp-dialog',
 					resizable: false
