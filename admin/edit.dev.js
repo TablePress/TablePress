@@ -35,6 +35,12 @@ jQuery(document).ready( function( $ ) {
 				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
+				if ( '' === $.trim( $( '#table-id' ).val() ) ) {
+					alert( tablepress_strings.table_id_not_empty );
+					$( '#table-id' ).val( tp.table.id ).focus().select();
+					return;
+				}
+
 				if ( this.value == tp.table.id )
 					return;
 
@@ -255,7 +261,8 @@ jQuery(document).ready( function( $ ) {
 				tp.table.set_table_changed();
 			},
 			remove: function( /* event */ ) {
-				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' ).closest( 'tr' );
+				var confirm_message,
+					$selected_rows = $( '#edit-form-body' ).find( 'input:checked' ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
 					alert( tablepress_strings.no_rows_selected );
@@ -267,7 +274,11 @@ jQuery(document).ready( function( $ ) {
 					return;
 				}
 
-				if ( ! confirm( tablepress_strings.ays_remove_rows ) )
+				if ( 1 == $selected_rows.length )
+					confirm_message = tablepress_strings.ays_remove_rows_singular;
+				else
+					confirm_message = tablepress_strings.ays_remove_rows_plural;
+				if ( ! confirm( confirm_message ) )
 					return;
 
 				$selected_rows.remove();
@@ -469,6 +480,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			remove: function( /* event */ ) {
 				var column_idxs,
+					confirm_message,
 					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -481,7 +493,11 @@ jQuery(document).ready( function( $ ) {
 					return;
 				}
 
-				if ( ! confirm( tablepress_strings.ays_remove_columns ) )
+				if ( 1 == $selected_columns.length )
+					confirm_message = tablepress_strings.ays_remove_columns_singular;
+				else
+					confirm_message = tablepress_strings.ays_remove_columns_plural;
+				if ( ! confirm( confirm_message ) )
 					return;
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
@@ -823,14 +839,6 @@ jQuery(document).ready( function( $ ) {
 		},
 		save_changes: {
 			trigger: function( event ) {
-
-				// check for required fields, maybe do this like on the "Add Table" screen
-				if ( '' === $.trim( $( '#table-id' ).val() ) ) {
-					alert( tablepress_strings.table_id_not_empty );
-					$( '#table-id' ).focus().select();
-					return;
-				}
-
 				if ( event.altKey ) {
 					tp.made_changes = false; // to prevent onunload warning
 					$(this).closest( 'form' ).submit();

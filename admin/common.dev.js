@@ -82,9 +82,11 @@ jQuery(document).ready( function($) {
 	 */
 	$( '#tablepress-page' )
 	.on( 'click', '.delete-link', function() {
-		if ( ! confirm( tablepress_common.ays_delete_table ) )
+		if ( ! confirm( tablepress_common.ays_delete_single_table ) )
 			return false;
-		// @TODO: somehow add tp.made_changes = false; // to prevent onunload warning
+
+		if ( 'undefined' != typeof tp )
+			tp.made_changes = false; // to prevent onunload warning
 	} );
 
 	/**

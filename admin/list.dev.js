@@ -37,21 +37,32 @@ jQuery(document).ready( function($) {
 	 */
 	$( '#doaction, #doaction2' ).on( 'click', function() {
 	console.log('click');
-		var bulk_action;
+		var bulk_action,
+			confirm_message,
+			num_selected = $( '#tablepress-all-tables' ).find( 'tbody' ).find( 'input:checked' ).length;
+
+		// determine location of clicked bulk action controls
 		if ( 'doaction' == this.id )
 			bulk_action = 'top';
 		else
 			bulk_action = 'bottom';
 
+		// check whether an action was selected, and whether tables were selected
 		if ( '-1' == $( '#bulk-action-' + bulk_action ).val() )
 			return false;
-
-		if ( ! $( '#tablepress-all-tables' ).find( 'tbody' ).find( 'input:checked' ).length )
+		if ( 0 == num_selected )
 			return false;
 
 		// Show AYS prompt for deletion
-		if ( 'delete' == $( '#bulk-action-' + bulk_action ).val() && ! confirm( tablepress_common.ays_delete_table ) )
-			return false;
+		if ( 'delete' == $( '#bulk-action-' + bulk_action ).val() ) {
+			if ( 1 == num_selected )
+				confirm_message = tablepress_common.ays_delete_single_table;
+			else
+				confirm_message = tablepress_common.ays_delete_multiple_tables;
+
+			if ( ! confirm( confirm_message ) )
+				return false;
+		}
 	} );
 
 } );
