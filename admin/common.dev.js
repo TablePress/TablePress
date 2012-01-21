@@ -65,13 +65,12 @@ jQuery(document).ready( function($) {
 	/**
 	 * Check that numerical fields (e.g. column/row number fields) only contain numbers
 	 *
+	 * Provides this functionality for browsers that don't yet support <input type="number" />.
+	 *
 	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' )
-	.on( 'keyup', '.numbers-only, .form-field-numbers-only input', function( event ) {
-		// allow navigation with left and right cursor key
-		if ( ( 37 == event.which ) || ( 39 == event.which ) )
-			return;
+	.on( 'blur', '.numbers-only, .form-field-numbers-only input', function( event ) {
 		var $input = $(this);
 		$input.val( $input.val().replace( /[^0-9]/g, '' ) );
 	} );

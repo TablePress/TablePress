@@ -137,7 +137,7 @@ class TablePress_Edit_View extends TablePress_View {
 			<th scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 			<td>
 				<input type="hidden" name="table[orig_id]" id="table-orig-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
-				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
+				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php _e( 'The Table ID can only consist of letters, numbers, the hyphen -, and the underscore _.', 'tablepress' ); ?>" pattern="[A-Za-z0-9-_]+" required />
 				<input type="text" class="table-shortcode" value="[<?php echo TablePress::$shortcode; ?> id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
 			</td>
 		</tr>
@@ -307,10 +307,10 @@ class TablePress_Edit_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<td>
-			<?php printf( __( 'Add %s row(s)', 'tablepress' ), '<input type="text" id="rows-append-number" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="rows-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
+			<?php printf( __( 'Add %s row(s)', 'tablepress' ), '<input type="number" id="rows-append-number" class="small-text numbers-only" title="' . __( 'This field must contain a positive number.', 'tablepress' ) . '" value="1" min="1" max="99999" maxlength="5" required />' ); ?>&nbsp;<input type="button" class="button-secondary" id="rows-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
 		</td>
 		<td>
-			<?php printf( __( 'Add %s column(s)', 'tablepress' ), '<input type="text" id="columns-append-number" class="small-text numbers-only" value="1" maxlength="5" />' ); ?>&nbsp;<input type="button" class="button-secondary" id="columns-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
+			<?php printf( __( 'Add %s column(s)', 'tablepress' ), '<input type="number" id="columns-append-number" class="small-text numbers-only" title="' . __( 'This field must contain a positive number.', 'tablepress' ) . '" value="1" min="1" max="99999" maxlength="5" required />' ); ?>&nbsp;<input type="button" class="button-secondary" id="columns-append" value="<?php _e( 'Add', 'tablepress' ); ?>" />
 		</td>
 	</tr>
 </table>

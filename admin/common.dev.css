@@ -87,3 +87,8 @@
 	cursor: auto;
 	color: #464646;
 }
+
+/* red border for form fields that have invalid values */
+#tablepress-page form :invalid {
+	border-color: #cc0000 !important;
+}
