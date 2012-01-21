@@ -205,7 +205,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// pre-define some table data
 		$data = array(
-			'action' => $action,
 			'view_actions' => $this->view_actions,
 			'message' => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false
 		);
@@ -255,7 +254,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 		}
 
-		$data = apply_filters( 'tablepress_view_data', $data );
+		$data = apply_filters( 'tablepress_view_data', $data, $action );
 
 		// prepare and initialize the view
 		$this->view = TablePress::load_view( $action, $data );
@@ -691,23 +690,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
 		$_render->set_input( $table );
-		$head_html = $_render->get_preview_css();
-		$body_html = $_render->get_output();
-		$title = __( 'Preview', 'tablepress' );
 
-		echo <<<HTML
-<!doctype html>
-<html>
-	<head>
-		<meta charset=utf-8>
-		<title>{$title}</title>
-		{$head_html}
-	</head>
-	<body>
-		{$body_html}
-	</body>
-</html>
-HTML;
+		$action = 'preview';
+		$data = array(
+			'head_html' => $_render->get_preview_css(),
+			'body_html' => $_render->get_output()
+		);
+
+		// prepare, initialize, and render the view
+		$this->view = TablePress::load_view( $action, $data );
+		$this->view->render();
 	}
 
 	/**
@@ -718,36 +710,15 @@ HTML;
 	public function handle_get_action_editor_button_thickbox() {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
-		$tables = $this->model_table->load_all();
-		$tables_list = '';
-		foreach ( $tables as $table ) {
-			$tables_list .= $table['name'] . '<span>' . $table['id'] . '</span><br/>';
-		}
-		
-		$shortcode = TablePress::$shortcode;
-		echo <<<HTML
-<!doctype html>
-<html>
-	<head>
-		<meta charset=utf-8>
-		<title>Popup</title>
-HTML;
-wp_print_scripts( 'jquery' );
-echo <<<HTML
-		<script>
-		jQuery(document).ready( function($) {
-			$( 'span' ).click(function() {
-				var win = window.dialogArguments || opener || parent || top;
-				win.send_to_editor( '[{$shortcode} id=' + $(this).text() + ' /]' );
-			} );
-		} );
-		</script>
-	</head>
-	<body>
-		{$tables_list}
-	</body>
-</html>
-HTML;
+		$action = 'editor_button';
+		$data = array(
+			'tables' => $this->model_table->load_all(),
+			'tables_count' => $this->model_table->count_tables()
+		);
+
+		// prepare, initialize, and render the view
+		$this->view = TablePress::load_view( $action, $data );
+		$this->view->render();
 	}
 
 } // class TablePress_Admin_Controller

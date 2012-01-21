@@ -396,10 +396,13 @@ abstract class TablePress_View {
 	/**
 	 * Return the content for the help tab for this screen
 	 *
-	 * Has to be implemented in every derived class of this base class!
+	 * Has to be implemented for every view that is visible in the WP Dashboard!
 	 *
 	 * @since 1.0.0
 	 */
-	abstract protected function help_tab_content();
+	protected function help_tab_content() {
+		// Has to be implemented for every view that is visible in the WP Dashboard!
+		return '';
+	}
 
 } // class TablePress_View

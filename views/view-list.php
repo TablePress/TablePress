@@ -174,11 +174,13 @@ else:
 		$row_class = ( 0 == ( $table_count % 2) ) ? ' class="alternate"' : '';
 		if ( '' == trim( $table['name'] ) )
 			$table['name'] = __( '(no name)', 'tablepress' );
+		if ( '' == trim( $table['description'] ) )
+			$table['description'] = __( '(no description)', 'tablepress' );
 ?>
 	<tr<?php echo $row_class;?> valign="top">
 		<th scope="row" class="check-column"><input type="checkbox" name="table[]" value="<?php echo esc_attr( $table['id'] ); ?>" /></th>
 		<td class="table-id"><?php echo esc_html( $table['id'] ); ?></td>
-		<td><strong><a title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>" class="row-title" href="<?php echo $edit_url; ?>"><?php echo $table['name']; ?></a></strong>
+		<td><strong><a title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>" class="row-title" href="<?php echo $edit_url; ?>"><?php echo esc_html( $table['name'] ); ?></a></strong>
 			<div class="row-actions">
 				<span class="edit"><a href="<?php echo $edit_url; ?>" title="<?php printf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $table['name'] ) ); ?>"><?php _e( 'Edit', 'tablepress' ); ?></a> | </span>
 				<span class="shortcode hide-if-no-js"><a href="#" title="<?php echo '[' . TablePress::$shortcode . ' id=' . esc_attr( $table['id'] ) . ' /]'; ?>"><?php _e( 'Shortcode', 'tablepress' ); ?></a> | </span>
@@ -187,7 +189,7 @@ else:
 				<span class="table-preview"><a href="<?php echo $preview_url; ?>" title="<?php _e( 'Show a preview of this Table', 'tablepress' ); ?>" target="_blank"><?php _e( 'Preview', 'tablepress' ); ?></a></span>
 			</div>
 		</td>
-		<td><?php echo $table['description']; ?></td>
+		<td><?php echo esc_html( $table['description'] ); ?></td>
 		<td><?php echo TablePress::get_last_editor( $table['options']['last_editor'] ); ?></td>
 		<td><?php echo TablePress::format_datetime( $table['options']['last_modified'], 'timestamp', '<br/>' ); ?></td>
 	</tr>
