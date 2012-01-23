@@ -105,8 +105,9 @@ abstract class TablePress {
 	 * @return object Initialized instance of the class
 	 */
 	public static function load_class( $class, $file, $folder, $params = null ) {
-		self::load_file( $file, $folder );
 		$class = apply_filters( 'tablepress_load_class_name', $class );
+		if ( ! class_exists( $class ) )
+			self::load_file( $file, $folder );
 		$the_class = new $class( $params );
 		return $the_class;
 	}
