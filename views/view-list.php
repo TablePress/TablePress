@@ -71,8 +71,7 @@ class TablePress_List_View extends TablePress_View {
 			'error_bulk_action_invalid' => __( 'Error: This bulk action is invalid!', 'tablepress' ),
 			'error_no_selection' => __( 'Error: You did not select any tables!', 'tablepress' ),
 			'error_delete_not_all_tables' => __( 'Notice: Not all selected tables could be deleted!', 'tablepress' ),
-			'error_copy_not_all_tables' => __( 'Notice: Not all selected tables could be copied!', 'tablepress' ),
-
+			'error_copy_not_all_tables' => __( 'Notice: Not all selected tables could be copied!', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
 			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';

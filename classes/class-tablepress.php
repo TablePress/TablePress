@@ -34,7 +34,7 @@ abstract class TablePress {
 	 *
 	 * @const int
 	 */
-	const db_version = 15;
+	const db_version = 1;
 
 	/**
 	 * Instance of the controller object

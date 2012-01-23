@@ -6,7 +6,7 @@
 
 /* hour glass cursor, while waiting for AJAX */
 body.wait * {
-	cursor: wait!important;
+	cursor: wait !important;
 }
 
 /* container for preview and advanced editor */
