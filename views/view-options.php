@@ -119,18 +119,18 @@ class TablePress_Options_View extends TablePress_View {
 		$entries['middle'] = __( 'Top-Level (middle)', 'tablepress' );
 		$entries['bottom'] = __( 'Top-Level (bottom)', 'tablepress' );
 
-		$select_box = '<select id="options_admin_menu_parent_page" name="options[admin_menu_parent_page]">' . "\n";
+		$select_box = '<select id="option-admin-menu-parent-page" name="options[admin_menu_parent_page]">' . "\n";
 		foreach ( $entries as $page => $entry ) {
 			$select_box .= '<option' . selected( $page, $data['user_options']['parent_page'], false ) . disabled( $page, '-', false ) .' value="' . $page . '">' . $entry . "</option>\n";
 		}
 		$select_box .= "</select>\n";
 		?>
 		<tr>
-			<th scope="row"><label for="options_admin_menu_parent_page"><?php _e( 'Admin menu entry', 'tablepress' ); ?>:</label></th>
+			<th scope="row"><label for="option-admin-menu-parent-page"><?php _e( 'Admin menu entry', 'tablepress' ); ?>:</label></th>
 			<td><?php printf( __( 'TablePress shall be shown in this section of the admin menu: %s', 'tablepress' ), $select_box ); ?></td>
 		</tr>
 		<?php
-		$select_box = '<select id="options_plugin_language" name="options[plugin_language]">' . "\n";
+		$select_box = '<select id="option-plugin-language" name="options[plugin_language]">' . "\n";
 		$select_box .= '<option' . selected( $data['user_options']['plugin_language'], 'auto', false ) . ' value="auto">' . sprintf( __( 'WordPress Default (currently %s)', 'tablepress' ), get_locale() ) . "</option>\n";
 		$select_box .= '<option value="-" disabled="disabled">---</option>' . "\n";
 		foreach ( $data['user_options']['available_plugin_languages'] as $lang_abbr => $language ) {
@@ -139,7 +139,7 @@ class TablePress_Options_View extends TablePress_View {
 		$select_box .= "</select>\n";
 		?>
 		<tr>
-			<th scope="row"><label for="options_plugin_language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
+			<th scope="row"><label for="option-plugin-language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
 			<td><?php printf( __( 'TablePress shall be shown in this language: %s', 'tablepress' ), $select_box ); ?></td>
 		</tr>
 		</table>
