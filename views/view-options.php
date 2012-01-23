@@ -36,7 +36,7 @@ class TablePress_Options_View extends TablePress_View {
 			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
-			$class = ( in_array( $data['message'], array( 'error_save' ) ) ) ? 'error' : 'updated' ;
+			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
 			$this->add_header_message( "<strong>{$action_messages[ $data['message'] ]}</strong>", $class );
 		}
 

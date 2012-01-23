@@ -60,15 +60,22 @@ class TablePress_List_View extends TablePress_View {
 			);
 
 		$this->action_messages = array(
-			'success_delete' => __( 'The table was deleted successfully.', 'tablepress' ),
+			'success_delete' => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),
+			'success_delete_plural' => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
-			'success_copy' => __( 'The table was copied successfully.', 'tablepress' ),
+			'success_copy' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ),
+			'success_copy_plural' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
 			'error_copy' => __( 'Error: The table could not be copied.', 'tablepress' ),
 			'error_no_table' => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
-			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' )
+			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' ),
+			'error_bulk_action_invalid' => __( 'Error: This bulk action is invalid!', 'tablepress' ),
+			'error_no_selection' => __( 'Error: You did not select any tables!', 'tablepress' ),
+			'error_delete_not_all_tables' => __( 'Notice: Not all selected tables could be deleted!', 'tablepress' ),
+			'error_copy_not_all_tables' => __( 'Notice: Not all selected tables could be copied!', 'tablepress' ),
+
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( in_array( $data['message'], array( 'error_delete', 'error_no_table', 'error_load_table' ) ) ) ? 'error' : 'updated' ;
+			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 

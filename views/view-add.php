@@ -37,7 +37,7 @@ class TablePress_Add_View extends TablePress_View {
 			'error_add' => __( 'Error: The table could not be added.', 'tablepress' ),
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( in_array( $data['message'], array( 'error_add' ) ) ) ? 'error' : 'updated' ;
+			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 

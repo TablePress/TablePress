@@ -391,7 +391,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! empty( $_POST['table'] ) && is_array( $_POST['table'] ) )
 			$tables = stripslashes_deep( $_POST['table'] );
 		else
-			TablePress::redirect( array( 'action' => 'list', 'message' => "error_{$bulk_action}_no_selection" ) );
+			TablePress::redirect( array( 'action' => 'list', 'message' => "error_no_selection" ) );
 
 		$no_success = array(); // to store table IDs that failed
 
@@ -432,7 +432,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( count( $no_success ) != 0 ) // maybe pass this information to the view?
 			TablePress::redirect( array( 'action' => 'list', 'message' => "error_{$bulk_action}_not_all_tables" ) );
 
-		TablePress::redirect( array( 'action' => 'list', 'message' => "success_{$bulk_action}" ) );
+		$plural = ( count( $tables ) > 1 ) ? '_plural' : '';
+		TablePress::redirect( array( 'action' => 'list', 'message' => "success_{$bulk_action}{$plural}" ) );
 	}
 
 	/**
