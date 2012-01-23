@@ -135,9 +135,20 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				'last_action' => 'ajax_edit',
 				'last_modified' => current_time( 'timestamp' ),
 				'last_editor' => get_current_user_id(),
-				'table_head' => $edit_table['options']['table_head'],
-				'table_foot' => $edit_table['options']['table_foot']
 			);
+			// check options that have a checkbox
+			$checkbox_options = array( 'table_head', 'table_foot', 'alternating_row_colors', 'row_hover' );
+			foreach ( $checkbox_options as $option ) {
+				$table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' == $edit_table['options'][$option] );
+			}
+			// check options that have a selectbox
+			$selectbox_options = array( 'print_name', 'print_description' );
+			foreach ( $selectbox_options as $option ) {
+				if ( isset( $edit_table['options'][$option] ) )
+					$table['options'][$option] = $edit_table['options'][$option];
+			}
+			if ( isset( $edit_table['options']['extra_css_classes'] ) )
+				$table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $edit_table['options']['extra_css_classes'] );
 			$table['visibility']['rows'] = $edit_table['visibility']['rows'];
 			$table['visibility']['columns'] = $edit_table['visibility']['columns'];
 
@@ -200,7 +211,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$preview_table['visibility'] = json_decode( $preview_table['visibility'], true );
 		$preview_table['options'] = json_decode( $preview_table['options'], true );
 		$preview_table['data'] = json_decode( $preview_table['data'], true );
-		// make consistency checks here?
+		// @TODO: make consistency checks here?
 
         $default_atts = array(
             'id' => 0,
@@ -211,12 +222,10 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
             'first_column_th' => false,
             'table_foot' => -1,
             'print_name' => -1,
-            'print_name_position' => -1,
             'print_description' => -1,
-            'print_description_position' => -1,
             'cache_table_output' => -1,
             'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
-            'use_tablesorter' => -1,
+            'use_datatables' => -1,
             'datatables_sort' => -1,
             'datatables_paginate' => -1,
             'datatables_paginate_entries' => -1,

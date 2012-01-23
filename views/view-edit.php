@@ -41,6 +41,11 @@ class TablePress_Edit_View extends TablePress_View {
 			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
 		);
 
+		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
+			$class = ( 'error' == substr( $data['message'], 0, 5 ) || in_array( $data['message'], array( 'success_save_error_id_change' ) ) ) ? 'error' : 'updated' ;
+			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
+		}
+
 		// do this here to get CSS into <head>
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		add_action( 'admin_footer', array( &$this, 'dequeue_media_upload_js'), 2 );
@@ -52,7 +57,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'cells_auto_grow' => true,
 				'shortcode' => TablePress::$shortcode
 			),
-			'strings' => array_merge( array(
+			'strings' => array(
 				'no_remove_all_rows' => 'Du kannst nicht alle Zeilen der Tabelle löschen!',
 				'no_remove_all_columns' => 'Du kannst nicht alle Spalten der Tabelle löschen!',
 				'no_rows_selected' => 'Du hast keine Zeilen ausgewählt!',
@@ -77,19 +82,15 @@ class TablePress_Edit_View extends TablePress_View {
 				'saving_changes' => 'Speichere Änderungen...',
 				'table_id_not_empty' => __( 'The Table ID field can not be empty. Please enter a Table ID!', 'tablepress' ),
 				'ays_change_table_id' => 'Willst du die Tabellen-ID wirklich ändern? Alle Shortcodes für diese Tabelle müssen angepasst werden!',
+				'extra_css_classes_invalid' => __( 'The entered value in the field &quot;Extra CSS classes&quot; is invalid.', 'tablepress' ),
 				'sort_asc' => __( 'Sort ascending', 'tablepress' ),
 				'sort_desc' => __( 'Sort descending', 'tablepress' ),
 				'no_rowspan_first_row' => 'You can not add rowspan to the first row!',
 				'no_colspan_first_col' => 'You can not add colspan to the first column!',
 				'no_rowspan_table_head' => 'You can not add rowspan into the table head row!',
 				'no_rowspan_table_foot' => 'You can not add rowspan out of the table foot row!'
-			), $this->action_messages )
+			)
 		) );
-
-		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( 'error' == substr( $data['message'], 0, 5 ) || in_array( $data['message'], array( 'success_save_error_id_change' ) ) ) ? 'error' : 'updated' ;
-			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
-		}
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
@@ -141,7 +142,7 @@ class TablePress_Edit_View extends TablePress_View {
 			<th scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 			<td>
 				<input type="hidden" name="table[orig_id]" id="table-orig-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
-				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php _e( 'The Table ID can only consist of letters, numbers, the hyphen -, and the underscore _.', 'tablepress' ); ?>" pattern="[A-Za-z0-9-_]+" required />
+				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php _e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z0-9-_]+" required />
 				<input type="text" class="table-shortcode" value="[<?php echo TablePress::$shortcode; ?> id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
 			</td>
 		</tr>
@@ -394,12 +395,40 @@ class TablePress_Edit_View extends TablePress_View {
 <table class="tablepress-postbox-table">
 <tbody>
 	<tr>
-		<td class="column-1"><label for="option-table-head"><?php _e( 'Tabellenkopf', 'tablepress' ); ?>:</label></td>
+		<td class="column-1"><label for="option-table-head"><?php _e( 'Table Head Row', 'tablepress' ); ?>:</label></td>
 		<td class="column-2"><input type="checkbox" id="option-table-head" name="table[options][table_head]" value="true"<?php checked( $options['table_head'] ); ?> /></td>
 	</tr>
 	<tr class="bottom-border">
-		<td class="column-1"><label for="option-table-foot"><?php _e( 'Tabellenfuß', 'tablepress' ); ?>:</label></td>
+		<td class="column-1"><label for="option-table-foot"><?php _e( 'Table Foot Row', 'tablepress' ); ?>:</label></td>
 		<td class="column-2"><input type="checkbox" id="option-table-foot" name="table[options][table_foot]" value="true"<?php checked( $options['table_foot'] ); ?> /></td>
+	</tr>
+	<tr class="top-border">
+		<td class="column-1"><label for="option-alternating-row-colors"><?php _e( 'Alternating Row Colors', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-alternating-row-colors" name="table[options][alternating_row_colors]" value="true"<?php checked( $options['alternating_row_colors'] ); ?> /></td>
+	</tr>
+	<tr class="bottom-border">
+		<td class="column-1"><label for="option-row-hover"><?php _e( 'Row Hover Highlighting', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-row-hover" name="table[options][row_hover]" value="true"<?php checked( $options['row_hover'] ); ?> /></td>
+	</tr>
+	<tr class="top-border">
+		<td class="column-1"><label for="option-print-name"><?php _e( 'Print Table Name', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><select id="option-print-name" name="table[options][print_name]">
+			<option<?php selected( 'no', $options['print_name'] ); ?> value="no"><?php _e( 'No', 'tablepress' ); ?></option>
+			<option<?php selected( 'above', $options['print_name'] ); ?> value="above"><?php _e( 'Above', 'tablepress' ); ?></option>
+			<option<?php selected( 'below', $options['print_name'] ); ?> value="below"><?php _e( 'Below', 'tablepress' ); ?></option>
+		</select></td>
+	</tr>
+	<tr class="bottom-border">
+		<td class="column-1"><label for="option-print-description"><?php _e( 'Print Table Description', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><select id="option-print-description" name="table[options][print_description]">
+			<option<?php selected( 'no', $options['print_description'] ); ?> value="no"><?php _e( 'No', 'tablepress' ); ?></option>
+			<option<?php selected( 'above', $options['print_description'] ); ?> value="above"><?php _e( 'Above', 'tablepress' ); ?></option>
+			<option<?php selected( 'below', $options['print_description'] ); ?> value="below"><?php _e( 'Below', 'tablepress' ); ?></option>
+		</select></td>
+	</tr>
+	<tr class="top-border bottom-border">
+		<td class="column-1"><label for="option-extra-css-classes"><?php _e( 'Extra CSS Classes', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="text" id="option-extra-css-classes" class="large-text" name="table[options][extra_css_classes]" value="<?php echo esc_attr( $options['extra_css_classes'] ); ?>" title="<?php _e( 'This field can only contain letters, numbers, spaces, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z0-9- _]*" /></td>
 	</tr>
 	<tr class="top-border bottom-border">
 		<td colspan="2"><?php echo json_encode( $options ); ?></td>

@@ -492,8 +492,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'last_editor' => get_current_user_id()
 		);
 		$table['options'] = array_merge( $table['options'], $updated_options );
-		$table['options']['table_head'] = ( isset( $edit_table['options']['table_head'] ) && 'true' == $edit_table['options']['table_head'] );
-		$table['options']['table_foot'] = ( isset( $edit_table['options']['table_foot'] ) && 'true' == $edit_table['options']['table_foot'] );
+		// check options that have a checkbox
+		$checkbox_options = array( 'table_head', 'table_foot', 'alternating_row_colors', 'row_hover' );
+		foreach ( $checkbox_options as $option ) {
+			$table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' == $edit_table['options'][$option] );
+		}
+		// check options that have a selectbox
+		$selectbox_options = array( 'print_name', 'print_description' );
+		foreach ( $selectbox_options as $option ) {
+			if ( isset( $edit_table['options'][$option] ) )
+				$table['options'][$option] = $edit_table['options'][$option];
+		}
+		if ( isset( $edit_table['options']['extra_css_classes'] ) )
+			$table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $edit_table['options']['extra_css_classes'] );
 		// Table Visibility
 		$table['visibility']['rows'] = array_map( 'intval', $edit_table['visibility']['rows'] );
 		$table['visibility']['columns'] = array_map( 'intval', $edit_table['visibility']['columns'] );
@@ -546,7 +557,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'last_modified' => current_time( 'timestamp' ),
 			'last_editor' => get_current_user_id(),
 			'table_head' => true,
-			'table_foot' => true
+			'table_foot' => true,
+			'alternating_row_colors' => true,
+			'row_hover' => true,
+			'print_name' => 'no',
+			'print_description' => 'no',
+			'extra_css_classes' => ''
 		);
 		$table['visibility'] = array(
 			'rows' => array_fill( 0, $num_rows, 1 ),
@@ -703,12 +719,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
             'first_column_th' => false,
             'table_foot' => -1,
             'print_name' => -1,
-            'print_name_position' => -1,
             'print_description' => -1,
-            'print_description_position' => -1,
             'cache_table_output' => -1,
             'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
-            'use_tablesorter' => -1,
+            'use_datatables' => -1,
             'datatables_sort' => -1,
             'datatables_paginate' => -1,
             'datatables_paginate_entries' => -1,

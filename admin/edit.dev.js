@@ -33,6 +33,7 @@ jQuery(document).ready( function( $ ) {
 			unset_table_changed: function() {
 				tp.made_changes = false;
 				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
+				$( '#tablepress_edit-table-information, #tablepress_edit-table-options' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
 				if ( '' === $.trim( $( '#table-id' ).val() ) ) {
@@ -78,7 +79,12 @@ jQuery(document).ready( function( $ ) {
 				// evtl. für options-saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
 				table_options = {
 					table_head: tp.table.head,
-					table_foot: tp.table.foot
+					table_foot: tp.table.foot,
+					alternating_row_colors: $( '#option-alternating-row-colors' ).prop( 'checked' ),
+					row_hover: $( '#option-row-hover' ).prop( 'checked' ),
+					print_name: $( '#option-print-name' ).val(),
+					print_description: $( '#option-print-description' ).val(),
+					extra_css_classes: $( '#option-extra-css-classes' ).val()
 				};
 				table_options = JSON.stringify( table_options );
 
@@ -849,6 +855,12 @@ jQuery(document).ready( function( $ ) {
 		},
 		save_changes: {
 			trigger: function( event ) {
+				if ( ( /[^A-Za-z0-9- _]/ ).test( $( '#option-extra-css-classes' ).val() ) ) {
+					alert( tablepress_strings.extra_css_classes_invalid );
+					$( '#option-extra-css-classes' ).focus().select();
+					return;
+				}
+
 				if ( event.altKey ) {
 					tp.made_changes = false; // to prevent onunload warning
 					$(this).closest( 'form' ).submit();
@@ -963,7 +975,9 @@ jQuery(document).ready( function( $ ) {
 
 			$( window ).on( 'beforeunload', tp.check.changes_saved );
 
-			$table.one( 'change', 'textarea', tp.table.set_table_changed ); // just once is enough, will be reset after saving
+			// just once is enough, will be reset after saving
+			$table.one( 'change', 'textarea', tp.table.set_table_changed );
+			$( '#tablepress_edit-table-information, #tablepress_edit-table-options' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 
 			if ( tablepress_options.cells_advanced_editor ) {
 				$table.on( 'click', 'textarea', tp.cells.advanced_editor.keyopen );
@@ -989,8 +1003,6 @@ jQuery(document).ready( function( $ ) {
 			$( '#edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
 
 			$( '#edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
-
-			$( '#tablepress_edit-table-information' ).on( 'change', 'input, textarea', tp.table.set_table_changed );
 
 			$table.sortable( {
 				axis: 'y',

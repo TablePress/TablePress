@@ -339,23 +339,21 @@ class TablePress_Render {
 
 		$output = '';
 
-		if ( $this->render_options['print_name'] ) {
+		if ( 'no' != $this->render_options['print_name'] ) {
 			$print_name_html_tag = apply_filters( 'tablepress_print_name_html_tag', 'h2', $this->table['id'] );
 			$print_name_css_class = apply_filters( 'tablepress_print_name_css_class', "tablepress-table-name tablepress-table-name-id-{$this->table['id']}", $this->table['id'] );
-			$name_html = "<{$print_name_html_tag} class=\"{$print_name_css_class}\">" . $this->safe_output( $this->table['name'] ) . "</{$print_name_html_tag}>\n";
-			$print_name_position = apply_filters( 'tablepress_print_name_position', $this->render_options['print_name_position'], $this->table['id'] );
-			if ( 'above' == $print_name_position )
-				$output .= $name_html;
+			$print_name_html = "<{$print_name_html_tag} class=\"{$print_name_css_class}\">" . $this->safe_output( $this->table['name'] ) . "</{$print_name_html_tag}>\n";
 		}
-
-		if ( $this->render_options['print_description'] ) {
+		if ( 'no' != $this->render_options['print_description'] ) {
 			$print_description_html_tag = apply_filters( 'tablepress_print_description_html_tag', 'span', $this->table['id'] );
 			$print_description_css_class = apply_filters( 'tablepress_print_description_css_class', "tablepress-table-description tablepress-table-description-id-{$this->table['id']}", $this->table['id'] );
-			$description_html = "<{$print_description_html_tag} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
-			$print_description_position = apply_filters( 'tablepress_print_description_position', $this->render_options['print_description_position'], $this->table['id'] );
-			if ( 'above' == $print_description_position )
-				$output .= $description_html;
+			$print_description_html = "<{$print_description_html_tag} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
 		}
+
+		if ( 'above' == $this->render_options['print_name'] )
+			$output .= $print_name_html;
+		if ( 'above' == $this->render_options['print_description'] )
+			$output .= $print_description_html;
 
 		$thead = '';
 		$tfoot = '';
@@ -380,7 +378,7 @@ class TablePress_Render {
 		}
 
 		// <caption> tag (possibly with "Edit" link)
-		$caption = apply_filters( 'tablepress_print_caption_tag', '', $this->table );
+		$caption = apply_filters( 'tablepress_print_caption_text', '', $this->table );
 		$caption_style = $caption_class = '';
 		if ( ! empty( $caption ) )
 			$caption_class = apply_filters( 'tablepress_print_caption_class', "tablepress-table-caption tablepress-table-caption-id-{$this->table['id']}", $this->table['id'] );
@@ -431,10 +429,10 @@ class TablePress_Render {
 		$output .= "</table>\n";
 
 		// name/description below table (HTML already generated above)
-		if ( $this->render_options['print_name'] && 'below' == $print_name_position )
-				$output .= $name_html;
-		if ( $this->render_options['print_description'] && 'below' == $print_description_position )
-				$output .= $description_html;
+		if ( 'below' == $this->render_options['print_name'] )
+			$output .= $print_name_html;
+		if ( 'below' == $this->render_options['print_description'] )
+			$output .= $print_description_html;
 
 		$this->output = apply_filters( 'tablepress_table_output', $output , $this->table, $this->render_options );
 	}
@@ -523,7 +521,7 @@ class TablePress_Render {
 		$row_class = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] )
 			$row_class .= ( 1 == ($row_idx % 2) ) ? ' even' : ' odd';
-		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_idx + 1 );
+		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_cells, $row_idx + 1 );
 		if ( ! empty( $row_class ) )
 			$row_class = " class=\"{$row_class}\"";
 
@@ -561,15 +559,28 @@ class TablePress_Render {
 <style type="text/css">
 .tablepress {
 	border-collapse: collapse;
-	border: 2px solid #000;
+	border: 2px solid #000000;
 	margin: 10px auto;
 }
 .tablepress td,
 .tablepress th {
 	box-sizing: border-box;
 	width: 200px;
-	border: 1px solid #ddd;
+	border: 1px solid #dddddd;
 	padding: 3px;
+}
+.tablepress thead tr,
+.tablepress tfoot tr {
+	background-color: #e6eeee;
+}
+.tablepress tbody tr.even {
+	background-color: #ffffff;
+}
+.tablepress tbody tr.odd {
+	background-color: #eeeeee;
+}
+.tablepress .row-hover tr:hover {
+	background-color: #d0d0d6;
 }
 </style>
 CSS;
