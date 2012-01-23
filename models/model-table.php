@@ -200,17 +200,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table_ids = array_keys( $table_post );
 		$post_ids = array_values( $table_post );
 
-		// get all table posts with one query, @see get_post() in WordPress, to prime the cache
-		global $wpdb;
-		$post_ids_list = implode( ',', $post_ids );
-		$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
-		foreach ( $all_posts as $single_post ) {
-			_get_post_ancestors($single_post);
-			$single_post = sanitize_post( $single_post, 'raw' );
-			wp_cache_add( $single_post->ID, $single_post, 'posts' );
-		}
-		// get all post meta data for all table posts, @see get_post_meta()
-		update_meta_cache( 'post', $post_ids );
+		// load all table posts with one query, to prime the cache
+		$this->model_post->load_posts( $post_ids );
 
 		// this loop now uses the WP cache
 		foreach ( $table_ids as $table_id ) {

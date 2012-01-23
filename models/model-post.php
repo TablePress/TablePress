@@ -91,6 +91,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'to_ping' => ''
 		);
 		$post = array_merge( $default_post, $post );
+		$post = add_magic_quotes( $post );
 		$post_id = wp_insert_post( $post, false ); // false means: no WP_Error object on error, but int 0
 		return $post_id;
 	}
@@ -125,6 +126,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'to_ping' => ''
 		);
 		$post = array_merge( $default_post, $post );
+		$post = add_magic_quotes( $post );
 		$post_id = wp_update_post( $post );
 		return $post_id;
 	}
@@ -135,7 +137,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 * @uses get_post()
 	 *
-	 * @param int Post ID
+	 * @param int $post_id Post ID
 	 * @return array|bool Post on success, false on error
 	 */
 	public function get( $post_id ) {
@@ -152,7 +154,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 * @uses wp_delete_post()
 	 *
-	 * @param int Post ID
+	 * @param int $post_id Post ID
 	 * @return array|bool Post on success, false on error
 	 */
 	public function delete( $post_id ) {
@@ -167,7 +169,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 * @uses wp_trash_post()
 	 *
-	 * @param int Post ID
+	 * @param int $post_id Post ID
 	 * @return array|bool Post on success, false on error
 	 */
 	public function trash( $post_id ) {
@@ -182,12 +184,33 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 * @uses wp_untrash_post()
 	 *
-	 * @param int Post ID
+	 * @param int $post_id Post ID
 	 * @return array|bool Post on success, false on error
 	 */
 	public function untrash( $post_id ) {
 		$post = wp_untrash_post( $post_id );
 		return $post;
+	}
+
+	/**
+	 * Load all posts with one query, to prime the cache
+	 *
+	 * @see get_post()
+	 * @since 1.0.0
+	 *
+	 * @param array $post_ids List of Post IDs
+	 */
+	public function load_posts( $post_ids ) {
+		global $wpdb;
+		$post_ids_list = implode( ',', $post_ids );
+		$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
+		foreach ( $all_posts as $single_post ) {
+			_get_post_ancestors($single_post);
+			$single_post = sanitize_post( $single_post, 'raw' );
+			wp_cache_add( $single_post->ID, $single_post, 'posts' );
+		}
+		// get all post meta data for all table posts, @see get_post_meta()
+		update_meta_cache( 'post', $post_ids );
 	}
 
 	/**
@@ -212,10 +235,11 @@ class TablePress_Post_Model extends TablePress_Model {
 	 *
 	 * @param int $post_id ID of the post for which the field shall be added
 	 * @param string $field Name of the post meta field
-	 * @param string $value Value of the post meta field
+	 * @param string $value Value of the post meta field (not slashed)
 	 * @return bool True on success, false on error
 	 */
 	public function add_meta_field( $post_id, $field, $value ) {
+		$value = addslashes( $value ); // WP expects a slashed value...
 		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique
 		return $success;
 	}
@@ -229,11 +253,12 @@ class TablePress_Post_Model extends TablePress_Model {
 	 *
 	 * @param int $post_id ID of the post for which the field shall be updated
 	 * @param string $field Name of the post meta field
-	 * @param string $value Value of the post meta field
+	 * @param string $value Value of the post meta field (not slashed)
 	 * @param string $prev_value (optional) Previous value of the post meta field
 	 * @return bool True on success, false on error
 	 */
 	public function update_meta_field( $post_id, $field, $value, $prev_value = '' ) {
+		$value = addslashes( $value ); // WP expects a slashed value...
 		$success = update_post_meta( $post_id, $field, $value, $prev_value );
 		return $success;
 	}

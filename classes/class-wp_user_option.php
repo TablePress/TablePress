@@ -54,7 +54,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 * @uses is_user_logged_in(), update_user_option()
 	 *
 	 * @param string $option_name Name of the WP User Option
-	 * @param mixed $new_value New value of the WP User Option
+	 * @param string $new_value New value of the WP User Option (not slashed)
 	 * @return bool True on success, false on failure
 	 */
 	protected function _update_option( $option_name, $new_value ) {
@@ -62,6 +62,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 		if ( ! is_user_logged_in() )
 			return false;
 
+		$new_value = addslashes( $new_value ); // WP expects a slashed value...
 		return update_user_option( get_current_user_id(), $option_name, $new_value, false );
 	}
 

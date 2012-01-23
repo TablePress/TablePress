@@ -139,7 +139,7 @@ class TablePress_WP_Option {
 	 * @uses update_option()
 	 *
 	 * @param string $option_name Name of the WP Option
-	 * @param mixed $new_value New value of the WP Option
+	 * @param string $new_value New value of the WP Option
 	 * @return bool True on success, false on failure
 	 */
 	protected function _update_option( $option_name, $new_value ) {
