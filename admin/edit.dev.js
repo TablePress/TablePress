@@ -746,9 +746,19 @@ jQuery(document).ready( function( $ ) {
 						var $textarea = $(this),
 							col_idx = $textarea.parent().index(),
 							row_idx = $textarea.closest( 'tr' ).index();
-						if ( ( '#rowspan#' == span ) && ( 0 == row_idx ) ) {
-							alert( tablepress_strings.no_rowspan_first_row );
-							return;
+						if ( '#rowspan#' == span ) {
+							if ( 0 == row_idx ) {
+								alert( tablepress_strings.no_rowspan_first_row );
+								return;
+							}
+							if ( tp.table.head && 1 == row_idx ) {
+								alert( tablepress_strings.no_rowspan_table_head );
+								return;
+							}
+							if ( tp.table.foot && ( tp.table.rows - 1 ) == row_idx ) {
+								alert( tablepress_strings.no_rowspan_table_foot );
+								return;
+							}
 						} else if ( ( '#colspan#' == span ) && ( tp.table.no_data_columns_pre == col_idx ) ) {
 							alert( tablepress_strings.no_colspan_first_col );
 							return;

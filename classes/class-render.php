@@ -76,7 +76,7 @@ class TablePress_Render {
 	 *
 	 * @var array
 	 */
-	var $rowspan = array();
+	protected $rowspan = array();
 
 	/**
 	 * Buffer to store the counts of colspan per row, initialized in _render_table()
@@ -85,8 +85,26 @@ class TablePress_Render {
 	 *
 	 * @var array
 	 */
-	var $colspan = array();
+	protected $colspan = array();
 
+	/**
+	 * Index of the last row of the visible data in the table, set in _render_table()
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
+	protected $last_row_idx;
+
+	/**
+	 * Index of the last column of the visible data in the table, set in _render_table()
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
+	protected $last_column_idx;
+	
 	/**
 	 * Initialize the Rendering class, include the EvalMath class
 	 *
@@ -343,11 +361,12 @@ class TablePress_Render {
 		$tfoot = '';
 		$tbody = array();
 
-		$last_row_idx = $num_rows - 1;
+		$this->last_row_idx = $num_rows - 1;
+		$this->last_column_idx = $num_columns - 1;
 		// loop through rows in reversed order, to search for rowspan trigger keyword
-		for ( $row_idx = $last_row_idx; $row_idx >= 0; $row_idx-- )	 {
+		for ( $row_idx = $this->last_row_idx; $row_idx >= 0; $row_idx-- )	 {
 			// last row, need to check for footer (but only if at least two rows)
-			if ( $last_row_idx == $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
+			if ( $this->last_row_idx == $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
 				$tfoot = $this->_render_row( $row_idx, 'th' );
 				continue;
 			}
@@ -431,9 +450,8 @@ class TablePress_Render {
 	 */
 	protected function _render_row( $row_idx, $tag ) {
 		$row_cells = array();
-		$last_col_idx = count( $this->table['data'][ $row_idx ] ) - 1;
 		// loop through cells in reversed order, to search for colspan or rowspan trigger words
-		for ( $col_idx = $last_col_idx; $col_idx >= 0; $col_idx-- )	 {
+		for ( $col_idx = $this->last_column_idx; $col_idx >= 0; $col_idx-- )	 {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
 			// print formulas that are escaped with '= (like in Excel) as text:
@@ -444,28 +462,38 @@ class TablePress_Render {
 			$cell_content = do_shortcode( $this->safe_output( $cell_content ) );
 			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 
-			// @TODO: Prohibit spanning into/out of head, foot, or first column th
-			if ( $this->span_trigger['span'] == $cell_content ) { // there will be a combined col- and rowspan
-				// check for #span# in first column or first row, which doesn't make sense
-				if ( 0 != $col_idx && 0 != $row_idx )
-					continue;
-				$cell_content = '&nbsp;'; // in that case we set the cell content from #span# to a space
-			} elseif ( $this->span_trigger['colspan'] == $cell_content ) { // there will be a colspan
-				// check for #colspan# in first column, which doesn't make sense
-				if ( 0 != $col_idx ) {
-					$this->colspan[ $row_idx ]++; // increase counter for colspan in this row
-					$this->rowspan[ $col_idx ] = 1; // reset counter for rowspan in this column, combined col- and rowspan might be happening
-					continue;
-				}
-				$cell_content = '&nbsp;'; // in that case we set the cell content from #colspan# to a space
-			} elseif ( $this->span_trigger['rowspan'] == $cell_content ) { // there will be a rowspan
+			if ( $this->span_trigger['rowspan'] == $cell_content ) { // there will be a rowspan
 				// check for #rowspan# in first row, which doesn't make sense
-				if ( 0 != $row_idx ) {
+				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx )
+				|| ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
+				|| ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) ) { // no rowspan out of table_foot
 					$this->rowspan[ $col_idx ]++; // increase counter for rowspan in this column
 					$this->colspan[ $row_idx ] = 1; // reset counter for colspan in this row, combined col- and rowspan might be happening
 					continue;
 				}
-				$cell_content = '&nbsp;'; // in that case we set the cell content from #rowspan# to a space
+				// invalid rowspan, so we set cell content from #rowspan# to a space
+				$cell_content = '&nbsp;';
+			} elseif ( $this->span_trigger['colspan'] == $cell_content ) { // there will be a colspan
+				// check for #colspan# in first column, which doesn't make sense
+				if ( $col_idx > 1
+				|| ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) { // no colspan into first column head
+					$this->colspan[ $row_idx ]++; // increase counter for colspan in this row
+					$this->rowspan[ $col_idx ] = 1; // reset counter for rowspan in this column, combined col- and rowspan might be happening
+					continue;
+				}
+				// invalid colspan, so we set cell content from #colspan# to a space
+				$cell_content = '&nbsp;';
+			} elseif ( $this->span_trigger['span'] == $cell_content ) { // there will be a combined col- and rowspan
+				// check for #span# in first column or first or last row, which is not always possible
+				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx && $col_idx > 1 )
+				// we are in first, second, or last row or in the first or second column, so more checks are necessary
+				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
+					&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) // and no colspan into first column head
+				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // no rowspan out of table_foot
+				 	&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
+					continue;
+				// invalid span, so we set cell content from #span# to a space
+				$cell_content = '&nbsp;';
 			}
 
 			$span_attr = '';

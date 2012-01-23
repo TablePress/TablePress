@@ -80,7 +80,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'sort_asc' => __( 'Sort ascending', 'tablepress' ),
 				'sort_desc' => __( 'Sort descending', 'tablepress' ),
 				'no_rowspan_first_row' => 'You can not add rowspan to the first row!',
-				'no_colspan_first_col' => 'You can not add colspan to the first column!'
+				'no_colspan_first_col' => 'You can not add colspan to the first column!',
+				'no_rowspan_table_head' => 'You can not add rowspan into the table head row!',
+				'no_rowspan_table_foot' => 'You can not add rowspan out of the table foot row!'
 			), $this->action_messages )
 		) );
 
