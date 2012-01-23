@@ -405,6 +405,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					}
 
 					// adjust name and options of copied table
+					if ( '' == trim( $table['name'] ) )
+						$table['name'] = __( '(no name)', 'tablepress' );
 					$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
 					$updated_options = array(
 						'last_action' => 'copy',
@@ -460,6 +462,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$edit_table['number']['rows'] = intval( $edit_table['number']['rows'] );
 		$edit_table['number']['columns'] = intval( $edit_table['number']['columns'] );
 		if ( ! isset( $edit_table['data'] )
+		|| 0 === $edit_table['number']['rows']
+		|| 0 === $edit_table['number']['columns']
 		|| $edit_table['number']['rows'] !== count( $edit_table['data'] )
 		|| $edit_table['number']['columns'] !== count( $edit_table['data'][0] ) )
 			$success = false;
@@ -656,6 +660,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
 		// adjust name and options of copied table
+		if ( '' == trim( $table['name'] ) )
+			$table['name'] = __( '(no name)', 'tablepress' );
 		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
 		$updated_options = array(
 			'last_action' => 'copy',
@@ -687,9 +693,45 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false === $table )
 			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 
+        $default_atts = array(
+            'id' => 0,
+            'column_widths' => array(),
+            'alternating_row_colors' => -1,
+            'row_hover' => -1,
+            'table_head' => -1,
+            'first_column_th' => false,
+            'table_foot' => -1,
+            'print_name' => -1,
+            'print_name_position' => -1,
+            'print_description' => -1,
+            'print_description_position' => -1,
+            'cache_table_output' => -1,
+            'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
+            'use_tablesorter' => -1,
+            'datatables_sort' => -1,
+            'datatables_paginate' => -1,
+            'datatables_paginate_entries' => -1,
+            'datatables_lengthchange' => -1,
+            'datatables_filter' => -1,
+            'datatables_info' => -1,
+            'datatables_tabletools' => -1,
+            'datatables_customcommands' => -1,
+            'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+            'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+            'show_rows' => array(),
+            'show_columns' => array(),
+            'hide_rows' => array(),
+            'hide_columns' => array(),
+            'cellspacing' => false,
+            'cellpadding' => false,
+            'border' => false,
+            'html_id' => 'test'
+        );
+		$render_options = shortcode_atts( $default_atts, $table['options'] );
+
 		// create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
-		$_render->set_input( $table );
+		$_render->set_input( $table, $render_options );
 
 		$action = 'preview';
 		$data = array(

@@ -93,7 +93,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$success = false;
 
 		// Number of rows and columns
-		if ( $edit_table['rows'] !== count( $edit_table['data'] )
+		if ( 0 === $edit_table['rows'] || 0 === $edit_table['columns']
+		|| $edit_table['rows'] !== count( $edit_table['data'] )
 		|| $edit_table['columns'] !== count( $edit_table['data'][0] ) )
 			$success = false;
 
@@ -103,27 +104,19 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$success = false;
 
 		// count hidden and visible rows
-		$visibility_rows = array_count_values( $edit_table['visibility']['rows'] );
-		// set non-existing values to 0
-		if ( ! isset( $visibility_rows[ 0 ] ) )
-			$visibility_rows[ 0 ] = 0;
-		if ( ! isset( $visibility_rows[ 1 ] ) )
-			$visibility_rows[ 1 ] = 0;
+		$num_visible_rows = count( array_keys( $edit_table['visibility']['rows'], 1 ) );
+		$num_hidden_rows = count( array_keys( $edit_table['visibility']['rows'], 0 ) );
 		// Check number of hidden and visible rows
-		if ( $edit_table['visibility']['hidden_rows'] !== $visibility_rows[ 0 ]
-		|| ( $edit_table['rows'] - $edit_table['visibility']['hidden_rows'] ) !== $visibility_rows[ 1 ] )
+		if ( $edit_table['visibility']['hidden_rows'] !== $num_hidden_rows
+		|| ( $edit_table['rows'] - $edit_table['visibility']['hidden_rows'] ) !== $num_visible_rows )
 			$success = false;
 
 		// count hidden and visible columns
-		$visibility_columns = array_count_values( $edit_table['visibility']['columns'] );
-		// set non-existing values to 0
-		if ( ! isset( $visibility_columns[ 0 ] ) )
-			$visibility_columns[ 0 ] = 0;
-		if ( ! isset( $visibility_columns[ 1 ] ) )
-			$visibility_columns[ 1 ] = 0;
+		$num_visible_columns = count( array_keys( $edit_table['visibility']['columns'], 1 ) );
+		$num_hidden_columns = count( array_keys( $edit_table['visibility']['columns'], 0 ) );
 		// Check number of hidden and visible columns
-		if ( $edit_table['visibility']['hidden_columns'] !== $visibility_columns[ 0 ]
-		|| ( $edit_table['columns'] - $edit_table['visibility']['hidden_columns'] ) !== $visibility_columns[ 1 ] )
+		if ( $edit_table['visibility']['hidden_columns'] !== $num_hidden_columns
+		|| ( $edit_table['columns'] - $edit_table['visibility']['hidden_columns'] ) !== $num_visible_columns )
 			$success = false;
 
 		// generate the response
@@ -207,11 +200,47 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$preview_table['visibility'] = json_decode( $preview_table['visibility'], true );
 		$preview_table['options'] = json_decode( $preview_table['options'], true );
 		$preview_table['data'] = json_decode( $preview_table['data'], true );
-			// make consistency checks here?
+		// make consistency checks here?
+
+        $default_atts = array(
+            'id' => 0,
+            'column_widths' => array(),
+            'alternating_row_colors' => -1,
+            'row_hover' => -1,
+            'table_head' => -1,
+            'first_column_th' => false,
+            'table_foot' => -1,
+            'print_name' => -1,
+            'print_name_position' => -1,
+            'print_description' => -1,
+            'print_description_position' => -1,
+            'cache_table_output' => -1,
+            'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
+            'use_tablesorter' => -1,
+            'datatables_sort' => -1,
+            'datatables_paginate' => -1,
+            'datatables_paginate_entries' => -1,
+            'datatables_lengthchange' => -1,
+            'datatables_filter' => -1,
+            'datatables_info' => -1,
+            'datatables_tabletools' => -1,
+            'datatables_customcommands' => -1,
+            'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+            'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+            'show_rows' => array(),
+            'show_columns' => array(),
+            'hide_rows' => array(),
+            'hide_columns' => array(),
+            'cellspacing' => false,
+            'cellpadding' => false,
+            'border' => false,
+            'html_id' => 'test'
+        );
+		$render_options = shortcode_atts( $default_atts, $preview_table['options'] );
 
 		// create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
-		$_render->set_input( $preview_table );
+		$_render->set_input( $preview_table, $render_options );
 		$head_html = $_render->get_preview_css();
 		$body_html = $_render->get_output();
 
