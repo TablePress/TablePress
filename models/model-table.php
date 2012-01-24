@@ -124,9 +124,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'ID' => $post_id,
 			'post_title' => $table['name'],
 			'post_excerpt' => $table['description'],
-//			'post_author' => $table['author'],
-//			'post_modified' => $table['last_modified'],
-			'post_content' => json_encode( $table['data'] ),
+			'post_content' => json_encode( $table['data'] )
 		);
 
 		return $post;
@@ -146,9 +144,10 @@ class TablePress_Table_Model extends TablePress_Model {
 			'id' => $table_id,
 			'name' => $post['post_title'],
 			'description' => $post['post_excerpt'],
-//			'author' => $post['post_author'],
-//			'last_modified' => $post['post_modified'],
-			'data' => json_decode( $post['post_content'], true ),
+			'author' => $post['post_author'],
+			'created' => $post['post_date'],
+			'last_modified' => $post['post_modified'],
+			'data' => json_decode( $post['post_content'], true )
 		);
 
 		return $table;
@@ -455,9 +454,11 @@ class TablePress_Table_Model extends TablePress_Model {
 			'name' => '',
 			'description' => '',
 			'data' => array( array( '' ) ), // one empty cell
+			'created' => current_time( 'mysql' ),
+			'last_modified' => current_time( 'mysql' ),
+			'author' => get_current_user_id(),
 			'options' => array(
-				'last_modified' => 0,
-				'last_editor' => 0,
+				'last_editor' => get_current_user_id(),
 				'table_head' => true,
 				'table_foot' => true,
 				'alternating_row_colors' => true,
@@ -556,12 +557,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table['name'] = $new_table['name'];
 		$table['description'] = $new_table['description'];
 		$table['data'] = $new_table['data'];
+		// $table['author'] = get_current_user_id(); // we don't want this, as it would override the original author
+		// $table['created'] = current_time( 'mysql' ); // we don't want this, as it would override the original datetime
+		$table['last_modified'] = current_time( 'mysql' );
+		$table['options']['last_editor'] = get_current_user_id();
 		// Table Options
-		$modification_options = array(
-			'last_modified' => current_time( 'timestamp' ),
-			'last_editor' => get_current_user_id()
-		);
-		$table['options'] = array_merge( $table['options'], $modification_options );
 		if ( isset( $new_table['options'] ) ) {
 			// specials check for certain options -> need to be unset, so that they are not merged in the next step
 			if ( isset( $new_table['options']['extra_css_classes'] ) ) {

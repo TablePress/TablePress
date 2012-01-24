@@ -244,7 +244,7 @@ abstract class TablePress {
 	 * @param string $separator (optional) Separator between date and time
 	 * @return string Nice looking string with the date and time
 	 */
-	function format_datetime( $datetime, $type = 'timestamp', $separator = ' ' ) {
+	function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
 		if ( 'mysql' == $type )
 			return mysql2date( get_option( 'date_format' ), $datetime ) . $separator . mysql2date( get_option( 'time_format' ), $datetime );
 		else
@@ -259,7 +259,7 @@ abstract class TablePress {
 	 */
 	function get_last_editor( $user_id ) {
 		$user = get_userdata( $user_id );
-		return ( $user && isset( $user->nickname ) ) ? $user->nickname : '';
+		return ( $user && isset( $user->display_name ) ) ? $user->display_name : '';
 	}
 
 	/**

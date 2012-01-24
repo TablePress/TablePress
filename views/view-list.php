@@ -196,8 +196,8 @@ else:
 			</div>
 		</td>
 		<td><?php echo esc_html( $table['description'] ); ?></td>
-		<td><?php echo TablePress::get_last_editor( $table['options']['last_editor'] ); ?></td>
-		<td><?php echo TablePress::format_datetime( $table['options']['last_modified'], 'timestamp', '<br/>' ); ?></td>
+		<td>A: <?php echo TablePress::get_last_editor( $table['author'] ); ?> LM: <?php echo TablePress::get_last_editor( $table['options']['last_editor'] ); ?></td>
+		<td>C: <?php echo TablePress::format_datetime( $table['created'], 'mysql', '<br/>' ); ?><br/>LM: <?php echo TablePress::format_datetime( $table['last_modified'], 'mysql', '<br/>' ); ?></td>
 	</tr>
 <?php
 	endforeach;

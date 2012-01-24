@@ -128,7 +128,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$response['table_id'] = $table['id'];
 			$response['new_edit_nonce'] = wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) );
 			$response['new_preview_nonce'] = wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) );
-			$response['last_modified'] = TablePress::format_datetime( $table['options']['last_modified'] );
+			$response['last_modified'] = TablePress::format_datetime( $table['last_modified'] );
 			$response['last_editor'] = TablePress::get_last_editor( $table['options']['last_editor'] );
 		}
 
