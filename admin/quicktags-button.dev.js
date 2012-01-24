@@ -19,7 +19,7 @@ jQuery(document).ready( function($) {
 		if ( $( 'body.admin-bar' ).length )
 			H -= 28;
 
-		tb_show( tablepress_editor_button.popup_title, tablepress_editor_button.popup_url + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
+		tb_show( tablepress_editor_button.thickbox_title, tablepress_editor_button.thickbox_url + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
 	}
 
 	/**

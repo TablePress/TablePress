@@ -120,17 +120,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array Post
 	 */
 	protected function _table_to_post( $table, $post_id ) {
-		if ( empty( $table['name'] ) )
-			$table['name'] = '';
-		if ( empty( $table['description'] ) )
-			$table['description'] = '';
-		if ( empty( $table['data'] ) )
-			$table['data'] = array( array( '' ) );
-
 		$post = array(
 			'ID' => $post_id,
 			'post_title' => $table['name'],
 			'post_excerpt' => $table['description'],
+//			'post_author' => $table['author'],
+//			'post_modified' => $table['last_modified'],
 			'post_content' => json_encode( $table['data'] ),
 		);
 
@@ -151,7 +146,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			'id' => $table_id,
 			'name' => $post['post_title'],
 			'description' => $post['post_excerpt'],
-			'author' => $post['post_author'],
+//			'author' => $post['post_author'],
+//			'last_modified' => $post['post_modified'],
 			'data' => json_decode( $post['post_content'], true ),
 		);
 
@@ -215,7 +211,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table Table (needs to include $table['id'])
+	 * @param array $table Table (needs to have $table['id']!)
 	 * @return mixed False on error, int table ID on success
 	 */
 	public function save( $table ) {
@@ -232,14 +228,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( 0 === $new_post_id || $post_id !== $new_post_id )
 			return false;
 
-		if ( ! isset( $table['options'] ) )
-			$table['options'] = array();
 		$options_saved = $this->_update_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved )
 			return false;
 
-		if ( ! isset( $table['visibility'] ) )
-			$table['visibility'] = array();
 		$visibility_saved = $this->_update_table_visibility( $new_post_id, $table['visibility'] );
 		if ( ! $visibility_saved )
 			return false;
@@ -253,12 +245,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table Table (without $table['id'], otherwise it gets removed)
+	 * @param array $table Table ($table['id'] is not necessary)
 	 * @return mixed False on error, int table ID of the new table on success
 	 */
 	public function add( $table ) {
-		if ( isset( $table['id'] ) )
-			unset( $table['id'] );
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
@@ -266,14 +256,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( 0 === $new_post_id )
 			return false;
 
-		if ( ! isset( $table['options'] ) )
-			$table['options'] = array();
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved )
 			return false;
 
-		if ( ! isset( $table['visibility'] ) )
-			$table['visibility'] = array();
 		$visibility_saved = $this->_add_table_visibility( $new_post_id, $table['visibility'] );
 		if ( ! $visibility_saved )
 			return false;
@@ -285,11 +271,38 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
+	 * Create a copy of a table and add it
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $table_id ID of the table to be copied
+	 * @return mixed False on error, int table ID of the new table on success
+	 */
+	public function copy( $table_id ) {
+		$table = $this->load( $table_id );
+		if ( false === $table )
+			return false;
+
+		// Adjust name of copied table
+		if ( '' == trim( $table['name'] ) )
+			$table['name'] = __( '(no name)', 'tablepress' );
+		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
+
+		// Merge this data into an empty table template
+		$table = $this->prepare_table( $this->get_table_template(), $table, false );
+		if ( false === $table )
+			return false;
+
+		// Add the copied table
+		return $this->add( $table );
+	}
+
+	/**
 	 * Delete a table (and its options)
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $table_id Table ID
+	 * @param string $table_id ID of the table to be deleted
 	 * @return bool False on error, true on success
 	 */
 	public function delete( $table_id ) {
@@ -400,6 +413,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( 0 === $post_id )
 			return false;
 
+		// Check new ID for correct format (letters, numbers, -, and _ only)
+		if ( 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) )
+			return false;
+
 		if ( $this->table_exists( $new_id ) )
 			return false;
 
@@ -423,6 +440,142 @@ class TablePress_Table_Model extends TablePress_Model {
 		} while ( $this->table_exists( $tables['last_id'] ) );
 		$this->tables->update( $tables );
 		return (string) $tables['last_id'];
+	}
+
+	/**
+	 * Get the template for an empty table
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Empty table
+	 */
+	public function get_table_template() {
+		$table = array(
+			'id' => false,
+			'name' => '',
+			'description' => '',
+			'data' => array( array( '' ) ), // one empty cell
+			'options' => array(
+				'last_modified' => 0,
+				'last_editor' => 0,
+				'table_head' => true,
+				'table_foot' => true,
+				'alternating_row_colors' => true,
+				'row_hover' => true,
+				'print_name' => 'no',
+				'print_description' => 'no',
+				'extra_css_classes' => ''
+			),
+			'visibility' => array(
+				'rows' => array( 1 ), // one visbile row
+				'columns' => array( 1 ) // one visible column
+			)
+		);
+		return $table;
+	}
+
+	/**
+	 * Combine two tables (e.g. an existing one with the updated data, or an empty one with new data)
+	 * Performs consistency checks on data and visibility settings
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $table Table to merge into
+	 * @param array $new_table Table to merge
+	 * @param bool $table_size_check (optional) Whether to check the number of rows and columns (e.g. not necessary for added or copied tables)
+	 * @param bool $extended_visibility_check (optional) Whether to check the counts of hidden rows and columns (only possible for Admin_AJAX controller as of now)
+	 * @return array|bool Merged table on success, false on error
+	 */
+	public function prepare_table( $table, $new_table, $table_size_check = true, $extended_visibility_check = false ) {
+		// Table ID must be the same (if there was an ID already)
+		if ( false !== $table['id'] ) {
+			if ( $table['id'] !== $new_table['id'] )
+				return false;
+		}
+
+		// Name, description, and data array need to exist, data must not be empty, the others could be ''
+		if ( ! isset( $new_table['name'] )
+		|| ! isset( $new_table['description'] )
+		|| empty( $new_table['data'] )
+		|| empty( $new_table['data'][0] ) )
+			return false;
+
+		// Visibility needs to exist
+		if ( ! isset( $new_table['visibility'] )
+		|| ! isset( $new_table['visibility']['rows'] )
+		|| ! isset( $new_table['visibility']['columns'] ) )
+			return false;
+		$new_table['visibility']['rows'] = array_map( 'intval', $new_table['visibility']['rows'] );
+		$new_table['visibility']['columns'] = array_map( 'intval', $new_table['visibility']['columns'] );
+
+		// Check dimensions of table data array (not done for newly added or copied tables)
+		if ( $table_size_check ) {
+			if ( empty( $new_table['number'] )
+			|| ! isset( $new_table['number']['rows'] )
+			|| ! isset( $new_table['number']['columns'] ) )
+				return false;
+			// Table data needs to be ok, and have the correct number of rows and columns
+			$new_table['number']['rows'] = intval( $new_table['number']['rows'] );
+			$new_table['number']['columns'] = intval( $new_table['number']['columns'] );
+			if ( 0 === $new_table['number']['rows']
+			|| 0 === $new_table['number']['columns']
+			|| $new_table['number']['rows'] !== count( $new_table['data'] )
+			|| $new_table['number']['columns'] !== count( $new_table['data'][0] ) )
+				return false;
+			// Visibility also needs to have correct dimensions
+			if ( $new_table['number']['rows'] !== count( $new_table['visibility']['rows'] )
+			|| $new_table['number']['columns'] !== count( $new_table['visibility']['columns'] ) )
+				return false;
+
+			if ( $extended_visibility_check ) { // only for Admin_AJAX controller
+				if ( ! isset( $new_table['number']['hidden_rows'] )
+				|| ! isset( $new_table['number']['hidden_columns'] ) )
+					return false;
+				$new_table['number']['hidden_rows'] = intval( $new_table['number']['hidden_rows'] );
+				$new_table['number']['hidden_columns'] = intval( $new_table['number']['hidden_columns'] );
+				// count hidden and visible rows
+				$num_visible_rows = count( array_keys( $new_table['visibility']['rows'], 1 ) );
+				$num_hidden_rows = count( array_keys( $new_table['visibility']['rows'], 0 ) );
+				// Check number of hidden and visible rows
+				if ( $new_table['number']['hidden_rows'] !== $num_hidden_rows
+				|| ( $new_table['number']['rows'] - $new_table['number']['hidden_rows'] ) !== $num_visible_rows )
+					return false;
+				// count hidden and visible columns
+				$num_visible_columns = count( array_keys( $new_table['visibility']['columns'], 1 ) );
+				$num_hidden_columns = count( array_keys( $new_table['visibility']['columns'], 0 ) );
+				// Check number of hidden and visible columns
+				if ( $new_table['number']['hidden_columns'] !== $num_hidden_columns
+				|| ( $new_table['number']['columns'] - $new_table['number']['hidden_columns'] ) !== $num_visible_columns )
+					return false;
+			}
+		}
+
+		// All checks were successful, replace original values with new ones
+		// $table['id'] is either false (and remains false) or already equal to $new_table['id']
+		$table['new_id'] = isset( $new_table['new_id'] ) ? $new_table['new_id'] : $table['id'];
+		$table['name'] = $new_table['name'];
+		$table['description'] = $new_table['description'];
+		$table['data'] = $new_table['data'];
+		// Table Options
+		$modification_options = array(
+			'last_modified' => current_time( 'timestamp' ),
+			'last_editor' => get_current_user_id()
+		);
+		$table['options'] = array_merge( $table['options'], $modification_options );
+		if ( isset( $new_table['options'] ) ) {
+			// specials check for certain options -> need to be unset, so that they are not merged in the next step
+			if ( isset( $new_table['options']['extra_css_classes'] ) ) {
+				$table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $new_table['options']['extra_css_classes'] );
+				unset( $new_table['options']['extra_css_classes'] );
+			}
+			// merge remaining new options
+			$table['options'] = array_merge( $table['options'], $new_table['options'] );
+		}
+		// Table Visibility
+		$table['visibility']['rows'] = array_map( 'intval', $new_table['visibility']['rows'] );
+		$table['visibility']['columns'] = array_map( 'intval', $new_table['visibility']['columns'] );
+
+		return $table;
 	}
 
 	/**

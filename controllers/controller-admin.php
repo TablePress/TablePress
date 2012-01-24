@@ -140,8 +140,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'editor_button' => array(
 				'caption' => __( 'Table', 'tablepress' ),
 				'title' => __( 'Insert a Table from TablePress', 'tablepress' ),
-				'popup_title' => __( 'Insert a Table from TablePress', 'tablepress' ),
-				'popup_url' => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' )
+				'thickbox_title' => __( 'Insert a Table from TablePress', 'tablepress' ),
+				'thickbox_url' => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' )
 			)
 		) );
 
@@ -388,36 +388,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// @TODO: caps check for selected bulk action
 
-		if ( ! empty( $_POST['table'] ) && is_array( $_POST['table'] ) )
-			$tables = stripslashes_deep( $_POST['table'] );
-		else
+		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => "error_no_selection" ) );
+		else
+			$tables = stripslashes_deep( $_POST['table'] );
 
 		$no_success = array(); // to store table IDs that failed
 
 		switch( $bulk_action ) {
 			case 'copy':
 				foreach ( $tables as $table_id ) {
-					$table = $this->model_table->load( $table_id );
-					if ( false === $table ) {
-						$no_success[] = $table_id;
-						continue;
-					}
-
-					// adjust name and options of copied table
-					if ( '' == trim( $table['name'] ) )
-						$table['name'] = __( '(no name)', 'tablepress' );
-					$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
-					$updated_options = array(
-						'last_action' => 'copy',
-						'last_modified' => current_time( 'timestamp' ),
-						'last_editor' => get_current_user_id(),
-					);
-					$table['options'] = array_merge( $table['options'], $updated_options );
-
-					$copy_table_id = $this->model_table->add( $table );
+					$copy_table_id = $this->model_table->copy( $table_id );
 					if ( false === $copy_table_id )
-						$no_success[] = $copy_table_id;
+						$no_success[] = $table_id;
 				}
 				break;
 			case 'delete':
@@ -442,84 +425,46 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function handle_post_action_edit() {
-		if ( empty( $_POST['table'] ) || empty( $_POST['table']['orig_id'] ) )
+		if ( empty( $_POST['table'] ) || empty( $_POST['table']['id'] ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
+		else
+			$edit_table = stripslashes_deep( $_POST['table'] );
 
-		$edit_table = stripslashes_deep( $_POST['table'] );
+		TablePress::check_nonce( 'edit', $edit_table['id'], 'nonce-edit-table' );
 
-		TablePress::check_nonce( 'edit', $edit_table['orig_id'], 'nonce-edit-table' );
+		// Options array must exist, so that checkboxes can be evaluated
+		if ( empty( $edit_table['options'] ) )
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 
-		// consistency checks
-		$success = true;
-		// Table ID can't be empty and must not contain illegal characters
-		if ( empty( $edit_table['id'] )
-		|| $edit_table['id'] != preg_replace( '/[^a-zA-Z0-9_-]/', '', $edit_table['id'] ) )
-			$success = false;
-		// Name, description, and number (rows/columns) array need to exist
-		if ( ! isset( $edit_table['name'] )
-		|| ! isset( $edit_table['description'] )
-		|| ! isset( $edit_table['number'] ) )
-			$success = false;
-		$edit_table['number']['rows'] = intval( $edit_table['number']['rows'] );
-		$edit_table['number']['columns'] = intval( $edit_table['number']['columns'] );
-		if ( ! isset( $edit_table['data'] )
-		|| 0 === $edit_table['number']['rows']
-		|| 0 === $edit_table['number']['columns']
-		|| $edit_table['number']['rows'] !== count( $edit_table['data'] )
-		|| $edit_table['number']['columns'] !== count( $edit_table['data'][0] ) )
-			$success = false;
-		if ( ! isset( $edit_table['visibility'] )
-		|| $edit_table['number']['rows'] !== count( $edit_table['visibility']['rows'] )
-		|| $edit_table['number']['columns'] !== count( $edit_table['visibility']['columns'] ) )
-			$success = false;
-
-		if ( false === $success )
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['orig_id'], 'message' => 'error_save' ) );
-
-		$table = $this->model_table->load( $edit_table['orig_id'] );
-		if ( false === $table ) // maybe somehow load a new table here?
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['orig_id'], 'message' => 'error_save' ) );
-
-		// replace original values with new ones from form fields
-		$table['name'] = $edit_table['name'];
-		$table['description'] = $edit_table['description'];
-		// Table Data
-		$table['data'] = $edit_table['data'];
-		// Table Options
-		$updated_options = array(
-			'last_action' => 'edit',
-			'last_modified' => current_time( 'timestamp' ),
-			'last_editor' => get_current_user_id()
-		);
-		$table['options'] = array_merge( $table['options'], $updated_options );
-		// check options that have a checkbox
+		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
 		$checkbox_options = array( 'table_head', 'table_foot', 'alternating_row_colors', 'row_hover' );
 		foreach ( $checkbox_options as $option ) {
-			$table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' == $edit_table['options'][$option] );
+			$edit_table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' === $edit_table['options'][$option] );
 		}
-		// check options that have a selectbox
-		$selectbox_options = array( 'print_name', 'print_description' );
-		foreach ( $selectbox_options as $option ) {
-			if ( isset( $edit_table['options'][$option] ) )
-				$table['options'][$option] = $edit_table['options'][$option];
-		}
-		if ( isset( $edit_table['options']['extra_css_classes'] ) )
-			$table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $edit_table['options']['extra_css_classes'] );
-		// Table Visibility
-		$table['visibility']['rows'] = array_map( 'intval', $edit_table['visibility']['rows'] );
-		$table['visibility']['columns'] = array_map( 'intval', $edit_table['visibility']['columns'] );
 
-		// Save updated Table
+		// Load existing table from DB
+		$table = $this->model_table->load( $edit_table['id'] );
+		if ( false === $table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
+
+		// Check consistency of new table, and then merge with existing table
+		$table = $this->model_table->prepare_table( $table, $edit_table );
+		if ( false === $table )
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
+
+		// Save updated table
 		$saved = $this->model_table->save( $table );
 		if ( false === $saved )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'error_save' ) );
 
-		if ( $table['id'] === $edit_table['id'] ) // if no table ID change necessary, we are done
+		// Check if ID change is desired
+		if ( $table['id'] === $table['new_id'] ) // if not, we are done
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save' ) );
 
-		$id_changed = $this->model_table->change_table_id( $table['id'], $edit_table['id'] );
+		// Change table ID
+		$id_changed = $this->model_table->change_table_id( $table['id'], $table['new_id'] );
 		if ( $id_changed )
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'success_save_success_id_change' ) );
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['new_id'], 'message' => 'success_save_success_id_change' ) );
 		else
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save_error_id_change' ) );
 	}
@@ -537,7 +482,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$add_table = stripslashes_deep( $_POST['table'] );
 
-		// sanity checks
+		// Perform sanity checks of posted data
+		// @TODO: maybe redirect to error instead of setting default values for name/description/numbers:
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
 		$description = ( isset( $add_table['description'] ) ) ? $add_table['description'] : '';
 		$num_rows = ( isset( $add_table['rows'] ) ) ? absint( $add_table['rows'] ) : 1;
@@ -547,28 +493,22 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $num_columns < 1 )
 			$num_columns = 1;
 
-		// create a new table array with default data
-		$table = array();
-		$table['name'] = $name;
-		$table['description'] = $description;
-		$table['data'] = array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) );
-		$table['options'] = array(
-			'last_action' => 'add',
-			'last_modified' => current_time( 'timestamp' ),
-			'last_editor' => get_current_user_id(),
-			'table_head' => true,
-			'table_foot' => true,
-			'alternating_row_colors' => true,
-			'row_hover' => true,
-			'print_name' => 'no',
-			'print_description' => 'no',
-			'extra_css_classes' => ''
+		// Create a new table array with information from the posted data
+		$new_table = array(
+			'name' => $name,
+			'description' => $description,
+			'data' => array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) ),
+			'visibility' => array(
+				'rows' => array_fill( 0, $num_rows, 1 ),
+				'columns' => array_fill( 0, $num_columns, 1 )
+			)
 		);
-		$table['visibility'] = array(
-			'rows' => array_fill( 0, $num_rows, 1 ),
-			'columns' => array_fill( 0, $num_columns, 1 )
-		);
+		// Merge this data into an empty table template
+		$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $new_table, false );
+		if ( false === $table )
+			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 
+		// Add the new table (and get its first ID)
 		$table_id = $this->model_table->add( $table );
 		if ( false === $table_id )
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
@@ -589,21 +529,22 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$posted_options = stripslashes_deep( $_POST['options'] );
 
+		// Valid new options that will be merged into existing ones
 		$new_options = array();
 
+		// Check each posted option value, and (maybe) add it to the new options
 		if ( ! empty( $posted_options['admin_menu_parent_page'] ) && '-' != $posted_options['admin_menu_parent_page'] ) {
 			$new_options['admin_menu_parent_page'] = $posted_options['admin_menu_parent_page'];
 			// re-init parent information, as TablePress::redirect() URL might be wrong otherwise
 			$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $posted_options['admin_menu_parent_page'] );
 			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ) );
 		}
-
 		if ( ! empty( $posted_options['plugin_language'] ) && '-' != $posted_options['plugin_language'] ) {
 			// maybe add check in array available languages
 			$new_options['plugin_language'] = $posted_options['plugin_language'];
 		}
 
-		// save gathered new options
+		// save gathered new options (will be merged into existing ones)
 		if ( ! empty( $new_options ) )
 			$this->model_options->update( $new_options );
 
@@ -671,24 +612,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false === $table_id ) // nonce check should actually catch this already
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
-		// load table to copy
-		$table = $this->model_table->load( $table_id );
-		if ( false === $table )
-			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
-
-		// adjust name and options of copied table
-		if ( '' == trim( $table['name'] ) )
-			$table['name'] = __( '(no name)', 'tablepress' );
-		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
-		$updated_options = array(
-			'last_action' => 'copy',
-			'last_modified' => current_time( 'timestamp' ),
-			'last_editor' => get_current_user_id(),
-		);
-		$table['options'] = array_merge( $table['options'], $updated_options );
-
-		$table_id = $this->model_table->add( $table );
-		if ( false === $table_id )
+		$copy_table_id = $this->model_table->copy( $table_id );
+		if ( false === $copy_table_id )
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
 		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
@@ -706,56 +631,23 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false === $table_id ) // nonce check should actually catch this already
 			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 
+		// Load existing table from DB
 		$table = $this->model_table->load( $table_id );
 		if ( false === $table )
-			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
+			wp_die( __( 'The table could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 
-        $default_atts = array(
-            'id' => 0,
-            'column_widths' => array(),
-            'alternating_row_colors' => -1,
-            'row_hover' => -1,
-            'table_head' => -1,
-            'first_column_th' => false,
-            'table_foot' => -1,
-            'print_name' => -1,
-            'print_description' => -1,
-            'cache_table_output' => -1,
-            'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
-            'use_datatables' => -1,
-            'datatables_sort' => -1,
-            'datatables_paginate' => -1,
-            'datatables_paginate_entries' => -1,
-            'datatables_lengthchange' => -1,
-            'datatables_filter' => -1,
-            'datatables_info' => -1,
-            'datatables_tabletools' => -1,
-            'datatables_customcommands' => -1,
-            'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
-            'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
-            'show_rows' => array(),
-            'show_columns' => array(),
-            'hide_rows' => array(),
-            'hide_columns' => array(),
-            'cellspacing' => false,
-            'cellpadding' => false,
-            'border' => false,
-            'html_id' => 'test'
-        );
-		$render_options = shortcode_atts( $default_atts, $table['options'] );
-
-		// create a render class instance
+		// Create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
+		// Merge desired options with default render options (as not all of them are stored in the table options, but are just Shortcode parameters)
+		$render_options = shortcode_atts( $_render->get_default_render_options(), $table['options'] );
 		$_render->set_input( $table, $render_options );
-
-		$action = 'preview';
-		$data = array(
+		$view_data = array(
 			'head_html' => $_render->get_preview_css(),
 			'body_html' => $_render->get_output()
 		);
 
-		// prepare, initialize, and render the view
-		$this->view = TablePress::load_view( $action, $data );
+		// Prepare, initialize, and render the view
+		$this->view = TablePress::load_view( 'preview', $view_data );
 		$this->view->render();
 	}
 
@@ -767,14 +659,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_get_action_editor_button_thickbox() {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
-		$action = 'editor_button';
-		$data = array(
+		$view_data = array(
 			'tables' => $this->model_table->load_all(),
 			'tables_count' => $this->model_table->count_tables()
 		);
 
-		// prepare, initialize, and render the view
-		$this->view = TablePress::load_view( $action, $data );
+		// Prepare, initialize, and render the view
+		$this->view = TablePress::load_view( 'editor_button', $view_data );
 		$this->view->render();
 	}
 

@@ -15,7 +15,7 @@ jQuery(document).ready( function( $ ) {
 		made_changes: false,
 		table: {
 			id: $( '#table-id' ).val(),
-			orig_id: $( '#table-orig-id' ).val(),
+			new_id: $( '#table-new-id' ).val(),
 			rows: $( '#number-rows' ).val(),
 			columns: $( '#number-columns' ).val(),
 			head: $( '#option-table-head' ).prop( 'checked' ),
@@ -36,21 +36,21 @@ jQuery(document).ready( function( $ ) {
 				$( '#tablepress_edit-table-information, #tablepress_edit-table-options' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
-				if ( '' === $.trim( $( '#table-id' ).val() ) ) {
+				if ( '' === $.trim( $( '#table-new-id' ).val() ) ) {
 					alert( tablepress_strings.table_id_not_empty );
-					$( '#table-id' ).val( tp.table.id ).focus().select();
+					$( '#table-new-id' ).val( tp.table.new_id ).focus().select();
 					return;
 				}
 
-				if ( this.value == tp.table.id )
+				if ( this.value == tp.table.new_id )
 					return;
 
 				if ( confirm( tablepress_strings.ays_change_table_id ) ) {
-					tp.table.id = this.value;
-					$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.id + ' /]' ).click(); // click() to focus and select
+					tp.table.new_id = this.value;
+					$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' ).click(); // click() to focus and select
 					tp.table.set_table_changed();
 				} else {
-					$(this).val( tp.table.id );
+					$(this).val( tp.table.new_id );
 				}
 			},
 			change_table_head: function( /* event */ ) {
@@ -65,7 +65,8 @@ jQuery(document).ready( function( $ ) {
 				var $table_body = $( '#edit-form-body' ),
 					table_data = [],
 					table_options,
-					table_visibility = { rows: [], columns: [], hidden_rows: 0, hidden_columns: 0 };
+					table_number = { rows: tp.table.rows, columns: tp.table.columns, hidden_rows: 0, hidden_columns: 0 },
+					table_visibility = { rows: [], columns: [] };
 
 				$table_body.children().each( function( idx, row ) {
 					table_data[idx] = $(row).find( 'textarea' )
@@ -92,7 +93,7 @@ jQuery(document).ready( function( $ ) {
 					.map( function() {
 						if ( '1' == $(this).val() )
 							return 1;
-						table_visibility.hidden_rows += 1;
+						table_number.hidden_rows += 1;
 						return 0;
 					} )
 					.get();
@@ -100,7 +101,7 @@ jQuery(document).ready( function( $ ) {
 					.map( function() {
 						if ( '1' == $(this).val() )
 							return 1;
-						table_visibility.hidden_columns += 1;
+						table_number.hidden_columns += 1;
 						return 0;
 					} )
 					.get();
@@ -112,11 +113,10 @@ jQuery(document).ready( function( $ ) {
 					_ajax_nonce : $( wp_nonce ).val(),
 					tablepress: {
 						id: tp.table.id,
-						orig_id: tp.table.orig_id,
+						new_id: tp.table.new_id,
 						name: $( '#table-name' ).val(),
 						description: $( '#table-description' ).val(),
-						rows: tp.table.rows,
-						columns: tp.table.columns,
+						number: table_number,
 						data: table_data,
 						options: table_options,
 						visibility: table_visibility
@@ -897,11 +897,11 @@ jQuery(document).ready( function( $ ) {
 				if ( ( 'pushState' in window.history ) && null !== window.history['pushState'] )
 					window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
 				// update table ID in input fields (type text and hidden)
-				tp.table.orig_id = tp.table.id = data.table_id;
-				$( '#table-orig-id' ).val( tp.table.orig_id );
+				tp.table.id = tp.table.new_id = data.table_id;
 				$( '#table-id' ).val( tp.table.id );
+				$( '#table-new-id' ).val( tp.table.new_id );
 				// update the Shortcode text field
-				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.id + ' /]' );
+				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' );
 				// update the nonces
 				$( '#nonce-edit-table' ).val( data.new_edit_nonce );
 				$( '#nonce-preview-table' ).val( data.new_preview_nonce );
@@ -955,14 +955,14 @@ jQuery(document).ready( function( $ ) {
 					'.save-changes-button':	tp.save_changes.trigger
 				},
 				'keyup': {
-					'#table-id':			tp.check.table_id
+					'#table-new-id':		tp.check.table_id
 				},
 				'change': {
 					'#option-table-head':	tp.table.change_table_head,
 					'#option-table-foot':	tp.table.change_table_foot
 				},
 				'blur': {
-					'#table-id':			tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
+					'#table-new-id':		tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
 				}
 			},
 			$table = $( '#edit-form-body' );

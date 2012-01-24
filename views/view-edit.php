@@ -57,7 +57,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'cells_auto_grow' => true,
 				'shortcode' => TablePress::$shortcode
 			),
-			'strings' => array(
+			'strings' => array_merge( array(
 				'no_remove_all_rows' => 'Du kannst nicht alle Zeilen der Tabelle löschen!',
 				'no_remove_all_columns' => 'Du kannst nicht alle Spalten der Tabelle löschen!',
 				'no_rows_selected' => 'Du hast keine Zeilen ausgewählt!',
@@ -89,7 +89,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'no_colspan_first_col' => 'You can not add colspan to the first column!',
 				'no_rowspan_table_head' => 'You can not add rowspan into the table head row!',
 				'no_rowspan_table_foot' => 'You can not add rowspan out of the table foot row!'
-			)
+			), $this->action_messages ) // merge this to have messages available for AJAX after save dialog
 		) );
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
@@ -141,8 +141,8 @@ class TablePress_Edit_View extends TablePress_View {
 		<tr valign="top">
 			<th scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 			<td>
-				<input type="hidden" name="table[orig_id]" id="table-orig-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
-				<input type="text" name="table[id]" id="table-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php _e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z0-9-_]+" required />
+				<input type="hidden" name="table[id]" id="table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
+				<input type="text" name="table[new_id]" id="table-new-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php _e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z0-9-_]+" required />
 				<input type="text" class="table-shortcode" value="[<?php echo TablePress::$shortcode; ?> id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /><br/>
 			</td>
 		</tr>

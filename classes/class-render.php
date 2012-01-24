@@ -548,6 +548,48 @@ class TablePress_Render {
 	}
 
 	/**
+	 * Get the default render options
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array Default render options
+	 */
+	public function get_default_render_options() {
+	    return array(
+            'id' => 0,
+            'column_widths' => array(),
+            'alternating_row_colors' => -1,
+            'row_hover' => -1,
+            'table_head' => -1,
+            'first_column_th' => false,
+            'table_foot' => -1,
+            'print_name' => -1,
+            'print_description' => -1,
+            'cache_table_output' => -1,
+            'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
+            'use_datatables' => -1,
+            'datatables_sort' => -1,
+            'datatables_paginate' => -1,
+            'datatables_paginate_entries' => -1,
+            'datatables_lengthchange' => -1,
+            'datatables_filter' => -1,
+            'datatables_info' => -1,
+            'datatables_tabletools' => -1,
+            'datatables_customcommands' => -1,
+            'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+            'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+            'show_rows' => array(),
+            'show_columns' => array(),
+            'hide_rows' => array(),
+            'hide_columns' => array(),
+            'cellspacing' => false,
+            'cellpadding' => false,
+            'border' => false,
+            'html_id' => 'test'
+        );
+	}
+
+	/**
 	 * Get the CSS code for the Preview iframe
 	 *
 	 * @since 1.0.0
