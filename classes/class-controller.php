@@ -86,7 +86,7 @@ abstract class TablePress_Controller {
 			) );
 		}
 
-		// Update Plugin Options, if necessary
+		// Update Plugin Options and Table Options, if necessary
 		if ( $this->model_options->get( 'plugin_options_db_version' ) < TablePress::db_version ) {
 			$this->model_options->merge_plugin_options_defaults();
 			$this->model_options->update( array(
@@ -95,6 +95,8 @@ abstract class TablePress_Controller {
 				'tablepress_version' => TablePress::version,
 				'message_plugin_update' => true
 			) );
+			
+			$this->model_table->merge_table_options_defaults();
 		}
 
 		// Update User Options, if necessary

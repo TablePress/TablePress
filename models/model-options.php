@@ -178,6 +178,7 @@ class TablePress_Options_Model extends TablePress_Model {
 
 		$this->plugin_options->update( $plugin_options );
 	}
+
 	/**
 	 * Merge existing User Options with default User Options,
 	 * remove (no longer) existing options, e.g. after a plugin update

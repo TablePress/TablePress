@@ -123,6 +123,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post = array(
 			'ID' => $post_id,
 			'post_title' => $table['name'],
+//			'post_author' => $table['author'],
 			'post_excerpt' => $table['description'],
 			'post_content' => json_encode( $table['data'] )
 		);
@@ -672,6 +673,38 @@ class TablePress_Table_Model extends TablePress_Model {
 			return array();
 		$visibility = json_decode( $visibility, true );
 		return $visibility;
+	}
+
+	/**
+	 * Merge existing Table Options with default Table Options,
+	 * remove (no longer) existing options, e.g. after a plugin update,
+	 * for all tables
+	 *
+	 * @since 1.0.0
+	 */
+	public function merge_table_options_defaults() {
+		$table_post = $this->tables->get( 'table_post' );
+		if ( empty( $table_post ) )
+			return;
+
+		$post_ids = array_values( $table_post );
+
+		// load all table posts with one query, to prime the cache
+		$this->model_post->load_posts( $post_ids );
+
+		// get default Table with default Table Options
+		$default_table = $this->get_table_template();
+
+		// go through all tables (this loop now uses the WP cache)
+		foreach ( $post_ids as $post_id ) {
+			$table_options = $this->_get_table_options( $post_id );
+			$default_table_options = $default_table['options']; // fresh copy for this loop iteration
+			// remove old (i.e. no longer existing) Table Options:
+			$table_options = array_intersect_key( $table_options, $default_table_options );
+			// merge into new Table Options:
+			$table_options = array_merge( $default_table_options, $table_options );
+			$this->_update_table_options( $post_id, $table_options );
+		}
 	}
 
 } // class TablePress_Table_Model
