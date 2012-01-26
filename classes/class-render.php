@@ -575,7 +575,7 @@ class TablePress_Render {
             'datatables_filter' => -1,
             'datatables_info' => -1,
             'datatables_tabletools' => -1,
-            'datatables_customcommands' => -1,
+            'datatables_custom_commands' => -1,
             'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
             'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
             'show_rows' => array(),

@@ -55,11 +55,18 @@ jQuery(document).ready( function( $ ) {
 			},
 			change_table_head: function( /* event */ ) {
 				tp.table.head = $(this).prop( 'checked' );
+				$( '#option-use-datatables' ).prop( 'disabled', ! tp.table.head ).change();
+				$( '#notice-datatables-head-row' ).toggle( ! tp.table.head );
 				tp.rows.stripe();
 			},
 			change_table_foot: function( /* event */ ) {
 				tp.table.foot = $(this).prop( 'checked' );
 				tp.rows.stripe();
+			},
+			change_datatables: function() {
+				var $datatables_checkbox = $(this),
+					checkboxes_disabled = ! ( $datatables_checkbox.prop( 'checked' ) && ! $datatables_checkbox.prop( 'disabled' ) );
+				$datatables_checkbox.closest( 'tbody' ).find( 'input' ).not( $datatables_checkbox ).prop( 'disabled', checkboxes_disabled );
 			},
 			prepare_ajax_request: function( wp_action, wp_nonce ) {
 				var $table_body = $( '#edit-form-body' ),
@@ -77,15 +84,22 @@ jQuery(document).ready( function( $ ) {
 				} );
 				table_data = JSON.stringify( table_data );
 
-				// evtl. für options-saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
+				// @TODO: evtl. für options-saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
+				// oder each() durch alle Checkboxes/Textfields/Selects
 				table_options = {
+					// Table Options
 					table_head: tp.table.head,
 					table_foot: tp.table.foot,
 					alternating_row_colors: $( '#option-alternating-row-colors' ).prop( 'checked' ),
 					row_hover: $( '#option-row-hover' ).prop( 'checked' ),
 					print_name: $( '#option-print-name' ).val(),
 					print_description: $( '#option-print-description' ).val(),
-					extra_css_classes: $( '#option-extra-css-classes' ).val()
+					extra_css_classes: $( '#option-extra-css-classes' ).val(),
+					// DataTables JS features
+					use_datatables: $( '#option-use-datatables' ).prop( 'checked' ),
+					datatables_sort: $( '#option-datatables-sort' ).prop( 'checked' ),
+					datatables_filter: $( '#option-datatables-filter' ).prop( 'checked' ),
+					datatables_custom_commands: $( '#option-datatables-custom-commands' ).val()
 				};
 				table_options = JSON.stringify( table_options );
 
@@ -130,10 +144,8 @@ jQuery(document).ready( function( $ ) {
 						return false;
 					}
 
-					$(this).after( '<span class="animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
-					$( '.show-preview-button' ).prop( 'disabled', true );
+					$(this).closest( 'p' ).append( '<span class="animation-preview" title="' + tablepress_strings.preparing_preview + '"/>' );
 					$( 'body' ).addClass( 'wait' );
-
 					$( '#table-preview' ).empty(); // clear preview
 
 					$.post(
@@ -149,9 +161,9 @@ jQuery(document).ready( function( $ ) {
 				},
 				ajax_success: function( data, status, jqXHR ) {
 					if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
-						tp.table.preview.error( 'AJAX call successful, but unclear status' );
+						tp.table.preview.error( 'AJAX call successful, but unclear status.' );
 					else if ( ( 'undefined' == typeof data ) || ( null == data ) || ( '-1' == data ) || ( 'undefined' == typeof data.success ) || ( true !== data.success ) )
-						tp.table.preview.error( 'AJAX call successful, but unclear data' );
+						tp.table.preview.error( 'AJAX call successful, but unclear data.' );
 					else
 						tp.table.preview.success( data );
 				},
@@ -166,16 +178,14 @@ jQuery(document).ready( function( $ ) {
 						$iframe.find( 'body' ).append( data.body_html );
 					} ).appendTo( '#table-preview' );
 					$( '.animation-preview' ).remove();
-					$( '.show-preview-button' ).prop( 'disabled', false );
 					$( 'body' ).removeClass( 'wait' );
 					tp.table.preview.show( '#TB_inline?inlineId=preview-container' );
 				},
 				error: function( message ) {
-					$( '.animation-preview' )
-						.after( '<span class="preview-error">' + tablepress_strings.preview_error + ' ' + message + '</span>' )
-						.remove();
-					$( '.preview-error' ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
-					$( '.show-preview-button' ).prop( 'disabled', false );
+					$( '.animation-preview' ).closest( 'p' )
+						.after( '<div class="preview-error error"><p><strong>' + tablepress_strings.preview_error + ': ' + message + '</strong></p></div>' );
+					$( '.animation-preview' ).remove();
+					$( '.preview-error' ).delay( 6000 ).fadeOut( 2000, function() { $(this).remove(); } );
 					$( 'body' ).removeClass( 'wait' );
 				},
 				show: function( url ) {
@@ -863,11 +873,11 @@ jQuery(document).ready( function( $ ) {
 
 				if ( event.altKey ) {
 					tp.made_changes = false; // to prevent onunload warning
-					$(this).closest( 'form' ).submit();
+					$( '#tablepress-page' ).find( 'form' ).submit();
 					return;
 				}
 
-				$(this).after( '<span class="animation-saving" title="' + tablepress_strings.saving_changes + '"/>' );
+				$(this).closest( 'p' ).append( '<span class="animation-saving" title="' + tablepress_strings.saving_changes + '"/>' );
 				$( '.save-changes-button' ).prop( 'disabled', true );
 				$( 'body' ).addClass( 'wait' );
 
@@ -882,14 +892,14 @@ jQuery(document).ready( function( $ ) {
 			},
 			ajax_success: function( data, status, jqXHR ) {
 				if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
-					tp.save_changes.error( 'AJAX call successful, but unclear status' );
+					tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the "Alt" key.' );
 				else if ( ( 'undefined' == typeof data ) || ( null == data ) || ( '-1' == data ) || ( 'undefined' == typeof data.success ) || ( true !== data.success ) )
-					tp.save_changes.error( 'AJAX call successful, but unclear data' );
+					tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the "Alt" key.' );
 				else
 					tp.save_changes.success( data );
 			},
 			ajax_error: function( jqXHR, status, error_thrown ) {
-				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown );
+				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the "Alt" key.' );
 			},
 			success: function( data ) {
 				// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances
@@ -925,11 +935,20 @@ jQuery(document).ready( function( $ ) {
 				if ( 'undefined' == typeof message )
 					message = '';
 				else
-					message = ' ' + message;
-				$( '.animation-saving' )
-					.after( '<span class="save-changes-' + type + '">' + tablepress_strings['save_changes_' + type] + message + '</span>' )
-					.remove();
-				$( '.save-changes-' + type ).delay( 2000 ).fadeOut( 2000, function() { $(this).remove(); } );
+					message = ': ' + message;
+				var delay,
+					div_class = 'save-changes-';
+				if ( 'success' == type ) {
+					div_class += type + ' updated';
+					delay = 3000;
+				} else {
+					div_class += type + ' error';
+					delay = 6000;
+				}
+				$( '.animation-saving' ).closest( 'p' )
+					.after( '<div class="' + div_class + '"><p><strong>' + tablepress_strings['save_changes_' + type] + message + '</strong></p></div>' );
+				$( '.animation-saving' ).remove();
+				$( '.save-changes-' + type ).delay( delay ).fadeOut( 2000, function() { $(this).remove(); } );
 				$( '.save-changes-button' ).prop( 'disabled', false );
 				$( 'body' ).removeClass( 'wait' );
 			}
@@ -958,8 +977,9 @@ jQuery(document).ready( function( $ ) {
 					'#table-new-id':		tp.check.table_id
 				},
 				'change': {
-					'#option-table-head':	tp.table.change_table_head,
-					'#option-table-foot':	tp.table.change_table_foot
+					'#option-table-head':		tp.table.change_table_head,
+					'#option-table-foot':		tp.table.change_table_foot,
+					'#option-use-datatables':	tp.table.change_datatables
 				},
 				'blur': {
 					'#table-new-id':		tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
@@ -1003,6 +1023,14 @@ jQuery(document).ready( function( $ ) {
 			$( '#edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
 
 			$( '#edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
+
+			// init changed/disabled states of DataTables JS features checkboxes
+			$( '#option-table-head' ).change();
+
+		    // on form submit: Enable disabled fields, so that they are transmitted in the POST request
+			$( '#tablepress-page' ).find( 'form' ).on( 'submit', function() {
+		        $(this).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
+			} );
 
 			$table.sortable( {
 				axis: 'y',

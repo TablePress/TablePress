@@ -67,17 +67,6 @@ body.wait * {
 	vertical-align: top;
 }
 
-/* fading messages after AJAX */
-.save-changes-success {
-	margin-left: 5px;
-	background-color: #00ff00;
-}
-.save-changes-error,
-.preview-error {
-	margin-left: 5px;
-	background-color: #ff0000;
-}
-
 /* table cells */
 #edit-form-body td {
 	padding: 2px 2px 2px 0px;
@@ -192,6 +181,7 @@ body.wait * {
 .tablepress-postbox-table td {
 	padding: 5px 5px 2px;
 	border-spacing: 0px;
+	word-wrap: break-word;
 }
 .tablepress-postbox-table .top-border td {
 	padding: 5px 5px 2px;
@@ -204,11 +194,13 @@ body.wait * {
 #tablepress_edit-table-manipulation td {
 	width: 50%;
 }
-#tablepress_edit-table-options .column-1 {
-	width: 150px;
+#tablepress_edit-table-options .column-1,
+#tablepress_edit-datatables-features .column-1 {
+	width: 175px;
 }
-#tablepress_edit-table-options .column-2 {
-	width: 650px;
+#tablepress_edit-table-options .column-2,
+#tablepress_edit-datatables-features .column-2 {
+	width: 625px;
 }
 
 /* adjust size of a.button-secondary to input.button-secondary */

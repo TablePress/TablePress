@@ -98,6 +98,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( &$this, 'postbox_table_data' ), 'normal' );
 		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( &$this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( &$this, 'postbox_table_options' ), 'normal' );
+		$this->add_meta_box( 'datatables-features', __( 'Features of the DataTables JavaScript library', 'tablepress' ), array( &$this, 'postbox_datatables_features' ), 'normal' );
 		$this->add_text_box( 'hidden-containers', array( &$this, 'textbox_hidden_containers' ), 'additional' );
 		$this->add_text_box( 'buttons-2', array( &$this, 'textbox_buttons' ), 'additional' );
 		$this->add_text_box( 'other-actions', array( &$this, 'textbox_other_actions' ), 'submit' );
@@ -392,7 +393,7 @@ class TablePress_Edit_View extends TablePress_View {
 	function postbox_table_options( $data, $box ) {
 		$options = $data['table']['options'];
 ?>
-<table class="tablepress-postbox-table">
+<table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr>
 		<td class="column-1"><label for="option-table-head"><?php _e( 'Table Head Row', 'tablepress' ); ?>:</label></td>
@@ -431,10 +432,42 @@ class TablePress_Edit_View extends TablePress_View {
 		<td class="column-2"><input type="text" id="option-extra-css-classes" class="large-text" name="table[options][extra_css_classes]" value="<?php echo esc_attr( $options['extra_css_classes'] ); ?>" title="<?php _e( 'This field can only contain letters, numbers, spaces, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z0-9- _]*" /></td>
 	</tr>
 	<tr class="top-border bottom-border">
-		<td colspan="2"><?php echo json_encode( $options ); ?></td>
+		<td colspan="2" style="width: 800px;"><?php echo json_encode( $options ); ?></td>
 	</tr>
 	<tr class="top-border">
 		<td colspan="2"><?php echo json_encode( $data['table']['visibility'] ); ?></td>
+	</tr>
+</tbody>
+</table>
+<?php
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	function postbox_datatables_features( $data, $box ) {
+		$options = $data['table']['options'];
+?>
+<p id="notice-datatables-head-row" class="hide-if-js"><?php printf( __( 'These features and options are only available, when the &quot;%1$s&quot; checkbox in the &quot;%2$s&quot; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></p>
+<table class="tablepress-postbox-table fixed">
+<tbody>
+	<tr class="bottom-border">
+		<td class="column-1"><label for="option-use-datatables"><?php _e( 'Use DataTables', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-use-datatables" name="table[options][use_datatables]" value="true"<?php checked( $options['use_datatables'] ); ?> /></td>
+	</tr>
+	<tr class="top-border">
+		<td class="column-1"><label for="option-datatables-sort"><?php _e( 'Sorting', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-datatables-sorting" name="table[options][datatables_sort]" value="true"<?php checked( $options['datatables_sort'] ); ?> /></td>
+	</tr>
+	<tr class="bottom-border">
+		<td class="column-1"><label for="option-datatables-filter"><?php _e( 'Search/Filtering', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="checkbox" id="option-datatables-filter" name="table[options][datatables_filter]" value="true"<?php checked( $options['datatables_filter'] ); ?> /></td>
+	</tr>
+	<tr class="top-border">
+		<td class="column-1"><label for="option-datatables-custom-commands"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</label></td>
+		<td class="column-2"><input type="text" id="option-datatables-custom-commands" class="large-text" name="table[options][datatables_custom_commands]" value="<?php echo esc_attr( $options['datatables_custom_commands'] ); ?>" /></td>
 	</tr>
 </tbody>
 </table>

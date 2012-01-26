@@ -466,7 +466,12 @@ class TablePress_Table_Model extends TablePress_Model {
 				'row_hover' => true,
 				'print_name' => 'no',
 				'print_description' => 'no',
-				'extra_css_classes' => ''
+				'extra_css_classes' => '',
+				// DataTables JavaScript library
+				'use_datatables' => true,
+				'datatables_sort' => true,
+				'datatables_filter' => true,
+				'datatables_custom_commands' => ''
 			),
 			'visibility' => array(
 				'rows' => array( 1 ), // one visbile row

@@ -437,7 +437,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
-		$checkbox_options = array( 'table_head', 'table_foot', 'alternating_row_colors', 'row_hover' );
+		$checkbox_options = array(
+			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover',	// Table Options
+			'use_datatables', 'datatables_sort', 'datatables_filter'			// DataTables JS Features @TODO: THIS NEEDS WORK (e.g. for disabled fields)!
+		);
 		foreach ( $checkbox_options as $option ) {
 			$edit_table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' === $edit_table['options'][$option] );
 		}
