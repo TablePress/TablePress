@@ -22,6 +22,10 @@ jQuery(document).ready( function($) {
 		tb_show( tablepress_editor_button.thickbox_title, tablepress_editor_button.thickbox_url + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
 	}
 
+	// only do this if QuickTags is available
+	if ( typeof( QTags ) == 'undefined' )
+		return;
+
 	/**
 	 * Register a button for the Quicktags (aka HTML editor) toolbar
 	 *

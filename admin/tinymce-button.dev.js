@@ -6,6 +6,10 @@
 
 ( function() {
 
+	// only do this if TinyMCE is available
+	if ( typeof( tinymce ) == 'undefined' )
+		return;
+
 	/**
 	 * Register a button for the TinyMCE (aka Visual Editor) toolbar
 	 *
