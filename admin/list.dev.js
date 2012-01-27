@@ -11,7 +11,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-all-tables' ).on( 'click', '.shortcode a', function( /* event */ ) {
+	$( '.tablepress-all-tables' ).on( 'click', '.shortcode a', function( /* event */ ) {
 		prompt( tablepress_list.shortcode_popup, $(this).attr( 'title' ) );
 		return false;
 	} );
@@ -21,7 +21,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-all-tables' ).on( 'click', '.table-preview a', function( /* event */ ) {
+	$( '.tablepress-all-tables' ).on( 'click', '.table-preview a', function( /* event */ ) {
 		var width = $(window).width() - 120,
 			height = $(window).height() - 120;
 		if ( $( 'body.admin-bar' ).length )
@@ -36,10 +36,9 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
 	$( '#doaction, #doaction2' ).on( 'click', function() {
-	console.log('click');
 		var bulk_action,
 			confirm_message,
-			num_selected = $( '#tablepress-all-tables' ).find( 'tbody' ).find( 'input:checked' ).length;
+			num_selected = $( '.tablepress-all-tables' ).find( 'tbody' ).find( 'input:checked' ).length;
 
 		// determine location of clicked bulk action controls
 		if ( 'doaction' == this.id )

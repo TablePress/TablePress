@@ -56,8 +56,28 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		// handler for changing the number of shown tables in the list of tables (via WP List Table class)
+		add_filter( 'set-screen-option', array( &$this, 'save_list_tables_screen_option' ), 10, 3 );
+
 		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entry' ) );
 		add_action( 'admin_init', array( &$this, 'add_admin_actions' ) );
+	}
+
+	/**
+	 * Handler for changing the number of shown tables in the list of tables (via WP List Table class)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool $false Current value of the filter (probably bool false)
+	 * @param string $option Option in which the setting is stored
+	 * @param int $value Current value of the setting
+	 * @return bool|int False to not save the changed setting, or the int value to be saved
+	 */
+	public function save_list_tables_screen_option( $false, $option, $value ) {
+		if ( 'tablepress_list_per_page' == $option )
+			return $value;
+		else
+			return $false;
 	}
 
 	/**
@@ -369,7 +389,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 
 	/**
-	 * Handle Bulk Actions on "All Tables" list screen
+	 * Handle Bulk Actions (Delete, Copy) and Search on "All Tables" list screen
 	 *
 	 * @since 1.0.0
 	 */
@@ -380,6 +400,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$bulk_action = $_POST['bulk-action-top'];
 		elseif ( isset( $_POST['bulk-action-bottom'] ) && '-1' != $_POST['bulk-action-bottom'] )
 			$bulk_action = $_POST['bulk-action-bottom'];
+		elseif ( ! empty( $_POST['s'] ) ) // @TODO: This currently does not yield the correct search terms!
+			TablePress::redirect( array( 'action' => 'list', 's' => $_POST['s'] ) );
 		else
 			$bulk_action = false;
 

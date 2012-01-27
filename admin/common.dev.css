@@ -51,11 +51,25 @@
 }
 
 /* width and font weight of the ID column on the "All Tables" screen */
-#tablepress-all-tables thead .table-id {
+.tablepress-all-tables thead .column-table_id {
 	width: 50px;
 }
-#tablepress-all-tables tbody .table-id {
+.tablepress-all-tables tbody .column-table_id {
 	font-weight: bold;
+}
+/* width of the Table Name column */
+.tablepress-all-tables thead .column-table_name {
+	width: 300px;
+}
+/* width of the Author and Last Modified columns */
+.tablepress-all-tables thead .column-table_author,
+.tablepress-all-tables thead .column-table_last_modified {
+	width: 150px;
+}
+
+.tablenav #bulk-action-top,
+.tablenav #bulk-action-bottom {
+	width: 130px;
 }
 
 /* remove outlines from all textareas */

@@ -1056,6 +1056,7 @@ jQuery(document).ready( function( $ ) {
 				sort: tp.columns.move.sort
 			} ).disableSelection();
 
+			tp.made_changes = false; // do this at the end of init(), as some calls might have set it to true
 		}
 	};
 
