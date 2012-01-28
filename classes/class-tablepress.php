@@ -257,7 +257,7 @@ abstract class TablePress {
 	 * @param int $user_id WP user ID
 	 * @return string Nickname of the WP user with the $user_id
 	 */
-	public function get_last_editor( $user_id ) {
+	public function get_user_display_name( $user_id ) {
 		$user = get_userdata( $user_id );
 		return ( $user && isset( $user->display_name ) ) ? $user->display_name : '';
 	}

@@ -354,7 +354,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		if ( false !== stripos( $item['id'], $term )
 		|| false !== stripos( $item['name'], $term )
 		|| false !== stripos( $item['description'], $term )
-		|| false !== stripos( TablePress::get_last_editor( $item['author'] ), $term )
+		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
 		|| false !== stripos( json_encode( $item['data'] ), $term ) )
 			return true;

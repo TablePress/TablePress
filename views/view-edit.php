@@ -157,7 +157,7 @@ class TablePress_Edit_View extends TablePress_View {
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e( 'Last Modified', 'tablepress' ); ?>:</th>
-			<td><?php printf( __( '%1$s by %2$s', 'tablepress' ), '<span id="last-modified">' . TablePress::format_datetime( $data['table']['last_modified'] ) . '</span>', '<span id="last-editor">' . TablePress::get_last_editor( $data['table']['options']['last_editor'] ) . '</span>' ); ?></td>
+			<td><?php printf( __( '%1$s by %2$s', 'tablepress' ), '<span id="last-modified">' . TablePress::format_datetime( $data['table']['last_modified'] ) . '</span>', '<span id="last-editor">' . TablePress::get_user_display_name( $data['table']['options']['last_editor'] ) . '</span>' ); ?></td>
 		</tr>
 		</tbody>
 		</table>

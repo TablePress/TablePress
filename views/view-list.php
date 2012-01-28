@@ -391,7 +391,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell
 	 */
 	protected function column_table_author( $item ){
-		return TablePress::get_last_editor( $item['author'] );
+		return TablePress::get_user_display_name( $item['author'] );
 	}
 
 	/**
@@ -519,7 +519,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( false !== stripos( $item['id'], $term )
 		|| false !== stripos( $item['name'], $term )
 		|| false !== stripos( $item['description'], $term )
-		|| false !== stripos( TablePress::get_last_editor( $item['author'] ), $term )
+		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
 		|| false !== stripos( json_encode( $item['data'] ), $term ) )
 			return true;
@@ -550,7 +550,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 				break;
 			case 'author':
 				// Get the actual author name, plain value is just the user ID
-				$result = strnatcasecmp( TablePress::get_last_editor( $item_a['author'] ), TablePress::get_last_editor( $item_b['author'] ) );
+				$result = strnatcasecmp( TablePress::get_user_display_name( $item_a['author'] ), TablePress::get_user_display_name( $item_b['author'] ) );
 				break;
 			default:
 				// other fields (ID, name, description) are sorted as strings
