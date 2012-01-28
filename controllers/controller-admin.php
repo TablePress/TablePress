@@ -470,7 +470,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! $sendback ) {
 			$sendback = TablePress::url( array( 'action' => 'list', 'message' => $message ) );
 		} else {
-			$sendback = remove_query_arg( array( 'action', 'message', 'table_id', '_wpnonce' ), $sendback );
+			$sendback = remove_query_arg( array( 'action', 'message', 'table_id' ), $sendback );
 			$sendback = add_query_arg( array( 'action' => 'list', 'message' => $message ), $sendback );
 		}
 		wp_redirect( $sendback );
@@ -661,7 +661,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! $sendback ) {
 			$sendback = TablePress::url( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ) );
 		} else {
-			$sendback = remove_query_arg( array( 'action', 'message', 'table_id', '_wpnonce' ), $sendback );
+			$sendback = remove_query_arg( array( 'action', 'message', 'table_id' ), $sendback );
 			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ), $sendback );
 		}
 		wp_redirect( $sendback );
@@ -693,7 +693,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! $sendback ) {
 			$sendback = TablePress::url( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
 		} else {
-			$sendback = remove_query_arg( array( 'action', 'message', 'table_id', '_wpnonce' ), $sendback );
+			$sendback = remove_query_arg( array( 'action', 'message', 'table_id' ), $sendback );
 			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ), $sendback );
 		}
 		wp_redirect( $sendback );

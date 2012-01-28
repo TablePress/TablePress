@@ -193,12 +193,12 @@ class TablePress_List_View extends TablePress_View {
 	<?php
 	if ( isset( $_GET['page'] ) )
 		echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />' . "\n";
-	wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false ); echo "\n";
 	$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' ); ?>
 </form>
 <form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 	<?php
-		$this->do_text_boxes( 'header' ); // this prints the nonce and action fields for this screen
+		// this prints the nonce and action fields for this screen (done here instead of render(), due to moved <form>):
+		$this->do_text_boxes( 'header' );
 		$this->wp_list_table->display();
 	?>	
 </form>
