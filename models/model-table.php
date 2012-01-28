@@ -146,7 +146,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'name' => $post['post_title'],
 			'description' => $post['post_excerpt'],
 			'author' => $post['post_author'],
-			'created' => $post['post_date'],
+//			'created' => $post['post_date'],
 			'last_modified' => $post['post_modified'],
 			'data' => json_decode( $post['post_content'], true )
 		);
@@ -455,7 +455,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'name' => '',
 			'description' => '',
 			'data' => array( array( '' ) ), // one empty cell
-			'created' => current_time( 'mysql' ),
+//			'created' => current_time( 'mysql' ),
 			'last_modified' => current_time( 'mysql' ),
 			'author' => get_current_user_id(),
 			'options' => array(

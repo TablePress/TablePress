@@ -403,7 +403,16 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell
 	 */
 	protected function column_table_last_modified( $item ){
-		return TablePress::format_datetime( $item['last_modified'], 'mysql', '<br/>' );
+		$modified_timestamp = strtotime( $item['last_modified'] );
+		$current_timestamp = current_time( 'timestamp' );
+		$time_diff = $current_timestamp - $modified_timestamp;
+		if ( $time_diff >= 0 && $time_diff < 24*60*60 ) // time difference is only shown up to one day
+			$time_diff = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
+		else
+			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br/>' );
+	
+		$readable_time = TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' );
+		return '<abbr title="' . $readable_time . '">' . $time_diff . '</abbr>';
 	}
 
 	/**
@@ -511,7 +520,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		|| false !== stripos( $item['name'], $term )
 		|| false !== stripos( $item['description'], $term )
 		|| false !== stripos( TablePress::get_last_editor( $item['author'] ), $term )
-		|| false !== stripos( TablePress::format_datetime( $item['created'], 'mysql', ' ' ), $term )
+		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
 		|| false !== stripos( json_encode( $item['data'] ), $term ) )
 			return true;
 
@@ -541,7 +550,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 				break;
 			case 'author':
 				// Get the actual author name, plain value is just the user ID
-				$result = strnatcasecmp( TablePress::get_last_editor( $item_a['author'] ), TablePress::get_last_editor( $item_b['author'] ) );					break;
+				$result = strnatcasecmp( TablePress::get_last_editor( $item_a['author'] ), TablePress::get_last_editor( $item_b['author'] ) );
+				break;
 			default:
 				// other fields (ID, name, description) are sorted as strings
 				$result = strnatcasecmp( $item_a[$orderby], $item_b[$orderby] );
