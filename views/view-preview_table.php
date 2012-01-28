@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * @author Tobias Bäthge
  * @since 1.0.0
  */
-class TablePress_Preview_View extends TablePress_View {
+class TablePress_Preview_Table_View extends TablePress_View {
 
 	/**
 	 * Initialize the View class
@@ -72,4 +72,4 @@ body {
 <?php
 	}
 
-} // class TablePress_Preview_View
+} // class TablePress_Preview_Table_View

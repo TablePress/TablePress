@@ -233,7 +233,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		switch ( $action ) {
 			case 'list':
 				$data['tables'] = $this->model_table->load_all();
-				$data['tables_count'] = $this->model_table->count_tables();
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
 				$data['messages']['plugin_update'] = $this->model_options->get( 'message_plugin_update' );
 				break;
@@ -672,7 +671,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		);
 
 		// Prepare, initialize, and render the view
-		$this->view = TablePress::load_view( 'preview', $view_data );
+		$this->view = TablePress::load_view( 'preview_table', $view_data );
 		$this->view->render();
 	}
 
@@ -685,12 +684,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
 		$view_data = array(
-			'tables' => $this->model_table->load_all(),
-			'tables_count' => $this->model_table->count_tables()
+			'tables' => $this->model_table->load_all()
 		);
 
 		// Prepare, initialize, and render the view
-		$this->view = TablePress::load_view( 'editor_button', $view_data );
+		$this->view = TablePress::load_view( 'editor_button_thickbox', $view_data );
 		$this->view->render();
 	}
 

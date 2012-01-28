@@ -490,7 +490,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			usort( $this->items, array( &$this, '_order_callback' ) );
 
 		// number of records to show per page
-		$per_page = $this->get_items_per_page( 'tablepress_list_per_page', 10 ); // hard-coded, as in filter in Admin_Controller
+		$per_page = $this->get_items_per_page( 'tablepress_list_per_page', 20 ); // hard-coded, as in filter in Admin_Controller
 		// page number the user is currently viewing
 		$current_page = $this->get_pagenum();
 		// number of records in the array
