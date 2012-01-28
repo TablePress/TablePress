@@ -414,7 +414,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 
 	/**
-	 * Handle Bulk Actions (Delete, Copy) and Search on "All Tables" list screen
+	 * Handle Bulk Actions (Delete, Copy) on "All Tables" list screen
 	 *
 	 * @since 1.0.0
 	 */
@@ -425,8 +425,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$bulk_action = $_POST['bulk-action-top'];
 		elseif ( isset( $_POST['bulk-action-bottom'] ) && '-1' != $_POST['bulk-action-bottom'] )
 			$bulk_action = $_POST['bulk-action-bottom'];
-		elseif ( ! empty( $_POST['s'] ) ) // @TODO: This currently does not yield the correct search terms!
-			TablePress::redirect( array( 'action' => 'list', 's' => $_POST['s'] ) );
 		else
 			$bulk_action = false;
 
@@ -459,11 +457,24 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 		}
 
-		if ( count( $no_success ) != 0 ) // maybe pass this information to the view?
-			TablePress::redirect( array( 'action' => 'list', 'message' => "error_{$bulk_action}_not_all_tables" ) );
+		if ( count( $no_success ) != 0 ) { // maybe pass this information to the view?
+			$message = "error_{$bulk_action}_not_all_tables";
+		} else {
+			$plural = ( count( $tables ) > 1 ) ? '_plural' : '';
+			$message = "success_{$bulk_action}{$plural}";
+		}
 
-		$plural = ( count( $tables ) > 1 ) ? '_plural' : '';
-		TablePress::redirect( array( 'action' => 'list', 'message' => "success_{$bulk_action}{$plural}" ) );
+		// slightly more complex redirect method, to account for sort, search, and pagination in the WP_List_Table on the List View
+		// but only if this action succeeds, to have everything fresh in the event of an error
+		$sendback = wp_get_referer();
+		if ( ! $sendback ) {
+			$sendback = TablePress::url( array( 'action' => 'list', 'message' => $message ) );
+		} else {
+			$sendback = remove_query_arg( array( 'action', 'message', 'table_id', '_wpnonce' ), $sendback );
+			$sendback = add_query_arg( array( 'action' => 'list', 'message' => $message ), $sendback );
+		}
+		wp_redirect( $sendback );
+		exit();
 	}
 
 	/**
@@ -644,7 +655,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false === $deleted )
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
 
-		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ) );
+		// slightly more complex redirect method, to account for sort, search, and pagination in the WP_List_Table on the List View
+		// but only if this action succeeds, to have everything fresh in the event of an error
+		$sendback = wp_get_referer();
+		if ( ! $sendback ) {
+			$sendback = TablePress::url( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ) );
+		} else {
+			$sendback = remove_query_arg( array( 'action', 'message', 'table_id', '_wpnonce' ), $sendback );
+			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ), $sendback );
+		}
+		wp_redirect( $sendback );
+		exit();
 	}
 
 	/**
@@ -666,7 +687,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false === $copy_table_id )
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 
-		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
+		// slightly more complex redirect method, to account for sort, search, and pagination in the WP_List_Table on the List View
+		// but only if this action succeeds, to have everything fresh in the event of an error
+		$sendback = wp_get_referer();
+		if ( ! $sendback ) {
+			$sendback = TablePress::url( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
+		} else {
+			$sendback = remove_query_arg( array( 'action', 'message', 'table_id', '_wpnonce' ), $sendback );
+			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ), $sendback );
+		}
+		wp_redirect( $sendback );
+		exit();
 	}
 
 	/**

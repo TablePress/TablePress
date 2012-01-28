@@ -96,6 +96,57 @@ class TablePress_List_View extends TablePress_View {
 		$this->wp_list_table = new TablePress_All_Tables_List_Table();
 		$this->wp_list_table->set_items( $this->data['tables'] );
 		$this->wp_list_table->prepare_items();
+
+		// cleanup Request URI string, which WP_List_Table uses to generate the sort URLs
+		$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'message', 'table_id' ), $_SERVER['REQUEST_URI'] );
+	}
+
+	/**
+	 * Render the current view (in this view: without form tag)
+	 *
+	 * @since 1.0.0
+	 */
+	public function render() {
+		?>
+		<div id="tablepress-page" class="wrap">
+		<?php screen_icon( 'tablepress' ); ?>
+		<?php
+			$this->print_nav_tab_menu();
+			// print all header messages
+			foreach ( $this->header_messages as $message ) {
+				echo $message;
+			}
+		?>
+			<?php
+			// For this screen, this is done in textbox_tables_list(), to get the fields into the correct <form>:
+			// $this->do_text_boxes( 'header' );
+			?>
+			<div id="poststuff" class="metabox-holder<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? ' has-right-sidebar' : ''; ?>">
+				<div id="side-info-column" class="inner-sidebar">
+				<?php
+					// print all boxes in the sidebar
+					$this->do_text_boxes( 'side' );
+					$this->do_meta_boxes( 'side' );
+				?>
+				</div>
+				<div id="post-body">
+					<div id="post-body-content">
+					<?php
+					$this->do_text_boxes( 'normal' );
+					$this->do_meta_boxes( 'normal' );
+
+					$this->do_text_boxes( 'additional' );
+					$this->do_meta_boxes( 'additional' );
+
+					// print all submit buttons
+					$this->do_text_boxes( 'submit' );
+					?>
+					</div>
+				</div>
+				<br class="clear" />
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -135,8 +186,23 @@ class TablePress_List_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function textbox_tables_list( $data, $box ) {
-		$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' );
+		if ( ! empty( $_GET['s'] ) )
+			printf( '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+	?>
+<form method="get" action="">
+	<?php
+	if ( isset( $_GET['page'] ) )
+		echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />' . "\n";
+	wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false ); echo "\n";
+	$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' ); ?>
+</form>
+<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
+	<?php
+		$this->do_text_boxes( 'header' ); // this prints the nonce and action fields for this screen
 		$this->wp_list_table->display();
+	?>	
+</form>
+	<?php
 	}
 
 	/**
@@ -162,6 +228,15 @@ class TablePress_List_View extends TablePress_View {
 class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 	/**
+	 * Number of items of the initial data set (before sort, search, and pagination)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
+	protected $items_count = 0;
+
+	/**
 	 * Initialize the List Table
 	 *
 	 * @since 1.0.0
@@ -175,7 +250,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Set the data (here: Tables) that are to be displayed by the List Tables
+	 * Set the data items (here: tables) that are to be displayed by the List Tables, and their original count
 	 *
 	 * @since 1.0.0
 	 *
@@ -183,6 +258,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 */
 	public function set_items( $items ) {
 		$this->items = $items;
+		$this->items_count = count( $items );
 	}
 
 	/**
@@ -384,9 +460,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @since 1.0.0
 	 */
 	public function no_items() {
-		$add_url = TablePress::url( array( 'action' => 'add' ) );
-		$import_url = TablePress::url( array( 'action' => 'import' ) );
-		echo __( 'No tables found.', 'tablepress' ) . ' ' . sprintf( __( 'You should <a href="%s">add</a> or <a href="%s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url );
+		echo __( 'No tables found.', 'tablepress' );
+		if ( 0 === $this->items_count ) {
+			$add_url = TablePress::url( array( 'action' => 'add' ) );
+			$import_url = TablePress::url( array( 'action' => 'import' ) );
+			echo ' ' . sprintf( __( 'You should <a href="%s">add</a> or <a href="%s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url );
+		}
 	}
 
 	/**

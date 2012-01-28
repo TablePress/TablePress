@@ -107,6 +107,12 @@ body {
 #tablepress-page .table-shortcode {
 	cursor: text;
 }
+
+/* Search results for WP_List_Table */
+#tablepress-page .subtitle {
+	float: left;
+	padding-left: 0px;
+}
 </style>
 </head>
 <body class="wp-admin js iframe">
@@ -119,6 +125,10 @@ body {
 </p><p>
 <?php printf( __( 'Click the &quot;%s&quot; button for the desired table to insert the corresponding Shortcode (%s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
 </p>
+<?php
+	if ( ! empty( $_GET['s'] ) )
+		printf( '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+?>
 <form method="get" action="">
 	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
 	<?php wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false ); echo "\n"; ?>
@@ -155,6 +165,15 @@ body {
 class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 	/**
+	 * Number of items of the initial data set (before sort, search, and pagination)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
+	protected $items_count = 0;
+
+	/**
 	 * Initialize the List Table
 	 *
 	 * @since 1.0.0
@@ -168,7 +187,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Set the data (here: Tables) that are to be displayed by the List Tables
+	 * Set the data items (here: tables) that are to be displayed by the List Tables, and their original count
 	 *
 	 * @since 1.0.0
 	 *
@@ -176,6 +195,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	public function set_items( $items ) {
 		$this->items = $items;
+		$this->items_count = count( $items );
 	}
 
 	/**
@@ -287,7 +307,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @since 1.0.0
 	 */
 	public function no_items() {
-		echo __( 'No tables found.', 'tablepress' ) . ' ' . __( 'You should add or import a table on the TablePress screens to get started!', 'tablepress' );
+		echo __( 'No tables found.', 'tablepress' );
+		if ( 0 === $this->items_count )
+			echo ' ' . __( 'You should add or import a table on the TablePress screens to get started!', 'tablepress' );
 	}
 
 	/**

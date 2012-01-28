@@ -72,6 +72,12 @@
 	width: 130px;
 }
 
+/* Search results for WP_List_Table */
+#tablepress-page .subtitle {
+	float: left;
+	padding-left: 0px;
+}
+
 /* remove outlines from all textareas */
 #tablepress-page textarea {
 	outline: none;
