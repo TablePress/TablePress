@@ -1,4 +1,15 @@
 <?php
+/**
+ * EvalMath PHP Class
+ *
+ * @package TablePress
+ * @subpackage Libraries
+ * @author Miles Kaufmann, Petr Skoda (Moodle)
+ * @since 1.0.0
+ */
+
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /*
 ================================================================================

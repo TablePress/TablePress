@@ -207,7 +207,7 @@ abstract class TablePress {
 	 * @param string $column Column string
 	 * @return int $number Column number, 1-based
 	 */
-	function letter_to_number( $column ) {
+	public function letter_to_number( $column ) {
 		$column = strtoupper( $column );
 		$count = strlen( $column );
 		$number = 0;
@@ -227,7 +227,7 @@ abstract class TablePress {
 	 * @param int $number Column number, 1-based
 	 * @return string $column Column string
 	 */
-	function number_to_letter( $number ) {
+	public function number_to_letter( $number ) {
 		$column = '';
 		while ( $number > 0 ) {
 			$column = chr( 65 + ( ( $number-1) % 26 ) ) . $column;
@@ -244,7 +244,7 @@ abstract class TablePress {
 	 * @param string $separator (optional) Separator between date and time
 	 * @return string Nice looking string with the date and time
 	 */
-	function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
+	public function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
 		if ( 'mysql' == $type )
 			return mysql2date( get_option( 'date_format' ), $datetime ) . $separator . mysql2date( get_option( 'time_format' ), $datetime );
 		else
@@ -257,7 +257,7 @@ abstract class TablePress {
 	 * @param int $user_id WP user ID
 	 * @return string Nickname of the WP user with the $user_id
 	 */
-	function get_last_editor( $user_id ) {
+	public function get_last_editor( $user_id ) {
 		$user = get_userdata( $user_id );
 		return ( $user && isset( $user->display_name ) ) ? $user->display_name : '';
 	}

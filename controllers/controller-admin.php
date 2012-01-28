@@ -146,13 +146,21 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			add_action( "load-{$editor_page}", array( &$this, 'add_editor_buttons' ) );
 		}
 
+		if ( ! is_network_admin() && ! is_user_admin() )
+			add_action( 'admin_bar_menu', array( &$this, 'add_wp_admin_bar_new_content_menu_entry' ), 71 );
+
 		// not sure if this is needed:
 		// add_action( 'load-plugins.php', array( &$this, 'plugin_notification' ) );
 		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
 		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 	}
 
-	function add_editor_buttons() {
+	/**
+	 * Register actions to add "Table" button to "HTML editor" and "Visual editor" toolbars
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_editor_buttons() {
 		$this->init_i18n_support();
 		add_thickbox(); // usually already loaded by media upload functions
 		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
@@ -178,7 +186,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $buttons Current set of buttons in the TinyMCE toolbar
 	 * @return array Current set of buttons in the TinyMCE toolbar, including "Table" button
 	 */
-	function add_tinymce_button( $buttons ) {
+	public function add_tinymce_button( $buttons ) {
 		$buttons[] = '|';
 		$buttons[] = 'tablepress_insert_table';
 		return $buttons;
@@ -190,11 +198,29 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $plugins Current set of registered TinyMCE plugins
 	 * @return array Current set of registered TinyMCE plugins, including "Table" button plugin
 	 */
-	function add_tinymce_plugin( $plugins ) {
+	public function add_tinymce_plugin( $plugins ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.dev' : '';
 		$js_file = "admin/tinymce-button{$suffix}.js";
 		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		return $plugins;
+	}
+
+	/**
+	 * Add "TablePress Table" entry to "New" dropdown menu in the WP Admin Bar
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param object $wp_admin_bar The current WP Admin Bar object
+	 */
+	public function add_wp_admin_bar_new_content_menu_entry( $wp_admin_bar ) {
+		// @TODO: Translation might not work, as textdomain might not yet be loaded here (for submenu entries)
+		// Might need $this->init_i18n_support(); here
+		$wp_admin_bar->add_menu( array(
+			'parent'    => 'new-content',
+			'id'        => 'new-tablepress-table',
+			'title'     => __( 'TablePress Table', 'tablepress' ),
+			'href'      => TablePress::url( array( 'action' => 'add' ) )
+		) );
 	}
 
 	/**

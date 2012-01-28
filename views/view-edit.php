@@ -135,7 +135,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function postbox_table_information( $data, $box ) {
+	public function postbox_table_information( $data, $box ) {
 		?>
 		<table class="form-table">
 		<tbody>
@@ -169,7 +169,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function postbox_table_data( $data, $box ) {
+	public function postbox_table_data( $data, $box ) {
 		$table = $data['table']['data'];
 		$options = $data['table']['options'];
 		$visibility = $data['table']['visibility'];
@@ -270,7 +270,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function postbox_table_manipulation( $data, $box ) {
+	public function postbox_table_manipulation( $data, $box ) {
 		$media_library_url = esc_url( add_query_arg( array( 'post_id' => '0', 'type' => 'image', 'tab' => 'library'), admin_url( 'media-upload.php' ) ) );
 ?>
 <table class="tablepress-postbox-table hide-if-no-js">
@@ -329,7 +329,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function textbox_buttons( $data, $box ) {
+	public function textbox_buttons( $data, $box ) {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 		?>
 			<p class="submit">
@@ -345,7 +345,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function textbox_other_actions( $data, $box ) {
+	public function textbox_other_actions( $data, $box ) {
 		?>
 			<p class="submit">
 				<?php _e( 'Other Actions' ); ?>:&nbsp;
@@ -360,7 +360,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function textbox_hidden_containers( $data, $box ) {
+	public function textbox_hidden_containers( $data, $box ) {
 ?>
 <div class="hidden-container">
 	<div id="advanced-editor">
@@ -390,7 +390,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function postbox_table_options( $data, $box ) {
+	public function postbox_table_options( $data, $box ) {
 		$options = $data['table']['options'];
 ?>
 <table class="tablepress-postbox-table fixed">
@@ -447,7 +447,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function postbox_datatables_features( $data, $box ) {
+	public function postbox_datatables_features( $data, $box ) {
 		$options = $data['table']['options'];
 ?>
 <p id="notice-datatables-head-row" class="hide-if-js"><?php printf( __( 'These features and options are only available, when the &quot;%1$s&quot; checkbox in the &quot;%2$s&quot; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></p>
@@ -479,7 +479,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	function textbox_head( $data, $box ) {
+	public function textbox_head( $data, $box ) {
 		?>
 		<p>
 		<?php _e( 'On this page, you can edit the content of the table.', 'tablepress' ); ?> <?php _e( 'It is also possible to change the table structure by inserting, deleting, moving, and swapping columns and rows.', 'tablepress' ); ?><br />
