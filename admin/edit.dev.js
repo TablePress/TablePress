@@ -995,9 +995,12 @@ jQuery(document).ready( function( $ ) {
 
 			$( window ).on( 'beforeunload', tp.check.changes_saved );
 
+			// init changed/disabled states of DataTables JS features checkboxes
+			$( '#option-table-head' ).change(); // do this before the next lines, to not trigger set_table_changed()
+
 			// just once is enough, will be reset after saving
 			$table.one( 'change', 'textarea', tp.table.set_table_changed );
-			$( '#tablepress_edit-table-information, #tablepress_edit-table-options' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
+			$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 
 			if ( tablepress_options.cells_advanced_editor ) {
 				$table.on( 'click', 'textarea', tp.cells.advanced_editor.keyopen );
@@ -1023,9 +1026,6 @@ jQuery(document).ready( function( $ ) {
 			$( '#edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
 
 			$( '#edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
-
-			// init changed/disabled states of DataTables JS features checkboxes
-			$( '#option-table-head' ).change();
 
 		    // on form submit: Enable disabled fields, so that they are transmitted in the POST request
 			$( '#tablepress-page' ).find( 'form' ).on( 'submit', function() {
@@ -1055,8 +1055,6 @@ jQuery(document).ready( function( $ ) {
 				change: tp.columns.move.change,
 				sort: tp.columns.move.sort
 			} ).disableSelection();
-
-			tp.made_changes = false; // do this at the end of init(), as some calls might have set it to true
 		}
 	};
 
