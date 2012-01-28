@@ -33,7 +33,7 @@ jQuery(document).ready( function( $ ) {
 			unset_table_changed: function() {
 				tp.made_changes = false;
 				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
-				$( '#tablepress_edit-table-information, #tablepress_edit-table-options' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
+				$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
 				if ( '' === $.trim( $( '#table-new-id' ).val() ) ) {
