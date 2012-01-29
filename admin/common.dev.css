@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 
+/* Screen icon */
 #icon-tablepress {
 	background: transparent url( 'tablepress-icon.png' ) no-repeat;
 }
@@ -34,17 +35,19 @@
 }
 
 /* Add New Table form */
-#tablepress-page .form-wrap {
-	max-width: 500px;
-}
-
-#tablepress_add-add-table .form-field {
-	margin: 10px 0;
+#tablepress_add-add-table div.inside {
+	margin: 6px;
 	padding: 0;
 }
-
-/* "Description" textarea on the "Add" screen */
-#tablepress-page .form-field-small {
+#tablepress_add-add-table .form-wrap {
+	max-width: 500px;
+}
+#tablepress_add-add-table .form-field {
+	margin: 0;
+	padding: 5px;
+}
+/* Number of rows/columns in the "Add New Table" form */
+#tablepress_add-add-table .form-field-small {
 	float: left;
 	width: 150px;
 	margin-right: 20px;
@@ -55,24 +58,24 @@
 	color: #bbbbbb;
 }
 
-/* width and font weight of the ID column on the "All Tables" screen */
+/* width of the columns on the "All Tables" list */
 .tablepress-all-tables thead .column-table_id {
 	width: 50px;
 }
-.tablepress-all-tables tbody .column-table_id {
-	font-weight: bold;
-}
-/* width of the Table Name column */
 .tablepress-all-tables thead .column-table_name {
 	width: 25%;
 }
-/* width of the Author and Last Modified columns */
 .tablepress-all-tables thead .column-table_author {
 	width: 12%;
 }
 .tablepress-all-tables thead .column-table_last_modified {
 	width: 15%;
 }
+/* font weight for the table ID column */
+.tablepress-all-tables tbody .column-table_id {
+	font-weight: bold;
+}
+/* width of the bulk actions select box */
 .tablenav #bulk-action-top,
 .tablenav #bulk-action-bottom {
 	width: 130px;
@@ -99,7 +102,6 @@
 	padding: 0;
 	font-weight: bold;
 }
-
 #tablepress-page .table-shortcode {
 	cursor: text;
 }
@@ -117,4 +119,37 @@
 /* red border for form fields that have invalid values */
 #tablepress-page form :invalid {
 	border-color: #cc0000 !important;
+}
+
+/* tables for in postboxes (on the "Edit" and "Plugin Options" screens) */
+.tablepress-postbox-table {
+	border-spacing: 0px;
+	width: 800px;
+}
+/* default column widths */
+.tablepress-postbox-table .column-1 {
+	width: 175px;
+}
+.tablepress-postbox-table .column-2 {
+	width: 625px;
+}
+.tablepress-postbox-table th {
+	text-align:left;
+	font-weight: normal;
+}
+.tablepress-postbox-table th,
+.tablepress-postbox-table td {
+	padding: 5px 5px 2px 2px;
+	border-spacing: 0px;
+	word-wrap: break-word;
+}
+.tablepress-postbox-table .top-border th,
+.tablepress-postbox-table .top-border td {
+	padding: 5px 5px 2px 2px;
+	border-top: 1px solid #ffffff;
+}
+.tablepress-postbox-table .bottom-border th,
+.tablepress-postbox-table .bottom-border td {
+	padding: 2px 5px 5px 2px;
+	border-bottom: 1px solid #dfdfdf;
 }

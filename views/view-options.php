@@ -65,14 +65,16 @@ class TablePress_Options_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function postbox_frontend_options( $data, $box ) {
-		?>
-		<table class="form-table">
-		<tr valign="top">
-			<th scope="row"><label for="field_id"><?php esc_html_e( 'Label', 'tablepress' ); ?>:</label></th>
-			<td><?php _e( 'Field', 'tablepress' ); ?></td>
-		</tr>
-		</table>
-		<?php
+?>
+<table class="tablepress-postbox-table fixed">
+<tbody>
+	<tr>
+		<th class="column-1" scope="row">Label</th>
+		<td class="column-2">Field</td>
+	</tr>
+</tbody>
+</table>
+<?php
 	}
 
 	/**
@@ -81,14 +83,16 @@ class TablePress_Options_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function postbox_backend_options( $data, $box ) {
-		?>
-		<table class="form-table">
-		<tr valign="top">
-			<th scope="row"><label for="field_id"><?php esc_html_e( 'Label', 'tablepress' ); ?>:</label></th>
-			<td><?php _e( 'Field', 'tablepress' ); ?></td>
-		</tr>
-		</table>
-		<?php
+?>
+<table class="tablepress-postbox-table fixed">
+<tbody>
+	<tr>
+		<th class="column-1" scope="row">Label</th>
+		<td class="column-2">Field</td>
+	</tr>
+</tbody>
+</table>
+<?php
 	}
 
 	/**
@@ -98,7 +102,8 @@ class TablePress_Options_View extends TablePress_View {
 	 */
 	public function postbox_user_options( $data, $box ) {
 		?>
-		<table class="form-table">
+<table class="tablepress-postbox-table fixed">
+<tbody>
 		<?php
 		// get list of current admin menu entries
 		$entries = array();
@@ -125,10 +130,10 @@ class TablePress_Options_View extends TablePress_View {
 		}
 		$select_box .= "</select>\n";
 		?>
-		<tr>
-			<th scope="row"><label for="option-admin-menu-parent-page"><?php _e( 'Admin menu entry', 'tablepress' ); ?>:</label></th>
-			<td><?php printf( __( 'TablePress shall be shown in this section of the admin menu: %s', 'tablepress' ), $select_box ); ?></td>
-		</tr>
+	<tr class="bottom-border">
+		<th class="column-1" scope="row"><label for="option-admin-menu-parent-page"><?php _e( 'Admin menu entry', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><?php printf( __( 'TablePress shall be shown in this section of the admin menu: %s', 'tablepress' ), $select_box ); ?></td>
+	</tr>
 		<?php
 		$select_box = '<select id="option-plugin-language" name="options[plugin_language]">' . "\n";
 		$select_box .= '<option' . selected( $data['user_options']['plugin_language'], 'auto', false ) . ' value="auto">' . sprintf( __( 'WordPress Default (currently %s)', 'tablepress' ), get_locale() ) . "</option>\n";
@@ -138,12 +143,13 @@ class TablePress_Options_View extends TablePress_View {
 		}
 		$select_box .= "</select>\n";
 		?>
-		<tr>
-			<th scope="row"><label for="option-plugin-language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
-			<td><?php printf( __( 'TablePress shall be shown in this language: %s', 'tablepress' ), $select_box ); ?></td>
-		</tr>
-		</table>
-		<?php
+	<tr class="top-border">
+		<th class="column-1" scope="row"><label for="option-plugin-language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><?php printf( __( 'TablePress shall be shown in this language: %s', 'tablepress' ), $select_box ); ?></td>
+	</tr>
+</tbody>
+</table>
+<?php
 	}
 
 	/**

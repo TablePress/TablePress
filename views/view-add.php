@@ -63,7 +63,7 @@ class TablePress_Add_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function postbox_support( $data, $box ) {
-		_e( 'These people are proud supporters of TablePress:', 'tablepress' );
+		echo '<p>' . __( 'These people are proud supporters of TablePress:', 'tablepress' ) . '</p>';
 	}
 
 	/**

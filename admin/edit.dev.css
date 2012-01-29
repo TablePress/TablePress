@@ -40,18 +40,15 @@ body.wait * {
 #advanced-editor {
 	padding: 0px 3px 3px;
 }
-
 #advanced-editor .submitbox {
 	padding: 6px 6px 0px;
 	font-size: 11px;
 	overflow: auto;
 	height: 28px;
 }
-
 #advanced-editor-confirm {
 	float: right;
 }
-
 #advanced-editor-cancel {
 	line-height: 25px;
 }
@@ -173,34 +170,8 @@ body.wait * {
 	background-color: #ffe0e0;
 }
 
-/* tables for "Table Manipulation" and "Table Options" */
-.tablepress-postbox-table {
-	border-spacing: 0px;
-	width: 800px;
-}
-.tablepress-postbox-table td {
-	padding: 5px 5px 2px;
-	border-spacing: 0px;
-	word-wrap: break-word;
-}
-.tablepress-postbox-table .top-border td {
-	padding: 5px 5px 2px;
-	border-top: 1px solid #ffffff;
-}
-.tablepress-postbox-table .bottom-border td {
-	padding: 2px 5px 5px;
-	border-bottom: 1px solid #dfdfdf;
-}
 #tablepress_edit-table-manipulation td {
 	width: 50%;
-}
-#tablepress_edit-table-options .column-1,
-#tablepress_edit-datatables-features .column-1 {
-	width: 175px;
-}
-#tablepress_edit-table-options .column-2,
-#tablepress_edit-datatables-features .column-2 {
-	width: 625px;
 }
 
 /* adjust size of a.button-secondary to input.button-secondary */
@@ -209,11 +180,4 @@ body.wait * {
 	display: inline-block;
 	margin: 1px;
 	line-height: 13px;
-}
-
-#tablepress_edit-table-information th {
-	padding: 6px 2px;
-}
-#tablepress_edit-table-information td {
-	padding: 2px 0 0;
 }
