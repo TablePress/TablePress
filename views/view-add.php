@@ -21,6 +21,15 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Add_View extends TablePress_View {
 
 	/**
+	 * Number of screen columns for the Add Table View
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
+	protected $screen_columns = 2;
+
+	/**
 	 * Set up the view with data and do things that are specific for this view
 	 *
 	 * @since 1.0.0
@@ -41,10 +50,20 @@ class TablePress_Add_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
+		$this->add_meta_box( 'support', __( 'Support', 'tablepress' ), array( &$this, 'postbox_support' ), 'side' );
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'add-table', __( 'Add New Table', 'tablepress' ), array( &$this, 'postbox_add_table' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Add Table', 'tablepress' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	public function postbox_support( $data, $box ) {
+		_e( 'These people are proud supporters of TablePress:', 'tablepress' );
 	}
 
 	/**

@@ -35,7 +35,12 @@
 
 /* Add New Table form */
 #tablepress-page .form-wrap {
-	width: 500px;
+	max-width: 500px;
+}
+
+#tablepress_add-add-table .form-field {
+	margin: 10px 0;
+	padding: 0;
 }
 
 /* "Description" textarea on the "Add" screen */
@@ -59,14 +64,15 @@
 }
 /* width of the Table Name column */
 .tablepress-all-tables thead .column-table_name {
-	width: 300px;
+	width: 25%;
 }
 /* width of the Author and Last Modified columns */
-.tablepress-all-tables thead .column-table_author,
-.tablepress-all-tables thead .column-table_last_modified {
-	width: 150px;
+.tablepress-all-tables thead .column-table_author {
+	width: 12%;
 }
-
+.tablepress-all-tables thead .column-table_last_modified {
+	width: 15%;
+}
 .tablenav #bulk-action-top,
 .tablenav #bulk-action-bottom {
 	width: 130px;

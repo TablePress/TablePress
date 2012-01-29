@@ -21,15 +21,6 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_List_View extends TablePress_View {
 
 	/**
-	 * Number of screen columns for the List View
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var int
-	 */
-	protected $screen_columns = 2;
-
-	/**
 	 * Object for the All Tables List Table
 	 *
 	 * @since 1.0.0
@@ -87,7 +78,6 @@ class TablePress_List_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_meta_box( 'support', __( 'Support', 'tablepress' ), array( &$this, 'postbox_support' ), 'side' );
 		$this->add_text_box( 'head1', array( &$this, 'textbox_head1' ), 'normal' );
 		$this->add_text_box( 'head2', array( &$this, 'textbox_head2' ), 'normal' );
 		$this->add_text_box( 'tables-list', array( &$this, 'textbox_tables_list' ), 'normal' );
@@ -147,15 +137,6 @@ class TablePress_List_View extends TablePress_View {
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	public function postbox_support( $data, $box ) {
-		_e( 'These people are proud supporters of TablePress:', 'tablepress' );
 	}
 
 	/**
