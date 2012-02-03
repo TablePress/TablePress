@@ -263,6 +263,27 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['messages']['plugin_update'] = $this->model_options->get( 'message_plugin_update' );
 				break;
 			case 'options':
+				// Maybe try saving "Custom CSS" to a file:
+				// (called here, as the credentials form posts to this handler again, due to how request_filesystem_credentials() works)
+				if ( isset( $_GET['item'] ) && 'save_custom_css' == $_GET['item'] ) {
+					TablePress::check_nonce( 'options', $_GET['item'] ); // nonce check here, as we don't have an explicit handler, and even viewing the screen needs to be checked
+					$action = 'options_custom_css'; // to load a different view
+					// try saving "Custom CSS" to a file, otherwise this gets the HTML for the credentials form
+					$result = $this->model_options->save_custom_css_to_file();
+					$data['credentials_form'] = $result;
+					break;
+				}
+				$data['frontend_options']['use_custom_css_file'] = $this->model_options->get( 'use_custom_css_file' );
+				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file();
+				$data['frontend_options']['custom_css_file_exists'] = ( false !== $data['frontend_options']['custom_css'] );
+				if ( $data['frontend_options']['use_custom_css_file'] ) {
+					// fall back to "Custom CSS" in options, if it could not be retrieved from file
+					if ( ! $data['frontend_options']['custom_css_file_exists'] )
+						$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
+				} else {
+					// get "Custom CSS" from options
+					$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
+				}
 				$data['user_options']['parent_page'] = $this->parent_page;
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' );
 				$data['user_options']['available_plugin_languages'] = array(
@@ -604,10 +625,29 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			// maybe add check in array available languages
 			$new_options['plugin_language'] = $posted_options['plugin_language'];
 		}
+		// Checkbox
+		$new_options['use_custom_css_file'] = ( isset( $posted_options['use_custom_css_file'] ) && 'true' === $posted_options['use_custom_css_file'] );
+		if ( isset( $posted_options['custom_css'] ) ) {
+			if ( 1 === preg_match( '#<style.*?>(.*?)</style>#is', $posted_options['custom_css'], $matches ) )
+				$posted_options['custom_css'] = trim( $matches[1] ); // if found, take match as style to save
+			// Save "Custom CSS" to option
+			$new_options['custom_css'] = $posted_options['custom_css'];
+			// Maybe save it to file as well
+			$update_custom_css_file = false;
+			if ( $new_options['use_custom_css_file']
+			&& $new_options['custom_css'] !== $this->model_options->load_custom_css_from_file() ) { // only write to file, if CSS really changed
+				$update_custom_css_file = true;
+				// Set to false again. As it was set here, it will be set true again, if file saving succeeds
+				$new_options['use_custom_css_file'] = false;
+			}
+		}
 
 		// save gathered new options (will be merged into existing ones)
 		if ( ! empty( $new_options ) )
 			$this->model_options->update( $new_options );
+
+		if ( $update_custom_css_file )
+			TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
 
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
@@ -726,6 +766,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'head_html' => $_render->get_preview_css(),
 			'body_html' => $_render->get_output()
 		);
+
+		if ( $this->model_options->get( 'use_custom_css_file' ) ) {
+			$custom_css = $this->model_options->load_custom_css_from_file();
+			// fall back to "Custom CSS" in options, if it could not be retrieved from file
+			if ( false === $custom_css  )
+				$custom_css = $this->model_options->get( 'custom_css' );
+		} else {
+			// get "Custom CSS" from options
+			$custom_css = $this->model_options->get( 'custom_css' );
+		}
+
+		if ( ! empty( $custom_css ) )
+			$view_data['head_html'] .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
 
 		// Prepare, initialize, and render the view
 		$this->view = TablePress::load_view( 'preview_table', $view_data );

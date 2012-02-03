@@ -43,7 +43,7 @@ class TablePress_Admin_Page {
 	 * @param array $dependencies List of names of JS scripts that this script depends on, and which need to be included before this one
 	 * @param bool|array $localize_script (optional) An array with strings that gets transformed into a JS object and is added to the page before the script is included
 	 */
-	public function enqueue_script( $name, $dependencies, $localize_script = false ) {
+	public function enqueue_script( $name, $dependencies = array(), $localize_script = false ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.dev' : '';
 		$js_file = "admin/{$name}{$suffix}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );

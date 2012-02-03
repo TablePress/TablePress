@@ -34,7 +34,7 @@ abstract class TablePress {
 	 *
 	 * @const int
 	 */
-	const db_version = 2;
+	const db_version = 6;
 
 	/**
 	 * Instance of the controller object
@@ -315,10 +315,17 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @uses url()
 	 *
-	 * @param array $target_parameters (optional) Parameters from which the target URL is constructed
+	 * @param array $params (optional) Parameters from which the target URL is constructed
+	 * @param bool $add_nonce (optional) Whether the URL shall be nonced by WordPress
 	 */
-	public static function redirect( $target_parameters = array() ) {
-		$redirect = self::url( $target_parameters );
+	public static function redirect( $params = array(), $add_nonce = false ) {
+		$redirect = self::url( $params );
+		if ( $add_nonce ) {
+			if ( ! isset( $params['item'] ) )
+				$params['item'] = false;
+			// don't use wp_nonce_url(), as that uses esc_html()
+			$redirect = add_query_arg( '_wpnonce', wp_create_nonce( self::nonce( $params['action'], $params['item'] ) ), $redirect );
+		}
 		wp_redirect( $redirect );
 		die();
 	}

@@ -32,7 +32,10 @@ class TablePress_Options_Model extends TablePress_Model {
 		'prev_tablepress_version' => '',
 		'tablepress_version' => TablePress::version,
 		'first_activation' => 0,
-		'message_plugin_update' => true
+		'message_plugin_update' => true,
+		'custom_css' => '',
+		'use_custom_css_file' => true,
+		'custom_css_version' => 0
 	);
 
 	/**
@@ -193,6 +196,82 @@ class TablePress_Options_Model extends TablePress_Model {
 		$user_options = array_merge( $this->default_user_options, $user_options );
 
 		$this->user_options->update( $user_options );
+	}
+
+	/**
+	 * Load the contents of the file with the "Custom CSS"
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|bool Custom CSS on success, false on error
+	 */
+	public function load_custom_css_from_file() {
+		$filename = WP_CONTENT_DIR . '/tablepress-custom.css';
+		$filename = apply_filters( 'tablepress_custom_css_file_name', $filename );
+		// Check if file name is valid (0 means yes)
+		if ( 0 !== validate_file( $filename ) )
+			return false;
+		if ( ! @is_file( $filename ) )
+			return false;
+		if ( ! @is_readable( $filename ) )
+			return false;
+		return file_get_contents( $filename );
+	}
+
+	/**
+	 * Save "Custom CSS" to a file, or return HTML for the credentials form
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string (if necessary) HTML for the credentials form for the WP_Filesystem API
+	 */
+	public function save_custom_css_to_file() {
+		// Set current screen to get Screen Icon to have a custom HTML ID, so that we can hide it with CSS
+		set_current_screen( "tablepress_options_invisible" );
+
+		// Start capturing the output, to get HTML of the credentials form (if needed)
+		ob_start();
+
+		$url = ''; // same page
+		$credentials = request_filesystem_credentials( $url, '', false, false, null );
+		// do we have credentials already? (Otherwise the form will have been rendered already.)
+		if ( false === $credentials ) {
+			$form_data = ob_get_contents();
+			ob_end_clean();
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary"', $form_data );
+			return $form_data;
+		}
+
+		// we have received credentials, but don't know if they are valid yet
+		if ( ! WP_Filesystem( $credentials ) ) {
+			// credentials failed, so ask again (with $error flag true)
+			request_filesystem_credentials( $url, '', true, false, null );
+			$form_data = ob_get_contents();
+			ob_end_clean();
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary"', $form_data );
+			return $form_data;
+		}
+
+		// we have valid access to the filesystem now -> try to save the file
+		$filename = WP_CONTENT_DIR . '/tablepress-custom.css';
+		$filename = apply_filters( 'tablepress_custom_css_file_name', $filename );
+		// Check if file name is valid (0 means yes)
+		if ( 0 !== validate_file( $filename ) )
+			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) );
+		global $wp_filesystem;
+		$custom_css = $this->get( 'custom_css' );
+		$result = $wp_filesystem->put_contents( $filename, $custom_css, FS_CHMOD_FILE );
+		if ( ! $result )
+			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) );
+
+		// at this point, saving was successful, so enable the checkbox again
+		// (if it was not enabled before, we would never have tried to save)
+		// and also increase the "Custom CSS" version number (for cache busting)
+		$this->update( array(
+			'use_custom_css_file' => true,
+			'custom_css_version' => $this->get( 'custom_css_version' ) + 1
+		) );
+		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
 
 } // class TablePress_Options_Model

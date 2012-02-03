@@ -31,8 +31,14 @@ class TablePress_Options_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
+		$this->admin_page->enqueue_style( 'codemirror' );
+		$this->admin_page->enqueue_script( 'codemirror' );
+		$this->admin_page->enqueue_script( 'codemirror-css', array( 'tablepress-codemirror' ) );
+		add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( &$this, 'print_codemirror_js' ) );
+
 		$action_messages = array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
+			'success_save_error_custom_css' => __( 'Options saved successfully, but &quot;Custom CSS&quot; was not saved to file.', 'tablepress' ),
 			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
@@ -46,6 +52,24 @@ class TablePress_Options_View extends TablePress_View {
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( &$this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Options', 'tablepress' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+	}
+
+	/**
+	 * Print the JavaScript code to invoke CodeMirror on the "Custom CSS" textarea (in the admin footer)
+	 *
+	 * @since 1.0.0
+	 */
+	public function print_codemirror_js() {
+		echo <<<JS
+<script type="text/javascript">
+CodeMirror.fromTextArea( document.getElementById( 'option-custom-css' ), {
+	mode: 'css',
+	indentUnit: 2,
+	tabSize: 2,
+	indentWithTabs: true
+} );
+</script>
+JS;
 	}
 
 	/**
@@ -69,8 +93,18 @@ class TablePress_Options_View extends TablePress_View {
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr>
-		<th class="column-1" scope="row">Label</th>
-		<td class="column-2">Field</td>
+		<th class="column-1" scope="row"><label for="option-use-custom-css-file"><?php _e( 'Custom CSS file', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> />
+		<?php
+			echo content_url( 'tablepress-custom.css' );
+			echo ' ';
+			echo ( $data['frontend_options']['custom_css_file_exists'] ) ? '(File exists.)' : '(File seems not to exist.)';
+		?>
+		</td>
+	</tr>
+	<tr>
+		<th class="column-1 top-align" scope="row"><label for="option-custom-css"><?php _e( 'Custom CSS', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea></td>
 	</tr>
 </tbody>
 </table>
