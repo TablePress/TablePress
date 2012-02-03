@@ -44,7 +44,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 */
 	public function ajax_action_hide_message() {
 		if ( empty( $_GET['item'] ) )
-			die( '0' );
+			wp_die( '0' );
 		else
 			$message_item = $_GET['item'];
 
@@ -53,7 +53,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		// @TODO Capability check!
 
 		$this->model_options->update( "message_{$message_item}", false );
-		die( '1' );
+		wp_die( '1' );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 */
 	public function ajax_action_save_table() {
 		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) )
-			die( '-1' );
+			wp_die( '-1' );
 		else
 			$edit_table = stripslashes_deep( $_POST['tablepress'] );
 
@@ -146,7 +146,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 */
 	public function ajax_action_preview_table() {
 		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) )
-			die( '-1' );
+			wp_die( '-1' );
 		else
 			$preview_table = stripslashes_deep( $_POST['tablepress'] );
 
