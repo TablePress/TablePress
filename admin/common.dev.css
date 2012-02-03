@@ -8,12 +8,16 @@
 #icon-tablepress {
 	background: transparent url( 'tablepress-icon.png' ) no-repeat;
 }
-
-/*
-#tablepress-page #poststuff {
-	padding-top: 0px;
+/* Hide second Screen icon (above the credentials form to save "Custom CSS" */
+#icon-tablepress_options_invisible {
+	display: none;
 }
-*/
+
+/* Margins for messages on screens */
+#tablepress-page div.updated,
+#tablepress-page div.error {
+	margin: 10px 0 0;
+}
 
 /* Nav Tab Menu */
 #tablepress-nav .separator {
@@ -137,6 +141,10 @@
 	text-align:left;
 	font-weight: normal;
 }
+.tablepress-postbox-table .top-align {
+	vertical-align: top;
+	padding-top: 7px;
+}
 .tablepress-postbox-table th,
 .tablepress-postbox-table td {
 	padding: 5px 5px 2px 2px;
@@ -152,4 +160,14 @@
 .tablepress-postbox-table .bottom-border td {
 	padding: 2px 5px 5px 2px;
 	border-bottom: 1px solid #dfdfdf;
+}
+.tablepress-postbox-table .top-align {
+	vertical-align: top;
+	padding-top: 7px;
+}
+.tablepress-postbox-table .top-border .top-align {
+	padding-top: 7px;
+}
+.tablepress-postbox-table .bottom-border .top-align {
+	padding-top: 4px;
 }

@@ -153,7 +153,7 @@ class TablePress_Edit_View extends TablePress_View {
 		<td class="column-2"><input type="text" name="table[name]" id="table-name" class="large-text" value="<?php echo esc_attr( $data['table']['name'] ); ?>" /></td>
 	</tr>
 	<tr class="bottom-border">
-		<th class="column-1" scope="row"><label for="table-description"><?php _e( 'Description', 'tablepress' ); ?>:</label></th>
+		<th class="column-1 top-align" scope="row"><label for="table-description"><?php _e( 'Description', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><textarea name="table[description]" id="table-description" class="large-text" rows="4"><?php echo esc_textarea( $data['table']['description'] ); ?></textarea></td>
 	</tr>
 	<tr class="top-border" valign="top">

@@ -106,11 +106,10 @@ class TablePress_List_View extends TablePress_View {
 			foreach ( $this->header_messages as $message ) {
 				echo $message;
 			}
-		?>
-			<?php
+
 			// For this screen, this is done in textbox_tables_list(), to get the fields into the correct <form>:
 			// $this->do_text_boxes( 'header' );
-			?>
+		?>
 			<div id="poststuff" class="metabox-holder<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? ' has-right-sidebar' : ''; ?>">
 				<div id="side-info-column" class="inner-sidebar">
 				<?php

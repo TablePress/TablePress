@@ -64,6 +64,12 @@ body.wait * {
 	vertical-align: top;
 }
 
+/* Margins from dynamically created (inline) .error/.updated messages */
+#tablepress-page div.save-changes-success,
+#tablepress-page div.save-changes-error,
+#tablepress-page div.preview-error {
+	margin: 0 0 15px;
+}
 /* table cells */
 #edit-form-body td {
 	padding: 2px 2px 2px 0px;

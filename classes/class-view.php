@@ -136,7 +136,7 @@ abstract class TablePress_View {
 		$this->data = $data;
 
 		// Set page <title>
-		$GLOBALS['title'] = sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $this->data['view_actions'][ $action ]['page_title'] );
+		$GLOBALS['title'] = sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'] );
 
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );

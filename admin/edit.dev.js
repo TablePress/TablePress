@@ -33,6 +33,7 @@ jQuery(document).ready( function( $ ) {
 			unset_table_changed: function() {
 				tp.made_changes = false;
 				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
+				// @TODO: maybe use .tablepress-postbox-table here and further below
 				$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
@@ -937,12 +938,12 @@ jQuery(document).ready( function( $ ) {
 				else
 					message = ': ' + message;
 				var delay,
-					div_class = 'save-changes-';
+					div_class = 'save-changes-' + type;
 				if ( 'success' == type ) {
-					div_class += type + ' updated';
+					div_class += ' updated';
 					delay = 3000;
 				} else {
-					div_class += type + ' error';
+					div_class += ' error';
 					delay = 6000;
 				}
 				$( '.animation-saving' ).closest( 'p' )
