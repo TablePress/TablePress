@@ -270,7 +270,7 @@ abstract class TablePress {
 	 * @param array $params (optional) Parameters to form the query string of the URL
 	 * @param bool $add_nonce (optional) Whether the URL shall be nonced by WordPress
 	 * @param string $target (optional) Target File, e.g. "admin-post.php" for POST requests
-	 * @return string The URL for the given parameters
+	 * @return string The URL for the given parameters (already run through esc_url() with $add_nonce == true!)
 	 */
 	public static function url( $params = array(), $add_nonce = false, $target = '' ) {
 

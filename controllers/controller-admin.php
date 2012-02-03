@@ -151,8 +151,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// not sure if this is needed:
 		// add_action( 'load-plugins.php', array( &$this, 'plugin_notification' ) );
-		// register_activation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_activation_hook' ) );
-		// register_deactivation_hook( TABLEPRESS__FILE__, array( &$this, 'plugin_deactivation_hook' ) );
 	}
 
 	/**
