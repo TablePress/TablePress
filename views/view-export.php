@@ -118,7 +118,7 @@ class TablePress_Export_View extends TablePress_View {
 			</select>
 		</td>
 	</tr>
-	<tr id="row-tables-export-csv-delimiter">
+	<tr>
 		<th class="column-1" scope="row"><label for="tables-export-csv-delimiter"><?php _e( 'CSV Delimiter', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
 			<select id="tables-export-csv-delimiter" name="export[csv_delimiter]">
@@ -128,12 +128,16 @@ class TablePress_Export_View extends TablePress_View {
 					echo "<option{$selected} value=\"{$delimiter}\">{$name}</option>";
 				}
 			?>
-			</select> <span class="description"><?php _e( '(Only needed for CSV export.)', 'tablepress' ); ?></span>
+			</select> <span id="tables-export-csv-delimiter-description" class="description hide-if-js"><?php _e( '(Only needed for CSV export.)', 'tablepress' ); ?></span>
 		</td>
 	</tr>
 	<tr>
-		<th class="column-1" scope="row"><label for="tables-export-zip-file"><?php _e( 'ZIP file', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" /> <?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></td>
+		<th class="column-1" scope="row"><?php _e( 'ZIP file', 'tablepress' ); ?>:</th>
+		<td class="column-2">
+			<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
+			<label for="tables-export-zip-file" style="vertical-align: top;"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></label>
+			<span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span>
+		</td>
 	</tr>
 </tbody>
 </table>

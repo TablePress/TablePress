@@ -34,7 +34,9 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
     $( '#tables-export-format' ).on( 'change', function() {
-		$( '#row-tables-export-csv-delimiter' ).toggle( ( 'csv' == $(this).val() ) );
+    	var non_csv_selected = ( 'csv' !== $(this).val() );
+		$( '#tables-export-csv-delimiter' ).prop( 'disabled', non_csv_selected );
+		$( '#tables-export-csv-delimiter-description' ).toggle( non_csv_selected );
     } )
     .change();
 
@@ -53,7 +55,8 @@ jQuery(document).ready( function($) {
 			zip_file_required = ( num_selected > 1 );
 		$( '#tables-export-zip-file' )
 			.prop( 'disabled', zip_file_required )
-			.prop( 'checked', zip_file_required || zip_file_manually_checked )
+			.prop( 'checked', zip_file_required || zip_file_manually_checked );
+		$( '#tables-export-zip-file-description' ).toggle( zip_file_required );
     } )
     .change();
 
