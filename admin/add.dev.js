@@ -11,7 +11,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' ).on( 'submit', 'form', function( /* event */ ) {
+	$( '#tablepress-page' ).find( 'form' ).on( 'submit', function( /* event */ ) {
 		var valid_form = true;
 
 		// remove default values from required placeholders, if no value was entered

@@ -126,5 +126,9 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	border-color: #bbbbbb;
 }
 #tablepress-page .CodeMirror-scroll {
-	height: 200px;
+	height: 100px;
+}
+#option-custom-css,
+#tablepress-page .large .CodeMirror-scroll {
+	height: 250px;
 }

@@ -32,15 +32,13 @@ class TablePress_Export_View extends TablePress_View {
 		parent::setup( $action, $data );
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
-
-		if ( $data['tables_count'] > 0 ) {
-			$this->add_text_box( 'export-form', array( &$this, 'textbox_export_form' ), 'normal' );
-			$this->data['submit_button_caption'] = __( 'Export Table', 'tablepress' );
-			$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'normal' );
-			if ( ! empty( $data['export_output'] ) )
-				$this->add_text_box( 'export-output', array( &$this, 'textbox_export_output' ), 'normal' );
+		if ( 0 == $data['tables_count'] ) {
+			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( &$this, 'postbox_no_tables' ), 'normal' );
 		} else {
-			$this->add_text_box( 'no-tables', array( &$this, 'textbox_no_tables' ), 'normal' );
+			$this->admin_page->enqueue_script( 'export', array( 'jquery' ) );
+			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( &$this, 'postbox_export_form' ), 'normal' );
+			$this->data['submit_button_caption'] = __( 'Export Table', 'tablepress' );
+			$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
 		}
 	}
 
@@ -51,7 +49,13 @@ class TablePress_Export_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'It is recommended to export and backup the data of important tables regularly.', 'tablepress' ); ?> <?php _e( 'Select the table, the desired export format and (for CSV only) a delimiter.', 'tablepress' ); ?> <?php _e( 'You may choose to download the export file. Otherwise it will be shown on this page.', 'tablepress' ); ?><br/><?php _e( 'Be aware that only the table data, but no options or settings are exported with this method.', 'tablepress' ); ?><br/><?php printf( __( 'To backup all tables, including their settings, at once, use the &quot;%s&quot; button in the &quot;%s&quot;.', 'tablepress' ), __( 'Create and Download Dump File', 'tablepress' ), __( 'Plugin Options', 'tablepress' ) ); ?></p>
+		<p>
+			<?php _e( 'It is recommended to export and backup the data of important tables regularly.', 'tablepress' ); ?>
+			<?php _e( 'Select the table, the desired export format and (for CSV only) a delimiter.', 'tablepress' ); ?>
+			<?php _e( 'You may choose to download the export file. Otherwise it will be shown on this page.', 'tablepress' ); ?>
+			<?php _e( 'Be aware that only the table data, but no options or settings are exported with this method.', 'tablepress' ); ?>
+			<?php printf( __( 'To backup all tables, including their settings, at once, use the &quot;%s&quot; button in the &quot;%s&quot;.', 'tablepress' ), __( 'Create and Download Dump File', 'tablepress' ), __( 'Plugin Options', 'tablepress' ) ); ?>
+		</p>
 		<?php
 	}
 
@@ -60,11 +64,11 @@ class TablePress_Export_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	public function textbox_no_tables( $data, $box ) {
-		$add_url = TablePress::url( array( 'action' => 'add' ), false );
-		$import_url = TablePress::url( array( 'action' => 'import' ), false );
+	public function postbox_no_tables( $data, $box ) {
+		$add_url = TablePress::url( array( 'action' => 'add' ) );
+		$import_url = TablePress::url( array( 'action' => 'import' ) );
 		?>
-		<p><?php _e( 'No tables were found.', 'tablepress' ); ?></p>
+		<p><?php _e( 'No tables found.', 'tablepress' ); ?></p>
 		<p><?php printf( __( 'You should <a href="%s">add</a> or <a href="%s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url ); ?></p>
 		<?php
 	}
@@ -74,70 +78,66 @@ class TablePress_Export_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	public function textbox_export_form( $data, $box ) {
-		$export_id = '';//$data['table_id'];
-
-		?>
-		<table class="form-table">
-		<tr valign="top">
-			<th scope="row"><label for="table_id"><?php _e( 'Select Table to Export', 'tablepress' ); ?>:</label></th>
-			<td><select id="table_id" name="table_id">
+	public function postbox_export_form( $data, $box ) {
+?>
+<table class="tablepress-postbox-table fixed">
+<tbody>
+	<tr>
+		<th class="column-1 top-align" scope="row"><label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label></th>
+		<td class="column-2">
+			<input type="hidden" name="export[tables_list]" id="tables-export-list" value="" />
+			<?php
+				$select_size = $data['tables_count'] + 1; // to show at least one empty row in the select
+				$select_size = max( $select_size, 3 );
+				$select_size = min( $select_size, 12 );
+			?>
+			<select id="tables-export" name="export[tables][]" size="<?php echo $select_size; ?>" multiple="multiple">
 			<?php
 				foreach ( $data['tables'] as $table ) {
-					$id = esc_attr( $table['id'] );
-					$name = esc_html( $table['name'] );
-					$text = sprintf( __( '%1$s (ID %2$s)', 'tablepress' ), $name, $id );
-					$selected = selected( $id, $export_id, false );
-					echo "<option{$selected} value=\"{$id}\">{$text}</option>";
+					if ( '' == trim( $table['name'] ) )
+						$table['name'] = __( '(no name)', 'tablepress' );
+					$text = esc_html( sprintf( __( 'ID %1$s: %2$s ', 'tablepress' ), $table['id'], $table['name'] ) );
+					$selected = selected( true, in_array( $table['id'], $data['export_ids'] ), false );
+					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
 				}
 			?>
-			</select></td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><label for="export_format"><?php _e( 'Select Export Format', 'tablepress' ); ?>:</label></th>
-			<td><select id="export_format" name="export_format">
+			</select><br/>
+			<span class="description"><?php _e( 'You can select multiple tables by holding down the &quot;Ctrl&quot; key (Windows) or the &quot;Command&quot; key (Mac).', 'tablepress' ); ?></span>
+		</td>
+	</tr>
+	<tr>
+		<th class="column-1" scope="row"><label for="tables-export-format"><?php _e( 'Export Format', 'tablepress' ); ?>:</label></th>
+		<td class="column-2">
+			<select id="tables-export-format" name="export[format]">
 			<?php
-				/*
-				$export_formats = $this->export_instance->export_formats;
-				foreach ( $export_formats as $export_format => $longname ) {
-					echo "<option" . ( ( isset( $_POST['export_format'] ) && $export_format == $_POST['export_format'] ) ? ' selected="selected"': '' ) . " value=\"{$export_format}\">{$longname}</option>";
+				foreach ( $data['export_formats'] as $format => $name ) {
+					$selected = selected( $format, $data['export_format'], false );
+					echo "<option{$selected} value=\"{$format}\">{$name}</option>";
 				}
-				*/
 			?>
-			</select></td>
-		</tr>
-		<tr valign="top" class="tr-export-delimiter">
-			<th scope="row"><label for="delimiter"><?php _e( 'Select Delimiter to use', 'tablepress' ); ?>:</label></th>
-			<td><select id="delimiter" name="delimiter">
+			</select>
+		</td>
+	</tr>
+	<tr id="row-tables-export-csv-delimiter">
+		<th class="column-1" scope="row"><label for="tables-export-csv-delimiter"><?php _e( 'CSV Delimiter', 'tablepress' ); ?>:</label></th>
+		<td class="column-2">
+			<select id="tables-export-csv-delimiter" name="export[csv_delimiter]">
 			<?php
-				/*
-				$delimiters = $this->export_instance->delimiters;
-				foreach ( $delimiters as $delimiter => $longname ) {
-					echo "<option" . ( ( isset( $_POST['delimiter'] ) && $delimiter == $_POST['delimiter'] ) ? ' selected="selected"': '' ) . " value=\"{$delimiter}\">{$longname}</option>";
+				foreach ( $data['csv_delimiters'] as $delimiter => $name ) {
+					$selected = selected( $delimiter, $data['csv_delimiter'], false );
+					echo "<option{$selected} value=\"{$delimiter}\">{$name}</option>";
 				}
-				*/
 			?>
-			</select> <small>(<?php _e( 'Only needed for CSV export.', 'tablepress' ); ?>)</small></td>
-		</tr>
-		<tr valign="top">
-			<th scope="row"><?php _e( 'Download file', 'tablepress' ); ?>:</th>
-			<td><input type="checkbox" name="download_export_file" id="download_export_file" value="true"<?php //echo ( isset( $_POST['submit'] ) && !isset( $_POST['download_export_file'] ) ) ? '' : ' checked="checked"'; ?> /> <label for="download_export_file"><?php _e( 'Yes, I want to download the export file.', 'tablepress' ); ?></label></td>
-		</tr>
-		</table>
-		<?php
-	}
-	
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	public function textbox_export_output( $data, $box ) {
-		_e( 'Export Output:', 'tablepress' );
-		?>
-		<br/>
-		<textarea rows="15" cols="40" class="large-text"><?php echo esc_html( $data['export_output'] ); ?></textarea>
-		<?php
+			</select> <span class="description"><?php _e( '(Only needed for CSV export.)', 'tablepress' ); ?></span>
+		</td>
+	</tr>
+	<tr>
+		<th class="column-1" scope="row"><label for="tables-export-zip-file"><?php _e( 'ZIP file', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" /> <?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></td>
+	</tr>
+</tbody>
+</table>
+<?php
 	}
 
 	/**

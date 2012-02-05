@@ -78,8 +78,7 @@ class TablePress_List_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_text_box( 'head1', array( &$this, 'textbox_head1' ), 'normal' );
-		$this->add_text_box( 'head2', array( &$this, 'textbox_head2' ), 'normal' );
+		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_text_box( 'tables-list', array( &$this, 'textbox_tables_list' ), 'normal' );
 
 		add_screen_option( 'per_page', array( 'label' => __( 'Tables', 'tablepress' ), 'default' => 20 ) ); // Admin_Controller contains function to allow changes to this in the Screen Options to be saved
@@ -143,20 +142,17 @@ class TablePress_List_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
-	public function textbox_head1( $data, $box ) {
+	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may add, edit, copy, delete or preview tables here.', 'tablepress' ); ?></p>
-		<?php
-	}
-
-	/**
-	 *
-	 *
-	 * @since 1.0.0
-	 */
-	public function textbox_head2( $data, $box ) {
-		?>
-		<p><?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?> <?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?> <?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?></p>
+		<p>
+			<?php _e( 'This is a list of all available tables.', 'tablepress' ); ?>
+			<?php _e( 'You may add, edit, copy, delete or preview tables here.', 'tablepress' ); ?>
+		</p>
+		<p>
+			<?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
+			<?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?>
+			<?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
+		</p>
 		<?php
 	}
 
@@ -331,6 +327,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	protected function column_table_name( $item ) {
 		$edit_url = TablePress::url( array( 'action' => 'edit', 'table_id' => $item['id'] ) );
 		$copy_url = TablePress::url( array( 'action' => 'copy_table', 'item' => $item['id'], 'return' => 'list', 'return_item' => $item['id'] ), true, 'admin-post.php' );
+		$export_url = TablePress::url( array( 'action' => 'export', 'table_id' => $item['id'] ) );
 		$delete_url = TablePress::url( array( 'action' => 'delete_table', 'item' => $item['id'], 'return' => 'list', 'return_item' => $item['id'] ), true, 'admin-post.php' );
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $item['id'], 'return' => 'list', 'return_item' => $item['id'] ), true, 'admin-post.php' );
 		if ( '' == trim( $item['name'] ) )
@@ -341,6 +338,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			'edit' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $edit_url, sprintf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Edit', 'tablepress' ) ),
 			'shortcode hide-if-no-js' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', '[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]', __( 'Shortcode', 'tablepress' ) ),
 			'copy' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, sprintf ( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Copy', 'tablepress' ) ),
+			'export' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $export_url, sprintf ( __( 'Export &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Export', 'tablepress' ) ),
 			'delete' => sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, sprintf ( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Delete', 'tablepress' ) ),
 			'table-preview' => sprintf( '<a href="%1$s" title="%2$s" target="_blank">%3$s</a>', $preview_url, sprintf ( __( 'Show a preview of &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Preview', 'tablepress' ) )
 		);
@@ -405,6 +403,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	public function get_bulk_actions() {
 		$bulk_actions = array(
 			'copy' => __( 'Copy', 'tablepress' ),
+			'export' => __( 'Export', 'tablepress' ),
 			'delete' => __( 'Delete', 'tablepress' )
 		);
 		return $bulk_actions;
@@ -449,7 +448,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @since 1.0.0
 	 */
 	public function no_items() {
-		echo __( 'No tables found.', 'tablepress' );
+		_e( 'No tables found.', 'tablepress' );
 		if ( 0 === $this->items_count ) {
 			$add_url = TablePress::url( array( 'action' => 'add' ) );
 			$import_url = TablePress::url( array( 'action' => 'import' ) );

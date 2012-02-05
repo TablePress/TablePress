@@ -99,4 +99,14 @@ jQuery(document).ready( function($) {
 		$(this).focus().select();
 	} );
 
+
+	/**
+	 * "Custom CSS" textarea grows on focus, once
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' ).find( '.CodeMirror' ).one( 'click', function() {
+		$(this).addClass( 'large' );
+	} );
+
 } );

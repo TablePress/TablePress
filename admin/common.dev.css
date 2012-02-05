@@ -67,7 +67,7 @@
 	width: 50px;
 }
 .tablepress-all-tables thead .column-table_name {
-	width: 25%;
+	width: 26%;
 }
 .tablepress-all-tables thead .column-table_author {
 	width: 12%;
@@ -118,6 +118,11 @@
 .no-js .postbox .hndle {
 	cursor: auto;
 	color: #464646;
+}
+
+/* table dropdown on "Export" screen */
+#tables-export {
+	width: 100%;
 }
 
 /* red border for form fields that have invalid values */

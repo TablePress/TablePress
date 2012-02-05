@@ -301,16 +301,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'export':
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
-				if ( ! empty( $_GET['table_id'] ) ) {
-					$data['table_id'] = $_GET['table_id'];
-					// this is actually done in the post_import handler function
-					$data['table'] = $this->model_table->load( $data['table_id'] );
-					if ( false === $data['table'] )
-						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
-					$data['export_output'] = '<a href="http://test.com">ada</a>';
-				} else {
-					// just show empty export form
-				}
+				if ( ! empty( $_GET['table_id'] ) )
+					$data['export_ids'] = explode( ',', $_GET['table_id'] );
+				else
+					$data['export_ids'] = array(); // just show empty export form
+				$data['export_formats'] = array( 'csv' => 'CSV - Character-Separated Values', 'html' => 'HTML - Hypertext Markup Language', 'xml' => 'JSON - eXtensible Markup Language', 'json' => 'JSON - JavaScript Object Notation' );
+				$data['export_format'] = ( ! empty( $_GET['export_format'] ) ) ? $_GET['export_format'] : false;
+				$data['csv_delimiters'] = array( ';' => '; (semicolon)', ',' => ', (comma)', ':' => ': (colon)', '.' => '. (dot)', '|' => '| (pipe)' );
+				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : false;
 				break;
 			case 'import':
 				$data['tables'] = $this->model_table->load_all();
@@ -433,7 +431,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 
 	/**
-	 * Handle Bulk Actions (Delete, Copy) on "All Tables" list screen
+	 * Handle Bulk Actions (Copy, Export, Delete) on "All Tables" list screen
 	 *
 	 * @since 1.0.0
 	 */
@@ -447,7 +445,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$bulk_action = false;
 
-		if ( ! in_array( $bulk_action, array( 'copy', 'delete' ) ) )		
+		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ) ) )		
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_bulk_action_invalid' ) );
 
 		// @TODO: caps check for selected bulk action
@@ -466,6 +464,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					if ( false === $copy_table_id )
 						$no_success[] = $table_id;
 				}
+				break;
+			case 'export':
+				// to export, redirect to "Export" screen, with selected table IDs
+				$table_ids = implode( ',', $tables );
+				TablePress::redirect( array( 'action' => 'export', 'table_id' => $table_ids ) );
 				break;
 			case 'delete':
 				foreach ( $tables as $table_id ) {
@@ -648,6 +651,40 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
 
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_post_action_export() {
+		TablePress::check_nonce( 'export' );
+
+		$zip = new ZipArchive();
+		$filename = "./test112.zip";
+
+		if ( true !== $zip->open( $filename, ZIPARCHIVE::CREATE ) )
+			exit("cannot open <$filename>\n");
+
+		$zip->addFromString("testfilephp.txt", "#1 This is a test string added as testfilephp.txt.\n" . time());
+		$zip->addFromString("testfilephp2.txt", "#2 This is a test string added as testfilephp2.txt.");
+		echo "numfiles: " . $zip->numFiles . "\n";
+		echo "status:" . $zip->status . "\n";
+		$zip->close();
+
+		$zip = new ZipArchive();
+		if ( true === $zip->open( $filename ) ) {
+			$idx = 0;
+			do {
+				$entry = $zip->getFromIndex( $idx );
+				if ( false === $entry )
+					break;
+				echo "<pre>{$entry}</pre>";
+				$idx++;
+			} while( true );
+			$zip->close();
+		}
 	}
 
 	/**

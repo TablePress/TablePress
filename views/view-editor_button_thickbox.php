@@ -307,7 +307,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @since 1.0.0
 	 */
 	public function no_items() {
-		echo __( 'No tables found.', 'tablepress' );
+		_e( 'No tables found.', 'tablepress' );
 		if ( 0 === $this->items_count )
 			echo ' ' . __( 'You should add or import a table on the TablePress screens to get started!', 'tablepress' );
 	}

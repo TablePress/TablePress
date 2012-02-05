@@ -1,0 +1,67 @@
+/**
+ *
+ *
+ * @since 1.0.0
+ */
+
+jQuery(document).ready( function($) {
+
+	/**
+	 * Check, whether inputs are valid
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' ).find( 'form' ).on( 'submit', function( /* event */ ) {
+		var selected_tables = $( '#tables-export' ).val(),
+			num_selected = ( selected_tables ) ? selected_tables.length : 0;
+
+		// only submit form, if at least one table was selected
+		if ( 0 == num_selected )
+			return false;
+
+		// at this point, the form is valid and will be submitted
+		
+		// add selected tables as a list to a hidden field
+		$( '#tables-export-list' ).val( selected_tables.join( ',' ) );
+
+		// on form submit: Enable disabled fields, so that they are transmitted in the POST request
+		$( '#tables-export-zip-file' ).prop( 'disabled', false );
+	} );
+
+  	/**
+	 * Show export delimiter dropdown box only if export format is CSV
+	 *
+	 * @since 1.0.0
+	 */
+    $( '#tables-export-format' ).on( 'change', function() {
+		$( '#row-tables-export-csv-delimiter' ).toggle( ( 'csv' == $(this).val() ) );
+    } )
+    .change();
+
+  	/**
+	 * Automatically check and disable the "ZIP file" checkbox whenever more than one table is selected
+	 *
+	 * @since 1.0.0
+	 */
+	var zip_file_manually_checked = false;
+	$( '#tables-export-zip-file' ).on( 'change', function() {
+		zip_file_manually_checked = $(this).prop( 'checked' );
+	} );
+    $( '#tables-export' ).on( 'change', function() {
+		var selected_tables = $(this).val(),
+			num_selected = ( selected_tables ) ? selected_tables.length : 0,
+			zip_file_required = ( num_selected > 1 );
+		$( '#tables-export-zip-file' )
+			.prop( 'disabled', zip_file_required )
+			.prop( 'checked', zip_file_required || zip_file_manually_checked )
+    } )
+    .change();
+
+	/**
+	 * Automatically focus the tables dropdown
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tables-export' ).focus();
+
+} );
