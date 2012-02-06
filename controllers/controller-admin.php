@@ -127,7 +127,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
-		$post_actions = array( 'list', 'add', 'edit', 'options' );
+		$post_actions = array( 'list', 'add', 'edit', 'options', 'export' );
 		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
@@ -661,22 +661,73 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_export() {
 		TablePress::check_nonce( 'export' );
 
+		if ( empty( $_POST['export'] ) || ! is_array( $_POST['export'] ) )
+			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
+		else
+			$export = stripslashes_deep( $_POST['export'] );
+
+
+		// Zipping can use a lot of memory, but not this much hopefully
+		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+
 		$zip = new ZipArchive();
-		$filename = "./test112.zip";
+		$export_file_name = str_replace( array( ':', ' ' ), '-', 'tablepress-export-' . current_time( 'mysql' ) . '.zip' );
+		$filename = wp_tempnam( $export_file_name );
+		if ( true !== $zip->open( $filename, ZIPARCHIVE::CREATE ) ) {
+			@unlink( $filename );
+			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_create_zip_file' ) );
+		}
 
-		if ( true !== $zip->open( $filename, ZIPARCHIVE::CREATE ) )
-			exit("cannot open <$filename>\n");
-
-		$zip->addFromString("testfilephp.txt", "#1 This is a test string added as testfilephp.txt.\n" . time());
-		$zip->addFromString("testfilephp2.txt", "#2 This is a test string added as testfilephp2.txt.");
-		echo "numfiles: " . $zip->numFiles . "\n";
-		echo "status:" . $zip->status . "\n";
+		$extension = $export['format'];
+		$no_success = array(); // to store table IDs that failed
+		foreach ( $export['tables'] as $table_id ) {
+			$zip->addFromString( "tablepress-id-{$table_id}.{$extension}", 'Exported data' . time() );
+			//if ( false === $exported )
+				//$no_success[] = $table_id;
+		}
+if (!$zip->status == ZIPARCHIVE::ER_OK) {
+    echo "Fehler beim Schreiben des ZIP\n";
+}
 		$zip->close();
 
+		$data = file_get_contents( $filename );
+		@unlink( $filename );
+
+		@ob_end_clean();
+		//header( 'Content-Description: File Transfer' );
+		header( 'Content-Type: application/octet-stream' );
+		header( 'Content-Disposition: attachment; filename="' . $export_file_name . '"');
+		header( 'Content-Length: ' . strlen( $data ) );
+		//header( 'Content-type: ' . $filetype. '; charset=' . get_option('blog_charset') );
+		echo $data; // WILL THIS WORK AS IS????
+/*
+		header( 'Content-Description: File Transfer' );
+		header( 'Content-Disposition: attachment; filename=' . $filename );
+		header( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ), true );
+*/
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_post_action_import() {
+		TablePress::check_nonce( 'import' );
+
+		if ( empty( $_POST['import'] ) || ! is_array( $_POST['import'] ) )
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
+		else
+			$import = stripslashes_deep( $_POST['import'] );
+
+// download_url( $url, $timeout = 300 )
+
+/*
 		$zip = new ZipArchive();
 		if ( true === $zip->open( $filename ) ) {
 			$idx = 0;
 			do {
+				$name = $zip->getNameIndex( $idx );
 				$entry = $zip->getFromIndex( $idx );
 				if ( false === $entry )
 					break;
@@ -685,6 +736,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			} while( true );
 			$zip->close();
 		}
+*/
 	}
 
 	/**
