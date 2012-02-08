@@ -300,6 +300,8 @@ class TablePress_Render {
 	/**
 	 * Evaluate a math expression
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param string $expression without leading = sign
 	 * @return string Result of the evaluation
 	 */
@@ -533,6 +535,8 @@ class TablePress_Render {
 	 * Possibly replace certain HTML entities and replace line breaks with HTML
 	 *
 	 * @TODO: Find a better solution than this function, e.g. something like wpautop()
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string $string The string to process
 	 * @return string Processed string for output

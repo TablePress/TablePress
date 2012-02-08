@@ -113,6 +113,7 @@ class TablePress_About_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function postbox_debug_version_information( $data, $box ) {
+			// @TODO: Add more relevant things? (like ZIP support?)
 		?>
 		<p>
 			<?php _e( 'You are using the following versions of the software.', 'tablepress' ); ?> <strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong><br/>
