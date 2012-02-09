@@ -368,7 +368,6 @@ jQuery(document).ready( function( $ ) {
 					};
 
 				$.each( rows, function( row_idx, row ) {
-					//parseFloat???
 					row.sort_key = $(row).children().eq( column_idx ).find( 'textarea' ).val().toUpperCase();
 				} );
 
@@ -818,22 +817,22 @@ jQuery(document).ready( function( $ ) {
 						if ( ( '' == value ) || ( '=' != value.charAt(0) ) )
 							return value;
 
-						return value.replace( /\[([a-z]+[0-9]+)(?::([a-z]+[0-9]+))?\]/gi, function( full_match, first_cell, second_cell ) {
-							// first_cell must always exist, while second_cell only exists in ranges like [A4:B7]
+						return value.replace( /([A-Z]+[0-9]+)(?::([A-Z]+[0-9]+))?/g, function( full_match, first_cell, second_cell ) {
+							// first_cell must always exist, while second_cell only exists in ranges like A4:B7
 							// we will use full_match as our result variable, so that we don't need an extra one
 
 							if ( ! known_references.hasOwnProperty( first_cell ) ) {
-								$cell = $( '#cell-' + first_cell.toUpperCase() );
+								$cell = $( '#cell-' + first_cell );
 								if ( $cell.length )
 									known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 								else
 									known_references[ first_cell ] = first_cell;
 							}
-							full_match = '[' + known_references[ first_cell ];
+							full_match = known_references[ first_cell ];
 
 							if ( 'undefined' != typeof second_cell ) {
 								if ( ! known_references.hasOwnProperty( second_cell ) ) {
-									$cell = $( '#cell-' + second_cell.toUpperCase() );
+									$cell = $( '#cell-' + second_cell );
 									if ( $cell.length )
 										known_references[ second_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 									else
@@ -842,7 +841,7 @@ jQuery(document).ready( function( $ ) {
 								full_match += ':' + known_references[ second_cell ];
 							}
 
-							return full_match + ']';
+							return full_match;
 						} );
 					} )
 					.attr( 'name', function( column_idx /*, old_name */ ) {

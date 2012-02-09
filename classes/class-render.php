@@ -220,16 +220,13 @@ class TablePress_Render {
 		if ( false !== strpos( $expression, '=' ) )
 			return '!ERROR! Too many "="';
 
-		if ( false !== strpos( $expression, '][' ) )
-			return '!ERROR! Two cell references next to each other';
-
 		$replaced_references = $replaced_ranges = array();
 
 		// remove all whitespace characters
 		$expression = preg_replace( '#\s#', '', $expression );
 
-		// expand cell ranges (like [A3:A6]) to a list of single cells (like [A3],[A4],[A5],[A6])
-		if ( preg_match_all( '#\[([a-z]+)([0-9]+):([a-z]+)([0-9]+)\]#i', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
+		// expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6)
+		if ( preg_match_all( '#([A-Z]+)([0-9]+):([A-Z]+)([0-9]+)#', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
 			foreach ( $referenced_cell_ranges as $cell_range ) {
 				if ( in_array( $cell_range[0], $replaced_ranges ) )
 					continue;
@@ -256,7 +253,7 @@ class TablePress_Render {
 				for ( $col = $col_start; $col < $col_end; $col++ ) {
 					for ( $row = $row_start; $row < $row_end; $row++ ) {
 						$column = TablePress::number_to_letter( $col );
-						$cell_list[] = "[{$column}{$row}]";
+						$cell_list[] = "{$column}{$row}";
 					}
 				}
 				$cell_list = implode( ',', $cell_list );
@@ -266,8 +263,8 @@ class TablePress_Render {
 			}
 		}
 
-		// parse and evaluate single cell references (like [A3] or [XY312]), while prohibiting circle references
-		if ( preg_match_all( '#\[([a-z]+)([0-9]+)\]#i', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
+		// parse and evaluate single cell references (like A3 or XY312), while prohibiting circle references
+		if ( preg_match_all( '#([A-Z]+)([0-9]+)#', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
 			foreach ( $referenced_cells as $cell_reference ) {
 				if ( in_array( $cell_reference[0], $parents ) )
 					return '!ERROR! Circle Reference';
