@@ -305,9 +305,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$data['export_ids'] = explode( ',', $_GET['table_id'] );
 				else
 					$data['export_ids'] = array(); // just show empty export form
-				$data['export_formats'] = array( 'csv' => 'CSV - Character-Separated Values', 'html' => 'HTML - Hypertext Markup Language', 'xml' => 'JSON - eXtensible Markup Language', 'json' => 'JSON - JavaScript Object Notation' );
+				$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
+				$data['zip_support_available'] = $exporter->zip_support_available;
+				$data['export_formats'] = $exporter->export_formats;
+				$data['csv_delimiters'] = $exporter->csv_delimiters;
 				$data['export_format'] = ( ! empty( $_GET['export_format'] ) ) ? $_GET['export_format'] : false;
-				$data['csv_delimiters'] = array( ';' => '; (semicolon)', ',' => ', (comma)', ':' => ': (colon)', '.' => '. (dot)', '|' => '| (pipe)' );
 				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : false;
 				break;
 			case 'import':
@@ -496,7 +498,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$sendback = add_query_arg( array( 'action' => 'list', 'message' => $message ), $sendback );
 		}
 		wp_redirect( $sendback );
-		exit();
+		exit;
 	}
 
 	/**
@@ -654,7 +656,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 *
+	 * Export selected tables
 	 *
 	 * @since 1.0.0
 	 */
@@ -666,45 +668,84 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$export = stripslashes_deep( $_POST['export'] );
 
+		$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
 
-		// Zipping can use a lot of memory, but not this much hopefully
-		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+		if ( empty( $export['tables'] ) )
+			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
+		if ( empty( $export['format'] ) || ! isset( $exporter->export_formats[ $export['format'] ] ) )
+			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
+		if ( empty( $export['csv_delimiter'] ) )
+			$export['csv_delimiter'] = ''; // set a value, so that the variable exists
+		if ( 'csv' == $export['format'] && ! isset( $exporter->csv_delimiters[ $export['csv_delimiter'] ] ) )
+			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
 
-		$zip = new ZipArchive();
-		$export_file_name = str_replace( array( ':', ' ' ), '-', 'tablepress-export-' . current_time( 'mysql' ) . '.zip' );
-		$filename = wp_tempnam( $export_file_name );
-		if ( true !== $zip->open( $filename, ZIPARCHIVE::CREATE ) ) {
-			@unlink( $filename );
-			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_create_zip_file' ) );
+		// use list of tables from concatenated field if available (as that's hopefully not truncated by Suhosin, which is possible for $export['tables'])
+		$tables = ( ! empty( $export['tables_list'] ) ) ? explode( ',', $export['tables_list'] ) : $export['tables'];
+
+		if ( $exporter->zip_support_available // determine if ZIP file support is available
+		&& ( ( isset( $export['zip_file'] ) && 'true' == $export['zip_file'] ) || count( $tables ) > 1 ) ) // only if ZIP desired or more than one table selected (mandatory)
+			$export_to_zip = true;
+		else
+			$export_to_zip = false;
+
+		if ( ! $export_to_zip ) {
+			// this is only possible for one table, so take the first
+			$table = $this->model_table->load( $tables[0] );
+			if ( false === $table )
+				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_load_table', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
+			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+			// export table
+			$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
+			$download_data = $export_data;
+		} else {
+			// Zipping can use a lot of memory, but not this much hopefully
+			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+
+			$zip_file = new ZipArchive();
+			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', date_i18n( 'Y-m-d-H-i-s' ), $export['format'] );
+			$full_filename = wp_tempnam( $download_filename );
+			if ( true !== $zip_file->open( $full_filename, ZIPARCHIVE::OVERWRITE ) ) {
+				@unlink( $full_filename );
+				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_create_zip_file', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
+			}
+
+			foreach ( $tables as $table_id ) {
+				$table = $this->model_table->load( $table_id );
+				if ( false === $table )
+					break; // no export if table could not be loaded
+				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
+				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+				$zip_file->addFromString( $export_filename, $export_data );
+			}
+
+			// if something went wrong, or no files were added to the ZIP file, bail out
+			if ( ! $zip_file->status == ZIPARCHIVE::ER_OK || 0 == $zip_file->numFiles ) {
+				$zip_file->close();
+				@unlink( $full_filename );
+				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_create_zip_file', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
+			}
+			$zip_file->close();
+
+			// load contents of the ZIP file, to send it as a download
+			$download_data = file_get_contents( $full_filename );
+			@unlink( $full_filename );
 		}
 
-		$extension = $export['format'];
-		$no_success = array(); // to store table IDs that failed
-		foreach ( $export['tables'] as $table_id ) {
-			$zip->addFromString( "tablepress-id-{$table_id}.{$extension}", 'Exported data' . time() );
-			//if ( false === $exported )
-				//$no_success[] = $table_id;
-		}
-if (!$zip->status == ZIPARCHIVE::ER_OK) {
-    echo "Fehler beim Schreiben des ZIP\n";
-}
-		$zip->close();
-
-		$data = file_get_contents( $filename );
-		@unlink( $filename );
-
-		@ob_end_clean();
-		//header( 'Content-Description: File Transfer' );
-		header( 'Content-Type: application/octet-stream' );
-		header( 'Content-Disposition: attachment; filename="' . $export_file_name . '"');
-		header( 'Content-Length: ' . strlen( $data ) );
-		//header( 'Content-type: ' . $filetype. '; charset=' . get_option('blog_charset') );
-		echo $data; // WILL THIS WORK AS IS????
-/*
+		// Send download headers for export file
 		header( 'Content-Description: File Transfer' );
-		header( 'Content-Disposition: attachment; filename=' . $filename );
-		header( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ), true );
-*/
+		header( 'Content-Type: application/octet-stream' );
+		header( 'Content-Disposition: attachment; filename="' . $download_filename . '"' );
+		header( 'Content-Transfer-Encoding: binary' );
+		header( 'Expires: 0' );
+		header( 'Cache-Control: must-revalidate' );
+		header( 'Pragma: public' );
+		header( 'Content-Length: ' . strlen( $download_data ) );
+		// $filetype = text/csv, text/xml, text/html, application/json
+		// header( 'Content-Type: ' . $filetype. '; charset=' . get_option( 'blog_charset' ) );
+		@ob_end_clean();
+		flush();
+		echo $download_data;
+		exit;
 	}
 
 	/**
@@ -721,14 +762,13 @@ if (!$zip->status == ZIPARCHIVE::ER_OK) {
 			$import = stripslashes_deep( $_POST['import'] );
 
 // download_url( $url, $timeout = 300 )
-
+// @see XREF _unzip_file_ziparchive()
 /*
 		$zip = new ZipArchive();
 		if ( true === $zip->open( $filename ) ) {
-			$idx = 0;
-			do {
-				$name = $zip->getNameIndex( $idx );
-				$entry = $zip->getFromIndex( $idx );
+			for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
+				$name = $zip->getNameIndex( $file_idx );
+				$entry = $zip->getFromIndex( $file_idx );
 				if ( false === $entry )
 					break;
 				echo "<pre>{$entry}</pre>";
@@ -792,7 +832,7 @@ if (!$zip->status == ZIPARCHIVE::ER_OK) {
 			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_delete', 'table_id' => $return_item ), $sendback );
 		}
 		wp_redirect( $sendback );
-		exit();
+		exit;
 	}
 
 	/**
@@ -824,7 +864,7 @@ if (!$zip->status == ZIPARCHIVE::ER_OK) {
 			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ), $sendback );
 		}
 		wp_redirect( $sendback );
-		exit();
+		exit;
 	}
 
 	/**

@@ -351,7 +351,7 @@ class TablePress_Edit_View extends TablePress_View {
 			<p class="submit">
 				<?php _e( 'Other Actions' ); ?>:&nbsp;
 				<a href="<?php echo TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ); ?>" class="button-secondary delete-link"><?php _e( 'Delete Table', 'tablepress' ); ?></a>
-				<?php /* @TODO: Add Export button here */ ?>
+				<a href="<?php echo TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ); ?>" class="button-secondary"><?php _e( 'Export Table', 'tablepress' ); ?></a>
 			</p>
 		<?php
 	}

@@ -31,6 +31,16 @@ class TablePress_Export_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
+		$this->action_messages = array(
+			'error_export' => __( 'Error: The export failed.', 'tablepress' ),
+			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' ),
+			'error_create_zip_file' => __( 'Error: The ZIP file could not be created.', 'tablepress' )
+		);
+		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
+			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
+			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
+		}
+
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		if ( 0 == $data['tables_count'] ) {
 			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( &$this, 'postbox_no_tables' ), 'normal' );
@@ -90,8 +100,9 @@ class TablePress_Export_View extends TablePress_View {
 				$select_size = $data['tables_count'] + 1; // to show at least one empty row in the select
 				$select_size = max( $select_size, 3 );
 				$select_size = min( $select_size, 12 );
+				$size_multiple = ( $data['zip_support_available'] ) ? " size=\"{$select_size}\" multiple=\"multiple\"" : '';
 			?>
-			<select id="tables-export" name="export[tables][]" size="<?php echo $select_size; ?>" multiple="multiple">
+			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
 			<?php
 				foreach ( $data['tables'] as $table ) {
 					if ( '' == trim( $table['name'] ) )
@@ -102,7 +113,10 @@ class TablePress_Export_View extends TablePress_View {
 				}
 			?>
 			</select><br/>
-			<span class="description"><?php _e( 'You can select multiple tables by holding down the &quot;Ctrl&quot; key (Windows) or the &quot;Command&quot; key (Mac).', 'tablepress' ); ?></span>
+			<?php
+				if ( $data['zip_support_available'] )
+					echo '<span class="description">' . __( 'You can select multiple tables by holding down the &quot;Ctrl&quot; key (Windows) or the &quot;Command&quot; key (Mac).', 'tablepress' ) . '</span>';
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -134,9 +148,17 @@ class TablePress_Export_View extends TablePress_View {
 	<tr>
 		<th class="column-1" scope="row"><?php _e( 'ZIP file', 'tablepress' ); ?>:</th>
 		<td class="column-2">
+		<?php
+			if ( $data['zip_support_available'] ) {
+		?>
 			<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
 			<label for="tables-export-zip-file" style="vertical-align: top;"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></label>
 			<span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span>
+		<?php
+			} else {
+				_e( 'Note: Support for ZIP file creation seems not to be available on this server.' );
+			}
+		?>
 		</td>
 	</tr>
 </tbody>
