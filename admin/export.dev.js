@@ -20,7 +20,7 @@ jQuery(document).ready( function($) {
 			return false;
 
 		// at this point, the form is valid and will be submitted
-		
+
 		// add selected tables as a list to a hidden field
 		$( '#tables-export-list' ).val( selected_tables.join( ',' ) );
 

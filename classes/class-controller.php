@@ -95,7 +95,7 @@ abstract class TablePress_Controller {
 				'tablepress_version' => TablePress::version,
 				'message_plugin_update' => true
 			) );
-			
+
 			$this->model_table->merge_table_options_defaults();
 		}
 

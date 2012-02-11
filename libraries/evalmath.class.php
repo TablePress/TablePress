@@ -4,7 +4,7 @@
  *
  * @package TablePress
  * @subpackage Libraries
- * @author Miles Kaufmann, Petr Skoda (Moodle)
+ * @author Miles Kaufmann, Petr Skoda (Moodle), Tobias Bäthge
  * @since 1.0.0
  */
 

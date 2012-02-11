@@ -104,7 +104,7 @@ class TablePress_Render {
 	 * @var int
 	 */
 	protected $last_column_idx;
-	
+
 	/**
 	 * Initialize the Rendering class, include the EvalMath class
 	 *
@@ -179,7 +179,7 @@ class TablePress_Render {
 			}
 			$this->table['data'][$row_idx] = array_merge( $row );
 		}
-		
+
 		$this->table = apply_filters( 'tablepress_table_render_data', $this->table, $orig_table, $this->render_options );
 	}
 

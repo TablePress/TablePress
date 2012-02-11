@@ -81,7 +81,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$table = $this->model_table->load( $edit_table['id'] );
 			if ( false === $table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
 				break;
-			
+
 			// Check and convert data that was transmitted as JSON
 			if ( empty( $edit_table['data'] )
 			|| empty( $edit_table['options'] )

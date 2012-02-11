@@ -381,8 +381,8 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		$result = strnatcasecmp( $item_a[$orderby], $item_b[$orderby] );
 
 		return ( 'asc' == $order ) ? $result : - $result;
-	}	
-	
+	}
+
 	/**
 	 * Prepares the list of items for displaying, by maybe searching and sorting, and by doing pagination
 	 *
@@ -396,7 +396,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		if ( $s )
 			$this->items = array_filter( $this->items, array( &$this, '_search_callback' ) );
 
-		// Maybe sort the items		
+		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();
 		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) )
 			usort( $this->items, array( &$this, '_order_callback' ) );
@@ -410,7 +410,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 		// Slice items array to hold only items for the current page
 		$this->items = array_slice( $this->items, ( ( $current_page-1) * $per_page ), $per_page );
-		
+
 		// Register pagination options and calculation results
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,					// total number of records/items
