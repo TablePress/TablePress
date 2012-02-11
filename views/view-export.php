@@ -112,10 +112,10 @@ class TablePress_Export_View extends TablePress_View {
 					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
 				}
 			?>
-			</select><br/>
+			</select>
 			<?php
 				if ( $data['zip_support_available'] )
-					echo '<span class="description">' . __( 'You can select multiple tables by holding down the &quot;Ctrl&quot; key (Windows) or the &quot;Command&quot; key (Mac).', 'tablepress' ) . '</span>';
+					echo '<br/><span class="description">' . __( 'You can select multiple tables by holding down the &quot;Ctrl&quot; key (Windows) or the &quot;Command&quot; key (Mac).', 'tablepress' ) . '</span>';
 			?>
 		</td>
 	</tr>
@@ -152,7 +152,7 @@ class TablePress_Export_View extends TablePress_View {
 			if ( $data['zip_support_available'] ) {
 		?>
 			<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
-			<label for="tables-export-zip-file" style="vertical-align: top;"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></label>
+			<label for="tables-export-zip-file"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></label>
 			<span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span>
 		<?php
 			} else {

@@ -102,7 +102,7 @@ class TablePress_Export {
 					$output .= "\t<tr>\n";
 					$row = array_map( array( &$this, 'html_wrap_and_escape' ), $row );
 					$output .= implode( '', $row );
-					$output . "\t</tr>\n";
+					$output .= "\t</tr>\n";
 				}
 				$output .= '</table>';
 				break;
