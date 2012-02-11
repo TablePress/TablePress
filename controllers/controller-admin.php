@@ -127,7 +127,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
-		$post_actions = array( 'list', 'add', 'edit', 'options', 'export' );
+		$post_actions = array( 'list', 'add', 'edit', 'options', 'export', 'import' );
 		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
@@ -214,10 +214,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// @TODO: Translation might not work, as textdomain might not yet be loaded here (for submenu entries)
 		// Might need $this->init_i18n_support(); here
 		$wp_admin_bar->add_menu( array(
-			'parent'    => 'new-content',
-			'id'        => 'new-tablepress-table',
-			'title'     => __( 'TablePress Table', 'tablepress' ),
-			'href'      => TablePress::url( array( 'action' => 'add' ) )
+			'parent' => 'new-content',
+			'id' => 'new-tablepress-table',
+			'title' => __( 'TablePress Table', 'tablepress' ),
+			'href' => TablePress::url( array( 'action' => 'add' ) )
 		) );
 	}
 
@@ -315,6 +315,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'import':
 				$data['tables'] = $this->model_table->load_all();
 				$data['tables_count'] = $this->model_table->count_tables();
+				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
+				$data['zip_support_available'] = $importer->zip_support_available;
+				$data['import_formats'] = $importer->import_formats;
+				$data['import_format'] = ( ! empty( $_GET['import_format'] ) ) ? $_GET['import_format'] : false;
+				$data['import_add_replace'] = ( ! empty( $_GET['import_add_replace'] ) ) ? $_GET['import_add_replace'] : 'add';
+				$data['import_replace_table'] = ( ! empty( $_GET['import_replace_table'] ) ) ? $_GET['import_replace_table'] : false;
+				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
+				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? $_GET['import_url'] : 'http://';
+				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? $_GET['import_server'] : ABSPATH;
+				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? $_GET['import_form_field'] : '';
 				break;
 		}
 
@@ -447,7 +457,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$bulk_action = false;
 
-		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ) ) )		
+		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ) ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_bulk_action_invalid' ) );
 
 		// @TODO: caps check for selected bulk action
@@ -719,7 +729,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 
 			// if something went wrong, or no files were added to the ZIP file, bail out
-			if ( ! $zip_file->status == ZIPARCHIVE::ER_OK || 0 == $zip_file->numFiles ) {
+			if ( ! ZIPARCHIVE::ER_OK == $zip_file->status || 0 == $zip_file->numFiles ) {
 				$zip_file->close();
 				@unlink( $full_filename );
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_create_zip_file', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
@@ -761,22 +771,185 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$import = stripslashes_deep( $_POST['import'] );
 
-// download_url( $url, $timeout = 300 )
-// @see XREF _unzip_file_ziparchive()
-/*
-		$zip = new ZipArchive();
-		if ( true === $zip->open( $filename ) ) {
-			for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
-				$name = $zip->getNameIndex( $file_idx );
-				$entry = $zip->getFromIndex( $file_idx );
-				if ( false === $entry )
-					break;
-				echo "<pre>{$entry}</pre>";
-				$idx++;
-			} while( true );
-			$zip->close();
+		if ( ! isset( $import['replace_table'] ) )
+			$import['replace_table'] = '';
+		if ( ! isset( $import['source'] ) )
+			$import['source'] = '';
+
+		$import_error = true;
+		$unlink_file = false;
+		switch( $import['source'] ) {
+			case 'file-upload':
+				if ( ! empty( $_FILES['import_file_upload'] ) && UPLOAD_ERR_OK == $_FILES['import_file_upload']['error'] ) {
+					$import_data['file_location'] = $_FILES['import_file_upload']['tmp_name'];
+					$import_data['file_name'] = $_FILES['import_file_upload']['name'];
+					// $_FILES['import_file_upload']['type'];
+					// $_FILES['import_file_upload']['size']
+					$import_error = false;
+					$unlink_file = true;
+				}
+				break;
+			case 'url':
+				if ( ! empty( $import['url'] ) && 'http://' != $import['url'] ) {
+					$import_data['file_location'] = download_url( $import['url'] ); // download URL to local file
+					$import_data['file_name'] = $import['url'];
+					if ( ! is_wp_error( $import_data['file_location'] ) )
+						$import_error = false;
+					$unlink_file = true;
+				}
+				break;
+			case 'server':
+				if ( ! empty( $import['server'] ) && ABSPATH != $import['server'] ) {
+					$import_data['file_location'] = $import['server'];
+					$import_data['file_name'] = pathinfo( $import['server'], PATHINFO_BASENAME );
+					if ( is_readable( $import['server'] ) )
+						$import_error = false;
+				}
+				break;
+			case 'form-field':
+				if ( ! empty( $import['form_field'] ) ) {
+					$import_data['file_location'] = '';
+					$import_data['file_name'] = '';
+					$import_data['data'] = $import['form_field'];
+					$import_error = false;
+				}
+				break;
 		}
+
+		if ( $import_error ) {
+			if ( $unlink_file )
+				@unlink( $import_data['file_location'] );
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import', 'import_format' => $import['format'], 'import_add_replace' => $import['add_replace'], 'import_replace_table' => $import['replace_table'], 'import_source' => $import['source'] ) );
+		}
+
+		$this->importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
+
+		if ( 'zip' == pathinfo( $import_data['file_name'], PATHINFO_EXTENSION ) ) {
+			if ( ! $this->importer->zip_support_available ) { // determine if ZIP file support is available
+				if ( $unlink_file )
+					@unlink( $import_data['file_location'] );
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_no_zip_import', 'import_format' => $import['format'], 'import_add_replace' => $import['add_replace'], 'import_replace_table' => $import['replace_table'], 'import_source' => $import['source'] ) );
+			}
+			$import_zip = true;
+		} else {
+			$import_zip = false;
+		}
+
+		if ( ! $import_zip ) {
+			if ( ! isset( $import_data['data'] ) )
+				$import_data['data'] = file_get_contents( $import_data['file_location'] );
+			if ( false == $import_data['data'] )
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
+
+			$name = $import_data['file_name'];
+			$description = $import_data['file_name'];
+			$table_id = $this->_import_table( $import['format'], $name, $description, $import_data['data'] );
+
+			if ( $unlink_file )
+				@unlink( $import_data['file_location'] );
+
+			if ( false == $table_id )
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_data' ) );
+			else
+				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_import' ) );
+		} else {
+			// Zipping can use a lot of memory, but not this much hopefully
+			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+
+			$zip = new ZipArchive();
+			if ( true !== $zip->open( $import_data['file_location'], ZIPARCHIVE::CHECKCONS ) ) {
+				if ( $unlink_file )
+					@unlink( $import_data['file_location'] );
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_open' ) );
+			}
+
+			$imported_files = array();
+			for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
+				$file_name = $zip->getNameIndex( $file_idx );
+				if ( '/' == substr( $file_name, -1 ) ) // directory
+					continue;
+				$data = $zip->getFromIndex( $file_idx );
+				if ( false === $data )
+					continue;
+
+				$name = $file_name;
+				$description = $file_name;
+				$table_id = $this->_import_table( $import['format'], $name, $description, $data );
+				if ( false == $table_id )
+					continue;
+				else
+					$imported_files[] = $table_id;
+			};
+			$zip->close();
+
+			if ( $unlink_file )
+				@unlink( $import_data['file_location'] );
+
+			if ( count( $imported_files ) > 1 )
+				TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import' ) );
+			elseif ( 1 == count( $imported_files ) )
+				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_files[0], 'message' => 'success_import' ) );
+			else
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_content' ) );
+		}
+
+/*
+			if ( isset( $_POST['import_addreplace'] ) && isset( $_POST['import_addreplace_table'] ) && ( 'replace' == $_POST['import_addreplace'] ) && $this->table_exists( $_POST['import_addreplace_table'] ) ) {
+				$table = $this->load_table( $_POST['import_addreplace_table'] );
+				$table['data'] = $imported_table['data'];
+				$success_message = sprintf( __( 'Table %s (%s) replaced successfully.', 'tablepress' ), $this->helper->safe_output( $table['name'] ), $this->helper->safe_output( $table['id'] ) );
+			} else {
+				$table = array_merge( $this->default_table, $imported_table );
+				$table['id'] = $this->get_new_table_id();
+				$success_message = _n( 'Table imported successfully.', 'Tables imported successfully.', 1, 'tablepress' );
+			}
+
+			foreach ( $table['data'] as $row_idx => $row )
+				$table['visibility']['rows'][$row_idx] = isset( $table['visibility']['rows'][$row_idx] ) ? $table['visibility']['rows'][$row_idx] : false;
+			foreach ( $table['data'][0] as $col_idx => $col )
+				$table['visibility']['columns'][$col_idx] = isset( $table['visibility']['columns'][$col_idx] ) ? $table['visibility']['columns'][$col_idx] : false;
 */
+	}
+
+	/**
+	 * Import a table
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $format Import format
+	 * @param string $name Name of the table
+	 * @param string $description Description of the table
+	 * @param array $data Data to import
+	 * @param bool|string False on error, table ID on success
+	 */
+	protected function _import_table( $format, $name, $description, $data ) {
+		$content = $this->importer->import_table( $format, $data );
+		if ( false === $content )
+			return false;
+
+		$num_rows = count( $content );
+		$num_columns = count( $content[0] );
+		// Create a new table array with information from the imported table
+		$imported_table = array(
+			'name' => $name,
+			'description' => $description,
+			'data' => $content,
+			'visibility' => array(
+				'rows' => array_fill( 0, $num_rows, 1 ),
+				'columns' => array_fill( 0, $num_columns, 1 )
+			)
+		);
+		// Merge this data into an empty table template
+		$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $imported_table, false );
+		if ( false === $table )
+			return false;
+
+		// Add the new table (and get its first ID)
+		$table_id = $this->model_table->add( $table );
+		if ( false === $table_id )
+			return false;
+
+		return $table_id;
 	}
 
 	/**
@@ -897,7 +1070,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $this->model_options->get( 'use_custom_css_file' ) ) {
 			$custom_css = $this->model_options->load_custom_css_from_file();
 			// fall back to "Custom CSS" in options, if it could not be retrieved from file
-			if ( false === $custom_css  )
+			if ( false === $custom_css )
 				$custom_css = $this->model_options->get( 'custom_css' );
 		} else {
 			// get "Custom CSS" from options

@@ -299,10 +299,10 @@ abstract class TablePress_View {
 			foreach ( $this->header_messages as $message ) {
 				echo $message;
 			}
-
-			// form enctype:  enctype="multipart/form-data" for forms with file upload
+			// "Import" screen has file upload
+			$enctype = ( 'import' == $this->action ) ? ' enctype="multipart/form-data"' : '';
 		?>
-		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
+		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post"<?php echo $enctype; ?>>
 			<?php
 			$this->do_text_boxes( 'header' );
 			?>

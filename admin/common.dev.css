@@ -67,7 +67,7 @@
 	width: 50px;
 }
 .tablepress-all-tables thead .column-table_name {
-	width: 26%;
+	width: 30%;
 }
 .tablepress-all-tables thead .column-table_author {
 	width: 12%;
@@ -152,19 +152,24 @@
 }
 .tablepress-postbox-table th,
 .tablepress-postbox-table td {
-	padding: 5px 5px 2px 2px;
+	padding: 6px 6px 2px 2px;
 	border-spacing: 0px;
 	word-wrap: break-word;
 }
 .tablepress-postbox-table .top-border th,
 .tablepress-postbox-table .top-border td {
-	padding: 5px 5px 2px 2px;
+	padding: 6px 6px 2px 2px;
 	border-top: 1px solid #ffffff;
 }
 .tablepress-postbox-table .bottom-border th,
 .tablepress-postbox-table .bottom-border td {
-	padding: 2px 5px 5px 2px;
+	padding: 2px 6px 6px 2px;
 	border-bottom: 1px solid #dfdfdf;
+}
+/* padding for both borders: */
+.tablepress-postbox-table .top-border.bottom-border th,
+.tablepress-postbox-table .top-border.bottom-border td {
+	padding: 6px 6px 6px 2px;
 }
 .tablepress-postbox-table .top-align {
 	vertical-align: top;
@@ -175,4 +180,18 @@
 }
 .tablepress-postbox-table .bottom-border .top-align {
 	padding-top: 4px;
+}
+/* adjust positioning of labels in relation to checkboxes/radio buttons on "Export" and "Import" screen */
+#tablepress_export-export-form .column-2 label,
+#tablepress_import-import-form .column-2 label {
+	vertical-align: top;
+}
+/* adjust padding on source fields on "Import" screen */
+#tables-import-url,
+#tables-import-server {
+	margin-bottom: 4px;
+}
+/* some left margin on radio buttons */
+#tablepress_import-import-form .column-2 input[type="radio"] {
+	margin-left: 5px;
 }
