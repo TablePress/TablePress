@@ -104,7 +104,7 @@ jQuery(document).ready( function( $ ) {
 				};
 				table_options = JSON.stringify( table_options );
 
-				table_visibility.rows = $table_body.find( ':hidden' )
+				table_visibility.rows = $table_body.find( 'input[type="hidden"]' )
 					.map( function() {
 						if ( '1' == $(this).val() )
 							return 1;
@@ -112,7 +112,7 @@ jQuery(document).ready( function( $ ) {
 						return 0;
 					} )
 					.get();
-				table_visibility.columns = $( '#edit-form-foot' ).find( ':hidden' )
+				table_visibility.columns = $( '#edit-form-foot' ).find( 'input[type="hidden"]' )
 					.map( function() {
 						if ( '1' == $(this).val() )
 							return 1;
