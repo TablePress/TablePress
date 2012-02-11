@@ -50,7 +50,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function render() {
-	_wp_admin_html_begin();
+		_wp_admin_html_begin();
 ?>
 <title><?php printf( __( '%s &lsaquo; TablePress', 'tablepress' ), __( 'Preview', 'tablepress' ) ); ?></title>
 <style type="text/css">

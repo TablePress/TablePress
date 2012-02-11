@@ -123,7 +123,7 @@ class TablePress_Export {
 			default:
 				$output = '';
 		}
-		
+
 		return $output;
 	}
 
