@@ -73,7 +73,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'link_add' => 'Bitte klicke in die Zelle, in die du einen Link einfügen möchtest.',
 				'image_add' => 'Bitte klicke in die Zelle, in die du ein Bild einfügen möchtest.' . "\n" .
 								__( 'The Media Library will open, from which you can select the desired image or insert the image URL.', 'tablepress' ) . "\n" .
-								sprintf( __( 'Click the &quot;%s&quot; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ) ,				
+								sprintf( __( 'Click the &quot;%s&quot; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
 				'unsaved_changes_unload' => 'Seite ohne speichern verlassen?',
 				'preparing_preview' => 'Die Vorschau wird vorbereitet...',
 				'preview_error' => 'Vorbereiten der Vorschau fehlgeschlagen',
@@ -144,7 +144,7 @@ class TablePress_Edit_View extends TablePress_View {
 		<td class="column-2">
 			<input type="hidden" name="table[id]" id="table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" />
 			<input type="text" name="table[new_id]" id="table-new-id" class="small-text" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php _e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z0-9-_]+" required />
-			<div style="float: right; margin-right: 1%;"><label for="table-information-shortcode" style="margin-left: 50px;"><?php _e( 'Shortcode', 'tablepress' ); ?>:</label>
+			<div style="float: right; margin-right: 1%;"><label for="table-information-shortcode"><?php _e( 'Shortcode', 'tablepress' ); ?>:</label>
 			<input type="text" id="table-information-shortcode" class="table-shortcode" value="[<?php echo TablePress::$shortcode; ?> id=<?php echo esc_attr( $data['table']['id'] ); ?> /]" readonly="readonly" /></div>
 		</td>
 	</tr>
@@ -156,7 +156,7 @@ class TablePress_Edit_View extends TablePress_View {
 		<th class="column-1 top-align" scope="row"><label for="table-description"><?php _e( 'Description', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><textarea name="table[description]" id="table-description" class="large-text" rows="4"><?php echo esc_textarea( $data['table']['description'] ); ?></textarea></td>
 	</tr>
-	<tr class="top-border" valign="top">
+	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Last Modified', 'tablepress' ); ?>:</th>
 		<td class="column-2"><?php printf( __( '%1$s by %2$s', 'tablepress' ), '<span id="last-modified">' . TablePress::format_datetime( $data['table']['last_modified'] ) . '</span>', '<span id="last-editor">' . TablePress::get_user_display_name( $data['table']['options']['last_editor'] ) . '</span>' ); ?></td>
 	</tr>
