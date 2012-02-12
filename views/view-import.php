@@ -55,7 +55,7 @@ class TablePress_Import_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'TablePress can import tables from existing data.', 'tablepress' ); ?> <?php _e( 'This may be a CSV, XML or HTML file, each with a certain structure.', 'tablepress' ); ?></p>
+		<p><?php _e( 'TablePress can import tables from existing data.', 'tablepress' ); ?> <?php _e( 'This may be a CSV, HTML, or JSON file, each with a certain structure.', 'tablepress' ); ?></p>
 		<p><?php _e( 'To import an existing table, please select its format and the source for the import.', 'tablepress' ); ?> <?php if ( 0 < $data['tables_count'] ) _e( 'You can also decide, if you want to import it as a new table or replace an existing table.', 'tablepress' ); ?></p>
 		<?php
 	}

@@ -57,7 +57,6 @@ class TablePress_Export {
 		$this->export_formats = array(
 			'csv' => __( 'CSV - Character-Separated Values', 'tablepress' ),
 			'html' => __( 'HTML - Hypertext Markup Language', 'tablepress' ),
-			'xml' => __( 'XML - eXtended Markup Language', 'tablepress' ),
 			'json' => __( 'JSON - JavaScript Object Notation', 'tablepress' )
 		);
 		$this->csv_delimiters = array(
@@ -79,7 +78,7 @@ class TablePress_Export {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table to be exported
-	 * @param string $export_format Format for the export ('csv', 'html', 'xml', 'json')
+	 * @param string $export_format Format for the export ('csv', 'html', 'json')
 	 * @param string $csv_delimiter Delimiter for CSV export
 	 * @return string Wrapped string for HTML export
 	 */
@@ -103,17 +102,6 @@ class TablePress_Export {
 					$row = array_map( array( &$this, 'html_wrap_and_escape' ), $row );
 					$output .= implode( '', $row );
 					$output .= "\t</tr>\n";
-				}
-				$output .= '</table>';
-				break;
-			case 'xml':
-				$output = '<?xml version="1.0" encoding="' . get_option( 'blog_charset' ) . "\"?>\n";
-				$output .= "<table>\n";
-				foreach ( $table['data'] as $row_idx => $row ) {
-					$output .= "\t<row>\n";
-					$row = array_map( array( &$this, 'xml_wrap_and_escape' ), $row );
-					$output .= implode( '', $row );
-					$output .= "\t</row>\n";
 				}
 				$output .= '</table>';
 				break;
@@ -154,20 +142,6 @@ class TablePress_Export {
 	 */
 	protected function html_wrap_and_escape( $string ) {
 		return "\t\t<td>{$string}</td>\n";
-	}
-
-	/**
-	 * Wrap and escape a cell for XML export
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $string Content of a cell
-	 * @return string Wrapped string for XML export
-	 */
-	protected function xml_wrap_and_escape( $string ) {
-		if ( $string != htmlspecialchars( $string ) )
-			$string = "<![CDATA[{$string}]]>";
-		return "\t\t<col>{$string}</col>\n";
 	}
 
 } // class TablePress_Export

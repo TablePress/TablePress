@@ -750,7 +750,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		header( 'Cache-Control: must-revalidate' );
 		header( 'Pragma: public' );
 		header( 'Content-Length: ' . strlen( $download_data ) );
-		// $filetype = text/csv, text/xml, text/html, application/json
+		// $filetype = text/csv, text/html, application/json
 		// header( 'Content-Type: ' . $filetype. '; charset=' . get_option( 'blog_charset' ) );
 		@ob_end_clean();
 		flush();

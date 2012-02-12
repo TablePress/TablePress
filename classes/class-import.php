@@ -66,7 +66,6 @@ class TablePress_Import {
 		$this->import_formats = array(
 			'csv' => __( 'CSV - Character-Separated Values', 'tablepress' ),
 			'html' => __( 'HTML - Hypertext Markup Language', 'tablepress' ),
-			'xml' => __( 'XML - eXtended Markup Language', 'tablepress' ),
 			'json' => __( 'JSON - JavaScript Object Notation', 'tablepress' )
 		);
 
@@ -85,7 +84,14 @@ class TablePress_Import {
 	 * @return bool|array False on error, data array on success
 	 */
 	function import_table( $format, $data ) {
+
+		// check and remove possible UTF-8 Byte-Order Mark (BOM)
+		$bom = pack( 'CCC', 0xef, 0xbb, 0xbf );
+		if ( 0 === strncmp( $data, $bom, 3 ) )
+			$data = substr( $data, 3 );
+
 		$this->import_data = $data;
+
 		switch ( $format ) {
 			case 'csv':
 				$this->import_csv();
@@ -93,8 +99,8 @@ class TablePress_Import {
 			case 'html':
 				$this->import_html();
 				break;
-			case 'xml':
-				$this->import_xml();
+			case 'json':
+				$this->import_json();
 				break;
 			/*case 'wp_table':
 				$this->import_wp_table();
@@ -138,8 +144,6 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	protected function import_html() {
-		$simpleXML = TablePress::load_class( 'simplexml', 'simplexml.class.php', 'libraries' );
-
 		// extract table from HTML, pattern: <table> (with eventually class, id, ...
 		// . means any charactery (except newline),
 		// * means in any count
@@ -152,34 +156,53 @@ class TablePress_Import {
 			return;
 		}
 
-		// most inner items have to be escaped, so we can get their contents as a string not as array elements
-		$temp_data = preg_replace( '#<td(.*?)>#', '<td${1}><![CDATA[' , $temp_data );
-		$temp_data = preg_replace( '#</td>#', ']]></td>' , $temp_data );
-		$temp_data = preg_replace( '#<thead(.*?)>#', '<_thead${1}>' , $temp_data ); // temporaray, otherwise <thead> will be affected by replacement of <th
-		$temp_data = preg_replace( '#<th(.*?)>#', '<th${1}><![CDATA[' , $temp_data );
-		$temp_data = preg_replace( '#<_thead(.*?)>#', '<thead${1}>' , $temp_data ); // revert from 2 lines above
-		$temp_data = preg_replace( '#</th>#', ']]></th>' , $temp_data );
-		$temp_data = $simpleXML->xml_load_string( $temp_data, 'array' );
-
-		if ( ! is_array( $temp_data ) ) {
+		libxml_use_internal_errors( true ); // no warnings/errors raised, but stored internally
+		$dom = new DOMDocument();
+		$dom->strictErrorChecking = false; // no strict checking for invalid HTML
+		$dom->loadHTML( $temp_data );
+		if ( false === $dom ) {
+			$this->imported_table = false;
+			return;
+		}
+		$table_html = simplexml_import_dom( $dom );
+		if ( false === $table_html ) {
 			$this->imported_table = false;
 			return;
 		}
 
-		$data = array();
-
-		$rows = array();
-		$rows = ( isset( $temp_data['thead'][0]['tr'] ) ) ? array_merge( $rows, $temp_data['thead'][0]['tr'] ) : $rows ;
-		$rows = ( isset( $temp_data['tbody'][0]['tr'] ) ) ? array_merge( $rows, $temp_data['tbody'][0]['tr'] ) : $rows ;
-		$rows = ( isset( $temp_data['tfoot'][0]['tr'] ) ) ? array_merge( $rows, $temp_data['tfoot'][0]['tr'] ) : $rows ;
-		$rows = ( isset( $temp_data['tr'] ) ) ? array_merge( $rows, $temp_data['tr'] ) : $rows ;
-		foreach ( $rows as $row ) {
-			$th_cols = ( isset( $row['th'] ) ) ? $row['th'] : array() ;
-			$td_cols = ( isset( $row['td'] ) ) ? $row['td'] : array() ;
-			$data[] = array_merge( $th_cols, $td_cols );
+		$errors = libxml_get_errors();
+		libxml_clear_errors();
+		if ( ! empty( $errors ) ) {
+			$output = '<b>' . __( 'The imported file contains errors:', 'tablepress' ) . '</b><br/><br/>';
+			foreach ( $errors as $error ) {
+				switch ( $error->level ) {
+					case LIBXML_ERR_WARNING:
+						$output .= "Warning {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br/>";
+						break;
+					case LIBXML_ERR_ERROR:
+						$output .= "Error {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br/>";
+						break;
+					case LIBXML_ERR_FATAL:
+						$output .= "Fatal {Error $error->code}: {$error->message} in line {$error->line}, column {$error->column}<br/>";
+						break;
+				}
+			}
+			wp_die( $output, 'Import Error', array( 'back_link' => true ) );
 		}
 
-		$this->imported_table = $this->pad_array_to_max_cols( $data );
+		$table = $table_html->body->table;
+
+		$rows = array();
+		if ( isset( $table->thead ) )
+			$rows = array_merge( $rows, $this->_import_html_rows( $table->thead[0]->tr ) );
+		if ( isset( $table->tbody ) )
+			$rows = array_merge( $rows, $this->_import_html_rows( $table->tbody[0]->tr ) );
+		if ( isset( $table->tr ) )
+			$rows = array_merge( $rows, $this->_import_html_rows( $table->tr ) );
+		if ( isset( $table->tfoot ) )
+			$rows = array_merge( $rows, $this->_import_html_rows( $table->tfoot[0]->tr ) );
+
+		$this->imported_table = $this->pad_array_to_max_cols( $rows );
 	}
 
 	/**
@@ -187,20 +210,34 @@ class TablePress_Import {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function import_xml() {
-		$simpleXML = TablePress::load_class( 'simplexml', 'simplexml.class.php', 'libraries' );
-
-		$temp_data = $simpleXML->xml_load_string( $this->import_data, 'array' );
-
-		if ( ! is_array( $temp_data ) || empty( $temp_data['row'] ) ) {
-			$this->imported_table = false;
-			return;
+	protected function _import_html_rows( $element ) {
+		$rows = array();
+		foreach ( $element as $row ) {
+			$new_row = array();
+			foreach ( $row as $cell ) {
+				$children = $cell->children();
+				if ( 0 == count( $children ) ) {
+					$cell_content = (string) $cell;
+				} else {
+					$cell_content = '';
+					foreach ( $children as $child ) {
+						$cell_content .= (string) $child->asXML();
+					}
+				}
+				$new_row[] = $cell_content;
+			}
+			$rows[] = $new_row;
 		}
+		return $rows;
+	}
 
-		$data = $temp_data['row'];
-		foreach ( $data as $key => $value )
-			$data[$key] = $value['col'];
-
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	protected function import_json() {
+		$data = json_decode( $this->import_data, true );
 		$this->imported_table = $this->pad_array_to_max_cols( $data );
 	}
 

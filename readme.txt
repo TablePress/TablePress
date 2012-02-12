@@ -10,7 +10,7 @@ TablePress enables you to create and manage tables, without having to write HTML
 
 == Description ==
 
-TablePress enables you to create and manage tables in your WP Dashboard. No HTML knowledge is needed. A comfortable backend allows to easily edit table data. Tables can contain any type of data and an additional JavaScript library can be used to extend it with features like sorting, pagination, filtering, and more. You can include the tables into your posts, on your pages, or in text widgets by using a Shortcode or a template tag function. Tables can be imported and exported from/to CSV, XML and HTML.
+TablePress enables you to create and manage tables in your WP Dashboard. No HTML knowledge is needed. A comfortable backend allows to easily edit table data. Tables can contain any type of data and an additional JavaScript library can be used to extend it with features like sorting, pagination, filtering, and more. You can include the tables into your posts, on your pages, or in text widgets by using a Shortcode or a template tag function. Tables can be imported and exported from/to CSV, HTML, and JSON.
 
 = More information =
 Please see the English plugin website http://tobias.baethge.com/wordpress/plugins/tablepress/ .
