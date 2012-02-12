@@ -260,7 +260,7 @@ class TablePress_Import {
 			return $max_columns;
 
 		foreach ( $array as $row_idx => $row ) {
-			$num_columns  = count( $row );
+			$num_columns = count( $row );
 			$max_columns = max( $num_columns, $max_columns );
 		}
 		return	$max_columns;

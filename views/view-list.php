@@ -570,7 +570,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		// Register pagination options and calculation results
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,					// total number of records/items
-			'per_page'	  => $per_page,						// number of items per page
+			'per_page' => $per_page,						// number of items per page
 			'total_pages' => ceil( $total_items/$per_page )	// total number of pages
 		) );
 	}

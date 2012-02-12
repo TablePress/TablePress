@@ -1027,9 +1027,9 @@ jQuery(document).ready( function( $ ) {
 
 			$( '#edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
 
-		    // on form submit: Enable disabled fields, so that they are transmitted in the POST request
+			// on form submit: Enable disabled fields, so that they are transmitted in the POST request
 			$( '#tablepress-page' ).find( 'form' ).on( 'submit', function() {
-		        $(this).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
+				$(this).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
 			} );
 
 			$table.sortable( {

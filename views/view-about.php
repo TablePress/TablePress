@@ -150,7 +150,7 @@ class TablePress_About_View extends TablePress_View {
 
 				foreach ( $this->available_plugin_languages as $code => $language ) {
 					echo "<br/>&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language, $credits_links[ $code ] ) . "\n";
-				}  */
+				} */
 			?>
 			<br/><?php _e( 'and to all donors, contributors, supporters, reviewers and users of the plugin!', 'tablepress' ); ?>
 		</p>

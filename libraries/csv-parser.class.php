@@ -252,7 +252,7 @@ class CSV_Parser {
 					$rows[] = $row;
 					$row = array();
 					$column = 0;
-					if ( "\r" == $curr_char  && "\n" == $next_char  )
+					if ( "\r" == $curr_char && "\n" == $next_char )
 						$i++; // skip next character in \r\n line breaks
 				}
 			} else {

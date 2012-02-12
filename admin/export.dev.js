@@ -28,19 +28,19 @@ jQuery(document).ready( function($) {
 		$( '#tables-export-zip-file' ).prop( 'disabled', false );
 	} );
 
-  	/**
+	/**
 	 * Show export delimiter dropdown box only if export format is CSV
 	 *
 	 * @since 1.0.0
 	 */
-    $( '#tables-export-format' ).on( 'change', function() {
-    	var non_csv_selected = ( 'csv' !== $(this).val() );
+	$( '#tables-export-format' ).on( 'change', function() {
+		var non_csv_selected = ( 'csv' !== $(this).val() );
 		$( '#tables-export-csv-delimiter' ).prop( 'disabled', non_csv_selected );
 		$( '#tables-export-csv-delimiter-description' ).toggle( non_csv_selected );
-    } )
-    .change();
+	} )
+	.change();
 
-  	/**
+	/**
 	 * Automatically check and disable the "ZIP file" checkbox whenever more than one table is selected
 	 *
 	 * @since 1.0.0
@@ -49,7 +49,7 @@ jQuery(document).ready( function($) {
 	$( '#tables-export-zip-file' ).on( 'change', function() {
 		zip_file_manually_checked = $(this).prop( 'checked' );
 	} );
-    $( '#tables-export' ).on( 'change', function() {
+	$( '#tables-export' ).on( 'change', function() {
 		var selected_tables = $(this).val(),
 			num_selected = ( selected_tables ) ? selected_tables.length : 0,
 			zip_file_required = ( num_selected > 1 );
@@ -57,8 +57,8 @@ jQuery(document).ready( function($) {
 			.prop( 'disabled', zip_file_required )
 			.prop( 'checked', zip_file_required || zip_file_manually_checked );
 		$( '#tables-export-zip-file-description' ).toggle( zip_file_required );
-    } )
-    .change();
+	} )
+	.change();
 
 	/**
 	 * Automatically focus the tables dropdown

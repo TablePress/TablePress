@@ -487,7 +487,7 @@ class TablePress_Render {
 				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
 					&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) // and no colspan into first column head
 				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // no rowspan out of table_foot
-				 	&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
+					&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
 					continue;
 				// invalid span, so we set cell content from #span# to a space
 				$cell_content = '&nbsp;';
@@ -556,38 +556,38 @@ class TablePress_Render {
 	 * @return array Default render options
 	 */
 	public function get_default_render_options() {
-	    return array(
-            'id' => 0,
-            'column_widths' => array(),
-            'alternating_row_colors' => -1,
-            'row_hover' => -1,
-            'table_head' => -1,
-            'first_column_th' => false,
-            'table_foot' => -1,
-            'print_name' => -1,
-            'print_description' => -1,
-            'cache_table_output' => -1,
-            'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
-            'use_datatables' => -1,
-            'datatables_sort' => -1,
-            'datatables_paginate' => -1,
-            'datatables_paginate_entries' => -1,
-            'datatables_lengthchange' => -1,
-            'datatables_filter' => -1,
-            'datatables_info' => -1,
-            'datatables_tabletools' => -1,
-            'datatables_custom_commands' => -1,
-            'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
-            'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
-            'show_rows' => array(),
-            'show_columns' => array(),
-            'hide_rows' => array(),
-            'hide_columns' => array(),
-            'cellspacing' => false,
-            'cellpadding' => false,
-            'border' => false,
-            'html_id' => 'test'
-        );
+		return array(
+			'id' => 0,
+			'column_widths' => array(),
+			'alternating_row_colors' => -1,
+			'row_hover' => -1,
+			'table_head' => -1,
+			'first_column_th' => false,
+			'table_foot' => -1,
+			'print_name' => -1,
+			'print_description' => -1,
+			'cache_table_output' => -1,
+			'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
+			'use_datatables' => -1,
+			'datatables_sort' => -1,
+			'datatables_paginate' => -1,
+			'datatables_paginate_entries' => -1,
+			'datatables_lengthchange' => -1,
+			'datatables_filter' => -1,
+			'datatables_info' => -1,
+			'datatables_tabletools' => -1,
+			'datatables_custom_commands' => -1,
+			'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+			'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
+			'show_rows' => array(),
+			'show_columns' => array(),
+			'hide_rows' => array(),
+			'hide_columns' => array(),
+			'cellspacing' => false,
+			'cellpadding' => false,
+			'border' => false,
+			'html_id' => 'test'
+		);
 	}
 
 	/**
