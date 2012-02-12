@@ -123,19 +123,11 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	protected function import_csv() {
-		$parseCSV = TablePress::load_class( 'parseCSV', 'parsecsv.class.php', 'libraries' );
-		$parseCSV->heading = false; // means: treat first row like all others
-
-		// different things have worked, but don't always
-		// none of the following: 1 of 3
-		//$parseCSV->encoding( 'ISO-8859-1', 'ISO-8859-1//IGNORE' ); // might need to play with this a little or offer an option // 1 of 3
-		//$parseCSV->encoding( 'ISO-8859-1', 'UTF-8//IGNORE' ); // might need to play with this a little or offer an option // 0 of 3
-		//$parseCSV->encoding( 'ISO-8859-1', 'UTF-8' ); // might need to play with this a little or offer an option // 0 of 3
-		//$parseCSV->encoding( 'Windows-1252', 'UTF-8//IGNORE' ); // might need to play with this a little or offer an option // 1 of 3
-		$parseCSV->load_data( $this->import_data );
-		$parseCSV->auto(); // let parsecsv do its magic (determine delimiter and parse the data)
-
-		$this->imported_table = $this->pad_array_to_max_cols( $parseCSV->data );
+		$csv_parser = TablePress::load_class( 'CSV_Parser', 'csv-parser.class.php', 'libraries' );
+		$csv_parser->load_data( $this->import_data );
+		$delimiter = $csv_parser->find_delimiter();
+		$data = $csv_parser->parse( $delimiter );
+		$this->imported_table = $this->pad_array_to_max_cols( $data );
 	}
 
 	/**
@@ -241,9 +233,8 @@ class TablePress_Import {
 		$this->imported_table = $this->pad_array_to_max_cols( $data );
 	}
 
-	// make sure array is rectangular with $max_cols columns in every row
 	/**
-	 *
+	 * Make sure array is rectangular with $max_cols columns in every row
 	 *
 	 * @since 1.0.0
 	 */
