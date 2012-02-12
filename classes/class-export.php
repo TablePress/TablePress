@@ -62,6 +62,7 @@ class TablePress_Export {
 		$this->csv_delimiters = array(
 			';' => __( '; (semicolon)', 'tablepress' ),
 			',' => __( ', (comma)', 'tablepress' ),
+			'tab' => __( '\t (tabulator)', 'tablepress' ),
 			':' => __( ': (colon)', 'tablepress' ),
 			'.' => __( '. (dot)', 'tablepress' ),
 			'|' => __( '| (pipe)', 'tablepress' )
@@ -86,13 +87,15 @@ class TablePress_Export {
 		switch( $export_format ) {
 			case 'csv':
 				$output = '';
+				if ( 'tab' == $csv_delimiter )
+					$csv_delimiter = "\t";
 				foreach ( $table['data'] as $row_idx => $row ) {
 					$csv_row = array();
 					foreach ( $row as $column_idx => $cell_content ) {
 						$csv_row[] = $this->csv_wrap_and_escape( $cell_content, $csv_delimiter );
 					}
 					$output .= implode( $csv_delimiter, $csv_row );
-					$output .= "\r\n";
+					$output .= "\r\n"; // Windows-style line breaks
 				}
 				break;
 			case 'html':
