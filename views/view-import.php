@@ -80,6 +80,10 @@ class TablePress_Import_View extends TablePress_View {
 				}
 			?>
 			</select>
+			<?php
+				if ( ! $data['html_import_support_available'] )
+					echo '<br/><span class="description">' . __( 'Import of HTML files is not available on your server.', 'tablepress' ) . '</span>';
+			?>
 		</td>
 	</tr>
 	<tr id="row-import-source" class="top-border">

@@ -317,6 +317,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['tables_count'] = $this->model_table->count_tables();
 				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
 				$data['zip_support_available'] = $importer->zip_support_available;
+				$data['html_import_support_available'] = $importer->html_import_support_available;
 				$data['import_formats'] = $importer->import_formats;
 				$data['import_format'] = ( ! empty( $_GET['import_format'] ) ) ? $_GET['import_format'] : false;
 				$data['import_add_replace'] = ( ! empty( $_GET['import_add_replace'] ) ) ? $_GET['import_add_replace'] : 'add';
@@ -771,10 +772,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$import = stripslashes_deep( $_POST['import'] );
 
+		if ( ! isset( $import['add_replace'] ) )
+			$import['add_replace'] = 'add';
 		if ( ! isset( $import['replace_table'] ) )
 			$import['replace_table'] = '';
 		if ( ! isset( $import['source'] ) )
 			$import['source'] = '';
+
+		// Check if a table to replace was selected
+		if ( 'replace' == $import['add_replace'] && empty( $import['replace_table'] ) )
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_no_replace_id', 'import_format' => $import['format'], 'import_add_replace' => 'replace', 'import_source' => $import['source'] ) );
 
 		$import_error = true;
 		$unlink_file = false;
@@ -819,7 +826,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $import_error ) {
 			if ( $unlink_file )
 				@unlink( $import_data['file_location'] );
-			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import', 'import_format' => $import['format'], 'import_add_replace' => $import['add_replace'], 'import_replace_table' => $import['replace_table'], 'import_source' => $import['source'] ) );
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_empty_source', 'import_format' => $import['format'], 'import_add_replace' => $import['add_replace'], 'import_replace_table' => $import['replace_table'], 'import_source' => $import['source'] ) );
 		}
 
 		$this->importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
@@ -843,7 +850,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 			$name = $import_data['file_name'];
 			$description = $import_data['file_name'];
-			$table_id = $this->_import_table( $import['format'], $name, $description, $import_data['data'] );
+			$replace_id = ( 'replace' == $import['add_replace'] && ! empty( $import['replace_table'] ) ) ? $import['replace_table'] : false;
+			$table_id = $this->_import_table( $import['format'], $import_data['data'], $name, $description, $replace_id );
 
 			if ( $unlink_file )
 				@unlink( $import_data['file_location'] );
@@ -874,7 +882,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 				$name = $file_name;
 				$description = $file_name;
-				$table_id = $this->_import_table( $import['format'], $name, $description, $data );
+				$replace_id = ( 'replace' == $import['add_replace'] ) ? false : false; // @TODO: Find a way to extract the replace ID from the filename, maybe?
+				$table_id = $this->_import_table( $import['format'], $data, $name, $description, $replace_id );
 				if ( false == $table_id )
 					continue;
 				else
@@ -893,62 +902,76 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_content' ) );
 		}
 
-/*
-			if ( isset( $_POST['import_addreplace'] ) && isset( $_POST['import_addreplace_table'] ) && ( 'replace' == $_POST['import_addreplace'] ) && $this->table_exists( $_POST['import_addreplace_table'] ) ) {
-				$table = $this->load_table( $_POST['import_addreplace_table'] );
-				$table['data'] = $imported_table['data'];
-				$success_message = sprintf( __( 'Table %s (%s) replaced successfully.', 'tablepress' ), $this->helper->safe_output( $table['name'] ), $this->helper->safe_output( $table['id'] ) );
-			} else {
-				$table = array_merge( $this->default_table, $imported_table );
-				$table['id'] = $this->get_new_table_id();
-				$success_message = _n( 'Table imported successfully.', 'Tables imported successfully.', 1, 'tablepress' );
-			}
-
-			foreach ( $table['data'] as $row_idx => $row )
-				$table['visibility']['rows'][$row_idx] = isset( $table['visibility']['rows'][$row_idx] ) ? $table['visibility']['rows'][$row_idx] : false;
-			foreach ( $table['data'][0] as $col_idx => $col )
-				$table['visibility']['columns'][$col_idx] = isset( $table['visibility']['columns'][$col_idx] ) ? $table['visibility']['columns'][$col_idx] : false;
-*/
 	}
 
 	/**
-	 * Import a table
+	 * Import a table by either replacing an existing table or adding it as a new table
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $format Import format
+	 * @param array $data Data to import
 	 * @param string $name Name of the table
 	 * @param string $description Description of the table
-	 * @param array $data Data to import
+	 * @param bool|string $replace_id False if table shall be added new, ID of the table to be replaced otherwise
 	 * @param bool|string False on error, table ID on success
 	 */
-	protected function _import_table( $format, $name, $description, $data ) {
+	protected function _import_table( $format, $data, $name, $description, $replace_id ) {
 		$content = $this->importer->import_table( $format, $data );
 		if ( false === $content )
 			return false;
 
+		// size of imported table
 		$num_rows = count( $content );
 		$num_columns = count( $content[0] );
-		// Create a new table array with information from the imported table
+
+		if ( false !== $replace_id ) {
+			// Load existing table from DB
+			$table = $this->model_table->load( $replace_id );
+			if ( false === $table )
+				return false;
+			// don't change name and description when a table is replaced
+			$name = $table['name'];
+			$description = $table['description'];
+			// cut visibility array (if the imported table is smaller), will be padded correctly below if it is bigger
+			$visibility = array(
+				'rows' => array_slice( $table['visibility']['rows'], 0, $num_rows ),
+				'columns' => array_slice( $table['visibility']['columns'], 0, $num_columns )
+			);
+		} else {
+			$table = $this->model_table->get_table_template();
+			// will be padded correctly below
+			$visibility = array(
+				'rows' => array(),
+				'columns' => array()
+			);
+		}
+
+		// Merge new or existing table with information from the imported table
 		$imported_table = array(
+			'id' => $table['id'], // will be false for new table or the existing table ID
 			'name' => $name,
 			'description' => $description,
 			'data' => $content,
-			'visibility' => array(
-				'rows' => array_fill( 0, $num_rows, 1 ),
-				'columns' => array_fill( 0, $num_columns, 1 )
+			'visibility' => array( // pad correctly if imported table is bigger than existing table (or new template)
+				'rows' => array_pad( $visibility['rows'], $num_rows, 1 ),
+				'columns' => array_pad( $visibility['columns'], $num_columns, 1 )
 			)
 		);
-		// Merge this data into an empty table template
-		$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $imported_table, false );
+
+		// Check if new data is ok
+		$table = $this->model_table->prepare_table( $table, $imported_table, false );
 		if ( false === $table )
 			return false;
 
-		// Add the new table (and get its first ID)
-		$table_id = $this->model_table->add( $table );
+		// Replace existing table or add new table
+		if ( false !== $replace_id )
+			$table_id = $this->model_table->save( $table ); // Replace existing table with imported table
+		else
+			$table_id = $this->model_table->add( $table ); // Add the imported table (and get its first ID)
+
 		if ( false === $table_id )
 			return false;
-
 		return $table_id;
 	}
 

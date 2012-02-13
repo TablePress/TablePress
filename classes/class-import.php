@@ -39,6 +39,15 @@ class TablePress_Import {
 	public $zip_support_available = false;
 
 	/**
+	 * Whether HTML import support is available in the PHP installation on the server
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var bool
+	 */
+	public $html_import_support_available = false;
+
+	/**
 	 * Data to be imported
 	 *
 	 * @since 1.0.0
@@ -62,16 +71,19 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		// initiate here, because function call not possible outside a class method
-		$this->import_formats = array(
-			'csv' => __( 'CSV - Character-Separated Values', 'tablepress' ),
-			'html' => __( 'HTML - Hypertext Markup Language', 'tablepress' ),
-			'json' => __( 'JSON - JavaScript Object Notation', 'tablepress' )
-		);
-
 		// filter from @see unzip_file() in WordPress
 		if ( class_exists( 'ZipArchive' ) && apply_filters( 'unzip_file_use_ziparchive', true ) )
 			$this->zip_support_available = true;
+
+		if ( class_exists( 'DOMDocument' ) && function_exists( 'simplexml_import_dom' ) && function_exists( 'libxml_use_internal_errors' ) )
+			$this->html_import_support_available = true;
+
+		// initiate here, because function call not possible outside a class method
+		$this->import_formats = array();
+		$this->import_formats['csv'] = __( 'CSV - Character-Separated Values', 'tablepress' );
+		if ( $this->html_import_support_available )
+			$this->import_formats['html'] = __( 'HTML - Hypertext Markup Language', 'tablepress' );
+		$this->import_formats['json'] = __( 'JSON - JavaScript Object Notation', 'tablepress' );
 	}
 
 	/**
@@ -97,6 +109,8 @@ class TablePress_Import {
 				$this->import_csv();
 				break;
 			case 'html':
+				if ( ! $this->html_import_support_available )
+					return false;
 				$this->import_html();
 				break;
 			case 'json':
@@ -269,10 +283,14 @@ class TablePress_Import {
 	/**
 	 * Fixes the encoding to UTF-8 for a cell
 	 *
+	 * @TODO: DO WE REALLY WANT THIS? IS THERE A BETTER WAY using iconv()?
+	 *
 	 * @since 1.0.0
 	 */
 	protected function fix_encoding( $string ) {
-		return ( 'UTF-8' == mb_detect_encoding( $string ) && mb_check_encoding( $string, 'UTF-8' ) ) ? $string : utf8_encode( $string );
+		// @TODO: Don't use for now
+		// return ( 'UTF-8' == mb_detect_encoding( $string ) && mb_check_encoding( $string, 'UTF-8' ) ) ? $string : utf8_encode( $string );
+		return $string;
 	}
 
 	/**
