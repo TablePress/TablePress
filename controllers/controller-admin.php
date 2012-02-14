@@ -826,7 +826,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $import_error ) {
 			if ( $unlink_file )
 				@unlink( $import_data['file_location'] );
-			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_empty_source', 'import_format' => $import['format'], 'import_add_replace' => $import['add_replace'], 'import_replace_table' => $import['replace_table'], 'import_source' => $import['source'] ) );
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_source_invalid', 'import_format' => $import['format'], 'import_add_replace' => $import['add_replace'], 'import_replace_table' => $import['replace_table'], 'import_source' => $import['source'] ) );
 		}
 
 		$this->importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );

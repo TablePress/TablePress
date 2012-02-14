@@ -69,24 +69,7 @@ class TablePress_Import_View extends TablePress_View {
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
-	<tr class="bottom-border">
-		<th class="column-1" scope="row"><label for="tables-import-format"><?php _e( 'Import Format', 'tablepress' ); ?>:</label></th>
-		<td class="column-2">
-			<select id="tables-import-format" name="import[format]">
-			<?php
-				foreach ( $data['import_formats'] as $format => $name ) {
-					$selected = selected( $format, $data['import_format'], false );
-					echo "<option{$selected} value=\"{$format}\">{$name}</option>";
-				}
-			?>
-			</select>
-			<?php
-				if ( ! $data['html_import_support_available'] )
-					echo '<br/><span class="description">' . __( 'Import of HTML files is not available on your server.', 'tablepress' ) . '</span>';
-			?>
-		</td>
-	</tr>
-	<tr id="row-import-source" class="top-border">
+	<tr id="row-import-source">
 		<th class="column-1" scope="row"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
 		<td class="column-2">
 			<input name="import[source]" id="tables-import-source-file-upload" type="radio" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <label for="tables-import-source-file-upload"><?php _e( 'File Upload', 'tablepress' ); ?></label>
@@ -129,6 +112,23 @@ class TablePress_Import_View extends TablePress_View {
 		<th class="column-1 top-align" scope="row"><label for="tables-import-form-field"><?php _e( 'Import data', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
 			<textarea name="import[form_field]" id="tables-import-form-field" rows="15" cols="40" class="large-text"><?php echo $data['import_form_field']; ?></textarea>
+		</td>
+	</tr>
+	<tr class="top-border bottom-border">
+		<th class="column-1" scope="row"><label for="tables-import-format"><?php _e( 'Import Format', 'tablepress' ); ?>:</label></th>
+		<td class="column-2">
+			<select id="tables-import-format" name="import[format]">
+			<?php
+				foreach ( $data['import_formats'] as $format => $name ) {
+					$selected = selected( $format, $data['import_format'], false );
+					echo "<option{$selected} value=\"{$format}\">{$name}</option>";
+				}
+			?>
+			</select>
+			<?php
+				if ( ! $data['html_import_support_available'] )
+					echo '<br/><span class="description">' . __( 'Import of HTML files is not available on your server.', 'tablepress' ) . '</span>';
+			?>
 		</td>
 	</tr>
 	<tr id="row-import-add_replace" class="top-border">
