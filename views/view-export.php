@@ -107,7 +107,7 @@ class TablePress_Export_View extends TablePress_View {
 				foreach ( $data['tables'] as $table ) {
 					if ( '' == trim( $table['name'] ) )
 						$table['name'] = __( '(no name)', 'tablepress' );
-					$text = esc_html( sprintf( __( 'ID %1$s: %2$s ', 'tablepress' ), $table['id'], $table['name'] ) );
+					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
 					$selected = selected( true, in_array( $table['id'], $data['export_ids'] ), false );
 					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
 				}
