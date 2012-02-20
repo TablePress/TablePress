@@ -128,11 +128,14 @@ class CSV_Parser {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param string|char $char Character to check
+	 * @param array $line_counts
+	 * @param int $number_lines
 	 * @return bool|string False if delimiter is not possible, string to be used as a sort key if character could be a delimiter
 	 */
-	protected function _check_delimiter_count( $char, $line_counts, $current_line ) {
+	protected function _check_delimiter_count( $char, $line_counts, $number_lines ) {
 		// was potential delimiter found in every line?
-		if ( count( $line_counts ) != $current_line )
+		if ( count( $line_counts ) != $number_lines )
 			return false;
 
 		// check if count in every line is the same (or one higher for "almost")
@@ -151,7 +154,8 @@ class CSV_Parser {
 				$equal = false;
 			}
 		}
-		if ( ! $equal )
+		// check equality only if more than one row
+		if ( $number_lines > 1 && ! $equal )
 			return false;
 
 		// at this point, count is equal in all lines, determine a string to sort priority
