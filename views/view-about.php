@@ -140,17 +140,10 @@ class TablePress_About_View extends TablePress_View {
 			<?php _e( 'Allan Jardine for the <a href="http://www.datatables.net/">DataTables jQuery plugin</a>,', 'tablepress' ); ?><br/>
 			<?php _e( 'the submitters of translations:', 'tablepress' ); ?>
 			<?php
-				/* $credits_links = array(
-					'lang_code' => '<a href="http://example.com">Example</a>',
-				);
-
-				// no credits link for English and German, as they are by me :-)
-				unset ( $this->available_plugin_languages['en_US'] );
-				unset ( $this->available_plugin_languages['de_DE'] );
-
-				foreach ( $this->available_plugin_languages as $code => $language ) {
-					echo "<br/>&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language, $credits_links[ $code ] ) . "\n";
-				} */
+				foreach ( $data['plugin_languages'] as $lang_abbr => $language ) {
+					$link = sprintf( '<a href="%1$s">%2$s</a>', $language['translator_url'], $language['translator_name'] );
+					echo "<br/>&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
+				}
 			?>
 			<br/><?php _e( 'and to all donors, contributors, supporters, reviewers and users of the plugin!', 'tablepress' ); ?>
 		</p>

@@ -971,7 +971,17 @@ jQuery(document).ready( function( $ ) {
 					'#span-add-rowspan':	function() { tp.content.span.add( '#rowspan#' ); },
 					'#span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
 					'.show-preview-button':	tp.table.preview.trigger,
-					'.save-changes-button':	tp.save_changes.trigger
+					'.save-changes-button':	tp.save_changes.trigger,
+					'.show-help-box':		function() {
+						$(this).next().wpdialog( {
+						title: $(this).attr( 'title' ),
+						height: 400,
+						width: 300,
+						modal: true,
+						dialogClass: 'wp-dialog',
+						resizable: false
+						} );
+					}
 				},
 				'keyup': {
 					'#table-new-id':		tp.check.table_id

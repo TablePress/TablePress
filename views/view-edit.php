@@ -93,8 +93,8 @@ class TablePress_Edit_View extends TablePress_View {
 		) );
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
-		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
 		$this->add_text_box( 'buttons-1', array( &$this, 'textbox_buttons' ), 'normal' );
+		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( &$this, 'postbox_table_data' ), 'normal' );
 		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( &$this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( &$this, 'postbox_table_options' ), 'normal' );
@@ -286,6 +286,16 @@ class TablePress_Edit_View extends TablePress_View {
 			<?php _e( 'Combine cells', 'tablepress' ); ?>:&nbsp;
 			<input type="button" class="button-secondary" id="span-add-rowspan" value="<?php _e( 'rowspan', 'tablepress' ); ?>" />
 			<input type="button" class="button-secondary" id="span-add-colspan" value="<?php _e( 'colspan', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary show-help-box" value="<?php _e( '?', 'tablepress' ); ?>" title="<?php _e( 'Help on combining cells' ); ?>" />
+			<div class="hidden-container hidden-help-box-container"><?php
+				echo '<p>' . __( 'Table cells can span across more than one column or row.', 'tablepress' ) . '</p>';
+				echo '<p>' . __( 'Combining consecutive cells within the same row is called "colspanning".', 'tablepress' )
+					. ' ' . __( 'Combining consecutive cells within the same column is called "rowspanning".', 'tablepress' ) . '</p>';
+				echo '<p>' . __( 'To combine adjacent cells in a row, add the keyword <code>#colspan#</code> to the cell to the right of the one with the content for the combined cell by using the corresponding button.', 'tablepress' )
+					. ' ' . __( 'To combine adjacent cells in a column, add the keyword <code>#rowspan#</code> to the cell below the one with the content for the combined cell by using the corresponding button.', 'tablepress' ) . '</p>';
+				echo '<p>' . __( 'Repeat this to add the keyword to all cells that shall be connected.', 'tablepress' ) . '</p>';
+				echo '<p><strong>' . __( 'Be aware that the functions of the DataTables JavaScript library will not work on tables which have combined cells.', 'tablepress' ) . '</strong></p>';
+			?></div>
 		</td>
 	</tr>
 	<tr class="top-border">

@@ -172,8 +172,8 @@ JS;
 		$select_box = '<select id="option-plugin-language" name="options[plugin_language]">' . "\n";
 		$select_box .= '<option' . selected( $data['user_options']['plugin_language'], 'auto', false ) . ' value="auto">' . sprintf( __( 'WordPress Default (currently %s)', 'tablepress' ), get_locale() ) . "</option>\n";
 		$select_box .= '<option value="-" disabled="disabled">---</option>' . "\n";
-		foreach ( $data['user_options']['available_plugin_languages'] as $lang_abbr => $language ) {
-			$select_box .= '<option' . selected( $data['user_options']['plugin_language'], $lang_abbr, false ) . ' value="' . $lang_abbr . '">' . "{$language} ({$lang_abbr})</option>\n";
+		foreach ( $data['user_options']['plugin_languages'] as $lang_abbr => $language ) {
+			$select_box .= '<option' . selected( $data['user_options']['plugin_language'], $lang_abbr, false ) . ' value="' . $lang_abbr . '">' . "{$language['name']} ({$lang_abbr})</option>\n";
 		}
 		$select_box .= "</select>\n";
 		?>

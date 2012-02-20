@@ -44,8 +44,12 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( &$this, 'postbox_import_form' ), 'normal' );
-		$this->data['submit_button_caption'] = __( 'Import Table', 'tablepress' );
-		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+		$this->data['submit_button_caption'] = __( 'Import', 'tablepress' );
+		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'additional' );
+		if ( $data['wp_table_reloaded_installed'] ) {
+			$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( &$this, 'postbox_wp_table_reloaded_import' ), 'additional' );
+			$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+		}
 	}
 
 	/**
@@ -147,7 +151,7 @@ class TablePress_Import_View extends TablePress_View {
 				foreach ( $data['tables'] as $table ) {
 					if ( '' == trim( $table['name'] ) )
 						$table['name'] = __( '(no name)', 'tablepress' );
-					$text = esc_html( sprintf( __( 'ID %1$s: %2$s ', 'tablepress' ), $table['id'], $table['name'] ) );
+					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
 					$selected = selected( $table['id'], $data['import_replace_table'], false );
 					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
 				}
@@ -158,6 +162,17 @@ class TablePress_Import_View extends TablePress_View {
 </tbody>
 </table>
 <?php
+	}
+
+	/**
+	 *
+	 *
+	 * @since 1.0.0
+	 */
+	public function postbox_wp_table_reloaded_import( $data, $box ) {
+		?>
+		<p><?php _e( 'Import from WP-Table Reloaded', 'tablepress' ); ?></p>
+		<?php
 	}
 
 	/**

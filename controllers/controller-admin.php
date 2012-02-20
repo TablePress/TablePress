@@ -149,8 +149,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! is_network_admin() && ! is_user_admin() )
 			add_action( 'admin_bar_menu', array( &$this, 'add_wp_admin_bar_new_content_menu_entry' ), 71 );
 
-		// not sure if this is needed:
-		// add_action( 'load-plugins.php', array( &$this, 'plugin_notification' ) );
+		add_action( 'load-plugins.php', array( &$this, 'plugins_page' ) );
 	}
 
 	/**
@@ -221,6 +220,39 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		) );
 	}
 
+    /**
+     * Handle actions for loading of Plugins page
+     *
+     * @since 1.0.0
+     */
+	public function plugins_page() {
+		$this->init_i18n_support();
+		// add message to list of plugins, if an update is available
+		// add_action( 'in_plugin_update_message-' . TABLEPRESS_BASENAME, array( &$this, 'add_plugin_update_message' ), 10, 2 );
+		// add additional links on Plugins page
+        add_filter( 'plugin_row_meta', array( &$this, 'add_plugin_row_meta' ), 10, 2);
+	}
+
+    /**
+     * Add links to the TablePress entry on the Plugins page
+     *
+     * @since 1.0.0
+     *
+     * @param array $links List of links to print on the Plugins page
+     * @param string $file Name of the plugin
+     * @return array Extended list of links to print on the Plugins page
+     */
+	public function add_plugin_row_meta( $links, $file ) {
+		if ( TABLEPRESS_BASENAME == $file ) {
+			$links[] = '<a href="' . TablePress::url() . '" title="' . __( 'TablePress Plugin Page', 'tablepress' ) . '">' . __( 'Plugin Page', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tobias.baethge.com/go/tablepress/faq/" title="' . __( 'Frequently Asked Questions', 'tablepress' ) . '">' . __( 'FAQ', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tobias.baethge.com/go/tablepress/support/" title="' . __( 'Support', 'tablepress' ) . '">' . __( 'Support', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tobias.baethge.com/go/tablepress/documentation/" title="' . __( 'Plugin Documentation', 'tablepress' ) . '">' . __( 'Documentation', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tobias.baethge.com/go/tablepress/donate/" title="' . __( 'Support TablePress with your donation!', 'tablepress' ) . '"><strong>' . __( 'Donate', 'tablepress' ) . '</strong></a>';
+		}
+		return $links;
+	}
+
 	/**
 	 * Prepare the rendering of an admin screen, by determining the current action, loading necessary data and initializing the view
 	 *
@@ -260,6 +292,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
 				$data['messages']['plugin_update'] = $this->model_options->get( 'message_plugin_update' );
 				break;
+			case 'about':
+				$data['plugin_languages'] = $this->get_plugin_languages();
+				break;
 			case 'options':
 				// Maybe try saving "Custom CSS" to a file:
 				// (called here, as the credentials form posts to this handler again, due to how request_filesystem_credentials() works)
@@ -284,10 +319,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				$data['user_options']['parent_page'] = $this->parent_page;
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' );
-				$data['user_options']['available_plugin_languages'] = array(
-					'en_US' => __( 'English', 'tablepress' ),
-					'de_DE' => __( 'German', 'tablepress' )
-				); // make this a function or property
+				$data['user_options']['plugin_languages'] = $this->get_plugin_languages();
 				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
@@ -326,6 +358,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? $_GET['import_url'] : 'http://';
 				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? $_GET['import_server'] : ABSPATH;
 				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? $_GET['import_form_field'] : '';
+				$data['wp_table_reloaded_installed'] = ( false !== get_option( 'wp_table_reloaded_options', false ) && false !== get_option( 'wp_table_reloaded_tables', false ) );
 				break;
 		}
 
@@ -357,6 +390,44 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		load_plugin_textdomain( 'tablepress', false, $language_directory );
 		remove_filter( 'locale', array( &$this, 'change_plugin_locale' ) );
 		$this->i18n_support_loaded = true;
+	}
+
+	/**
+	 * Get a list of available plugin languages and information on the translator
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array List of languages
+	 */
+	protected function get_plugin_languages() {
+		$languages = array(
+			'de_DE' => array(
+				'name' => __( 'German', 'tablepress' ),
+				'translator_name' => 'Tobias Bäthge',
+				'translator_url' => 'http://tobias.baethge.com/'
+			),
+			'en_US' => array(
+				'name' => __( 'English', 'tablepress' ),
+				'translator_name' => 'Tobias Bäthge',
+				'translator_url' => 'http://tobias.baethge.com/'
+			)
+		);
+		uasort( $languages, array( &$this, '_get_plugin_languages_sort_cb' ) ); // to sort after the translation is done
+		return $languages;
+	}
+
+	/**
+	 * Callback for sorting the language array in @see get_plugin_languages()
+	 *
+	 * @see get_plugin_languages()
+	 * @since 1.0.0
+	 *
+	 * @param array $a First language to sort
+	 * @param array $b Second language to sort
+	 * @return array -1, 0, 1, depending on sort
+	 */
+	protected function _get_plugin_languages_sort_cb( $a, $b ) {
+	    return strnatcasecmp( $a['name'], $b['name'] );
 	}
 
 	/**
@@ -636,8 +707,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ) );
 		}
 		if ( ! empty( $posted_options['plugin_language'] ) && '-' != $posted_options['plugin_language'] ) {
-			// maybe add check in array available languages
-			$new_options['plugin_language'] = $posted_options['plugin_language'];
+			// only allow "auto" language and all values that have a translation
+			if ( 'auto' == $posted_options['plugin_language'] || array_key_exists( $posted_options['plugin_language'], $this->get_plugin_languages() ) )
+				$new_options['plugin_language'] = $posted_options['plugin_language'];
 		}
 		// Checkbox
 		$new_options['use_custom_css_file'] = ( isset( $posted_options['use_custom_css_file'] ) && 'true' === $posted_options['use_custom_css_file'] );

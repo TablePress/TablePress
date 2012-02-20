@@ -100,6 +100,11 @@ abstract class TablePress_View {
 			'id' => 'tablepress-help', // This should be unique for the screen.
 			'title' => __( 'TablePress Help', 'tablepress' ),
 			'content' => '<p>' . $this->help_tab_content() . '</p>'
+						. '<p>' . sprintf( __( 'More information about TablePress can be found on the <a href="%1$s">plugin\'s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/website/', 'http://wordpress.org/extend/plugins/tablepress/' ) . ' '
+						. sprintf( __( 'For technical information, see the <a href="%1$s">documentation</a>.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/documentation/' ) . ' '
+						. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/support/', 'http://wordpress.org/tags/tablepress' ) . ' '
+						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/faq/' ) . '<br/>'
+						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/donate/' ) . '</p>'
 		) );
 		// "sidebar" in the help tab
 		$screen->set_help_sidebar( '<p><strong>' . __( 'For more information:', 'tablepress' ) . '</strong></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/" target="_blank">TablePress Website</a></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/faq/" target="_blank">TablePress FAQ</a></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/documentation/" target="_blank">TablePress Documentation</a></p><p><a href="http://tobias.baethge.com/wordpress/plugins/tablepress/support/" target="_blank">TablePress Support</a></p>' );
@@ -141,6 +146,10 @@ abstract class TablePress_View {
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$this->admin_page->enqueue_style( 'common' );
+		/* // @TODO: maybe later necessary: RTL styles for admin interface
+		if ( is_rtl() )
+			$this->admin_page->enqueue_style( 'common-rtl' );
+		*/
 		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ), array(
 			'common' => array(
 				'ays_delete_single_table' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),

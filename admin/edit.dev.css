@@ -14,6 +14,11 @@ body.wait * {
 	display: none;
 }
 
+/* Margin in Help boxes */
+.hidden-help-box-container p {
+	margin: 6px;
+}
+
 /* move Thickbox more to the front, so that it's always above a jQuery UI dialog */
 #TB_HideSelect {
 	z-index: 301099;
