@@ -153,15 +153,64 @@ class TablePress_Render {
 	protected function _prepare_render_data() {
 		$orig_table = $this->table;
 
-		// @TODO: Can this be replaced by ranges (like 3-8) in show/hide_rows/columns?
-		// if row_offset or row_count were given, we cut that part from the table and show just that
-		$this->table['data'] = array_slice( $this->table['data'], $this->render_options['row_offset'] - 1, $this->render_options['row_count'] ); // -1 because we start from 1
+		$num_rows = count( $this->table['data'] );
+		$num_columns = ( $num_rows > 0 ) ? count( $this->table['data'][0] ) : 0;
+
+		// evaluate show/hide_rows/columns parameters
+		$actions = array( 'show', 'hide' );
+		$elements = array( 'rows', 'columns' );
+		foreach ( $actions as $action ) {
+			foreach ( $elements as $element ) {
+				if ( empty( $this->render_options["{$action}_{$element}"] ) ) {
+					$this->render_options["{$action}_{$element}"] = array();
+					continue;
+				}
+
+				// add all rows/columns to array if "all" value set for one of the four parameters
+				if ( 'all' == $this->render_options["{$action}_{$element}"] ) {
+					$this->render_options["{$action}_{$element}"] = range( 0, $num_{$element} - 1 );
+					continue;
+				}
+
+				// we have a list of rows/columns (possibly with ranges in it)
+				$this->render_options["{$action}_{$element}"] = explode( ',', $this->render_options["{$action}_{$element}"] );
+				// support for ranges like 3-6 or A-BA
+				$range_cells = array();
+				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
+					$range_dash = strpos( $value, '-' );
+					if ( false !== $range_dash ) {
+						unset( $this->render_options["{$action}_{$element}"][$key] );
+						$start = substr( $value, 0, $range_dash );
+						if ( ! is_numeric( $start ) )
+							$start = TablePress::letter_to_number( $start );
+						$end = substr( $value, $range_dash + 1 );
+						if ( ! is_numeric( $end ) )
+							$end = TablePress::letter_to_number( $end );
+						$current_range = range( $start, $end );
+						$range_cells = array_merge( $range_cells, $current_range );
+					}
+				}
+				$this->render_options["{$action}_{$element}"] = array_merge( $this->render_options["{$action}_{$element}"], $range_cells );
+				// parse single letters and
+				// change from regular numbering to zero-based numbering,
+				// as rows/columns are indexed from 0 internally, but from 1 externally
+				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
+					if ( ! is_numeric( $value ) )
+						$value = TablePress::letter_to_number( $value );
+					$this->render_options["{$action}_{$element}"][$key] = (int)$value - 1;
+				}
+
+				// remove duplicate entries and sort the array
+				$this->render_options["{$action}_{$element}"] = array_unique( $this->render_options["{$action}_{$element}"], SORT_NUMERIC );
+				sort( $this->render_options["{$action}_{$element}"], SORT_NUMERIC );
+			}
+		}
 
 		// load information about hidden rows and columns
-		$hidden_rows = isset( $this->table['visibility']['rows'] ) ? array_keys( $this->table['visibility']['rows'], 0 ) : array(); // get indexes of hidden rows (array value of 0))
+		$hidden_rows = array_keys( $this->table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0))
 		$hidden_rows = array_merge( $hidden_rows, $this->render_options['hide_rows'] );
 		$hidden_rows = array_diff( $hidden_rows, $this->render_options['show_rows'] );
-		$hidden_columns = isset( $this->table['visibility']['columns'] ) ? array_keys( $this->table['visibility']['columns'], 0 ) : array(); // get indexes of hidden columns (array value of 0))
+		$hidden_columns = array_keys( $this->table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0))
 		$hidden_columns = array_merge( $hidden_columns, $this->render_options['hide_columns'] );
 		$hidden_columns = array_merge( array_diff( $hidden_columns, $this->render_options['show_columns'] ) );
 
@@ -333,7 +382,9 @@ class TablePress_Render {
 		// allow overwriting the colspan and rowspan trigger keywords, by table ID
 		$this->span_trigger = apply_filters( 'tablepress_span_trigger_keywords', $this->span_trigger, $this->table['id'] );
 
-		// make array $shortcode_atts['column_widths'] have $columns entries
+		// explode from string to array
+		$this->render_options['column_widths'] = ( ! empty( $this->render_options['column_widths'] ) ) ? explode( '|', $this->render_options['column_widths'] ) : array();
+		// make array $this->render_options['column_widths'] have $columns entries
 		$this->render_options['column_widths'] = array_pad( $this->render_options['column_widths'], $num_columns, '' );
 
 		$output = '';
@@ -412,7 +463,7 @@ class TablePress_Render {
 		$tbody = "<tbody{$tbody_class}>\n" . implode( '', $tbody ) . "</tbody>\n";
 
 		// <table> attributes
-		$id = " id=\"{$this->render_options['html_id']}\"";
+		$id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}\"" : '';
 		// classes that will be added to <table class="...">, for CSS styling
 		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
 		$css_classes = apply_filters( 'tablepress_table_css_classes', $css_classes, $this->table['id'] );
@@ -549,7 +600,7 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Get the default render options
+	 * Get the default render options, null means: Use option from "Edit" screen
 	 *
 	 * @since 1.0.0
 	 *
@@ -557,36 +608,33 @@ class TablePress_Render {
 	 */
 	public function get_default_render_options() {
 		return array(
-			'id' => 0,
-			'column_widths' => array(),
-			'alternating_row_colors' => -1,
-			'row_hover' => -1,
-			'table_head' => -1,
+			'id' => '',
+			'column_widths' => '',
+			'alternating_row_colors' => null,
+			'row_hover' => null,
+			'table_head' => null,
+			'table_foot' => null,
 			'first_column_th' => false,
-			'table_foot' => -1,
-			'print_name' => -1,
-			'print_description' => -1,
-			'cache_table_output' => -1,
-			'extra_css_classes' => '', //@TODO: sanitize this parameter, if set
-			'use_datatables' => -1,
-			'datatables_sort' => -1,
-			'datatables_paginate' => -1,
-			'datatables_paginate_entries' => -1,
-			'datatables_lengthchange' => -1,
-			'datatables_filter' => -1,
-			'datatables_info' => -1,
-			'datatables_tabletools' => -1,
-			'datatables_custom_commands' => -1,
-			'row_offset' => 1, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
-			'row_count' => null, // ATTENTION: MIGHT BE DROPPED IN FUTURE VERSIONS!
-			'show_rows' => array(),
-			'show_columns' => array(),
-			'hide_rows' => array(),
-			'hide_columns' => array(),
+			'print_name' => null,
+			'print_description' => null,
+			'cache_table_output' => false,
+			'extra_css_classes' => '',
+			'use_datatables' => null,
+			'datatables_sort' => null,
+			'datatables_paginate' => false,
+			'datatables_paginate_entries' => false,
+			'datatables_lengthchange' => false,
+			'datatables_filter' => null,
+			'datatables_info' => false,
+			'datatables_tabletools' => false,
+			'datatables_custom_commands' => null,
+			'show_rows' => '',
+			'show_columns' => '',
+			'hide_rows' => '',
+			'hide_columns' => '',
 			'cellspacing' => false,
 			'cellpadding' => false,
-			'border' => false,
-			'html_id' => 'test'
+			'border' => false
 		);
 	}
 
