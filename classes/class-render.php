@@ -434,7 +434,7 @@ class TablePress_Render {
 			$caption_class = apply_filters( 'tablepress_print_caption_class', "tablepress-table-caption tablepress-table-caption-id-{$this->table['id']}", $this->table['id'] );
 		if ( ! empty( $this->render_options['edit_table_url'] ) ) {
 			if ( ! empty( $caption ) )
-				$caption .= '<br/>';
+				$caption .= '<br />';
 			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\" title=\"" . __( 'Edit', 'default' ) . "\">" . __( 'Edit', 'default' ) . "</a>";
 			$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;"';
 		}

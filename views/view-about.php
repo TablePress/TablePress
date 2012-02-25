@@ -92,7 +92,7 @@ class TablePress_About_View extends TablePress_View {
 	 */
 	public function postbox_author_license( $data, $box ) {
 		?>
-		<p><?php printf( __( 'This plugin was written by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'http://tobias.baethge.com/' ); ?> <?php _e( 'It is licensed as Free Software under GPL 2.', 'tablepress' ); ?><br/><?php printf( __( 'If you like the plugin, <a href="%s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tobias.baethge.com/go/TablePress/donate/' ); ?> <?php printf( __( 'Please rate the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://wordpress.org/extend/plugins/TablePress/' ); ?><br/><?php _e( 'Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!', 'tablepress' ); ?></p>
+		<p><?php printf( __( 'This plugin was written by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'http://tobias.baethge.com/' ); ?> <?php _e( 'It is licensed as Free Software under GPL 2.', 'tablepress' ); ?><br /><?php printf( __( 'If you like the plugin, <a href="%s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tobias.baethge.com/go/TablePress/donate/' ); ?> <?php printf( __( 'Please rate the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://wordpress.org/extend/plugins/TablePress/' ); ?><br /><?php _e( 'Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!', 'tablepress' ); ?></p>
 		<?php
 	}
 
@@ -116,14 +116,14 @@ class TablePress_About_View extends TablePress_View {
 			// @TODO: Add more relevant things? (like ZIP support?)
 		?>
 		<p>
-			<?php _e( 'You are using the following versions of the software.', 'tablepress' ); ?> <strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong><br/>
-			<br/>&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
-			<br/>&middot; TablePress (Script): <?php echo TablePress::version; ?>
-			<br/>&middot; <?php _e( 'Plugin installed', 'tablepress' ); ?>: <?php //echo date( 'Y/m/d H:i:s', $this->options['install_time'] ); ?>
-			<br/>&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
-			<br/>&middot; PHP: <?php echo phpversion(); ?>
-			<br/>&middot; mySQL (Server): <?php echo mysql_get_server_info(); ?>
-			<br/>&middot; mySQL (Client): <?php echo mysql_get_client_info(); ?>
+			<?php _e( 'You are using the following versions of the software.', 'tablepress' ); ?> <strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong><br />
+			<br />&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
+			<br />&middot; TablePress (Script): <?php echo TablePress::version; ?>
+			<br />&middot; <?php _e( 'Plugin installed', 'tablepress' ); ?>: <?php //echo date( 'Y/m/d H:i:s', $this->options['install_time'] ); ?>
+			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
+			<br />&middot; PHP: <?php echo phpversion(); ?>
+			<br />&middot; mySQL (Server): <?php echo mysql_get_server_info(); ?>
+			<br />&middot; mySQL (Client): <?php echo mysql_get_client_info(); ?>
 		</p>
 		<?php
 	}
@@ -136,16 +136,16 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_credits_thanks( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'Thanks go to', 'tablepress' ); ?><br/>
-			<?php _e( 'Allan Jardine for the <a href="http://www.datatables.net/">DataTables jQuery plugin</a>,', 'tablepress' ); ?><br/>
+			<?php _e( 'Thanks go to', 'tablepress' ); ?><br />
+			<?php _e( 'Allan Jardine for the <a href="http://www.datatables.net/">DataTables jQuery plugin</a>,', 'tablepress' ); ?><br />
 			<?php _e( 'the submitters of translations:', 'tablepress' ); ?>
 			<?php
 				foreach ( $data['plugin_languages'] as $lang_abbr => $language ) {
 					$link = sprintf( '<a href="%1$s">%2$s</a>', $language['translator_url'], $language['translator_name'] );
-					echo "<br/>&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
+					echo "<br />&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
 				}
 			?>
-			<br/><?php _e( 'and to all donors, contributors, supporters, reviewers and users of the plugin!', 'tablepress' ); ?>
+			<br /><?php _e( 'and to all donors, contributors, supporters, reviewers and users of the plugin!', 'tablepress' ); ?>
 		</p>
 		<?php
 	}

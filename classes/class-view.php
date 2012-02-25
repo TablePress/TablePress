@@ -103,7 +103,7 @@ abstract class TablePress_View {
 						. '<p>' . sprintf( __( 'More information about TablePress can be found on the <a href="%1$s">plugin\'s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/website/', 'http://wordpress.org/extend/plugins/tablepress/' ) . ' '
 						. sprintf( __( 'For technical information, see the <a href="%1$s">documentation</a>.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/documentation/' ) . ' '
 						. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/support/', 'http://wordpress.org/tags/tablepress' ) . ' '
-						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/faq/' ) . '<br/>'
+						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/faq/' ) . '<br />'
 						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tobias.baethge.com/go/tablepress/donate/' ) . '</p>'
 		) );
 		// "sidebar" in the help tab

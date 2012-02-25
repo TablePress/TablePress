@@ -88,7 +88,7 @@ class TablePress_Import_View extends TablePress_View {
 			<input name="import_file_upload" id="tables-import-file-upload" type="file" class="large-text" style="box-sizing: border-box;" />
 			<?php
 				if ( $data['zip_support_available'] )
-					echo '<br/><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
+					echo '<br /><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
 			?>
 		</td>
 	</tr>
@@ -98,7 +98,7 @@ class TablePress_Import_View extends TablePress_View {
 			<input type="text" name="import[url]" id="tables-import-url" class="large-text" value="<?php echo $data['import_url']; ?>" />
 			<?php
 				if ( $data['zip_support_available'] )
-					echo '<br/><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
+					echo '<br /><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
 			?>
 		</td>
 	</tr>
@@ -108,7 +108,7 @@ class TablePress_Import_View extends TablePress_View {
 			<input type="text" name="import[server]" id="tables-import-server" class="large-text" value="<?php echo $data['import_server']; ?>" />
 			<?php
 				if ( $data['zip_support_available'] )
-					echo '<br/><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
+					echo '<br /><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
 			?>
 		</td>
 	</tr>
@@ -131,7 +131,7 @@ class TablePress_Import_View extends TablePress_View {
 			</select>
 			<?php
 				if ( ! $data['html_import_support_available'] )
-					echo '<br/><span class="description">' . __( 'Import of HTML files is not available on your server.', 'tablepress' ) . '</span>';
+					echo '<br /><span class="description">' . __( 'Import of HTML files is not available on your server.', 'tablepress' ) . '</span>';
 			?>
 		</td>
 	</tr>

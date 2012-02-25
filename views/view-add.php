@@ -73,7 +73,7 @@ class TablePress_Add_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'To add a new table, enter its name, a description (optional) and the number of rows and columns.', 'tablepress' ); ?><br/><?php _e( 'You can always change the name, description, and size of your table later.', 'tablepress' ); ?></p>
+		<p><?php _e( 'To add a new table, enter its name, a description (optional) and the number of rows and columns.', 'tablepress' ); ?><br /><?php _e( 'You can always change the name, description, and size of your table later.', 'tablepress' ); ?></p>
 		<?php
 	}
 

@@ -179,17 +179,17 @@ class TablePress_Import {
 		$errors = libxml_get_errors();
 		libxml_clear_errors();
 		if ( ! empty( $errors ) ) {
-			$output = '<b>' . __( 'The imported file contains errors:', 'tablepress' ) . '</b><br/><br/>';
+			$output = '<b>' . __( 'The imported file contains errors:', 'tablepress' ) . '</b><br /><br />';
 			foreach ( $errors as $error ) {
 				switch ( $error->level ) {
 					case LIBXML_ERR_WARNING:
-						$output .= "Warning {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br/>";
+						$output .= "Warning {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br />";
 						break;
 					case LIBXML_ERR_ERROR:
-						$output .= "Error {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br/>";
+						$output .= "Error {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br />";
 						break;
 					case LIBXML_ERR_FATAL:
-						$output .= "Fatal {Error $error->code}: {$error->message} in line {$error->line}, column {$error->column}<br/>";
+						$output .= "Fatal {Error $error->code}: {$error->message} in line {$error->line}, column {$error->column}<br />";
 						break;
 				}
 			}

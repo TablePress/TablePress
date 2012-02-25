@@ -49,7 +49,7 @@ class TablePress_List_View extends TablePress_View {
 
 		if ( $data['messages']['first_visit'] )
 			$this->add_header_message(
-				'<strong><em>Welcome!</em></strong><br />Thank you for using TablePress for the first time!<br/>'
+				'<strong><em>Welcome!</em></strong><br />Thank you for using TablePress for the first time!<br />'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) )
 			);
 
@@ -387,7 +387,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( $time_diff >= 0 && $time_diff < 24*60*60 ) // time difference is only shown up to one day
 			$time_diff = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 		else
-			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br/>' );
+			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br />' );
 
 		$readable_time = TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' );
 		return '<abbr title="' . $readable_time . '">' . $time_diff . '</abbr>';
