@@ -466,6 +466,8 @@ class TablePress_Render {
 		$id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}\"" : '';
 		// classes that will be added to <table class="...">, for CSS styling
 		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
+		if ( is_rtl() )
+			$css_classes[] = 'tablepress-rtl';
 		$css_classes = apply_filters( 'tablepress_table_css_classes', $css_classes, $this->table['id'] );
 		$class = ( ! empty( $css_classes ) ) ? ' class="' . trim( implode( ' ', $css_classes ) ) . '"' : '';
 		$summary = apply_filters( 'tablepress_print_summary_attr', '', $this->table );

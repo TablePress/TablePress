@@ -37,6 +37,13 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	public function __construct() {
 		parent::__construct();
 
+		// enqueue CSS files
+		// if ( $this->options['use_default_css'] || $this->options['use_custom_css'] )
+			add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_css' ) );
+
+		// add DataTables invocation calls
+		add_action( 'wp_print_footer_scripts', array( &$this, 'add_datatables_calls' ), 11 ); // after inclusion of files
+
 		// shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
 		// add_shortcode( 'table-info', array( &$this, 'shortcode_table_info' ) );
 		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
@@ -45,6 +52,72 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// load Template Tag functions
 		//require_once ( TABLEPRESS_ABSPATH . 'libraries/template-tag-functions.php' );
+	}
+
+	/**
+	 * Enqueue CSS files for default CSS and "Custom CSS" (if desired)
+	 *
+	 * @since 1.0.0
+	 */
+	public function enqueue_css() {
+		// @TODO: Add check for whether default CSS is desired at all
+		$default_css_url = plugins_url( 'css/default.css', TABLEPRESS__FILE__ );
+		$default_css_url = apply_filters( 'tablepress_default_css_url', $default_css_url );
+		wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
+
+		// @TODO: Add check for whether "Custom CSS" is desired at all
+		$use_custom_css_from_option = true;
+		if ( $this->model_options->get( 'use_custom_css_file' ) ) {
+			// fall back to "Custom CSS" in options, if it could not be retrieved from file
+			$custom_css_file_contents = $this->model_options->load_custom_css_from_file();
+			if ( ! empty( $custom_css_file_contents ) ) {
+				$use_custom_css_from_option = false;
+				$custom_css_url = content_url( 'tablepress-custom.css' );
+				$custom_css_url = apply_filters( 'tablepress_custom_css_url', $custom_css_url );
+				$custom_css_dependencies = array( 'tablepress-default' ); // if default CSS is desired, but also handled internally
+				$custom_css_version = $this->model_options->get( 'custom_css_version' );
+				$custom_css_version = apply_filters( 'tablepress_custom_css_version', $custom_css_version );
+				wp_enqueue_style( 'tablepress-custom', $custom_css_url, $custom_css_dependencies, $custom_css_version );
+			}
+		}
+
+		if ( $use_custom_css_from_option ) {
+			// get "Custom CSS" from options
+			$custom_css = trim( $this->model_options->get( 'custom_css' ) );
+			if ( ! empty( $custom_css ) )
+				wp_add_inline_style( 'tablepress-default', $custom_css ); // handle of the file to which the <style> shall be appended
+		}
+	}
+
+	/**
+	 * Enqueue the DataTables JavaScript library (and jQuery)
+	 *
+	 * @since 1.0.0
+	 */
+	public function enqueue_datatables() {
+		$js_file = 'js/jquery.datatables.js';
+		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
+		wp_enqueue_script( 'tablepress-datatables', $js_url, array( 'jquery' ), TablePress::version, true );
+	}
+
+	/**
+	 * Add JS code for invocation of DataTables JS library
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_datatables_calls() {
+		if ( empty( $this->shown_tables ) )
+			return;
+
+		echo '<script type="text/javascript">' . "\n";
+		foreach ( $this->shown_tables as $table_id => $table_store ) {
+			if ( empty( $table_store['instances'] ) )
+				continue;
+			foreach( $table_store['instances'] as $html_id => $js_options ) {
+				echo '// #' . $html_id . ': ' . json_encode( $js_options ) . "\n";
+			}
+		}
+		echo "</script>\n";
 	}
 
 	/**
@@ -124,6 +197,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			);
 			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options );
 			$this->shown_tables[$table_id]['instances'][ $render_options['html_id'] ] = $js_options;
+			$this->enqueue_datatables();
 		}
 
 		// generate "Edit Table" link
