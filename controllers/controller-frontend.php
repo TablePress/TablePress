@@ -95,8 +95,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function enqueue_datatables() {
-		$js_file = 'js/jquery.datatables.js';
+		$js_file = 'js/jquery.datatables.min.js';
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
+		$js_url = apply_filters( 'tablepress_datatables_js_url', $js_url, $js_file );
+		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'tablepress-datatables', $js_url, array( 'jquery' ), TablePress::version, true );
 	}
 
@@ -107,17 +109,72 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function add_datatables_calls() {
 		if ( empty( $this->shown_tables ) )
-			return;
+			return; // there are no tables with activated DataTables
 
-		echo '<script type="text/javascript">' . "\n";
+		// generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters
+		$commands = array();
+
 		foreach ( $this->shown_tables as $table_id => $table_store ) {
 			if ( empty( $table_store['instances'] ) )
 				continue;
 			foreach( $table_store['instances'] as $html_id => $js_options ) {
-				echo '// #' . $html_id . ': ' . json_encode( $js_options ) . "\n";
+				$parameters = array();
+
+				if ( $js_options['datatables_tabletools'] )
+					$parameters['sDom'] = '"sDom": \'T<"clear">lfrtip\'';
+				$datatables_locale = apply_filters( 'tablepress_datatables_locale', get_locale() );
+				$language_file = "i18n/datatables/lang-{$datatables_locale}.txt";
+				$language_file = ( file_exists( TABLEPRESS_ABSPATH . $language_file ) ) ? '/' . $language_file : '/i18n/datatables/lang-default.txt';
+				$language_file_url = plugins_url( $language_file, TABLEPRESS__FILE__ );
+				$root_relative_language_file_url = parse_url( $language_file_url, PHP_URL_PATH );
+				$root_relative_language_file_url = apply_filters( 'tablepress_datatables_language_file_url', $root_relative_language_file_url, $language_file_url );
+				if ( ! empty( $root_relative_language_file_url ) )
+					$parameters['oLanguage'] = '"oLanguage":{"sUrl": "' . $root_relative_language_file_url . '"}'; // root relative language file URL
+				// these parameters need to be added for performance gain or to overwrite unwanted default behavior
+				$parameters['aaSorting'] = '"aaSorting":[]'; // no initial sort
+				$parameters['bSortClasses'] = '"bSortClasses":false'; // don't add additional classes, to speed up sorting
+				$parameters['asStripeClasses'] = '"asStripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? "['even','odd']" : '[]' ); // alternating row colors is default, so remove them if not wanted with []
+				// the following options are activated by default, so we only need to "false" them if we don't want them, but don't need to "true" them if we do
+				if ( ! $js_options['datatables_sort'] )
+					$parameters['bSort'] = '"bSort":false';
+				if ( ! $js_options['datatables_paginate'] )
+					$parameters['bPaginate'] = '"bPaginate":false';
+				if ( $js_options['datatables_paginate'] && ! empty( $js_options['datatables_paginate_entries'] ) && 10 != $js_options['datatables_paginate_entries'] )
+					$parameters['iDisplayLength'] = '"iDisplayLength":'. $js_options['datatables_paginate_entries'];
+				if ( ! $js_options['datatables_lengthchange'] )
+					$parameters['bLengthChange'] = '"bLengthChange":false';
+				if ( ! $js_options['datatables_filter'] )
+					$parameters['bFilter'] = '"bFilter":false';
+				if ( ! $js_options['datatables_info'] )
+					$parameters['bInfo'] = '"bInfo":false';
+				if ( $js_options['datatables_scrollX'] ) {
+					$parameters['sScrollX'] = '"sScrollX":"100%"';
+					$parameters['bScrollCollapse'] = '"bScrollCollapse":true';
+				}
+				if ( ! empty( $js_options['datatables_custom_commands'] ) )
+					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
+
+				$parameters = apply_filters( 'tablepress_datatables_parameters', $parameters, $table_id, $html_id, $js_options );
+				$parameters = implode( ', ', $parameters );
+				$parameters = ( ! empty( $parameters ) ) ? '{' . $parameters . '}' : '';
+
+				$command = "$('#{$html_id}').dataTable({$parameters});";
+				$command = apply_filters( 'tablepress_datatables_command', $command, $html_id, $parameters, $table_id, $js_options );
+				if ( ! empty( $command ) )
+					$commands[] = "\t{$command}";
 			}
 		}
-		echo "</script>\n";
+
+		$commands = implode( "\n", $commands );
+		$commands = apply_filters( 'tablepress_all_datatables_commands', $commands );
+		if ( ! empty( $commands ) )
+			echo <<<JS
+<script type="text/javascript">
+jQuery(document).ready(function($){
+{$commands}
+});
+</script>
+JS;
 	}
 
 	/**
@@ -192,6 +249,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				'datatables_lengthchange' => $render_options['datatables_lengthchange'],
 				'datatables_filter' => $render_options['datatables_filter'],
 				'datatables_info' => $render_options['datatables_info'],
+				'datatables_scrollX' => $render_options['datatables_scrollX'],
 				'datatables_tabletools' => $render_options['datatables_tabletools'],
 				'datatables_custom_commands' => $render_options['datatables_custom_commands']
 			);
@@ -219,7 +277,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		}
 		*/
 		// @TODO: temporary for above:
-		$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
+		if ( is_user_logged_in() )
+			$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
 
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
 
