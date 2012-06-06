@@ -81,7 +81,6 @@
 .paginate_enabled_previous,
 .paginate_disabled_next,
 .paginate_enabled_next {
-	height: 19px;
 	float: left;
 	cursor: pointer;
 	*cursor: hand;
@@ -112,13 +111,13 @@
 	padding-right: 23px;
 	margin-left: 10px;
 }
-.paginate_enabled_previous { background: url('../img/back_enabled.png') no-repeat top left; }
-.paginate_enabled_previous:hover { background: url('../img/back_enabled_hover.png') no-repeat top left; }
-.paginate_disabled_previous { background: url('../img/back_disabled.png') no-repeat top left; }
+.paginate_enabled_previous { background: url('../img/back_enabled.png') no-repeat center left; }
+.paginate_enabled_previous:hover { background: url('../img/back_enabled_hover.png') no-repeat center left; }
+.paginate_disabled_previous { background: url('../img/back_disabled.png') no-repeat center left; }
 /* hover */
-.paginate_enabled_next { background: url('../img/forward_enabled.png') no-repeat top right; }
-.paginate_enabled_next:hover { background: url('../img/forward_enabled_hover.png') no-repeat top right; }
-.paginate_disabled_next { background: url('../img/forward_disabled.png') no-repeat top right; }
+.paginate_enabled_next { background: url('../img/forward_enabled.png') no-repeat center right; }
+.paginate_enabled_next:hover { background: url('../img/forward_enabled_hover.png') no-repeat center right; }
+.paginate_disabled_next { background: url('../img/forward_disabled.png') no-repeat center right; }
 
 /* Full number pagination */
 .paging_full_numbers {
