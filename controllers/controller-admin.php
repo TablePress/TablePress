@@ -294,6 +294,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'about':
 				$data['plugin_languages'] = $this->get_plugin_languages();
+				$data['first_activation'] = $this->model_options->get( 'first_activation' );
 				break;
 			case 'options':
 				// Maybe try saving "Custom CSS" to a file:
