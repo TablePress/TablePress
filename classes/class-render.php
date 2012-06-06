@@ -623,7 +623,7 @@ class TablePress_Render {
 			'extra_css_classes' => '',
 			'use_datatables' => null,
 			'datatables_sort' => null,
-			'datatables_paginate' => true,
+			'datatables_paginate' => null,
 			'datatables_paginate_entries' => '10',
 			'datatables_lengthchange' => true,
 			'datatables_filter' => null,
