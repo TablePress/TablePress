@@ -167,6 +167,10 @@
 	padding: 2px 6px 6px 2px;
 	border-bottom: 1px solid #dfdfdf;
 }
+.tablepress-postbox-table .no-border th,
+.tablepress-postbox-table .no-border td {
+	padding: 2px 6px 2px 2px;
+}
 /* padding for both borders: */
 .tablepress-postbox-table .top-border.bottom-border th,
 .tablepress-postbox-table .top-border.bottom-border td {
