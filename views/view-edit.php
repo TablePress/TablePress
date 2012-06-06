@@ -502,7 +502,7 @@ class TablePress_Edit_View extends TablePress_View {
 		?>
 		<p>
 		<?php _e( 'On this page, you can edit the content of the table.', 'tablepress' ); ?> <?php _e( 'It is also possible to change the table structure by inserting, deleting, moving, and swapping columns and rows.', 'tablepress' ); ?><br />
-		<?php printf( __( 'To insert the table into a page, post or text-widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' );?>
+		<?php printf( __( 'To insert the table into a page, post or text widget, copy the Shortcode %s and paste it into the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' ); ?>
 		</p>
 		<?php
 	}

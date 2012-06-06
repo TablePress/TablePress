@@ -1159,6 +1159,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$render_options = shortcode_atts( $_render->get_default_render_options(), $table['options'] );
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
+			'table_id' => $table_id,
 			'head_html' => $_render->get_preview_css(),
 			'body_html' => $_render->get_output()
 		);
