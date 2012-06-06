@@ -625,7 +625,7 @@ class TablePress_Render {
 			'datatables_sort' => null,
 			'datatables_paginate' => null,
 			'datatables_paginate_entries' => '10',
-			'datatables_lengthchange' => true,
+			'datatables_lengthchange' => null,
 			'datatables_filter' => null,
 			'datatables_info' => true,
 			'datatables_scrollX' => false,

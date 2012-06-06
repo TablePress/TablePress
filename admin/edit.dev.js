@@ -101,6 +101,7 @@ jQuery(document).ready( function( $ ) {
 					datatables_sort: $( '#option-datatables-sort' ).prop( 'checked' ),
 					datatables_filter: $( '#option-datatables-filter' ).prop( 'checked' ),
 					datatables_paginate: $( '#option-datatables-paginate' ).prop( 'checked' ),
+					datatables_lengthchange: $( '#option-datatables-lengthchange' ).prop( 'checked' ),
 					datatables_custom_commands: $( '#option-datatables-custom-commands' ).val()
 				};
 				table_options = JSON.stringify( table_options );

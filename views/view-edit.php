@@ -476,9 +476,13 @@ class TablePress_Edit_View extends TablePress_View {
 		<th class="column-1" scope="row"><label for="option-datatables-filter"><?php _e( 'Search/Filtering', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><input type="checkbox" id="option-datatables-filter" name="table[options][datatables_filter]" value="true"<?php checked( $options['datatables_filter'] ); ?> /></td>
 	</tr>
-	<tr class="bottom-border">
+	<tr>
 		<th class="column-1" scope="row"><label for="option-datatables-paginate"><?php _e( 'Pagination', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><input type="checkbox" id="option-datatables-paginate" name="table[options][datatables_paginate]" value="true"<?php checked( $options['datatables_paginate'] ); ?> /></td>
+	</tr>
+	<tr class="bottom-border">
+		<th class="column-1" scope="row"><label for="option-datatables-lengthchange"><?php _e( 'Pagination Length Change', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><input type="checkbox" id="option-datatables-lengthchange" name="table[options][datatables_lengthchange]" value="true"<?php checked( $options['datatables_lengthchange'] ); ?> /></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><label for="option-datatables-custom-commands"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</label></th>

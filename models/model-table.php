@@ -472,6 +472,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_sort' => true,
 				'datatables_filter' => true,
 				'datatables_paginate' => true,
+				'datatables_lengthchange' => true,
 				'datatables_custom_commands' => ''
 			),
 			'visibility' => array(
