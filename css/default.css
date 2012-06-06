@@ -84,7 +84,7 @@
 	float: left;
 	cursor: pointer;
 	*cursor: hand;
-	color: #111 !important;
+	color: #111111 !important;
 }
 .paginate_disabled_previous:hover,
 .paginate_enabled_previous:hover,
@@ -129,7 +129,7 @@
 
 .paging_full_numbers a.paginate_button,
 .paging_full_numbers a.paginate_active {
-	border: 1px solid #aaa;
+	border: 1px solid #aaaaaa;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -175,6 +175,7 @@
 }
 .dataTables_scrollBody {
 	*margin-top: -1px;
+	-webkit-overflow-scrolling: touch;
 }
 
 /* Sorting */
