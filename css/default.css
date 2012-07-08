@@ -48,6 +48,7 @@
 	position: relative;
 	clear: both;
 	*zoom: 1;
+	margin-bottom: 1em;
 }
 .dataTables_wrapper .tablepress {
 	width: 100%;
@@ -195,6 +196,23 @@
 .dataTables_wrapper .sorting_desc_disabled { background: url('../img/sort_desc_disabled.png') no-repeat center right; }
 
 .dataTables_wrapper th:active { outline: none; }
+
+/* Self clearing - */
+.dataTables_wrapper:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+html[xmlns] .dataTables_wrapper { display: block; }
+* html .dataTables_wrapper { height: 1%; }
+
+.dataTables_wrapper label input,
+.dataTables_wrapper label select {
+	display: inline;
+}
 
 /* RTL languages */
 .tablepress-rtl {
