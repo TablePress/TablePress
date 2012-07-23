@@ -105,7 +105,7 @@ class TablePress_Add_View extends TablePress_View {
 				<input type="number" name="table[columns]" id="table-columns" title="<?php _e( 'This field must contain a positive number.', 'tablepress' ); ?>" value="5" min="1" max="99999" maxlength="5" required />
 				<p><?php _e( 'The number of columns in your table.', 'tablepress' ); ?></p>
 			</div>
-			<div class="clear" />
+			<div class="clear"></div>
 		</div>
 		<?php
 	}

@@ -66,25 +66,25 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 
 			$this->do_text_boxes( 'header' );
 		?>
-			<div id="poststuff" class="metabox-holder<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? ' has-right-sidebar' : ''; ?>">
-				<div id="side-info-column" class="inner-sidebar">
-				<?php
-					// print all boxes in the sidebar
-					$this->do_text_boxes( 'side' );
-					$this->do_meta_boxes( 'side' );
-				?>
-				</div>
-				<div id="post-body">
-					<div id="post-body-content">
+			<div id="poststuff">
+				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
+					<div id="postbox-container-2" class="postbox-container">
+						<?php
+						$this->do_text_boxes( 'normal' );
+						$this->do_meta_boxes( 'normal' );
+
+						$this->do_text_boxes( 'additional' );
+						$this->do_meta_boxes( 'additional' );
+
+						// print all submit buttons
+						$this->do_text_boxes( 'submit' );
+						?>
+					</div>
+					<div id="postbox-container-1" class="postbox-container">
 					<?php
-					$this->do_text_boxes( 'normal' );
-					$this->do_meta_boxes( 'normal' );
-
-					$this->do_text_boxes( 'additional' );
-					$this->do_meta_boxes( 'additional' );
-
-					// print all submit buttons
-					$this->do_text_boxes( 'submit' );
+						// print all boxes in the sidebar
+						$this->do_text_boxes( 'side' );
+						$this->do_meta_boxes( 'side' );
 					?>
 					</div>
 				</div>
