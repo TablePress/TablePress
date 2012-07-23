@@ -1,4 +1,4 @@
-// CodeMirror version 2.31
+// CodeMirror version 2.32
 //
 // All functions that need access to the editor's state live inside
 // the CodeMirror function. Below that, at the bottom of the file,
@@ -58,7 +58,7 @@ var CodeMirror = (function() {
     // Needed to handle Tab key in KHTML
     if (khtml) inputDiv.style.height = "1px", inputDiv.style.position = "absolute";
 
-    // Check for OS X >= 10.7. If so, we need to force a width on the scrollbar, and 
+    // Check for OS X >= 10.7. If so, we need to force a width on the scrollbar, and
     // make it overlap the content. (But we only do this if the scrollbar doesn't already
     // have a natural width. If the mouse is plugged in or the user sets the system pref
     // to always show scrollbars, the scrollbar shouldn't overlap.)
@@ -566,7 +566,7 @@ var CodeMirror = (function() {
     function onDragStart(e) {
       var txt = getSelection();
       e.dataTransfer.setData("Text", txt);
-      
+
       // Use dummy image instead of default browsers image.
       if (gecko || chrome || opera) {
         var img = document.createElement('img');
@@ -881,8 +881,8 @@ var CodeMirror = (function() {
       // Position the mover div to align with the current virtual scroll position
       mover.style.top = (displayOffset * textHeight() - scrollbar.scrollTop) + "px";
     }
-  
-    // On Mac OS X Lion and up, detect whether the mouse is plugged in by measuring 
+
+    // On Mac OS X Lion and up, detect whether the mouse is plugged in by measuring
     // the width of a div with a scrollbar in it. If the width is <= 1, then
     // the mouse isn't plugged in and scrollbars should overlap the content.
     function overlapScrollbars() {
@@ -901,7 +901,7 @@ var CodeMirror = (function() {
     }
 
     function computeMaxLength() {
-      var maxLineLength = 0; 
+      var maxLineLength = 0;
       maxLine = ""; maxLineChanged = true;
       doc.iter(0, doc.size, function(line) {
         var l = line.text;
@@ -1143,7 +1143,7 @@ var CodeMirror = (function() {
         var shouldHaveScrollbar = scrollHeight ? "block" : "none";
         if (scrollbar.style.display != shouldHaveScrollbar) {
           scrollbar.style.display = shouldHaveScrollbar;
-          scrollbarInner.style.height = scrollHeight + "px";
+          if (scrollHeight) scrollbarInner.style.height = scrollHeight + "px";
           checkHeights();
         }
       }
@@ -2667,7 +2667,12 @@ var CodeMirror = (function() {
             outPos += l;
             span_(text, style);
             // Output empty wrapper when at end of line
-            if (outPos == wrapAt && outPos == len) html.push(open + (gecko ? "&#x200b;" : " ") + "</span>");
+            // (Gecko and IE8+ do strange wrapping when adding a space
+            // to the end of the line. Other browsers don't react well
+            // to zero-width spaces. So we do hideous browser sniffing
+            // to determine which to use.)
+            if (outPos == wrapAt && outPos == len)
+              html.push(open + (gecko || (ie && !ie_lt8) ? "&#x200b;" : " ") + "</span>");
             // Stop outputting HTML when gone sufficiently far beyond measure
             else if (outPos > wrapAt + 10 && /\s/.test(text)) span = function(){};
           }
