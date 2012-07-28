@@ -47,7 +47,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	protected $default_user_options = array(
 		'user_options_db_version' => TablePress::db_version,
-		'admin_menu_parent_page' => 'tools.php',
+		'admin_menu_parent_page' => 'bottom',
 		'plugin_language' => 'auto',
 		'message_first_visit' => true
 	);
