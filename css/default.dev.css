@@ -20,6 +20,7 @@
 	border-collapse: collapse;
 	border-spacing: 0;
 	text-align: left;
+	width: 100%;
 }
 
 .tablepress th,
@@ -63,7 +64,6 @@
 	margin-bottom: 1em;
 }
 .dataTables_wrapper .tablepress {
-	width: 100%;
 	clear: both;
 }
 
