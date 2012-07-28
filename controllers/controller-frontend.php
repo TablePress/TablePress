@@ -121,8 +121,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			foreach( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
 
-				if ( $js_options['datatables_tabletools'] )
-					$parameters['sDom'] = '"sDom": \'T<"clear">lfrtip\'';
+				//if ( $js_options['datatables_tabletools'] )
+				//	$parameters['sDom'] = '"sDom": \'T<"clear">lfrtip\'';
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', get_locale() );
 				$language_file = "i18n/datatables/lang-{$datatables_locale}.txt";
 				$language_file = ( file_exists( TABLEPRESS_ABSPATH . $language_file ) ) ? '/' . $language_file : '/i18n/datatables/lang-default.txt';
@@ -251,7 +251,7 @@ JS;
 				'datatables_filter' => $render_options['datatables_filter'],
 				'datatables_info' => $render_options['datatables_info'],
 				'datatables_scrollX' => $render_options['datatables_scrollX'],
-				'datatables_tabletools' => $render_options['datatables_tabletools'],
+				//'datatables_tabletools' => $render_options['datatables_tabletools'],
 				'datatables_custom_commands' => $render_options['datatables_custom_commands']
 			);
 			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options );

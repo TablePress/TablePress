@@ -77,6 +77,7 @@ jQuery(document).ready( function( $ ) {
 				var $pagination_checkbox = $( '#option-datatables-paginate' ),
 					pagination_enabled = ( $pagination_checkbox.prop( 'checked' ) && ! $pagination_checkbox.prop( 'disabled' ) );
 				$( '#option-datatables-lengthchange' ).prop( 'disabled', ! pagination_enabled );
+				$( '#option-datatables-paginate_entries' ).prop( 'disabled', ! pagination_enabled );
 			},
 			prepare_ajax_request: function( wp_action, wp_nonce ) {
 				var $table_body = $( '#edit-form-body' ),
@@ -111,6 +112,9 @@ jQuery(document).ready( function( $ ) {
 					datatables_filter: $( '#option-datatables-filter' ).prop( 'checked' ),
 					datatables_paginate: $( '#option-datatables-paginate' ).prop( 'checked' ),
 					datatables_lengthchange: $( '#option-datatables-lengthchange' ).prop( 'checked' ),
+					datatables_paginate_entries: $( '#option-datatables-paginate_entries' ).val(),
+					datatables_info: $( '#option-datatables-info' ).prop( 'checked' ),
+					datatables_scrollX: $( '#option-datatables-scrollX' ).prop( 'checked' ),
 					datatables_custom_commands: $( '#option-datatables-custom-commands' ).val()
 				};
 				table_options = JSON.stringify( table_options );
@@ -1001,7 +1005,7 @@ jQuery(document).ready( function( $ ) {
 					'#option-table-head':		tp.table.change_table_head,
 					'#option-table-foot':		tp.table.change_table_foot,
 					'#option-use-datatables':	tp.table.change_datatables,
-					'#option-datatables-paginate':	tp.table.change_datatables_pagination,
+					'#option-datatables-paginate':	tp.table.change_datatables_pagination
 				},
 				'blur': {
 					'#table-new-id':		tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id

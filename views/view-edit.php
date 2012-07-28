@@ -480,9 +480,21 @@ class TablePress_Edit_View extends TablePress_View {
 		<th class="column-1" scope="row"><label for="option-datatables-paginate"><?php _e( 'Pagination', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><input type="checkbox" id="option-datatables-paginate" name="table[options][datatables_paginate]" value="true"<?php checked( $options['datatables_paginate'] ); ?> /></td>
 	</tr>
-	<tr class="bottom-border">
+	<tr class="no-border">
+		<th class="column-1" scope="row"><label for="option-datatables-paginate_entries"><?php _e( 'Pagination Entries', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><input type="number" id="option-datatables-paginate_entries" name="table[options][datatables_paginate_entries]" value="<?php echo $options['datatables_paginate_entries']; ?>" min="1" max="99999" maxlength="5" /></td>
+	</tr>
+	<tr class="no-border">
 		<th class="column-1" scope="row"><label for="option-datatables-lengthchange"><?php _e( 'Pagination Length Change', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><input type="checkbox" id="option-datatables-lengthchange" name="table[options][datatables_lengthchange]" value="true"<?php checked( $options['datatables_lengthchange'] ); ?> /></td>
+	</tr>
+	<tr class="no-border">
+		<th class="column-1" scope="row"><label for="option-datatables-info"><?php _e( 'Info', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><input type="checkbox" id="option-datatables-info" name="table[options][datatables_info]" value="true"<?php checked( $options['datatables_info'] ); ?> /></td>
+	</tr>
+	<tr class="bottom-border">
+		<th class="column-1" scope="row"><label for="option-datatables-scrollX"><?php _e( 'Horizontal Scrolling', 'tablepress' ); ?>:</label></th>
+		<td class="column-2"><input type="checkbox" id="option-datatables-scrollX" name="table[options][datatables_scrollX]" value="true"<?php checked( $options['datatables_scrollX'] ); ?> /></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><label for="option-datatables-custom-commands"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</label></th>
