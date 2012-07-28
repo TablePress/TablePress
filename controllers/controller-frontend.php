@@ -61,7 +61,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function enqueue_css() {
 		// @TODO: Add check for whether default CSS is desired at all
-		$default_css_url = plugins_url( 'css/default.css', TABLEPRESS__FILE__ );
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.dev' : '';
+		$default_css_url = plugins_url( "css/default{$suffix}.css", TABLEPRESS__FILE__ );
 		$default_css_url = apply_filters( 'tablepress_default_css_url', $default_css_url );
 		wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
 
