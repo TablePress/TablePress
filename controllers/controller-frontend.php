@@ -148,10 +148,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['bFilter'] = '"bFilter":false';
 				if ( ! $js_options['datatables_info'] )
 					$parameters['bInfo'] = '"bInfo":false';
-				if ( $js_options['datatables_scrollX'] ) {
+				if ( $js_options['datatables_scrollX'] )
 					$parameters['sScrollX'] = '"sScrollX":"100%"';
-					$parameters['bScrollCollapse'] = '"bScrollCollapse":true';
-				}
 				if ( ! empty( $js_options['datatables_custom_commands'] ) )
 					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
 
