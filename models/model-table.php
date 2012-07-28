@@ -474,6 +474,11 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_paginate' => true,
 				'datatables_lengthchange' => true,
 				'datatables_custom_commands' => ''
+				//'datatables_paginate_entries' => 10,
+				//'datatables_info' => true,
+				//'datatables_tabletools' => false,
+				// scrollX?
+				// 'cache_table_output' => true???
 			),
 			'visibility' => array(
 				'rows' => array( 1 ), // one visbile row
