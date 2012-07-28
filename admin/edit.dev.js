@@ -68,9 +68,15 @@ jQuery(document).ready( function( $ ) {
 				tp.rows.stripe();
 			},
 			change_datatables: function() {
-				var $datatables_checkbox = $(this),
+				var $datatables_checkbox = $( '#option-use-datatables' ),
 					checkboxes_disabled = ! ( $datatables_checkbox.prop( 'checked' ) && ! $datatables_checkbox.prop( 'disabled' ) );
 				$datatables_checkbox.closest( 'tbody' ).find( 'input' ).not( $datatables_checkbox ).prop( 'disabled', checkboxes_disabled );
+				tp.table.change_datatables_pagination();
+			},
+			change_datatables_pagination: function() {
+				var $pagination_checkbox = $( '#option-datatables-paginate' ),
+					pagination_enabled = ( $pagination_checkbox.prop( 'checked' ) && ! $pagination_checkbox.prop( 'disabled' ) );
+				$( '#option-datatables-lengthchange' ).prop( 'disabled', ! pagination_enabled );
 			},
 			prepare_ajax_request: function( wp_action, wp_nonce ) {
 				var $table_body = $( '#edit-form-body' ),
@@ -994,7 +1000,8 @@ jQuery(document).ready( function( $ ) {
 				'change': {
 					'#option-table-head':		tp.table.change_table_head,
 					'#option-table-foot':		tp.table.change_table_foot,
-					'#option-use-datatables':	tp.table.change_datatables
+					'#option-use-datatables':	tp.table.change_datatables,
+					'#option-datatables-paginate':	tp.table.change_datatables_pagination,
 				},
 				'blur': {
 					'#table-new-id':		tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
