@@ -1,3 +1,15 @@
+/**
+ * TablePress Default CSS
+ *
+ * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
+ * on the "Plugin Options" screen of TablePress.
+ *
+ * @package TablePress
+ * @subpackage Frontend CSS
+ * @author Tobias Bäthge, Allan Jardine
+ * @since 1.0.0
+ */
+
 /* Table description */
 .tablepress-table-description {
 	clear: both;

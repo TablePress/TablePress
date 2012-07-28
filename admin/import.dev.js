@@ -1,6 +1,9 @@
 /**
+ * JavaScript code for the "Import" screen
  *
- *
+ * @package TablePress
+ * @subpackage Views JavaScript
+ * @author Tobias Bäthge
  * @since 1.0.0
  */
 
