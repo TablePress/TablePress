@@ -619,7 +619,7 @@ class TablePress_Render {
 			'first_column_th' => false,
 			'print_name' => null,
 			'print_description' => null,
-			'cache_table_output' => false,
+			'cache_table_output' => true,
 			'extra_css_classes' => '',
 			'use_datatables' => null,
 			'datatables_sort' => null,

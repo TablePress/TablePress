@@ -305,17 +305,28 @@ JS;
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
 
 		// check if table output shall and can be loaded from the transient cache, otherwise generate the output
-		$cache_name = "tablepress_table_output_{$table_id}"; // @TODO: use some sort of hash of the Shortcode here?
-		if ( ! $render_options['cache_table_output'] || is_user_logged_in() ) {
-			$output = get_transient( $cache_name );
+		if ( $render_options['cache_table_output'] && ! is_user_logged_in() ) {
+			$shortcode_hash = md5( json_encode( $shortcode_atts ) ); // hash the Shortcode attributes to get a unique cache identifier
+			$transient_name = 'tablepress_' . $shortcode_hash; // Attention: This string must not be longer than 45 characters!
+			$output = get_transient( $transient_name );
 			if ( false === $output ) {
-				// render/generate the table HTML
+				// render/generate the table HTML, as it was not found in the cache
 				$_render->set_input( $table, $render_options );
 				$output = $_render->get_output();
-
-				if ( $render_options['cache_table_output'] && ! is_user_logged_in() )
-					set_transient( $cache_name, $output, 60*60*24 ); // store $output in a transient, set cache timeout to 24 hours
+				// save output to a transient
+				set_transient( $transient_name, $output, 60*60*24 ); // store $output in a transient, set cache timeout to 24 hours
+				// update output caches list transient (necessary for cache invalidation upon table saving)
+				$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
+				$caches_list = get_transient( $caches_list_transient_name );
+				if ( ! is_array( $caches_list ) )
+					$caches_list = array();
+				$caches_list[ $transient_name ] = 1; // 1 is a dummy value
+				set_transient( $caches_list_transient_name, $caches_list, 60*60*24*2 );
 			}
+		} else {
+			// render/generate the table HTML, as no cache is to be used
+			$_render->set_input( $table, $render_options );
+			$output = $_render->get_output();
 		}
 
 		return $output;

@@ -237,6 +237,10 @@ class TablePress_Table_Model extends TablePress_Model {
 			return false;
 
 		// at this point, post was successfully added
+
+		// invalidate table output caches that belong to this table
+		$this->_invalidate_table_output_caches( $table['id'] );
+
 		return $table['id'];
 	}
 
@@ -317,6 +321,10 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// if post was deleted successfully, remove the table ID from the list of tables
 		$this->_remove_post_id( $table_id );
+
+		// invalidate table output caches that belong to this table
+		$this->_invalidate_table_output_caches( $table['id'] );
+
 		return true;
 	}
 
@@ -348,6 +356,24 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$count_db = $this->model_post->count_posts();
 		return array( 'list' => $count_list, 'db' => $count_db );
+	}
+
+	/**
+	 * Delete all transients used for output caching of a table (e.g. when the table is updated or deleted)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $table_id Table ID
+	 */
+	protected function _invalidate_table_output_caches( $table_id ) {
+		$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
+		$caches_list = get_transient( $caches_list_transient_name );
+		if ( is_array( $caches_list ) ) {
+			foreach ( $caches_list as $cache_transient_name => $dummy_value ) {
+				delete_transient( $cache_transient_name );
+			}
+		}
+		delete_transient( $caches_list_transient_name );
 	}
 
 	/**
