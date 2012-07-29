@@ -1,0 +1,16 @@
+{
+	"sProcessing":	 "Próiseáil...",
+	"sLengthMenu":	 "Taispeáin iontrálacha _MENU_",
+	"sZeroRecords":	 "Gan aon taifead meaitseáil aimsithe",
+	"sInfo":		 "_START_ Showing a _END_ na n-iontrálacha	_TOTAL_",
+	"sInfoEmpty":	 "Showing 0-0 na n-iontrálacha	0",
+	"sInfoFiltered": "(scagtha ó _MAX_ iontrálacha iomlán)",
+	"sInfoPostFix":	 "",
+	"sSearch":		 "Cuardaigh:",
+	"oPaginate": {
+		"sFirst":	 "An Chéad",
+		"sPrevious": "Roimhe Seo",
+		"sNext":	 "Ar Aghaidh",
+		"sLast":	 "Last"
+	}
+}
