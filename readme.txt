@@ -33,7 +33,7 @@ Manual Installation works just as for most other WordPress plugins:
 
 1. Create and manage tables by going to the "TablePress" section in the admin menu.
 
-1. Add a table to a page, post, or text widget, by adding the Shortcode `[table id=&lt;your-table's-id&gt; /]` to its content.
+1. Add a table to a page, post, or text widget, by adding the Shortcode `[table id=<your-table's-ID> /]` to its content.
 
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
@@ -68,7 +68,7 @@ Please visit the [official plugin website](http://tablepress.org/) for the lates
 After installing the plugin, you can add, import, export, edit, copy, delete, ... tables via the "TablePress" screen in your admin menu in the WordPress Dashboard.
 Everything should be self-explaining there.
 
-To show one of your tables in a post, on a page, or in a text widget, just include the Shortcode `[table id=&lt;the-id&gt; /]` to your post/page/text widget, where `&lt;the-id&gt` is the ID of your table (can be found on the left side of the "All Tables" screen.)
+To show one of your tables in a post, on a page, or in a text widget, just include the Shortcode `[table id=<the-ID> /]` to your post/page/text widget, where `<the-ID>` is the ID of your table (can be found on the left side of the "All Tables" screen.)
 
 After that you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen.
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by checking the appropriate options on the "Edit table" screen.
