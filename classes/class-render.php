@@ -439,7 +439,7 @@ class TablePress_Render {
 			$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;"';
 		}
 		if ( ! empty( $caption ) )
-			$caption = "<caption{$caption_class}{$caption_style}>\n{$caption}</caption>\n";
+			$caption = "<caption{$caption_class}{$caption_style}>{$caption}</caption>\n";
 
 		// <colgroup> tag
 		$colgroup = '';
