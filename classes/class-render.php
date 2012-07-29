@@ -631,6 +631,7 @@ class TablePress_Render {
 			'datatables_scrollX' => null,
 			//'datatables_tabletools' => false,
 			'datatables_custom_commands' => null,
+			'datatables_locale' => get_locale(),
 			'show_rows' => '',
 			'show_columns' => '',
 			'hide_rows' => '',

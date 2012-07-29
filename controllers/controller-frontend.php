@@ -112,6 +112,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		if ( empty( $this->shown_tables ) )
 			return; // there are no tables with activated DataTables
 
+		// storage for the DataTables languages
+		$datatables_languages = array();
 		// generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters
 		$commands = array();
 
@@ -121,16 +123,20 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			foreach( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
 
-				//if ( $js_options['datatables_tabletools'] )
-				//	$parameters['sDom'] = '"sDom": \'T<"clear">lfrtip\'';
-				$datatables_locale = apply_filters( 'tablepress_datatables_locale', get_locale() );
-				$language_file = "i18n/datatables/lang-{$datatables_locale}.txt";
-				$language_file = ( file_exists( TABLEPRESS_ABSPATH . $language_file ) ) ? '/' . $language_file : '/i18n/datatables/lang-default.txt';
-				$language_file_url = plugins_url( $language_file, TABLEPRESS__FILE__ );
-				$root_relative_language_file_url = parse_url( $language_file_url, PHP_URL_PATH );
-				$root_relative_language_file_url = apply_filters( 'tablepress_datatables_language_file_url', $root_relative_language_file_url, $language_file_url );
-				if ( ! empty( $root_relative_language_file_url ) )
-					$parameters['oLanguage'] = '"oLanguage":{"sUrl": "' . $root_relative_language_file_url . '"}'; // root relative language file URL
+				// DataTables language/translation handling
+				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
+				// only load DataTables translation if it's not "en_US", which is loaded as the default by DataTables
+				if ( 'en_US' != $datatables_locale ) {
+					// only do the expensive language file checks if they haven't been done yet
+					if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
+						$language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.txt";
+						$language_file = apply_filters( 'tablepress_datatables_language_file', $language_file, $datatables_locale, TABLEPRESS_ABSPATH );
+						if ( ! file_exists( $language_file ) )
+							$language_file = TABLEPRESS_ABSPATH . 'i18n/datatables/lang-default.txt';
+						$datatables_languages[ $datatables_locale ] = $language_file;
+					}
+					$parameters['oLanguage'] = '"oLanguage":DataTables_oLanguage["' . $datatables_locale . '"]';
+				}
 				// these parameters need to be added for performance gain or to overwrite unwanted default behavior
 				$parameters['aaSorting'] = '"aaSorting":[]'; // no initial sort
 				$parameters['bSortClasses'] = '"bSortClasses":false'; // don't add additional classes, to speed up sorting
@@ -150,27 +156,43 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['bInfo'] = '"bInfo":false';
 				if ( $js_options['datatables_scrollX'] )
 					$parameters['sScrollX'] = '"sScrollX":"100%"';
+				//if ( $js_options['datatables_tabletools'] )
+				//	$parameters['sDom'] = '"sDom": \'T<"clear">lfrtip\'';
 				if ( ! empty( $js_options['datatables_custom_commands'] ) )
 					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
 
 				$parameters = apply_filters( 'tablepress_datatables_parameters', $parameters, $table_id, $html_id, $js_options );
-				$parameters = implode( ', ', $parameters );
+				$parameters = implode( ',', $parameters );
 				$parameters = ( ! empty( $parameters ) ) ? '{' . $parameters . '}' : '';
 
 				$command = "$('#{$html_id}').dataTable({$parameters});";
 				$command = apply_filters( 'tablepress_datatables_command', $command, $html_id, $parameters, $table_id, $js_options );
 				if ( ! empty( $command ) )
-					$commands[] = "\t{$command}";
+					$commands[] = $command;
 			}
 		}
 
 		$commands = implode( "\n", $commands );
 		$commands = apply_filters( 'tablepress_all_datatables_commands', $commands );
-		if ( ! empty( $commands ) )
-			echo <<<JS
+		if ( empty( $commands ) )
+			return;
+
+		// DataTables language/translation handling
+		$datatables_strings = '';
+		foreach ( $datatables_languages as $locale => $language_file ) {
+			$strings = file_get_contents( $language_file );
+			// remove unnecessary white space
+			$strings = str_replace( array( "\n", "\r", "\t" ), '', $strings );
+			$datatables_strings .= "DataTables_oLanguage[\"{$locale}\"]={$strings};\n";
+		}
+		if ( ! empty( $datatables_strings ) )
+			$datatables_strings = "var DataTables_oLanguage={};\n" . $datatables_strings;
+
+		// echo DataTables strings and JS calls
+		echo <<<JS
 <script type="text/javascript">
 jQuery(document).ready(function($){
-{$commands}
+{$datatables_strings}{$commands}
 });
 </script>
 JS;
@@ -249,6 +271,7 @@ JS;
 				'datatables_filter' => $render_options['datatables_filter'],
 				'datatables_info' => $render_options['datatables_info'],
 				'datatables_scrollX' => $render_options['datatables_scrollX'],
+				'datatables_locale' => $render_options['datatables_locale'],
 				//'datatables_tabletools' => $render_options['datatables_tabletools'],
 				'datatables_custom_commands' => $render_options['datatables_custom_commands']
 			);
