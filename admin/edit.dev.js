@@ -918,9 +918,11 @@ jQuery(document).ready( function( $ ) {
 			},
 			success: function( data ) {
 				// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances
-				// update URL (for HTML5 browsers only)
-				if ( ( 'pushState' in window.history ) && null !== window.history['pushState'] )
-					window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
+				if ( tp.table.id != data.table_id ) {
+					// update URL (for HTML5 browsers only), but only if ID really changed, to not get dummy entries in the browser history
+					if ( ( 'pushState' in window.history ) && null !== window.history['pushState'] )
+						window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
+				}
 				// update table ID in input fields (type text and hidden)
 				tp.table.id = tp.table.new_id = data.table_id;
 				$( '#table-id' ).val( tp.table.id );
