@@ -284,8 +284,8 @@ class TablePress_Edit_View extends TablePress_View {
 		</td>
 		<td>
 			<?php _e( 'Combine cells', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button-secondary" id="span-add-rowspan" value="<?php _e( 'rowspan', 'tablepress' ); ?>" />
-			<input type="button" class="button-secondary" id="span-add-colspan" value="<?php _e( 'colspan', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="span-add-rowspan" value="<?php _e( 'in a column (rowspan)', 'tablepress' ); ?>" />
+			<input type="button" class="button-secondary" id="span-add-colspan" value="<?php _e( 'in a row (colspan)', 'tablepress' ); ?>" />
 			<input type="button" class="button-secondary show-help-box" value="<?php _e( '?', 'tablepress' ); ?>" title="<?php _e( 'Help on combining cells' ); ?>" />
 			<div class="hidden-container hidden-help-box-container"><?php
 				echo '<p>' . __( 'Table cells can span across more than one column or row.', 'tablepress' ) . '</p>';
