@@ -45,7 +45,7 @@ abstract class TablePress_Controller {
 	 *
 	 * @var string
 	 */
-	public $parent_page = 'tools.php';
+	public $parent_page = 'bottom';
 
 	/**
 	 * Whether TablePress admin screens are a top-level menu item in the admin menu
