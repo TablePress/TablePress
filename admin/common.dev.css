@@ -9,7 +9,14 @@
 
 /* Screen icon */
 #icon-tablepress {
-	background: transparent url( 'tablepress-icon.png' ) no-repeat;
+	background-image: url( 'tablepress-icon.png' );
+}
+/* Retina Screen icon */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+	#icon-tablepress {
+		background-image: url( 'tablepress-icon-2x.png' );
+		background-size: 36px 36px;
+	}
 }
 /* Hide second Screen icon (above the credentials form to save "Custom CSS" */
 #icon-tablepress_options_invisible {
