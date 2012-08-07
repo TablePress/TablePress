@@ -64,6 +64,14 @@ abstract class TablePress {
 	public static function run() {
 		do_action( 'tablepress_run' );
 
+		// exit early if TablePress doesn't have to be loaded
+		if ( ( 'wp-login.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) // Login screen
+				|| ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
+				|| ( defined( 'APP_REQUEST' ) && APP_REQUEST )
+				|| ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
+			return;
+		}
+
 		// some filtering of "global" class variables
 		self::$shortcode = apply_filters( 'tablepress_table_shortcode', self::$shortcode );
 
