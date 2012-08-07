@@ -1,6 +1,8 @@
 # TablePress
 
-TablePress enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
+TablePress is a plugin for the [WordPress](http://wordpress.org/) publishing platfrom.
+
+It enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
 
 ## More information
 
@@ -45,10 +47,16 @@ In short: WordPress 3.4.1 or higher, while the latest version of WordPress is al
 **Languages and Localization?**
 
 The plugin currently includes the following languages:
+
 English and German.
 
 I'd really appreciate it, if you would translate the plugin into your language! Using Heiko Rabe's WordPress plugin [Codestyling Localization](http://www.code-styling.de/english/development/wordpress-plugin-codestyling-localization-en/) that really is as easy as pie. Just install the plugin, add your language, create the .po-file, translate the strings in the comfortable editor and create the .mo-file. It will automatically be saved in TablePress's plugin folder. If you send me the .mo- and .po-file, I will gladly include them into future plugin releases.
+
 There is also a .pot-file available to use in the "i18n" subfolder. Of course you can also use [poEdit](http://www.poedit.net/) as your editor, which also works nicely.
+
+**Development**
+
+You can follow the development of TablePress more closely in its official GitHub repository at https://github.com/TobiasBg/TablePress.
 
 **Where can I get more information?**
 
@@ -62,21 +70,27 @@ Everything should be self-explaining there.
 To show one of your tables in a post, on a page, or in a text widget, just include the Shortcode `[table id=<the-ID> /]` to your post/page/text widget, where `<the-ID>` is the ID of your table (can be found on the left side of the "All Tables" screen.)
 
 After that you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen.
+
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by checking the appropriate options on the "Edit table" screen.
+
 ## Acknowledgements
 
 Special thanks go to [Allan Jardine](http://www.datatables.net/) for the DataTables jQuery plugin.
+
 Thanks to all language file translators!
+
 Thanks to every donor, supporter and bug reporter!
 
 ## License
 
-This plugin is Free Software, released under the GPL, version 2.
+This plugin is Free Software, released under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
+
 I kindly ask you for link somewhere on your website to http://tablepress.org/. This is not required!
 I'm also happy about [donations](http://tablepress.org/donate/) or something from [my wishlist](http://tobias.baethge.com/wishlist/)! Thanks!
 
 ## Changelog
 
 **Version 1.0**
+
 This version is the initial release.

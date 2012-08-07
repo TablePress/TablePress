@@ -5,6 +5,8 @@ Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.4.1
 Tested up to: trunk
 Stable tag: 1.0
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 TablePress enables you to create and manage tables, without having to write HTML code, and it adds valuable functions for your visitors.
 
@@ -85,7 +87,7 @@ Thanks to every donor, supporter and bug reporter!
 
 == License ==
 
-This plugin is Free Software, released under the GPL, version 2.
+This plugin is Free Software, released under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
 I kindly ask you for link somewhere on your website to http://tablepress.org/. This is not required!
 I'm also happy about [donations](http://tablepress.org/donate/) or something from [my wishlist](http://tobias.baethge.com/wishlist/)! Thanks!
