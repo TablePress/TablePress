@@ -45,7 +45,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		add_action( 'wp_print_footer_scripts', array( &$this, 'add_datatables_calls' ), 11 ); // after inclusion of files
 
 		// shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
-		// add_shortcode( 'table-info', array( &$this, 'shortcode_table_info' ) ); // also uncomment this in widget_text_filter()
+		add_shortcode( TablePress::$shortcode_info, array( &$this, 'shortcode_table_info' ) );
 		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
 		// make TablePress Shortcodes work in text widgets
 		add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
@@ -338,6 +338,90 @@ JS;
 		return $output;
 	}
 
+	/**
+	 * Handle Shortcode [table-info id=<ID> field=<name> /] in the_content()
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $atts list of attributes that where included in the Shortcode
+	 * @return string Text that replaces the Shortcode (error message or asked-for information)
+	 */
+	public function shortcode_table_info( $shortcode_atts ) {
+		// parse Shortcode attributes, only allow those that are specified
+		$default_shortcode_atts = array(
+				'id' => 0,
+				'field' => '',
+				'format' => ''
+		);
+		$default_shortcode_atts = apply_filters( 'tablepress_shortcode_table_info_default_shortcode_atts', $default_shortcode_atts );
+		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts );
+		$shortcode_atts = apply_filters( 'tablepress_shortcode_table_info_shortcode_atts', $shortcode_atts );
+
+		// allow a filter to determine behavior of this function, by overwriting its behavior, just need to return something other than false
+		$overwrite = apply_filters( 'tablepress_shortcode_table_info_overwrite', false, $shortcode_atts );
+		if ( $overwrite )
+			return $overwrite;
+
+		// check, if a table with the given ID exists
+		$table_id = $shortcode_atts['id'];
+		if ( ! $this->model_table->table_exists( $table_id ) ) {
+			$message = "[table &quot;{$table_id}&quot; not found /]<br />\n";
+			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
+			return $message;
+		}
+
+		// load the table
+		$table = $this->model_table->load( $table_id );
+		if ( false === $table ) {
+			$message = "[table &quot;{$table_id}&quot; could not be loaded /]<br />\n";
+			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
+			return $message;
+		}
+
+		$field = $shortcode_atts['field'];
+		$format = $shortcode_atts['format'];
+
+		// generate output, depending on what information (field) was asked for
+		switch ( $field ) {
+			case 'name':
+			case 'description':
+				$output = $table[ $field ];
+				break;
+			case 'last_modified':
+				switch ( $format ) {
+					case 'raw':
+						$output = $table['last_modified'];
+						break 2;
+					case 'mysql':
+						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
+						break 2;
+					case 'human':
+						$modified_timestamp = strtotime( $table['last_modified'] );
+						$current_timestamp = current_time( 'timestamp' );
+						$time_diff = $current_timestamp - $modified_timestamp;
+						if ( $time_diff >= 0 && $time_diff < 24*60*60 ) // time difference is only shown up to one day
+							$output = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
+						else
+							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
+						break 2;
+					default:
+						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
+				}
+				break;
+			case 'last_editor':
+				$output = TablePress::get_user_display_name( $table['options']['last_editor'] );
+				break;
+			case 'author':
+				$output = TablePress::get_user_display_name( $table['author'] );
+				break;
+			default:
+					$output = "[table-info field &quot;{$field}&quot; not found in table &quot;{$table_id}&quot; /]<br />\n";
+					$output = apply_filters( 'tablepress_table_info_not_found_message', $output, $table, $field, $format );
+		}
+
+		$output = apply_filters( 'tablepress_shortcode_table_info_output', $output, $table, $shortcode_atts );
+		return $output;
+	}
 
 	/**
 	 * Handle Shortcodes in text widgets, by temporarily removing all Shortcodes, registering only the plugin's two,
@@ -355,7 +439,7 @@ JS;
 		$orig_shortcode_tags = $shortcode_tags;
 		$shortcode_tags = array();
 		// register TablePress's Shortcodes (which are then the only ones registered)
-		// add_shortcode( 'table-info', array( &$this, 'shortcode_table_info' ) );
+		add_shortcode( TablePress::$shortcode_info, array( &$this, 'shortcode_table_info' ) );
 		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
 		// do the WP Shortcode routines on the widget text (i.e. search for TablePress's Shortcodes)
 		$content = do_shortcode( $content );
