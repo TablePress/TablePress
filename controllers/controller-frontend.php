@@ -50,6 +50,11 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// make TablePress Shortcodes work in text widgets
 		add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
 
+		// extend WordPress Search to also find posts/pages that have a table with the one of the search terms in them
+		// if ( $this->options['enable_search'] )
+			add_filter( 'posts_search', array( &$this, 'posts_search_filter' ) );
+
+
 		// load Template Tag functions
 		//require_once ( TABLEPRESS_ABSPATH . 'libraries/template-tag-functions.php' );
 	}
@@ -357,6 +362,102 @@ JS;
 		// restore the original Shortcodes (which includes TablePress's Shortcodes, for use in posts and pages)
 		$shortcode_tags = $orig_shortcode_tags;
 		return $content;
+	}
+
+	/**
+	 * Expand WP Search to also find posts and pages that have a search term in a table that is shown in them
+	 *
+	 * This is done by looping through all search terms and TablePress tables and searching there for the search term,
+	 * saving all tables's IDs that have a search term and then expanding the WP query to search for posts or pages that have the
+	 * Shortcode for one of these tables in their content.
+	 *
+	 * @since 1.0.0
+	 * @uses $wpdb
+	 *
+	 * @param string $search Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching
+	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them
+	 */
+	function posts_search_filter( $search_sql ) {
+		if ( ! is_search() )
+			return $search_sql;
+
+		global $wpdb;
+
+		// get variable that contains all search terms, parsed from $_GET['s'] by WP
+		$search_terms = get_query_var( 'search_terms' );
+		if ( empty( $search_terms ) || ! is_array( $search_terms ) )
+			return $search_sql;
+
+		// load all tables, and remove hidden cells, as those will not be searched
+		// do this here once, so that we don't have to do it in each loop for each search term again
+		$search_tables = array();
+		$tables = $this->model_table->load_all();
+		foreach ( $tables as $table_id => $table ) {
+			// load information about hidden rows and columns
+			$hidden_rows = array_keys( $table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0))
+			$hidden_columns = array_keys( $table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0))
+			// remove hidden rows and re-index
+			foreach ( $hidden_rows as $row_idx ) {
+				if ( isset( $table['data'][$row_idx] ) )
+					unset( $table['data'][$row_idx] );
+			}
+			$table['data'] = array_merge( $table['data'] );
+			// remove hidden columns and re-index
+			foreach ( $table['data'] as $row_idx => $row ) {
+				foreach ( $hidden_columns as $col_idx ) {
+					if ( isset( $row[$col_idx] ) )
+						unset( $row[$col_idx] );
+				}
+				$table['data'][$row_idx] = array_merge( $row );
+			}
+
+			// @TODO: Cells are not evaluated here, so math formulas are searched
+
+			// add name and description to searched items, if they are displayed with the table
+			$table_name = ( 'no' != $table['options']['print_name'] ) ? $table['name'] : '';
+			$table_description = ( 'no' != $table['options']['print_description'] ) ? $table['description'] : '';
+
+			$search_tables[ $table_id ] = array(
+				'data' => $table['data'],
+				'name' => $table_name,
+				'description' => $table_description
+			);
+		}
+
+		// for all search terms loop through all tables's cells (those cells are all visible, because we filtered before!)
+		$query_result = array(); // array of all search words that were found, and the table IDs where they were found
+		foreach ( $search_terms as $search_term ) {
+			$search_term = addslashes_gpc( $search_term ); // escapes with esc_sql
+			foreach ( $search_tables as $table_id => $table ) {
+				if ( false !== stripos( $table['name'], $search_term ) || false !== stripos( $table['description'], $search_term ) ) {
+					// we found the $search_term in the name or description (and they are shown)
+					$query_result[ $search_term ][] = $table_id; // add table ID to result list
+					continue; // don't need to search through this table any further, continue with next table
+				}
+				foreach ( $table['data'] as $table_row ) {
+					foreach ( $table_row as $table_cell ) {
+						if ( false !== stripos( $table_cell, $search_term ) ){
+							// we found the $search_term in the cell
+							$query_result[ $search_term ][] = $table_id; // add table ID to result list
+							break 2; // don't need to search through this table any further, "2" means that we leave both foreach loops
+						}
+					}
+				}
+			}
+		}
+
+		// for all found table IDs for each search term, add additional OR statement to the SQL "WHERE" clause
+		$exact = get_query_var( 'exact' ); // if $_GET['exact'] is set, WordPress doesn't use % in SQL LIKE clauses
+		$n = ( empty( $exact ) ) ? '%' : '';
+		foreach ( $query_result as $search_term => $tables ) {
+			$old_or = "OR ({$wpdb->posts}.post_content LIKE '{$n}{$search_term}{$n}')";
+			$table_ids = implode( '|', $tables );
+			$regexp = '\\\\[table id=(["\\\']?)(' . $table_ids . ')(["\\\' /])'; // ' needs to be single escaped, [ double escaped (with \\) in mySQL
+			$new_or = $old_or . " OR ({$wpdb->posts}.post_content REGEXP '{$regexp}')";
+			$search_sql = str_replace( $old_or, $new_or, $search_sql );
+		}
+
+		return $search_sql;
 	}
 
 } // class TablePress_Frontend_Controller
