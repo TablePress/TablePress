@@ -45,10 +45,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		add_action( 'wp_print_footer_scripts', array( &$this, 'add_datatables_calls' ), 11 ); // after inclusion of files
 
 		// shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
-		// add_shortcode( 'table-info', array( &$this, 'shortcode_table_info' ) );
+		// add_shortcode( 'table-info', array( &$this, 'shortcode_table_info' ) ); // also uncomment this in widget_text_filter()
 		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
-		// make Shortcodes work in text widgets
-		// add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
+		// make TablePress Shortcodes work in text widgets
+		add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
 
 		// load Template Tag functions
 		//require_once ( TABLEPRESS_ABSPATH . 'libraries/template-tag-functions.php' );
@@ -331,6 +331,32 @@ JS;
 		}
 
 		return $output;
+	}
+
+
+	/**
+	 * Handle Shortcodes in text widgets, by temporarily removing all Shortcodes, registering only the plugin's two,
+	 * running WP's Shortcode routines, and then restoring old behavior/Shortcodes
+	 *
+	 * @since 1.0.0
+	 * @uses $shortcode_tags global variable
+	 *
+	 * @param string $content Text content of the text widget, will be searched for one of TablePress's Shortcodes
+	 * @return string Text of the text widget, with eventually found Shortcodes having been replaced by corresponding output
+	 */
+	public function widget_text_filter( $content ) {
+		global $shortcode_tags;
+		// backup the currently registered Shortcodes and clear the global array
+		$orig_shortcode_tags = $shortcode_tags;
+		$shortcode_tags = array();
+		// register TablePress's Shortcodes (which are then the only ones registered)
+		// add_shortcode( 'table-info', array( &$this, 'shortcode_table_info' ) );
+		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
+		// do the WP Shortcode routines on the widget text (i.e. search for TablePress's Shortcodes)
+		$content = do_shortcode( $content );
+		// restore the original Shortcodes (which includes TablePress's Shortcodes, for use in posts and pages)
+		$shortcode_tags = $orig_shortcode_tags;
+		return $content;
 	}
 
 } // class TablePress_Frontend_Controller
