@@ -56,7 +56,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 
 		// load Template Tag functions
-		//require_once ( TABLEPRESS_ABSPATH . 'libraries/template-tag-functions.php' );
+		require_once ( TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php' );
 	}
 
 	/**
