@@ -85,6 +85,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		if ( $use_custom_css_from_option ) {
 			// get "Custom CSS" from options
 			$custom_css = trim( $this->model_options->get( 'custom_css' ) );
+			$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 			if ( ! empty( $custom_css ) )
 				wp_add_inline_style( 'tablepress-default', $custom_css ); // handle of the file to which the <style> shall be appended
 		}
