@@ -55,7 +55,7 @@ class TablePress_List_View extends TablePress_View {
 
 		if ( $data['messages']['plugin_update'] )
 			$this->add_header_message(
-				'<strong><em>Thank you for updating to TablePress' . TablePress::version . ' (revision ' . TablePress::db_version . ')</em></strong><br />'
+				'<strong><em>Thank you for updating to TablePress ' . TablePress::version . ' (revision ' . TablePress::db_version . ')!</em></strong><br />'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) )
 			);
 
