@@ -558,7 +558,7 @@ class TablePress_Render {
 			}
 
 			$cell_class = apply_filters( 'tablepress_cell_css_class', $cell_class, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
-			$class_attr = ( ! empty( $col_class ) ) ? " class=\"{$col_class}\"" : '';
+			$class_attr = ( ! empty( $cell_class ) ) ? " class=\"{$cell_class}\"" : '';
 			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][$col_idx] ) ) ? " style=\"width:{$this->render_options['column_widths'][$col_idx]};\"" : '';
 
 			if ( $this->render_options['first_column_th'] && 0 == $col_idx )
