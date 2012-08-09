@@ -542,8 +542,8 @@ class TablePress_Render {
 				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // no rowspan out of table_foot
 					&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
 					continue;
-				// invalid span, so we set cell content from #span# to a space
-				$cell_content = '&nbsp;';
+				// invalid span, so we set cell content from #span# to empty
+				$cell_content = '';
 			}
 
 			$span_attr = '';
