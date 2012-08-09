@@ -35,7 +35,7 @@
 				longname: 'TablePress',
 				author: 'Tobias Bäthge',
 				authorurl: 'http://tobias.baethge.com/',
-				infourl: 'http://tobias.baethge.com/wordpress/plugins/tablepress/',
+				infourl: 'http://tablepress.org/',
 				version: '1.0.0'
 			};
 		}
