@@ -53,11 +53,13 @@ class TablePress_List_View extends TablePress_View {
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) )
 			);
 
-		if ( $data['messages']['plugin_update'] )
-			$this->add_header_message(
-				'<strong><em>Thank you for updating to TablePress ' . TablePress::version . ' (revision ' . TablePress::db_version . ')!</em></strong><br />'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) )
-			);
+		if ( $data['messages']['show_plugin_update'] ) {
+			$message = '<strong><em>Thank you for updating to TablePress ' . TablePress::version . ' (revision ' . TablePress::db_version . ')!</em></strong><br />';
+			if ( ! empty( $data['messages']['plugin_update_message'] ) )
+				$message .= $data['messages']['plugin_update_message'] . '<br /><br />';
+			$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) );
+			$this->add_header_message( $message );
+		}
 
 		$this->action_messages = array(
 			'success_delete' => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),

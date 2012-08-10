@@ -79,24 +79,32 @@ abstract class TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	protected function plugin_update_check() {
-		// Save initial set of plugin options, and time of first activation of the plugin, on first activation
-		if ( 0 == $this->model_options->get( 'first_activation' ) ) {
-			$this->model_options->update( array(
-				'first_activation' => current_time( 'timestamp' )
-			) );
-		}
-
-		// Update Plugin Options and Table Options, if necessary
+		// First activation or plugin update
 		if ( $this->model_options->get( 'plugin_options_db_version' ) < TablePress::db_version ) {
-			$this->model_options->merge_plugin_options_defaults();
-			$this->model_options->update( array(
-				'plugin_options_db_version' => TablePress::db_version,
-				'prev_tablepress_version' => $this->model_options->get( 'tablepress_version' ),
-				'tablepress_version' => TablePress::version,
-				'message_plugin_update' => true
-			) );
+			// Allow more PHP execution time for update process
+			@set_time_limit( 300 );
 
-			$this->model_table->merge_table_options_defaults();
+			if ( 0 == $this->model_options->get( 'first_activation' ) ) {
+				// Save initial set of plugin options, and time of first activation of the plugin, on first activation
+				$this->model_options->update( array(
+					'first_activation' => current_time( 'timestamp' ),
+					'plugin_options_db_version' => TablePress::db_version
+				) );
+			} else {
+				// Update Plugin Options and Table Options, if necessary
+				$this->model_options->merge_plugin_options_defaults();
+				$this->model_options->update( array(
+					'plugin_options_db_version' => TablePress::db_version,
+					'prev_tablepress_version' => $this->model_options->get( 'tablepress_version' ),
+					'tablepress_version' => TablePress::version,
+					'message_plugin_update' => true
+				) );
+				$this->model_table->merge_table_options_defaults();
+			}
+
+			$this->model_options->update( array(
+				'message_plugin_update_content' => $this->model_options->plugin_update_message( $this->model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() )
+			) );
 		}
 
 		// Update User Options, if necessary

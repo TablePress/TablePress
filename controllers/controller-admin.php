@@ -290,7 +290,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'list':
 				$data['tables'] = $this->model_table->load_all();
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
-				$data['messages']['plugin_update'] = $this->model_options->get( 'message_plugin_update' );
+				$data['messages']['show_plugin_update'] = $this->model_options->get( 'message_plugin_update' );
+				$data['messages']['plugin_update_message'] = $this->model_options->get( 'message_plugin_update_content' );
 				break;
 			case 'about':
 				$data['plugin_languages'] = $this->get_plugin_languages();
@@ -1066,7 +1067,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$message_item = ! empty( $_GET['item'] ) ? $_GET['item'] : '';
 		TablePress::check_nonce( 'hide_message', $message_item );
 
-		$this->model_options->update( "message_{$message_item}", false );
+		$updated_options = array( "message_{$message_item}" => false );
+		if ( 'plugin_update' == $message_item )
+			$updated_options['message_plugin_update_content'] = '';
+		$this->model_options->update( $updated_options );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		TablePress::redirect( array( 'action' => $return ) );

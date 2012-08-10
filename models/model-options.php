@@ -28,11 +28,12 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @var array
 	 */
 	protected $default_plugin_options = array(
-		'plugin_options_db_version' => TablePress::db_version,
-		'prev_tablepress_version' => '',
+		'plugin_options_db_version' => 0,
+		'prev_tablepress_version' => '0',
 		'tablepress_version' => TablePress::version,
 		'first_activation' => 0,
-		'message_plugin_update' => true,
+		'message_plugin_update' => false,
+		'message_plugin_update_content' => '',
 		'custom_css' => '',
 		'use_custom_css_file' => true,
 		'custom_css_version' => 0
@@ -46,7 +47,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @var array
 	 */
 	protected $default_user_options = array(
-		'user_options_db_version' => TablePress::db_version,
+		'user_options_db_version' => TablePress::db_version, // to prevent saving on first load
 		'admin_menu_parent_page' => 'bottom',
 		'plugin_language' => 'auto',
 		'message_first_visit' => true
@@ -196,6 +197,23 @@ class TablePress_Options_Model extends TablePress_Model {
 		$user_options = array_merge( $this->default_user_options, $user_options );
 
 		$this->user_options->update( $user_options );
+	}
+
+	/**
+	 * Retrieve the update message from the development server to notify users of the included changes in this update, in his language
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $current_version Version before the update
+	 * @param string $new_version Version after the update
+	 * @param string $locale Desired locale of the message
+	 * @return string Plugin update message
+	 */
+	public function plugin_update_message( $current_version, $new_version, $locale ) {
+		$update_message = wp_remote_fopen( "http://dev.tablepress.org/plugin/update/{$current_version}/{$new_version}/{$locale}/" );
+		if ( empty( $update_message ) )
+			$update_message = '';
+		return $update_message;
 	}
 
 	/**
