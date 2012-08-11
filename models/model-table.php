@@ -736,11 +736,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		// go through all tables (this loop now uses the WP cache)
 		foreach ( $post_ids as $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
-			$default_table_options = $default_table['options']; // fresh copy for this loop iteration
 			// remove old (i.e. no longer existing) Table Options:
-			$table_options = array_intersect_key( $table_options, $default_table_options );
+			$table_options = array_intersect_key( $table_options, $default_table['options'] );
 			// merge into new Table Options:
-			$table_options = array_merge( $default_table_options, $table_options );
+			$table_options = array_merge( $default_table['options'], $table_options );
 			$this->_update_table_options( $post_id, $table_options );
 		}
 	}
