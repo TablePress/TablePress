@@ -323,7 +323,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->_remove_post_id( $table_id );
 
 		// invalidate table output caches that belong to this table
-		$this->_invalidate_table_output_caches( $table['id'] );
+		$this->_invalidate_table_output_caches( $table_id );
 
 		return true;
 	}
