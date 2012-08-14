@@ -3,14 +3,16 @@ Contributors: TobiasBg
 Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.4.1
-Tested up to: trunk
-Stable tag: 1.0
+Tested up to: 3.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 TablePress enables you to create and manage tables, without having to write HTML code, and it adds valuable functions for your visitors.
 
 == Description ==
+
+= ATTENTION: =
+**TablePress is absolute ALPHA software right now. Use at your own risk. No support will be provided yet! During this alpha stage, all settings, options, and functionality may change without notice, and without maintaining backwards compatibility!**
 
 TablePress enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
 
@@ -94,10 +96,10 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
-= Version 1.0 =
+= Version 0.3-alpha =
 This version is the initial release.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 0.3-alpha =
 This version is the initial release.
