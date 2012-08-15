@@ -95,7 +95,7 @@ class TablePress_Export {
 						$csv_row[] = $this->csv_wrap_and_escape( $cell_content, $csv_delimiter );
 					}
 					$output .= implode( $csv_delimiter, $csv_row );
-					$output .= "\r\n"; // Windows-style line breaks
+					$output .= "\n";
 				}
 				break;
 			case 'html':
