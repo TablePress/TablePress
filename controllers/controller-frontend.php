@@ -44,9 +44,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// add DataTables invocation calls
 		add_action( 'wp_print_footer_scripts', array( &$this, 'add_datatables_calls' ), 11 ); // after inclusion of files
 
-		// shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
-		add_shortcode( TablePress::$shortcode_info, array( &$this, 'shortcode_table_info' ) );
-		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
+		// Remove WP-Table Reloaded Shortcodes and add TablePress Shortcodes
+		add_action( 'init', array( &$this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
+
 		// make TablePress Shortcodes work in text widgets
 		add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
 
@@ -57,6 +57,23 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// load Template Tag functions
 		require_once ( TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php' );
+	}
+
+	/**
+	 * Register TablePress Shortcodes, after removing WP-Table Reloaded Shortcodes
+	 *
+	 * @since 1.0.0
+	 */
+	public function init_shortcodes() {
+		// if WP-Table Reloaded is activated, remove it's Shortcodes, as these would otherwise be used instead of TablePress's Shortcodes
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		if ( is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ) ) {
+			remove_shortcode( 'table-info' );
+			remove_shortcode( 'table' );
+		}
+		// Shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
+		add_shortcode( TablePress::$shortcode_info, array( &$this, 'shortcode_table_info' ) );
+		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
 	}
 
 	/**
