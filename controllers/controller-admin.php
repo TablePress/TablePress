@@ -290,6 +290,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'list':
 				$data['tables'] = $this->model_table->load_all();
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
+				$data['messages']['wp_table_reloaded_warning'] = is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ); // check if WP-Table Reloaded is activated
 				$data['messages']['show_plugin_update'] = $this->model_options->get( 'message_plugin_update' );
 				$data['messages']['plugin_update_message'] = $this->model_options->get( 'message_plugin_update_content' );
 				break;

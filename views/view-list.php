@@ -53,6 +53,12 @@ class TablePress_List_View extends TablePress_View {
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ) , __( 'Hide', 'tablepress' ) )
 			);
 
+		if ( $data['messages']['wp_table_reloaded_warning'] )
+			$this->add_header_message(
+				sprintf( __( '<strong><em>Attention!</em></strong><br />You have activated the plugin WP-Table Reloaded, which can not be used together with TablePress.<br />Please follow the <a href="%s" title"Migration Guide from WP-Table Reloaded to TablePress">migration guide</a> and then deactivate WP-Table Reloaded!', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ),
+				'error'
+			);
+
 		if ( $data['messages']['show_plugin_update'] ) {
 			$message = '<strong><em>Thank you for updating to TablePress ' . TablePress::version . ' (revision ' . TablePress::db_version . ')!</em></strong><br />';
 			if ( ! empty( $data['messages']['plugin_update_message'] ) )
