@@ -178,7 +178,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(){
+	public function __construct() {
 		parent::__construct( array(
 			'singular'	=> 'tablepress-table',				// singular name of the listed records
 			'plural'	=> 'tablepress-editor-button-list',	// plural name of the listed records
@@ -218,7 +218,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @return array List of columns in this List Table
 	 */
-	public function get_columns(){
+	public function get_columns() {
 		$columns = array(
 			'table_id' => __( 'ID', 'tablepress' ),
 			'table_name' => __( 'Table Name', 'tablepress' ), // just "name" is special in WP, which is why we prefix every entry here, to be safe!
@@ -283,7 +283,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_description( $item ){
+	protected function column_table_description( $item ) {
 		if ( '' == trim( $item['description'] ) )
 			$item['description'] = __( '(no description)', 'tablepress' );
 		return esc_html( $item[ 'description' ] );
@@ -297,7 +297,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_action( $item ){
+	protected function column_table_action( $item ) {
 		return '<input type="button" class="insert-shortcode button-secondary" title="[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]" value="' . __( 'Insert Shortcode', 'tablepress' ) . '" />';
 	}
 
@@ -409,7 +409,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		$total_items = count( $this->items );
 
 		// Slice items array to hold only items for the current page
-		$this->items = array_slice( $this->items, ( ( $current_page-1) * $per_page ), $per_page );
+		$this->items = array_slice( $this->items, ( ( $current_page-1 ) * $per_page ), $per_page );
 
 		// Register pagination options and calculation results
 		$this->set_pagination_args( array(

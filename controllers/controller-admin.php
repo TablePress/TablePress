@@ -220,28 +220,28 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		) );
 	}
 
-    /**
-     * Handle actions for loading of Plugins page
-     *
-     * @since 1.0.0
-     */
+	/**
+	 * Handle actions for loading of Plugins page
+	 *
+	 * @since 1.0.0
+	 */
 	public function plugins_page() {
 		$this->init_i18n_support();
 		// add message to list of plugins, if an update is available
 		// add_action( 'in_plugin_update_message-' . TABLEPRESS_BASENAME, array( &$this, 'add_plugin_update_message' ), 10, 2 );
 		// add additional links on Plugins page
-        add_filter( 'plugin_row_meta', array( &$this, 'add_plugin_row_meta' ), 10, 2);
+		add_filter( 'plugin_row_meta', array( &$this, 'add_plugin_row_meta' ), 10, 2);
 	}
 
-    /**
-     * Add links to the TablePress entry on the Plugins page
-     *
-     * @since 1.0.0
-     *
-     * @param array $links List of links to print on the Plugins page
-     * @param string $file Name of the plugin
-     * @return array Extended list of links to print on the Plugins page
-     */
+	/**
+	 * Add links to the TablePress entry on the Plugins page
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $links List of links to print on the Plugins page
+	 * @param string $file Name of the plugin
+	 * @return array Extended list of links to print on the Plugins page
+	 */
 	public function add_plugin_row_meta( $links, $file ) {
 		if ( TABLEPRESS_BASENAME == $file ) {
 			$links[] = '<a href="' . TablePress::url() . '" title="' . __( 'TablePress Plugin Page', 'tablepress' ) . '">' . __( 'Plugin Page', 'tablepress' ) . '</a>';
@@ -430,7 +430,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @return array -1, 0, 1, depending on sort
 	 */
 	protected function _get_plugin_languages_sort_cb( $a, $b ) {
-	    return strnatcasecmp( $a['name'], $b['name'] );
+		return strnatcasecmp( $a['name'], $b['name'] );
 	}
 
 	/**
@@ -606,7 +606,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
 		$checkbox_options = array(
 			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover',	// Table Options
-			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollX'	// DataTables JS Features @TODO: THIS NEEDS WORK (e.g. for disabled fields)!
+			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollX' // DataTables JS Features @TODO: THIS NEEDS WORK (e.g. for disabled fields)!
 		);
 		foreach ( $checkbox_options as $option ) {
 			$edit_table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' === $edit_table['options'][$option] );

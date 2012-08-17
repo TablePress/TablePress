@@ -110,7 +110,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		foreach ( $new_options as $name => $value ) {
 			if ( isset( $this->default_plugin_options[ $name ] ) ) {
 				$plugin_options[ $name ] = $value;
-			 } elseif ( isset( $this->default_user_options[ $name ] ) ) {
+			} elseif ( isset( $this->default_user_options[ $name ] ) ) {
 				$user_options[ $name ] = $value;
 			} else {
 				// no valid Plugin or User Option -> discard the name/value pair

@@ -35,13 +35,13 @@
 /* Vertical lines / borders */
 .tablepress tbody tr,
 .tablepress tfoot tr {
-    border-top: 1px solid #dddddd;
+	border-top: 1px solid #dddddd;
 }
 .tablepress tbody tr:first-child {
 	border-top: 0;
 }
 .tablepress thead tr {
-    border-bottom: 1px solid #dddddd;
+	border-bottom: 1px solid #dddddd;
 }
 
 /* Row background colors */

@@ -46,7 +46,7 @@ define( 'TABLEPRESS__FILE__', __FILE__ );
 define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
 
 // Load TablePress class, which holds common functions and variables
-require_once( TABLEPRESS_ABSPATH . 'classes/class-tablepress.php' );
+require_once TABLEPRESS_ABSPATH . 'classes/class-tablepress.php';
 
 // Start up TablePress on WordPress's "init" hook
 add_action( 'init', array( 'TablePress', 'run' ) );

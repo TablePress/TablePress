@@ -252,14 +252,14 @@ class TablePress_Import {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function pad_array_to_max_cols( $array ){
+	protected function pad_array_to_max_cols( $array ) {
 		$rows = count( $array );
 		$rows = ( $rows > 0 ) ? $rows : 1;
 		$max_columns = $this->count_max_columns( $array );
 		$max_columns = ( $max_columns > 0 ) ? $max_columns : 1;
 		// array_map wants arrays as additional parameters (so we create one with the max_columns to pad to and one with the value to use (empty string)
 		$max_columns_array = array_fill( 1, $rows, $max_columns );
-		$pad_values_array =	 array_fill( 1, $rows, '' );
+		$pad_values_array =  array_fill( 1, $rows, '' );
 		return array_map( 'array_pad', $array, $max_columns_array, $pad_values_array );
 	}
 
@@ -268,7 +268,7 @@ class TablePress_Import {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function count_max_columns( $array ){
+	protected function count_max_columns( $array ) {
 		$max_columns = 0;
 		if ( ! is_array( $array ) || 0 == count( $array ) )
 			return $max_columns;
@@ -277,7 +277,7 @@ class TablePress_Import {
 			$num_columns = count( $row );
 			$max_columns = max( $num_columns, $max_columns );
 		}
-		return	$max_columns;
+		return $max_columns;
 	}
 
 	/**

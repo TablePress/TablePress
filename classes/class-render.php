@@ -412,7 +412,7 @@ class TablePress_Render {
 		$this->last_row_idx = $num_rows - 1;
 		$this->last_column_idx = $num_columns - 1;
 		// loop through rows in reversed order, to search for rowspan trigger keyword
-		for ( $row_idx = $this->last_row_idx; $row_idx >= 0; $row_idx-- )	 {
+		for ( $row_idx = $this->last_row_idx; $row_idx >= 0; $row_idx-- ) {
 			// last row, need to check for footer (but only if at least two rows)
 			if ( $this->last_row_idx == $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
 				$tfoot = $this->_render_row( $row_idx, 'th' );
@@ -501,7 +501,7 @@ class TablePress_Render {
 	protected function _render_row( $row_idx, $tag ) {
 		$row_cells = array();
 		// loop through cells in reversed order, to search for colspan or rowspan trigger words
-		for ( $col_idx = $this->last_column_idx; $col_idx >= 0; $col_idx-- )	 {
+		for ( $col_idx = $this->last_column_idx; $col_idx >= 0; $col_idx-- ) {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
 			// print formulas that are escaped with '= (like in Excel) as text:
@@ -572,7 +572,7 @@ class TablePress_Render {
 		// @TODO: Maybe apply row-$row_idx and alternate colors classes only to body rows?
 		$row_class = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] )
-			$row_class .= ( 1 == ($row_idx % 2) ) ? ' even' : ' odd';
+			$row_class .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
 		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_cells, $row_idx + 1 );
 		if ( ! empty( $row_class ) )
 			$row_class = " class=\"{$row_class}\"";

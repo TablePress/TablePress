@@ -218,7 +218,7 @@ class CSV_Parser {
 					$i++; // skip next character
 				} elseif ( $next_char != $delimiter && "\r" != $next_char && "\n" != $next_char ) {
 					// for-loop (instead of while-loop) that skips white-space
-					for ( $x = ($i+1); isset( $data[$x] ) && '' == ltrim( $data[$x], $white_spaces ); $x++ ) {}
+					for ( $x = ( $i+1 ); isset( $data[$x] ) && '' == ltrim( $data[$x], $white_spaces ); $x++ ) {}
 					if ( $data[$x] == $delimiter ) {
 						$enclosed = false;
 						$i = $x;

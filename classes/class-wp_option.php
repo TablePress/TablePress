@@ -150,7 +150,7 @@ class TablePress_WP_Option {
 	 * Delete a WP Option with the WP API
 	 *
 	 * @since 1.0.0
- 	 * @uses delete_option()
+	 * @uses delete_option()
 	 *
 	 * @param string $option_name Name of the WP Option
 	 * @return bool True on success, false on failure

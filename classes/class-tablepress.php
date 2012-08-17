@@ -249,8 +249,8 @@ abstract class TablePress {
 	public function number_to_letter( $number ) {
 		$column = '';
 		while ( $number > 0 ) {
-			$column = chr( 65 + ( ( $number-1) % 26 ) ) . $column;
-			$number = floor( ($number-1) / 26 );
+			$column = chr( 65 + ( ( $number-1 ) % 26 ) ) . $column;
+			$number = floor( ( $number-1 ) / 26 );
 		}
 		return $column;
 	}

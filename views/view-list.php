@@ -225,7 +225,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(){
+	public function __construct() {
 		parent::__construct( array(
 			'singular'	=> 'tablepress-table',		// singular name of the listed records
 			'plural'	=> 'tablepress-all-tables',	// plural name of the listed records
@@ -265,7 +265,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return array List of columns in this List Table
 	 */
-	public function get_columns(){
+	public function get_columns() {
 		$columns = array(
 			'cb' => $this->has_items() ? '<input type="checkbox" class="hide-if-no-js" />' : '', // checkbox for "Select all", but only if there are items in the table
 			'table_id' => __( 'ID', 'tablepress' ),
@@ -362,7 +362,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_description( $item ){
+	protected function column_table_description( $item ) {
 		if ( '' == trim( $item['description'] ) )
 			$item['description'] = __( '(no description)', 'tablepress' );
 		return esc_html( $item[ 'description' ] );
@@ -376,7 +376,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_author( $item ){
+	protected function column_table_author( $item ) {
 		return TablePress::get_user_display_name( $item['author'] );
 	}
 
@@ -388,7 +388,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_last_modified( $item ){
+	protected function column_table_last_modified( $item ) {
 		$modified_timestamp = strtotime( $item['last_modified'] );
 		$current_timestamp = current_time( 'timestamp' );
 		$time_diff = $current_timestamp - $modified_timestamp;
@@ -573,7 +573,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$total_items = count( $this->items );
 
 		// Slice items array to hold only items for the current page
-		$this->items = array_slice( $this->items, ( ( $current_page-1) * $per_page ), $per_page );
+		$this->items = array_slice( $this->items, ( ( $current_page-1 ) * $per_page ), $per_page );
 
 		// Register pagination options and calculation results
 		$this->set_pagination_args( array(

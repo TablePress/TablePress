@@ -274,7 +274,7 @@ class TablePress_Post_Model extends TablePress_Model {
 
 	/**
 	 * Delete a post meta field of a post
- 	 * (yet unused)
+	 * (yet unused)
 	 *
 	 * @since 1.0.0
 	 * @uses delete_post_meta()

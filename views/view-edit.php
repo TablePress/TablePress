@@ -48,7 +48,7 @@ class TablePress_Edit_View extends TablePress_View {
 
 		// do this here to get CSS into <head>
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		add_action( 'admin_footer', array( &$this, 'dequeue_media_upload_js'), 2 );
+		add_action( 'admin_footer', array( &$this, 'dequeue_media_upload_js' ), 2 );
 		add_thickbox();
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
@@ -272,7 +272,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function postbox_table_manipulation( $data, $box ) {
-		$media_library_url = esc_url( add_query_arg( array( 'post_id' => '0', 'type' => 'image', 'tab' => 'library'), admin_url( 'media-upload.php' ) ) );
+		$media_library_url = esc_url( add_query_arg( array( 'post_id' => '0', 'type' => 'image', 'tab' => 'library' ), admin_url( 'media-upload.php' ) ) );
 ?>
 <table class="tablepress-postbox-table fixed hide-if-no-js">
 <tbody>

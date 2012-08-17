@@ -56,7 +56,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 
 		// load Template Tag functions
-		require_once ( TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php' );
+		require_once TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php';
 	}
 
 	/**
@@ -66,7 +66,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function init_shortcodes() {
 		// if WP-Table Reloaded is activated, remove it's Shortcodes, as these would otherwise be used instead of TablePress's Shortcodes
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ) ) {
 			remove_shortcode( 'table-info' );
 			remove_shortcode( 'table' );
@@ -143,7 +143,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		foreach ( $this->shown_tables as $table_id => $table_store ) {
 			if ( empty( $table_store['instances'] ) )
 				continue;
-			foreach( $table_store['instances'] as $html_id => $js_options ) {
+			foreach ( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
 
 				// DataTables language/translation handling
@@ -278,7 +278,7 @@ JS;
 		$this->shown_tables[$table_id]['count']++;
 		$count = $this->shown_tables[$table_id]['count'];
 		$render_options['html_id'] = "tablepress-{$table_id}";
-		if( $count > 1 )
+		if ( $count > 1 )
 			$render_options['html_id'] .= "-no-{$count}";
 		$render_options['html_id'] = apply_filters( 'tablepress_html_id', $render_options['html_id'], $table_id, $count );
 
@@ -537,7 +537,7 @@ JS;
 				}
 				foreach ( $table['data'] as $table_row ) {
 					foreach ( $table_row as $table_cell ) {
-						if ( false !== stripos( $table_cell, $search_term ) ){
+						if ( false !== stripos( $table_cell, $search_term ) ) {
 							// we found the $search_term in the cell
 							$query_result[ $search_term ][] = $table_id; // add table ID to result list
 							break 2; // don't need to search through this table any further, "2" means that we leave both foreach loops
