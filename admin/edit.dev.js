@@ -250,7 +250,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			insert: function( event ) {
 				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
-					.prop( 'checked', event.altKey ).closest( 'tr' );
+					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
 					alert( tablepress_strings.no_rows_selected );
@@ -264,7 +264,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			hide: function( event ) {
 				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
-					.prop( 'checked', event.altKey ).closest( 'tr' );
+					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
 					alert( tablepress_strings.no_rows_selected );
@@ -278,7 +278,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			unhide: function( event ) {
 				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
-					.prop( 'checked', event.altKey ).closest( 'tr' );
+					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
 					alert( tablepress_strings.no_rows_selected );
@@ -449,7 +449,7 @@ jQuery(document).ready( function( $ ) {
 			insert: function( event ) {
 				var column_idxs,
 					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
-						.prop( 'checked', event.altKey ).closest( 'th' );
+						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
@@ -472,7 +472,7 @@ jQuery(document).ready( function( $ ) {
 			hide: function( event ) {
 				var column_idxs,
 					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
-						.prop( 'checked', event.altKey ).closest( 'th' );
+						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
@@ -492,7 +492,7 @@ jQuery(document).ready( function( $ ) {
 			unhide: function( event ) {
 				var column_idxs,
 					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
-						.prop( 'checked', event.altKey ).closest( 'th' );
+						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
@@ -651,8 +651,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			advanced_editor: {
 				keyopen: function( event ) {
-					// evtl. lieber event.shiftKey oder event.ctrlKey
-					if ( ! event.altKey )
+					if ( ! event.shiftKey )
 						return;
 
 					var $advanced_editor = $( '#advanced-editor-content' );
@@ -886,7 +885,7 @@ jQuery(document).ready( function( $ ) {
 					return;
 				}
 
-				if ( event.altKey ) {
+				if ( event.shiftKey ) {
 					tp.made_changes = false; // to prevent onunload warning
 					$( '#tablepress-page' ).find( 'form' ).submit();
 					return;
@@ -907,14 +906,14 @@ jQuery(document).ready( function( $ ) {
 			},
 			ajax_success: function( data, status, jqXHR ) {
 				if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
-					tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the "Alt" key.' );
+					tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the "Shift" key.' );
 				else if ( ( 'undefined' == typeof data ) || ( null == data ) || ( '-1' == data ) || ( 'undefined' == typeof data.success ) || ( true !== data.success ) )
-					tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the "Alt" key.' );
+					tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the "Shift" key.' );
 				else
 					tp.save_changes.success( data );
 			},
 			ajax_error: function( jqXHR, status, error_thrown ) {
-				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the "Alt" key.' );
+				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the "Shift" key.' );
 			},
 			success: function( data ) {
 				// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances
