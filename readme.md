@@ -4,13 +4,18 @@ TablePress is a plugin for the [WordPress](http://wordpress.org/) publishing pla
 
 It enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
 
-## More information
-
 Please visit the plugin website at http://tablepress.org/ for more information.
+
+## Supporting future development ##
 
 If you like the TablePress plugin, please rate it in the [WordPress Plugin Directory](http://wordpress.org/extend/plugins/tablepress/), support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
 [![Flattr TablePress](http://api.flattr.com/button/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress)
+
+## Migration from WP-Table Reloaded ##
+
+TablePress is the official successor of the WP-Table Reloaded plugin. It has been written from the ground up and by using an entirely new internal structure fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
+If you are currently using WP-Table Reloaded, it is recommended that you switch to TablePress. WP-Table Reloaded will no longer be maintained or developed. For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](http://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
 
 ## Screenshots
 
@@ -59,6 +64,10 @@ There is also a .pot-file available to use in the "i18n" subfolder. Of course yo
 **Development**
 
 You can follow the development of TablePress more closely in its official GitHub repository at https://github.com/TobiasBg/TablePress.
+
+**Switch from WP-Table Reloaded to TablePress**
+
+For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](http://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
 
 **Where can I get more information?**
 
