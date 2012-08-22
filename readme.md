@@ -1,4 +1,4 @@
-# TablePress
+# [TablePress](http://tablepress.org/) [![Flattr TablePress](http://api.flattr.com/button/flattr-badge-large.png)](http://flattr.com/thing/783658/TablePress)
 
 TablePress is a plugin for the [WordPress](http://wordpress.org/) publishing platform.
 
@@ -9,6 +9,8 @@ It enables you to create and manage tables on your WordPress site. No HTML knowl
 Please visit the plugin website at http://tablepress.org/ for more information.
 
 If you like the TablePress plugin, please rate it in the [WordPress Plugin Directory](http://wordpress.org/extend/plugins/tablepress/), support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
+
+[![Flattr TablePress](http://api.flattr.com/button/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress)
 
 ## Screenshots
 
