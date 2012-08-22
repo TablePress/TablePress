@@ -293,6 +293,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['messages']['wp_table_reloaded_warning'] = is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ); // check if WP-Table Reloaded is activated
 				$data['messages']['show_plugin_update'] = $this->model_options->get( 'message_plugin_update' );
 				$data['messages']['plugin_update_message'] = $this->model_options->get( 'message_plugin_update_content' );
+				$data['messages']['donation_message'] = $this->maybe_show_donation_message();
+				$data['table_count'] = count( $data['tables'] );
 				break;
 			case 'about':
 				$data['plugin_languages'] = $this->get_plugin_languages();
@@ -431,6 +433,23 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	protected function _get_plugin_languages_sort_cb( $a, $b ) {
 		return strnatcasecmp( $a['name'], $b['name'] );
+	}
+
+	/**
+	 * Decide whether a donate message shall be shown on the "All Tables" screen, depending on passed days since installation and whether it was shown before
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool Whether the donate message shall be shown on the "All Tables" screen
+	 */
+	protected function maybe_show_donation_message() {
+		if ( ! $this->model_options->get( 'message_donation_nag' ) )
+			return false;
+
+		// How long has the plugin been installed?
+		$secs = time() - $this->model_options->get( 'first_activation' );
+		$days = floor( $secs / ( 60*60*24 ) );
+		return ( $days >= 30 ) ? true : false;
 	}
 
 	/**
