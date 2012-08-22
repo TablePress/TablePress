@@ -198,7 +198,6 @@ class TablePress_Post_Model extends TablePress_Model {
 		$post_ids_list = implode( ',', $post_ids );
 		$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
 		foreach ( $all_posts as $single_post ) {
-			_get_post_ancestors( $single_post ); // get things like post_parent
 			$single_post = sanitize_post( $single_post, 'raw' ); // just minimal sanitation of int fields
 			wp_cache_add( $single_post->ID, $single_post, 'posts' );
 			// using @see update_post_cache( $all_posts ) instead this loop might be simpler
