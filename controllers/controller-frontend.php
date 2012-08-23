@@ -305,7 +305,7 @@ JS;
 		// generate "Edit Table" link
 		$render_options['edit_table_url'] = '';
 		/*
-		if ( is_user_logged_in() && $this->model_options->get( 'frontend_edit_table_link' ) {
+		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true ) ) {
 			$user_group = $this->model_options->get( 'user_access_plugin' );
 			$capabilities = array(
 				'admin' => 'manage_options',
@@ -321,7 +321,7 @@ JS;
 		}
 		*/
 		// @TODO: temporary for above:
-		if ( is_user_logged_in() )
+		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true ) && current_user_can( apply_filters( 'tablepress_min_access_cap', 'edit_pages' ) ) )
 			$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
 
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
