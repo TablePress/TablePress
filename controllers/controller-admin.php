@@ -87,7 +87,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_admin_menu_entry() {
 		// for all menu entries:
-		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'read' ); // make this a Plugin Option!
+		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'edit_pages' ); // @TODO: Make this a plugin option for usage here, below, and for the frontend edit link!
 		$callback = array( &$this, 'show_admin_page' );
 
 		if ( $this->is_top_level_page ) {
@@ -464,49 +464,49 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'page_title' => __( 'All Tables', 'tablepress' ),
 				'admin_menu_title' => __( 'All Tables', 'tablepress' ),
 				'nav_tab_title' => __( 'All Tables', 'tablepress' ),
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			),
 			'add' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Add New Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Add New Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Add New', 'tablepress' ),
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			),
 			'edit' => array(
 				'show_entry' => false,
 				'page_title' => __( 'Edit Table', 'tablepress' ),
 				'admin_menu_title' => '',
 				'nav_tab_title' => '',
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			),
 			'import' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Import a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Import a Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Import', 'tablepress' ),
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			),
 			'export' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Export a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Export a Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Export', 'tablepress' ),
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			),
 			'options' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Plugin Options', 'tablepress' ),
 				'admin_menu_title' => __( 'Plugin Options', 'tablepress' ),
 				'nav_tab_title' => __( 'Plugin Options', 'tablepress' ),
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			),
 			'about' => array(
 				'show_entry' => true,
 				'page_title' => __( 'About', 'tablepress' ),
 				'admin_menu_title' => __( 'About TablePress', 'tablepress' ),
 				'nav_tab_title' => __( 'About', 'tablepress' ),
-				'min_access_cap' => 'read'
+				'min_access_cap' => 'edit_pages'
 			)
 		);
 
