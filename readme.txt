@@ -58,7 +58,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 = Requirements? =
 
-In short: WordPress 3.5 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 3.4.1 or higher, while the latest version of WordPress is always recommended.
 
 = Languages and Localization? =
 
@@ -105,10 +105,10 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
-= Version 0.3-alpha =
+= Version 1.0 =
 This version is the initial release.
 
 == Upgrade Notice ==
 
-= 0.3-alpha =
+= 1.0 =
 This version is the initial release.
