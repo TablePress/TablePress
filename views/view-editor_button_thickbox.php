@@ -73,7 +73,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 <title><?php printf( __( '%s &lsaquo; TablePress', 'tablepress' ), __( 'List of Tables', 'tablepress' ) ); ?></title>
 <style type="text/css">
 body {
-	margin: 2px 0px 15px 15px;
+	margin: -26px 0px 15px 15px; /* top has -28px offset to account for html.wp-toolbar */
 }
 
 #icon-tablepress {
