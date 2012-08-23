@@ -196,7 +196,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @return array Current set of registered TinyMCE plugins, including "Table" button plugin
 	 */
 	public function add_tinymce_plugin( $plugins ) {
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.dev' : '';
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$js_file = "admin/tinymce-button{$suffix}.js";
 		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		return $plugins;
