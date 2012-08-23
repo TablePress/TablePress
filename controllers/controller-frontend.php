@@ -50,10 +50,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// make TablePress Shortcodes work in text widgets
 		add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
 
-		// extend WordPress Search to also find posts/pages that have a table with the one of the search terms in them
-		// if ( $this->options['enable_search'] )
+		// extend WordPress Search to also find posts/pages that have a table with the one of the search terms in title (if shown), description (if shown), or content
+		if ( apply_filters( 'tablepress_wp_search_integration', true ) )
 			add_filter( 'posts_search', array( &$this, 'posts_search_filter' ) );
-
 
 		// load Template Tag functions
 		require_once TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php';
