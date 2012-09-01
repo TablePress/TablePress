@@ -601,13 +601,16 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table['last_modified'] = current_time( 'mysql' );
 		$table['options']['last_editor'] = get_current_user_id();
 		// Table Options
-		if ( isset( $new_table['options'] ) ) {
-			// specials check for certain options -> need to be unset, so that they are not merged in the next step
-			if ( isset( $new_table['options']['extra_css_classes'] ) ) {
-				$table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $new_table['options']['extra_css_classes'] );
-				unset( $new_table['options']['extra_css_classes'] );
+		if ( isset( $new_table['options'] ) ) { // is for example not set for newly added tables
+			// specials check for certain options
+			if ( isset( $new_table['options']['extra_css_classes'] ) )
+				$new_table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $new_table['options']['extra_css_classes'] );
+			if ( isset( $new_table['options']['datatables_paginate_entries'] ) ) {
+				$new_table['options']['datatables_paginate_entries'] = intval( $new_table['options']['datatables_paginate_entries'] );
+				if ( $new_table['options']['datatables_paginate_entries'] < 1 )
+					$new_table['options']['datatables_paginate_entries'] = 10; // default value
 			}
-			// merge remaining new options
+			// merge new options
 			$table['options'] = array_merge( $table['options'], $new_table['options'] );
 		}
 		// Table Visibility
