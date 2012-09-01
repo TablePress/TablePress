@@ -34,7 +34,7 @@ class TablePress_Options_View extends TablePress_View {
 		$this->admin_page->enqueue_style( 'codemirror' );
 		$this->admin_page->enqueue_script( 'codemirror' );
 		$this->admin_page->enqueue_script( 'codemirror-css', array( 'tablepress-codemirror' ) );
-		add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( &$this, 'print_codemirror_js' ) );
+		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror', 'tablepress-codemirror-css' ) );
 
 		$action_messages = array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
@@ -52,24 +52,6 @@ class TablePress_Options_View extends TablePress_View {
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( &$this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Options', 'tablepress' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
-	}
-
-	/**
-	 * Print the JavaScript code to invoke CodeMirror on the "Custom CSS" textarea (in the admin footer)
-	 *
-	 * @since 1.0.0
-	 */
-	public function print_codemirror_js() {
-		echo <<<JS
-<script type="text/javascript">
-CodeMirror.fromTextArea( document.getElementById( 'option-custom-css' ), {
-	mode: 'css',
-	indentUnit: 2,
-	tabSize: 2,
-	indentWithTabs: true
-} );
-</script>
-JS;
 	}
 
 	/**
@@ -92,19 +74,28 @@ JS;
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
+	<tr class="bottom-border">
+		<th class="column-1" scope="row"><?php _e( 'Default CSS', 'tablepress' ); ?>:</th>
+		<td class="column-2"><label for="option-use-default-css"><input type="checkbox" id="option-use-default-css" name="options[use_default_css]" value="true"<?php checked( $data['frontend_options']['use_default_css'] ); ?> /> <?php _e( 'Load the default table styling.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label>
+		</td>
+	</tr>
+	<tr class="top-border">
+		<th class="column-1" scope="row"><?php _e( 'Custom CSS', 'tablepress' ); ?>:</th>
+		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load the following "Custom CSS" commands on each page:', 'tablepress' ); ?></label>
+		</td>
+	</tr>
 	<tr>
-		<th class="column-1" scope="row"><label for="option-use-custom-css-file"><?php _e( 'Custom CSS file', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> />
+		<th class="column-1" scope="row"></th>
+		<td class="column-2">
+			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
+			<p class="description"><?php _e( 'This should be used to change the table styling.', 'tablepress' ); ?> <?php _e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' ); ?> <?php _e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' ); ?></p>
+			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the "Custom CSS" code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
 		<?php
 			echo content_url( 'tablepress-custom.css' );
 			echo ' ';
 			echo ( $data['frontend_options']['custom_css_file_exists'] ) ? '(File exists.)' : '(File seems not to exist.)';
 		?>
 		</td>
-	</tr>
-	<tr>
-		<th class="column-1 top-align" scope="row"><label for="option-custom-css"><?php _e( 'Custom CSS', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea></td>
 	</tr>
 </tbody>
 </table>

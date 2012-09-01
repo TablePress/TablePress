@@ -35,8 +35,10 @@ class TablePress_Options_Model extends TablePress_Model {
 		'message_plugin_update' => false,
 		'message_plugin_update_content' => '',
 		'message_donation_nag' => true,
-		'custom_css' => '',
+		'use_default_css' => true,
+		'use_custom_css' => true,
 		'use_custom_css_file' => true,
+		'custom_css' => '',
 		'custom_css_version' => 0
 	);
 

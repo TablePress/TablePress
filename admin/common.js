@@ -72,8 +72,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' )
-	.on( 'blur', '.numbers-only, .form-field-numbers-only input', function( event ) {
+	$( '#tablepress-page' ).on( 'blur', '.numbers-only, .form-field-numbers-only input', function( event ) {
 		var $input = $(this);
 		$input.val( $input.val().replace( /[^0-9]/g, '' ) );
 	} );
@@ -83,8 +82,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' )
-	.on( 'click', '.delete-link', function() {
+	$( '#tablepress-page' ).on( 'click', '.delete-link', function() {
 		if ( ! confirm( tablepress_common.ays_delete_single_table ) )
 			return false;
 
@@ -97,19 +95,8 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' )
-	.on( 'click', '.table-shortcode', function() {
+	$( '#tablepress-page' ).on( 'click', '.table-shortcode', function() {
 		$(this).focus().select();
-	} );
-
-
-	/**
-	 * "Custom CSS" textarea grows on focus, once
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).find( '.CodeMirror' ).one( 'click', function() {
-		$(this).addClass( 'large' );
 	} );
 
 } );

@@ -311,6 +311,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$data['credentials_form'] = $result;
 					break;
 				}
+				$data['frontend_options']['use_default_css'] = $this->model_options->get( 'use_default_css' );
+				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
 				$data['frontend_options']['use_custom_css_file'] = $this->model_options->get( 'use_custom_css_file' );
 				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file();
 				$data['frontend_options']['custom_css_file_exists'] = ( false !== $data['frontend_options']['custom_css'] );
@@ -733,8 +735,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( 'auto' == $posted_options['plugin_language'] || array_key_exists( $posted_options['plugin_language'], $this->get_plugin_languages() ) )
 				$new_options['plugin_language'] = $posted_options['plugin_language'];
 		}
-		// Checkbox
-		$new_options['use_custom_css_file'] = ( isset( $posted_options['use_custom_css_file'] ) && 'true' === $posted_options['use_custom_css_file'] );
+		// Checkboxes
+		foreach ( array( 'use_default_css', 'use_custom_css', 'use_custom_css_file' ) as $checkbox ) {
+			$new_options[ $checkbox ] = ( isset( $posted_options[ $checkbox ] ) && 'true' === $posted_options[ $checkbox ] );
+		}
 		if ( isset( $posted_options['custom_css'] ) ) {
 			if ( 1 === preg_match( '#<style.*?>(.*?)</style>#is', $posted_options['custom_css'], $matches ) )
 				$posted_options['custom_css'] = trim( $matches[1] ); // if found, take match as style to save
