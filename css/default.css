@@ -21,6 +21,7 @@
 	border-spacing: 0;
 	text-align: left;
 	width: 100%;
+	margin-bottom: 1em;
 }
 
 .tablepress th,
@@ -65,6 +66,7 @@
 }
 .dataTables_wrapper .tablepress {
 	clear: both;
+	margin: 0 !important;
 }
 
 /* Length Change menu */
@@ -82,12 +84,14 @@
 .dataTables_info {
 	clear: both;
 	float: left;
+	margin-top: 4px;
 }
 
 /* Pagination */
 .dataTables_paginate {
 	float: right;
 	text-align: right;
+	margin-top: 4px;
 }
 /* Two button pagination - previous/next */
 .paginate_disabled_previous,
@@ -224,6 +228,7 @@ html[xmlns] .dataTables_wrapper { display: block; }
 .dataTables_wrapper label input,
 .dataTables_wrapper label select {
 	display: inline;
+	margin: 2px;
 }
 
 /* RTL languages */
