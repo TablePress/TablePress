@@ -81,14 +81,14 @@ class TablePress_Options_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Custom CSS', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load the following "Custom CSS" commands on each page:', 'tablepress' ); ?></label>
+		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load these "Custom CSS" commands to influence the table styling:', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr>
 		<th class="column-1" scope="row"></th>
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
-			<p class="description"><?php _e( 'This should be used to change the table styling.', 'tablepress' ); ?> <?php _e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' ); ?> <?php _e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' ); ?></p>
+			<p class="description"><?php _e( '"Custom CSS" can be used to change the styling or layout of a table.', 'tablepress' ); ?> <?php _e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' ); ?> <?php _e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' ); ?></p>
 			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the "Custom CSS" code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
 		<?php
 			echo content_url( 'tablepress-custom.css' );
