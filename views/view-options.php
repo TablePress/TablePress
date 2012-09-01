@@ -48,7 +48,7 @@ class TablePress_Options_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( &$this, 'postbox_frontend_options' ), 'normal' );
-		$this->add_meta_box( 'backend-options', __( 'Backend Options', 'tablepress' ), array( &$this, 'postbox_backend_options' ), 'normal' );
+		// $this->add_meta_box( 'backend-options', __( 'Backend Options', 'tablepress' ), array( &$this, 'postbox_backend_options' ), 'normal' ); // @TODO: Commented out as backend options are not yet used
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( &$this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Options', 'tablepress' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
