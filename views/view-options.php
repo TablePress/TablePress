@@ -21,6 +21,15 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Options_View extends TablePress_View {
 
 	/**
+	 * List of WP feature pointers for this view
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	// protected $wp_pointers = array( 'tp100_custom_css' ); // @TODO: Temporarily disabled
+
+	/**
 	 * Set up the view with data and do things that are specific for this view
 	 *
 	 * @since 1.0.0
@@ -184,6 +193,21 @@ class TablePress_Options_View extends TablePress_View {
 	 */
 	protected function help_tab_content() {
 		return 'Help for the Plugin Options screen';
+	}
+
+	/**
+	 * Set the content for the WP feature pointer about the TablePress nav bar
+	 *
+	 * @since 1.0.0
+	 */
+	public function wp_pointer_tp100_custom_css() {
+		$content  = '<h3>' . __( 'TablePress Feature: Custom CSS', 'tablepress' ) . '</h3>';
+		$content .= '<p>' .	 __( 'This is the "Custom CSS" textarea where CSS code for table styling should be entered.', 'tablepress' ) . '</p>';
+
+		$this->admin_page->print_wp_pointer_js( 'tp100_custom_css', '.CodeMirror', array(
+			'content'  => $content,
+			'position' => array( 'edge' => 'right', 'align' => 'center', 'offset' => '-16 0', 'defer_loading' => true ),
+		) );
 	}
 
 } // class TablePress_Options_View

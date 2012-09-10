@@ -79,4 +79,46 @@ class TablePress_Admin_Page {
 		return $content;
 	}
 
+	/**
+	 * Print the JavaScript code for a WP feature pointer
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $pointer_id The pointer ID.
+	 * @param string $selector The HTML elements, on which the pointer should be attached.
+	 * @param array $args Arguments to be passed to the pointer JS (see wp-pointer.js).
+	 */
+	public function print_wp_pointer_js( $pointer_id, $selector, $args ) {
+		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args ) || empty( $args['content'] ) )
+			return;
+		?>
+		<script type="text/javascript">
+		(function($){
+			var options = <?php echo json_encode( $args ); ?>, setup;
+
+			if ( ! options )
+				return;
+
+			options = $.extend( options, {
+				close: function() {
+					$.post( ajaxurl, {
+						pointer: '<?php echo $pointer_id; ?>',
+						action: 'dismiss-wp-pointer'
+					});
+				}
+			});
+
+			setup = function() {
+				$('<?php echo $selector; ?>').pointer( options ).pointer('open');
+			};
+
+			if ( options.position && options.position.defer_loading )
+				$(window).bind( 'load.wp-pointers', setup );
+			else
+				$(document).ready( setup );
+		})( jQuery );
+		</script>
+		<?php
+	}
+
 } // class TablePress_Admin_Page

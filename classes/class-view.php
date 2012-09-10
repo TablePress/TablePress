@@ -85,6 +85,15 @@ abstract class TablePress_View {
 	protected $has_meta_boxes = false;
 
 	/**
+	 * List of WP feature pointers for this view
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	protected $wp_pointers = array();
+
+	/**
 	 * Initialize the View class, by setting the correct screen columns and adding help texts
 	 *
 	 * @since 1.0.0
@@ -157,6 +166,9 @@ abstract class TablePress_View {
 			)
 		) );
 		$this->admin_page->add_admin_footer_text();
+
+		// Initialize WP feature pointers for TablePress
+		$this->_init_wp_pointers();
 
 		// necessary fields for all views
 		$this->add_text_box( 'default_nonce_fields', array( &$this, 'default_nonce_fields' ), 'header', false );
@@ -413,6 +425,34 @@ abstract class TablePress_View {
 	protected function help_tab_content() {
 		// Has to be implemented for every view that is visible in the WP Dashboard!
 		return '';
+	}
+
+	/**
+	 * Initialize the WP feature pointers for TablePress
+	 *
+	 * @since 1.0.0
+	 */
+	protected function _init_wp_pointers() {
+		// Check if there are WP pointers for this view
+		if ( empty( $this->wp_pointers ) )
+			return;
+
+		// Get dismissed pointers
+		$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
+
+		$got_pointers = false;
+		foreach ( array_diff( $this->wp_pointers, $dismissed ) as $pointer ) {
+			// Bind pointer print function
+			add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( &$this, 'wp_pointer_' . $pointer ) );
+			$got_pointers = true;
+		}
+
+		if ( ! $got_pointers )
+			return;
+
+		// Add pointers script and style to queue
+		wp_enqueue_style( 'wp-pointer' );
+		wp_enqueue_script( 'wp-pointer' );
 	}
 
 } // class TablePress_View
