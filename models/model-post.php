@@ -234,6 +234,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	public function add_meta_field( $post_id, $field, $value ) {
 		$value = addslashes( $value ); // WP expects a slashed value...
 		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique
+		$success = ( false === $success ) ? false : true; // make sure that $success is a boolean, as add_post_meta() returns an ID or false
 		return $success;
 	}
 
