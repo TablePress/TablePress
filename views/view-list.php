@@ -460,7 +460,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			echo "\t<option value='$name'$>$title</option>\n";
 		}
 		echo "</select>\n";
-		echo '<input type="submit" name="" id="doaction' . $two . '" class="button-secondary action" value="' . __( 'Apply', 'tablepress' ) . '" />' . "\n";
+		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . __( 'Apply', 'tablepress' ) . '" />' . "\n";
 	}
 
 	/**

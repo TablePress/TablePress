@@ -187,11 +187,3 @@ body.wait * {
 #tablepress_edit-table-manipulation td {
 	width: 50%;
 }
-
-/* adjust size of a.button-secondary to input.button-secondary */
-#tablepress-page a.button-secondary {
-	padding: 3px 8px;
-	display: inline-block;
-	margin: 1px;
-	line-height: 13px;
-}
