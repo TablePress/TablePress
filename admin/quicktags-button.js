@@ -37,7 +37,7 @@ jQuery(document).ready( function($) {
 	QTags.addButton(
 		'tablepress_quicktags_button',		// ID
 		tablepress_editor_button.caption,	// button caption
-		tablepress_open_shortcode_thickbox,	// click callback
+		tablepress_open_shortcode_thickbox, // click callback
 		false,								// unused
 		false,								// access key
 		tablepress_editor_button.title,		// button title

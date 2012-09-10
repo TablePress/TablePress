@@ -362,7 +362,7 @@ jQuery(document).ready( function( $ ) {
 						// first try and sort Hex codes or Dates
 						if (yD) {
 							if ( xD < yD ) return -1;
-							else if ( xD > yD )	return 1;
+							else if ( xD > yD ) return 1;
 						}
 						// natural sorting through split numeric strings and default strings
 						for(var cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
@@ -986,8 +986,8 @@ jQuery(document).ready( function( $ ) {
 					'#image-add':			tp.content.image.add,
 					'#span-add-rowspan':	function() { tp.content.span.add( '#rowspan#' ); },
 					'#span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
-					'.show-preview-button':	tp.table.preview.trigger,
-					'.save-changes-button':	tp.save_changes.trigger,
+					'.show-preview-button': tp.table.preview.trigger,
+					'.save-changes-button': tp.save_changes.trigger,
 					'.show-help-box':		function() {
 						$(this).next().wpdialog( {
 						title: $(this).attr( 'title' ),

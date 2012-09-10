@@ -259,7 +259,7 @@ class TablePress_Import {
 		$max_columns = ( $max_columns > 0 ) ? $max_columns : 1;
 		// array_map wants arrays as additional parameters (so we create one with the max_columns to pad to and one with the value to use (empty string)
 		$max_columns_array = array_fill( 1, $rows, $max_columns );
-		$pad_values_array =  array_fill( 1, $rows, '' );
+		$pad_values_array = array_fill( 1, $rows, '' );
 		return array_map( 'array_pad', $array, $max_columns_array, $pad_values_array );
 	}
 
