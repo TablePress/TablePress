@@ -152,8 +152,7 @@ class TablePress_Export_View extends TablePress_View {
 			if ( $data['zip_support_available'] ) {
 		?>
 			<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
-			<label for="tables-export-zip-file"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?></label>
-			<span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span>
+			<label for="tables-export-zip-file"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?> <span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span></label>
 		<?php
 			} else {
 				_e( 'Note: Support for ZIP file creation seems not to be available on this server.' );
