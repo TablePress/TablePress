@@ -44,12 +44,8 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( &$this, 'postbox_import_form' ), 'normal' );
-		$this->data['submit_button_caption'] = __( 'Import', 'tablepress' );
-		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'additional' );
-		if ( $data['wp_table_reloaded_installed'] ) {
+		if ( $data['wp_table_reloaded_installed'] )
 			$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( &$this, 'postbox_wp_table_reloaded_import' ), 'additional' );
-			$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
-		}
 	}
 
 	/**
@@ -142,7 +138,7 @@ class TablePress_Import_View extends TablePress_View {
 			<input name="import[add_replace]" id="tables-import-add_replace-replace" type="radio" value="replace"<?php checked( $data['import_add_replace'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <label for="tables-import-add_replace-replace"><?php _e( 'Replace existing table', 'tablepress' ); ?></label>
 		</td>
 	</tr>
-	<tr id="row-import-replace-table">
+	<tr id="row-import-replace-table" class="bottom-border">
 		<th class="column-1" scope="row"><label for="tables-import-replace-table"><?php _e( 'Table to replace', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
 			<select id="tables-import-replace-table" name="import[replace_table]"<?php disabled( $data['tables_count'] > 0, false, true ); ?>>
@@ -159,6 +155,10 @@ class TablePress_Import_View extends TablePress_View {
 			</select>
 		</td>
 	</tr>
+	<tr class="top-border">
+		<th class="column-1" scope="row"></th>
+		<td class="column-2"><input type="submit" value="<?php echo esc_attr__( 'Import', 'tablepress' ); ?>" class="button button-primary" name="submit" /></td>
+	</tr>
 </tbody>
 </table>
 <?php
@@ -171,7 +171,23 @@ class TablePress_Import_View extends TablePress_View {
 	 */
 	public function postbox_wp_table_reloaded_import( $data, $box ) {
 		?>
-		<p><?php _e( 'Import from WP-Table Reloaded', 'tablepress' ); ?></p>
+<p><?php _e( 'Import from WP-Table Reloaded', 'tablepress' ); ?></p>
+<table class="tablepress-postbox-table fixed">
+<tbody>
+	<tr class="no-border">
+		<th class="column-1" scope="row"><?php _e( 'Tables', 'tablepress' ); ?>:</th>
+		<td class="column-2"><label for="import-wp-table-reloaded-tables"> <input type="checkbox" id="import-wp-table-reloaded-tables" name="import[wp_table_reloaded][tables]" value="true" checked="checked" /> <?php _e( 'Import all tables and their settings from WP-Table Reloaded.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label></td>
+	</tr>
+	<tr class="bottom-border">
+		<th class="column-1" scope="row"><?php _e( 'Styling', 'tablepress' ); ?>:</th>
+		<td class="column-2"><label for="import-wp-table-reloaded-css"> <input type="checkbox" id="import-wp-table-reloaded-css" name="import[wp_table_reloaded][css]" value="true" checked="checked" /> <?php _e( 'Try to automatically convert the "Custom CSS" code from the "Plugin Options" screen of WP-Table Reloaded.', 'tablepress' ); ?></label></td>
+	</tr>
+	<tr class="top-border">
+		<th class="column-1" scope="row"></th>
+		<td class="column-2"><input type="submit" value="<?php echo esc_attr__( 'Import from WP-Table Reloaded', 'tablepress' ); ?>" class="button" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
+	</tr>
+</tbody>
+</table>
 		<?php
 	}
 

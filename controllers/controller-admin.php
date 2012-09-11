@@ -858,7 +858,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 *
+	 * Import data from either an existing source or WP-Table Reloaded
 	 *
 	 * @since 1.0.0
 	 */
@@ -870,6 +870,21 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$import = stripslashes_deep( $_POST['import'] );
 
+		// Determine if this is a regular import or an import from WP-Table Reloaded
+		if ( isset( $_POST['submit_wp_table_reloaded_import'] ) )
+			$this->_handle_post_action_import_wp_table_reloaded( $import );
+		else
+			$this->_handle_post_action_import_regular( $import );
+	}
+
+	/**
+	 * Import data from existing source (Upload, URL, Server, Direct input)
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $import Submitted form data
+	 */
+	protected function _handle_post_action_import_regular( $import ) {
 		if ( ! isset( $import['add_replace'] ) )
 			$import['add_replace'] = 'add';
 		if ( ! isset( $import['replace_table'] ) )
@@ -1000,6 +1015,92 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_content' ) );
 		}
 
+	}
+
+	/**
+	 * Import data from WP-Table Reloaded
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $import Submitted form data
+	 */
+	protected function _handle_post_action_import_wp_table_reloaded( $import ) {
+		// @TODO: Proper check for WP-Table Reloaded (maybe check for WP options in DB)
+		// if ( ! is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ) ) // check if WP-Table Reloaded is activated
+		//	TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_not_installed' ) );
+
+		// Handle checkbox selections
+		$import_tables = ( isset( $import['wp_table_reloaded']['tables'] ) && 'true' === $import['wp_table_reloaded']['tables'] );
+		$import_css = ( isset( $import['wp_table_reloaded']['css'] ) && 'true' === $import['wp_table_reloaded']['css'] );
+
+		if ( ! $import_tables && ! $import_css )
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_nothing_selected' ) );
+
+		// Import WP-Table Reloaded tables
+		$imported_tables = $not_imported_tables = array();
+		if ( $import_tables ) {
+			$wp_table_reloaded_tables_list = get_option( 'wp_table_reloaded_tables', false );
+			foreach ( $wp_table_reloaded_tables_list as $table_id => $table_option_name ) {
+				$wp_table_reloaded_table = get_option( $table_option_name, false );
+				if ( false === $wp_table_reloaded_table ) {
+					$not_imported_tables[] = $table_id;
+					continue;
+				}
+
+				// Table was loaded, import the data, table options, and visibility
+				$rows = count( $wp_table_reloaded_table['data'] );
+				$columns = count( $wp_table_reloaded_table['data'][0] );
+				// @TODO: Actually import tables
+
+				$not_imported_tables[] = $table_id;
+			}
+		}
+
+		// Import WP-Table Reloaded CSS settings
+		$imported_css = false;
+		if ( $import_css ) {
+			$wp_table_reloaded_options = get_option( 'wp_table_reloaded_options', false );
+			if ( false !== $wp_table_reloaded_options && is_array( $wp_table_reloaded_options ) ) {
+				$imported_options = array();
+				if ( isset( $wp_table_reloaded_options['use_default_css'] ) )
+					$imported_options['use_default_css'] = (bool)$wp_table_reloaded_options['use_default_css'];
+				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
+					$imported_options['use_custom_css'] = (bool)$wp_table_reloaded_options['use_custom_css'];
+				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
+					$imported_options['custom_css'] = $wp_table_reloaded_options['custom_css']; // @TODO: Do CSS conversion here!
+
+				/*
+					// @TODO:
+					// Maybe save it to file as well
+					$update_custom_css_file = false;
+					if ( $this->model_options->get( 'use_custom_css_file' )
+					&& $imported_options['custom_css'] !== $this->model_options->load_custom_css_from_file() ) { // only write to file, if CSS really changed
+						$update_custom_css_file = true;
+						// Set to false again. As it was set here, it will be set true again, if file saving succeeds
+						$imported_options['use_custom_css_file'] = false;
+					}
+				*/
+
+				// Save gathered imported options
+				if ( ! empty( $imported_options ) )
+					$this->model_options->update( $imported_options );
+
+				// @TODO: Necessary if saving to file above is used
+				// if ( $update_custom_css_file )
+				//	TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
+
+				$imported_css = true;
+			}
+		}
+
+		if ( count( $imported_tables ) > 1 )
+			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
+		elseif ( 1 == count( $imported_tables ) )
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_tables[0], 'message' => 'success_import_wp_table_reloaded' ) );
+		elseif ( $imported_css )
+			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
+		else
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_wp_table_reloaded' ) );
 	}
 
 	/**

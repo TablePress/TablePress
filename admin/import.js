@@ -61,13 +61,12 @@ jQuery(document).ready( function($) {
 		$( '#tables-import-format' ).val( extension );
 	}
 
-
 	/**
 	 * Check, whether inputs are valid
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' ).find( 'form' ).on( 'submit', function( /* event */ ) {
+	$( '#tablepress-page' ).find( 'form' ).on( 'submit.tablepress', function( /* event */ ) {
 		var import_source = $( '#row-import-source' ).find( 'input:checked' ).val(),
 			selected_import_source_field = $( '#tables-import-' + import_source ).get(0),
 			valid_form = true;
@@ -97,6 +96,15 @@ jQuery(document).ready( function($) {
 		if ( ! valid_form )
 			return false;
 		// at this point, the form is valid and will be submitted
+	} );
+
+	/**
+	 * Remove form validation check if "Import from WP-Table Reloaded" button is clicked
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' ).find( '#submit_wp_table_reloaded_import' ).on( 'click', function() {
+		$( '#tablepress-page' ).find( 'form' ).off( 'submit.tablepress' );
 	} );
 
 } );
