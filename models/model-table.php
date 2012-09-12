@@ -194,6 +194,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			return array();
 
 		$table_ids = array_keys( $table_post );
+		$table_ids = array_map( 'strval', $table_ids ); // convert table IDs to strings
 		$post_ids = array_values( $table_post );
 
 		// load all table posts with one query, to prime the cache
@@ -212,7 +213,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table (needs to have $table['id']!)
-	 * @return mixed False on error, int table ID on success
+	 * @return mixed False on error, string table ID on success
 	 */
 	public function save( $table ) {
 		if ( empty( $table['id'] ) )
@@ -250,7 +251,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table ($table['id'] is not necessary)
-	 * @return mixed False on error, int table ID of the new table on success
+	 * @return mixed False on error, string table ID of the new table on success
 	 */
 	public function add( $table ) {
 		$post_id = false; // to insert table
@@ -280,7 +281,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id ID of the table to be copied
-	 * @return mixed False on error, int table ID of the new table on success
+	 * @return mixed False on error, string table ID of the new table on success
 	 */
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id );
@@ -425,8 +426,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $old_id Old table ID
-	 * @param int $new_id New table ID
+	 * @param string $old_id Old table ID
+	 * @param string $new_id New table ID
 	 * @return bool True on success, false on error
 	 */
 	public function change_table_id( $old_id, $new_id ) {
@@ -434,8 +435,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( false === $post_id )
 			return false;
 
-		// Check new ID for correct format (letters, numbers, -, and _ only)
-		if ( 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) )
+		// Check new ID for correct format (string from letters, numbers, -, and _ only, except the '0' string)
+		if ( empty( $new_id ) || 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) )
 			return false;
 
 		if ( $this->table_exists( $new_id ) )

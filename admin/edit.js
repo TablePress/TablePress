@@ -40,8 +40,15 @@ jQuery(document).ready( function( $ ) {
 				$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
+				// empty table IDs are not allowed
 				if ( '' === $.trim( $( '#table-new-id' ).val() ) ) {
 					alert( tablepress_strings.table_id_not_empty );
+					$( '#table-new-id' ).val( tp.table.new_id ).focus().select();
+					return;
+				}
+				// the '0' table ID is not allowed
+				if ( '0' === $.trim( $( '#table-new-id' ).val() ) ) {
+					alert( tablepress_strings.table_id_not_zero );
 					$( '#table-new-id' ).val( tp.table.new_id ).focus().select();
 					return;
 				}

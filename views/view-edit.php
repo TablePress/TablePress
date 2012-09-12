@@ -81,6 +81,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'save_changes_error' => 'Speichern fehlgeschlagen',
 				'saving_changes' => 'Speichere Änderungen...',
 				'table_id_not_empty' => __( 'The Table ID field can not be empty. Please enter a Table ID!', 'tablepress' ),
+				'table_id_not_zero' => __( 'The Table ID &quot;0&quot; is not supported. Please enter a different Table ID!', 'tablepress' ),
 				'ays_change_table_id' => 'Willst du die Tabellen-ID wirklich ändern? Alle Shortcodes für diese Tabelle müssen angepasst werden!',
 				'extra_css_classes_invalid' => __( 'The entered value in the field &quot;Extra CSS classes&quot; is invalid.', 'tablepress' ),
 				'sort_asc' => __( 'Sort ascending', 'tablepress' ),
