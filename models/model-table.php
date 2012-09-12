@@ -167,7 +167,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			return false;
 
 		$post_id = $this->_get_post_id( $table_id );
-		if ( 0 === $post_id )
+		if ( false === $post_id )
 			return false;
 
 		$post = $this->model_post->get( $post_id );
@@ -219,7 +219,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			return false;
 
 		$post_id = $this->_get_post_id( $table['id'] );
-		if ( 0 === $post_id )
+		if ( false === $post_id )
 			return false;
 
 		$post = $this->_table_to_post( $table, $post_id );
@@ -313,7 +313,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( ! $this->table_exists( $table_id ) )
 			return false;
 
-		$post_id = $this->_get_post_id( $table_id );
+		$post_id = $this->_get_post_id( $table_id ); // no !false check necessary, as this is covered by table_exists() check above
 		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
 
 		if ( false === $deleted )
@@ -382,14 +382,14 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
-	 * @return int Post ID on success, int 0 on error
+	 * @return int Post ID on success, false on error
 	 */
 	protected function _get_post_id( $table_id ) {
-		$post_id = 0;
 		$table_post = $this->tables->get( 'table_post' );
 		if ( isset( $table_post[ $table_id ] ) )
-			$post_id = $table_post[ $table_id ];
-		return $post_id;
+			return $table_post[ $table_id ];
+		else
+			return false;
 	}
 
 	/**
@@ -431,7 +431,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function change_table_id( $old_id, $new_id ) {
 		$post_id = $this->_get_post_id( $old_id );
-		if ( 0 === $post_id )
+		if ( false === $post_id )
 			return false;
 
 		// Check new ID for correct format (letters, numbers, -, and _ only)
