@@ -216,15 +216,13 @@ class TablePress_Render {
 
 		// remove hidden rows and re-index
 		foreach ( $hidden_rows as $row_idx ) {
-			if ( isset( $this->table['data'][$row_idx] ) )
-				unset( $this->table['data'][$row_idx] );
+			unset( $this->table['data'][$row_idx] );
 		}
 		$this->table['data'] = array_merge( $this->table['data'] );
 		// remove hidden columns and re-index
 		foreach ( $this->table['data'] as $row_idx => $row ) {
 			foreach ( $hidden_columns as $col_idx ) {
-				if ( isset( $row[$col_idx] ) )
-					unset( $row[$col_idx] );
+				unset( $row[$col_idx] );
 			}
 			$this->table['data'][$row_idx] = array_merge( $row );
 		}

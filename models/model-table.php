@@ -402,9 +402,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _update_post_id( $table_id, $post_id ) {
 		$tables = $this->tables->get();
-
 		$tables['table_post'][ $table_id ] = $post_id;
-
 		uksort( $tables['table_post'], 'strnatcasecmp' );
 		$this->tables->update( $tables );
 	}
@@ -418,10 +416,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _remove_post_id( $table_id ) {
 		$tables = $this->tables->get();
-
-		if ( isset( $tables['table_post'][ $table_id ] ) )
-			unset( $tables['table_post'][ $table_id ] );
-
+		unset( $tables['table_post'][ $table_id ] );
 		$this->tables->update( $tables );
 	}
 

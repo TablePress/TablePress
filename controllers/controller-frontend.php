@@ -508,15 +508,13 @@ JS;
 			$hidden_columns = array_keys( $table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0))
 			// remove hidden rows and re-index
 			foreach ( $hidden_rows as $row_idx ) {
-				if ( isset( $table['data'][$row_idx] ) )
-					unset( $table['data'][$row_idx] );
+				unset( $table['data'][$row_idx] );
 			}
 			$table['data'] = array_merge( $table['data'] );
 			// remove hidden columns and re-index
 			foreach ( $table['data'] as $row_idx => $row ) {
 				foreach ( $hidden_columns as $col_idx ) {
-					if ( isset( $row[$col_idx] ) )
-						unset( $row[$col_idx] );
+					unset( $row[$col_idx] );
 				}
 				$table['data'][$row_idx] = array_merge( $row );
 			}
