@@ -146,7 +146,7 @@ body.wait * {
 /* hightlighting of table head and foot in table cells */
 #edit-form-body .head-row,
 #edit-form-body .foot-row {
-	background-color: #c0dddd;
+	background-color: #d9edf7;
 }
 
 /* head cells (column letters) and sorting */
