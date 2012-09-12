@@ -173,6 +173,11 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 }
 
 /* CodeMirror Styling for TablePress page/customizations compared to original CSS in this file */
+#tablepress-page .CodeMirror {
+	font-family: Consolas, Monaco, monospace;
+	font-size: 12px;
+	line-height: inherit;
+}
 #option-custom-css,
 #tablepress-page .CodeMirror-scroll {
 	background-color: #ffffff;
@@ -196,5 +201,5 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 #tablepress-page .large .CodeMirror-scroll {
-	height: 250px;
+	height: 300px;
 }
