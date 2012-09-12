@@ -64,7 +64,10 @@ class TablePress_List_View extends TablePress_View {
 
 		if ( $data['messages']['wp_table_reloaded_warning'] )
 			$this->add_header_message(
-				sprintf( __( '<strong><em>Attention!</em></strong><br />You have activated the plugin WP-Table Reloaded, which can not be used together with TablePress.<br />Please follow the <a href="%s" title"Migration Guide from WP-Table Reloaded to TablePress">migration guide</a> and then deactivate WP-Table Reloaded!', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ),
+				'<strong><em>' . __( 'Attention!', 'tablepress' ) . '</em></strong><br />'
+				. __( 'You have activated the plugin WP-Table Reloaded, which can not be used together with TablePress.', 'tablepress' ) . '<br />'
+				. sprintf( __( 'Please follow the <a href="%s" title"Migration Guide from WP-Table Reloaded to TablePress">migration guide</a> and then deactivate WP-Table Reloaded!', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ) . '<br />'
+				. '<a href="' . TablePress::url( array( 'action' => 'import' ) ) . '" class="button button-primary" title="' . __( 'Import your tables from WP-Table Reloaded', 'tablepress' ) . '" style="color:#ffffff;margin-top:5px;">' . __( 'Import your tables from WP-Table Reloaded', 'tablepress' ) . '</a>',
 				'error'
 			);
 
