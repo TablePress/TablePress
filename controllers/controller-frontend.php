@@ -127,7 +127,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	public function enqueue_datatables() {
+	protected function _enqueue_datatables() {
 		$js_file = 'js/jquery.datatables.min.js';
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		$js_url = apply_filters( 'tablepress_datatables_js_url', $js_url, $js_file );
@@ -309,7 +309,7 @@ JS;
 			);
 			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options );
 			$this->shown_tables[$table_id]['instances'][ $render_options['html_id'] ] = $js_options;
-			$this->enqueue_datatables();
+			$this->_enqueue_datatables();
 		}
 
 		// generate "Edit Table" link
@@ -487,7 +487,7 @@ JS;
 	 * @param string $search Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching
 	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them
 	 */
-	function posts_search_filter( $search_sql ) {
+	public function posts_search_filter( $search_sql ) {
 		if ( ! is_search() )
 			return $search_sql;
 
