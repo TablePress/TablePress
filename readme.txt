@@ -101,7 +101,7 @@ Thanks to every donor, supporter and bug reporter!
 This plugin is Free Software, released under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
 I kindly ask you for link somewhere on your website to http://tablepress.org/. This is not required!
-I'm also happy about [donations](http://tablepress.org/donate/) or something from [my wishlist](http://tobias.baethge.com/wishlist/)! Thanks!
+I'm also happy about [donations](http://tablepress.org/donate/) or something from [my wishlist](http://tablepress.org/wishlist/)! Thanks!
 
 == Changelog ==
 
