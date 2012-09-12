@@ -1066,8 +1066,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$imported_options['use_default_css'] = (bool)$wp_table_reloaded_options['use_default_css'];
 				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
 					$imported_options['use_custom_css'] = (bool)$wp_table_reloaded_options['use_custom_css'];
-				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
-					$imported_options['custom_css'] = $wp_table_reloaded_options['custom_css']; // @TODO: Do CSS conversion here!
+				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) {
+					$imported_options['custom_css'] = stripslashes( $wp_table_reloaded_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '#wp-table-reloaded-id-', '#tablepress-', $imported_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '-no-1', '', $imported_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '.wp-table-reloaded-id-', '.tablepress-id-', $imported_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '.wp-table-reloaded', '.tablepress', $imported_options['custom_css'] );
+				}
 
 				/*
 					// @TODO:
