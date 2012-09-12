@@ -958,7 +958,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! $import_zip ) {
 			if ( ! isset( $import_data['data'] ) )
 				$import_data['data'] = file_get_contents( $import_data['file_location'] );
-			if ( false == $import_data['data'] )
+			if ( false === $import_data['data'] )
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
 
 			$name = $import_data['file_name'];
@@ -969,7 +969,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( $unlink_file )
 				@unlink( $import_data['file_location'] );
 
-			if ( false == $table_id )
+			if ( false === $table_id )
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_data' ) );
 			else
 				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_import' ) );
@@ -997,7 +997,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$description = $file_name;
 				$replace_id = ( 'replace' == $import['add_replace'] ) ? false : false; // @TODO: Find a way to extract the replace ID from the filename, maybe?
 				$table_id = $this->_import_table( $import['format'], $data, $name, $description, $replace_id );
-				if ( false == $table_id )
+				if ( false === $table_id )
 					continue;
 				else
 					$imported_files[] = $table_id;
