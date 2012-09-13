@@ -1025,9 +1025,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $import Submitted form data
 	 */
 	protected function _handle_post_action_import_wp_table_reloaded( $import ) {
-		// @TODO: Proper check for WP-Table Reloaded (maybe check for WP options in DB)
-		// if ( ! is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ) ) // check if WP-Table Reloaded is activated
-		//	TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_not_installed' ) );
+		if ( false === get_option( 'wp_table_reloaded_options', false ) || false === get_option( 'wp_table_reloaded_tables', false ) )
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_not_installed' ) );
 
 		// Handle checkbox selections
 		$import_tables = ( isset( $import['wp_table_reloaded']['tables'] ) && 'true' === $import['wp_table_reloaded']['tables'] );
@@ -1037,22 +1036,96 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_nothing_selected' ) );
 
 		// Import WP-Table Reloaded tables
-		$imported_tables = $not_imported_tables = array();
+		$imported_tables = $imported_other_id_tables = $not_imported_tables = array();
 		if ( $import_tables ) {
 			$wp_table_reloaded_tables_list = get_option( 'wp_table_reloaded_tables', false );
-			foreach ( $wp_table_reloaded_tables_list as $table_id => $table_option_name ) {
-				$wp_table_reloaded_table = get_option( $table_option_name, false );
-				if ( false === $wp_table_reloaded_table ) {
-					$not_imported_tables[] = $table_id;
+			foreach ( $wp_table_reloaded_tables_list as $wptr_table_id => $table_option_name ) {
+				$wptr_table = get_option( $table_option_name, false );
+				if ( false === $wptr_table ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+				// Perform sanity checks of imported table
+				if ( ! isset( $wptr_table['name'] )
+					|| ! isset( $wptr_table['description'] )
+					|| empty( $wptr_table['data'] )
+					|| empty( $wptr_table['options'] ) ) {
+					$not_imported_tables[] = $wptr_table_id;
 					continue;
 				}
 
 				// Table was loaded, import the data, table options, and visibility
-				$rows = count( $wp_table_reloaded_table['data'] );
-				$columns = count( $wp_table_reloaded_table['data'][0] );
-				// @TODO: Actually import tables
+				// Create a new table array with information from the imported table
+				$new_table = array(
+					'name' => $wptr_table['name'],
+					'description' => $wptr_table['description'],
+					'data' => $wptr_table['data'],
+					'options' => array(),
+					'visibility' => array(
+						'rows' => array_fill( 0, count( $wptr_table['data'] ), 1 ),
+						'columns' => array_fill( 0, count( $wptr_table['data'][0] ), 1 )
+					)
+				);
+				if ( isset( $wptr_table['last_modified'] ) )
+					$new_table['last_modified'] = $wptr_table['last_modified'];
+				if ( isset( $wptr_table['last_editor_id'] ) )
+					$new_table['author'] = $wptr_table['last_editor_id'];
+				if ( isset( $wptr_table['options']['last_editor_id'] ) )
+					$new_table['options']['last_editor'] = $wptr_table['last_editor_id'];
+				if ( isset( $wptr_table['options']['first_row_th'] ) )
+					$new_table['options']['table_head'] = $wptr_table['options']['first_row_th'];
+				if ( isset( $wptr_table['options']['table_footer'] ) )
+					$new_table['options']['table_foot'] = $wptr_table['options']['table_footer'];
+				if ( isset( $wptr_table['options']['print_name'] ) && isset( $wptr_table['options']['print_name_position'] ) )
+					$new_table['options']['print_name'] = ( false === $wptr_table['options']['print_name'] ) ? 'no' : $wptr_table['options']['print_name_position'];
+				if ( isset( $wptr_table['options']['print_description'] ) && isset( $wptr_table['options']['print_description_position'] ) )
+					$new_table['options']['print_description'] = ( false === $wptr_table['options']['print_description'] ) ? 'no' : $wptr_table['options']['print_description_position'];
+				if ( isset( $wptr_table['options']['custom_css_class'] ) )
+					$new_table['options']['extra_css_classes'] = $wptr_table['options']['custom_css_class'];
+				// array key is the same in both plugins for the following options
+				foreach ( array( 'alternating_row_colors', 'row_hover',
+					'use_datatables', 'datatables_sort',  'datatables_filter', 'datatables_paginate',
+					'datatables_lengthchange', 'datatables_paginate_entries', 'datatables_info'
+					) as $_option ) {
+					if ( isset( $wptr_table['options'][ $_option ] ) )
+						$new_table['options'][ $_option ] = $wptr_table['options'][ $_option ];
+				}
+				if ( isset( $wptr_table['options']['datatables_customcommands'] ) )
+					$new_table['options']['datatables_custom_commands'] = $wptr_table['options']['datatables_customcommands'];
+				// not imported: $wptr_table['options']['datatables_tabletools']
+				// not imported: $wptr_table['options']['cache_table_output']
+				// not imported: $wptr_table['custom_fields']
 
-				$not_imported_tables[] = $table_id;
+				// Fix visibility: WP-Table Reloaded uses 0 and 1 the other way around
+				foreach ( array_keys( $wptr_table['visibility']['rows'], true ) as $row_idx ) {
+					$new_table['visibility']['rows'][ $row_idx ] = 0;
+				}
+				foreach ( array_keys( $wptr_table['visibility']['columns'], true ) as $column_idx ) {
+					$new_table['visibility']['columns'][ $column_idx ] = 0;
+				}
+
+				// Merge this data into an empty table template
+				$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $new_table, false );
+				if ( false === $table ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				// Add the new table (and get its first ID)
+				$tp_table_id = $this->model_table->add( $table );
+				if ( false === $tp_table_id ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				// Change table ID to the ID the table had in WP-Table Reloaded (except if that ID is already taken)
+				$id_changed = $this->model_table->change_table_id( $tp_table_id, $wptr_table_id );
+				if ( ! $id_changed ) {
+					$imported_other_id_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				$imported_tables[] = $wptr_table_id;
 			}
 		}
 
@@ -1098,6 +1171,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 		}
 
+		// @TODO: Better handling of the different cases of imported/imported-without-ID-change/not-imported tables
 		if ( count( $imported_tables ) > 1 )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
 		elseif ( 1 == count( $imported_tables ) )
