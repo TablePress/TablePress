@@ -499,8 +499,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_info' => true,
 				'datatables_scrollX' => true,
 				'datatables_custom_commands' => ''
-				//'datatables_tabletools' => false,
-				//'cache_table_output' => true???
+				//'datatables_tabletools' => false
 			),
 			'visibility' => array(
 				'rows' => array( 1 ), // one visbile row
@@ -610,8 +609,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['options'] = array_merge( $table['options'], $new_table['options'] );
 		}
 		// Table Visibility
-		$table['visibility']['rows'] = array_map( 'intval', $new_table['visibility']['rows'] );
-		$table['visibility']['columns'] = array_map( 'intval', $new_table['visibility']['columns'] );
+		$table['visibility']['rows'] = $new_table['visibility']['rows'];
+		$table['visibility']['columns'] = $new_table['visibility']['columns'];
 
 		return $table;
 	}
