@@ -280,6 +280,13 @@ class TablePress_Options_Model extends TablePress_Model {
 		if ( 0 !== validate_file( $filename ) )
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) );
 		global $wp_filesystem;
+
+		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
+		// We need to account for that by replacing the path difference in the filename
+		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
+		if ( '' != $path_difference )
+			$filename = str_replace( $path_difference, '', $filename );
+
 		$custom_css = $this->get( 'custom_css' );
 		$result = $wp_filesystem->put_contents( $filename, $custom_css, FS_CHMOD_FILE );
 		if ( ! $result )
