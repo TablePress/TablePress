@@ -21,6 +21,8 @@ abstract class TablePress {
 	/**
 	 * TablePress version
 	 *
+	 * Increases whenever a new plugin version is released
+	 *
 	 * @since 1.0.0
 	 *
 	 * @const string
@@ -28,13 +30,27 @@ abstract class TablePress {
 	const version = '0.4-alpha';
 
 	/**
-	 * TablePress "data scheme" version
+	 * TablePress internal plugin version ("options scheme" version)
+	 *
+	 * Increases whenever the scheme for the plugin options changes, or on a plugin update
 	 *
 	 * @since 1.0.0
 	 *
 	 * @const int
 	 */
-	const db_version = 6;
+	const db_version = 7;
+
+	/**
+	 * TablePress "table scheme" (data format structure) version
+	 *
+	 * Increases whenever the scheme for a $table changes,
+	 * used to be able to update plugin options and table scheme independently
+	 *
+	 * @since 1.0.0
+	 *
+	 * @const int
+	 */
+	const table_scheme_version = 1;
 
 	/**
 	 * Instance of the controller object

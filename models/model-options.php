@@ -29,6 +29,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	protected $default_plugin_options = array(
 		'plugin_options_db_version' => 0,
+		'table_scheme_db_version' => 0,
 		'prev_tablepress_version' => '0',
 		'tablepress_version' => TablePress::version,
 		'first_activation' => 0,

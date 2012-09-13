@@ -99,11 +99,18 @@ abstract class TablePress_Controller {
 					'tablepress_version' => TablePress::version,
 					'message_plugin_update' => true
 				) );
-				$this->model_table->merge_table_options_defaults();
 			}
 
 			$this->model_options->update( array(
 				'message_plugin_update_content' => $this->model_options->plugin_update_message( $this->model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() )
+			) );
+		}
+
+		// Maybe update the table scheme in each existing table, independently from updating the plugin options
+		if ( $this->model_options->get( 'table_scheme_db_version' ) < TablePress::table_scheme_version ) {
+			$this->model_table->merge_table_options_defaults();
+			$this->model_options->update( array(
+				'table_scheme_db_version' => TablePress::table_scheme_version
 			) );
 		}
 

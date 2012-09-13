@@ -714,7 +714,7 @@ class TablePress_Table_Model extends TablePress_Model {
 
 	/**
 	 * Merge existing Table Options with default Table Options,
-	 * remove (no longer) existing options, e.g. after a plugin update,
+	 * remove (no longer) existing options, after a table scheme change,
 	 * for all tables
 	 *
 	 * @since 1.0.0
