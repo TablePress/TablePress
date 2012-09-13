@@ -85,7 +85,7 @@ class TablePress_List_View extends TablePress_View {
 			);
 
 		if ( $data['messages']['show_plugin_update'] ) {
-			$message = '<strong><em>Thank you for updating to TablePress ' . TablePress::version . ' (revision ' . TablePress::db_version . ')!</em></strong><br />';
+			$message = '<strong><em>Thank you for updating to TablePress ' . TablePress::version . '!</em></strong><br />';
 			if ( ! empty( $data['messages']['plugin_update_message'] ) )
 				$message .= $data['messages']['plugin_update_message'] . '<br /><br />';
 			$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ) , __( 'Hide this message', 'tablepress' ) );
