@@ -97,7 +97,13 @@ class TablePress_Options_View extends TablePress_View {
 		<th class="column-1" scope="row"></th>
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
-			<p class="description"><?php _e( '"Custom CSS" can be used to change the styling or layout of a table.', 'tablepress' ); ?> <?php _e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' ); ?> <?php _e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' ); ?></p>
+			<p class="description"><?php
+				_e( sprintf( '"Custom CSS" (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'http://www.htmldog.com/guides/cssbeginner/' ), 'tablepress' );
+				echo ' ';
+				_e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' );
+				echo ' ';
+				_e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' );
+			?></p>
 			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the "Custom CSS" code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
 		<?php
 			echo content_url( 'tablepress-custom.css' );
