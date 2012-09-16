@@ -86,7 +86,7 @@ body.wait * {
 
 /* cells of currently focussed row/autogrow */
 #edit-form-body .focus td {
-	height: 60px;
+	height: 64px;
 }
 
 /* alternating row colors */
