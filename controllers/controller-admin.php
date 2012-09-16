@@ -1054,6 +1054,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					continue;
 				}
 
+				$wptr_table = stripslashes_deep( $wptr_table ); // slashed in WP-Table Reloaded
+
 				// Table was loaded, import the data, table options, and visibility
 				// Create a new table array with information from the imported table
 				$new_table = array(
