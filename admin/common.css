@@ -11,11 +11,21 @@
 #icon-tablepress {
 	background-image: url( 'tablepress-icon.png' );
 }
-/* Retina Screen icon */
+/* Retina images */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+	/* Screen icon */
 	#icon-tablepress {
 		background-image: url( 'tablepress-icon-2x.png' );
 		background-size: 36px 36px;
+	}
+	/* Admin Menu icon */
+	#toplevel_page_tablepress .wp-menu-image {
+		background-image: url( 'tablepress-icon-small-2x.png' );
+		background-size: 16px 16px;
+		background-position: 7px 7px;
+	}
+	#toplevel_page_tablepress .wp-menu-image img {
+		display: none;
 	}
 }
 /* Hide second Screen icon (above the credentials form to save "Custom CSS" */
