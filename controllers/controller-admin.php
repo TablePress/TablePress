@@ -366,6 +366,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? $_GET['import_server'] : ABSPATH;
 				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? $_GET['import_form_field'] : '';
 				$data['wp_table_reloaded_installed'] = ( false !== get_option( 'wp_table_reloaded_options', false ) && false !== get_option( 'wp_table_reloaded_tables', false ) );
+				$data['import_wp_table_reloaded_source'] = ( ! empty( $_GET['import_wp_table_reloaded_source'] ) ) ? $_GET['import_wp_table_reloaded_source'] : ( $data['wp_table_reloaded_installed'] ? 'db' : 'dump-file' );
 				break;
 		}
 
@@ -871,10 +872,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$import = stripslashes_deep( $_POST['import'] );
 
 		// Determine if this is a regular import or an import from WP-Table Reloaded
-		if ( isset( $_POST['submit_wp_table_reloaded_import'] ) )
-			$this->_handle_post_action_import_wp_table_reloaded( $import );
-		else
+		if ( isset( $_POST['submit_wp_table_reloaded_import'] ) && isset( $import['wp_table_reloaded'] ) && isset( $import['wp_table_reloaded']['source'] ) ) {
+			if ( 'db' == $import['wp_table_reloaded']['source'] )
+				$this->_handle_post_action_import_wp_table_reloaded_db( $import );
+			else
+				$this->_handle_post_action_import_wp_table_reloaded_dump_file( $import );
+		} else {
 			$this->_handle_post_action_import_regular( $import );
+		}
 	}
 
 	/**
@@ -1018,13 +1023,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Import data from WP-Table Reloaded
+	 * Import data from WP-Table Reloaded from the WordPress database
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param array $import Submitted form data
 	 */
-	protected function _handle_post_action_import_wp_table_reloaded( $import ) {
+	protected function _handle_post_action_import_wp_table_reloaded_db( $import ) {
 		if ( false === get_option( 'wp_table_reloaded_options', false ) || false === get_option( 'wp_table_reloaded_tables', false ) )
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_not_installed' ) );
 
@@ -1182,6 +1187,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
 		else
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_wp_table_reloaded' ) );
+	}
+
+	/**
+	 * Import data from WP-Table Reloaded from a WP-Table Reloaded Dump File
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $import Submitted form data
+	 */
+	protected function _handle_post_action_import_wp_table_reloaded_dump_file( $import ) {
+		//@TODO: Yet to implement
+		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
 	}
 
 	/**

@@ -219,6 +219,7 @@
 	margin-bottom: 4px;
 }
 /* some left margin on radio buttons */
-#tablepress_import-import-form .column-2 input[type="radio"] {
+#tablepress_import-import-form .column-2 input[type="radio"],
+#tablepress_import-import-wp-table-reloaded .column-2 input[type="radio"] {
 	margin-left: 5px;
 }

@@ -183,7 +183,24 @@ class TablePress_Import_View extends TablePress_View {
 <p><?php _e( 'Import from WP-Table Reloaded', 'tablepress' ); ?></p>
 <table class="tablepress-postbox-table fixed">
 <tbody>
-	<tr class="no-border">
+	<tr id="row-import-wp-table-reloaded-source">
+		<th class="column-1" scope="row"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
+		<td class="column-2">
+			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-db" type="radio" value="db"<?php checked( $data['import_wp_table_reloaded_source'], 'db', true ); ?> /> <label for="import-wp-table-reloaded-source-db"><?php _e( 'WordPress database', 'tablepress' ); ?></label>
+			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-dump-file" type="radio" value="dump-file"<?php checked( $data['import_wp_table_reloaded_source'], 'dump-file', true ); ?> /> <label for="import-wp-table-reloaded-source-dump-file"><?php _e( 'WP-Table Reloaded Dump File', 'tablepress' ); ?></label>
+		</td>
+	</tr>
+	<tr id="row-import-wp-table-reloaded-source-dump-file" class="bottom-border">
+		<th class="column-1 top-align" scope="row"><label for="tables-import-wp-table-reloaded-dump-file"><?php _e( 'Select file', 'tablepress' ); ?>:</label></th>
+		<td class="column-2">
+			<input name="import_wp_table_reloaded_file_upload" id="tables-import-wp-table-reloaded-dump-file" type="file" class="large-text" style="box-sizing: border-box;" />
+		</td>
+	</tr>
+	<tr id="row-import-wp-table-reloaded-source-db" class="bottom-border">
+		<th class="column-1 top-align" scope="row" style="padding:2px;"></th>
+		<td class="column-2" style="padding:2px;"></td>
+	</tr>
+	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Tables', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="import-wp-table-reloaded-tables"> <input type="checkbox" id="import-wp-table-reloaded-tables" name="import[wp_table_reloaded][tables]" value="true" checked="checked" /> <?php _e( 'Import all tables and their settings from WP-Table Reloaded.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label></td>
 	</tr>
