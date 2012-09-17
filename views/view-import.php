@@ -53,8 +53,7 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( &$this, 'postbox_import_form' ), 'normal' );
-		if ( $data['wp_table_reloaded_installed'] )
-			$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( &$this, 'postbox_wp_table_reloaded_import' ), 'additional' );
+		$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( &$this, 'postbox_wp_table_reloaded_import' ), 'additional' );
 	}
 
 	/**
@@ -186,7 +185,7 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-wp-table-reloaded-source">
 		<th class="column-1" scope="row"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-db" type="radio" value="db"<?php checked( $data['import_wp_table_reloaded_source'], 'db', true ); ?> /> <label for="import-wp-table-reloaded-source-db"><?php _e( 'WordPress database', 'tablepress' ); ?></label>
+			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-db" type="radio" value="db"<?php checked( $data['import_wp_table_reloaded_source'], 'db', true ); disabled( $data['wp_table_reloaded_installed'], false, true ); ?> /> <label for="import-wp-table-reloaded-source-db"><?php _e( 'WordPress database', 'tablepress' ); ?></label>
 			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-dump-file" type="radio" value="dump-file"<?php checked( $data['import_wp_table_reloaded_source'], 'dump-file', true ); ?> /> <label for="import-wp-table-reloaded-source-dump-file"><?php _e( 'WP-Table Reloaded Dump File', 'tablepress' ); ?></label>
 		</td>
 	</tr>
@@ -232,9 +231,6 @@ class TablePress_Import_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function wp_pointer_tp100_wp_table_reloaded_import() {
-		if ( ! $this->data['wp_table_reloaded_installed'] )
-			return;
-
 		$content  = '<h3>' . __( 'TablePress Feature: Import from WP-Table Reloaded', 'tablepress' ) . '</h3>';
 		$content .= '<p>' .	 __( 'You can import your existing tables and "Custom CSS" from WP-Table Reloaded into TablePress.', 'tablepress' ) . '</p>';
 
