@@ -307,7 +307,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell
 	 */
 	protected function column_table_action( $item ) {
-		return '<input type="button" class="insert-shortcode button button-small" title="[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]" value="' . __( 'Insert Shortcode', 'tablepress' ) . '" />';
+		return '<input type="button" class="insert-shortcode button" title="[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]" value="' . __( 'Insert Shortcode', 'tablepress' ) . '" />';
 	}
 
 	/**

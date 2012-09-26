@@ -209,7 +209,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"></th>
-		<td class="column-2"><input type="submit" value="<?php echo esc_attr__( 'Import from WP-Table Reloaded', 'tablepress' ); ?>" class="button" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
+		<td class="column-2"><input type="submit" value="<?php echo esc_attr__( 'Import from WP-Table Reloaded', 'tablepress' ); ?>" class="button button-large" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
 	</tr>
 </tbody>
 </table>
