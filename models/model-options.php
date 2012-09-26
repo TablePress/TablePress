@@ -249,7 +249,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	public function save_custom_css_to_file() {
 		// Set current screen to get Screen Icon to have a custom HTML ID, so that we can hide it with CSS
-		set_current_screen( "tablepress_options_invisible" );
+		set_current_screen( 'tablepress_options_invisible' );
 
 		// Start capturing the output, to get HTML of the credentials form (if needed)
 		ob_start();
