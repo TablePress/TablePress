@@ -190,7 +190,8 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular'	=> 'tablepress-table',				// singular name of the listed records
 			'plural'	=> 'tablepress-editor-button-list', // plural name of the listed records
-			'ajax'		=> false							// does this list table support AJAX?
+			'ajax'		=> false,							// does this list table support AJAX?
+			'screen'	=> convert_to_screen( 'tablepress_editor_button_thickbox' )
 		) );
 	}
 
