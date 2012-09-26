@@ -196,6 +196,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	width: 98%;
 	height: 100px;
 	margin: 1px;
+	resize: vertical; /* currently not always working if scrolling is necessary */
 }
 #tablepress-page .CodeMirror-lines {
 	padding: 3px;
