@@ -81,7 +81,7 @@ class TablePress_About_View extends TablePress_View {
 	 */
 	public function postbox_more_information( $data, $box ) {
 		?>
-		<p><?php printf( __( 'More information about TablePress can be found on the <a href="%s">plugin\'s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tablepress.org/website/', 'http://wordpress.org/extend/plugins/tablepress/' ); ?> <?php printf( __( 'For technical information, see the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' ); ?></p>
+		<p><?php printf( __( 'More information about TablePress can be found on the <a href="%s">plugin\'s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tablepress.org/', 'http://wordpress.org/extend/plugins/tablepress/' ); ?> <?php printf( __( 'For technical information, see the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' ); ?></p>
 		<?php
 	}
 
