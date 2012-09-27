@@ -1196,8 +1196,169 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $import Submitted form data
 	 */
 	protected function _handle_post_action_import_wp_table_reloaded_dump_file( $import ) {
-		//@TODO: Yet to implement
-		TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
+		if ( empty( $_FILES['import_wp_table_reloaded_file_upload'] ) || empty( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] ) || UPLOAD_ERR_OK !== $_FILES['import_wp_table_reloaded_file_upload']['error'] )
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_dump_file' ) );
+
+		$dump_file = file_get_contents( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
+		$dump_file = unserialize( $dump_file );
+		if ( empty( $dump_file ) ) {
+			@unlink( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_dump_file' ) );
+		}
+
+		// Handle checkbox selections
+		$import_tables = ( isset( $import['wp_table_reloaded']['tables'] ) && 'true' === $import['wp_table_reloaded']['tables'] );
+		$import_css = ( isset( $import['wp_table_reloaded']['css'] ) && 'true' === $import['wp_table_reloaded']['css'] );
+
+		if ( ! $import_tables && ! $import_css )
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_nothing_selected' ) );
+
+		// Import WP-Table Reloaded tables
+		$imported_tables = $imported_other_id_tables = $not_imported_tables = array();
+		if ( $import_tables && ! empty( $dump_file['tables'] ) ) {
+			foreach ( $dump_file['tables'] as $wptr_table_id => $wptr_table ) {
+				if ( empty( $wptr_table ) ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+				// Perform sanity checks of imported table
+				if ( ! isset( $wptr_table['name'] )
+					|| ! isset( $wptr_table['description'] )
+					|| empty( $wptr_table['data'] )
+					|| empty( $wptr_table['options'] ) ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				$wptr_table = stripslashes_deep( $wptr_table ); // slashed in WP-Table Reloaded
+
+				// Table was loaded, import the data, table options, and visibility
+				// Create a new table array with information from the imported table
+				$new_table = array(
+					'name' => $wptr_table['name'],
+					'description' => $wptr_table['description'],
+					'data' => $wptr_table['data'],
+					'options' => array(),
+					'visibility' => array(
+						'rows' => array_fill( 0, count( $wptr_table['data'] ), 1 ),
+						'columns' => array_fill( 0, count( $wptr_table['data'][0] ), 1 )
+					)
+				);
+				if ( isset( $wptr_table['last_modified'] ) )
+					$new_table['last_modified'] = $wptr_table['last_modified'];
+				if ( isset( $wptr_table['last_editor_id'] ) )
+					$new_table['author'] = $wptr_table['last_editor_id'];
+				if ( isset( $wptr_table['options']['last_editor_id'] ) )
+					$new_table['options']['last_editor'] = $wptr_table['last_editor_id'];
+				if ( isset( $wptr_table['options']['first_row_th'] ) )
+					$new_table['options']['table_head'] = $wptr_table['options']['first_row_th'];
+				if ( isset( $wptr_table['options']['table_footer'] ) )
+					$new_table['options']['table_foot'] = $wptr_table['options']['table_footer'];
+				if ( isset( $wptr_table['options']['print_name'] ) && isset( $wptr_table['options']['print_name_position'] ) )
+					$new_table['options']['print_name'] = ( false === $wptr_table['options']['print_name'] ) ? 'no' : $wptr_table['options']['print_name_position'];
+				if ( isset( $wptr_table['options']['print_description'] ) && isset( $wptr_table['options']['print_description_position'] ) )
+					$new_table['options']['print_description'] = ( false === $wptr_table['options']['print_description'] ) ? 'no' : $wptr_table['options']['print_description_position'];
+				if ( isset( $wptr_table['options']['custom_css_class'] ) )
+					$new_table['options']['extra_css_classes'] = $wptr_table['options']['custom_css_class'];
+				// array key is the same in both plugins for the following options
+				foreach ( array( 'alternating_row_colors', 'row_hover',
+					'use_datatables', 'datatables_sort',  'datatables_filter', 'datatables_paginate',
+					'datatables_lengthchange', 'datatables_paginate_entries', 'datatables_info'
+					) as $_option ) {
+					if ( isset( $wptr_table['options'][ $_option ] ) )
+						$new_table['options'][ $_option ] = $wptr_table['options'][ $_option ];
+				}
+				if ( isset( $wptr_table['options']['datatables_customcommands'] ) )
+					$new_table['options']['datatables_custom_commands'] = $wptr_table['options']['datatables_customcommands'];
+				// not imported: $wptr_table['options']['datatables_tabletools']
+				// not imported: $wptr_table['options']['cache_table_output']
+				// not imported: $wptr_table['custom_fields']
+
+				// Fix visibility: WP-Table Reloaded uses 0 and 1 the other way around
+				foreach ( array_keys( $wptr_table['visibility']['rows'], true ) as $row_idx ) {
+					$new_table['visibility']['rows'][ $row_idx ] = 0;
+				}
+				foreach ( array_keys( $wptr_table['visibility']['columns'], true ) as $column_idx ) {
+					$new_table['visibility']['columns'][ $column_idx ] = 0;
+				}
+
+				// Merge this data into an empty table template
+				$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $new_table, false );
+				if ( false === $table ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				// Add the new table (and get its first ID)
+				$tp_table_id = $this->model_table->add( $table );
+				if ( false === $tp_table_id ) {
+					$not_imported_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				// Change table ID to the ID the table had in WP-Table Reloaded (except if that ID is already taken)
+				$id_changed = $this->model_table->change_table_id( $tp_table_id, $wptr_table_id );
+				if ( ! $id_changed ) {
+					$imported_other_id_tables[] = $wptr_table_id;
+					continue;
+				}
+
+				$imported_tables[] = $wptr_table_id;
+			}
+		}
+
+		// Import WP-Table Reloaded CSS settings
+		$imported_css = false;
+		if ( $import_css && ! empty( $dump_file['options'] ) ) {
+			$wp_table_reloaded_options = $dump_file['options'];
+			if ( false !== $wp_table_reloaded_options && is_array( $wp_table_reloaded_options ) ) {
+				$imported_options = array();
+				if ( isset( $wp_table_reloaded_options['use_default_css'] ) )
+					$imported_options['use_default_css'] = (bool)$wp_table_reloaded_options['use_default_css'];
+				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
+					$imported_options['use_custom_css'] = (bool)$wp_table_reloaded_options['use_custom_css'];
+				if ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) {
+					$imported_options['custom_css'] = stripslashes( $wp_table_reloaded_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '#wp-table-reloaded-id-', '#tablepress-', $imported_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '-no-1', '', $imported_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '.wp-table-reloaded-id-', '.tablepress-id-', $imported_options['custom_css'] );
+					$imported_options['custom_css'] = str_replace( '.wp-table-reloaded', '.tablepress', $imported_options['custom_css'] );
+				}
+
+				/*
+					// @TODO:
+					// Maybe save it to file as well
+					$update_custom_css_file = false;
+					if ( $this->model_options->get( 'use_custom_css_file' )
+					&& $imported_options['custom_css'] !== $this->model_options->load_custom_css_from_file() ) { // only write to file, if CSS really changed
+						$update_custom_css_file = true;
+						// Set to false again. As it was set here, it will be set true again, if file saving succeeds
+						$imported_options['use_custom_css_file'] = false;
+					}
+				*/
+
+				// Save gathered imported options
+				if ( ! empty( $imported_options ) )
+					$this->model_options->update( $imported_options );
+
+				// @TODO: Necessary if saving to file above is used
+				// if ( $update_custom_css_file )
+				//	TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
+
+				$imported_css = true;
+			}
+		}
+
+		@unlink( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
+		// @TODO: Better handling of the different cases of imported/imported-without-ID-change/not-imported tables
+		if ( count( $imported_tables ) > 1 )
+			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
+		elseif ( 1 == count( $imported_tables ) )
+			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_tables[0], 'message' => 'success_import_wp_table_reloaded' ) );
+		elseif ( $imported_css )
+			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
+		else
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_wp_table_reloaded' ) );
 	}
 
 	/**
