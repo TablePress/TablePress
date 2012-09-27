@@ -545,16 +545,11 @@ class TablePress_Render {
 			}
 
 			$span_attr = '';
-			$cell_class = 'column-' . ( $col_idx + 1 );
-			if ( $this->colspan[ $row_idx ] > 1 ) { // we have colspaned cells
+			if ( $this->colspan[ $row_idx ] > 1 ) // we have colspaned cells
 				$span_attr .= " colspan=\"{$this->colspan[ $row_idx ]}\"";
-				$cell_class .= " colspan-{$this->colspan[ $row_idx ]}";
-			}
-			if ( $this->rowspan[ $col_idx ] > 1 ) { // we have rowspaned cells
+			if ( $this->rowspan[ $col_idx ] > 1 ) // we have rowspaned cells
 				$span_attr .= " rowspan=\"{$this->rowspan[ $col_idx ]}\"";
-				$cell_class .= " rowspan-{$this->rowspan[ $col_idx ]}";
-			}
-
+			$cell_class = 'column-' . ( $col_idx + 1 );
 			$cell_class = apply_filters( 'tablepress_cell_css_class', $cell_class, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
 			$class_attr = ( ! empty( $cell_class ) ) ? " class=\"{$cell_class}\"" : '';
 			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][$col_idx] ) ) ? " style=\"width:{$this->render_options['column_widths'][$col_idx]};\"" : '';
