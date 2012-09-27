@@ -519,8 +519,8 @@ class TablePress_Render {
 					$this->colspan[ $row_idx ] = 1; // reset counter for colspan in this row, combined col- and rowspan might be happening
 					continue;
 				}
-				// invalid rowspan, so we set cell content from #rowspan# to a space
-				$cell_content = '&nbsp;';
+				// invalid rowspan, so we set cell content from #rowspan# to empty
+				$cell_content = '';
 			} elseif ( $this->span_trigger['colspan'] == $cell_content ) { // there will be a colspan
 				// check for #colspan# in first column, which doesn't make sense
 				if ( $col_idx > 1
@@ -529,16 +529,16 @@ class TablePress_Render {
 					$this->rowspan[ $col_idx ] = 1; // reset counter for rowspan in this column, combined col- and rowspan might be happening
 					continue;
 				}
-				// invalid colspan, so we set cell content from #colspan# to a space
-				$cell_content = '&nbsp;';
+				// invalid colspan, so we set cell content from #colspan# to empty
+				$cell_content = '';
 			} elseif ( $this->span_trigger['span'] == $cell_content ) { // there will be a combined col- and rowspan
 				// check for #span# in first column or first or last row, which is not always possible
 				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx && $col_idx > 1 )
 				// we are in first, second, or last row or in the first or second column, so more checks are necessary
 				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
-					&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) // and no colspan into first column head
+					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
 				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // no rowspan out of table_foot
-					&& ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
+					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // and no colspan into first column head
 					continue;
 				// invalid span, so we set cell content from #span# to empty
 				$cell_content = '';
