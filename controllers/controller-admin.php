@@ -1182,6 +1182,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
 		elseif ( 1 == count( $imported_tables ) )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_tables[0], 'message' => 'success_import_wp_table_reloaded' ) );
+		if ( count( $imported_other_id_tables ) > 0 )
+			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
 		elseif ( $imported_css )
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
 		else
@@ -1355,6 +1357,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
 		elseif ( 1 == count( $imported_tables ) )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_tables[0], 'message' => 'success_import_wp_table_reloaded' ) );
+		if ( count( $imported_other_id_tables ) > 0 )
+			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
 		elseif ( $imported_css )
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
 		else
