@@ -184,7 +184,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @return array Current set of buttons in the TinyMCE toolbar, including "Table" button
 	 */
 	public function add_tinymce_button( $buttons ) {
-		$buttons[] = '|';
 		$buttons[] = 'tablepress_insert_table';
 		return $buttons;
 	}
