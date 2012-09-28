@@ -226,27 +226,37 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function plugins_page() {
 		$this->init_i18n_support();
-		// add message to list of plugins, if an update is available
-		// add_action( 'in_plugin_update_message-' . TABLEPRESS_BASENAME, array( &$this, 'add_plugin_update_message' ), 10, 2 );
 		// add additional links on Plugins page
-		add_filter( 'plugin_row_meta', array( &$this, 'add_plugin_row_meta' ), 10, 2);
+		add_filter( 'plugin_action_links_' . TABLEPRESS_BASENAME, array( &$this, 'add_plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( &$this, 'add_plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
-	 * Add links to the TablePress entry on the Plugins page
+	 * Add links to the TablePress entry in the "Plugin" column on the Plugins page
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $links List of links to print on the Plugins page
+	 * @param array $links List of links to print in the "Plugin" column on the Plugins page
+	 * @return array Extended list of links to print in the "Plugin" column on the Plugins page
+	 */
+	public function add_plugin_action_links( $links ) {
+		$links[] = '<a href="' . TablePress::url() . '" title="' . __( 'TablePress Plugin page', 'tablepress' ) . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
+		return $links;
+	}
+	/**
+	 * Add links to the TablePress entry in the "Description" column on the Plugins page
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $links List of links to print in the "Description" column on the Plugins page
 	 * @param string $file Name of the plugin
-	 * @return array Extended list of links to print on the Plugins page
+	 * @return array Extended list of links to print in the "Description" column on the Plugins page
 	 */
 	public function add_plugin_row_meta( $links, $file ) {
 		if ( TABLEPRESS_BASENAME == $file ) {
-			$links[] = '<a href="' . TablePress::url() . '" title="' . __( 'TablePress Plugin Page', 'tablepress' ) . '">' . __( 'Plugin Page', 'tablepress' ) . '</a>';
 			$links[] = '<a href="http://tablepress.org/faq/" title="' . __( 'Frequently Asked Questions', 'tablepress' ) . '">' . __( 'FAQ', 'tablepress' ) . '</a>';
-			$links[] = '<a href="http://tablepress.org/support/" title="' . __( 'Support', 'tablepress' ) . '">' . __( 'Support', 'tablepress' ) . '</a>';
 			$links[] = '<a href="http://tablepress.org/documentation/" title="' . __( 'Plugin Documentation', 'tablepress' ) . '">' . __( 'Documentation', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tablepress.org/support/" title="' . __( 'Support', 'tablepress' ) . '">' . __( 'Support', 'tablepress' ) . '</a>';
 			$links[] = '<a href="http://tablepress.org/donate/" title="' . __( 'Support TablePress with your donation!', 'tablepress' ) . '"><strong>' . __( 'Donate', 'tablepress' ) . '</strong></a>';
 		}
 		return $links;
