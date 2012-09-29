@@ -14,7 +14,7 @@ If you like the TablePress plugin, please rate it in the [WordPress Plugin Direc
 
 ## Migration from WP-Table Reloaded ##
 
-TablePress is the official successor of the WP-Table Reloaded plugin. It has been written from the ground up and by using an entirely new internal structure fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
+TablePress is the official successor of the WP-Table Reloaded plugin. It has been rewritten from the ground up and uses an entirely new internal structure. This fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
 If you are currently using WP-Table Reloaded, it is recommended that you switch to TablePress. WP-Table Reloaded will no longer be maintained or developed. For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](http://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
 
 ## Screenshots

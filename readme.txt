@@ -12,7 +12,7 @@ TablePress enables you to create and manage tables, without having to write HTML
 == Description ==
 
 = ATTENTION: =
-**TablePress is absolute ALPHA software right now. Use at your own risk. No support will be provided yet! During this alpha stage, all settings, options, and functionality may change without notice, and without maintaining backwards compatibility!**
+**TablePress is in beta stage now. It is already usable and quite stable, but regular backups are recommended!**
 
 TablePress enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
 
@@ -23,7 +23,7 @@ Please visit the plugin website at http://tablepress.org/ for more information.
 If you like the TablePress plugin, please rate it here in the WordPress Plugin Directory, support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
 = Migration from WP-Table Reloaded =
-TablePress is the official successor of the WP-Table Reloaded plugin. It has been written from the ground up and by using an entirely new internal structure fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
+TablePress is the official successor of the WP-Table Reloaded plugin. It has been rewritten from the ground up and uses an entirely new internal structure. This fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
 If you are currently using WP-Table Reloaded, it is recommended that you switch to TablePress. WP-Table Reloaded will no longer be maintained or developed. For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](http://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
 
 == Screenshots ==
