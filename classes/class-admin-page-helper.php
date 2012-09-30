@@ -42,9 +42,10 @@ class TablePress_Admin_Page {
 	 * @param string $name Name of the JS file, without extension(s)
 	 * @param array $dependencies List of names of JS scripts that this script depends on, and which need to be included before this one
 	 * @param bool|array $localize_script (optional) An array with strings that gets transformed into a JS object and is added to the page before the script is included
+	 * @param bool $force_minified Always load the minified version, regardless of SCRIPT_DEBUG constant value
 	 */
-	public function enqueue_script( $name, $dependencies = array(), $localize_script = false ) {
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	public function enqueue_script( $name, $dependencies = array(), $localize_script = false, $force_minified = false ) {
+		$suffix = ( ! $force_minified && defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$js_file = "admin/{$name}{$suffix}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		wp_enqueue_script( "tablepress-{$name}", $js_url, $dependencies, TablePress::version, true );

@@ -41,9 +41,8 @@ class TablePress_Options_View extends TablePress_View {
 		parent::setup( $action, $data );
 
 		$this->admin_page->enqueue_style( 'codemirror' );
-		$this->admin_page->enqueue_script( 'codemirror' );
-		$this->admin_page->enqueue_script( 'codemirror-css', array( 'tablepress-codemirror' ) );
-		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror', 'tablepress-codemirror-css' ) );
+		$this->admin_page->enqueue_script( 'codemirror', array(), false, true );
+		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror' ) );
 
 		$action_messages = array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
