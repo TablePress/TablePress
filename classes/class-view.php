@@ -150,7 +150,7 @@ abstract class TablePress_View {
 		$this->data = $data;
 
 		// Set page <title>
-		$GLOBALS['title'] = sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'] );
+		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' );
 
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
@@ -165,6 +165,7 @@ abstract class TablePress_View {
 				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' )
 			)
 		) );
+
 		$this->admin_page->add_admin_footer_text();
 
 		// Initialize WP feature pointers for TablePress

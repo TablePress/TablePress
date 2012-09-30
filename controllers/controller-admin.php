@@ -89,6 +89,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// for all menu entries:
 		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'edit_pages' ); // @TODO: Make this a plugin option for usage here, below, and for the frontend edit link!
 		$callback = array( &$this, 'show_admin_page' );
+		$admin_menu_entry_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
 
 		if ( $this->is_top_level_page ) {
 			$this->init_i18n_support(); // done here as translated strings for admin menu are needed already
@@ -106,17 +107,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$position = ( ++$GLOBALS['_wp_last_utility_menu'] );
 					break;
 			}
-			add_menu_page( 'TablePress', 'TablePress', $min_access_cap, 'tablepress', $callback, $icon_url, $position );
+			add_menu_page( 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback, $icon_url, $position );
 			foreach ( $this->view_actions as $action => $entry ) {
 				if ( ! $entry['show_entry'] )
 					continue;
 				$slug = 'tablepress';
 				if ( 'list' != $action )
 					$slug .= '_' . $action;
-				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $entry['page_title'] ) , $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
+				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ) , $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
 			}
 		} else {
-			$this->page_hooks[] = add_submenu_page( $this->parent_page, 'TablePress', 'TablePress', $min_access_cap, 'tablepress', $callback );
+			$this->page_hooks[] = add_submenu_page( $this->parent_page, 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback );
 		}
 	}
 

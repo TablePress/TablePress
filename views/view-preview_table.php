@@ -52,7 +52,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 	public function render() {
 		_wp_admin_html_begin();
 ?>
-<title><?php printf( __( '%s &lsaquo; TablePress', 'tablepress' ), __( 'Preview', 'tablepress' ) ); ?></title>
+<title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'Preview', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">
 body {
 	margin: 10px;

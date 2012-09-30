@@ -33,7 +33,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		$this->data = $data;
 
 		// Set page <title>
-		$GLOBALS['title'] = sprintf( __( '%s &lsaquo; TablePress', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'] );
+		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' );
 
 		$this->add_header_message( '<strong>' . __( 'Attention: Further action is required to save the changes to your &quot;Custom CSS&quot;!', 'tablepress' ) . '</strong>', 'updated' );
 

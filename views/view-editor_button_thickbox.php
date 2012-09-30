@@ -70,7 +70,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 		wp_print_styles( 'colors' );
 		wp_print_scripts( 'jquery' );
 ?>
-<title><?php printf( __( '%s &lsaquo; TablePress', 'tablepress' ), __( 'List of Tables', 'tablepress' ) ); ?></title>
+<title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">
 body {
 	margin: -26px 0px 15px 15px; /* top has -28px offset to account for html.wp-toolbar */
@@ -126,7 +126,7 @@ body {
 <body class="wp-admin js iframe">
 <div id="tablepress-page" class="wrap">
 <?php screen_icon( 'tablepress' ); ?>
-<h2><?php printf( __( '%s &lsaquo; TablePress', 'tablepress' ), __( 'List of Tables', 'tablepress' ) ); ?></h2>
+<h2><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h2>
 <div id="poststuff">
 <p>
 <?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may insert a table into a post or page here.', 'tablepress' ); ?>
