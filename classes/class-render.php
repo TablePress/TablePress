@@ -387,20 +387,20 @@ class TablePress_Render {
 
 		$output = '';
 
-		if ( 'no' != $this->render_options['print_name'] ) {
+		if ( $this->render_options['print_name'] ) {
 			$print_name_html_tag = apply_filters( 'tablepress_print_name_html_tag', 'h2', $this->table['id'] );
 			$print_name_css_class = apply_filters( 'tablepress_print_name_css_class', "tablepress-table-name tablepress-table-name-id-{$this->table['id']}", $this->table['id'] );
 			$print_name_html = "<{$print_name_html_tag} class=\"{$print_name_css_class}\">" . $this->safe_output( $this->table['name'] ) . "</{$print_name_html_tag}>\n";
 		}
-		if ( 'no' != $this->render_options['print_description'] ) {
+		if ( $this->render_options['print_description'] ) {
 			$print_description_html_tag = apply_filters( 'tablepress_print_description_html_tag', 'span', $this->table['id'] );
 			$print_description_css_class = apply_filters( 'tablepress_print_description_css_class', "tablepress-table-description tablepress-table-description-id-{$this->table['id']}", $this->table['id'] );
 			$print_description_html = "<{$print_description_html_tag} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
 		}
 
-		if ( 'above' == $this->render_options['print_name'] )
+		if ( $this->render_options['print_name'] && 'above' == $this->render_options['print_name_position'] )
 			$output .= $print_name_html;
-		if ( 'above' == $this->render_options['print_description'] )
+		if ( $this->render_options['print_description'] && 'above' == $this->render_options['print_description_position'] )
 			$output .= $print_description_html;
 
 		$thead = '';
@@ -479,9 +479,9 @@ class TablePress_Render {
 		$output .= "</table>\n";
 
 		// name/description below table (HTML already generated above)
-		if ( 'below' == $this->render_options['print_name'] )
+		if ( $this->render_options['print_name'] && 'below' == $this->render_options['print_name_position'] )
 			$output .= $print_name_html;
-		if ( 'below' == $this->render_options['print_description'] )
+		if ( $this->render_options['print_description'] && 'below' == $this->render_options['print_description_position'] )
 			$output .= $print_description_html;
 
 		$this->output = apply_filters( 'tablepress_table_output', $output , $this->table, $this->render_options );

@@ -632,7 +632,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
 		$checkbox_options = array(
-			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover',	// Table Options
+			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover', 'print_name', 'print_description', // Table Options
 			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollX' // DataTables JS Features
 		);
 		foreach ( $checkbox_options as $option ) {
@@ -1258,14 +1258,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$new_table['options']['table_head'] = $wptr_table['options']['first_row_th'];
 		if ( isset( $wptr_table['options']['table_footer'] ) )
 			$new_table['options']['table_foot'] = $wptr_table['options']['table_footer'];
-		if ( isset( $wptr_table['options']['print_name'] ) && isset( $wptr_table['options']['print_name_position'] ) )
-			$new_table['options']['print_name'] = ( false === $wptr_table['options']['print_name'] ) ? 'no' : $wptr_table['options']['print_name_position'];
-		if ( isset( $wptr_table['options']['print_description'] ) && isset( $wptr_table['options']['print_description_position'] ) )
-			$new_table['options']['print_description'] = ( false === $wptr_table['options']['print_description'] ) ? 'no' : $wptr_table['options']['print_description_position'];
 		if ( isset( $wptr_table['options']['custom_css_class'] ) )
 			$new_table['options']['extra_css_classes'] = $wptr_table['options']['custom_css_class'];
 		// array key is the same in both plugins for the following options
 		foreach ( array( 'alternating_row_colors', 'row_hover',
+			'print_name', 'print_name_position', 'print_description', 'print_description_position',
 			'use_datatables', 'datatables_sort',  'datatables_filter', 'datatables_paginate',
 			'datatables_lengthchange', 'datatables_paginate_entries', 'datatables_info'
 			) as $_option ) {

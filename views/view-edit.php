@@ -424,20 +424,24 @@ class TablePress_Edit_View extends TablePress_View {
 		<td class="column-2"><label for="option-row-hover"><input type="checkbox" id="option-row-hover" name="table[options][row_hover]" value="true"<?php checked( $options['row_hover'] ); ?> /> <?php _e( 'Highlight a row while the mouse cursor hovers above it by changing its background color.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
-		<th class="column-1" scope="row"><label for="option-print-name"><?php _e( 'Print Table Name', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><select id="option-print-name" name="table[options][print_name]">
-			<option<?php selected( 'no', $options['print_name'] ); ?> value="no"><?php _e( 'No', 'tablepress' ); ?></option>
-			<option<?php selected( 'above', $options['print_name'] ); ?> value="above"><?php _e( 'Above', 'tablepress' ); ?></option>
-			<option<?php selected( 'below', $options['print_name'] ); ?> value="below"><?php _e( 'Below', 'tablepress' ); ?></option>
-		</select></td>
+		<th class="column-1" scope="row"><?php _e( 'Print Table Name', 'tablepress' ); ?>:</th>
+		<?php
+			$position_select = '<select id="option-print-name-position" name="table[options][print_name_position]">';
+			$position_select .= '<option' . selected( 'above', $options['print_name_position'], false ) . ' value="above">' . __( 'above', 'tablepress' ) . '</option>';
+			$position_select .= '<option' . selected( 'below', $options['print_name_position'], false ) . ' value="below">' . __( 'below', 'tablepress' ) . '</option>';
+			$position_select .= '</select>';
+		?>
+		<td class="column-2"><input type="checkbox" id="option-print-name" name="table[options][print_name]" value="true"<?php checked( $options['print_name'] ); ?> /> <?php printf( __( 'The table name shall be written %s the table.', 'tablepress' ), $position_select ); ?></td>
 	</tr>
 	<tr class="bottom-border">
-		<th class="column-1" scope="row"><label for="option-print-description"><?php _e( 'Print Table Description', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><select id="option-print-description" name="table[options][print_description]">
-			<option<?php selected( 'no', $options['print_description'] ); ?> value="no"><?php _e( 'No', 'tablepress' ); ?></option>
-			<option<?php selected( 'above', $options['print_description'] ); ?> value="above"><?php _e( 'Above', 'tablepress' ); ?></option>
-			<option<?php selected( 'below', $options['print_description'] ); ?> value="below"><?php _e( 'Below', 'tablepress' ); ?></option>
-		</select></td>
+		<th class="column-1" scope="row"><?php _e( 'Print Table Description', 'tablepress' ); ?>:</th>
+		<?php
+			$position_select = '<select id="option-print-description-position" name="table[options][print_description_position]">';
+			$position_select .= '<option' . selected( 'above', $options['print_description_position'], false ) . ' value="above">' . __( 'above', 'tablepress' ) . '</option>';
+			$position_select .= '<option' . selected( 'below', $options['print_description_position'], false ) . ' value="below">' . __( 'below', 'tablepress' ) . '</option>';
+			$position_select .= '</select>';
+		?>
+		<td class="column-2"><input type="checkbox" id="option-print-description" name="table[options][print_description]" value="true"<?php checked( $options['print_description'] ); ?> /> <?php printf( __( 'The table description shall be written %s the table.', 'tablepress' ), $position_select ); ?></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Extra CSS Classes', 'tablepress' ); ?>:</th>

@@ -486,8 +486,10 @@ class TablePress_Table_Model extends TablePress_Model {
 				'table_foot' => true,
 				'alternating_row_colors' => true,
 				'row_hover' => true,
-				'print_name' => 'no',
-				'print_description' => 'no',
+				'print_name' => false,
+				'print_name_position' => 'above',
+				'print_description' => false,
+				'print_description_position' => 'below',
 				'extra_css_classes' => '',
 				// DataTables JavaScript library
 				'use_datatables' => true,
@@ -738,6 +740,39 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table_options = array_intersect_key( $table_options, $default_table['options'] );
 			// merge into new Table Options:
 			$table_options = array_merge( $default_table['options'], $table_options );
+			$this->_update_table_options( $post_id, $table_options );
+		}
+	}
+
+	/**
+	 * Merge changes made for TablePress 0.6-beta:
+	 * Table Name/Table Description
+	 * @TODO: Remove in 1.0
+	 *
+	 * @since 1.0.0
+	 */
+	public function merge_table_options_tp06() {
+		$table_post = $this->tables->get( 'table_post' );
+		if ( empty( $table_post ) )
+			return;
+
+		$post_ids = array_values( $table_post );
+
+		// go through all tables (this loop now uses the WP cache)
+		foreach ( $post_ids as $post_id ) {
+			$table_options = $this->_get_table_options( $post_id );
+
+			// Move "Print Name" to new format
+			$print_name = in_array( $table_options['print_name'], array( 'above', 'below' ) );
+			if ( $print_name )
+				$table_options['print_name_position'] = $table_options['print_name'];
+			$table_options['print_name'] = $print_name;
+			// Move "Print Description" to new format
+			$print_description = in_array( $table_options['print_description'], array( 'above', 'below' ) );
+			if ( $print_description )
+				$table_options['print_description_position'] = $table_options['print_description'];
+			$table_options['print_description'] = $print_description;
+
 			$this->_update_table_options( $post_id, $table_options );
 		}
 	}

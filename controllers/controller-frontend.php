@@ -522,8 +522,8 @@ JS;
 			// @TODO: Cells are not evaluated here, so math formulas are searched
 
 			// add name and description to searched items, if they are displayed with the table
-			$table_name = ( 'no' != $table['options']['print_name'] ) ? $table['name'] : '';
-			$table_description = ( 'no' != $table['options']['print_description'] ) ? $table['description'] : '';
+			$table_name = ( $table['options']['print_name'] ) ? $table['name'] : '';
+			$table_description = ( $table['options']['print_description'] ) ? $table['description'] : '';
 
 			$search_tables[ $table_id ] = array(
 				'data' => $table['data'],

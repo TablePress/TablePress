@@ -74,6 +74,9 @@ jQuery(document).ready( function( $ ) {
 				tp.table.foot = $(this).prop( 'checked' );
 				tp.rows.stripe();
 			},
+			change_print_name_description: function( /* event */ ) {
+				$( '#' + this.id + '-position' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
+			},
 			change_datatables: function() {
 				var $datatables_checkbox = $( '#option-use-datatables' ),
 					checkboxes_disabled = ! ( $datatables_checkbox.prop( 'checked' ) && ! $datatables_checkbox.prop( 'disabled' ) );
@@ -110,8 +113,10 @@ jQuery(document).ready( function( $ ) {
 					table_foot: tp.table.foot,
 					alternating_row_colors: $( '#option-alternating-row-colors' ).prop( 'checked' ),
 					row_hover: $( '#option-row-hover' ).prop( 'checked' ),
-					print_name: $( '#option-print-name' ).val(),
-					print_description: $( '#option-print-description' ).val(),
+					print_name: $( '#option-print-name' ).prop( 'checked' ),
+					print_description: $( '#option-print-description' ).prop( 'checked' ),
+					print_name_position: $( '#option-print-name-position' ).val(),
+					print_description_position: $( '#option-print-description-position' ).val(),
 					extra_css_classes: $( '#option-extra-css-classes' ).val(),
 					// DataTables JS features
 					use_datatables: $( '#option-use-datatables' ).prop( 'checked' ),
@@ -1010,9 +1015,9 @@ jQuery(document).ready( function( $ ) {
 					'#table-new-id':		tp.check.table_id
 				},
 				'change': {
-					'#option-table-head':		tp.table.change_table_head,
-					'#option-table-foot':		tp.table.change_table_foot,
-					'#option-use-datatables':	tp.table.change_datatables,
+					'#option-table-head':			tp.table.change_table_head,
+					'#option-table-foot':			tp.table.change_table_foot,
+					'#option-use-datatables':		tp.table.change_datatables,
 					'#option-datatables-paginate':	tp.table.change_datatables_pagination
 				},
 				'blur': {
@@ -1029,8 +1034,10 @@ jQuery(document).ready( function( $ ) {
 
 			$( window ).on( 'beforeunload', tp.check.changes_saved );
 
-			// init changed/disabled states of DataTables JS features checkboxes
-			$( '#option-table-head' ).change(); // do this before the next lines, to not trigger set_table_changed()
+			// do this before the next lines, to not trigger set_table_changed()
+			$( '#option-table-head' ).change(); // init changed/disabled states of DataTables JS features checkboxes
+			$( '#option-print-name' ).change( tp.table.change_print_name_description ).change(); // init dropdowns for name and description position
+			$( '#option-print-description' ).change( tp.table.change_print_name_description ).change();
 
 			// just once is enough, will be reset after saving
 			$table.one( 'change', 'textarea', tp.table.set_table_changed );
