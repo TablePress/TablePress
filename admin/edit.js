@@ -102,8 +102,8 @@ jQuery(document).ready( function( $ ) {
 				} );
 				table_data = JSON.stringify( table_data );
 
-				// @TODO: evtl. für options-saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
-				// oder each() durch alle Checkboxes/Textfields/Selects
+				// @TODO: maybe for options saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
+				// or each()-loop through all checkboxes/textfields/selects
 				table_options = {
 					// Table Options
 					table_head: tp.table.head,
@@ -775,7 +775,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			span: {
 				add: function( span ) {
-					// todo: Frage entsprechend des span-Typs
+					// @TODO: Ask question according to span type
 					if ( ! confirm( tablepress_strings.span_add ) )
 						return;
 

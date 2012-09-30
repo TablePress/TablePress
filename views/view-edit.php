@@ -446,13 +446,6 @@ class TablePress_Edit_View extends TablePress_View {
 </tbody>
 </table>
 <?php
-	// @TODO: Remove this Debug cruft once everything works
-	echo '<!--';
-	echo json_encode( $options ) . "\n";
-	echo json_encode( $data['table']['visibility'] ) . "\n";
-	echo '-->';
-?>
-<?php
 	}
 
 	/**

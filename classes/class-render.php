@@ -367,7 +367,7 @@ class TablePress_Render {
 		$num_rows = count( $this->table['data'] );
 		$num_columns = ( $num_rows > 0 ) ? count( $this->table['data'][0] ) : 0;
 
-		// check if there are rows and columns in the table (might not be the case after removing to hidden rows/columns!)
+		// check if there are rows and columns in the table (might not be the case after removing hidden rows/columns!)
 		if ( 0 === $num_rows || 0 === $num_columns ) {
 			$this->output = sprintf( __( '<!-- The table with the ID %s is empty! -->', 'tablepress' ), $this->table['id'] ); // @TODO: Maybe use a more meaningful output here?
 			return;
@@ -562,7 +562,6 @@ class TablePress_Render {
 			$this->rowspan[ $col_idx ] = 1; // reset
 		}
 
-		// @TODO: Maybe apply row-$row_idx and alternate colors classes only to body rows?
 		$row_class = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] )
 			$row_class .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
@@ -587,7 +586,7 @@ class TablePress_Render {
 	protected function safe_output( $string ) {
 		// replace any & with &amp; that is not already an encoded entity (from function htmlentities2 in WP 2.8)
 		// complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want
-		$string = preg_replace( "/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/", "&amp;", $string );
+		$string = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $string );
 		// substitute line breaks with HTML <br> tags, nl2br can be overwritten to false, if not wanted
 		if ( apply_filters( 'tablepress_apply_nl2br', true, $this->table['id'] ) )
 			$string = nl2br( $string );

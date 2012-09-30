@@ -85,9 +85,9 @@ class CSV_Parser {
 		// and search potential delimiter characters
 		$data_length = strlen( $data );
 		for ( $i = 0; $i < $data_length; $i++ ) {
+			$prev_char = ( $i-1 >= 0 ) ? $data[$i-1] : '';
 			$curr_char = $data[$i];
-			$next_char = ( isset( $data[$i+1] ) ) ? $data[$i+1] : false; // @TODO: Maybe use simpler boundaray checks, like 0 == $i and $data_length-1 == $i
-			$prev_char = ( isset( $data[$i-1] ) ) ? $data[$i-1] : false;
+			$next_char = ( $i+1 < $data_length ) ? $data[$i+1] : '';
 
 			if ( $curr_char == $this->enclosure ) {
 				// open and closing quotes
@@ -189,8 +189,7 @@ class CSV_Parser {
 		$data_length = strlen( $data );
 		for ( $i = 0; $i < $data_length; $i++ ) {
 			$curr_char = $data[$i];
-			$next_char = ( isset( $data[$i+1] ) ) ? $data[$i+1] : false; // @TODO: Maybe use simpler boundaray checks, like 0 == $i and $data_length-1 == $i
-			$prev_char = ( isset( $data[$i-1] ) ) ? $data[$i-1] : false;
+			$next_char = ( $i+1 < $data_length ) ? $data[$i+1] : '';
 
 			if ( $curr_char == $this->enclosure ) {
 				// open/close quotes, and inline quotes

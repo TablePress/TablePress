@@ -542,11 +542,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * HTTP POST actions
-	 *
-	 * @TODO: STILL REQUIRED:
-	 * caps check with correct user caps, like
-	 * // if ( ! current_user_can( 'manage_options' ) )
-	 * //	wp_die( __('Cheatin&#8217; uh?') );
 	 */
 
 	/**
@@ -638,7 +633,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
 		$checkbox_options = array(
 			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover',	// Table Options
-			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollX' // DataTables JS Features @TODO: THIS NEEDS WORK (e.g. for disabled fields)!
+			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollX' // DataTables JS Features
 		);
 		foreach ( $checkbox_options as $option ) {
 			$edit_table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' === $edit_table['options'][$option] );
@@ -685,15 +680,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$add_table = stripslashes_deep( $_POST['table'] );
 
 		// Perform sanity checks of posted data
-		// @TODO: maybe redirect to error instead of setting default values for name/description/numbers:
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
 		$description = ( isset( $add_table['description'] ) ) ? $add_table['description'] : '';
-		$num_rows = ( isset( $add_table['rows'] ) ) ? absint( $add_table['rows'] ) : 1;
-		if ( $num_rows < 1 )
-			$num_rows = 1;
-		$num_columns = ( isset( $add_table['columns'] ) ) ? absint( $add_table['columns'] ) : 1;
-		if ( $num_columns < 1 )
-			$num_columns = 1;
+		if ( ! isset( $add_table['rows'] ) || ! isset( $add_table['columns'] ) )
+			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
+
+		$num_rows = absint( $add_table['rows'] );
+		$num_columns = absint( $add_table['columns'] );
+		if ( 0 == $num_rows || 0 == $num_columns )
+			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 
 		// Create a new table array with information from the posted data
 		$new_table = array(
@@ -1449,11 +1444,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 	/**
 	 * Save GET actions
-	 *
-	 * @TODO: STILL REQUIRED:
-	 * caps check with correct user caps, like
-	 * // if ( ! current_user_can( 'manage_options' ) )
-	 * //	wp_die( __('Cheatin&#8217; uh?') );
 	 */
 
 	/**
