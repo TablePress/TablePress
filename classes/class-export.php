@@ -81,7 +81,7 @@ class TablePress_Export {
 	 * @return string Wrapped string for HTML export
 	 */
 	public function export_table( $table, $export_format, $csv_delimiter ) {
-		switch( $export_format ) {
+		switch ( $export_format ) {
 			case 'csv':
 				$output = '';
 				if ( 'tab' == $csv_delimiter )

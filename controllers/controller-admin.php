@@ -571,7 +571,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$no_success = array(); // to store table IDs that failed
 
-		switch( $bulk_action ) {
+		switch ( $bulk_action ) {
 			case 'copy':
 				foreach ( $tables as $table_id ) {
 					$copy_table_id = $this->model_table->copy( $table_id );
@@ -914,7 +914,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$import_error = true;
 		$unlink_file = false;
-		switch( $import['source'] ) {
+		switch ( $import['source'] ) {
 			case 'file-upload':
 				if ( ! empty( $_FILES['import_file_upload'] ) && UPLOAD_ERR_OK == $_FILES['import_file_upload']['error'] ) {
 					$import_data['file_location'] = $_FILES['import_file_upload']['tmp_name'];

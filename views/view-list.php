@@ -570,7 +570,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			return 0;
 
 		// certain fields require some extra work before being sortable
-		switch( $orderby ) {
+		switch ( $orderby ) {
 			case 'last_modified':
 				// Compare UNIX timestamps for "last modified", which actually is a mySQL datetime string
 				$result = ( strtotime( $item_a['last_modified'] ) > strtotime( $item_b['last_modified'] ) ) ? 1 : -1;
