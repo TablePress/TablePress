@@ -645,30 +645,43 @@ class TablePress_Render {
 	public function get_preview_css() {
 		return <<<CSS
 <style type="text/css">
+body {
+	font-family: sans-serif;
+}
 .tablepress {
 	border-collapse: collapse;
-	border: 2px solid #000000;
+	border: none;
 	margin: 10px auto;
 }
 .tablepress td,
 .tablepress th {
 	box-sizing: border-box;
 	width: 200px;
-	border: 1px solid #dddddd;
-	padding: 3px;
+	padding: 8px;
+	text-align: left;
+}
+.tablepress tbody tr,
+.tablepress tfoot tr {
+	border-top: 1px solid #dddddd;
+}
+.tablepress tbody tr:first-child {
+	border-top: 0;
+}
+.tablepress thead tr {
+	border-bottom: 1px solid #dddddd;
 }
 .tablepress thead tr,
 .tablepress tfoot tr {
-	background-color: #e6eeee;
+	background-color: #d9edf7;
 }
 .tablepress tbody tr.even {
 	background-color: #ffffff;
 }
 .tablepress tbody tr.odd {
-	background-color: #eeeeee;
+	background-color: #f9f9f9;
 }
 .tablepress .row-hover tr:hover {
-	background-color: #d0d0d6;
+	background-color: #f3f3f3;
 }
 </style>
 CSS;

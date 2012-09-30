@@ -1575,7 +1575,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			// get "Custom CSS" from options
 			$custom_css = $this->model_options->get( 'custom_css' );
 		}
-
 		if ( ! empty( $custom_css ) )
 			$view_data['head_html'] .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
 

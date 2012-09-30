@@ -196,8 +196,27 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Merge desired options with default render options (as not all of them are stored in the table options, but are just Shortcode parameters)
 			$render_options = shortcode_atts( $_render->get_default_render_options(), $table['options'] );
 			$_render->set_input( $table, $render_options );
-			$head_html = $_render->get_preview_css();
-			$body_html = $_render->get_output();
+			$head_html = '<style type="text/css">body{margin:10px;}</style>';
+			$head_html .= $_render->get_preview_css();
+			// Add "Custom CSS"
+			if ( $this->model_options->get( 'use_custom_css_file' ) ) {
+				$custom_css = $this->model_options->load_custom_css_from_file();
+				// fall back to "Custom CSS" in options, if it could not be retrieved from file
+				if ( false === $custom_css )
+					$custom_css = $this->model_options->get( 'custom_css' );
+			} else {
+				// get "Custom CSS" from options
+				$custom_css = $this->model_options->get( 'custom_css' );
+			}
+			if ( ! empty( $custom_css ) )
+				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
+
+			$body_html = '<div id="tablepress-page"><p>'
+				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
+				. __( 'Because of CSS styling, the table might look different on your page!', 'tablepress' ) . ' '
+				. __( 'The features of the DataTables JavaScript library are also not visible in this preview!', 'tablepress' ) . '<br />'
+				. sprintf( __( 'To insert the table into a page, post or text widget, copy the Shortcode %s and paste it into the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=' . esc_attr( $table['id'] ) . ' /]" readonly="readonly" />' )
+				. '</p>' . $_render->get_output() . '</div>';
 		} else {
 			$head_html = '';
 			$body_html = __( 'The preview could not be loaded.', 'tablepress' );

@@ -43,6 +43,10 @@ body.wait * {
 	margin: 0;
 	border: none;
 }
+/* To account for additional padding of #TB_WindowContent in direct preview */
+#table-preview {
+	margin: -2px -15px -15px -15px;
+}
 
 /* Content of the Advanced Editor jQueryUI dialog */
 #advanced-editor {
