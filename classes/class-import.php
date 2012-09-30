@@ -96,7 +96,6 @@ class TablePress_Import {
 	 * @return bool|array False on error, data array on success
 	 */
 	function import_table( $format, $data ) {
-
 		// check and remove possible UTF-8 Byte-Order Mark (BOM)
 		$bom = pack( 'CCC', 0xef, 0xbb, 0xbf );
 		if ( 0 === strncmp( $data, $bom, 3 ) )
@@ -116,23 +115,18 @@ class TablePress_Import {
 			case 'json':
 				$this->import_json();
 				break;
-			/*case 'wp_table':
-				$this->import_wp_table();
-				break;*/
 			default:
 				return false;
 		}
 
-		// only check this, if needed functions are available (needs PHP library "mbstring")
-		if ( function_exists( 'mb_detect_encoding' ) && function_exists( 'mb_check_encoding' ) && function_exists( 'utf8_encode' )
-		&& false != $this->imported_table )
+		if ( ! empty( $this->imported_table ) )
 			$this->fix_table_encoding();
 
 		return $this->imported_table;
 	}
 
 	/**
-	 *
+	 * Import CSV data
 	 *
 	 * @since 1.0.0
 	 */
@@ -145,7 +139,7 @@ class TablePress_Import {
 	}
 
 	/**
-	 *
+	 * Import HTML data
 	 *
 	 * @since 1.0.0
 	 */
@@ -212,9 +206,12 @@ class TablePress_Import {
 	}
 
 	/**
-	 *
+	 * Helper for HTML import
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $element XMLElement
+	 * @return array XMLElement exported to an array
 	 */
 	protected function _import_html_rows( $element ) {
 		$rows = array();
@@ -238,7 +235,7 @@ class TablePress_Import {
 	}
 
 	/**
-	 *
+	 * Import JSON data
 	 *
 	 * @since 1.0.0
 	 */
@@ -251,6 +248,9 @@ class TablePress_Import {
 	 * Make sure array is rectangular with $max_cols columns in every row
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $array Two-dimensional array to be padded
+	 * @return array Padded array
 	 */
 	protected function pad_array_to_max_cols( $array ) {
 		$rows = count( $array );
@@ -264,9 +264,12 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Get the biggest number of columns in the rows
+	 * Get the highest number of columns in the rows
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $array Two-dimensional array
+	 * @return int Highest number of columns in the rows of the array
 	 */
 	protected function count_max_columns( $array ) {
 		$max_columns = 0;
@@ -282,14 +285,15 @@ class TablePress_Import {
 
 	/**
 	 * Fixes the encoding to UTF-8 for a cell
-	 *
-	 * @TODO: DO WE REALLY WANT THIS? IS THERE A BETTER WAY using iconv()?
+	 * @TODO: Function is not yet implemented
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $string String to be encoded correctly
+	 * @return string Correctly encoded string
 	 */
 	protected function fix_encoding( $string ) {
-		// @TODO: Don't use for now
-		// return ( 'UTF-8' == mb_detect_encoding( $string ) && mb_check_encoding( $string, 'UTF-8' ) ) ? $string : utf8_encode( $string );
+		// @TODO: Is this maybe possible with iconv()?
 		return $string;
 	}
 
@@ -303,7 +307,7 @@ class TablePress_Import {
 			return;
 
 		foreach ( $this->imported_table as $row_idx => $row ) {
-			$this->imported_table[$row_idx] = array_map( array( &$this, 'fix_encoding' ), $row );
+			$this->imported_table[ $row_idx ] = array_map( array( &$this, 'fix_encoding' ), $row );
 		}
 	}
 
