@@ -159,7 +159,7 @@ class TablePress_Options_View extends TablePress_View {
 			$entries['edit-comments.php'] = preg_replace( '/ <span.*span>/', '', $entries['edit-comments.php'] );
 
 		// add separator and generic positions
-		$entries['-'] = __( '---', 'tablepress' );
+		$entries['-'] = '---';
 		$entries['top'] = __( 'Top-Level (top)', 'tablepress' );
 		$entries['middle'] = __( 'Top-Level (middle)', 'tablepress' );
 		$entries['bottom'] = __( 'Top-Level (bottom)', 'tablepress' );
