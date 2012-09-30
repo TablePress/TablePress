@@ -69,7 +69,7 @@ class TablePress_Options_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'TablePress has several options which affect the plugin behavior in different areas.', 'tablepress' ); ?><br /><?php _e( 'Frontend Options influence the output and used features of tables in pages, posts or text-widgets.', 'tablepress' ); ?> <?php printf( __( 'The Backend Options control the plugin\'s admin area, e.g. the &quot;%s&quot; screen.', 'tablepress' ), __( 'Edit Table', 'tablepress' ) ); ?> <?php _e( 'Administrators have access to further Admin Options.', 'tablepress' ); ?></p>
+		<p><?php _e( 'TablePress has several options which affect the plugin behavior in different areas.', 'tablepress' ); ?><br /><?php _e( 'Frontend Options influence the output and used features of tables in pages, posts, or text widgets.', 'tablepress' ); ?> <?php printf( __( 'The Backend Options control the plugin\'s admin area, e.g. the &quot;%s&quot; screen.', 'tablepress' ), __( 'Edit Table', 'tablepress' ) ); ?> <?php _e( 'Administrators have access to further Admin Options.', 'tablepress' ); ?></p>
 		<?php
 	}
 
