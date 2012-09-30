@@ -62,10 +62,7 @@ class TablePress_Export {
 		$this->csv_delimiters = array(
 			';' => __( '; (semicolon)', 'tablepress' ),
 			',' => __( ', (comma)', 'tablepress' ),
-			'tab' => __( '\t (tabulator)', 'tablepress' ),
-			':' => __( ': (colon)', 'tablepress' ),
-			'.' => __( '. (dot)', 'tablepress' ),
-			'|' => __( '| (pipe)', 'tablepress' )
+			'tab' => __( '\t (tabulator)', 'tablepress' )
 		);
 
 		// filter from @see unzip_file() in WordPress

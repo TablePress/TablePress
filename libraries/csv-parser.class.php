@@ -29,7 +29,7 @@ class CSV_Parser {
 	protected $non_delimiter_chars = "a-zA-Z0-9\n\r";
 	// preferred delimiter characters, only used when all filtering method
 	// returns multiple possible delimiters (happens very rarely)
-	protected $preferred_delimiter_chars = ";,\t:.|";
+	protected $preferred_delimiter_chars = ";,\t";
 	// data to import
 	protected $import_data;
 
