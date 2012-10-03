@@ -309,6 +309,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'about':
 				$data['plugin_languages'] = $this->get_plugin_languages();
 				$data['first_activation'] = $this->model_options->get( 'first_activation' );
+				$dummy_exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' ); // just to find out about ZIP support
+				$data['zip_support_available'] = $dummy_exporter->zip_support_available;
+				unset( $dummy_exporter );
 				break;
 			case 'options':
 				// Maybe try saving "Custom CSS" to a file:

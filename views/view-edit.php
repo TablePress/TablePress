@@ -508,10 +508,13 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p>
-		<?php _e( 'On this page, you can edit the content of the table.', 'tablepress' ); ?> <?php _e( 'It is also possible to change the table structure by inserting, deleting, moving, and swapping columns and rows.', 'tablepress' ); ?><br />
-		<?php printf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it into the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' ); ?>
-		</p>
+	<p>
+		<?php printf( __( 'On this screen, you can edit the content and structure of the table with the ID %s.', 'tablepress' ), esc_html( $data['table']['id'] ) ); ?>
+		<?php _e( 'For example, you can insert things like text, images, or links into the table, or change the used table features. You can also insert, delete, move, hide, and swap columns and rows.', 'tablepress' ); ?>
+	</p>
+	<p>
+		<?php printf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=' . esc_attr( $data['table']['id'] ) . ' /]" readonly="readonly" />' ); ?>
+	</p>
 		<?php
 	}
 

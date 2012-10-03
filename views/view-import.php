@@ -63,8 +63,13 @@ class TablePress_Import_View extends TablePress_View {
 	 */
 	public function textbox_head( $data, $box ) {
 		?>
-		<p><?php _e( 'TablePress can import tables from existing data.', 'tablepress' ); ?> <?php _e( 'This may be a CSV, HTML, or JSON file, each with a certain structure.', 'tablepress' ); ?></p>
-		<p><?php _e( 'To import an existing table, please select its format and the source for the import.', 'tablepress' ); ?> <?php if ( 0 < $data['tables_count'] ) _e( 'You can also decide, if you want to import it as a new table or replace an existing table.', 'tablepress' ); ?></p>
+		<p>
+			<?php _e( 'TablePress can import tables from existing data, like from a CSV file from a spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or its own JSON format.', 'tablepress' ); ?>
+			<?php _e( 'You can also import existing tables from the WP-Table Reloaded plugin below.', 'tablepress' ); ?>
+		</p>
+		<p>
+			<?php _e( 'To import a table, select and enter the import source in the following form.', 'tablepress' ); ?> <?php if ( 0 < $data['tables_count'] ) _e( 'You can also choose to import it as a new table or to replace an existing table.', 'tablepress' ); ?>
+		</p>
 		<?php
 	}
 
@@ -179,7 +184,14 @@ class TablePress_Import_View extends TablePress_View {
 	 */
 	public function postbox_wp_table_reloaded_import( $data, $box ) {
 		?>
-<p><?php _e( 'Import from WP-Table Reloaded', 'tablepress' ); ?></p>
+<p>
+	<?php _e( 'To import all tables from a WP-Table Reloaded installation, choose the relevant import source below.', 'tablepress' ); ?>
+<br />
+	<?php _e( 'If WP-Table Reloaded is installed on this site, the "WordPress database" option is recommended.', 'tablepress' ); ?>
+	<?php _e( 'If you want to import tables from another site, create a "WP-Table Reloaded Dump File" there and upload it below, after choosing "WP-Table Reloaded Dump File".', 'tablepress' ); ?>
+<br />
+	<?php printf( __( 'Before doing this, it is highly recommended to read the <a href="%s" title"Migration Guide from WP-Table Reloaded to TablePress">migration guide</a> on the TablePress website.', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ); ?>
+</p>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr id="row-import-wp-table-reloaded-source">
@@ -200,11 +212,11 @@ class TablePress_Import_View extends TablePress_View {
 		<td class="column-2" style="padding:2px;"></td>
 	</tr>
 	<tr class="top-border">
-		<th class="column-1" scope="row"><?php _e( 'Tables', 'tablepress' ); ?>:</th>
+		<th class="column-1" scope="row"><?php _e( 'Import tables', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="import-wp-table-reloaded-tables"> <input type="checkbox" id="import-wp-table-reloaded-tables" name="import[wp_table_reloaded][tables]" value="true" checked="checked" /> <?php _e( 'Import all tables and their settings from WP-Table Reloaded.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="bottom-border">
-		<th class="column-1" scope="row"><?php _e( 'Styling', 'tablepress' ); ?>:</th>
+		<th class="column-1" scope="row"><?php _e( 'Import styling', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="import-wp-table-reloaded-css"> <input type="checkbox" id="import-wp-table-reloaded-css" name="import[wp_table_reloaded][css]" value="true" checked="checked" /> <?php _e( 'Try to automatically convert the "Custom CSS" code from the "Plugin Options" screen of WP-Table Reloaded.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">

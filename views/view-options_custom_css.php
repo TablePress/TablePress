@@ -103,7 +103,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'Due to the configuration of your server, TablePress was not able to automatically save your &quot;Custom CSS&quot; to a file.', 'tablepress' ); ?>
-			<?php printf( __( 'To try again via the same method that you use for updating plugins or themes, please fill out the &quot;%s&quot; form below.', 'tablepress' ), __( 'Connection Information', 'default' ) ); ?>
+			<?php printf( __( 'To try again with the same method that you use for updating plugins or themes, please fill out the &quot;%s&quot; form below.', 'tablepress' ), __( 'Connection Information', 'default' ) ); ?>
 		</p>
 		<?php
 	}

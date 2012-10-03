@@ -131,7 +131,7 @@ body {
 <p>
 <?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may insert a table into a post or page here.', 'tablepress' ); ?>
 </p><p>
-<?php printf( __( 'Click the &quot;%s&quot; button for the desired table to insert the corresponding Shortcode (%s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
+<?php printf( __( 'Click the &quot;%s&quot; button for the desired table to automatically insert the<br />corresponding Shortcode (%s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
 </p>
 <?php
 	if ( ! empty( $_GET['s'] ) )

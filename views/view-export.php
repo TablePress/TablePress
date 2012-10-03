@@ -60,11 +60,13 @@ class TablePress_Export_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'It is recommended to export and backup the data of important tables regularly.', 'tablepress' ); ?>
-			<?php _e( 'Select the table, the desired export format and (for CSV only) a delimiter.', 'tablepress' ); ?>
-			<?php _e( 'You may choose to download the export file. Otherwise it will be shown on this page.', 'tablepress' ); ?>
-			<?php _e( 'Be aware that only the table data, but no options or settings are exported with this method.', 'tablepress' ); ?>
-			<?php printf( __( 'To backup all tables, including their settings, at once, use the &quot;%s&quot; button in the &quot;%s&quot;.', 'tablepress' ), __( 'Create and Download Dump File', 'tablepress' ), __( 'Plugin Options', 'tablepress' ) ); ?>
+			<?php _e( 'Exporting a table allows you to use it in other programs, like spreadsheets applications.', 'tablepress' ); ?>
+			<?php _e( 'Regularly exporting tables is also recommended as a backup of your data.', 'tablepress' ); ?>
+		</p>
+		<p>
+			<?php _e( 'To export, select the tables and the desired export format.', 'tablepress' ); ?>
+			<?php _e( 'If you choose more than one table, the exported files will automatically be stored in a ZIP archive file.', 'tablepress' ); ?>
+			<?php _e( 'Be aware that only the table data, but no options or settings are exported with this method!', 'tablepress' ); ?>
 		</p>
 		<?php
 	}

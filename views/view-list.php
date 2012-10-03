@@ -180,13 +180,13 @@ class TablePress_List_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'This is a list of all available tables.', 'tablepress' ); ?>
-			<?php _e( 'You may add, edit, copy, delete or preview tables here.', 'tablepress' ); ?>
+			<?php _e( 'This is a list of your tables.', 'tablepress' ); ?>
+			<?php _e( 'Click the corresponding links within the list to edit, copy, delete, or preview a table.', 'tablepress' ); ?>
 		</p>
 		<p>
-			<?php printf( __( 'To insert the table into a page, post, or text widget, copy the shortcode %s and paste it into the corresponding place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
-			<?php _e( 'Each table has a unique ID that needs to be adjusted in that shortcode.', 'tablepress' ); ?>
-			<?php printf( __( 'You can also click the button &quot;%s&quot; in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
+			<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
+			<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
+			<?php printf( __( 'You can also click the &quot;%s&quot; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
 		</p>
 		<?php
 	}
@@ -403,7 +403,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$row_text = '<strong><a title="' . sprintf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ) . '" class="row-title" href="' . $edit_url . '">' . esc_html( $item['name'] ) . '</a></strong>';
 		$row_actions = array(
 			'edit' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $edit_url, sprintf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Edit', 'tablepress' ) ),
-			'shortcode hide-if-no-js' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', '[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]', __( 'Shortcode', 'tablepress' ) ),
+			'shortcode hide-if-no-js' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', '[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]', __( 'Show Shortcode', 'tablepress' ) ),
 			'copy' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, sprintf ( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Copy', 'tablepress' ) ),
 			'export' => sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $export_url, sprintf ( __( 'Export &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Export', 'tablepress' ) ),
 			'delete' => sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, sprintf ( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Delete', 'tablepress' ) ),
