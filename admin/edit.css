@@ -50,19 +50,19 @@ body.wait * {
 
 /* Content of the Advanced Editor jQueryUI dialog */
 #advanced-editor {
-	padding: 0px 3px 3px;
+	padding: 3px;
 }
 #advanced-editor .submitbox {
 	padding: 6px 6px 0px;
 	font-size: 11px;
 	overflow: auto;
-	height: 28px;
+	height: 30px;
 }
 #advanced-editor-confirm {
 	float: right;
 }
 #advanced-editor-cancel {
-	line-height: 25px;
+	line-height: 30px;
 }
 
 /* spinner/loading animation while saving/preview preparation */
