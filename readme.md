@@ -86,7 +86,7 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 ## Acknowledgements
 
-Special thanks go to [Allan Jardine](http://www.datatables.net/) for the DataTables jQuery plugin.
+Special thanks go to [Allan Jardine](http://www.sprymedia.co.uk/) for the [DataTables JavaScript library](http://www.datatables.net/).
 
 Thanks to all language file translators!
 
