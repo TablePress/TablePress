@@ -60,7 +60,9 @@ class TablePress_List_View extends TablePress_View {
 
 		if ( $data['messages']['first_visit'] )
 			$this->add_header_message(
-				'<strong><em>Welcome!</em></strong><br />Thank you for using TablePress for the first time!<br />'
+				'<strong><em>' . __( 'Welcome!', 'tablepress' ) . '</em></strong><br />'
+				. __( 'Thank you for using TablePress for the first time!', 'tablepress' ) . ' '
+				. sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'http://tablepress.org/faq/', 'http://tablepress.org/documentation/', 'http://tablepress.org/support/', 'http://tablepress.org/' ) . '<br /><br />'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ) , __( 'Hide this message', 'tablepress' ) )
 			);
 
@@ -87,9 +89,12 @@ class TablePress_List_View extends TablePress_View {
 			);
 
 		if ( $data['messages']['show_plugin_update'] ) {
-			$message = '<strong><em>Thank you for updating to TablePress ' . TablePress::version . '!</em></strong><br />';
+			$message = '<strong><em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em></strong><br />';
 			if ( ! empty( $data['messages']['plugin_update_message'] ) )
-				$message .= $data['messages']['plugin_update_message'] . '<br /><br />';
+				$message .= $data['messages']['plugin_update_message'] . '<br />';
+			$message .= sprintf( __( 'Please read the <a href="%s">release announcement</a> for more information.', 'tablepress' ), 'http://tablepress.org/news/' ) . ' '
+				. sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'http://tablepress.org/donate/' )
+				. '<br /><br />';
 			$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ) , __( 'Hide this message', 'tablepress' ) );
 			$this->add_header_message( $message );
 		}
