@@ -27,18 +27,27 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' ).on( 'click', '.ajax-link', function( /* event */ ) {
-		var link = this,
-			action = link.className.replace(/^.*ajax-link /, '');
+		var $link = $( this ),
+			action = $link.data( 'action' ),
+			item = $link.data( 'item' ),
+			target = $link.data( 'target' );
 		$.get(
 			ajaxurl,
-			link.href.split('?')['1'], /* query string of the link */
+			this.href.split('?')['1'], /* query string of the link */
 			function( result ) {
 				if ( '1' != result )
 					return;
 
 				switch ( action ) {
 					case 'hide_message':
-						$( link ).closest( 'div' ).remove();
+						/* Donation message links show new message */
+						if ( 'donation_nag' == item && '' != target ) {
+							$link.closest( 'div' ).after( '<div class="donation-message-after-click-message updated"><p><strong>' + tablepress_list['donation-message-' + target] + '</strong></p></div>' );
+							$( '.donation-message-after-click-message' ).delay( 10000 ).fadeOut( 2000, function() { $(this).remove(); } );
+						}
+
+						/* Remove original message */
+						$link.closest( 'div' ).remove();
 						break;
 				}
 			}

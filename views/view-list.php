@@ -52,7 +52,9 @@ class TablePress_List_View extends TablePress_View {
 		add_thickbox();
 		$this->admin_page->enqueue_script( 'list', array( 'jquery' ), array(
 			'list' => array(
-				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' )
+				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ),
+				'donation-message-already-donated' => __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' ),
+				'donation-message-maybe-later' => sprintf ( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you\'ll always find the &quot;Donate&quot; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'http://tablepress.org/' ),
 			)
 		) );
 
@@ -80,8 +82,8 @@ class TablePress_List_View extends TablePress_View {
 				sprintf( __( '<a href="%s">Donations</a> help me to continue user support and development of this <em>free</em> software &mdash; things for which I spend countless hours of my free time! Thank you very much!', 'tablepress' ), 'http://tablepress.org/donate/' ) . '<br/><br />' .
 				__( 'Sincerly, Tobias', 'tablepress' ) . '<br /><br />' .
 				sprintf( '<a href="%s" target="_blank"><strong>%s</strong></a>', 'http://tablepress.org/donate/', __( 'Sure, I\'ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;' .
-				$this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list' ) , __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;' .
-				$this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list' ) , __( 'No, thanks. Don\'t ask again.', 'tablepress' ) )
+				$this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'already-donated' ) , __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;' .
+				$this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later' ) , __( 'No, thanks. Don\'t ask again.', 'tablepress' ) )
 			);
 
 		if ( $data['messages']['show_plugin_update'] ) {
