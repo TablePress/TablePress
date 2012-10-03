@@ -56,7 +56,6 @@ class TablePress_Options_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( &$this, 'postbox_frontend_options' ), 'normal' );
-		// $this->add_meta_box( 'backend-options', __( 'Backend Options', 'tablepress' ), array( &$this, 'postbox_backend_options' ), 'normal' ); // @TODO: Commented out as backend options are not yet used
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( &$this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Changes', 'tablepress' );
 		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
@@ -113,24 +112,6 @@ class TablePress_Options_View extends TablePress_View {
 			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the "Custom CSS" code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
 			<input type="checkbox" style="visibility: hidden;" <?php // Dummy checkbox for space alignment ?>/> <?php echo content_url( 'tablepress-custom.css' ) . ' ' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? '(File exists.)' : '(File seems not to exist.)' ); ?>
 		</td>
-	</tr>
-</tbody>
-</table>
-<?php
-	}
-
-	/**
-	 * Print the content of the "Backend Options" post meta box
-	 *
-	 * @since 1.0.0
-	 */
-	public function postbox_backend_options( $data, $box ) {
-?>
-<table class="tablepress-postbox-table fixed">
-<tbody>
-	<tr>
-		<th class="column-1" scope="row">Label</th>
-		<td class="column-2">Field</td>
 	</tr>
 </tbody>
 </table>
