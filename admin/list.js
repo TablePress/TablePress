@@ -34,6 +34,40 @@ jQuery(document).ready( function($) {
 	} );
 
 	/**
+	 * Process links with a class "ajax-link" with AJAX
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tablepress-page' ).on( 'click', '.ajax-link', function( /* event */ ) {
+		var $link = $( this ),
+			action = $link.data( 'action' ),
+			item = $link.data( 'item' ),
+			target = $link.data( 'target' );
+		$.get(
+			ajaxurl,
+			this.href.split('?')['1'], /* query string of the link */
+			function( result ) {
+				if ( '1' != result )
+					return;
+
+				switch ( action ) {
+					case 'hide_message':
+						/* Donation message links show new message */
+						if ( 'donation_nag' == item && '' != target ) {
+							$link.closest( 'div' ).after( '<div class="donation-message-after-click-message updated"><p><strong>' + tablepress_list['donation-message-' + target] + '</strong></p></div>' );
+							$( '.donation-message-after-click-message' ).delay( 10000 ).fadeOut( 2000, function() { $(this).remove(); } );
+						}
+
+						/* Remove original message */
+						$link.closest( 'div' ).remove();
+						break;
+				}
+			}
+		);
+		return false;
+	} );
+
+	/**
 	 * Submit Bulk Actions only if an action was selected an a table's checkbox was checked
 	 *
 	 * @since 1.0.0

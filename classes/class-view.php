@@ -402,23 +402,6 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Create HTML code for an AJAXified link
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array $params Parameters for the URL
-	 * @param string $text Text for the link
-	 * @return string HTML code for the link
-	 */
-	protected function ajax_link( $params = array( 'action' => 'list', 'item' => '' ), $text ) {
-		$url = TablePress::url( $params, true, 'admin-post.php' );
-		$action = esc_attr( $params['action'] );
-		$item = esc_attr( $params['item'] );
-		$target = isset( $params['target'] ) ? esc_attr( $params['target'] ) : '';
-		return "<a class=\"ajax-link\" href=\"{$url}\" data-action=\"{$action}\" data-item=\"{$item}\" data-target=\"{$target}\">{$text}</a>";
-	}
-
-	/**
 	 * Return the content for the help tab for this screen
 	 *
 	 * Has to be implemented for every view that is visible in the WP Dashboard!
