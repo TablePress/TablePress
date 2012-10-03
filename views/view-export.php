@@ -53,7 +53,7 @@ class TablePress_Export_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the screen head text
 	 *
 	 * @since 1.0.0
 	 */
@@ -72,7 +72,7 @@ class TablePress_Export_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "No tables found" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -86,7 +86,7 @@ class TablePress_Export_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Export Tables" post meta box
 	 *
 	 * @since 1.0.0
 	 */

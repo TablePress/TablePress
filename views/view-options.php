@@ -63,7 +63,7 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the screen head text
 	 *
 	 * @since 1.0.0
 	 */
@@ -81,7 +81,7 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Frontend Options" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -120,7 +120,7 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Backend Options" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -138,7 +138,7 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 * Render a form for user options
+	 * Print the content of the "User Options" post meta box
 	 *
 	 * @since 1.0.0
 	 */

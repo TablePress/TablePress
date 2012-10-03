@@ -61,7 +61,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 *
+	 * Save the table after the "Save Changes" button on the "Edit" screen has been clicked
 	 *
 	 * @since 1.0.0
 	 */
@@ -144,7 +144,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 *
+	 * Return the live preview data of table that has non-saved changes
 	 *
 	 * @since 1.0.0
 	 */

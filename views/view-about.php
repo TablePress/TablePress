@@ -50,7 +50,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Plugin Purpose" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -66,7 +66,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Usage" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -95,7 +95,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "More Information and Documentation" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -109,7 +109,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Author and License" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -128,7 +128,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Help and Support" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -145,7 +145,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Debug and Version Information" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -171,7 +171,7 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Credits and Thanks" post meta box
 	 *
 	 * @since 1.0.0
 	 */

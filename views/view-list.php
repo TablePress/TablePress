@@ -173,7 +173,7 @@ class TablePress_List_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the screen head text
 	 *
 	 * @since 1.0.0
 	 */
@@ -192,7 +192,7 @@ class TablePress_List_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "All Tables" text box
 	 *
 	 * @since 1.0.0
 	 */

@@ -57,7 +57,7 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the screen head text
 	 *
 	 * @since 1.0.0
 	 */
@@ -74,7 +74,7 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Import Tables" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -178,7 +178,7 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Import from WP-Table Reloaded" post meta box
 	 *
 	 * @since 1.0.0
 	 */

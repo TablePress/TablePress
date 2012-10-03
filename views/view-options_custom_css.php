@@ -95,7 +95,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Explanation" text box
 	 *
 	 * @since 1.0.0
 	 */
@@ -109,7 +109,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Credentials" text box
 	 *
 	 * @since 1.0.0
 	 */
@@ -118,7 +118,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Cancel Saving" text box
 	 *
 	 * @since 1.0.0
 	 */

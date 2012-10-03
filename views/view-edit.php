@@ -132,7 +132,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Table Information" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -167,7 +167,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Table Content" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -268,7 +268,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Table Manipulation" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -337,7 +337,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the "Preview" and "Save Changes" button
 	 *
 	 * @since 1.0.0
 	 */
@@ -353,7 +353,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the "Delete Table" and "Export Table" buttons
 	 *
 	 * @since 1.0.0
 	 */
@@ -368,7 +368,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the hidden containers for the Advanced Editor and the Preview
 	 *
 	 * @since 1.0.0
 	 */
@@ -398,7 +398,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Table Options" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -453,7 +453,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the content of the "Features of the DataTables JavaScript library" post meta box
 	 *
 	 * @since 1.0.0
 	 */
@@ -502,7 +502,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 *
+	 * Print the screen head text
 	 *
 	 * @since 1.0.0
 	 */
