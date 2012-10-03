@@ -260,7 +260,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		if ( false === $credentials ) {
 			$form_data = ob_get_contents();
 			ob_end_clean();
-			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary"', $form_data );
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data );
 			return $form_data;
 		}
 
@@ -270,7 +270,7 @@ class TablePress_Options_Model extends TablePress_Model {
 			request_filesystem_credentials( $url, '', true, false, null );
 			$form_data = ob_get_contents();
 			ob_end_clean();
-			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary"', $form_data );
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data );
 			return $form_data;
 		}
 

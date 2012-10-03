@@ -165,7 +165,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"></th>
-		<td class="column-2"><input type="submit" value="<?php echo esc_attr__( 'Import', 'tablepress' ); ?>" class="button button-primary" name="submit" /></td>
+		<td class="column-2"><input type="submit" value="<?php echo esc_attr__( 'Import', 'tablepress' ); ?>" class="button button-primary button-large" name="submit" /></td>
 	</tr>
 </tbody>
 </table>

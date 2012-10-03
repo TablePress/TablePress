@@ -346,8 +346,8 @@ class TablePress_Edit_View extends TablePress_View {
 		?>
 			<p class="submit">
 				<a href="<?php echo $preview_url; ?>" class="button button-large show-preview-button" target="_blank"><?php _e( 'Preview', 'tablepress' ); ?></a>
-				<input type="button" class="button button-primary save-changes-button hide-if-no-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
-				<input type="submit" class="button button-primary hide-if-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+				<input type="button" class="button button-primary button-large save-changes-button hide-if-no-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+				<input type="submit" class="button button-primary button-large hide-if-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 			</p>
 		<?php
 	}
@@ -387,7 +387,7 @@ class TablePress_Edit_View extends TablePress_View {
 	?>
 	<div class="submitbox">
 		<a href="#" class="submitdelete" id="advanced-editor-cancel"><?php _e( 'Cancel', 'tablepress' ); ?></a>
-		<input type="button" class="button button-primary" id="advanced-editor-confirm" value="<?php _e( 'OK', 'tablepress' ); ?>" />
+		<input type="button" class="button button-primary button-large" id="advanced-editor-confirm" value="<?php _e( 'OK', 'tablepress' ); ?>" />
 	</div>
 	</div>
 </div>

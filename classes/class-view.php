@@ -397,7 +397,7 @@ abstract class TablePress_View {
 	protected function textbox_submit_button( $data, $box ) {
 		$caption = isset( $data['submit_button_caption'] ) ? $data['submit_button_caption'] : __( 'Save Changes', 'tablepress' );
 		?>
-		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary" name="submit" /></p>
+		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary button-large" name="submit" /></p>
 		<?php
 	}
 
