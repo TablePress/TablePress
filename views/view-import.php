@@ -40,7 +40,11 @@ class TablePress_Import_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->admin_page->enqueue_script( 'import', array( 'jquery' ) );
+		$this->admin_page->enqueue_script( 'import', array( 'jquery' ), array(
+			'import' => array(
+				'error_wp_table_reloaded_nothing_selected' => __( 'Error: You did not select what to import from WP-Table Reloaded!', 'tablepress' )
+			)
+		) );
 
 		$this->action_messages = array(
 			'error_import' => __( 'Error: The import failed.', 'tablepress' ),

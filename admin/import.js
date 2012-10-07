@@ -125,6 +125,13 @@ jQuery(document).ready( function($) {
 				.focus().select();
 			return false;
 		}
+
+		/* At least one checkbox must be check, to have something imported */
+		if ( ! $( '#import-wp-table-reloaded-tables' ).prop( 'checked' ) && ! $( '#import-wp-table-reloaded-css' ).prop( 'checked' ) ) {
+			alert( tablepress_import.error_wp_table_reloaded_nothing_selected );
+			return false;
+		}
+
 	} );
 
 } );
