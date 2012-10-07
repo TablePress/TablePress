@@ -261,7 +261,7 @@ JS;
 		// check, if a table with the given ID exists
 		$table_id = $shortcode_atts['id'];
 		if ( ! $this->model_table->table_exists( $table_id ) ) {
-			$message = "[table &quot;{$table_id}&quot; not found /]<br />\n";
+			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
 			return $message;
 		}
@@ -269,7 +269,7 @@ JS;
 		// load the table
 		$table = $this->model_table->load( $table_id );
 		if ( false === $table ) {
-			$message = "[table &quot;{$table_id}&quot; could not be loaded /]<br />\n";
+			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
 			return $message;
 		}
@@ -402,7 +402,7 @@ JS;
 		// check, if a table with the given ID exists
 		$table_id = $shortcode_atts['id'];
 		if ( ! $this->model_table->table_exists( $table_id ) ) {
-			$message = "[table &quot;{$table_id}&quot; not found /]<br />\n";
+			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
 			return $message;
 		}
@@ -410,7 +410,7 @@ JS;
 		// load the table
 		$table = $this->model_table->load( $table_id );
 		if ( false === $table ) {
-			$message = "[table &quot;{$table_id}&quot; could not be loaded /]<br />\n";
+			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
 			return $message;
 		}
@@ -452,7 +452,7 @@ JS;
 				$output = TablePress::get_user_display_name( $table['author'] );
 				break;
 			default:
-					$output = "[table-info field &quot;{$field}&quot; not found in table &quot;{$table_id}&quot; /]<br />\n";
+					$output = "[table-info field &#8220;{$field}&#8221; not found in table &#8220;{$table_id}&#8221; /]<br />\n";
 					$output = apply_filters( 'tablepress_table_info_not_found_message', $output, $table, $field, $format );
 		}
 

@@ -125,7 +125,7 @@ class TablePress_Export_View extends TablePress_View {
 			</select>
 			<?php
 				if ( $data['zip_support_available'] )
-					echo '<br /><span class="description">' . __( 'You can select multiple tables by holding down the &quot;Ctrl&quot; key (Windows) or the &quot;Command&quot; key (Mac).', 'tablepress' ) . '</span>';
+					echo '<br /><span class="description">' . __( 'You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac).', 'tablepress' ) . '</span>';
 			?>
 		</td>
 	</tr>

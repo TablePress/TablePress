@@ -200,10 +200,10 @@ class TablePress_Import_View extends TablePress_View {
 <p>
 	<?php _e( 'To import all tables from a WP-Table Reloaded installation, choose the relevant import source below.', 'tablepress' ); ?>
 <br />
-	<?php _e( 'If WP-Table Reloaded is installed on this site, the "WordPress database" option is recommended.', 'tablepress' ); ?>
-	<?php _e( 'If you want to import tables from another site, create a "WP-Table Reloaded Dump File" there and upload it below, after choosing "WP-Table Reloaded Dump File".', 'tablepress' ); ?>
+	<?php _e( 'If WP-Table Reloaded is installed on this site, the &#8220;WordPress database&#8221; option is recommended.', 'tablepress' ); ?>
+	<?php _e( 'If you want to import tables from another site, create a &#8220;WP-Table Reloaded Dump File&#8221; there and upload it below, after choosing &#8220;WP-Table Reloaded Dump File&#8221;.', 'tablepress' ); ?>
 <br />
-	<?php printf( __( 'Before doing this, it is highly recommended to read the <a href="%s" title"Migration Guide from WP-Table Reloaded to TablePress">migration guide</a> on the TablePress website.', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ); ?>
+	<?php printf( __( 'Before doing this, it is highly recommended to read the <a href="%s" title="Migration Guide from WP-Table Reloaded to TablePress">migration guide</a> on the TablePress website.', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ); ?>
 </p>
 <table class="tablepress-postbox-table fixed">
 <tbody>
@@ -230,7 +230,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><?php _e( 'Import styling', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="import-wp-table-reloaded-css"> <input type="checkbox" id="import-wp-table-reloaded-css" name="import[wp_table_reloaded][css]" value="true" checked="checked" /> <?php _e( 'Try to automatically convert the "Custom CSS" code from the "Plugin Options" screen of WP-Table Reloaded.', 'tablepress' ); ?></label></td>
+		<td class="column-2"><label for="import-wp-table-reloaded-css"> <input type="checkbox" id="import-wp-table-reloaded-css" name="import[wp_table_reloaded][css]" value="true" checked="checked" /> <?php _e( 'Try to automatically convert the &#8220;Custom CSS&#8221; code from the &#8220;Plugin Options&#8221; screen of WP-Table Reloaded.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"></th>
@@ -257,7 +257,7 @@ class TablePress_Import_View extends TablePress_View {
 	 */
 	public function wp_pointer_tp100_wp_table_reloaded_import() {
 		$content  = '<h3>' . __( 'TablePress Feature: Import from WP-Table Reloaded', 'tablepress' ) . '</h3>';
-		$content .= '<p>' .	 __( 'You can import your existing tables and "Custom CSS" from WP-Table Reloaded into TablePress.', 'tablepress' ) . '</p>';
+		$content .= '<p>' .	 __( 'You can import your existing tables and &#82210;Custom CSS&#8221; from WP-Table Reloaded into TablePress.', 'tablepress' ) . '</p>';
 
 		$this->admin_page->print_wp_pointer_js( 'tp100_wp_table_reloaded_import', '#tablepress_import-import-wp-table-reloaded', array(
 			'content'  => $content,

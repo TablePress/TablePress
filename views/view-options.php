@@ -46,9 +46,9 @@ class TablePress_Options_View extends TablePress_View {
 
 		$action_messages = array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
-			'success_save_error_custom_css' => __( 'Options saved successfully, but &quot;Custom CSS&quot; was not saved to file.', 'tablepress' ),
+			'success_save_error_custom_css' => __( 'Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file.', 'tablepress' ),
 			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' ),
-			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &quot;Custom CSS&quot; was imported successfully.', 'tablepress' )
+			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &#8220;Custom CSS&#8221; was imported successfully.', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
 			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
@@ -70,7 +70,7 @@ class TablePress_Options_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'TablePress has several options which affect the plugin\'s behavior in different areas.', 'tablepress' ); ?>
+			<?php _e( 'TablePress has several options which affect the plugin&#8217;s behavior in different areas.', 'tablepress' ); ?>
 		</p>
 		<p>
 			<?php _e( 'Frontend Options influence the styling of tables in pages, posts, or text widgets, by defining which CSS code shall be loaded.', 'tablepress' ); ?>
@@ -96,7 +96,7 @@ class TablePress_Options_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Custom CSS', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load these "Custom CSS" commands to influence the table styling:', 'tablepress' ); ?></label>
+		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load these &#8220;Custom CSS&#8221; commands to influence the table styling:', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr>
@@ -104,13 +104,13 @@ class TablePress_Options_View extends TablePress_View {
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
 			<p class="description"><?php
-				_e( sprintf( '"Custom CSS" (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'http://www.htmldog.com/guides/cssbeginner/' ), 'tablepress' );
+				_e( sprintf( '&#8220;Custom CSS&#8221; (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'http://www.htmldog.com/guides/cssbeginner/' ), 'tablepress' );
 				echo ' ';
 				_e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' );
 				echo ' ';
 				_e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' );
 			?></p>
-			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the "Custom CSS" code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
+			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the &#8220;Custom CSS&#8221; code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
 			<input type="checkbox" style="visibility: hidden;" <?php // Dummy checkbox for space alignment ?>/> <?php echo content_url( 'tablepress-custom.css' ) . ' ' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? '(File exists.)' : '(File seems not to exist.)' ); ?>
 		</td>
 	</tr>
@@ -192,7 +192,7 @@ class TablePress_Options_View extends TablePress_View {
 	 */
 	public function wp_pointer_tp100_custom_css() {
 		$content  = '<h3>' . __( 'TablePress Feature: Custom CSS', 'tablepress' ) . '</h3>';
-		$content .= '<p>' .	 __( 'This is the "Custom CSS" textarea where CSS code for table styling should be entered.', 'tablepress' ) . '</p>';
+		$content .= '<p>' .	 __( 'This is the &#8220;Custom CSS&#8221; textarea where CSS code for table styling should be entered.', 'tablepress' ) . '</p>';
 
 		$this->admin_page->print_wp_pointer_js( 'tp100_custom_css', '.CodeMirror', array(
 			'content'  => $content,

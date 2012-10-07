@@ -69,12 +69,12 @@ class TablePress_Edit_View extends TablePress_View {
 				'ays_remove_rows_plural' => _n( 'Do you really want to delete this row?', 'Do you really want to delete these rows?', 2, 'tablepress' ),
 				'ays_remove_columns_singular' => _n( 'Do you really want to delete this column?', 'Do you really want to delete these columns?', 1, 'tablepress' ),
 				'ays_remove_columns_plural' => _n( 'Do you really want to delete this column?', 'Do you really want to delete these columns?', 2, 'tablepress' ),
-				'advanced_editor_open' => __( 'Please click into the cell that you want to edit using the &quot;Advanced Editor&quot;.', 'tablepress' ),
+				'advanced_editor_open' => __( 'Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;.', 'tablepress' ),
 				'span_add' => __( 'Please click into the cell that you want to connect with a neighbor.', 'tablepress' ),
 				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ),
 				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
 								__( 'The Media Library will open, from which you can select the desired image or enter the image URL.', 'tablepress' ) . "\n" .
-								sprintf( __( 'Click the &quot;%s&quot; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
+								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
 				'unsaved_changes_unload' => __( 'The changes to this table were not saved yet and will be lost if you navigate away from this page.', 'tablepress' ),
 				'preparing_preview' => __( 'The Table Preview is being loaded...', 'tablepress' ),
 				'preview_error' => __( 'The Table Preview could not be loaded.', 'tablepress' ),
@@ -82,9 +82,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'save_changes_error' => __( 'Saving failed', 'tablepress' ),
 				'saving_changes' => __( 'Changes are being saved...', 'tablepress' ),
 				'table_id_not_empty' => __( 'The Table ID field can not be empty. Please enter a Table ID!', 'tablepress' ),
-				'table_id_not_zero' => __( 'The Table ID &quot;0&quot; is not supported. Please enter a different Table ID!', 'tablepress' ),
+				'table_id_not_zero' => __( 'The Table ID &#8220;0&#8221; is not supported. Please enter a different Table ID!', 'tablepress' ),
 				'ays_change_table_id' => __( 'Do you really want to change the Table ID? All Shortcodes for this table in your pages and posts will have to be adjusted!', 'tablepress' ),
-				'extra_css_classes_invalid' => __( 'The entered value in the field &quot;Extra CSS classes&quot; is invalid.', 'tablepress' ),
+				'extra_css_classes_invalid' => __( 'The entered value in the field &#8220;Extra CSS classes&#8221; is invalid.', 'tablepress' ),
 				'sort_asc' => __( 'Sort ascending', 'tablepress' ),
 				'sort_desc' => __( 'Sort descending', 'tablepress' ),
 				'no_rowspan_first_row' => __( 'You can not add rowspan to the first row!', 'tablepress' ),
@@ -291,8 +291,8 @@ class TablePress_Edit_View extends TablePress_View {
 			<input type="button" class="button show-help-box" value="<?php _e( '?', 'tablepress' ); ?>" title="<?php _e( 'Help on combining cells' ); ?>" />
 			<div class="hidden-container hidden-help-box-container"><?php
 				echo '<p>' . __( 'Table cells can span across more than one column or row.', 'tablepress' ) . '</p>';
-				echo '<p>' . __( 'Combining consecutive cells within the same row is called "colspanning".', 'tablepress' )
-					. ' ' . __( 'Combining consecutive cells within the same column is called "rowspanning".', 'tablepress' ) . '</p>';
+				echo '<p>' . __( 'Combining consecutive cells within the same row is called &#8220;colspanning&#8221;.', 'tablepress' )
+					. ' ' . __( 'Combining consecutive cells within the same column is called &#8220;rowspanning&#8221;.', 'tablepress' ) . '</p>';
 				echo '<p>' . __( 'To combine adjacent cells in a row, add the keyword <code>#colspan#</code> to the cell to the right of the one with the content for the combined cell by using the corresponding button.', 'tablepress' )
 					. ' ' . __( 'To combine adjacent cells in a column, add the keyword <code>#rowspan#</code> to the cell below the one with the content for the combined cell by using the corresponding button.', 'tablepress' ) . '</p>';
 				echo '<p>' . __( 'Repeat this to add the keyword to all cells that shall be connected.', 'tablepress' ) . '</p>';
@@ -461,7 +461,7 @@ class TablePress_Edit_View extends TablePress_View {
 	public function postbox_datatables_features( $data, $box ) {
 		$options = $data['table']['options'];
 ?>
-<p id="notice-datatables-head-row" class="hide-if-js"><?php printf( __( 'These features and options are only available, when the &quot;%1$s&quot; checkbox in the &quot;%2$s&quot; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></p>
+<p id="notice-datatables-head-row" class="hide-if-js"><?php printf( __( 'These features and options are only available, when the &#8220;%1$s&#8221; checkbox in the &#8220;%2$s&#8221; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></p>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr class="bottom-border">

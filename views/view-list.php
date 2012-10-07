@@ -54,7 +54,7 @@ class TablePress_List_View extends TablePress_View {
 			'list' => array(
 				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ),
 				'donation-message-already-donated' => __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' ),
-				'donation-message-maybe-later' => sprintf ( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you\'ll always find the &quot;Donate&quot; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'http://tablepress.org/' ),
+				'donation-message-maybe-later' => sprintf ( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you\'ll always find the &#8220;Donate&#8221; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'http://tablepress.org/' ),
 			)
 		) );
 
@@ -195,7 +195,7 @@ class TablePress_List_View extends TablePress_View {
 		<p>
 			<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
 			<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
-			<?php printf( __( 'You can also click the &quot;%s&quot; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
+			<?php printf( __( 'You can also click the &#8220;%s&#8221; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
 		</p>
 		<?php
 	}

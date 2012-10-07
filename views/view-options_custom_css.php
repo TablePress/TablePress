@@ -35,7 +35,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		// Set page <title>
 		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' );
 
-		$this->add_header_message( '<strong>' . __( 'Attention: Further action is required to save the changes to your &quot;Custom CSS&quot;!', 'tablepress' ) . '</strong>', 'updated' );
+		$this->add_header_message( '<strong>' . __( 'Attention: Further action is required to save the changes to your &#8220;Custom CSS&#8221;!', 'tablepress' ) . '</strong>', 'updated' );
 
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
@@ -102,8 +102,8 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	public function textbox_explanation_text( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'Due to the configuration of your server, TablePress was not able to automatically save your &quot;Custom CSS&quot; to a file.', 'tablepress' ); ?>
-			<?php printf( __( 'To try again with the same method that you use for updating plugins or themes, please fill out the &quot;%s&quot; form below.', 'tablepress' ), __( 'Connection Information', 'default' ) ); ?>
+			<?php _e( 'Due to the configuration of your server, TablePress was not able to automatically save your &#8220;Custom CSS&#8221; to a file.', 'tablepress' ); ?>
+			<?php printf( __( 'To try again with the same method that you use for updating plugins or themes, please fill out the &#8220;%s&#8221; form below.', 'tablepress' ), __( 'Connection Information', 'default' ) ); ?>
 		</p>
 		<?php
 	}
@@ -126,10 +126,10 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		?>
 		<h2><?php _e( 'Proceed without saving a file', 'tablepress' ) ?></h2>
 		<p>
-			<?php _e( 'To proceed without trying to save the &quot;Custom CSS&quot; to a file, click the button below.', 'tablepress' ); ?>
-			<?php _e( 'Your &quot;Custom CSS&quot; will then be loaded inline.', 'tablepress' ); ?>
+			<?php _e( 'To proceed without trying to save the &#8220;Custom CSS&#8221; to a file, click the button below.', 'tablepress' ); ?>
+			<?php _e( 'Your &#8220;Custom CSS&#8221; will then be loaded inline.', 'tablepress' ); ?>
 		</p><p>
-			<a href="<?php echo TablePress::url( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) ); ?>" class="button button-large"><?php _e( 'Proceed without saving &quot;Custom CSS&quot; to a file', 'tablepress' ); ?></a>
+			<a href="<?php echo TablePress::url( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) ); ?>" class="button button-large"><?php _e( 'Proceed without saving &#8220;Custom CSS&#8221; to a file', 'tablepress' ); ?></a>
 		</p>
 		<?php
 	}

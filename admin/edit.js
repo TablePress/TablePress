@@ -918,14 +918,14 @@ jQuery(document).ready( function( $ ) {
 			},
 			ajax_success: function( data, status, jqXHR ) {
 				if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
-					tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the "Shift" key.' );
+					tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the &#8220;Shift&#8221; key.' );
 				else if ( ( 'undefined' == typeof data ) || ( null == data ) || ( '-1' == data ) || ( 'undefined' == typeof data.success ) || ( true !== data.success ) )
-					tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the "Shift" key.' );
+					tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the &#8220;Shift&#8221; key.' );
 				else
 					tp.save_changes.success( data );
 			},
 			ajax_error: function( jqXHR, status, error_thrown ) {
-				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the "Shift" key.' );
+				tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the &#8220;Shift&#8221; key.' );
 			},
 			success: function( data ) {
 				// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances

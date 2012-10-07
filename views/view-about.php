@@ -83,7 +83,7 @@ class TablePress_About_View extends TablePress_View {
 	</p>
 	<p>
 		<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
-		<?php printf( __( 'You can also click the &quot;%s&quot; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
+		<?php printf( __( 'You can also click the &#8220;%s&#8221; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
 	</p>
 	<p>
 		<?php _e( 'Tables can be styled by changing and adding CSS commands.', 'tablepress' ); ?>
@@ -102,7 +102,7 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_more_information( $data, $box ) {
 		?>
 	<p>
-		<?php printf( __( 'More information about TablePress can be found on the <a href="%s">plugin\'s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tablepress.org/', 'http://wordpress.org/extend/plugins/tablepress/' ); ?>
+		<?php printf( __( 'More information about TablePress can be found on the <a href="%s">plugin&#8217;s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tablepress.org/', 'http://wordpress.org/extend/plugins/tablepress/' ); ?>
 		<?php printf( __( 'For technical information, please see the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' ); ?>
 	</p>
 		<?php
