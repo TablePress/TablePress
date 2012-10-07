@@ -1048,13 +1048,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param bool|string False on error, table ID on success
 	 */
 	protected function _import_tablepress_table( $format, $data, $name, $description, $replace_id ) {
-		$content = $this->importer->import_table( $format, $data );
-		if ( false === $content )
+		$imported_table = $this->importer->import_table( $format, $data );
+		if ( false === $imported_table )
 			return false;
-
-		// size of imported table
-		$num_rows = count( $content );
-		$num_columns = count( $content[0] );
 
 		if ( false !== $replace_id ) {
 			// Load existing table from DB
@@ -1062,32 +1058,25 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( false === $table )
 				return false;
 			// don't change name and description when a table is replaced
-			$name = $table['name'];
-			$description = $table['description'];
-			// cut visibility array (if the imported table is smaller), will be padded correctly below if it is bigger
-			$visibility = array(
-				'rows' => array_slice( $table['visibility']['rows'], 0, $num_rows ),
-				'columns' => array_slice( $table['visibility']['columns'], 0, $num_columns )
-			);
+			$imported_table['name'] = $table['name'];
+			$imported_table['description'] = $table['description'];
 		} else {
 			$table = $this->model_table->get_table_template();
-			// will be padded correctly below
-			$visibility = array(
-				'rows' => array(),
-				'columns' => array()
-			);
+			// if name and description are imported from a new table, use those
+			if ( ! isset( $imported_table['name'] ) )
+				$imported_table['name'] = $name;
+			if ( ! isset( $imported_table['description'] ) )
+				$imported_table['description'] = $description;
 		}
 
 		// Merge new or existing table with information from the imported table
-		$imported_table = array(
-			'id' => $table['id'], // will be false for new table or the existing table ID
-			'name' => $name,
-			'description' => $description,
-			'data' => $content,
-			'visibility' => array( // pad correctly if imported table is bigger than existing table (or new template)
-				'rows' => array_pad( $visibility['rows'], $num_rows, 1 ),
-				'columns' => array_pad( $visibility['columns'], $num_columns, 1 )
-			)
+		$imported_table['id'] = $table['id']; // will be false for new table or the existing table ID
+		// cut visibility array (if the imported table is smaller), and pad correctly if imported table is bigger than existing table (or new template)
+		$num_rows = count( $imported_table['data'] );
+		$num_columns = count( $imported_table['data'][0] );
+		$imported_table['visibility'] = array(
+			'rows' => array_pad( array_slice( $table['visibility']['rows'], 0, $num_rows ), $num_rows, 1 ),
+			'columns' => array_pad( array_slice( $table['visibility']['columns'], 0, $num_columns ), $num_columns, 1 )
 		);
 
 		// Check if new data is ok

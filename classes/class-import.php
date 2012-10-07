@@ -57,7 +57,7 @@ class TablePress_Import {
 	protected $import_data;
 
 	/**
-	 * Imported table data
+	 * Imported table
 	 *
 	 * @since 1.0.0
 	 *
@@ -93,7 +93,7 @@ class TablePress_Import {
 	 *
 	 * @param string $format Import format
 	 * @param array $data Data to import
-	 * @return bool|array False on error, data array on success
+	 * @return bool|array False on error, table array on success
 	 */
 	function import_table( $format, $data ) {
 		// check and remove possible UTF-8 Byte-Order Mark (BOM)
@@ -108,8 +108,6 @@ class TablePress_Import {
 				$this->import_csv();
 				break;
 			case 'html':
-				if ( ! $this->html_import_support_available )
-					return false;
 				$this->import_html();
 				break;
 			case 'json':
@@ -135,7 +133,7 @@ class TablePress_Import {
 		$csv_parser->load_data( $this->import_data );
 		$delimiter = $csv_parser->find_delimiter();
 		$data = $csv_parser->parse( $delimiter );
-		$this->imported_table = $this->pad_array_to_max_cols( $data );
+		$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $data ) );
 	}
 
 	/**
@@ -144,6 +142,9 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	protected function import_html() {
+		if ( ! $this->html_import_support_available )
+			return false;
+
 		// extract table from HTML, pattern: <table> (with eventually class, id, ...
 		// . means any charactery (except newline),
 		// * means in any count
@@ -202,7 +203,7 @@ class TablePress_Import {
 		if ( isset( $table->tfoot ) )
 			$rows = array_merge( $rows, $this->_import_html_rows( $table->tfoot[0]->tr ) );
 
-		$this->imported_table = $this->pad_array_to_max_cols( $rows );
+		$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $rows ) );
 	}
 
 	/**
@@ -240,8 +241,17 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	protected function import_json() {
-		$data = json_decode( $this->import_data, true );
-		$this->imported_table = $this->pad_array_to_max_cols( $data );
+		$json_table = json_decode( $this->import_data, true );
+
+		if ( isset( $json_table['data'] ) )
+			// JSON data contained a full export
+			$table = $json_table;
+		else
+			// JSON data contained only the data of a table, but no options
+			$table = array( 'data' => $json_table );
+
+		$table['data'] = $this->pad_array_to_max_cols( $table['data'] );
+		$this->imported_table = $table;
 	}
 
 	/**
@@ -303,11 +313,11 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	protected function fix_table_encoding() {
-		if ( ! is_array( $this->imported_table ) || 0 == count( $this->imported_table ) )
+		if ( ! is_array( $this->imported_table['data'] ) || 0 == count( $this->imported_table['data'] ) )
 			return;
 
-		foreach ( $this->imported_table as $row_idx => $row ) {
-			$this->imported_table[ $row_idx ] = array_map( array( $this, 'fix_encoding' ), $row );
+		foreach ( $this->imported_table['data'] as $row_idx => $row ) {
+			$this->imported_table['data'][ $row_idx ] = array_map( array( $this, 'fix_encoding' ), $row );
 		}
 	}
 
