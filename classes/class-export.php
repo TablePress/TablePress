@@ -78,7 +78,7 @@ class TablePress_Export {
 	 * @param array $table Table to be exported
 	 * @param string $export_format Format for the export ('csv', 'html', 'json')
 	 * @param string $csv_delimiter Delimiter for CSV export
-	 * @return string Wrapped string for HTML export
+	 * @return string Exported table (only data for CSV and HTML, full tables (including options) for JSON)
 	 */
 	public function export_table( $table, $export_format, $csv_delimiter ) {
 		switch ( $export_format ) {
@@ -106,7 +106,7 @@ class TablePress_Export {
 				$output .= '</table>';
 				break;
 			case 'json':
-				$output = json_encode( $table['data'] );
+				$output = json_encode( $table );
 				break;
 			default:
 				$output = '';
