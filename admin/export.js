@@ -60,8 +60,21 @@ jQuery(document).ready( function($) {
 			.prop( 'disabled', zip_file_required )
 			.prop( 'checked', zip_file_required || zip_file_manually_checked );
 		$( '#tables-export-zip-file-description' ).toggle( zip_file_required );
+		// set state of "Select all" checkbox
+		$( '#tables-export-select-all' ).prop( 'checked', 0 == $(this).find( 'option' ).not( ':selected' ).length );
 	} )
 	.change();
+
+	/**
+	 * Select all entries from the multiple-select dropdown on checkbox change
+	 *
+	 * @since 1.0.0
+	 */
+	$( '#tables-export-select-all' ).on( 'change', function() {
+		var $tables = $( '#tables-export' );
+		$tables.find( 'option' ).prop( 'selected', $(this).prop( 'checked' ) );
+		$tables.change(); // to update ZIP file checkbox
+	} );
 
 	/**
 	 * Automatically focus the tables dropdown

@@ -97,7 +97,13 @@ class TablePress_Export_View extends TablePress_View {
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr>
-		<th class="column-1 top-align" scope="row"><label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label></th>
+		<th class="column-1 top-align" scope="row">
+			<label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label>
+			<?php
+				if ( $data['zip_support_available'] )
+					echo '<br /><br /><label for="tables-export-select-all"><input type="checkbox" id="tables-export-select-all"> ' . __( 'Select all', 'tablepress' ) . '</label>';
+			?>
+		</th>
 		<td class="column-2">
 			<input type="hidden" name="export[tables_list]" id="tables-export-list" value="" />
 			<?php
