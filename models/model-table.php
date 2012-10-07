@@ -499,7 +499,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_lengthchange' => true,
 				'datatables_paginate_entries' => 10,
 				'datatables_info' => true,
-				'datatables_scrollX' => true,
+				'datatables_scrollX' => false,
 				'datatables_custom_commands' => ''
 				//'datatables_tabletools' => false
 			),
