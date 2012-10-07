@@ -66,7 +66,9 @@ class TablePress_Export_View extends TablePress_View {
 		<p>
 			<?php _e( 'To export, select the tables and the desired export format.', 'tablepress' ); ?>
 			<?php _e( 'If you choose more than one table, the exported files will automatically be stored in a ZIP archive file.', 'tablepress' ); ?>
-			<?php _e( 'Be aware that only the table data, but no options or settings are exported with this method!', 'tablepress' ); ?>
+		<br />
+			<?php _e( 'Be aware that for the CSV and HTML formats only the table data, but no table options are exported!', 'tablepress' ); ?>
+			<?php _e( 'For the JSON format, the table data and the table options are exported.', 'tablepress' ); ?>
 		</p>
 		<?php
 	}
