@@ -507,12 +507,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			return;
 
 		echo "<select name='$name_id' id='$name_id'>\n";
-		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions' ) . "</option>\n";
+		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'default' ) . "</option>\n";
 		foreach ( $this->_actions as $name => $title ) {
 			echo "\t<option value='$name'$>$title</option>\n";
 		}
 		echo "</select>\n";
-		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . __( 'Apply', 'tablepress' ) . '" />' . "\n";
+		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . __( 'Apply', 'default' ) . '" />' . "\n";
 	}
 
 	/**

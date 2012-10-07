@@ -34,7 +34,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->action_messages = array(
 			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
 			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
-		/*	'success_import' => __( 'The table was imported successfully.', 'tablepress' ), */
+			'success_import' => __( 'The table was imported successfully.', 'tablepress' ),
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
 			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
@@ -58,38 +58,38 @@ class TablePress_Edit_View extends TablePress_View {
 				'shortcode' => TablePress::$shortcode
 			),
 			'strings' => array_merge( array(
-				'no_remove_all_rows' => 'Du kannst nicht alle Zeilen der Tabelle löschen!',
-				'no_remove_all_columns' => 'Du kannst nicht alle Spalten der Tabelle löschen!',
-				'no_rows_selected' => 'Du hast keine Zeilen ausgewählt!',
-				'no_columns_selected' => 'Du hast keine Spalten ausgewählt!',
-				'append_num_rows_invalid' => 'Die Eingabe für die Zeilenanzahl ist ungültig!',
-				'append_num_columns_invalid' => 'Die Eingabe für die Spaltenanzahl ist ungültig!',
+				'no_remove_all_rows' => __( 'You can not delete all table rows!', 'tablepress' ),
+				'no_remove_all_columns' => __( 'You can not delete all table columns!', 'tablepress' ),
+				'no_rows_selected' => __( 'You did not select any rows!', 'tablepress' ),
+				'no_columns_selected' => __( 'You did not select any columns!', 'tablepress' ),
+				'append_num_rows_invalid' => __( 'The value for the number of rows is invalid!', 'tablepress' ),
+				'append_num_columns_invalid' => __( 'The value for the number of columns is invalid!', 'tablepress' ),
 				'ays_remove_rows_singular' => _n( 'Do you really want to delete this row?', 'Do you really want to delete these rows?', 1, 'tablepress' ),
 				'ays_remove_rows_plural' => _n( 'Do you really want to delete this row?', 'Do you really want to delete these rows?', 2, 'tablepress' ),
 				'ays_remove_columns_singular' => _n( 'Do you really want to delete this column?', 'Do you really want to delete these columns?', 1, 'tablepress' ),
 				'ays_remove_columns_plural' => _n( 'Do you really want to delete this column?', 'Do you really want to delete these columns?', 2, 'tablepress' ),
-				'advanced_editor_open' => 'Bitte klicke in die Zelle, die du bearbeiten möchtest.',
-				'span_add' => 'Bitte klicke in die Zelle, die verbunden werden soll.',
-				'link_add' => 'Bitte klicke in die Zelle, in die du einen Link einfügen möchtest.',
-				'image_add' => 'Bitte klicke in die Zelle, in die du ein Bild einfügen möchtest.' . "\n" .
-								__( 'The Media Library will open, from which you can select the desired image or insert the image URL.', 'tablepress' ) . "\n" .
+				'advanced_editor_open' => __( 'Please click into the cell that you want to edit using the &quot;Advanced Editor&quot;.', 'tablepress' ),
+				'span_add' => __( 'Please click into the cell that you want to connect with a neighbor.', 'tablepress' ),
+				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ),
+				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
+								__( 'The Media Library will open, from which you can select the desired image or enter the image URL.', 'tablepress' ) . "\n" .
 								sprintf( __( 'Click the &quot;%s&quot; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
-				'unsaved_changes_unload' => 'Seite ohne speichern verlassen?',
-				'preparing_preview' => 'Die Vorschau wird vorbereitet...',
-				'preview_error' => 'Vorbereiten der Vorschau fehlgeschlagen',
-				'save_changes_success' => 'Speichern erfolgreich',
-				'save_changes_error' => 'Speichern fehlgeschlagen',
-				'saving_changes' => 'Speichere Änderungen...',
+				'unsaved_changes_unload' => __( 'The changes to this table were not saved yet and will be lost if you navigate away from this page.', 'tablepress' ),
+				'preparing_preview' => __( 'The Table Preview is being loaded...', 'tablepress' ),
+				'preview_error' => __( 'The Table Preview could not be loaded.', 'tablepress' ),
+				'save_changes_success' => __( 'Saving successful', 'tablepress' ),
+				'save_changes_error' => __( 'Saving failed', 'tablepress' ),
+				'saving_changes' => __( 'Changes are being saved...', 'tablepress' ),
 				'table_id_not_empty' => __( 'The Table ID field can not be empty. Please enter a Table ID!', 'tablepress' ),
 				'table_id_not_zero' => __( 'The Table ID &quot;0&quot; is not supported. Please enter a different Table ID!', 'tablepress' ),
-				'ays_change_table_id' => 'Willst du die Tabellen-ID wirklich ändern? Alle Shortcodes für diese Tabelle müssen angepasst werden!',
+				'ays_change_table_id' => __( 'Do you really want to change the Table ID? All Shortcodes for this table in your pages and posts will have to be adjusted!', 'tablepress' ),
 				'extra_css_classes_invalid' => __( 'The entered value in the field &quot;Extra CSS classes&quot; is invalid.', 'tablepress' ),
 				'sort_asc' => __( 'Sort ascending', 'tablepress' ),
 				'sort_desc' => __( 'Sort descending', 'tablepress' ),
-				'no_rowspan_first_row' => 'You can not add rowspan to the first row!',
-				'no_colspan_first_col' => 'You can not add colspan to the first column!',
-				'no_rowspan_table_head' => 'You can not add rowspan into the table head row!',
-				'no_rowspan_table_foot' => 'You can not add rowspan out of the table foot row!'
+				'no_rowspan_first_row' => __( 'You can not add rowspan to the first row!', 'tablepress' ),
+				'no_colspan_first_col' => __( 'You can not add colspan to the first column!', 'tablepress' ),
+				'no_rowspan_table_head' => __( 'You can not connect cells into the table head row!', 'tablepress' ),
+				'no_rowspan_table_foot' => __( 'You can not connect cells out of the table foot row!', 'tablepress' )
 			), $this->action_messages ) // merge this to have messages available for AJAX after save dialog
 		) );
 
@@ -360,7 +360,7 @@ class TablePress_Edit_View extends TablePress_View {
 	public function textbox_other_actions( $data, $box ) {
 		?>
 			<p class="submit">
-				<?php _e( 'Other Actions' ); ?>:&nbsp;
+				<?php _e( 'Other Actions', 'tablepress' ); ?>:&nbsp;
 				<a href="<?php echo TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ); ?>" class="button delete-link"><?php _e( 'Delete Table', 'tablepress' ); ?></a>
 				<a href="<?php echo TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ); ?>" class="button"><?php _e( 'Export Table', 'tablepress' ); ?></a>
 			</p>
