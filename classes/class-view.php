@@ -102,7 +102,7 @@ abstract class TablePress_View {
 		$screen = get_current_screen();
 		if ( 0 != $this->screen_columns )
 			$screen->add_option( 'layout_columns', array( 'max' => $this->screen_columns ) );
-		add_filter( "get_user_option_screen_layout_{$screen->id}", array( &$this, 'set_current_screen_layout_columns' ) ); // enable two column layout
+		add_filter( "get_user_option_screen_layout_{$screen->id}", array( $this, 'set_current_screen_layout_columns' ) ); // enable two column layout
 
 		// add help tab
 		$screen->add_help_tab( array(
@@ -172,9 +172,9 @@ abstract class TablePress_View {
 		$this->_init_wp_pointers();
 
 		// necessary fields for all views
-		$this->add_text_box( 'default_nonce_fields', array( &$this, 'default_nonce_fields' ), 'header', false );
-		$this->add_text_box( 'action_nonce_field', array( &$this, 'action_nonce_field' ), 'header', false );
-		$this->add_text_box( 'action_field', array( &$this, 'action_field' ), 'header', false );
+		$this->add_text_box( 'default_nonce_fields', array( $this, 'default_nonce_fields' ), 'header', false );
+		$this->add_text_box( 'action_nonce_field', array( $this, 'action_nonce_field' ), 'header', false );
+		$this->add_text_box( 'action_field', array( $this, 'action_field' ), 'header', false );
 	}
 
 	/**
@@ -429,7 +429,7 @@ abstract class TablePress_View {
 		$got_pointers = false;
 		foreach ( array_diff( $this->wp_pointers, $dismissed ) as $pointer ) {
 			// Bind pointer print function
-			add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( &$this, 'wp_pointer_' . $pointer ) );
+			add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( $this, 'wp_pointer_' . $pointer ) );
 			$got_pointers = true;
 		}
 

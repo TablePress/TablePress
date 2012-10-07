@@ -39,20 +39,20 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// enqueue CSS files
 		if ( $this->model_options->get( 'use_default_css' ) || $this->model_options->get( 'use_custom_css' ) )
-			add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_css' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
 
 		// add DataTables invocation calls
-		add_action( 'wp_print_footer_scripts', array( &$this, 'add_datatables_calls' ), 11 ); // after inclusion of files
+		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 11 ); // after inclusion of files
 
 		// Remove WP-Table Reloaded Shortcodes and add TablePress Shortcodes
-		add_action( 'init', array( &$this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
+		add_action( 'init', array( $this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
 
 		// make TablePress Shortcodes work in text widgets
-		add_filter( 'widget_text', array( &$this, 'widget_text_filter' ) );
+		add_filter( 'widget_text', array( $this, 'widget_text_filter' ) );
 
 		// extend WordPress Search to also find posts/pages that have a table with the one of the search terms in title (if shown), description (if shown), or content
 		if ( apply_filters( 'tablepress_wp_search_integration', true ) )
-			add_filter( 'posts_search', array( &$this, 'posts_search_filter' ) );
+			add_filter( 'posts_search', array( $this, 'posts_search_filter' ) );
 
 		// load Template Tag functions
 		require_once TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php';
@@ -71,8 +71,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			remove_shortcode( 'table' );
 		}
 		// Shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
-		add_shortcode( TablePress::$shortcode_info, array( &$this, 'shortcode_table_info' ) );
-		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
+		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
+		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
 	}
 
 	/**
@@ -116,7 +116,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					if ( $this->model_options->get( 'use_default_css' ) )
 						wp_add_inline_style( 'tablepress-default', $custom_css ); // handle of the file to which the <style> shall be appended
 					else
-						add_action( 'wp_head', array( &$this, '_print_custom_css' ), 8 ); // priority 8 to hook in right after WP_Styles has been processed
+						add_action( 'wp_head', array( $this, '_print_custom_css' ), 8 ); // priority 8 to hook in right after WP_Styles has been processed
 				}
 			}
 		}
@@ -476,8 +476,8 @@ JS;
 		$orig_shortcode_tags = $shortcode_tags;
 		$shortcode_tags = array();
 		// register TablePress's Shortcodes (which are then the only ones registered)
-		add_shortcode( TablePress::$shortcode_info, array( &$this, 'shortcode_table_info' ) );
-		add_shortcode( TablePress::$shortcode, array( &$this, 'shortcode_table' ) );
+		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
+		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
 		// do the WP Shortcode routines on the widget text (i.e. search for TablePress's Shortcodes)
 		$content = do_shortcode( $content );
 		// restore the original Shortcodes (which includes TablePress's Shortcodes, for use in posts and pages)

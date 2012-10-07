@@ -119,8 +119,8 @@ class TablePress_List_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
-		$this->add_text_box( 'tables-list', array( &$this, 'textbox_tables_list' ), 'normal' );
+		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
+		$this->add_text_box( 'tables-list', array( $this, 'textbox_tables_list' ), 'normal' );
 
 		add_screen_option( 'per_page', array( 'label' => __( 'Tables', 'tablepress' ), 'default' => 20 ) ); // Admin_Controller contains function to allow changes to this in the Screen Options to be saved
 		$this->wp_list_table = new TablePress_All_Tables_List_Table();
@@ -623,12 +623,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 		// Maybe search in the items
 		if ( $s )
-			$this->items = array_filter( $this->items, array( &$this, '_search_callback' ) );
+			$this->items = array_filter( $this->items, array( $this, '_search_callback' ) );
 
 		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();
 		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) )
-			usort( $this->items, array( &$this, '_order_callback' ) );
+			usort( $this->items, array( $this, '_order_callback' ) );
 
 		// number of records to show per page
 		$per_page = $this->get_items_per_page( 'tablepress_list_per_page', 20 ); // hard-coded, as in filter in Admin_Controller

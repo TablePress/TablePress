@@ -99,7 +99,7 @@ class TablePress_Export {
 				$output = "<table>\n";
 				foreach ( $table['data'] as $row_idx => $row ) {
 					$output .= "\t<tr>\n";
-					$row = array_map( array( &$this, 'html_wrap_and_escape' ), $row );
+					$row = array_map( array( $this, 'html_wrap_and_escape' ), $row );
 					$output .= implode( '', $row );
 					$output .= "\t</tr>\n";
 				}

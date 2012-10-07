@@ -41,14 +41,14 @@ class TablePress_Export_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
+		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		if ( 0 == $data['tables_count'] ) {
-			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( &$this, 'postbox_no_tables' ), 'normal' );
+			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_no_tables' ), 'normal' );
 		} else {
 			$this->admin_page->enqueue_script( 'export', array( 'jquery' ) );
-			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( &$this, 'postbox_export_form' ), 'normal' );
+			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_export_form' ), 'normal' );
 			$this->data['submit_button_caption'] = __( 'Export Table', 'tablepress' );
-			$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+			$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
 		}
 	}
 

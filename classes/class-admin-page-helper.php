@@ -63,7 +63,7 @@ class TablePress_Admin_Page {
 	 */
 	public function add_admin_footer_text() {
 		// show admin footer message (only on pages of TablePress)
-		add_filter( 'admin_footer_text', array( &$this, '_admin_footer_text' ) );
+		add_filter( 'admin_footer_text', array( $this, '_admin_footer_text' ) );
 	}
 
 	/**

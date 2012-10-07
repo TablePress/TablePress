@@ -51,9 +51,9 @@ class TablePress_Import_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
-		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( &$this, 'postbox_import_form' ), 'normal' );
-		$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( &$this, 'postbox_wp_table_reloaded_import' ), 'additional' );
+		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
+		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( $this, 'postbox_import_form' ), 'normal' );
+		$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( $this, 'postbox_wp_table_reloaded_import' ), 'additional' );
 	}
 
 	/**

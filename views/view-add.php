@@ -41,10 +41,10 @@ class TablePress_Add_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
-		$this->add_meta_box( 'add-table', __( 'Add New Table', 'tablepress' ), array( &$this, 'postbox_add_table' ), 'normal' );
+		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
+		$this->add_meta_box( 'add-table', __( 'Add New Table', 'tablepress' ), array( $this, 'postbox_add_table' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Add Table', 'tablepress' );
-		$this->add_text_box( 'submit', array( &$this, 'textbox_submit_button' ), 'submit' );
+		$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
 	}
 
 	/**

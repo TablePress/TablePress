@@ -43,9 +43,9 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 
 		$this->admin_page->add_admin_footer_text();
 
-		$this->add_text_box( 'explanation-text', array( &$this, 'textbox_explanation_text' ), 'normal' );
-		$this->add_text_box( 'credentials-form', array( &$this, 'textbox_credentials_form' ), 'normal' );
-		$this->add_text_box( 'proceed-no-file-saving', array( &$this, 'textbox_proceed_no_file_saving' ), 'submit' );
+		$this->add_text_box( 'explanation-text', array( $this, 'textbox_explanation_text' ), 'normal' );
+		$this->add_text_box( 'credentials-form', array( $this, 'textbox_credentials_form' ), 'normal' );
+		$this->add_text_box( 'proceed-no-file-saving', array( $this, 'textbox_proceed_no_file_saving' ), 'submit' );
 	}
 
 	/**

@@ -403,12 +403,12 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 		// Maybe search in the items
 		if ( $s )
-			$this->items = array_filter( $this->items, array( &$this, '_search_callback' ) );
+			$this->items = array_filter( $this->items, array( $this, '_search_callback' ) );
 
 		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();
 		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) )
-			usort( $this->items, array( &$this, '_order_callback' ) );
+			usort( $this->items, array( $this, '_order_callback' ) );
 
 		// number of records to show per page
 		$per_page = 15; // hard-coded, as there's no possibility to change this in the Thickbox

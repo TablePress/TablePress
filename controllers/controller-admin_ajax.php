@@ -33,7 +33,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 		$ajax_actions = array( 'hide_message', 'save_table', 'preview_table' );
 		foreach ( $ajax_actions as $action ) {
-			add_action( "wp_ajax_tablepress_{$action}", array( &$this, "ajax_action_{$action}" ) );
+			add_action( "wp_ajax_tablepress_{$action}", array( $this, "ajax_action_{$action}" ) );
 		}
 	}
 

@@ -48,7 +48,7 @@ class TablePress_Edit_View extends TablePress_View {
 
 		// do this here to get CSS into <head>
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		add_action( 'admin_footer', array( &$this, 'dequeue_media_upload_js' ), 2 );
+		add_action( 'admin_footer', array( $this, 'dequeue_media_upload_js' ), 2 );
 		add_thickbox();
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
@@ -93,16 +93,16 @@ class TablePress_Edit_View extends TablePress_View {
 			), $this->action_messages ) // merge this to have messages available for AJAX after save dialog
 		) );
 
-		$this->add_text_box( 'head', array( &$this, 'textbox_head' ), 'normal' );
-		$this->add_text_box( 'buttons-1', array( &$this, 'textbox_buttons' ), 'normal' );
-		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( &$this, 'postbox_table_information' ), 'normal' );
-		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( &$this, 'postbox_table_data' ), 'normal' );
-		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( &$this, 'postbox_table_manipulation' ), 'normal' );
-		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( &$this, 'postbox_table_options' ), 'normal' );
-		$this->add_meta_box( 'datatables-features', __( 'Features of the DataTables JavaScript library', 'tablepress' ), array( &$this, 'postbox_datatables_features' ), 'normal' );
-		$this->add_text_box( 'hidden-containers', array( &$this, 'textbox_hidden_containers' ), 'additional' );
-		$this->add_text_box( 'buttons-2', array( &$this, 'textbox_buttons' ), 'additional' );
-		$this->add_text_box( 'other-actions', array( &$this, 'textbox_other_actions' ), 'submit' );
+		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
+		$this->add_text_box( 'buttons-1', array( $this, 'textbox_buttons' ), 'normal' );
+		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( $this, 'postbox_table_information' ), 'normal' );
+		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( $this, 'postbox_table_data' ), 'normal' );
+		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( $this, 'postbox_table_manipulation' ), 'normal' );
+		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( $this, 'postbox_table_options' ), 'normal' );
+		$this->add_meta_box( 'datatables-features', __( 'Features of the DataTables JavaScript library', 'tablepress' ), array( $this, 'postbox_datatables_features' ), 'normal' );
+		$this->add_text_box( 'hidden-containers', array( $this, 'textbox_hidden_containers' ), 'additional' );
+		$this->add_text_box( 'buttons-2', array( $this, 'textbox_buttons' ), 'additional' );
+		$this->add_text_box( 'other-actions', array( $this, 'textbox_other_actions' ), 'submit' );
 	}
 
 	/**

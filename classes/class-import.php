@@ -307,7 +307,7 @@ class TablePress_Import {
 			return;
 
 		foreach ( $this->imported_table as $row_idx => $row ) {
-			$this->imported_table[ $row_idx ] = array_map( array( &$this, 'fix_encoding' ), $row );
+			$this->imported_table[ $row_idx ] = array_map( array( $this, 'fix_encoding' ), $row );
 		}
 	}
 

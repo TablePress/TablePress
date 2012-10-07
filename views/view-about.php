@@ -40,13 +40,13 @@ class TablePress_About_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->add_meta_box( 'plugin-purpose', __( 'Plugin Purpose', 'tablepress' ), array( &$this, 'postbox_plugin_purpose' ), 'normal' );
-		$this->add_meta_box( 'usage', __( 'Usage', 'tablepress' ), array( &$this, 'postbox_usage' ), 'normal' );
-		$this->add_meta_box( 'more-information', __( 'More Information and Documentation', 'tablepress' ), array( &$this, 'postbox_more_information' ), 'normal' );
-		$this->add_meta_box( 'help-support', __( 'Help and Support', 'tablepress' ), array( &$this, 'postbox_help_support' ), 'normal' );
-		$this->add_meta_box( 'author-license', __( 'Author and License', 'tablepress' ), array( &$this, 'postbox_author_license' ), 'side' );
-		$this->add_meta_box( 'credits-thanks', __( 'Credits and Thanks', 'tablepress' ), array( &$this, 'postbox_credits_thanks' ), 'side' );
-		$this->add_meta_box( 'debug-version-information', __( 'Debug and Version Information', 'tablepress' ), array( &$this, 'postbox_debug_version_information' ), 'side' );
+		$this->add_meta_box( 'plugin-purpose', __( 'Plugin Purpose', 'tablepress' ), array( $this, 'postbox_plugin_purpose' ), 'normal' );
+		$this->add_meta_box( 'usage', __( 'Usage', 'tablepress' ), array( $this, 'postbox_usage' ), 'normal' );
+		$this->add_meta_box( 'more-information', __( 'More Information and Documentation', 'tablepress' ), array( $this, 'postbox_more_information' ), 'normal' );
+		$this->add_meta_box( 'help-support', __( 'Help and Support', 'tablepress' ), array( $this, 'postbox_help_support' ), 'normal' );
+		$this->add_meta_box( 'author-license', __( 'Author and License', 'tablepress' ), array( $this, 'postbox_author_license' ), 'side' );
+		$this->add_meta_box( 'credits-thanks', __( 'Credits and Thanks', 'tablepress' ), array( $this, 'postbox_credits_thanks' ), 'side' );
+		$this->add_meta_box( 'debug-version-information', __( 'Debug and Version Information', 'tablepress' ), array( $this, 'postbox_debug_version_information' ), 'side' );
 	}
 
 	/**

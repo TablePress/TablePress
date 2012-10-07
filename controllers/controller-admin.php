@@ -57,10 +57,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		parent::__construct();
 
 		// handler for changing the number of shown tables in the list of tables (via WP List Table class)
-		add_filter( 'set-screen-option', array( &$this, 'save_list_tables_screen_option' ), 10, 3 );
+		add_filter( 'set-screen-option', array( $this, 'save_list_tables_screen_option' ), 10, 3 );
 
-		add_action( 'admin_menu', array( &$this, 'add_admin_menu_entry' ) );
-		add_action( 'admin_init', array( &$this, 'add_admin_actions' ) );
+		add_action( 'admin_menu', array( $this, 'add_admin_menu_entry' ) );
+		add_action( 'admin_init', array( $this, 'add_admin_actions' ) );
 	}
 
 	/**
@@ -88,7 +88,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_menu_entry() {
 		// for all menu entries:
 		$min_access_cap = apply_filters( 'tablepress_min_access_cap', 'edit_pages' ); // @TODO: Make this a plugin option for usage here, below, and for the frontend edit link!
-		$callback = array( &$this, 'show_admin_page' );
+		$callback = array( $this, 'show_admin_page' );
 		$admin_menu_entry_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
 
 		if ( $this->is_top_level_page ) {
@@ -131,26 +131,26 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$post_actions = array( 'list', 'add', 'edit', 'options', 'export', 'import' );
 		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox' );
 		foreach ( $post_actions as $action ) {
-			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_post_action_{$action}" ) );
+			add_action( "admin_post_tablepress_{$action}", array( $this, "handle_post_action_{$action}" ) );
 		}
 		foreach ( $get_actions as $action ) {
-			add_action( "admin_post_tablepress_{$action}", array( &$this, "handle_get_action_{$action}" ) );
+			add_action( "admin_post_tablepress_{$action}", array( $this, "handle_get_action_{$action}" ) );
 		}
 
 		// register callbacks to trigger load behavior for admin pages
 		foreach ( $this->page_hooks as $page_hook ) {
-			add_action( "load-{$page_hook}", array( &$this, 'load_admin_page' ) );
+			add_action( "load-{$page_hook}", array( $this, 'load_admin_page' ) );
 		}
 
 		$pages_with_editor_button = array( 'post.php', 'post-new.php' );
 		foreach ( $pages_with_editor_button as $editor_page ) {
-			add_action( "load-{$editor_page}", array( &$this, 'add_editor_buttons' ) );
+			add_action( "load-{$editor_page}", array( $this, 'add_editor_buttons' ) );
 		}
 
 		if ( ! is_network_admin() && ! is_user_admin() )
-			add_action( 'admin_bar_menu', array( &$this, 'add_wp_admin_bar_new_content_menu_entry' ), 71 );
+			add_action( 'admin_bar_menu', array( $this, 'add_wp_admin_bar_new_content_menu_entry' ), 71 );
 
-		add_action( 'load-plugins.php', array( &$this, 'plugins_page' ) );
+		add_action( 'load-plugins.php', array( $this, 'plugins_page' ) );
 	}
 
 	/**
@@ -173,8 +173,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// TinyMCE integration
 		if ( user_can_richedit() ) {
-			add_filter( 'mce_external_plugins', array( &$this, 'add_tinymce_plugin' ) );
-			add_filter( 'mce_buttons', array( &$this, 'add_tinymce_button' ) );
+			add_filter( 'mce_external_plugins', array( $this, 'add_tinymce_plugin' ) );
+			add_filter( 'mce_buttons', array( $this, 'add_tinymce_button' ) );
 		}
 	}
 
@@ -228,8 +228,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function plugins_page() {
 		$this->init_i18n_support();
 		// add additional links on Plugins page
-		add_filter( 'plugin_action_links_' . TABLEPRESS_BASENAME, array( &$this, 'add_plugin_action_links' ) );
-		add_filter( 'plugin_row_meta', array( &$this, 'add_plugin_row_meta' ), 10, 2 );
+		add_filter( 'plugin_action_links_' . TABLEPRESS_BASENAME, array( $this, 'add_plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
@@ -406,10 +406,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	protected function init_i18n_support() {
 		if ( $this->i18n_support_loaded )
 			return;
-		add_filter( 'locale', array( &$this, 'change_plugin_locale' ) ); // allow changing the plugin language
+		add_filter( 'locale', array( $this, 'change_plugin_locale' ) ); // allow changing the plugin language
 		$language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
 		load_plugin_textdomain( 'tablepress', false, $language_directory );
-		remove_filter( 'locale', array( &$this, 'change_plugin_locale' ) );
+		remove_filter( 'locale', array( $this, 'change_plugin_locale' ) );
 		$this->i18n_support_loaded = true;
 	}
 
@@ -433,7 +433,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_url' => 'http://tobias.baethge.com/'
 			)
 		);
-		uasort( $languages, array( &$this, '_get_plugin_languages_sort_cb' ) ); // to sort after the translation is done
+		uasort( $languages, array( $this, '_get_plugin_languages_sort_cb' ) ); // to sort after the translation is done
 		return $languages;
 	}
 
