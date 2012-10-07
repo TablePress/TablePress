@@ -47,7 +47,8 @@ class TablePress_Options_View extends TablePress_View {
 		$action_messages = array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
 			'success_save_error_custom_css' => __( 'Options saved successfully, but &quot;Custom CSS&quot; was not saved to file.', 'tablepress' ),
-			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' )
+			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' ),
+			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &quot;Custom CSS&quot; was imported successfully.', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
 			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';

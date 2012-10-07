@@ -35,6 +35,7 @@ class TablePress_Edit_View extends TablePress_View {
 			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
 			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
 			'success_import' => __( 'The table was imported successfully.', 'tablepress' ),
+			'success_import_wp_table_reloaded' => __( 'The table was imported successfully from WP-Table Reloaded.', 'tablepress' ),
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
 			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),

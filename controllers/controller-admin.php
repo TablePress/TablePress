@@ -567,7 +567,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// @TODO: caps check for selected bulk action
 
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
-			TablePress::redirect( array( 'action' => 'list', 'message' => "error_no_selection" ) );
+			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_selection' ) );
 		else
 			$tables = stripslashes_deep( $_POST['table'] );
 

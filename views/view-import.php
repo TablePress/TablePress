@@ -44,7 +44,16 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->action_messages = array(
 			'error_import' => __( 'Error: The import failed.', 'tablepress' ),
-			'error_no_zip_import' => __( 'Error: Import of ZIP files is not available on this server.', 'tablepress' )
+			'error_no_zip_import' => __( 'Error: Import of ZIP files is not available on this server.', 'tablepress' ),
+			'error_import_zip_open' => __( 'Error: The ZIP file could not be opened.', 'tablepress' ),
+			'error_import_zip_content' => __( 'Error: The data in the ZIP file is invalid.', 'tablepress' ),
+			'error_import_no_replace_id' => __( 'Error: You selected to replace an existing table, but did not select a table.', 'tablepress' ),
+			'error_import_source_invalid' => __( 'Error: The source for the import is invalid or could not be accessed.', 'tablepress' ),
+			'error_import_data' => __( 'Error: The data for the import is invalid.', 'tablepress' ),
+			'error_wp_table_reloaded_nothing_selected' => __( 'Error: You did not select what to import from WP-Table Reloaded!', 'tablepress' ),
+			'error_wp_table_reloaded_not_installed' => __( 'Error: Existing WP-Table Reloaded tables were not found in the database.', 'tablepress' ),
+			'error_import_wp_table_reloaded'=> __( 'Error: The tables from WP-Table Reloaded could not be imported.', 'tablepress' ),
+			'error_wp_table_reloaded_dump_file' => __( 'Error: The WP-Table Reloaded Dump File could not be imported!', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
 			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';

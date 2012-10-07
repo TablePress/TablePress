@@ -104,6 +104,7 @@ class TablePress_List_View extends TablePress_View {
 			'success_delete' => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),
 			'success_delete_plural' => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'success_copy' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ),
 			'success_copy_plural' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
 			'error_copy' => __( 'Error: The table could not be copied.', 'tablepress' ),
@@ -112,7 +113,9 @@ class TablePress_List_View extends TablePress_View {
 			'error_bulk_action_invalid' => __( 'Error: This bulk action is invalid!', 'tablepress' ),
 			'error_no_selection' => __( 'Error: You did not select any tables!', 'tablepress' ),
 			'error_delete_not_all_tables' => __( 'Notice: Not all selected tables could be deleted!', 'tablepress' ),
-			'error_copy_not_all_tables' => __( 'Notice: Not all selected tables could be copied!', 'tablepress' )
+			'error_copy_not_all_tables' => __( 'Notice: Not all selected tables could be copied!', 'tablepress' ),
+			'success_import' => __( 'The tables were imported successfully.', 'tablepress' ),
+			'success_import_wp_table_reloaded' => __( 'The tables were imported successfully from WP-Table Reloaded.', 'tablepress' )
 		);
 		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
 			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
