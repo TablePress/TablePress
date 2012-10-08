@@ -114,7 +114,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$slug = 'tablepress';
 				if ( 'list' != $action )
 					$slug .= '_' . $action;
-				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ) , $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
+				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ), $entry['admin_menu_title'], $entry['min_access_cap'], $slug, $callback );
 			}
 		} else {
 			$this->page_hooks[] = add_submenu_page( $this->parent_page, 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback );

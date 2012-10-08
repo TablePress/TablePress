@@ -484,7 +484,7 @@ class TablePress_Render {
 		if ( $this->render_options['print_description'] && 'below' == $this->render_options['print_description_position'] )
 			$output .= $print_description_html;
 
-		$this->output = apply_filters( 'tablepress_table_output', $output , $this->table, $this->render_options );
+		$this->output = apply_filters( 'tablepress_table_output', $output, $this->table, $this->render_options );
 	}
 
 	/**
@@ -536,7 +536,7 @@ class TablePress_Render {
 				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx && $col_idx > 1 )
 				// we are in first, second, or last row or in the first or second column, so more checks are necessary
 				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
-					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
+					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
 				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // no rowspan out of table_foot
 					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // and no colspan into first column head
 					continue;
