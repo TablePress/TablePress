@@ -32,17 +32,17 @@ Screenshots of the TablePress interface and links to example tables are availabl
 
 == Installation ==
 
-The easiest way to install TablePress is via your WordPress Dashboard. Go to the "Plugins" section and search for "TablePress" in the WordPress Plugin Directory. Then you can click "Install" and the following steps will be done for you automatically. You'll just have to activate the plugin.
+The easiest way to install TablePress is via your WordPress Dashboard. Go to the "Plugins" page and search for "TablePress" in the WordPress Plugin Directory. Then click "Install Now" and the following steps will be done for you automatically. You'll just have to activate TablePress.
 
-Manual Installation works just as for most other WordPress plugins:
+Manual installation works just as for other WordPress plugins:
 
-1. Download and extract the zip file and just drop the folder "tablepress" into the "wp-content/plugins/" directory of your WordPress installation.
+1. Download and extract the ZIP file and move the folder "tablepress" into the "wp-content/plugins/" directory of your WordPress installation.
 
-1. Activate the plugin "TablePress" on your "Plugins" page.
+1. Activate the plugin "TablePress" on the "Plugins" page of your WordPress Dashboard.
 
 1. Create and manage tables by going to the "TablePress" section in the admin menu.
 
-1. Add a table to a page, post, or text widget, by adding the Shortcode `[table id=<your-table's-ID> /]` to its content.
+1. Add a table to a page, post, or text widget, by adding the Shortcode `[table id=<your-table's-ID> /]` to its content, or by using the "Table" button in the editor toolbar.
 
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
@@ -50,7 +50,7 @@ Manual Installation works just as for most other WordPress plugins:
 
 = Where can I find answers to Frequently Asked Questions? =
 
-A wide group of questions, regarding different features or styling has been answered in the [FAQ section](http://tablepress.org/faq/) on the plugin website.
+A wide group of questions, regarding different features or styling has been answered on the [FAQ page](http://tablepress.org/faq/) on the plugin website.
 
 = Support? =
 
@@ -82,10 +82,11 @@ Please visit the [official plugin website](http://tablepress.org/) for the lates
 
 == Usage ==
 
-After installing the plugin, you can add, import, export, edit, copy, delete, ... tables via the "TablePress" screen in your admin menu in the WordPress Dashboard.
+After installing the plugin, you can add, import, export, edit, copy, delete, ... tables on the "TablePress" screen in the WordPress Dashboard.
 Everything should be self-explaining there.
 
 To show one of your tables in a post, on a page, or in a text widget, just include the Shortcode `[table id=<the-ID> /]` to your post/page/text widget, where `<the-ID>` is the ID of your table (can be found on the left side of the "All Tables" screen.)
+Alternatively, you can also insert tables by clicking the "Table" button in the editor toolbar, and then selecting the desired table.
 
 After that you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen.
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by checking the appropriate options on a table's "Edit" screen.
@@ -101,7 +102,7 @@ Thanks to every donor, supporter and bug reporter!
 This plugin is Free Software, released under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
 I kindly ask you for link somewhere on your website to http://tablepress.org/. This is not required!
-I'm also happy about [donations](http://tablepress.org/donate/) or something from [my wishlist](http://tablepress.org/wishlist/)! Thanks!
+I'm also happy about [donations](http://tablepress.org/donate/) or something from my [amazon.de](http://tablepress.org/wishlist-de/) or [amazon.com wishlist](http://tablepress.org/wishlist-us/)! Thanks!
 
 == Changelog ==
 
