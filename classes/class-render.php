@@ -565,12 +565,12 @@ class TablePress_Render {
 		$row_class = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] )
 			$row_class .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
-		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_cells, $row_idx + 1 );
+		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_cells, $row_idx + 1, $this->table['data'][ $row_idx ] );
 		if ( ! empty( $row_class ) )
 			$row_class = " class=\"{$row_class}\"";
 
 		$row_cells = array_reverse( $row_cells ); // because we looped through the cells in reverse order
-		return "\t<tr{$row_class}>\n\t\t" . implode( '', $row_cells ) . "\n\t</tr>\n";
+		return "<tr{$row_class}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
 	}
 
 	/**
