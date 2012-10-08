@@ -483,7 +483,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'options' => array(
 				'last_editor' => get_current_user_id(),
 				'table_head' => true,
-				'table_foot' => true,
+				'table_foot' => false,
 				'alternating_row_colors' => true,
 				'row_hover' => true,
 				'print_name' => false,
