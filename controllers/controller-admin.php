@@ -947,7 +947,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'form-field':
 				if ( ! empty( $import['form_field'] ) ) {
 					$import_data['file_location'] = '';
-					$import_data['file_name'] = '';
+					$import_data['file_name'] = __( 'Imported from Manual Input', 'tablepress' ); // Description of the table
 					$import_data['data'] = $import['form_field'];
 					$import_error = false;
 				}
