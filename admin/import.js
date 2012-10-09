@@ -56,11 +56,11 @@ jQuery(document).ready( function($) {
 			extension = '';
 		// determine filename from full path
 		filename_start = path.lastIndexOf( '\\' );
-		if ( -1 != filename_start ) { // Windows-based path
+		if ( -1 != filename_start ) { // Windows-based path
 			filename = path.substr( filename_start + 1 );
 		} else {
 			filename_start = path.lastIndexOf( '/' );
-			if ( -1 != filename_start ) { // Windows-based path
+			if ( -1 != filename_start ) { // Windows-based path
 				filename = path.substr( filename_start + 1 );
 			}
 		}

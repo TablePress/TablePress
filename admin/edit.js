@@ -997,7 +997,7 @@ jQuery(document).ready( function( $ ) {
 					'#link-add':			tp.content.link.add,
 					'#image-add':			tp.content.image.add,
 					'#span-add-rowspan':	function() { tp.content.span.add( '#rowspan#' ); },
-					'#span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
+					'#span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
 					'.show-preview-button': tp.table.preview.trigger,
 					'.save-changes-button': tp.save_changes.trigger,
 					'.show-help-box':		function() {
