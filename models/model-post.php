@@ -49,14 +49,14 @@ class TablePress_Post_Model extends TablePress_Model {
 		$this->post_type = apply_filters( 'tablepress_post_type', $this->post_type );
 		$post_type_args = array(
 			'labels' => array(
-				'name' => 'TP Tables' // 'TablePress Tables' is too long for the admin menu
+				'name' => 'TablePress Tables'
 			),
 			'public' => false,
 			'show_ui' => false,
 			'query_var' => false,
 			'rewrite' => false,
 			'supports' => array( 'title', 'editor', 'excerpt', 'revisions' ),
-			'can_export' => false
+			'can_export' => true
 		);
 		$post_type_args = apply_filters( 'tablepress_post_type_args', $post_type_args );
 		register_post_type( $this->post_type, $post_type_args );
