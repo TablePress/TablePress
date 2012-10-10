@@ -4,13 +4,13 @@
 	"sZeroRecords":	 "Keine Einträge vorhanden.",
 	"sInfo":		 "_START_ bis _END_ von _TOTAL_ Einträgen",
 	"sInfoEmpty":	 "0 bis 0 von 0 Einträgen",
-	"sInfoFiltered": "(gefiltert von _MAX_	Einträgen)",
+	"sInfoFiltered": "(gefiltert von _MAX_ Einträgen)",
 	"sInfoPostFix":	 "",
-	"sSearch":		 "Suchen",
+	"sSearch":		 "Suchen:",
 	"oPaginate": {
-		"sFirst":	 "Erster",
+		"sFirst":	 "Anfang",
 		"sPrevious": "Zurück",
-		"sNext":	 "Nächster",
-		"sLast":	 "Letzter"
+		"sNext":	 "Weiter",
+		"sLast":	 "Ende"
 	}
 }
