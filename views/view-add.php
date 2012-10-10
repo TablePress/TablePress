@@ -83,12 +83,12 @@ class TablePress_Add_View extends TablePress_View {
 			</div>
 			<div class="form-field form-required form-field-numbers-only form-field-small">
 				<label for="table-rows"><?php _e( 'Number of Rows', 'tablepress' ); ?>:</label>
-				<input type="number" name="table[rows]" id="table-rows" title="<?php _e( 'This field must contain a positive number.', 'tablepress' ); ?>" value="5" min="1" max="99999" maxlength="5" required />
+				<input type="number" name="table[rows]" id="table-rows" title="<?php esc_attr_e( 'This field must contain a positive number.', 'tablepress' ); ?>" value="5" min="1" max="99999" maxlength="5" required />
 				<p><?php _e( 'The number of rows in your table.', 'tablepress' ); ?></p>
 			</div>
 			<div class="form-field form-required form-field-numbers-only form-field-small">
 				<label for="table-columns"><?php _e( 'Number of Columns', 'tablepress' ); ?>:</label>
-				<input type="number" name="table[columns]" id="table-columns" title="<?php _e( 'This field must contain a positive number.', 'tablepress' ); ?>" value="5" min="1" max="99999" maxlength="5" required />
+				<input type="number" name="table[columns]" id="table-columns" title="<?php esc_attr_e( 'This field must contain a positive number.', 'tablepress' ); ?>" value="5" min="1" max="99999" maxlength="5" required />
 				<p><?php _e( 'The number of columns in your table.', 'tablepress' ); ?></p>
 			</div>
 			<div class="clear"></div>
