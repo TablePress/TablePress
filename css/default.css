@@ -72,12 +72,14 @@
 /* Length Change menu */
 .dataTables_length {
 	float: left;
+	white-space: nowrap;
 }
 
 /* Filter/Search */
 .dataTables_filter {
 	float: right;
 	text-align: right;
+	white-space: nowrap;
 }
 
 /* Table information */
