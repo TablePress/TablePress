@@ -27,8 +27,9 @@
 .tablepress th,
 .tablepress td {
 	padding: 8px;
+	border: none;
+	background: none;
 }
-
 .tablepress th {
 	font-weight: bold;
 }
@@ -50,9 +51,12 @@
 .tablepress tfoot tr {
 	background-color: #d9edf7;
 }
-.tablepress tbody tr.odd { background-color: #f9f9f9; }
-.tablepress tbody tr.even { background-color: #ffffff; }
-
+.tablepress tbody tr.odd {
+	background-color: #f9f9f9;
+}
+.tablepress tbody tr.even {
+	background-color: #ffffff;
+}
 .tablepress .row-hover tr:hover {
 	background-color: #f3f3f3;
 }
@@ -133,7 +137,6 @@
 .paginate_enabled_previous { background: url('../img/back_enabled.png') no-repeat center left; }
 .paginate_enabled_previous:hover { background: url('../img/back_enabled_hover.png') no-repeat center left; }
 .paginate_disabled_previous { background: url('../img/back_disabled.png') no-repeat center left; }
-/* hover */
 .paginate_enabled_next { background: url('../img/forward_enabled.png') no-repeat center right; }
 .paginate_enabled_next:hover { background: url('../img/forward_enabled_hover.png') no-repeat center right; }
 .paginate_disabled_next { background: url('../img/forward_disabled.png') no-repeat center right; }
