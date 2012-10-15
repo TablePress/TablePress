@@ -780,8 +780,8 @@ jQuery(document).ready( function( $ ) {
 			},
 			span: {
 				add: function( span ) {
-					// @TODO: Ask question according to span type
-					if ( ! confirm( tablepress_strings.span_add ) )
+					var span_add_msg = ( '#rowspan#' == span ) ? tablepress_strings.rowspan_add : tablepress_strings.colspan_add ;
+					if ( ! confirm( span_add_msg ) )
 						return;
 
 					$( '#edit-form-body' ).one( 'click', 'textarea', function() {

@@ -65,15 +65,16 @@ class TablePress_Edit_View extends TablePress_View {
 				'no_columns_selected' => __( 'You did not select any columns!', 'tablepress' ),
 				'append_num_rows_invalid' => __( 'The value for the number of rows is invalid!', 'tablepress' ),
 				'append_num_columns_invalid' => __( 'The value for the number of columns is invalid!', 'tablepress' ),
-				'ays_remove_rows_singular' => _n( 'Do you really want to delete this row?', 'Do you really want to delete these rows?', 1, 'tablepress' ),
-				'ays_remove_rows_plural' => _n( 'Do you really want to delete this row?', 'Do you really want to delete these rows?', 2, 'tablepress' ),
-				'ays_remove_columns_singular' => _n( 'Do you really want to delete this column?', 'Do you really want to delete these columns?', 1, 'tablepress' ),
-				'ays_remove_columns_plural' => _n( 'Do you really want to delete this column?', 'Do you really want to delete these columns?', 2, 'tablepress' ),
+				'ays_remove_rows_singular' => _n( 'Do you really want to delete the selected row?', 'Do you really want to delete the selected rows?', 1, 'tablepress' ),
+				'ays_remove_rows_plural' => _n( 'Do you really want to delete the selected row?', 'Do you really want to delete the selected rows?', 2, 'tablepress' ),
+				'ays_remove_columns_singular' => _n( 'Do you really want to delete the selected column?', 'Do you really want to delete the selected columns?', 1, 'tablepress' ),
+				'ays_remove_columns_plural' => _n( 'Do you really want to delete the selected column?', 'Do you really want to delete the selected columns?', 2, 'tablepress' ),
 				'advanced_editor_open' => __( 'Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;.', 'tablepress' ),
-				'span_add' => __( 'Please click into the cell that you want to connect with a neighbor.', 'tablepress' ),
+				'rowspan_add' => __( 'To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have.', 'tablepress' ),
+				'colspan_add' => __( 'To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have.', 'tablepress' ),
 				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ),
 				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
-								__( 'The Media Library will open, from which you can select the desired image or enter the image URL.', 'tablepress' ) . "\n" .
+								__( 'The Media Library will open, where you can select or upload the desired image or enter the image URL.', 'tablepress' ) . "\n" .
 								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
 				'unsaved_changes_unload' => __( 'The changes to this table were not saved yet and will be lost if you navigate away from this page.', 'tablepress' ),
 				'preparing_preview' => __( 'The Table Preview is being loaded...', 'tablepress' ),
