@@ -508,7 +508,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				'columns' => array( 1 ) // one visible column
 			)
 		);
-		return $table;
+		return apply_filters( 'tablepress_table_template', $table );
 	}
 
 	/**
