@@ -168,7 +168,7 @@ class TablePress_Render {
 
 				// add all rows/columns to array if "all" value set for one of the four parameters
 				if ( 'all' == $this->render_options["{$action}_{$element}"] ) {
-					$this->render_options["{$action}_{$element}"] = range( 0, $num_{$element} - 1 );
+					$this->render_options["{$action}_{$element}"] = range( 0, ${'num_' . $element} - 1 );
 					continue;
 				}
 
