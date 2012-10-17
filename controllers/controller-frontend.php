@@ -302,27 +302,6 @@ JS;
 			$render_options['html_id'] .= "-no-{$count}";
 		$render_options['html_id'] = apply_filters( 'tablepress_html_id', $render_options['html_id'], $table_id, $count );
 
-		// eventually add this table to list of tables which have a JS library enabled and thus are to be included in the script's call in the footer
-		if ( $render_options['use_datatables'] && $render_options['table_head'] && count( $table['data'] ) > 1 ) {
-			// get options for the DataTables JavaScript library from the table's options
-			$js_options = array (
-				'alternating_row_colors' => $render_options['alternating_row_colors'],
-				'datatables_sort' => $render_options['datatables_sort'],
-				'datatables_paginate' => $render_options['datatables_paginate'],
-				'datatables_paginate_entries' => $render_options['datatables_paginate_entries'],
-				'datatables_lengthchange' => $render_options['datatables_lengthchange'],
-				'datatables_filter' => $render_options['datatables_filter'],
-				'datatables_info' => $render_options['datatables_info'],
-				'datatables_scrollX' => $render_options['datatables_scrollX'],
-				'datatables_locale' => $render_options['datatables_locale'],
-				//'datatables_tabletools' => $render_options['datatables_tabletools'],
-				'datatables_custom_commands' => $render_options['datatables_custom_commands']
-			);
-			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options );
-			$this->shown_tables[$table_id]['instances'][ $render_options['html_id'] ] = $js_options;
-			$this->_enqueue_datatables();
-		}
-
 		// generate "Edit Table" link
 		$render_options['edit_table_url'] = '';
 		/*
@@ -346,6 +325,21 @@ JS;
 			$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
 
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
+
+		// eventually add this table to list of tables which have a JS library enabled and thus are to be included in the script's call in the footer
+		if ( $render_options['use_datatables'] && $render_options['table_head'] && count( $table['data'] ) > 1 ) {
+			// get options for the DataTables JavaScript library from the table's render options
+			$js_options = array();
+			foreach ( array( 'alternating_row_colors', 'datatables_sort', 'datatables_paginate',
+								'datatables_paginate', 'datatables_paginate_entries', 'datatables_lengthchange',
+								'datatables_filter', 'datatables_info', 'datatables_scrollX', // 'datatables_tabletools'
+								'datatables_locale', 'datatables_custom_commands' ) as $option ) {
+				$js_options[ $option ] = $render_options[ $option ];
+			}
+			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options ); // need this filter to e.g. set JS parameters depending on Shortcode attributes
+			$this->shown_tables[$table_id]['instances'][ $render_options['html_id'] ] = $js_options;
+			$this->_enqueue_datatables();
+		}
 
 		// check if table output shall and can be loaded from the transient cache, otherwise generate the output
 		if ( $render_options['cache_table_output'] && ! is_user_logged_in() ) {
