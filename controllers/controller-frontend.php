@@ -359,6 +359,8 @@ JS;
 					$caches_list = array();
 				$caches_list[ $transient_name ] = 1; // 1 is a dummy value
 				set_transient( $caches_list_transient_name, $caches_list, 60*60*24*2 );
+			} else {
+				$output .= apply_filters( 'tablepress_cache_hit_comment', "<!-- #{$render_options['html_id']} from cache -->" );
 			}
 		} else {
 			// render/generate the table HTML, as no cache is to be used
