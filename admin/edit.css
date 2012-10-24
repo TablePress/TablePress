@@ -159,18 +159,11 @@ body.wait * {
 	vertical-align: top;
 }
 #edit-form-head .sort-control {
-	display: none;
 	float: right;
 	width: 12px;
 	height: 12px;
 	cursor: pointer;
 	margin: 2px 3px 0 0;
-}
-.js #edit-form-head .head:hover .sort-control {
-	display: block;
-}
-.js #edit-form-head .ui-sortable-helper:hover .sort-control {
-	display: none;
 }
 #edit-form-head .sort-asc {
 	background: url(img/sort-asc.gif) no-repeat center center;
