@@ -185,6 +185,9 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	width: 98%;
 	height: 102px;
 	margin: 1px;
+	-moz-tab-size: 2;
+	-o-tab-size: 2;
+	tab-size: 2;
 }
 #tablepress-page .CodeMirror-scroll {
 	background-color: #ffffff;
