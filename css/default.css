@@ -204,7 +204,7 @@
 .dataTables_wrapper .sorting,
 .dataTables_wrapper .sorting_asc,
 .dataTables_wrapper .sorting_desc {
-	padding: 8px 18px 8px 8px; /* more right padding for sort arrows */
+	padding-right: 18px; /* more right padding for sort arrows */
 	cursor: pointer;
 	*cursor: hand;
 }
@@ -245,5 +245,5 @@ html[xmlns] .dataTables_wrapper { display: block; }
 .dataTables_wrapper .tablepress-rtl .sorting_asc,
 .dataTables_wrapper .tablepress-rtl .sorting_desc {
 	background-position: left !important;
-	padding: 8px 8px 8px 18px; /* more left padding for sort arrows */
+	padding-left: 18px; /* more left padding for sort arrows */
 }
