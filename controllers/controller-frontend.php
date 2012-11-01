@@ -168,18 +168,17 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 				// DataTables language/translation handling
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
-				// only load DataTables translation if it's not "en_US", which is loaded as the default by DataTables
-				if ( 'en_US' != $datatables_locale ) {
-					// only do the expensive language file checks if they haven't been done yet
-					if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
-						$language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.js";
-						$language_file = apply_filters( 'tablepress_datatables_language_file', $language_file, $datatables_locale, TABLEPRESS_ABSPATH );
-						if ( ! file_exists( $language_file ) )
-							$language_file = TABLEPRESS_ABSPATH . 'i18n/datatables/lang-default.js';
+				// only do the expensive language file checks if they haven't been done yet
+				if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
+					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.js";
+					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH );
+					if ( ( 'en_US' != $datatables_locale || $orig_language_file != $language_file ) // load DataTables translation if it was changed or is not "en_US" (which is loaded as the default by DataTables)
+						&& file_exists( $language_file ) )
 						$datatables_languages[ $datatables_locale ] = $language_file;
-					}
-					$parameters['oLanguage'] = '"oLanguage":DataTables_oLanguage["' . $datatables_locale . '"]';
 				}
+				// if translation is registered to have its strings added to the JS, add corresponding parameter to DataTables call
+				if ( isset( $datatables_languages[ $datatables_locale ] ) )
+					$parameters['oLanguage'] = '"oLanguage":DataTables_oLanguage["' . $datatables_locale . '"]';
 				// these parameters need to be added for performance gain or to overwrite unwanted default behavior
 				$parameters['aaSorting'] = '"aaSorting":[]'; // no initial sort
 				$parameters['bSortClasses'] = '"bSortClasses":false'; // don't add additional classes, to speed up sorting
