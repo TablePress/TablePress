@@ -415,7 +415,7 @@ class TablePress_Edit_View extends TablePress_View {
 	</tr>
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><?php _e( 'Table Foot Row', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-table-foot"><input type="checkbox" id="option-table-foot" name="table[options][table_foot]" value="true"<?php checked( $options['table_foot'] ); ?> /> <?php _e( 'The first row of the table is the table footer.', 'tablepress' ); ?></label></td>
+		<td class="column-2"><label for="option-table-foot"><input type="checkbox" id="option-table-foot" name="table[options][table_foot]" value="true"<?php checked( $options['table_foot'] ); ?> /> <?php _e( 'The last row of the table is the table footer.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Alternating Row Colors', 'tablepress' ); ?>:</th>
