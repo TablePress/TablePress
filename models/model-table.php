@@ -501,7 +501,6 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_info' => true,
 				'datatables_scrollX' => false,
 				'datatables_custom_commands' => ''
-				//'datatables_tabletools' => false
 			),
 			'visibility' => array(
 				'rows' => array( 1 ), // one visbile row

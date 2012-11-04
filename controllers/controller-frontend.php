@@ -199,8 +199,6 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['bInfo'] = '"bInfo":false';
 				if ( $js_options['datatables_scrollX'] )
 					$parameters['sScrollX'] = '"sScrollX":"100%"';
-				//if ( $js_options['datatables_tabletools'] )
-				//	$parameters['sDom'] = '"sDom": \'T<"clear">lfrtip\'';
 				if ( ! empty( $js_options['datatables_custom_commands'] ) )
 					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
 
@@ -332,7 +330,7 @@ JS;
 			$js_options = array();
 			foreach ( array( 'alternating_row_colors', 'datatables_sort', 'datatables_paginate',
 								'datatables_paginate', 'datatables_paginate_entries', 'datatables_lengthchange',
-								'datatables_filter', 'datatables_info', 'datatables_scrollX', // 'datatables_tabletools'
+								'datatables_filter', 'datatables_info', 'datatables_scrollX',
 								'datatables_locale', 'datatables_custom_commands' ) as $option ) {
 				$js_options[ $option ] = $render_options[ $option ];
 			}

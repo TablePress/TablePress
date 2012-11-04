@@ -1262,7 +1262,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 		if ( isset( $wptr_table['options']['datatables_customcommands'] ) )
 			$new_table['options']['datatables_custom_commands'] = $wptr_table['options']['datatables_customcommands'];
-		// not imported: $wptr_table['options']['datatables_tabletools']
 		// not imported: $wptr_table['options']['cache_table_output']
 		// not imported: $wptr_table['custom_fields']
 

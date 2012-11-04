@@ -623,7 +623,6 @@ class TablePress_Render {
 			'datatables_filter' => null,
 			'datatables_info' => null,
 			'datatables_scrollX' => null,
-			//'datatables_tabletools' => false,
 			'datatables_custom_commands' => null,
 			'datatables_locale' => get_locale(),
 			'show_rows' => '',
