@@ -116,6 +116,7 @@ body.wait * {
 
 #edit-form {
 	border-collapse: collapse;
+	margin-bottom: 5px; /* spacing for the scroll bar */
 }
 
 /* row and column moving with jQueryUI sortable */
@@ -183,4 +184,24 @@ body.wait * {
 
 #tablepress_edit-table-manipulation td {
 	width: 50%;
+}
+
+/* scrolling of the table edit fields (otherwise, scroll bar will be at the very bottom of the page...) */
+#poststuff #tablepress_edit-table-data .inside {
+	overflow-x: auto;
+	overflow-y: hidden;
+	margin: 6px 12px 8px 10px;
+	padding: 0;
+}
+
+/* always force scroll bar on Mac OS X, and in webkit browsers, see http://simurai.com/post/8083942390/force-lion-scrollbar */
+#tablepress_edit-table-data ::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 7px;
+	height: 7px;
+}
+#tablepress_edit-table-data ::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(0,0,0,.5);
+	-webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
