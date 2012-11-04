@@ -95,7 +95,7 @@ Thanks to every donor, supporter and bug reporter!
 
 ## License
 
-This plugin is Free Software, released under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
+This plugin is Free Software, released and licensed under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
 
 I kindly ask you for link somewhere on your website to http://tablepress.org/. This is not required!
