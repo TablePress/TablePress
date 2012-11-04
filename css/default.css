@@ -19,7 +19,6 @@
 .tablepress {
 	border-collapse: collapse;
 	border-spacing: 0;
-	text-align: left;
 	width: 100%;
 	margin-bottom: 1em;
 	border: none;
@@ -30,6 +29,7 @@
 	padding: 8px;
 	border: none;
 	background: none;
+	text-align: left;
 }
 
 /* Vertical lines / borders */
