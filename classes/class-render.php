@@ -650,37 +650,40 @@ body {
 }
 .tablepress {
 	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	margin-bottom: 10px auto;
 	border: none;
-	margin: 10px auto;
 }
 .tablepress td,
 .tablepress th {
-	box-sizing: border-box;
-	width: 200px;
 	padding: 8px;
+	border: none;
+	background: none;
 	text-align: left;
 }
-.tablepress tbody tr,
-.tablepress tfoot tr {
+.tablepress tbody tr td,
+.tablepress tfoot tr th {
 	border-top: 1px solid #dddddd;
 }
-.tablepress tbody tr:first-child {
+.tablepress tbody tr:first-child td {
 	border-top: 0;
 }
-.tablepress thead tr {
+.tablepress thead tr th {
 	border-bottom: 1px solid #dddddd;
 }
-.tablepress thead tr,
-.tablepress tfoot tr {
+.tablepress thead th,
+.tablepress tfoot th {
 	background-color: #d9edf7;
+	font-weight: bold;
 }
-.tablepress tbody tr.even {
-	background-color: #ffffff;
-}
-.tablepress tbody tr.odd {
+.tablepress tbody tr.odd td {
 	background-color: #f9f9f9;
 }
-.tablepress .row-hover tr:hover {
+.tablepress tbody tr.even td {
+	background-color: #ffffff;
+}
+.tablepress .row-hover tr:hover td {
 	background-color: #f3f3f3;
 }
 </style>
