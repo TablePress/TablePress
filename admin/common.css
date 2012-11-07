@@ -132,16 +132,6 @@
 	cursor: text;
 }
 
-/* fix non-JS styling of Post Boxes (might be able to remove this in future versions of WP) */
-.no-js .postbox:hover .handlediv {
-	background-image: none !important;
-	cursor: auto;
-}
-.no-js .postbox .hndle {
-	cursor: auto;
-	color: #464646;
-}
-
 /* table dropdown on "Export" screen */
 #tables-export {
 	width: 100%;
