@@ -126,12 +126,11 @@ body.wait * {
 	margin: auto;
 	width: 16px;
 	height: 16px;
-	cursor: move;
 	text-align: center;
 	font-weight: bold;
 }
-.no-js #edit-form .move-handle {
-	cursor: auto;
+.js #edit-form .move-handle {
+	cursor: move;
 }
 #edit-form-body .move-handle {
 	margin: auto 3px;
