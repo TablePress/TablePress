@@ -45,6 +45,7 @@ body.wait * {
 }
 /* To account for additional padding of #TB_WindowContent in direct preview */
 #table-preview {
+	height: 100%;
 	margin: -2px -15px -15px -15px;
 }
 
