@@ -28,7 +28,7 @@ jQuery(document).ready( function( $ ) {
 			body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][rows][]" value="1" /></td>',
 			body_cells_post: '<td><span class="move-handle"></span></td></tr>',
 			body_cell: '<td><textarea rows="1"></textarea></td>',
-			head_cell: '<th class="head"><span class="sort-control sort-desc" title="' + tablepress_strings.sort_desc + '"></span><span class="sort-control sort-asc" title="' + tablepress_strings.sort_asc + '"></span><span class="move-handle"></span></th>',
+			head_cell: '<th class="head"><span class="sort-control sort-desc" title="' + tablepress_strings.sort_desc + '"><span class="sorting-indicator"></span></span><span class="sort-control sort-asc" title="' + tablepress_strings.sort_asc + '"><span class="sorting-indicator"></span></span><span class="move-handle"></span></th>',
 			foot_cell: '<th><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][columns][]" value="1" /></th>',
 			set_table_changed: function() {
 				tp.made_changes = true;

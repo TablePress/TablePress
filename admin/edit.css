@@ -166,11 +166,15 @@ body.wait * {
 	cursor: pointer;
 	margin: 2px 3px 0 0;
 }
-#edit-form-head .sort-asc {
-	background: url(img/sort-asc.gif) no-repeat center center;
+#edit-form-head .sorting-indicator {
+	display: block;
+	margin: 4px 2px 0 0;
 }
-#edit-form-head .sort-desc {
-	background: url(img/sort-desc.gif) no-repeat center center;
+#edit-form-head .sort-asc .sorting-indicator {
+	background-position: 0 0;
+}
+#edit-form-head .sort-desc .sorting-indicator {
+	background-position: -7px 0;
 }
 
 /* (red) highlighting of hidden rows and columns */

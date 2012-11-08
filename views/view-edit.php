@@ -211,7 +211,7 @@ class TablePress_Edit_View extends TablePress_View {
 		if ( 0 === $visibility['columns'][$col_idx] )
 			$column_class = ' column-hidden';
 		$column = TablePress::number_to_letter( $col_idx + 1 );
-		echo "\t\t\t<th class=\"head{$column_class}\"><span class=\"sort-control sort-desc\" title=\"" . __( 'Sort descending', 'tablepress' ) . "\"></span><span class=\"sort-control sort-asc\" title=\"" . __( 'Sort ascending', 'tablepress' ) . "\"></span><span class=\"move-handle\">{$column}</span></th>\n";
+		echo "\t\t\t<th class=\"head{$column_class}\"><span class=\"sort-control sort-desc\" title=\"" . __( 'Sort descending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"sort-control sort-asc\" title=\"" . __( 'Sort ascending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"move-handle\">{$column}</span></th>\n";
 	}
 ?>
 			<th></th>
