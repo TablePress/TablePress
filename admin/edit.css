@@ -67,13 +67,11 @@ body.wait * {
 }
 
 /* spinner/loading animation while saving/preview preparation */
-.animation-saving,
-.animation-preview {
+.spinner.animation-saving,
+.spinner.animation-preview {
 	display: inline-block;
-	background: url(../../../../wp-admin/images/wpspin_light.gif);
-	height: 16px;
-	width: 16px;
-	margin: 4px 0 0 5px;
+	float: none;
+	margin: 7px 0 0 7px;
 	vertical-align: top;
 }
 
