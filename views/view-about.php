@@ -160,12 +160,13 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; TablePress: <?php echo TablePress::version; ?>
 			<br />&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
 			<br />&middot; TablePress table scheme: <?php echo TablePress::table_scheme_version; ?>
-			<br />&middot; <?php _e( 'Plugin installed', 'tablepress' ); ?>: <?php echo date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
+			<br />&middot; Plugin installed: <?php echo date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
 			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
 			<br />&middot; PHP: <?php echo phpversion(); ?>
 			<br />&middot; mySQL (Server): <?php echo mysql_get_server_info(); ?>
 			<br />&middot; mySQL (Client): <?php echo mysql_get_client_info(); ?>
-			<br />&middot; ZIP support: <?php echo $data['zip_support_available'] ? __( 'yes', 'tablepress' ) : __( 'no', 'tablepress' ); ?>
+			<br />&middot; ZIP support: <?php echo $data['zip_support_available'] ? 'yes' : 'no'; ?>
+			<br />&middot; WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?>
 		</p>
 		<?php
 	}
