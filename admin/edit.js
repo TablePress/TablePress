@@ -297,9 +297,7 @@ jQuery(document).ready( function( $ ) {
 					return;
 				}
 
-				$selected_rows
-					.removeClass( 'row-hidden' )
-					.find( '.visibility' ).val( '1' );
+				$selected_rows.removeClass( 'row-hidden' ).find( '.visibility' ).val( '1' );
 
 				tp.rows.stripe();
 				tp.table.set_table_changed();
@@ -876,7 +874,7 @@ jQuery(document).ready( function( $ ) {
 
 				$row.find( '.move-handle' ).html( row_idx + 1 );
 			} )
-			.each( function( row_idx, row ) {
+			.each( function( row_idx, row ) { // need a second loop here to not break logic in previous loop, that queries textareas by their old ID
 				$( row ).find( 'textarea' ).attr( 'id', function( column_idx /*, old_id */ ) {
 					return 'cell-' + tp.columns.number_to_letter( column_idx + 1 ) + ( row_idx + 1 );
 				} );
@@ -957,7 +955,6 @@ jQuery(document).ready( function( $ ) {
 			},
 			error: function( message ) {
 				tp.save_changes.after_saving_dialog( 'error', message );
-				//alert( tablepress_strings.save_changes_error );
 			},
 			after_saving_dialog: function( type, message ) {
 				if ( 'undefined' == typeof message )
