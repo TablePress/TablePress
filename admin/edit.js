@@ -351,10 +351,9 @@ jQuery(document).ready( function( $ ) {
 					$foot_rows = $table_body.find( '.foot-row' ).nextAll().andSelf(),
 					rows = $table_body.children().not( $head_rows ).not( $foot_rows ).get(),
 					/*
-					 * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
+					 * Natural Sort algorithm for Javascript - Version 0.7 - Released under MIT license
 					 * Author: Jim Palmer (based on chunking idea from Dave Koelle)
-					 * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
-					 * See: http://js-naturalsort.googlecode.com/ and http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
+					 * See: https://github.com/overset/javascript-natural-sort and http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
 					 */
 					natural_sort = function( a, b ) {
 						var re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi,
@@ -362,15 +361,16 @@ jQuery(document).ready( function( $ ) {
 							dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
 							hre = /^0x[0-9a-f]+$/i,
 							ore = /^0/,
-							// convert all to strings and trim()
-							x = a.toString().replace(sre, '') || '',
-							y = b.toString().replace(sre, '') || '',
+							// strip whitespace
+							x = a.replace(sre, '') || '',
+							y = b.replace(sre, '') || '',
 							// chunk/tokenize
 							xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 							yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 							// numeric, hex or date detection
 							xD = parseInt(x.match(hre)) || (xN.length != 1 && x.match(dre) && Date.parse(x)),
-							yD = parseInt(y.match(hre)) || xD && y.match(dre) && Date.parse(y) || null;
+							yD = parseInt(y.match(hre)) || xD && y.match(dre) && Date.parse(y) || null,
+							oFxNcL, oFyNcL;
 						// first try and sort Hex codes or Dates
 						if (yD) {
 							if ( xD < yD ) return -1;
@@ -382,7 +382,7 @@ jQuery(document).ready( function( $ ) {
 							oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
 							oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
 							// handle numeric vs string comparison - number < string - (Kyle Adams)
-							if (isNaN(oFxNcL) !== isNaN(oFyNcL)) return (isNaN(oFxNcL)) ? 1 : -1;
+							if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
 							// rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
 							else if (typeof oFxNcL !== typeof oFyNcL) {
 								oFxNcL += '';
@@ -395,7 +395,7 @@ jQuery(document).ready( function( $ ) {
 					};
 
 				$.each( rows, function( row_idx, row ) {
-					row.sort_key = $(row).children().eq( column_idx ).find( 'textarea' ).val().toUpperCase();
+					row.sort_key = ( '' + $(row).children().eq( column_idx ).find( 'textarea' ).val() ).toLowerCase(); // convert to string, and lower case for case insensitive sorting
 				} );
 
 				rows.sort( function( a, b ) {
