@@ -72,7 +72,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'advanced_editor_open' => __( 'Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;.', 'tablepress' ),
 				'rowspan_add' => __( 'To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have.', 'tablepress' ),
 				'colspan_add' => __( 'To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have.', 'tablepress' ),
-				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ),
+				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ) . "\n" .
+								__( 'You can then enter the link URL or choose an existing page or post.', 'tablepress' ) . "\n" .
+								__( 'After the link HTML code is inserted, type the link text, for which the cursor will already be in the correct position.', 'tablepress' ),
 				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
 								__( 'The Media Library will open, where you can select or upload the desired image or enter the image URL.', 'tablepress' ) . "\n" .
 								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
