@@ -81,6 +81,14 @@ body.wait * {
 #tablepress-page div.preview-error {
 	margin: 0 0 15px;
 }
+
+/* make postboxes at least as wide as their contents,
+Attention: This decreases usability of the the sorting/moving feature of postboxes! */
+#tablepress-page .postbox {
+	display: inline-block; /* e.g. stretch to the width of the table */
+	min-width: 100%; /* but use the full width */
+}
+
 /* table cells */
 #edit-form-body td {
 	padding: 2px 2px 2px 0px;
