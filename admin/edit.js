@@ -1096,8 +1096,8 @@ jQuery(document).ready( function( $ ) {
 		}
 	};
 
-	// do allow wide tables to scroll sideways, only on "Edit" screen
-	$( '#wpbody-content' ).css( 'overflow-x', 'scroll' );
+	// allow wide tables to scroll sideways, only on "Edit" screen
+	$( '#wpbody-content' ).css( 'overflow', 'visible' );
 
 	// run TablePress initialization
 	tp.init();
