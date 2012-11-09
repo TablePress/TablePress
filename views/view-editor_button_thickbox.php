@@ -77,13 +77,13 @@ body {
 }
 
 #icon-tablepress {
-	background: transparent url( '<?php echo plugins_url( 'admin/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>' ) no-repeat;
+	background: transparent url(<?php echo plugins_url( 'admin/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>) no-repeat;
 }
 /* Retina images */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
 	/* Screen icon */
 	#icon-tablepress {
-		background-image: url( '<?php echo plugins_url( 'admin/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>' );
+		background-image: url(<?php echo plugins_url( 'admin/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>);
 		background-size: 36px 36px;
 	}
 }
