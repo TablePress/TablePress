@@ -87,11 +87,13 @@ body.wait * {
 	margin: 0 0 15px;
 }
 
-/* make postboxes at least as wide as their contents,
-Attention: This decreases usability of the the sorting/moving feature of postboxes! */
+/* make postboxes at least as wide as their contents, to prevent overlapping elements */
 #tablepress-page .postbox {
-	display: inline-block; /* e.g. stretch to the width of the table */
-	min-width: 100%; /* but use the full width */
+	min-width: 836px; /* sum of inner table width, padding, border, ... */
+}
+#tablepress-page #tablepress_edit-table-data {
+	display: inline-block; /* stretch to the width of the table */
+	min-width: 99.9%; /* but use the full width, bus minus like 1px as the box is wider than the others otherwise */
 }
 
 /* table cells */
