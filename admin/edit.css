@@ -22,6 +22,11 @@ body.wait * {
 	margin: 6px;
 }
 
+/* allow wide tables to scroll sideways, only on "Edit" screen */
+#wpbody-content {
+	overflow: visible !important; /* !important is necessary to override an inline style that postboxes.js sets via JS */
+}
+
 /* move Thickbox more to the front, so that it's always above a jQuery UI dialog */
 #TB_HideSelect {
 	z-index: 301099;
