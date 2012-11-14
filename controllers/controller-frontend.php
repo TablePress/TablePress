@@ -64,13 +64,15 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function init_shortcodes() {
-		// if WP-Table Reloaded is activated, remove it's Shortcodes, as these would otherwise be used instead of TablePress's Shortcodes
+		// if WP-Table Reloaded is activated, remove its Shortcodes and CSS, as these would otherwise be used instead of TablePress's Shortcodes
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ) ) {
 			remove_shortcode( 'table-info' );
 			remove_shortcode( 'table' );
+			if ( isset( $GLOBALS['WP_Table_Reloaded_Frontend'] ) )
+				remove_action( 'wp_head', array( $GLOBALS['WP_Table_Reloaded_Frontend'], 'add_frontend_css' ) );
 		}
-		// Shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized!
+		// Shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized! (@TODO: Might no longer be the case since [22382] in WP 3.5.)
 		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
 		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
 	}
