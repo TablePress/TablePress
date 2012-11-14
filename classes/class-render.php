@@ -270,7 +270,7 @@ class TablePress_Render {
 		$replaced_references = $replaced_ranges = array();
 
 		// remove all whitespace characters
-		$expression = preg_replace( '#\s#', '', $expression );
+		$expression = preg_replace( '#[\r\n\t ]#', '', $expression );
 
 		// expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6)
 		if ( preg_match_all( '#([A-Z]+)([0-9]+):([A-Z]+)([0-9]+)#', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
