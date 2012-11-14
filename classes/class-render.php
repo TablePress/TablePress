@@ -281,7 +281,7 @@ class TablePress_Render {
 				$replaced_ranges[] = $cell_range[0];
 
 				if ( isset( $this->known_ranges[ $cell_range[0] ] ) ) {
-					$expression = str_replace( $cell_range[0], $this->known_ranges[ $cell_range[0] ], $expression );
+					$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_range[0], '#' ) . '(?![0-9])#', $this->known_ranges[ $cell_range[0] ], $expression );
 					continue;
 				}
 
@@ -305,7 +305,7 @@ class TablePress_Render {
 				}
 				$cell_list = implode( ',', $cell_list );
 
-				$expression = str_replace( $cell_range[0], $cell_list, $expression );
+				$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_range[0], '#' ) . '(?![0-9])#', $cell_list, $expression );
 				$this->known_ranges[ $cell_range[0] ] = $cell_list;
 			}
 		}
@@ -334,7 +334,7 @@ class TablePress_Render {
 				if ( false !== strpos( $result, '!ERROR!' ) )
 					return $result;
 
-				$expression = str_replace( $cell_reference[0], $result, $expression );
+				$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_reference[0], '#' ) . '(?![0-9])#', $result, $expression );
 			}
 		}
 
