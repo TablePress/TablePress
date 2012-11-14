@@ -325,14 +325,18 @@ class TablePress_Render {
 				$ref_row = $cell_reference[2] - 1;
 
 				if ( ! ( isset( $this->table['data'][$ref_row] ) && isset( $this->table['data'][$ref_row][$ref_col] ) ) )
-					return '!ERROR! Non-Existing Cell';
+					return '!ERROR! Non-existing Cell';
 
 				$ref_parents = $parents;
 				$ref_parents[] = $cell_reference[0];
 
 				$result = $this->table['data'][$ref_row][$ref_col] = $this->_evaluate_cell( $this->table['data'][$ref_row][$ref_col], $ref_parents );
+				// Bail if there was an error already
 				if ( false !== strpos( $result, '!ERROR!' ) )
 					return $result;
+				// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated)
+				if ( ! is_numeric( $result ) )
+					return '!ERROR! ' . $cell_reference[0] . ' does not contain a number or expression';
 
 				$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_reference[0], '#' ) . '(?![0-9])#', $result, $expression );
 			}
