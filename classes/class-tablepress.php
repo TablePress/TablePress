@@ -97,6 +97,15 @@ abstract class TablePress {
 			return;
 		}
 
+		// check if minimum requirements are fulfilled, currently a stable WordPress 3.4
+		if ( version_compare( $GLOBALS['wp_version'], '3.4', '<' ) ) {
+			// show error notice to admins, if WP is not installed in the minimum required version, in which case TablePress will not work
+			if ( current_user_can( 'update_plugins' ) )
+				add_action( 'admin_notices', array( 'TablePress', 'show_minimum_requirements_error_notice' ) );
+			// and exit TablePress
+			return;
+		}
+
 		// some filtering of "global" class variables
 		self::$shortcode = apply_filters( 'tablepress_table_shortcode', self::$shortcode );
 		self::$shortcode_info = apply_filters( 'tablepress_table_info_shortcode', self::$shortcode_info );
@@ -362,6 +371,19 @@ abstract class TablePress {
 		}
 		wp_redirect( $redirect );
 		die();
+	}
+
+	/**
+	 * Show an error notice to admins, if TablePress's minimum requirements are not reached
+	 *
+	 * @since 1.0.0
+	 */
+	public static function show_minimum_requirements_error_notice() {
+		// Message is not translated as it is shown on every admin screen, for which we don't want to load translations
+		echo '<div class="error"><p>' .
+			'<strong>Attention:</strong> ' .
+			'The installed version of WordPress is too old for the TablePress plugin! TablePress requires an up-to-date version! <strong>Please <a href="' . admin_url( 'update-core.php' ) . '">update your WordPress installation</a></strong>!' .
+			"</p></div>\n";
 	}
 
 } // class TablePress
