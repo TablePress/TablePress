@@ -219,16 +219,10 @@ class TablePress_Import {
 		foreach ( $element as $row ) {
 			$new_row = array();
 			foreach ( $row as $cell ) {
-				$children = $cell->children();
-				if ( 0 == count( $children ) ) {
-					$cell_content = (string) $cell;
-				} else {
-					$cell_content = '';
-					foreach ( $children as $child ) {
-						$cell_content .= (string) $child->asXML();
-					}
-				}
-				$new_row[] = $cell_content;
+				if ( 1 === preg_match( '#<t(?:d|h).*?>(.*)</t(?:d|h)>#is', $cell->asXML(), $matches ) ) // get text between <td>...</td>, or <th>...</th>, possibly with attributes
+					$new_row[] = $matches[1];
+				else
+					$new_row[] = '';
 			}
 			$rows[] = $new_row;
 		}
