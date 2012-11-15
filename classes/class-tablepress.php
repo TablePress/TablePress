@@ -38,7 +38,7 @@ abstract class TablePress {
 	 *
 	 * @const int
 	 */
-	const db_version = 10;
+	const db_version = 11;
 
 	/**
 	 * TablePress "table scheme" (data format structure) version

@@ -323,7 +323,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$data['credentials_form'] = $result;
 					break;
 				}
-				$data['frontend_options']['use_default_css'] = $this->model_options->get( 'use_default_css' );
 				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
 				$data['frontend_options']['use_custom_css_file'] = $this->model_options->get( 'use_custom_css_file' );
 				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file();
@@ -744,7 +743,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$new_options['plugin_language'] = $posted_options['plugin_language'];
 		}
 		// Checkboxes
-		foreach ( array( 'use_default_css', 'use_custom_css', 'use_custom_css_file' ) as $checkbox ) {
+		foreach ( array( 'use_custom_css', 'use_custom_css_file' ) as $checkbox ) {
 			$new_options[ $checkbox ] = ( isset( $posted_options[ $checkbox ] ) && 'true' === $posted_options[ $checkbox ] );
 		}
 		if ( isset( $posted_options['custom_css'] ) ) {
@@ -1304,8 +1303,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return false;
 
 		$imported_options = array();
-		if ( isset( $wp_table_reloaded_options['use_default_css'] ) )
-			$imported_options['use_default_css'] = (bool)$wp_table_reloaded_options['use_default_css'];
 		if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
 			$imported_options['use_custom_css'] = (bool)$wp_table_reloaded_options['use_custom_css'];
 		if ( isset( $wp_table_reloaded_options['custom_css'] ) ) {

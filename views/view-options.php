@@ -89,12 +89,7 @@ class TablePress_Options_View extends TablePress_View {
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
-	<tr class="bottom-border">
-		<th class="column-1" scope="row"><?php _e( 'Default CSS', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-use-default-css"><input type="checkbox" id="option-use-default-css" name="options[use_default_css]" value="true"<?php checked( $data['frontend_options']['use_default_css'] ); ?> /> <?php _e( 'Load the default table styling.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label>
-		</td>
-	</tr>
-	<tr class="top-border">
+	<tr>
 		<th class="column-1" scope="row"><?php _e( 'Custom CSS', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load these &#8220;Custom CSS&#8221; commands to influence the table styling:', 'tablepress' ); ?></label>
 		</td>
