@@ -169,6 +169,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			foreach ( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
 
+				// Settle dependencies/conflicts between certain features
+				if ( false !== $js_options['datatables_scrolly'] ) // not necessarily a boolean!
+					$js_options['datatables_paginate'] = false; // vertical scrolling and pagination don't work together
+
 				// DataTables language/translation handling
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
 				// only do the expensive language file checks if they haven't been done yet
@@ -202,6 +206,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['bInfo'] = '"bInfo":false';
 				if ( $js_options['datatables_scrollx'] )
 					$parameters['sScrollX'] = '"sScrollX":"100%"';
+				if ( false !== $js_options['datatables_scrolly'] ) {
+					$parameters['sScrollY'] = "\"sScrollY\":\"{$js_options['datatables_scrolly']}\"";
+					$parameters['bScrollCollapse'] = '"bScrollCollapse":true';
+				}
 				if ( ! empty( $js_options['datatables_custom_commands'] ) )
 					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
 
@@ -333,7 +341,7 @@ JS;
 			$js_options = array();
 			foreach ( array( 'alternating_row_colors', 'datatables_sort', 'datatables_paginate',
 								'datatables_paginate', 'datatables_paginate_entries', 'datatables_lengthchange',
-								'datatables_filter', 'datatables_info', 'datatables_scrollx',
+								'datatables_filter', 'datatables_info', 'datatables_scrollx', 'datatables_scrolly',
 								'datatables_locale', 'datatables_custom_commands' ) as $option ) {
 				$js_options[ $option ] = $render_options[ $option ];
 			}
