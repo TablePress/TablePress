@@ -102,7 +102,8 @@ body.wait * {
 	height: 32px;
 }
 
-/* cells of currently focussed row/autogrow */
+/* cells of currently focussed row/autogrow, and automatically increase cells if JS is disabled */
+.no-js #edit-form-body td,
 #edit-form-body .focus td {
 	height: 64px;
 }
