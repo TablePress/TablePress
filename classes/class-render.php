@@ -605,6 +605,7 @@ class TablePress_Render {
 	 * @return array Default render options
 	 */
 	public function get_default_render_options() {
+		// Attention: Array keys have to be lower case, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP
 		return array(
 			'id' => '',
 			'column_widths' => '',
@@ -626,7 +627,7 @@ class TablePress_Render {
 			'datatables_lengthchange' => null,
 			'datatables_filter' => null,
 			'datatables_info' => null,
-			'datatables_scrollX' => null,
+			'datatables_scrollx' => null,
 			'datatables_custom_commands' => null,
 			'datatables_locale' => get_locale(),
 			'show_rows' => '',
