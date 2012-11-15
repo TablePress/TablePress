@@ -665,6 +665,7 @@ body {
 	border: none;
 	background: none;
 	text-align: left;
+	vertical-align: top;
 }
 .tablepress tbody tr td,
 .tablepress tfoot tr th {
