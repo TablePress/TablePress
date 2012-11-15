@@ -79,8 +79,11 @@ body {
 #icon-tablepress {
 	background: transparent url(<?php echo plugins_url( 'admin/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>) no-repeat;
 }
-/* Retina images */
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+/* HiDPI images */
+@media print,
+ (-o-min-device-pixel-ratio: 5/4),
+ (-webkit-min-device-pixel-ratio: 1.25),
+ (min-resolution: 120dpi) {
 	/* Screen icon */
 	#icon-tablepress {
 		background-image: url(<?php echo plugins_url( 'admin/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>);

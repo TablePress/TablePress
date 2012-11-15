@@ -11,8 +11,11 @@
 #icon-tablepress {
 	background-image: url(tablepress-icon.png);
 }
-/* Retina images */
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+/* HiDPI images */
+@media print,
+ (-o-min-device-pixel-ratio: 5/4),
+ (-webkit-min-device-pixel-ratio: 1.25),
+ (min-resolution: 120dpi) {
 	/* Screen icon */
 	#icon-tablepress {
 		background-image: url(tablepress-icon-2x.png);
