@@ -172,6 +172,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				// Settle dependencies/conflicts between certain features
 				if ( false !== $js_options['datatables_scrolly'] ) // not necessarily a boolean!
 					$js_options['datatables_paginate'] = false; // vertical scrolling and pagination don't work together
+				if ( ! $js_options['datatables_paginate'] )
+					$js_options['datatables_paginate_entries'] = false; // Pagination is required for the initial value to be set
 
 				// DataTables language/translation handling
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
@@ -196,7 +198,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['bSort'] = '"bSort":false';
 				if ( ! $js_options['datatables_paginate'] )
 					$parameters['bPaginate'] = '"bPaginate":false';
-				if ( $js_options['datatables_paginate'] && ! empty( $js_options['datatables_paginate_entries'] ) && 10 != $js_options['datatables_paginate_entries'] )
+				if ( ! empty( $js_options['datatables_paginate_entries'] ) && 10 != $js_options['datatables_paginate_entries'] )
 					$parameters['iDisplayLength'] = '"iDisplayLength":'. $js_options['datatables_paginate_entries'];
 				if ( ! $js_options['datatables_lengthchange'] )
 					$parameters['bLengthChange'] = '"bLengthChange":false';
