@@ -368,14 +368,14 @@ abstract class TablePress_View {
 			<?php
 			echo __( 'TablePress', 'tablepress' ) . '<span class="separator"></span>';
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
+				// special case: Add a separator before the group that starts with "Plugin Options", for some spacing
+				if ( 'options' == $action )
+					echo '<span class="separator"></span><span class="separator"></span>';
+
 				if ( '' == $entry['nav_tab_title'] )
 					continue;
 				if ( ! current_user_can( $entry['min_access_cap'] ) )
 					continue;
-
-				// special case: Add separators before "Plugin Options" for some spacing
-				if ( 'options' == $action )
-					echo '<span class="separator"></span><span class="separator"></span>';
 
 				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
 				$active = ( $action == $this->action ) ? ' nav-tab-active' : '';
