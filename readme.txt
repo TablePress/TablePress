@@ -20,7 +20,7 @@ TablePress enables you to create and manage tables on your WordPress site. No HT
 Please visit the plugin website at http://tablepress.org/ for more information.
 
 = Supporting future development =
-If you like the TablePress plugin, please rate it here in the WordPress Plugin Directory, support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
+If you like the TablePress plugin, please rate and review it here in the WordPress Plugin Directory, support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
 = Migration from WP-Table Reloaded =
 TablePress is the official successor of the WP-Table Reloaded plugin. It has been rewritten from the ground up and uses an entirely new internal structure. This fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.

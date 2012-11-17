@@ -8,7 +8,7 @@ Please visit the plugin website at http://tablepress.org/ for more information.
 
 ## Supporting future development ##
 
-If you like the TablePress plugin, please rate it in the [WordPress Plugin Directory](http://wordpress.org/extend/plugins/tablepress/), support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
+If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](http://wordpress.org/support/view/plugin-reviews/tablepress), support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
 [![Flattr TablePress](http://api.flattr.com/button/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-but04.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2)
 

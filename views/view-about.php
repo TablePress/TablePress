@@ -120,7 +120,7 @@ class TablePress_About_View extends TablePress_View {
 		<?php _e( 'It is licensed as Free Software under GNU General Public License 2 (GPL 2).', 'tablepress' ); ?>
 	<br />
 		<?php printf( __( 'If you like the plugin, <a href="%s"><strong>giving a donation</strong></a> is recommended.', 'tablepress' ), 'http://tablepress.org/donate/' ); ?>
-		<?php printf( __( 'Please rate the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://wordpress.org/extend/plugins/tablepress/' ); ?>
+		<?php printf( __( 'Please rate and review the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://wordpress.org/support/view/plugin-reviews/tablepress' ); ?>
 	<br />
 		<?php _e( 'Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!', 'tablepress' ); ?>
 	</p>
