@@ -34,14 +34,14 @@
 }
 
 /* Vertical lines / borders */
-.tablepress tbody tr td,
-.tablepress tfoot tr th {
+.tablepress tbody td,
+.tablepress tfoot th {
 	border-top: 1px solid #dddddd;
 }
 .tablepress tbody tr:first-child td {
 	border-top: 0;
 }
-.tablepress thead tr th {
+.tablepress thead th {
 	border-bottom: 1px solid #dddddd;
 }
 
@@ -51,10 +51,10 @@
 	background-color: #d9edf7;
 	font-weight: bold;
 }
-.tablepress tbody tr.odd td {
+.tablepress .odd td {
 	background-color: #f9f9f9;
 }
-.tablepress tbody tr.even td {
+.tablepress .even td {
 	background-color: #ffffff;
 }
 .tablepress .row-hover tr:hover td {
