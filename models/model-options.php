@@ -93,6 +93,9 @@ class TablePress_Options_Model extends TablePress_Model {
 			'default_value' => $this->default_user_options
 		);
 		$this->user_options = TablePress::load_class( 'TablePress_WP_User_Option', 'class-wp_user_option.php', 'classes', $params );
+
+		// Filter to map Meta capabilities to Primitive Capabilities
+		add_filter( 'map_meta_cap', array( $this, 'map_tablepress_meta_caps' ), 10, 4 );
 	}
 
 	/**
@@ -200,6 +203,95 @@ class TablePress_Options_Model extends TablePress_Model {
 		$user_options = array_merge( $this->default_user_options, $user_options );
 
 		$this->user_options->update( $user_options );
+	}
+
+	/**
+	 * Add default capabilities to "Administrator", "Editor", and "Author" roles
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_access_capabilities() {
+		// Capabilities for all roles
+		$roles = array( 'administrator', 'editor', 'author' );
+		foreach ( $roles as $role ) {
+			$role =& get_role( $role );
+			if ( empty( $role ) )
+				continue;
+
+			// from get_post_type_capabilities()
+			$role->add_cap( 'tablepress_edit_tables' );
+			// $role->add_cap( 'tablepress_edit_others_tables' );
+			$role->add_cap( 'tablepress_delete_tables' );
+			// $role->add_cap( 'tablepress_delete_others_tables' );
+
+			// custom capabilities()
+			$role->add_cap( 'tablepress_list_tables' );
+			$role->add_cap( 'tablepress_add_tables' );
+			$role->add_cap( 'tablepress_copy_tables' );
+			$role->add_cap( 'tablepress_import_tables' );
+			$role->add_cap( 'tablepress_export_tables' );
+			$role->add_cap( 'tablepress_access_options_screen' );
+			$role->add_cap( 'tablepress_access_about_screen' );
+		}
+
+		// Capabilities for single roles
+		$role =& get_role( 'administrator' );
+		if ( ! empty( $role ) ) {
+			$role->add_cap( 'tablepress_import_tables_wptr' );
+			$role->add_cap( 'tablepress_edit_options' );
+		}
+	}
+
+	/**
+	 * Map TablePress meta capabilities to primitive capabilities
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $caps Current set of primitive caps
+	 * @param string $cap Meta cap that is to be checked/mapped
+	 * @param int $user_id User ID for which meta cap is to be checked
+	 * @param array $args Arguments for the check, here e.g. the table ID
+	 * @return bool
+	 */
+	public function map_tablepress_meta_caps( $caps, $cap, $user_id, $args ) {
+		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ) ) )
+			return $caps;
+
+		// $user = get_userdata( $user_id );
+		// $username = $user->user_login);
+		// $table_id = ( ! empty( $args ) ) ? $args[0] : false;
+
+		// reset current set of primitive caps
+		$caps = array();
+
+		switch( $cap ) {
+			case 'tablepress_edit_table':
+				$caps[] = 'tablepress_edit_tables';
+				break;
+			case 'tablepress_edit_table_id':
+				$caps[] = 'tablepress_edit_tables';
+				break;
+			case 'tablepress_copy_table':
+				$caps[] = 'tablepress_copy_tables';
+				break;
+			case 'tablepress_delete_table':
+				$caps[] = 'tablepress_delete_tables';
+				break;
+			case 'tablepress_export_table':
+				$caps[] = 'tablepress_export_tables';
+				break;
+			case 'tablepress_preview_table':
+				$caps[] = 'tablepress_edit_tables';
+				break;
+			default:
+				// something went wrong; deny access to be on the safe side
+				$caps[] = 'do_not_allow';
+				break;
+		}
+
+		$caps = apply_filters( 'tablepress_map_meta_caps', $caps, $cap, $user_id, $args );
+
+		return $caps;
 	}
 
 	/**

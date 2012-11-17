@@ -374,7 +374,7 @@ abstract class TablePress_View {
 
 				if ( '' == $entry['nav_tab_title'] )
 					continue;
-				if ( ! current_user_can( $entry['min_access_cap'] ) )
+				if ( ! current_user_can( $entry['required_cap'] ) )
 					continue;
 
 				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );

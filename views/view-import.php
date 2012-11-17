@@ -66,7 +66,8 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( $this, 'postbox_import_form' ), 'normal' );
-		$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( $this, 'postbox_wp_table_reloaded_import' ), 'additional' );
+		if ( current_user_can( 'tablepress_import_tables_wptr' ) )
+			$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( $this, 'postbox_wp_table_reloaded_import' ), 'additional' );
 	}
 
 	/**
@@ -171,6 +172,8 @@ class TablePress_Import_View extends TablePress_View {
 				<option value=""><?php _e( 'Select:' ); ?></option>
 			<?php
 				foreach ( $data['tables'] as $table ) {
+					if ( ! current_user_can( 'tablepress_edit_table', $table['id'] ) )
+						continue;
 					if ( '' == trim( $table['name'] ) )
 						$table['name'] = __( '(no name)', 'tablepress' );
 					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );

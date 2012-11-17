@@ -55,6 +55,8 @@ class TablePress_Post_Model extends TablePress_Model {
 			'show_ui' => false,
 			'query_var' => false,
 			'rewrite' => false,
+			'capability_type' => 'tablepress_table', // this ensures, that WP's regular CPT UI respects our capabilities
+			'map_meta_cap' => false, // integrated WP mapping does not fit our needs, therefore use our own in a filter
 			'supports' => array( 'title', 'editor', 'excerpt', 'revisions' ),
 			'can_export' => true
 		);

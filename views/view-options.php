@@ -56,7 +56,8 @@ class TablePress_Options_View extends TablePress_View {
 		}
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
-		$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
+		if ( current_user_can( 'tablepress_edit_options' ) )
+			$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( $this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Changes', 'tablepress' );
 		$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
@@ -73,10 +74,14 @@ class TablePress_Options_View extends TablePress_View {
 			<?php _e( 'TablePress has several options which affect the plugin&#8217;s behavior in different areas.', 'tablepress' ); ?>
 		</p>
 		<p>
-			<?php _e( 'Frontend Options influence the styling of tables in pages, posts, or text widgets, by defining which CSS code shall be loaded.', 'tablepress' ); ?>
-		<br />
-			<?php _e( 'In the User Options, every TablePress user can choose the position of the plugin in the WordPress admin menu, and the desired plugin language.', 'tablepress' ); ?>
-			<?php // _e( 'Administrators have access to further Admin Options, e.g. to control which user groups are allowed to use TablePress.', 'tablepress' ); ?></p>
+			<?php
+				if ( current_user_can( 'tablepress_edit_options' ) ) {
+					_e( 'Frontend Options influence the styling of tables in pages, posts, or text widgets, by defining which CSS code shall be loaded.', 'tablepress' );
+					echo '<br />';
+				}
+				_e( 'In the User Options, every TablePress user can choose the position of the plugin in his WordPress admin menu, and his desired plugin language.', 'tablepress' );
+			?>
+		</p>
 		<?php
 	}
 
@@ -151,7 +156,7 @@ class TablePress_Options_View extends TablePress_View {
 		?>
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><label for="option-admin-menu-parent-page"><?php _e( 'Admin menu entry', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><?php printf( __( 'TablePress shall be shown in this section of the admin menu: %s', 'tablepress' ), $select_box ); ?></td>
+		<td class="column-2"><?php printf( __( 'TablePress shall be shown in this section of my admin menu: %s', 'tablepress' ), $select_box ); ?></td>
 	</tr>
 		<?php
 		$select_box = '<select id="option-plugin-language" name="options[plugin_language]">' . "\n";
@@ -164,7 +169,7 @@ class TablePress_Options_View extends TablePress_View {
 		?>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><label for="option-plugin-language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><?php printf( __( 'TablePress shall be shown in this language: %s', 'tablepress' ), $select_box ); ?></td>
+		<td class="column-2"><?php printf( __( 'I want to use TablePress in this language: %s', 'tablepress' ), $select_box ); ?></td>
 	</tr>
 </tbody>
 </table>

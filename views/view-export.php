@@ -115,6 +115,8 @@ class TablePress_Export_View extends TablePress_View {
 			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
 			<?php
 				foreach ( $data['tables'] as $table ) {
+					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) )
+						continue;
 					if ( '' == trim( $table['name'] ) )
 						$table['name'] = __( '(no name)', 'tablepress' );
 					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );

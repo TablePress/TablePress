@@ -509,8 +509,6 @@ class TablePress_Render {
 			// print formulas that are escaped with '= (like in Excel) as text:
 			if ( strlen( $cell_content ) > 2 && "'=" == substr( $cell_content, 0, 2 ) )
 				$cell_content = substr( $cell_content, 1 );
-			// @TODO: Maybe do this on the full HTML output, instead on each cell individually?
-			// @TODO: Maybe move this to after the colspan/rowspan checks in the next block?
 			$cell_content = do_shortcode( $this->safe_output( $cell_content ) );
 			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 

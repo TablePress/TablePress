@@ -942,11 +942,14 @@ jQuery(document).ready( function( $ ) {
 				$( '#nonce-edit-table' ).val( data.new_edit_nonce );
 				$( '#nonce-preview-table' ).val( data.new_preview_nonce );
 				// update URLs in Preview links
-				$( '.show-preview-button' ).attr( 'href',
-					$( '.show-preview-button' ).first().attr( 'href' )
-						.replace( /item=[a-zA-Z0-9_-]+/g, 'item=' + data.table_id )
-						.replace( /&_wpnonce=[a-z0-9]+/ig, '&_wpnonce=' + data.new_preview_nonce )
-				);
+				var $show_preview_buttons = $( '.show-preview-button' );
+				if ( $show_preview_buttons.length ) { // check necessary, because Preview button might not be visible
+					$show_preview_buttons.attr( 'href',
+						$show_preview_buttons.first().attr( 'href' )
+							.replace( /item=[a-zA-Z0-9_-]+/g, 'item=' + data.table_id )
+							.replace( /&_wpnonce=[a-z0-9]+/ig, '&_wpnonce=' + data.new_preview_nonce )
+					);
+				}
 				// update last modified date and user nickname
 				$( '#last-modified' ).text( data.last_modified );
 				$( '#last-editor' ).text( data.last_editor );

@@ -347,13 +347,15 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_buttons( $data, $box ) {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
+
+		echo '<p class="submit">';
+		if ( current_user_can( 'tablepress_preview_table', $data['table']['id'] ) )
+			echo '<a href="' . $preview_url . '" class="button button-large show-preview-button" target="_blank">' . __( 'Preview', 'tablepress' ) . '</a>';
 		?>
-			<p class="submit">
-				<a href="<?php echo $preview_url; ?>" class="button button-large show-preview-button" target="_blank"><?php _e( 'Preview', 'tablepress' ); ?></a>
-				<input type="button" class="button button-primary button-large save-changes-button hide-if-no-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
-				<input type="submit" class="button button-primary button-large hide-if-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
-			</p>
+			<input type="button" class="button button-primary button-large save-changes-button hide-if-no-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
+			<input type="submit" class="button button-primary button-large hide-if-js" value="<?php _e( 'Save Changes', 'tablepress' ); ?>" />
 		<?php
+		echo '</p>';
 	}
 
 	/**
@@ -362,13 +364,19 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function textbox_other_actions( $data, $box ) {
-		?>
-			<p class="submit">
-				<?php _e( 'Other Actions', 'tablepress' ); ?>:&nbsp;
-				<a href="<?php echo TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ); ?>" class="button delete-link"><?php _e( 'Delete Table', 'tablepress' ); ?></a>
-				<a href="<?php echo TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ); ?>" class="button"><?php _e( 'Export Table', 'tablepress' ); ?></a>
-			</p>
-		<?php
+		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
+		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
+
+		if ( ! $user_can_delete_table && ! $user_can_export_table )
+			return;
+
+		echo '<p class="submit">';
+		echo __( 'Other Actions', 'tablepress' ) . ':&nbsp;';
+		if ( $user_can_delete_table )
+			echo '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) . '" class="button delete-link">' . __( 'Delete Table', 'tablepress' ) . '</a> ';
+		if ( $user_can_export_table )
+			echo '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ) . '" class="button">' . __( 'Export Table', 'tablepress' ) . '</a>';
+		echo '</p>';
 	}
 
 	/**

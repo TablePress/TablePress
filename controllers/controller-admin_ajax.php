@@ -50,7 +50,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 		TablePress::check_nonce( 'hide_message', $message_item, '_wpnonce', true );
 
-		// @TODO Capability check!
+		if ( ! current_user_can( 'tablepress_list_tables' ) )
+			wp_die( '-1' );
 
 		$updated_options = array( "message_{$message_item}" => false );
 		if ( 'plugin_update' == $message_item )
@@ -75,7 +76,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'edit', $edit_table['id'], '_ajax_nonce', true );
 
 		// ignore the request if the current user doesn't have sufficient permissions
-		// @TODO Capability check!
+		if ( ! current_user_can( 'tablepress_edit_table', $edit_table['id'] ) )
+			wp_die( '-1' );
 
 		// default response data:
 		$success = false;
@@ -114,7 +116,10 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				break;
 
 			// Change table ID
-			$id_changed = $this->model_table->change_table_id( $table['id'], $table['new_id'] );
+			if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) )
+				$id_changed = $this->model_table->change_table_id( $table['id'], $table['new_id'] );
+			else
+				$id_changed = false;
 			if ( $id_changed ) {
 				$message = 'success_save_success_id_change';
 				$table['id'] = $table['new_id'];
@@ -158,7 +163,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'preview_table', $preview_table['id'], '_ajax_nonce', true );
 
 		// ignore the request if the current user doesn't have sufficient permissions
-		// @TODO Capability check!
+		if ( ! current_user_can( 'tablepress_preview_table', $preview_table['id'] ) )
+			wp_die( '-1' );
 
 		// default response data:
 		$success = false;

@@ -84,6 +84,10 @@ abstract class TablePress_Controller {
 			// Allow more PHP execution time for update process
 			@set_time_limit( 300 );
 
+			// Add TablePress capabilities to the WP_Roles objects
+			if ( $this->model_options->get( 'plugin_options_db_version' ) < 12 )
+				$this->model_options->add_access_capabilities();
+
 			if ( 0 == $this->model_options->get( 'first_activation' ) ) {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation
 				$this->model_options->update( array(

@@ -315,24 +315,7 @@ JS;
 
 		// generate "Edit Table" link
 		$render_options['edit_table_url'] = '';
-		/*
-		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true ) ) {
-			$user_group = $this->model_options->get( 'user_access_plugin' );
-			$capabilities = array(
-				'admin' => 'manage_options',
-				'editor' => 'publish_pages',
-				'author' => 'publish_posts',
-				'contributor' => 'edit_posts'
-			);
-			$min_capability = isset( $capabilities[ $user_group ] ) ? $capabilities[ $user_group ] : 'manage_options';
-			$min_capability = apply_filters( 'tablepress_min_needed_capability', $min_capability );
-
-			if ( current_user_can( $min_capability ) )
-				$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
-		}
-		*/
-		// @TODO: temporary for above:
-		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true ) && current_user_can( apply_filters( 'tablepress_min_access_cap', 'edit_pages' ) ) )
+		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true ) && current_user_can( 'tablepress_edit_table', $table['id'] ) )
 			$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
 
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
