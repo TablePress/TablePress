@@ -335,7 +335,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'cb' => $this->has_items() ? '<input type="checkbox" class="hide-if-no-js" />' : '', // checkbox for "Select all", but only if there are items in the table
+			'cb' => $this->has_items() ? '<input type="checkbox" />' : '', // checkbox for "Select all", but only if there are items in the table
 			'table_id' => __( 'ID', 'tablepress' ),
 			'table_name' => __( 'Table Name', 'tablepress' ), // just "name" is special in WP, which is why we prefix every entry here, to be safe!
 			'table_description' => __( 'Description', 'tablepress' ),
