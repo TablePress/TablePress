@@ -38,7 +38,7 @@ jQuery(document).ready( function($) {
 	$( '#option-use-custom-css' ).on( 'change', function() {
 		var use_custom_css = $(this).prop( 'checked' );
 		CM_custom_css.setOption( 'readOnly', ! use_custom_css );
-		$( '#tablepress-page' ).find( '.CodeMirror-scroll' ).toggleClass( 'disabled', ! use_custom_css );
+		$( '#tablepress-page' ).find( '.CodeMirror' ).toggleClass( 'disabled', ! use_custom_css );
 		$( '#option-use-custom-css-file' ).prop( 'disabled', ! use_custom_css );
 	} ).change();
 
