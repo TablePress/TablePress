@@ -91,7 +91,17 @@ class TablePress_Post_Model extends TablePress_Model {
 		);
 		$post = array_merge( $default_post, $post );
 		$post = add_magic_quotes( $post ); // WP expects everything to be slashed
+
+		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
+		remove_filter( 'content_save_pre', 'balanceTags', 50 );
+		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+
 		$post_id = wp_insert_post( $post, false ); // false means: no WP_Error object on error, but int 0
+
+		// re-add balanceTags() to sanitize_post()
+		add_filter( 'content_save_pre', 'balanceTags', 50 );
+		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+
 		return $post_id;
 	}
 
@@ -122,7 +132,17 @@ class TablePress_Post_Model extends TablePress_Model {
 		);
 		$post = array_merge( $default_post, $post );
 		$post = add_magic_quotes( $post ); // WP expects everything to be slashed
+
+		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
+		remove_filter( 'content_save_pre', 'balanceTags', 50 );
+		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+
 		$post_id = wp_update_post( $post );
+
+		// re-add balanceTags() to sanitize_post()
+		add_filter( 'content_save_pre', 'balanceTags', 50 );
+		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+
 		return $post_id;
 	}
 
