@@ -389,13 +389,17 @@ class TablePress_Edit_View extends TablePress_View {
 <div class="hidden-container">
 	<div id="advanced-editor">
 	<?php
-		wp_editor( '', 'advanced-editor-content', array(
+		$wp_editor_options = array(
 			'textarea_rows' => 10,
 			'tinymce' => false,
 			'quicktags' => array(
 				'buttons' => 'strong,em,link,del,ins,img,code,spell,close'
 			)
-		) );
+		);
+		// temporarily disable "Add Media" button in Advanced Editor for WP 3.5
+		if ( version_compare( $GLOBALS['wp_version'], '3.4.99', '>' ) )
+			$wp_editor_options['media_buttons'] = false;
+		wp_editor( '', 'advanced-editor-content', $wp_editor_options );
 	?>
 	<div class="submitbox">
 		<a href="#" class="submitdelete" id="advanced-editor-cancel"><?php _e( 'Cancel', 'tablepress' ); ?></a>

@@ -703,10 +703,15 @@ jQuery(document).ready( function( $ ) {
 				},
 				thickbox_size: function() {
 					var $link = $( '#advanced-editor-content-add_media' ),
-						url = $link.attr( 'href' ),
+						url,
 						width = $(window).width(),
 						W = ( 720 < width ) ? 720 : width,
 						H = $(window).height();
+
+					if ( ! $link.length ) // for temporary 3.5 compatibility
+						return;
+
+					url = $link.attr( 'href' );
 
 					if ( $( 'body.admin-bar' ).length )
 						H -= 28;
