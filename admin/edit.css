@@ -200,6 +200,9 @@ body.wait * {
 	background-color: #ffe0e0;
 }
 
-#tablepress_edit-table-manipulation td {
-	width: 50%;
+#tablepress_edit-table-manipulation .column-1 {
+	width: 45%;
+}
+#tablepress_edit-table-manipulation .column-2 {
+	width: 55%;
 }
