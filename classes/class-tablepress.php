@@ -27,7 +27,7 @@ abstract class TablePress {
 	 *
 	 * @const string
 	 */
-	const version = '0.7-beta';
+	const version = '0.8-beta';
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version)
@@ -38,7 +38,7 @@ abstract class TablePress {
 	 *
 	 * @const int
 	 */
-	const db_version = 12;
+	const db_version = 13;
 
 	/**
 	 * TablePress "table scheme" (data format structure) version
