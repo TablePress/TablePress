@@ -172,6 +172,18 @@ jQuery(document).ready( function( $ ) {
 						return false;
 					}
 
+					// validation checks
+					if ( $( '#option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $( '#option-datatables-paginate_entries' ).val() ) ) {
+						alert( tablepress_strings.num_pagination_entries_invalid );
+						$( '#option-datatables-paginate_entries' ).focus().select();
+						return;
+					}
+					if ( ( /[^A-Za-z0-9- _]/ ).test( $( '#option-extra-css-classes' ).val() ) ) {
+						alert( tablepress_strings.extra_css_classes_invalid );
+						$( '#option-extra-css-classes' ).focus().select();
+						return;
+					}
+
 					$(this).closest( 'p' ).append( '<span class="animation-preview spinner" title="' + tablepress_strings.preparing_preview + '"/>' );
 					$( 'body' ).addClass( 'wait' );
 					$( '#table-preview' ).empty(); // clear preview
@@ -894,6 +906,12 @@ jQuery(document).ready( function( $ ) {
 		},
 		save_changes: {
 			trigger: function( event ) {
+				// validation checks
+				if ( $( '#option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $( '#option-datatables-paginate_entries' ).val() ) ) {
+					alert( tablepress_strings.num_pagination_entries_invalid );
+					$( '#option-datatables-paginate_entries' ).focus().select();
+					return;
+				}
 				if ( ( /[^A-Za-z0-9- _]/ ).test( $( '#option-extra-css-classes' ).val() ) ) {
 					alert( tablepress_strings.extra_css_classes_invalid );
 					$( '#option-extra-css-classes' ).focus().select();
