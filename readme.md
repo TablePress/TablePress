@@ -51,6 +51,8 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 In short: WordPress 3.4 or higher, while the latest version of WordPress is always recommended.
 
+TablePress 1.0 will require WordPress 3.5!
+
 **Languages and Localization?**
 
 The plugin currently includes the following languages:
