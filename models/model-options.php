@@ -264,7 +264,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		// reset current set of primitive caps
 		$caps = array();
 
-		switch( $cap ) {
+		switch ( $cap ) {
 			case 'tablepress_edit_table':
 				$caps[] = 'tablepress_edit_tables';
 				break;

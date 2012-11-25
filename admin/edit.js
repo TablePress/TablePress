@@ -431,7 +431,7 @@ jQuery(document).ready( function( $ ) {
 				var $rows = $( '#edit-form-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
 				$rows.filter( ':even' ).addClass( 'odd' );
 				$rows = $rows.not( '.row-hidden' );
-				if( helper.hasClass( 'row-hidden' ) )
+				if ( helper.hasClass( 'row-hidden' ) )
 					$rows = $rows.not( '.ui-sortable-placeholder' );
 				if ( tp.table.head )
 					$rows.first().addClass( 'head-row' );
