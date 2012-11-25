@@ -216,6 +216,15 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
 
 				$parameters = apply_filters( 'tablepress_datatables_parameters', $parameters, $table_id, $html_id, $js_options );
+
+				// if "aaSorting", "bSortClasses", or "asStripeClasses" are set in "Custom Commands", remove their default value
+				if ( isset( $parameters['custom_commands'] ) ) {
+					foreach ( array( 'aaSorting', 'bSortClasses', 'asStripeClasses' ) as $maybe_overwritten_parameter ) {
+						if ( false !== strpos( $parameters['custom_commands'], $maybe_overwritten_parameter ) )
+							unset( $parameters[ $maybe_overwritten_parameter ] );
+					}
+				}
+
 				$parameters = implode( ',', $parameters );
 				$parameters = ( ! empty( $parameters ) ) ? '{' . $parameters . '}' : '';
 
