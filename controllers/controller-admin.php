@@ -475,9 +475,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return false;
 
 		// How long has the plugin been installed?
-		$secs = time() - $this->model_options->get( 'first_activation' );
-		$days = floor( $secs / ( 60*60*24 ) );
-		return ( $days >= 30 ) ? true : false;
+		$seconds_installed = time() - $this->model_options->get( 'first_activation' );
+		return ( $seconds_installed > 30*DAY_IN_SECONDS );
 	}
 
 	/**

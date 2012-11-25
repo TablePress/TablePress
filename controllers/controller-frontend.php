@@ -352,14 +352,14 @@ JS;
 				$_render->set_input( $table, $render_options );
 				$output = $_render->get_output();
 				// save output to a transient
-				set_transient( $transient_name, $output, 60*60*24 ); // store $output in a transient, set cache timeout to 24 hours
+				set_transient( $transient_name, $output, DAY_IN_SECONDS ); // store $output in a transient, set cache timeout to 24 hours
 				// update output caches list transient (necessary for cache invalidation upon table saving)
 				$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
 				$caches_list = get_transient( $caches_list_transient_name );
 				if ( ! is_array( $caches_list ) )
 					$caches_list = array();
 				$caches_list[ $transient_name ] = 1; // 1 is a dummy value
-				set_transient( $caches_list_transient_name, $caches_list, 60*60*24*2 );
+				set_transient( $caches_list_transient_name, $caches_list, 2*DAY_IN_SECONDS );
 			} else {
 				$output .= apply_filters( 'tablepress_cache_hit_comment', "<!-- #{$render_options['html_id']} from cache -->" );
 			}
@@ -433,7 +433,7 @@ JS;
 						$modified_timestamp = strtotime( $table['last_modified'] );
 						$current_timestamp = current_time( 'timestamp' );
 						$time_diff = $current_timestamp - $modified_timestamp;
-						if ( $time_diff >= 0 && $time_diff < 24*60*60 ) // time difference is only shown up to one day
+						if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) // time difference is only shown up to one day
 							$output = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 						else
 							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );

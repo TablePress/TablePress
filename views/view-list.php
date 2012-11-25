@@ -503,7 +503,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$modified_timestamp = strtotime( $item['last_modified'] );
 		$current_timestamp = current_time( 'timestamp' );
 		$time_diff = $current_timestamp - $modified_timestamp;
-		if ( $time_diff >= 0 && $time_diff < 24*60*60 ) // time difference is only shown up to one day
+		if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) // time difference is only shown up to one day
 			$time_diff = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 		else
 			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br />' );
