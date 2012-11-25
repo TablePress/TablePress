@@ -52,8 +52,6 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 		$this->action = $action;
 		$this->data = $data;
 
-		set_current_screen( 'tablepress_editor_button_thickbox' );
-
 		$this->wp_list_table = new TablePress_Editor_Button_Thickbox_List_Table();
 		$this->wp_list_table->set_items( $this->data['tables'] );
 		$this->wp_list_table->prepare_items();
@@ -196,7 +194,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 			'singular'	=> 'tablepress-table',				// singular name of the listed records
 			'plural'	=> 'tablepress-editor-button-list', // plural name of the listed records
 			'ajax'		=> false,							// does this list table support AJAX?
-			'screen'	=> convert_to_screen( 'tablepress_editor_button_thickbox' )
+			'screen'	=> get_current_screen()				// WP_Screen object
 		) );
 	}
 

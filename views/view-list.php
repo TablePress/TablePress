@@ -297,7 +297,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular'	=> 'tablepress-table',		// singular name of the listed records
 			'plural'	=> 'tablepress-all-tables', // plural name of the listed records
-			'ajax'		=> false					// does this list table support AJAX?
+			'ajax'		=> false,					// does this list table support AJAX?
+			'screen'	=> get_current_screen()		// WP_Screen object
 		) );
 	}
 

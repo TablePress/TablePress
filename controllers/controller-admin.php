@@ -1551,6 +1551,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'tables' => $this->model_table->load_all()
 		);
 
+		set_current_screen( 'tablepress_editor_button_thickbox' );
+
 		// Prepare, initialize, and render the view
 		$this->view = TablePress::load_view( 'editor_button_thickbox', $view_data );
 		$this->view->render();
