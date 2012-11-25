@@ -293,6 +293,9 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['name'] = __( '(no name)', 'tablepress' );
 		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
 
+		// Set Last Editor to user who copied
+		$table['options']['last_editor'] = get_current_user_id();
+
 		// Merge this data into an empty table template
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
 		if ( false === $table )
