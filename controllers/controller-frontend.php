@@ -44,7 +44,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// add DataTables invocation calls
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 11 ); // after inclusion of files
 
-		// Remove WP-Table Reloaded Shortcodes and add TablePress Shortcodes
+		// Remove WP-Table Reloaded Shortcodes and CSS, and add TablePress Shortcodes
 		add_action( 'init', array( $this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
 
 		// make TablePress Shortcodes work in text widgets
@@ -64,17 +64,15 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function init_shortcodes() {
-		// if WP-Table Reloaded is activated, remove its Shortcodes and CSS, as these would otherwise be used instead of TablePress's Shortcodes
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-		if ( is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ) ) {
-			remove_shortcode( 'table-info' );
-			remove_shortcode( 'table' );
-			if ( isset( $GLOBALS['WP_Table_Reloaded_Frontend'] ) )
-				remove_action( 'wp_head', array( $GLOBALS['WP_Table_Reloaded_Frontend'], 'add_frontend_css' ) );
-		}
-		// Shortcode "table-info" needs to be declared before "table"! Otherwise it will not be recognized! (@TODO: Might no longer be the case since [22382] in WP 3.5.)
-		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
+		// Remove previously registered [table /] Shortcodes (e.g. from WP-Table Reloaded), as these would otherwise be used instead of TablePress's Shortcodes
+		remove_shortcode( 'table' );
+		remove_shortcode( 'table-info' );
+		// Dequeue WP-Table Relaoded Default CSS, as it can influence TablePress table styling
+		if ( isset( $GLOBALS['WP_Table_Reloaded_Frontend'] ) )
+			remove_action( 'wp_head', array( $GLOBALS['WP_Table_Reloaded_Frontend'], 'add_frontend_css' ) );
+
 		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
+		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
 	}
 
 	/**
