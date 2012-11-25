@@ -47,10 +47,24 @@ class TablePress_Edit_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		// do this here to get CSS into <head>
-		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		add_action( 'admin_footer', array( $this, 'dequeue_media_upload_js' ), 2 );
+		wp_enqueue_style( 'wp-jquery-ui-dialog' ); // do this here to get CSS into <head>
+		add_action( 'admin_footer', array( $this, 'dequeue_media_upload_js' ), 2 ); // remove default media-upload.js, in favor of own code
 		add_thickbox();
+
+		// Use modified version of wpLink, instead of default version (changes "Title" to "Link Text")
+		wp_deregister_script( 'wplink' );
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		// See wp-includes/script-loader.php for default parameters
+		wp_register_script( 'wplink', plugins_url( "admin/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ ), array( 'jquery', 'wpdialogs' ), TablePress::version, true );
+		wp_localize_script( 'wplink', 'wpLinkL10n', array(
+			'title' => __('Insert/edit link'),
+			'update' => __('Update'),
+			'save' => __('Add Link'),
+			'noTitle' => __('(no title)'),
+			'noMatchesFound' => __('No matches found.'),
+			'link_text' => __( 'Link Text', 'tablepress' ) // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
+		) );
+
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
 			'options' => array(
@@ -73,8 +87,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'rowspan_add' => __( 'To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have.', 'tablepress' ),
 				'colspan_add' => __( 'To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have.', 'tablepress' ),
 				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ) . "\n" .
-								__( 'You can then enter the link URL or choose an existing page or post.', 'tablepress' ) . "\n" .
-								__( 'After the link HTML code is inserted, type the link text, for which the cursor will already be in the correct position.', 'tablepress' ),
+								__( 'You can then enter the Link URL and Text or choose an existing page or post.', 'tablepress' ),
 				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
 								__( 'The Media Library will open, where you can select or upload the desired image or enter the image URL.', 'tablepress' ) . "\n" .
 								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
