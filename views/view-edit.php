@@ -411,8 +411,7 @@ class TablePress_Edit_View extends TablePress_View {
 			)
 		);
 		// temporarily disable "Add Media" button in Advanced Editor for WP 3.5
-		if ( version_compare( $GLOBALS['wp_version'], '3.4.99', '>' ) )
-			$wp_editor_options['media_buttons'] = false;
+		$wp_editor_options['media_buttons'] = false;
 		wp_editor( '', 'advanced-editor-content', $wp_editor_options );
 	?>
 	<div class="submitbox">
