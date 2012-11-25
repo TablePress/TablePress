@@ -151,6 +151,15 @@ class TablePress_Table_Model extends TablePress_Model {
 			'data' => json_decode( $post['post_content'], true )
 		);
 
+		// Check if JSON could be decoded
+		if ( is_null( $table['data'] ) ) {
+			// set a single cell as the default
+			$table['data'] = array( array( 'The internal data of this table is corrupted!' ) );
+			// mark table as broken
+			$table['name'] = '[ERROR] ' . $table['name'];
+			$table['description'] = "[ERROR] THE TABLE DATA IS CORRUPTED!  DO NOT EDIT THIS TABLE NOW!\nInstead, please ask for support at http://wordpress.org/support/plugin/tablepress\n\n" . $table['description'];
+		}
+
 		return $table;
 	}
 
