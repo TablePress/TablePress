@@ -1055,6 +1055,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$file_name = $zip->getNameIndex( $file_idx );
 				if ( '/' == substr( $file_name, -1 ) ) // directory
 					continue;
+				if ( '__MACOSX/' == substr( $file_name, 0, 9 ) ) // Skip the __MACOSX directory that Mac OSX adds to archives
+					continue;
 				$data = $zip->getFromIndex( $file_idx );
 				if ( false === $data )
 					continue;

@@ -237,6 +237,12 @@ class TablePress_Import {
 	protected function import_json() {
 		$json_table = json_decode( $this->import_data, true );
 
+		// Check if JSON could be decoded
+		if ( is_null( $json_table ) ) {
+			$this->imported_table = false;
+			return;
+		}
+
 		if ( isset( $json_table['data'] ) )
 			// JSON data contained a full export
 			$table = $json_table;
