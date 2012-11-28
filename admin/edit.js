@@ -126,7 +126,7 @@ jQuery(document).ready( function( $ ) {
 					datatables_lengthchange: $( '#option-datatables-lengthchange' ).prop( 'checked' ),
 					datatables_paginate_entries: $( '#option-datatables-paginate_entries' ).val(),
 					datatables_info: $( '#option-datatables-info' ).prop( 'checked' ),
-					datatables_scrollX: $( '#option-datatables-scrollX' ).prop( 'checked' ),
+					datatables_scrollx: $( '#option-datatables-scrollx' ).prop( 'checked' ),
 					datatables_custom_commands: $( '#option-datatables-custom-commands' ).val()
 				};
 				table_options = JSON.stringify( table_options );

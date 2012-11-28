@@ -479,6 +479,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	/**
 	 * Get the template for an empty table
 	 *
+	 * Important: This scheme is versioned via TablePress::table_scheme_version; changes likely need a version update!
+	 *
 	 * @since 1.0.0
 	 *
 	 * @return array Empty table
@@ -511,7 +513,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_lengthchange' => true,
 				'datatables_paginate_entries' => 10,
 				'datatables_info' => true,
-				'datatables_scrollX' => false,
+				'datatables_scrollx' => false,
 				'datatables_custom_commands' => ''
 			),
 			'visibility' => array(
@@ -763,7 +765,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Table Name/Table Description
 	 * @TODO: Remove in 1.0
 	 *
-	 * @since 1.0.0
+	 * @since 0.6-beta
 	 */
 	public function merge_table_options_tp06() {
 		$table_post = $this->tables->get( 'table_post' );
@@ -786,6 +788,31 @@ class TablePress_Table_Model extends TablePress_Model {
 			if ( $print_description )
 				$table_options['print_description_position'] = $table_options['print_description'];
 			$table_options['print_description'] = $print_description;
+
+			$this->_update_table_options( $post_id, $table_options );
+		}
+	}
+
+	/**
+	 * Merge changes made for TablePress 0.9-RC:
+	 * Conversion of parameter "datatables_scrollX" to "datatables_scrollx"
+	 *
+	 * @since 0.9-RC
+	 */
+	public function merge_table_options_tp09() {
+		$table_post = $this->tables->get( 'table_post' );
+		if ( empty( $table_post ) )
+			return;
+
+		$post_ids = array_values( $table_post );
+
+		// go through all tables (this loop now uses the WP cache)
+		foreach ( $post_ids as $post_id ) {
+			$table_options = $this->_get_table_options( $post_id );
+
+			// Convert parameter "datatables_scrollX" to "datatables_scrollx"
+			if ( isset( $table_options['datatables_scrollX'] ) && ! isset( $table_options['datatables_scrollx'] ) )
+				$table_options['datatables_scrollx'] = $table_options['datatables_scrollX'];
 
 			$this->_update_table_options( $post_id, $table_options );
 		}

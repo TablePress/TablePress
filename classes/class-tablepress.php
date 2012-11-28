@@ -50,7 +50,7 @@ abstract class TablePress {
 	 *
 	 * @const int
 	 */
-	const table_scheme_version = 2;
+	const table_scheme_version = 3;
 
 	/**
 	 * Instance of the controller object

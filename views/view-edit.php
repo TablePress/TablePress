@@ -519,7 +519,7 @@ class TablePress_Edit_View extends TablePress_View {
 	</tr>
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><?php _e( 'Horizontal Scrolling', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-datatables-scrollX"><input type="checkbox" id="option-datatables-scrollX" name="table[options][datatables_scrollX]" value="true"<?php checked( $options['datatables_scrollX'] ); ?> /> <?php _e( 'Enable horizontal scrolling, to make viewing tables with many columns easier.', 'tablepress' ); ?></label></td>
+		<td class="column-2"><label for="option-datatables-scrollx"><input type="checkbox" id="option-datatables-scrollx" name="table[options][datatables_scrollx]" value="true"<?php checked( $options['datatables_scrollx'] ); ?> /> <?php _e( 'Enable horizontal scrolling, to make viewing tables with many columns easier.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</th>

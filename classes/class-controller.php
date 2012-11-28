@@ -112,6 +112,10 @@ abstract class TablePress_Controller {
 
 		// Maybe update the table scheme in each existing table, independently from updating the plugin options
 		if ( $this->model_options->get( 'table_scheme_db_version' ) < TablePress::table_scheme_version ) {
+			// Convert parameter "datatables_scrollX" to "datatables_scrollx", has to be done before merge_table_options_defaults() is called!
+			if ( $this->model_options->get( 'table_scheme_db_version' ) < 3 )
+				$this->model_table->merge_table_options_tp09();
+
 			$this->model_table->merge_table_options_defaults();
 
 			// Merge print_name/print_description changes made for 0.6-beta, @TODO: Remove in 1.0
