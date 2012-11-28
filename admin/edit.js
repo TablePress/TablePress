@@ -766,7 +766,7 @@ jQuery(document).ready( function( $ ) {
 					// other approaches can lead to the wrong textarea being selected
 					$( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
 						wpActiveEditor = this.id;
-						$( window ).one( 'mouseup', function() {
+						$( document ).one( 'mouseup', function() {
 							wpLink.open();
 							tp.table.set_table_changed();
 						} );
