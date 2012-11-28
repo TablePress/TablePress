@@ -202,12 +202,10 @@
 }
 .dataTables_wrapper .sorting_asc {
 	background-image: url(../img/asc.gif);
+	background-color: #049cdb;
 }
 .dataTables_wrapper .sorting_desc {
 	background-image: url(../img/desc.gif);
-}
-.dataTables_wrapper .sorting_asc,
-.dataTables_wrapper .sorting_desc {
 	background-color: #049cdb;
 }
 .dataTables_wrapper th:active {
