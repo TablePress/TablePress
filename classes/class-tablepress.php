@@ -98,7 +98,7 @@ abstract class TablePress {
 		}
 
 		// check if minimum requirements are fulfilled, currently a release candidate of WordPress 3.5
-		if ( version_compare( $GLOBALS['wp_version'], '3.5-RC1', '<' ) ) {
+		if ( version_compare( $GLOBALS['wp_version'], '3.5-RC2', '<' ) ) {
 			// show error notice to admins, if WP is not installed in the minimum required version, in which case TablePress will not work
 			if ( current_user_can( 'update_plugins' ) )
 				add_action( 'admin_notices', array( 'TablePress', 'show_minimum_requirements_error_notice' ) );
