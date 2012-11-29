@@ -603,7 +603,7 @@ class TablePress_Render {
 	 * @return array Default render options
 	 */
 	public function get_default_render_options() {
-		// Attention: Array keys have to be lower case, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP
+		// Attention: Array keys have to be lowercase, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP
 		return array(
 			'id' => '',
 			'column_widths' => '',

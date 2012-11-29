@@ -486,6 +486,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array Empty table
 	 */
 	public function get_table_template() {
+		// Attention: Array keys have to be lowercase, to make it possible to match them with Shortcode attributes!
 		$table = array(
 			'id' => false,
 			'name' => '',
