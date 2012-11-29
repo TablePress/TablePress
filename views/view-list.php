@@ -207,7 +207,7 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	public function textbox_tables_list( $data, $box ) {
 		if ( ! empty( $_GET['s'] ) )
-			printf( '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'default' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
 	?>
 <form method="get" action="">
 	<?php

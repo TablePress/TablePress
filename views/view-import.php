@@ -169,7 +169,7 @@ class TablePress_Import_View extends TablePress_View {
 		<th class="column-1" scope="row"><label for="tables-import-replace-table"><?php _e( 'Table to replace', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
 			<select id="tables-import-replace-table" name="import[replace_table]"<?php disabled( $data['tables_count'] > 0, false, true ); ?>>
-				<option value=""><?php _e( 'Select:' ); ?></option>
+				<option value=""><?php _e( 'Select:', 'tablepress' ); ?></option>
 			<?php
 				foreach ( $data['tables'] as $table ) {
 					if ( ! current_user_can( 'tablepress_edit_table', $table['id'] ) )
