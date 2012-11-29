@@ -969,6 +969,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$import_error = true;
 		$unlink_file = false;
+		$import_data = array();
 		switch ( $import['source'] ) {
 			case 'file-upload':
 				if ( ! empty( $_FILES['import_file_upload'] ) && UPLOAD_ERR_OK == $_FILES['import_file_upload']['error'] ) {
@@ -1098,7 +1099,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param string $name Name of the table
 	 * @param string $description Description of the table
 	 * @param bool|string $replace_id False if table shall be added new, ID of the table to be replaced otherwise
-	 * @param bool|string False on error, table ID on success
+	 * @return bool|string False on error, table ID on success
 	 */
 	protected function _import_tablepress_table( $format, $data, $name, $description, $replace_id ) {
 		$imported_table = $this->importer->import_table( $format, $data );
