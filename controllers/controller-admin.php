@@ -370,7 +370,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['export_formats'] = $exporter->export_formats;
 				$data['csv_delimiters'] = $exporter->csv_delimiters;
 				$data['export_format'] = ( ! empty( $_GET['export_format'] ) ) ? $_GET['export_format'] : false;
-				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : false;
+				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : _x( ',', 'Default CSV delimiter in the translated language (";", ",", or "tab")', 'tablepress' );
 				break;
 			case 'import':
 				$data['tables'] = $this->model_table->load_all();
