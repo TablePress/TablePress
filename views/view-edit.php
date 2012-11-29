@@ -55,13 +55,14 @@ class TablePress_Edit_View extends TablePress_View {
 		wp_deregister_script( 'wplink' );
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		// See wp-includes/script-loader.php for default parameters
-		wp_register_script( 'wplink', plugins_url( "admin/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ ), array( 'jquery', 'wpdialogs' ), TablePress::version, true );
+		$wplink_url = plugins_url( "admin/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
+		wp_register_script( 'wplink', $wplink_url, array( 'jquery', 'wpdialogs' ), TablePress::version, true );
 		wp_localize_script( 'wplink', 'wpLinkL10n', array(
-			'title' => __('Insert/edit link'),
-			'update' => __('Update'),
-			'save' => __('Add Link'),
-			'noTitle' => __('(no title)'),
-			'noMatchesFound' => __('No matches found.'),
+			'title' => __( 'Insert/edit link', 'default' ),
+			'update' => __( 'Update', 'default' ),
+			'save' => __( 'Add Link', 'default' ),
+			'noTitle' => __( '(no title)', 'default' ),
+			'noMatchesFound' => __( 'No matches found.', 'default' ),
 			'link_text' => __( 'Link Text', 'tablepress' ) // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
 		) );
 
@@ -305,7 +306,7 @@ class TablePress_Edit_View extends TablePress_View {
 			<?php _e( 'Combine cells', 'tablepress' ); ?>:&nbsp;
 			<input type="button" class="button" id="span-add-rowspan" value="<?php _e( 'in a column (rowspan)', 'tablepress' ); ?>" />
 			<input type="button" class="button" id="span-add-colspan" value="<?php _e( 'in a row (colspan)', 'tablepress' ); ?>" />
-			<input type="button" class="button show-help-box" value="<?php _e( '?', 'tablepress' ); ?>" title="<?php esc_attr_e( 'Help on combining cells' ); ?>" />
+			<input type="button" class="button show-help-box" value="<?php _e( '?', 'tablepress' ); ?>" title="<?php esc_attr_e( 'Help on combining cells', 'tablepress' ); ?>" />
 			<div class="hidden-container hidden-help-box-container"><?php
 				echo '<p>' . __( 'Table cells can span across more than one column or row.', 'tablepress' ) . '</p>';
 				echo '<p>' . __( 'Combining consecutive cells within the same row is called &#8220;colspanning&#8221;.', 'tablepress' )
