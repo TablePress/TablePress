@@ -407,6 +407,10 @@ class TablePress_Render {
 		if ( $this->render_options['print_description'] && 'above' == $this->render_options['print_description_position'] )
 			$output .= $print_description_html;
 
+		// Deactivate nl2br() for this render process, if "convert_line_breaks" Shortcode parameter is set to false
+		if ( ! $this->render_options['convert_line_breaks'] )
+			add_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // priority 9, so that this filter can easily be overwritten at the default priority
+
 		$thead = '';
 		$tfoot = '';
 		$tbody = array();
@@ -428,6 +432,10 @@ class TablePress_Render {
 			// neither first nor last row (with respective head/foot enabled), so render as body row
 			$tbody[] = $this->_render_row( $row_idx, 'td' );
 		}
+
+		// Re-instate nl2br() behavior after this render process, if "convert_line_breaks" Shortcode parameter is set to false
+		if ( ! $this->render_options['convert_line_breaks'] )
+			remove_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // priority 9, so that this filter can easily be overwritten at the default priority
 
 		// <caption> tag (possibly with "Edit" link)
 		$caption = apply_filters( 'tablepress_print_caption_text', '', $this->table );
@@ -617,6 +625,7 @@ class TablePress_Render {
 			'print_description' => null,
 			'print_description_position' => null,
 			'cache_table_output' => true,
+			'convert_line_breaks' => true,
 			'extra_css_classes' => null,
 			'use_datatables' => null,
 			'datatables_sort' => null,
