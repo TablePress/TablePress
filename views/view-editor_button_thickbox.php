@@ -126,7 +126,7 @@ body {
 }
 </style>
 </head>
-<body class="wp-admin js iframe">
+<body class="wp-admin wp-core-ui js iframe">
 <div id="tablepress-page" class="wrap">
 <?php screen_icon( 'tablepress' ); ?>
 <h2><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h2>
