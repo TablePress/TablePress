@@ -28,7 +28,7 @@ If you are currently using WP-Table Reloaded, it is recommended that you switch 
 
 == Screenshots ==
 
-1. "List Tables" screen
+1. "All Tables" screen
 2. "Edit" screen
 3. "Add new Table" screen
 4. "Import" screen
