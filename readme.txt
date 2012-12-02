@@ -28,7 +28,14 @@ If you are currently using WP-Table Reloaded, it is recommended that you switch 
 
 == Screenshots ==
 
-Screenshots of the TablePress interface and links to example tables are available at http://tablepress.org/features/.
+1. "List Tables" screen
+2. "Edit" screen
+3. "Add new Table" screen
+4. "Import" screen
+5. "Export" screen
+6. "Plugin Options" screen
+7. "About" screen
+8. Two example tables (as they can be seen on the [TablePress website](http://tablepress.org/features/))
 
 == Installation ==
 
@@ -37,13 +44,9 @@ The easiest way to install TablePress is via your WordPress Dashboard. Go to the
 Manual installation works just as for other WordPress plugins:
 
 1. Download and extract the ZIP file and move the folder "tablepress" into the "wp-content/plugins/" directory of your WordPress installation.
-
 1. Activate the plugin "TablePress" on the "Plugins" page of your WordPress Dashboard.
-
 1. Create and manage tables by going to the "TablePress" section in the admin menu.
-
 1. Add a table to a page, post, or text widget, by adding the Shortcode `[table id=<your-table's-ID> /]` to its content, or by using the "Table" button in the editor toolbar.
-
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
 == Frequently Asked Questions ==

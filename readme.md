@@ -19,7 +19,7 @@ If you are currently using WP-Table Reloaded, it is recommended that you switch 
 
 ## Screenshots
 
-Screenshots of the TablePress interface and links to example tables are available at http://tablepress.org/features/.
+Screenshots of the TablePress interface are available at http://wordpress.org/extend/plugins/tablepress/screenshots/.
 
 ## Installation
 
