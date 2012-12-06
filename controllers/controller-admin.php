@@ -1110,6 +1110,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( false !== $replace_id && ! current_user_can( 'tablepress_edit_table', $replace_id ) )
 			return false;
 
+		// Full JSON format table can contain a table ID, try to keep that
+		$table_id_in_import = false;
+
 		if ( false !== $replace_id ) {
 			// Load existing table from DB
 			$existing_table = $this->model_table->load( $replace_id );
@@ -1121,6 +1124,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		} else {
 			$existing_table = $this->model_table->get_table_template();
 			// if name and description are imported from a new table, use those
+			if ( isset( $imported_table['id'] ) )
+				$table_id_in_import = $imported_table['id'];
 			if ( ! isset( $imported_table['name'] ) )
 				$imported_table['name'] = $name;
 			if ( ! isset( $imported_table['description'] ) )
@@ -1154,6 +1159,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		if ( false === $table_id )
 			return false;
+
+		// Try to use ID from imported file (e.g. in full JSON format table)
+		if ( false !== $table_id_in_import && $table_id != $table_id_in_import && current_user_can( 'tablepress_edit_table_id', $table_id ) ) {
+			$id_changed = $this->model_table->change_table_id( $table_id, $table_id_in_import );
+			if ( $id_changed )
+				$table_id = $table_id_in_import;
+		}
+
 		return $table_id;
 	}
 
