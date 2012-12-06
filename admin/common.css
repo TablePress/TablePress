@@ -146,6 +146,14 @@
 	border-color: #cc0000 !important;
 }
 
+/* gray background for disabled and readonly inputs */
+#tablepress-page form input[type="text"][disabled],
+#tablepress-page form input[type="text"][readonly],
+#tablepress-page form input[type="number"][disabled],
+#tablepress-page form input[type="number"][readonly] {
+	background-color: #eeeeee;
+}
+
 /* tables for in postboxes (on the "Edit" and "Plugin Options" screens) */
 .tablepress-postbox-table {
 	border-spacing: 0px;

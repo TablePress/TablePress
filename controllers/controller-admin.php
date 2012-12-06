@@ -662,14 +662,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Load existing table from DB
-		$table = $this->model_table->load( $edit_table['id'] );
-		if ( false === $table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
+		$existing_table = $this->model_table->load( $edit_table['id'] );
+		if ( false === $existing_table ) // @TODO: Maybe somehow load a new table here? ($this->model_table->get_table_template())?
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 
 		// Check consistency of new table, and then merge with existing table
-		$table = $this->model_table->prepare_table( $table, $edit_table );
+		$table = $this->model_table->prepare_table( $existing_table, $edit_table );
 		if ( false === $table )
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
+
+		// DataTables Custom Commands can only be edit by trusted users
+		if ( ! current_user_can( 'tablepress_edit_options' ) )
+			$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 		// Save updated table
 		$saved = $this->model_table->save( $table );
@@ -1109,14 +1113,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		if ( false !== $replace_id ) {
 			// Load existing table from DB
-			$table = $this->model_table->load( $replace_id );
-			if ( false === $table )
+			$existing_table = $this->model_table->load( $replace_id );
+			if ( false === $existing_table )
 				return false;
 			// don't change name and description when a table is replaced
-			$imported_table['name'] = $table['name'];
-			$imported_table['description'] = $table['description'];
+			$imported_table['name'] = $existing_table['name'];
+			$imported_table['description'] = $existing_table['description'];
 		} else {
-			$table = $this->model_table->get_table_template();
+			$existing_table = $this->model_table->get_table_template();
 			// if name and description are imported from a new table, use those
 			if ( ! isset( $imported_table['name'] ) )
 				$imported_table['name'] = $name;
@@ -1125,19 +1129,23 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Merge new or existing table with information from the imported table
-		$imported_table['id'] = $table['id']; // will be false for new table or the existing table ID
+		$imported_table['id'] = $existing_table['id']; // will be false for new table or the existing table ID
 		// cut visibility array (if the imported table is smaller), and pad correctly if imported table is bigger than existing table (or new template)
 		$num_rows = count( $imported_table['data'] );
 		$num_columns = count( $imported_table['data'][0] );
 		$imported_table['visibility'] = array(
-			'rows' => array_pad( array_slice( $table['visibility']['rows'], 0, $num_rows ), $num_rows, 1 ),
-			'columns' => array_pad( array_slice( $table['visibility']['columns'], 0, $num_columns ), $num_columns, 1 )
+			'rows' => array_pad( array_slice( $existing_table['visibility']['rows'], 0, $num_rows ), $num_rows, 1 ),
+			'columns' => array_pad( array_slice( $existing_table['visibility']['columns'], 0, $num_columns ), $num_columns, 1 )
 		);
 
 		// Check if new data is ok
-		$table = $this->model_table->prepare_table( $table, $imported_table, false );
+		$table = $this->model_table->prepare_table( $existing_table, $imported_table, false );
 		if ( false === $table )
 			return false;
+
+		// DataTables Custom Commands can only be edit by trusted users
+		if ( ! current_user_can( 'tablepress_edit_options' ) )
+			$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 		// Replace existing table or add new table
 		if ( false !== $replace_id )
