@@ -95,12 +95,18 @@ class TablePress_Post_Model extends TablePress_Model {
 		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+		// remove possible KSES filtering here, as it can destroy the JSON when messing with HTML
+		// saving is done to table cells individually, when saving
+		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
 		$post_id = wp_insert_post( $post, false ); // false means: no WP_Error object on error, but int 0
 
 		// re-add balanceTags() to sanitize_post()
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+		// re-add KSES filtering, if necessary
+		if ( ! current_user_can( 'unfiltered_html' ) )
+			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
 		return $post_id;
 	}
@@ -136,12 +142,18 @@ class TablePress_Post_Model extends TablePress_Model {
 		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+		// remove possible KSES filtering here, as it can destroy the JSON when messing with HTML
+		// saving is done to table cells individually, when saving
+		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
 		$post_id = wp_update_post( $post );
 
 		// re-add balanceTags() to sanitize_post()
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
+		// re-add KSES filtering, if necessary
+		if ( ! current_user_can( 'unfiltered_html' ) )
+			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
 		return $post_id;
 	}
