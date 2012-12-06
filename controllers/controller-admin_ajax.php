@@ -84,8 +84,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$message = 'error_save';
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
-			$table = $this->model_table->load( $edit_table['id'] );
-			if ( false === $table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
+			$existing_table = $this->model_table->load( $edit_table['id'] );
+			if ( false === $existing_table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
 				break;
 
 			// Check and convert data that was transmitted as JSON
@@ -98,9 +98,13 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
-			$table = $this->model_table->prepare_table( $table, $edit_table, true, true );
+			$table = $this->model_table->prepare_table( $existing_table, $edit_table, true, true );
 			if ( false === $table )
 				break;
+
+			// DataTables Custom Commands can only be edit by trusted users
+			if ( ! current_user_can( 'tablepress_edit_options' ) )
+				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 			// Save updated table
 			$saved = $this->model_table->save( $table );
@@ -170,8 +174,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$success = false;
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
-			$table = $this->model_table->load( $preview_table['id'] );
-			if ( false === $table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
+			$existing_table = $this->model_table->load( $preview_table['id'] );
+			if ( false === $existing_table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
 				break;
 
 			// Check and convert data that was transmitted as JSON
@@ -184,9 +188,13 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$preview_table['visibility'] = json_decode( $preview_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
-			$table = $this->model_table->prepare_table( $table, $preview_table, true, true );
+			$table = $this->model_table->prepare_table( $existing_table, $preview_table, true, true );
 			if ( false === $table )
 				break;
+
+			// DataTables Custom Commands can only be edit by trusted users
+			if ( ! current_user_can( 'tablepress_edit_options' ) )
+				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 			// If the ID has changed, and the new ID is valid, render with the new ID (important e.g. for CSS classes/HTML ID)
 			if ( $table['id'] !== $table['new_id'] && 0 === preg_match( '/[^a-zA-Z0-9_-]/', $table['new_id'] ) )
