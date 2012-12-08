@@ -206,3 +206,8 @@ body.wait * {
 #tablepress_edit-table-manipulation .column-2 {
 	width: 55%;
 }
+
+/* gray background for disabled "Pagination entries" field */
+#option-datatables-paginate_entries[disabled] {
+	background-color: #eeeeee;
+}
