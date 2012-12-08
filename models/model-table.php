@@ -125,7 +125,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			foreach ( $table['data'] as $row_idx => $row ) {
 				foreach ( $row as $column_idx => $cell_content ) {
-					$table['data'][ $row_idx ][ $column_idx ] = wp_kses( $cell_content, 'post' ); // equals wp_filter_post_kses(), but without the unncessary slashes handling
+					$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // equals wp_filter_post_kses(), but without the unncessary slashes handling
 				}
 			}
 		}
