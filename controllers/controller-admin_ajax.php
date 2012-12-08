@@ -103,7 +103,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				break;
 
 			// DataTables Custom Commands can only be edit by trusted users
-			if ( ! current_user_can( 'tablepress_edit_options' ) )
+			if ( ! current_user_can( 'unfiltered_html' ) )
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 			// Save updated table
@@ -193,7 +193,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				break;
 
 			// DataTables Custom Commands can only be edit by trusted users
-			if ( ! current_user_can( 'tablepress_edit_options' ) )
+			if ( ! current_user_can( 'unfiltered_html' ) )
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 			// If the ID has changed, and the new ID is valid, render with the new ID (important e.g. for CSS classes/HTML ID)

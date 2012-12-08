@@ -673,7 +673,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 
 		// DataTables Custom Commands can only be edit by trusted users
-		if ( ! current_user_can( 'tablepress_edit_options' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) )
 			$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 		// Save updated table
@@ -1148,7 +1148,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return false;
 
 		// DataTables Custom Commands can only be edit by trusted users
-		if ( ! current_user_can( 'tablepress_edit_options' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) )
 			$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 		// Replace existing table or add new table
@@ -1335,7 +1335,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( isset( $wptr_table['options'][ $_option ] ) )
 				$new_table['options'][ $_option ] = $wptr_table['options'][ $_option ];
 		}
-		if ( isset( $wptr_table['options']['datatables_customcommands'] ) )
+		if ( isset( $wptr_table['options']['datatables_customcommands'] ) && current_user_can( 'unfiltered_html' ) )
 			$new_table['options']['datatables_custom_commands'] = $wptr_table['options']['datatables_customcommands'];
 		// not imported: $wptr_table['options']['cache_table_output']
 		// not imported: $wptr_table['custom_fields']
