@@ -225,19 +225,28 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @see get_post()
 	 * @since 1.0.0
 	 *
-	 * @param array $post_ids List of Post IDs
+	 * @param array $all_post_ids List of Post IDs
 	 */
-	public function load_posts( $post_ids ) {
+	public function load_posts( $all_post_ids ) {
 		global $wpdb;
-		$post_ids_list = implode( ',', $post_ids );
-		$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
-		foreach ( $all_posts as $single_post ) {
-			$single_post = sanitize_post( $single_post, 'raw' ); // just minimal sanitation of int fields
-			wp_cache_add( $single_post->ID, $single_post, 'posts' );
-			// using @see update_post_cache( $all_posts ) instead this loop might be simpler
+
+		// Split post loading, to save memory
+		$offset = 0;
+		$length = 100; // 100 posts at a time
+		$number_of_posts = count( $all_post_ids );
+		while ( $offset < $number_of_posts ) {
+			$post_ids = array_slice( $all_post_ids, $offset, $length );
+			$post_ids_list = implode( ',', $post_ids );
+			$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
+			foreach ( $all_posts as $single_post ) {
+				$single_post = sanitize_post( $single_post, 'raw' ); // just minimal sanitization of int fields
+				wp_cache_add( $single_post->ID, $single_post, 'posts' );
+				// using update_post_cache( $all_posts ) instead of this loop might be simpler
+			}
+			// get all post meta data for all table posts, @see get_post_meta()
+			update_meta_cache( 'post', $post_ids );
+			$offset += $length; // next array_slice() $offset
 		}
-		// get all post meta data for all table posts, @see get_post_meta()
-		update_meta_cache( 'post', $post_ids );
 	}
 
 	/**
