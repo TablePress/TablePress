@@ -136,7 +136,7 @@ class TablePress_About_View extends TablePress_View {
 		?>
 	<p>
 		<?php printf( __( '<a href="%s">Support</a> is provided through the <a href="%s">WordPress Support Forums</a>.', 'tablepress' ), 'http://tablepress.org/support/', 'http://wordpress.org/support/plugin/tablepress' ); ?>
-		<?php printf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a> where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tablepress.org/faq/' ); ?>
+		<?php printf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tablepress.org/faq/' ); ?>
 	</p>
 	<p>
 		<?php printf( __( 'If you do not find an answer there, please <a href="%s">open a new thread</a> in the WordPress Support Forums.', 'tablepress' ), 'http://wordpress.org/support/plugin/tablepress' ); ?>
