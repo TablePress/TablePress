@@ -201,18 +201,21 @@
 .tablepress-postbox-table .bottom-border .top-align {
 	padding-top: 4px;
 }
-/* adjust positioning of labels in relation to checkboxes/radio buttons on "Export" and "Import" screen */
+/* adjust positioning of labels in relation to checkboxes/radio buttons on "Export" and "Import" screen, some margin on radio buttons */
 #tablepress_export-export-form .column-2 label,
-#tablepress_import-import-form .column-2 label {
+#tablepress_import-import-form .column-2 label,
+#tablepress_import-import-wp-table-reloaded .column-2 label {
 	vertical-align: top;
+	margin-right: 5px;
+}
+/* adjust margin on radio buttons on "Import" screen */
+#tablepress_export-export-form input[type="radio"],
+#tablepress_import-import-form input[type="radio"],
+#tablepress_import-import-wp-table-reloaded input[type="radio"] {
+	margin: 0;
 }
 /* adjust padding on source fields on "Import" screen */
 #tables-import-url,
 #tables-import-server {
 	margin-bottom: 4px;
-}
-/* some left margin on radio buttons */
-#tablepress_import-import-form .column-2 input[type="radio"],
-#tablepress_import-import-wp-table-reloaded .column-2 input[type="radio"] {
-	margin-left: 5px;
 }
