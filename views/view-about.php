@@ -73,7 +73,7 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_usage( $data, $box ) {
 		?>
 	<p>
-		<?php _e( 'At first you should add or import a table.', 'tablepress' ); ?>
+		<?php _e( 'At first, you should add or import a table.', 'tablepress' ); ?>
 		<?php _e( 'This means that you either let the plugin create an empty table for you or that you load an existing table from either a CSV, HTML, or JSON file.', 'tablepress' ); ?>
 	</p>
 	<p>
@@ -152,7 +152,6 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_debug_version_information( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'You are using the following versions of the software.', 'tablepress' ); ?>
 			<strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong>
 		</p>
 		<p>
