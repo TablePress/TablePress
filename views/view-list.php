@@ -207,7 +207,7 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	public function textbox_tables_list( $data, $box ) {
 		if ( ! empty( $_GET['s'] ) )
-			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'default' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
 	?>
 <form method="get" action="">
 	<?php
@@ -504,7 +504,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$current_timestamp = current_time( 'timestamp' );
 		$time_diff = $current_timestamp - $modified_timestamp;
 		if ( $time_diff >= 0 && $time_diff < 24*60*60 ) // time difference is only shown up to one day
-			$time_diff = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
+			$time_diff = sprintf( __( '%s ago', 'tablepress' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 		else
 			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br />' );
 
@@ -557,12 +557,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			return;
 
 		echo "<select name='$name_id' id='$name_id'>\n";
-		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'default' ) . "</option>\n";
+		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'tablepress' ) . "</option>\n";
 		foreach ( $this->_actions as $name => $title ) {
 			echo "\t<option value='$name'$>$title</option>\n";
 		}
 		echo "</select>\n";
-		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . __( 'Apply', 'default' ) . '" />' . "\n";
+		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . __( 'Apply', 'tablepress' ) . '" />' . "\n";
 	}
 
 	/**

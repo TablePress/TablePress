@@ -138,7 +138,7 @@ body {
 </p>
 <?php
 	if ( ! empty( $_GET['s'] ) )
-		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'default' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
 ?>
 <form method="get" action="">
 	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
