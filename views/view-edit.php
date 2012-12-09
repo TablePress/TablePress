@@ -58,12 +58,12 @@ class TablePress_Edit_View extends TablePress_View {
 		$wplink_url = plugins_url( "admin/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
 		wp_register_script( 'wplink', $wplink_url, array( 'jquery', 'wpdialogs' ), TablePress::version, true );
 		wp_localize_script( 'wplink', 'wpLinkL10n', array(
-			'title' => __( 'Insert/edit link', 'default' ),
-			'update' => __( 'Update', 'default' ),
-			'save' => __( 'Add Link', 'default' ),
-			'noTitle' => __( '(no title)', 'default' ),
-			'noMatchesFound' => __( 'No matches found.', 'default' ),
-			'link_text' => __( 'Link Text', 'tablepress' ) // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
+			'title' => _x( 'Insert/edit link', 'Insert Link dialog', 'tablepress' ),
+			'update' => _x( 'Update', 'Insert Link dialog', 'tablepress' ),
+			'save' => _x( 'Add Link', 'Insert Link dialog', 'tablepress' ),
+			'noTitle' => _x( '(no title)', 'Insert Link dialog', 'tablepress' ),
+			'noMatchesFound' => _x( 'No matches found.', 'Insert Link dialog', 'tablepress' ),
+			'link_text' => _x( 'Link Text', 'Insert Link dialog', 'tablepress' ) // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
 		) );
 
 		$this->admin_page->enqueue_style( 'edit' );

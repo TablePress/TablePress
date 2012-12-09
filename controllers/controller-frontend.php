@@ -434,7 +434,7 @@ JS;
 						$current_timestamp = current_time( 'timestamp' );
 						$time_diff = $current_timestamp - $modified_timestamp;
 						if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) // time difference is only shown up to one day
-							$output = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
+							$output = sprintf( __( '%s ago', 'tablepress' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 						else
 							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
 						break 2;
