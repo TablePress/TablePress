@@ -110,7 +110,7 @@ abstract class TablePress_View {
 			'title' => __( 'TablePress Help', 'tablepress' ),
 			'content' => '<p>' . $this->help_tab_content() . '</p>'
 						. '<p>' . sprintf( __( 'More information about TablePress can be found on the <a href="%1$s">plugin&#8217;s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'http://tablepress.org/', 'http://wordpress.org/extend/plugins/tablepress/' ) . ' '
-						. sprintf( __( 'For technical information, please see the <a href="%1$s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' ) . ' '
+						. sprintf( __( 'For technical information, please see the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' ) . ' '
 						. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'http://tablepress.org/support/', 'http://wordpress.org/tags/tablepress' ) . ' '
 						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tablepress.org/faq/' ) . '<br />'
 						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tablepress.org/donate/' ) . '</p>'
