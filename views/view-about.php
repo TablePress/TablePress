@@ -162,6 +162,7 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; TablePress table scheme: <?php echo TablePress::table_scheme_version; ?>
 			<br />&middot; Plugin installed: <?php echo date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
 			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
+			<br />&middot; Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?>
 			<br />&middot; PHP: <?php echo phpversion(); ?>
 			<br />&middot; mySQL (Server): <?php echo mysql_get_server_info(); ?>
 			<br />&middot; mySQL (Client): <?php echo mysql_get_client_info(); ?>
