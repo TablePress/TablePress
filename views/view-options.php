@@ -104,11 +104,11 @@ class TablePress_Options_View extends TablePress_View {
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
 			<p class="description"><?php
-				_e( sprintf( '&#8220;Custom CSS&#8221; (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'http://www.htmldog.com/guides/cssbeginner/' ), 'tablepress' );
+				printf( __( '&#8220;Custom CSS&#8221; (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'tablepress' ), 'http://www.htmldog.com/guides/cssbeginner/' );
 				echo ' ';
-				_e( sprintf( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'http://tablepress.org/faq/' ), 'tablepress' );
+				printf( __( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'tablepress' ), 'http://tablepress.org/faq/' );
 				echo ' ';
-				_e( sprintf( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'http://tablepress.org/documentation/' ), 'tablepress' );
+				printf( __( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' );
 			?></p>
 			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the &#8220;Custom CSS&#8221; code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
 			<input type="checkbox" style="visibility: hidden;" <?php // Dummy checkbox for space alignment ?>/> <?php echo content_url( 'tablepress-custom.css' ) . ' ' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? '(File exists.)' : '(File seems not to exist.)' ); ?>
