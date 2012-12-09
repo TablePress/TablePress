@@ -99,10 +99,10 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-source">
 		<th class="column-1" scope="row"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<input name="import[source]" id="tables-import-source-file-upload" type="radio" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <label for="tables-import-source-file-upload"><?php _e( 'File Upload', 'tablepress' ); ?></label>
-			<input name="import[source]" id="tables-import-source-url" type="radio" value="url"<?php checked( $data['import_source'], 'url', true ); ?> /> <label for="tables-import-source-url"><?php _e( 'URL', 'tablepress' ); ?></label>
-			<input name="import[source]" id="tables-import-source-server" type="radio" value="server"<?php checked( $data['import_source'], 'server', true ); ?> /> <label for="tables-import-source-server"><?php _e( 'File on server', 'tablepress' ); ?></label>
-			<input name="import[source]" id="tables-import-source-form-field" type="radio" value="form-field"<?php checked( $data['import_source'], 'form-field', true ); ?> /> <label for="tables-import-source-form-field"><?php _e( 'Manual Input', 'tablepress' ); ?></label>
+			<label for="tables-import-source-file-upload"><input name="import[source]" id="tables-import-source-file-upload" type="radio" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <?php _e( 'File Upload', 'tablepress' ); ?></label>
+			<label for="tables-import-source-url"><input name="import[source]" id="tables-import-source-url" type="radio" value="url"<?php checked( $data['import_source'], 'url', true ); ?> /> <?php _e( 'URL', 'tablepress' ); ?></label>
+			<label for="tables-import-source-server"><input name="import[source]" id="tables-import-source-server" type="radio" value="server"<?php checked( $data['import_source'], 'server', true ); ?> /> <?php _e( 'File on server', 'tablepress' ); ?></label>
+			<label for="tables-import-source-form-field"><input name="import[source]" id="tables-import-source-form-field" type="radio" value="form-field"<?php checked( $data['import_source'], 'form-field', true ); ?> /> <?php _e( 'Manual Input', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr id="row-import-source-file-upload" class="bottom-border">
@@ -161,8 +161,8 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-add_replace" class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Add or Replace?', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<input name="import[add_replace]" id="tables-import-add_replace-add" type="radio" value="add"<?php checked( $data['import_add_replace'], 'add', true ); ?> /> <label for="tables-import-add_replace-add"><?php _e( 'Add as new table', 'tablepress' ); ?></label>
-			<input name="import[add_replace]" id="tables-import-add_replace-replace" type="radio" value="replace"<?php checked( $data['import_add_replace'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <label for="tables-import-add_replace-replace"><?php _e( 'Replace existing table', 'tablepress' ); ?></label>
+			<label for="tables-import-add_replace-add"><input name="import[add_replace]" id="tables-import-add_replace-add" type="radio" value="add"<?php checked( $data['import_add_replace'], 'add', true ); ?> /> <?php _e( 'Add as new table', 'tablepress' ); ?></label>
+			<label for="tables-import-add_replace-replace"><input name="import[add_replace]" id="tables-import-add_replace-replace" type="radio" value="replace"<?php checked( $data['import_add_replace'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Replace existing table', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr id="row-import-replace-table" class="bottom-border">
@@ -213,8 +213,8 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-wp-table-reloaded-source">
 		<th class="column-1" scope="row"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-db" type="radio" value="db"<?php checked( $data['import_wp_table_reloaded_source'], 'db', true ); disabled( $data['wp_table_reloaded_installed'], false, true ); ?> /> <label for="import-wp-table-reloaded-source-db"><?php _e( 'WordPress database', 'tablepress' ); ?></label>
-			<input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-dump-file" type="radio" value="dump-file"<?php checked( $data['import_wp_table_reloaded_source'], 'dump-file', true ); ?> /> <label for="import-wp-table-reloaded-source-dump-file"><?php _e( 'WP-Table Reloaded Dump File', 'tablepress' ); ?></label>
+			<label for="import-wp-table-reloaded-source-db"><input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-db" type="radio" value="db"<?php checked( $data['import_wp_table_reloaded_source'], 'db', true ); disabled( $data['wp_table_reloaded_installed'], false, true ); ?> /> <?php _e( 'WordPress database', 'tablepress' ); ?></label>
+			<label for="import-wp-table-reloaded-source-dump-file"><input name="import[wp_table_reloaded][source]" id="import-wp-table-reloaded-source-dump-file" type="radio" value="dump-file"<?php checked( $data['import_wp_table_reloaded_source'], 'dump-file', true ); ?> /> <?php _e( 'WP-Table Reloaded Dump File', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr id="row-import-wp-table-reloaded-source-dump-file" class="bottom-border">
