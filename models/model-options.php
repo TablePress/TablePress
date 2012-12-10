@@ -240,6 +240,10 @@ class TablePress_Options_Model extends TablePress_Model {
 			$role->add_cap( 'tablepress_import_tables_wptr' );
 			$role->add_cap( 'tablepress_edit_options' );
 		}
+
+		// Refresh current set of capabilities of the user, to be able to directly use the new caps
+		$user = wp_get_current_user();
+		$user->get_role_caps();
 	}
 
 	/**
