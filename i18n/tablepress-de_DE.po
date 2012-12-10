@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v0.8-beta\n"
+"Project-Id-Version: TablePress v0.8.1-beta\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-12-09 17:33:18+0000\n"
+"PO-Revision-Date: 2012-12-10 09:08:31+0000\n"
 "Last-Translator: TobiasBg <wordpress@tobias.baethge.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1128,12 +1128,12 @@ msgstr ""
 #: views/view-list.php:560
 #@ tablepress
 msgid "Bulk Actions"
-msgstr ""
+msgstr "Aktion wählen"
 
 #: views/view-list.php:565
 #@ tablepress
 msgid "Apply"
-msgstr ""
+msgstr "Übernehmen"
 
 #: views/view-options.php:60
 #@ tablepress
@@ -1170,7 +1170,7 @@ msgstr "Danke, dass du <a href=\"http://tablepress.org/\">TablePress</a> benutzt
 #, php-format
 #@ tablepress
 msgid "More information about TablePress can be found on the <a href=\"%1$s\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress Plugin Directory</a>."
-msgstr "Weitere Informationen zu TablePress findes du auf der <a href=\"%1$s\">Plugin-Website</a> oder im <a href=\"%s\">WordPress-Pluginverzeichnis</a>."
+msgstr "Weitere Informationen zu TablePress findes du auf der <a href=\"%1$s\">Plugin-Website</a> oder im <a href=\"%s\">WordPress-Plugin-Verzeichnis</a>."
 
 #: classes/class-view.php:114
 #, php-format
@@ -1243,12 +1243,6 @@ msgstr "Um die Tabelle in eine Seite, einen Artikel oder ein Text-Widget einzuf�
 msgid "http://tablepress.org/"
 msgstr "http://tablepress.org/"
 
-#. translators: plugin header field 'Version'
-#: tablepress.php:0
-#@ tablepress
-msgid "0.8-beta"
-msgstr "0.8-beta"
-
 #: views/view-about.php:60
 #@ tablepress
 msgid "TablePress allows you to create and manage tables in the admin area of WordPress."
@@ -1307,7 +1301,7 @@ msgstr "Das Plugin enthält ein CSS-Standarddesign, das mit eigenem CSS code ge�
 #, php-format
 #@ tablepress
 msgid "More information about TablePress can be found on the <a href=\"%s\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress Plugin Directory</a>."
-msgstr "Weitere Informationen zu TablePress findest du auf der <a href=\"%s\">Plugin-Website</a> oder auf seiner Seite im <a href=\"%s\">WordPress-Pluginverzeichnis</a>."
+msgstr "Weitere Informationen zu TablePress findest du auf der <a href=\"%s\">Plugin-Website</a> oder auf seiner Seite im <a href=\"%s\">WordPress-Plugin-Verzeichnis</a>."
 
 #: classes/class-view.php:113
 #: views/view-about.php:106
@@ -1337,7 +1331,7 @@ msgstr "Wenn dir das Plugin gefällt, wird eine <a href=\"%s\"><strong>Spende</s
 #, php-format
 #@ tablepress
 msgid "Please rate and review the plugin in the <a href=\"%s\">WordPress Plugin Directory</a>."
-msgstr "Bitte bewerte das Plugin im <a href=\"%s\">WordPress-Pluginverzeichnis</a>."
+msgstr "Bitte bewerte das Plugin im <a href=\"%s\">WordPress-Plugin-Verzeichnis</a>."
 
 #: views/view-about.php:142
 #, php-format
@@ -1780,7 +1774,7 @@ msgstr ""
 #: views/view-export.php:104
 #@ tablepress
 msgid "Select all"
-msgstr ""
+msgstr "Alle auswählen"
 
 #: views/view-export.php:122
 #: views/view-import.php:179
@@ -1792,7 +1786,7 @@ msgstr ""
 #: views/view-export.php:130
 #@ tablepress
 msgid "You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac)."
-msgstr ""
+msgstr "Du kannst mehrere Tabellen auf einmal auswählen, indem du die &#8220;Strg&#8221;-Taste (Windows) oder die &#8220;Befehlstaste&#8221; (Mac) gedrückt hältst."
 
 #: views/view-import.php:45
 #: views/view-import.php:57
@@ -2072,17 +2066,17 @@ msgstr ""
 #: views/view-list.php:192
 #@ tablepress
 msgid "This is a list of your tables."
-msgstr ""
+msgstr "Dies ist eine Liste deiner Tabellen."
 
 #: views/view-list.php:193
 #@ tablepress
 msgid "Click the corresponding links within the list to edit, copy, delete, or preview a table."
-msgstr ""
+msgstr "Klicke die jeweiligen Links in der Liste, um eine Tabelle zu bearbeiten, zu kopieren, zu löschen oder eine Vorschau zu sehen."
 
 #: views/view-list.php:197
 #@ tablepress
 msgid "Each table has a unique ID that needs to be adjusted in that Shortcode."
-msgstr ""
+msgstr "Jede Tabelle hat eine eindeutige ID, die in diesem Shortcode angepasst werden muss."
 
 #: views/view-list.php:260
 #@ tablepress
@@ -2144,24 +2138,24 @@ msgstr ""
 #: views/view-options.php:99
 #@ tablepress
 msgid "Load these &#8220;Custom CSS&#8221; commands to influence the table styling:"
-msgstr ""
+msgstr "Lade diese &#8220;Zusatz-CSS&#8221;-Befehle, um das Aussehen von Tabellen zu beeinflussen:"
 
 #: views/view-options.php:113
 #@ tablepress
 msgid "Use a file for storing and loading the &#8220;Custom CSS&#8221; code."
-msgstr ""
+msgstr "Nutze eine Datei, um den &#8220;Zusatz-CSS&#8221;-Code zu speichern bzw. zu laden."
 
 #: views/view-options.php:159
 #, php-format
 #@ tablepress
 msgid "TablePress shall be shown in this section of my admin menu: %s"
-msgstr ""
+msgstr "TablePress soll in diesem Menüpunkt des Admin-Menüs angezeigt werden: %s"
 
 #: views/view-options.php:172
 #, php-format
 #@ tablepress
 msgid "I want to use TablePress in this language: %s"
-msgstr ""
+msgstr "Ich möchte TablePress in dieser Sprache nutzen: %s"
 
 #: views/view-options.php:194
 #@ tablepress
@@ -2253,5 +2247,29 @@ msgstr ""
 #@ tablepress
 msgctxt "Insert Link dialog"
 msgid "Link Text"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: tablepress.php:0
+#@ tablepress
+msgid "0.8.1-beta"
+msgstr ""
+
+#: views/view-options.php:107
+#, php-format
+#@ tablepress
+msgid "&#8220;Custom CSS&#8221; (<a href=\"%s\">Cascading Style Sheets</a>) can be used to change the styling or layout of a table."
+msgstr ""
+
+#: views/view-options.php:109
+#, php-format
+#@ tablepress
+msgid "You can get styling examples from the <a href=\"%s\">FAQ</a>."
+msgstr ""
+
+#: views/view-options.php:111
+#, php-format
+#@ tablepress
+msgid "Information on available CSS selectors can be found in the <a href=\"%s\">documentation</a>."
 msgstr ""
 
