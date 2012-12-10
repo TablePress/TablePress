@@ -87,6 +87,8 @@
 .cm-s-default .cm-hr {color: #999;}
 .cm-s-default .cm-link {color: #00c;}
 
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
 .cm-header, .cm-strong {font-weight: bold;}
 .cm-em {font-style: italic;}
 .cm-emstrong {font-style: italic; font-weight: bold;}
@@ -278,7 +280,4 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 }
 #tablepress-page .CodeMirror.large {
 	height: 300px;
-}
-#tablepress-page .CodeMirror.disabled {
-	height: 100px;
 }

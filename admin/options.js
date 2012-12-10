@@ -22,12 +22,16 @@ jQuery(document).ready( function($) {
 	} );
 
 	/**
-	 * "Custom CSS" textarea grows on focus, once
+	 * "Custom CSS" textarea grows on focus, if it is not disabled, but only once
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' ).find( '.CodeMirror' ).one( 'click', function() {
-		$(this).addClass( 'large' );
+	$( '#tablepress-page' ).find( '.CodeMirror' ).on( 'click.codemirror', function() {
+		var $this = $(this);
+		if ( ! $this.hasClass( 'disabled' ) ) {
+			$this.addClass( 'large' );
+			$this.off( 'click.codemirror' );
+		}
 	} );
 
 	/**
