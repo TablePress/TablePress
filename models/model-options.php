@@ -39,6 +39,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		'use_custom_css' => true,
 		'use_custom_css_file' => true,
 		'custom_css' => '',
+		'custom_css_minified' => '',
 		'custom_css_version' => 0
 	);
 
@@ -320,11 +321,14 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param string $type "normal" version or "minified" version
 	 * @return string|bool Custom CSS on success, false on error
 	 */
-	public function load_custom_css_from_file() {
-		$filename = WP_CONTENT_DIR . '/tablepress-custom.css';
-		$filename = apply_filters( 'tablepress_custom_css_file_name', $filename );
+	public function load_custom_css_from_file( $type = 'normal' ) {
+		$suffix = ( 'minified' == $type ) ? '.min' : '';
+		$filter_name = ( 'minified' == $type ) ? 'tablepress_custom_css_minified_file_name' : 'tablepress_custom_css_file_name';
+		$filename = WP_CONTENT_DIR . "/tablepress-custom{$suffix}.css";
+		$filename = apply_filters( $filter_name, $filename );
 		// Check if file name is valid (0 means yes)
 		if ( 0 !== validate_file( $filename ) )
 			return false;
@@ -372,20 +376,26 @@ class TablePress_Options_Model extends TablePress_Model {
 		// we have valid access to the filesystem now -> try to save the file
 		$filename = WP_CONTENT_DIR . '/tablepress-custom.css';
 		$filename = apply_filters( 'tablepress_custom_css_file_name', $filename );
+		$filename_min = WP_CONTENT_DIR . '/tablepress-custom.min.css';
+		$filename_min = apply_filters( 'tablepress_custom_css_minified_file_name', $filename_min );
 		// Check if file name is valid (0 means yes)
-		if ( 0 !== validate_file( $filename ) )
+		if ( 0 !== validate_file( $filename ) || 0 !== validate_file( $filename_min ) )
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) );
 		global $wp_filesystem;
 
 		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
 		// We need to account for that by replacing the path difference in the filename
 		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
-		if ( '' != $path_difference )
+		if ( '' != $path_difference ) {
 			$filename = str_replace( $path_difference, '', $filename );
+			$filename_min = str_replace( $path_difference, '', $filename_min );
+		}
 
 		$custom_css = $this->get( 'custom_css' );
+		$custom_css_minified = $this->get( 'custom_css_minified' );
 		$result = $wp_filesystem->put_contents( $filename, $custom_css, FS_CHMOD_FILE );
-		if ( ! $result )
+		$result_min = $wp_filesystem->put_contents( $filename_min, $custom_css_minified, FS_CHMOD_FILE );
+		if ( ! $result || ! $result_min )
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) );
 
 		// at this point, saving was successful, so enable the checkbox again

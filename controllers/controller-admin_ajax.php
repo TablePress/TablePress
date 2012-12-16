@@ -214,7 +214,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$head_html .= $_render->get_preview_css();
 			// Add "Custom CSS"
 			if ( $this->model_options->get( 'use_custom_css_file' ) ) {
-				$custom_css = $this->model_options->load_custom_css_from_file();
+				$custom_css = $this->model_options->load_custom_css_from_file( 'normal' );
 				// fall back to "Custom CSS" in options, if it could not be retrieved from file
 				if ( false === $custom_css )
 					$custom_css = $this->model_options->get( 'custom_css' );

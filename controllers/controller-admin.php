@@ -333,7 +333,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
 				$data['frontend_options']['use_custom_css_file'] = $this->model_options->get( 'use_custom_css_file' );
-				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file();
+				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file( 'normal' );
 				$data['frontend_options']['custom_css_file_exists'] = ( false !== $data['frontend_options']['custom_css'] );
 				if ( $data['frontend_options']['use_custom_css_file'] ) {
 					// fall back to "Custom CSS" in options, if it could not be retrieved from file
@@ -790,13 +790,71 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$new_options[ $checkbox ] = ( isset( $posted_options[ $checkbox ] ) && 'true' === $posted_options[ $checkbox ] );
 			}
 			if ( isset( $posted_options['custom_css'] ) ) {
-				if ( 1 === preg_match( '#<style.*?>(.*?)</style>#is', $posted_options['custom_css'], $matches ) )
-					$posted_options['custom_css'] = trim( $matches[1] ); // if found, take match as style to save
+				$custom_css = $posted_options['custom_css'];
+
+				$csstidy = TablePress::load_class( 'csstidy', 'class.csstidy.php', 'libraries/csstidy' );
+
+				// Sanitization and not just tidying for users without enough privileges
+				if ( ! current_user_can( 'unfiltered_html' ) ) {
+					$csstidy->optimise = new csstidy_custom_sanitize( $csstidy );
+
+					$custom_css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $custom_css );
+					$custom_css = str_replace( '<=', '&lt;=', $custom_css ); // Let "arrows" survive, otherwise this might be recognized as the beginning of an HTML tag and removed with other stuff behind it
+					$custom_css = wp_kses( $custom_css, 'strip' ); // remove all HTML tags
+					$custom_css = str_replace( '&gt;', '>', $custom_css ); // KSES replaces single ">" with "&gt;", but ">" is valid in CSS selectors
+					$custom_css = strip_tags( $custom_css ); // strip_tags again, because of the just added ">" (KSES for a second time would again bring the ">" problem)
+				}
+
+				$csstidy->set_cfg( 'remove_bslash', false );
+				$csstidy->set_cfg( 'compress_colors', false );
+				$csstidy->set_cfg( 'compress_font-weight', false );
+				$csstidy->set_cfg( 'lowercase_s', false );
+				$csstidy->set_cfg( 'optimise_shorthands', false );
+				$csstidy->set_cfg( 'remove_last_;', false );
+				$csstidy->set_cfg( 'case_properties', false);
+				$csstidy->set_cfg( 'sort_properties', false );
+				$csstidy->set_cfg( 'sort_selectors', false );
+				$csstidy->set_cfg( 'discard_invalid_selectors', false );
+				$csstidy->set_cfg( 'discard_invalid_properties', true );
+				$csstidy->set_cfg( 'merge_selectors', false );
+				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
+				$csstidy->set_cfg( 'preserve_css', true );
+				$csstidy->set_cfg( 'timestamp', false );
+				$csstidy->set_cfg( 'template', dirname( TABLEPRESS__FILE__ ) . '/libraries/csstidy/tablepress-standard.tpl' );
+
+				$csstidy->parse( $custom_css );
+				$custom_css = $csstidy->print->plain();
 				// Save "Custom CSS" to option
-				$new_options['custom_css'] = $posted_options['custom_css'];
-				// Maybe save it to file as well
+				$new_options['custom_css'] = $custom_css;
+
+				// Minify CSS
+				$minify_csstidy = new csstidy();
+				$minify_csstidy->optimise = new csstidy_custom_sanitize( $minify_csstidy );
+				$minify_csstidy->set_cfg( 'remove_bslash', false );
+				$minify_csstidy->set_cfg( 'compress_colors', true );
+				$minify_csstidy->set_cfg( 'compress_font-weight', true );
+				$minify_csstidy->set_cfg( 'lowercase_s', false );
+				$minify_csstidy->set_cfg( 'optimise_shorthands', 1 );
+				$minify_csstidy->set_cfg( 'remove_last_;', true );
+				$minify_csstidy->set_cfg( 'case_properties', false);
+				$minify_csstidy->set_cfg( 'sort_properties', false );
+				$minify_csstidy->set_cfg( 'sort_selectors', false );
+				$minify_csstidy->set_cfg( 'discard_invalid_selectors', false );
+				$minify_csstidy->set_cfg( 'discard_invalid_properties', true );
+				$minify_csstidy->set_cfg( 'merge_selectors', false );
+				$minify_csstidy->set_cfg( 'css_level', 'CSS3.0' );
+				$minify_csstidy->set_cfg( 'preserve_css', false );
+				$minify_csstidy->set_cfg( 'timestamp', false );
+				$minify_csstidy->set_cfg( 'template', 'highest' );
+
+				$minify_csstidy->parse( $custom_css );
+				$minified_custom_css = $minify_csstidy->print->plain();
+				// Save minified "Custom CSS" to option
+				$new_options['custom_css_minified'] = $minified_custom_css;
+
+				// Maybe update CSS files as well
 				if ( $new_options['use_custom_css_file']
-				&& $new_options['custom_css'] !== $this->model_options->load_custom_css_from_file() ) { // only write to file, if CSS really changed
+				&& $new_options['custom_css'] !== $this->model_options->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
 					$update_custom_css_file = true;
 					// Set to false again. As it was set here, it will be set true again, if file saving succeeds
 					$new_options['use_custom_css_file'] = false;
@@ -1403,7 +1461,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			// Maybe save it to file as well
 			$update_custom_css_file = false;
 			if ( $this->model_options->get( 'use_custom_css_file' )
-			&& $imported_options['custom_css'] !== $this->model_options->load_custom_css_from_file() ) { // only write to file, if CSS really changed
+			&& $imported_options['custom_css'] !== $this->model_options->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
 				$update_custom_css_file = true;
 				// Set to false again. As it was set here, it will be set true again, if file saving succeeds
 				$imported_options['use_custom_css_file'] = false;
@@ -1551,7 +1609,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		);
 
 		if ( $this->model_options->get( 'use_custom_css_file' ) ) {
-			$custom_css = $this->model_options->load_custom_css_from_file();
+			$custom_css = $this->model_options->load_custom_css_from_file( 'normal' );
 			// fall back to "Custom CSS" in options, if it could not be retrieved from file
 			if ( false === $custom_css )
 				$custom_css = $this->model_options->get( 'custom_css' );
