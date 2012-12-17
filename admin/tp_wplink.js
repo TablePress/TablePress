@@ -608,7 +608,7 @@ var wpLink;
 	// Change "Title" to "Link Text", for changed TablePress link insertion behavior
 	$(document).ready( function( $ ) {
 		$( '#link-title-field' ).prev().text( wpLinkL10n.link_text );
-	} );
+	} );
 
 	$(document).ready( wpLink.init );
 })(jQuery);
