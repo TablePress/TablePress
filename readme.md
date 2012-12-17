@@ -53,7 +53,7 @@ TablePress 1.0 will require WordPress 3.5!
 
 The plugin currently includes the following languages:
 
-English and German.
+English, French, and German.
 
 I'd really appreciate it, if you would translate the plugin into your language! Using Heiko Rabe's WordPress plugin [Codestyling Localization](http://wordpress.org/extend/plugins/codestyling-localization/) that really is as easy as pie. Just install the plugin, add your language, create the .po-file, translate the strings in the comfortable editor and create the .mo-file. It will automatically be saved in TablePress's plugin folder. If you send me the .mo- and .po-file, I will gladly include them into future plugin releases.
 

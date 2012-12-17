@@ -188,7 +188,8 @@ class TablePress_About_View extends TablePress_View {
 			<?php _e( 'Thanks to the translators:', 'tablepress' ); ?>
 			<?php
 				foreach ( $data['plugin_languages'] as $lang_abbr => $language ) {
-					$link = sprintf( '<a href="%1$s">%2$s</a>', $language['translator_url'], $language['translator_name'] );
+					$link_template = ( ! empty( $language['translator_url'] ) ) ? '<a href="%1$s">%2$s</a>' : '%2$s';
+					$link = sprintf( $link_template, $language['translator_url'], $language['translator_name'] );
 					echo "<br />&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
 				}
 			?>
