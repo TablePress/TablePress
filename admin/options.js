@@ -26,11 +26,11 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' ).find( '.CodeMirror' ).on( 'click.codemirror', function() {
+	$( '#tablepress-page' ).find( '.CodeMirror' ).on( 'mousedown.codemirror', function() {
 		var $this = $(this);
 		if ( ! $this.hasClass( 'disabled' ) ) {
 			$this.addClass( 'large' );
-			$this.off( 'click.codemirror' );
+			$this.off( 'mousedown.codemirror' );
 		}
 	} );
 
