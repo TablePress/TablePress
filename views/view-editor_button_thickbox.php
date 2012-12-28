@@ -362,6 +362,8 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		if ( is_null( $term ) )
 			$term = stripslashes( $_GET['s'] );
 
+		$item = TablePress::$controller->model_table->load( $item['id'] ); // load table again, with data
+
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )
 		|| false !== stripos( $item['name'], $term )

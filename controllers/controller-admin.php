@@ -303,7 +303,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// depending on action, load more necessary data for the corresponding view
 		switch ( $action ) {
 			case 'list':
-				$data['tables'] = $this->model_table->load_all();
+				$data['tables'] = $this->model_table->load_all(); // does not contain table data
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
 				if ( current_user_can( 'tablepress_import_tables_wptr' ) )
 					$data['messages']['wp_table_reloaded_warning'] = is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ); // check if WP-Table Reloaded is activated
@@ -359,7 +359,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				break;
 			case 'export':
-				$data['tables'] = $this->model_table->load_all();
+				$data['tables'] = $this->model_table->load_all(); // does not contain table data
 				$data['tables_count'] = $this->model_table->count_tables();
 				if ( ! empty( $_GET['table_id'] ) )
 					$data['export_ids'] = explode( ',', $_GET['table_id'] );
@@ -373,7 +373,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : _x( ',', 'Default CSV delimiter in the translated language (";", ",", or "tab")', 'tablepress' );
 				break;
 			case 'import':
-				$data['tables'] = $this->model_table->load_all();
+				$data['tables'] = $this->model_table->load_all(); // does not contain table data
 				$data['tables_count'] = $this->model_table->count_tables();
 				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
 				$data['zip_support_available'] = $importer->zip_support_available;
@@ -1634,7 +1634,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
 		$view_data = array(
-			'tables' => $this->model_table->load_all()
+			'tables' => $this->model_table->load_all() // does not contain table data
 		);
 
 		set_current_screen( 'tablepress_editor_button_thickbox' );

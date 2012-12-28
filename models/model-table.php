@@ -204,7 +204,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Array of Tables
+	 * @return array Array of Tables, but each without table data!
 	 */
 	public function load_all() {
 		$tables = array();
@@ -222,6 +222,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// this loop now uses the WP cache
 		foreach ( $table_ids as $table_id ) {
 			$tables[ $table_id ] = $this->load( $table_id );
+			unset( $tables[ $table_id ]['data'] ); // remove table data, to save memory
 		}
 		return $tables;
 	}

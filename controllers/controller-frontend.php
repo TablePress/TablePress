@@ -517,8 +517,9 @@ JS;
 		// load all tables, and remove hidden cells, as those will not be searched
 		// do this here once, so that we don't have to do it in each loop for each search term again
 		$search_tables = array();
-		$tables = $this->model_table->load_all();
+		$tables = $this->model_table->load_all(); // does not contain table data
 		foreach ( $tables as $table_id => $table ) {
+			$table = $this->model_table->load( $table_id ); // load table again, to also get table data
 			// load information about hidden rows and columns
 			$hidden_rows = array_keys( $table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0))
 			$hidden_columns = array_keys( $table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0))
