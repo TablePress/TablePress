@@ -184,24 +184,29 @@
 .dataTables_wrapper .sorting,
 .dataTables_wrapper .sorting_asc,
 .dataTables_wrapper .sorting_desc {
-	padding-right: 18px; /* more right padding for sort arrows */
+	padding-right: 19px; /* more right padding for sort arrows */
 	cursor: pointer;
 	*cursor: hand;
 	background-repeat: no-repeat;
 	background-position: center right;
+	background-size: 19px 4px;
 }
 .dataTables_wrapper .sorting {
-	background-image: url(../img/both.gif);
+	background-image: url(data:image/gif;base64,R0lGODlhEwAJAPABAAAAACMtMCH5BAkKAAAALAAAAAATAAkAAAIVhH+Byxbf4ptxzVuzBpfuviVQmFQFADs=);
+	background-image: url(../img/both.gif)!ie;
+	background-size: 19px 9px;
 }
 .dataTables_wrapper .sorting:hover {
 	background-color: #049cdb;
 }
 .dataTables_wrapper .sorting_asc {
-	background-image: url(../img/asc.gif);
+	background-image: url(data:image/gif;base64,R0lGODlhEwAEAPABAAAAACMtMCH5BAkKAAAALAAAAAATAAQAAAIMhH+Byxbf4ptxzcsKADs=);
+	background-image: url(../img/asc.gif)!ie;
 	background-color: #049cdb;
 }
 .dataTables_wrapper .sorting_desc {
-	background-image: url(../img/desc.gif);
+	background-image: url(data:image/gif;base64,R0lGODlhEwAEAPABAAAAACMtMCH5BAkKAAAALAAAAAATAAQAAAINhB+pce2w2Jsw0StnAQA7);
+	background-image: url(../img/desc.gif)!ie;
 	background-color: #049cdb;
 }
 .dataTables_wrapper th:active {
@@ -236,5 +241,25 @@ html[xmlns] .dataTables_wrapper { display: block; }
 .dataTables_wrapper .tablepress-rtl .sorting_desc {
 	background-position: center left;
 	padding-right: 8px;
-	padding-left: 18px; /* more left padding for sort arrows */
+	padding-left: 19px; /* more left padding for sort arrows */
+}
+
+/**
+ * HiDPI Displays
+ */
+@media print,
+  (-o-min-device-pixel-ratio: 5/4),
+  (-webkit-min-device-pixel-ratio: 1.25),
+  (min-resolution: 120dpi) {
+
+	.dataTables_wrapper .sorting {
+		background-image: url(data:image/gif;base64,R0lGODlhJgASAPEAAB4eHo6Ojv///wAAACH5BAkAAAMALAAAAAAmABIAAAI8nI+Joe2vAmCwWgmm3Q1nzYXeB4bVSJZml7bUmqBt9sL2jcPyXN872cP9VDnDLlgcoJBJ5YfZdEKjSlgBADs=);
+	}
+	.dataTables_wrapper .sorting_asc {
+		background-image: url(data:image/gif;base64,R0lGODlhJgAIAPEAAB4eHo6Ojv///wAAACH5BAkKAAMALAAAAAAmAAgAAAIhnI+Joe2vAmCwWgmm3Q1nzYXeB4bVSJZml7bUmqBt9joFADs=);
+	}
+	.dataTables_wrapper .sorting_desc {
+		background-image: url(data:image/gif;base64,R0lGODlhJgAIAPEAAB4eHo6Ojv///wAAACH5BAkAAAMALAAAAAAmAAgAAAIhnI8WwO0dkpxyvReppvaCvIVJ54DiqWDoenQmiy4vHNMFADs=);
+	}
+
 }
