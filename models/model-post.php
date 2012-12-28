@@ -165,11 +165,10 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @uses get_post()
 	 *
 	 * @param int $post_id Post ID
-	 * @return array|bool Post on success, false on error
+	 * @return WP_Post|bool Post on success, false on error
 	 */
 	public function get( $post_id ) {
-		$post = get_post( $post_id, ARRAY_A, 'raw' );
-		// $post = wp_get_single_post( $post_id, ARRAY_A ); would also give categories/tags in the $post array
+		$post = get_post( $post_id );
 		if ( is_null( $post ) )
 			return false;
 		return $post;
@@ -182,7 +181,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @uses wp_delete_post()
 	 *
 	 * @param int $post_id Post ID
-	 * @return array|bool Post on success, false on error
+	 * @return mixed|bool Post on success, false on error
 	 */
 	public function delete( $post_id ) {
 		$post = wp_delete_post( $post_id, true ); // force delete, although for CPTs this is automatic in this function
@@ -197,7 +196,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @uses wp_trash_post()
 	 *
 	 * @param int $post_id Post ID
-	 * @return array|bool Post on success, false on error
+	 * @return mixed|bool Post on success, false on error
 	 */
 	public function trash( $post_id ) {
 		$post = wp_trash_post( $post_id );
@@ -238,10 +237,10 @@ class TablePress_Post_Model extends TablePress_Model {
 			$post_ids = array_slice( $all_post_ids, $offset, $length );
 			$post_ids_list = implode( ',', $post_ids );
 			$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
+			// loop is similar to update_post_cache( $all_posts ), but with sanitization
 			foreach ( $all_posts as $single_post ) {
 				$single_post = sanitize_post( $single_post, 'raw' ); // just minimal sanitization of int fields
 				wp_cache_add( $single_post->ID, $single_post, 'posts' );
-				// using update_post_cache( $all_posts ) instead of this loop might be simpler
 			}
 			// get all post meta data for all table posts, @see get_post_meta()
 			update_meta_cache( 'post', $post_ids );

@@ -146,19 +146,19 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $post Post
+	 * @param WP_Post $post Post
 	 * @param string $table_id Table ID
 	 * @return array Table
 	 */
 	protected function _post_to_table( $post, $table_id ) {
 		$table = array(
 			'id' => $table_id,
-			'name' => $post['post_title'],
-			'description' => $post['post_excerpt'],
-			'author' => $post['post_author'],
-//			'created' => $post['post_date'],
-			'last_modified' => $post['post_modified'],
-			'data' => json_decode( $post['post_content'], true )
+			'name' => $post->post_title,
+			'description' => $post->post_excerpt,
+			'author' => $post->post_author,
+//			'created' => $post->post_date,
+			'last_modified' => $post->post_modified,
+			'data' => json_decode( $post->post_content, true )
 		);
 
 		// Check if JSON could be decoded
