@@ -516,14 +516,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'show_entry' => true,
 				'page_title' => __( 'Import a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Import a Table', 'tablepress' ),
-				'nav_tab_title' => __( 'Import', 'tablepress' ),
+				'nav_tab_title' => _x( 'Import', 'navigation bar', 'tablepress' ),
 				'required_cap' => 'tablepress_import_tables'
 			),
 			'export' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Export a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Export a Table', 'tablepress' ),
-				'nav_tab_title' => __( 'Export', 'tablepress' ),
+				'nav_tab_title' => _x( 'Export', 'navigation bar', 'tablepress' ),
 				'required_cap' => 'tablepress_export_tables'
 			),
 			'options' => array(

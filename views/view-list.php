@@ -444,7 +444,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( $user_can_copy_table )
 			$row_actions['copy'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, sprintf ( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Copy', 'tablepress' ) );
 		if ( $user_can_export_table )
-			$row_actions['export'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $export_url, sprintf ( __( 'Export &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Export', 'tablepress' ) );
+			$row_actions['export'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $export_url, sprintf ( __( 'Export &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), _x( 'Export', 'row action', 'tablepress' ) );
 		if ( $user_can_delete_table )
 			$row_actions['delete'] = sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, sprintf ( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Delete', 'tablepress' ) );
 		if ( $user_can_preview_table )
@@ -523,11 +523,11 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$bulk_actions = array();
 
 		if ( current_user_can( 'tablepress_copy_tables' ) )
-			$bulk_actions['copy'] = __( 'Copy', 'tablepress' );
+			$bulk_actions['copy'] = _x( 'Copy', 'bulk action', 'tablepress' );
 		if ( current_user_can( 'tablepress_export_tables' ) )
-			$bulk_actions['export'] = __( 'Export', 'tablepress' );
+			$bulk_actions['export'] = _x( 'Export', 'bulk action', 'tablepress' );
 		if ( current_user_can( 'tablepress_delete_tables' ) )
-			$bulk_actions['delete'] = __( 'Delete', 'tablepress' );
+			$bulk_actions['delete'] = _x( 'Delete', 'bulk action', 'tablepress' );
 
 		return $bulk_actions;
 	}
