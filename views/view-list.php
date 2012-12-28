@@ -539,12 +539,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @since 1.0.0
 	 */
 	public function bulk_actions() {
-		$screen = get_current_screen();
-
 		if ( is_null( $this->_actions ) ) {
 			$no_new_actions = $this->_actions = $this->get_bulk_actions();
 			// This filter can currently only be used to remove actions.
-			$this->_actions = apply_filters( 'bulk_actions-' . $screen->id, $this->_actions );
+			$this->_actions = apply_filters( 'bulk_actions-' . $this->screen->id, $this->_actions );
 			$this->_actions = array_intersect_assoc( $this->_actions, $no_new_actions );
 			$two = '';
 			$name_id = 'bulk-action-top';
