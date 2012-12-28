@@ -101,16 +101,18 @@
 }
 /* Two button pagination - previous/next */
 .dataTables_paginate a {
-	cursor: pointer;
-	*cursor: hand;
 	color: #111111 !important;
 	background-repeat: no-repeat;
-}
-.dataTables_paginate a:hover {
-	text-decoration: none !important;
+	background-size: 19px 19px;
 }
 .dataTables_paginate a:active {
 	outline: none;
+}
+.paginate_enabled_previous:hover,
+.paginate_enabled_next:hover {
+	cursor: pointer;
+	*cursor: hand;
+	text-decoration: none !important;
 }
 .paginate_disabled_previous,
 .paginate_disabled_next {
@@ -128,22 +130,28 @@
 	background-position: center right;
 }
 .paginate_enabled_previous {
-	background-image: url(../img/back_enabled.png);
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAB30lEQVR42s2UPUgCYRjHe+/V0z6kkCw1CmoIwqEo2mqIIqIMCsJu6guSloq+oCAXiababCsCm2oKWoSGaAjaGiscGtSlFAtMC8+u563n1O7MrKmDH/f1Pr97ed//c0X/9iB/GM99nDO1b4DEIL+RIBqEoCQFJJmUK0BCsVgHlAHlu4cn3VeB8DG7BkoAnn3oJ4kWKAYqAOv65nb/pT94dhtJSNf3z3F41gI0AJWAXqO04BcoomODZldcjY7xiZUqi3VAnoEkfSyRCWtegYTmGxHPZjQ66axzzi0u1NTWOQghvDxIluGMXoAnVqfJscj8kCCY5tfc89WWmmlKudL0CLXMgLPXslqV7OLmbsxoNLk5Sivz7Yz0mQQ9E8lR4ZSyfc+OLxQMeEUxGf0pL8rMpWVy8HY9W489rU0ee0fb0Pmpby8ei+WRZgL7KVO/TLHdufP7I05h2Ntpq5858u4dRCOR8NfsEAl3UczdAZls6TGM5YiRUmpcdm10DTqEPlO12SomxVeb2TAF7wJACAgrZSSrZfgsqYGB4S1dcrnb7SNCb1dz4yrcPwD3QJTkTL9aqsNOKGNyvJfkjCGxvI2uaG4tSniE1YooTLD1S8sKkmaanmb9NUQk9UX2u1yp/2fvnsCI6O8xoOQAAAAASUVORK5CYII=);
+	background-image: url(../img/back-enabled.png)!ie;
 }
 .paginate_enabled_previous:hover {
-	background-image: url(../img/back_enabled_hover.png);
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAB5ElEQVR42s2UO0gcURSG75k7O/tyWR+7LKgR0linCjaCYLmFsVEQsZGUohZ2VvYpTZWICXZpAi6+WDUEglgoaGEjio2lZhV1V925x3MnZ3bi3JCsVln42Xnc/5v/zD1nxH/7g2est7z/wKtIqAVPgbBsFjDEJd1rqFUHRLI5SmogpcXEh145u/dVH5MSJEc/yK4zSdQzDU2/kq/7pqChsQeVKtO1DOmSPa4BY4DUYkhM5Mc6Zc/glGjM5QG8+/4ryrLnllS2/wTi2HHRPdwh86OToqV1AMByHq1Egv1KViFdaJ8dLs0Ddb3JWv2T49Ccewsgk0b2IFmK00e014BZ77ZGINU8A5aVMfxmspgG+a1ihWFq9eMKnp9+Rvf+57/6Jdxz0ijzaNfF4qd93FlaFpkXSqSzL8F24gZGuQoL71fp6IykH3wdhkFtJ69KiNuLh7i58E0kmyqipa0NovFEUKZysTBbYFgpDEM/rt/Znqp3t7i/cYTFue8iEiuJTHsOYskUvbMqwb7QmnPezQAWgiqG3XEPVch8jQc/jnFtbl3YzglB01icX9SpuHFvarNplBt0v8PbH+dxSvA5+j3GuvrroIdGKsIQh6W9VQaWdQU1WF3QYOjlb1+NKst9BHtaX5nfswc+S5brrnXw/AAAAABJRU5ErkJggg==);
+	background-image: url(../img/back-hover.png)!ie;
 }
 .paginate_disabled_previous {
-	background-image: url(../img/back_disabled.png);
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAABZ0lEQVQYGQXBv29NYRgA4Od9v++e3h+tNo3aSpqwmcRMYiE1aiISEgkrJTabhERiEInYDDWY2I3+DKPFQmmJ9rq9957jeQAAAAAAAQAACCFAhy4AABBSCglanTYAACGloipS6MzMzBIAoah6+kaWLH+4tPvRoqFGqYAQUlU1+gZPz95+uHaxHVt2iLaCkFJPY8Fw+/S9B+tXJF1YVcwcVRBS1RjeWn98f2MrGqALy2bGxhUhpN611Wfbp+7kCAAsOdBTKgj59eaJJ+U4ANCFgUaVCYhXn77tTPcAABQpSICXv8+8Pn/185vDnwBgrtORoNOam37Zv/z+5N13b399B6IzcWSuDVCkxsDIkmNWysrzCzc219Znk9F1u37YCxBS1dM3MLRo0dDCi3NbmxuP7Nv3JwApFD1VX99AXyPNTRz4axwAQgpFVS1oVAVTE/8cBQAIIaWqKhKtualZAAAIIaQUQqfVaf8Dv7ZdEdkjbwsAAAAASUVORK5CYII=);
+	background-image: url(../img/back-disabled.png)!ie;
 }
 .paginate_enabled_next {
-	background-image: url(../img/forward_enabled.png);
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAB4klEQVR42s2Uy0sCQRjAc31EFPSgQKJbdA76A4KOnjpF/QHdhaKTJ+0iXXocovAWUVGIVIQFglD2IFBT7GFEEUJBaqWur33ZN/ZNu26Kdmvgx85+M/ub4Ztvp+nfNk1FX4bBWAmRys86TafoM4ge0BIpCgREqidlVKLm8Mune3XTOQz9LqADaAfayBhZ/GehWg0ntADd0WS+RPDdPHknzVPjEBsEBoBeoPN7nrz7qjJcvY+IKHeJnOg+D3lMo2NEOgT0A8bybmUpIyddzl0r7uxBvZIkSfxtOHQ0Z7U4Lo69zxBKASxQAIqYS5HK9LizHpBFa+VC4IVC5MrvslmmHdd+fwylOYAjw2qZEWQ39UqA57l0JBhYnjCNrKAwT8K6vxYmxxVzkYDfszw/54NXg+IgNA3L2Ew66znYP1uwWw9fY7FHCCXVdaeWSWrJRzKR2t3euFy0z57mWDYOIcInHkAeC1ok0m+Z/MsIVJKIv70419dOluzWkCAIGRS8Ez/20yjjyLdqmUgGMpl0cG9ny2WbMd+Tg8HJrELA4gkWcIynMo2iaA1Ya+2KomzCD7IElBRpKVAJzZtyZwKupsHJepzMEwHCq37631eQ4trRVrk1RJpkKmn0PmPKTzleqrjT6rQvSErlvMbdXnMAAAAASUVORK5CYII=);
+	background-image: url(../img/next-enabled.png)!ie;
 }
 .paginate_enabled_next:hover {
-	background-image: url(../img/forward_enabled_hover.png);
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAB0UlEQVR42s2Uz0sCQRTHZ921sII6FHj1L6i/oL+hU1D/RX9Bl6BLFwNDsGN0iMCUflLQoSwyoiQrTLHECqSy1PXn7sw0o2/dcUXWYwNfZubN28/Om3lv0L9tUsfYlANsFESavU1ThLED5GSSORQAOojYQWUDBONB2f+wTz2Tbyi6q/K5CTcjsIXBR0PyzILP4fbMS9NzU1RWcih1UzOA4Ed7QSUB6mIaU9aTWWORUkpQLn2KQ94Auj5IMlOBqcxUZWpA+JiH34KZZzfMNM5gKesfKcEayj4d4a2VAEpEMgDlx8B3XQcYbsIgjBGmCQZL9DoTivUaeo0H8eZSAGViWYBWjF1aYW4Ge7RLAaprRZqJr5HlWT8HQtiaYnW0BzUq6OX+hOz5ztl0QEgjSekbUlXL5O74gga9hyj/nmamb2veWWGkC1LKF8hlKErDqxFUUz+ZiesXLqAq3ChtwcyS0duQwtcHjWyfkR1vDBG9BIA80w+Mi0KKECsMNxeq6i25CgfJxuIzvxhwVgWACjdYgzXNgIlJOwC5Ngpy8QX4oMwFkLqRCgbEODdxZzr8TQJnJzhrHADSxKLvVU5Su9i7Xw1sKRvS73vmaPamnXa8aTbtD3+S4Ca88AjnAAAAAElFTkSuQmCC);
+	background-image: url(../img/next-hover.png)!ie;
 }
 .paginate_disabled_next {
-	background-image: url(../img/forward_disabled.png);
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAABx0lEQVR42s2US0sCURSAm/FFFFhREBEUWEGrIPfB/IF20q9w6Vp0E/4LV4MbaeGiFkJoDyEXkcsWIQgtHHqoM87DUTtHz+2OozK268LH3Llz7ndfZ+7Svy3CRJ0jUtuQGIyeHsXvqItEAPChlAQ2MfCSii5RqN1uX+fz+TOobwBrQBhYxW84+O9A8woFLAObpmkOkXq9fptIJC6g7QQ4BHaA9XEcn/1MGY2+iyKGYRj9Wq1WjMViKD0FIsD2aLZcKk7tHQVEuIyj67pVqVQKkiSd00z3cRU4AT5LXgK0hCPsPA9N0/RyuSxHo1EJYg+ALWCF+gtu2TF28qLT6bRKpdIlxO/RIYVwuf6/JqZlWd1qtVrMZDL38Bp0HISwsAxSRisUCo/JZPKm0Wi8QdOHO+/csoFboihKS5blp3Q6/aCqqgJNyDegAjoldB+lYxn/ZWwmaTab79ls9i6VSr3Ytt0hwSfwRfU2ySzs65b18QMs5zmXy13F4/FXPBgKVpmA6l3AoG89JhMcSRukYw47knKJOmgISUxqs5mE7ZtzZjaNJlBwgIJ7KCB6rp9++gpyXDu+GbdGn20ykyx6n4mjJ28fTtxpHuUHC3MXxsgWHxUAAAAASUVORK5CYII=);
+	background-image: url(../img/next-disabled.png)!ie;
 }
 
 /* Full number pagination */
@@ -260,6 +268,26 @@ html[xmlns] .dataTables_wrapper { display: block; }
 	}
 	.dataTables_wrapper .sorting_desc {
 		background-image: url(data:image/gif;base64,R0lGODlhJgAIAPEAAB4eHo6Ojv///wAAACH5BAkAAAMALAAAAAAmAAgAAAIhnI8WwO0dkpxyvReppvaCvIVJ54DiqWDoenQmiy4vHNMFADs=);
+	}
+
+	/* Pagination icons are loaded from files, as including them via Data URL causes extra load for most users */
+	.paginate_enabled_previous {
+		background-image: url(../img/back-enabled-2x.png);
+	}
+	.paginate_enabled_previous:hover {
+		background-image: url(../img/back-hover-2x.png);
+	}
+	.paginate_disabled_previous {
+		background-image: url(../img/back-disabled-2x.png);
+	}
+	.paginate_enabled_next {
+		background-image: url(../img/next-enabled-2x.png);
+	}
+	.paginate_enabled_next:hover {
+		background-image: url(../img/next-hover-2x.png);
+	}
+	.paginate_disabled_next {
+		background-image: url(../img/next-disabled-2x.png);
 	}
 
 }
