@@ -145,11 +145,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] );
 		}
 
-		// response output
-		header( 'Content-Type: application/json; charset=UTF-8' );
-		echo json_encode( $response );
-
-		exit;
+		// Send the response
+		wp_send_json( $response );
 	}
 
 	/**
@@ -236,18 +233,15 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$body_html = __( 'The preview could not be loaded.', 'tablepress' );
 		}
 
-		// generate the response
+		// Generate the response
 		$response = array(
 			'success' => $success,
 			'head_html' => $head_html,
 			'body_html' => $body_html
 		);
 
-		// response output
-		header( 'Content-Type: application/json; charset=UTF-8' );
-		echo json_encode( $response );
-
-		exit;
+		// Send the response
+		wp_send_json( $response );
 	}
 
 } // class TablePress_Admin_AJAX_Controller
