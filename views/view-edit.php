@@ -50,6 +50,8 @@ class TablePress_Edit_View extends TablePress_View {
 		wp_enqueue_style( 'wp-jquery-ui-dialog' ); // do this here to get CSS into <head>
 		add_action( 'admin_footer', array( $this, 'dequeue_media_upload_js' ), 2 ); // remove default media-upload.js, in favor of own code
 		add_thickbox();
+		add_filter( 'media_view_strings', array( $this, 'change_media_view_strings' ) );
+		wp_enqueue_media();
 
 		// Use modified version of wpLink, instead of default version (changes "Title" to "Link Text")
 		wp_deregister_script( 'wplink' );
@@ -133,6 +135,19 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function dequeue_media_upload_js() {
 		wp_dequeue_script( 'media-upload' );
+	}
+
+	/**
+	 * Change Media View string "Insert into post" to "Insert into Table"
+	 *
+	 * @since 1.0.0
+	 *
+ 	 * @param array $strings Current set of Media View strings
+	 * @return array Changed Media View strings
+	 */
+	public function change_media_view_strings( $strings ) {
+		$strings['insertIntoPost'] = __( 'Insert into Table', 'tablepress' );
+		return $strings;
 	}
 
 	/**
@@ -411,8 +426,6 @@ class TablePress_Edit_View extends TablePress_View {
 				'buttons' => 'strong,em,link,del,ins,img,code,spell,close'
 			)
 		);
-		// temporarily disable "Add Media" button in Advanced Editor for WP 3.5
-		$wp_editor_options['media_buttons'] = false;
 		wp_editor( '', 'advanced-editor-content', $wp_editor_options );
 	?>
 	<div class="submitbox">

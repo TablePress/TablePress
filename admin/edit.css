@@ -31,7 +31,8 @@ body.wait * {
 #TB_HideSelect {
 	z-index: 301099;
 }
-#TB_overlay {
+#TB_overlay,
+.media-modal {
 	z-index: 301100;
 }
 #TB_window {
