@@ -177,11 +177,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( user_can_richedit() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'add_tinymce_plugin' ) );
 			add_filter( 'mce_buttons', array( $this, 'add_tinymce_button' ) );
+			add_action( 'admin_print_styles', array( $this, 'add_tinymce_button_hidpi_css' ), 21 );
 		}
 	}
 
 	/**
 	 * Add "Table" button and separator to the TinyMCE toolbar
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param array $buttons Current set of buttons in the TinyMCE toolbar
 	 * @return array Current set of buttons in the TinyMCE toolbar, including "Table" button
@@ -194,6 +197,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	/**
 	 * Register "Table" button plugin to TinyMCE
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param array $plugins Current set of registered TinyMCE plugins
 	 * @return array Current set of registered TinyMCE plugins, including "Table" button plugin
 	 */
@@ -202,6 +207,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$js_file = "admin/tinymce-button{$suffix}.js";
 		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		return $plugins;
+	}
+
+	/**
+	 * Print TinyMCE button HiDPI CSS, on post.php and post-new.php, if the Visual editor is enabled
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_tinymce_button_hidpi_css() {
+		echo '<style type="text/css">@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){#content_tablepress_insert_table span{background-image:url(' . plugins_url( 'admin/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ');background-size:20px 20px;background-position:0 0}#content_tablepress_insert_table img{display:none}}</style>' . "\n";
 	}
 
 	/**
