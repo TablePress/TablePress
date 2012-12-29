@@ -187,17 +187,25 @@ class TablePress_Import {
 
 		$table = $table_html->body->table;
 
-		$rows = array();
-		if ( isset( $table->thead ) )
-			$rows = array_merge( $rows, $this->_import_html_rows( $table->thead[0]->tr ) );
+		$html_table = array(
+			'data' => array(),
+			'options' => array()
+		);
+		if ( isset( $table->thead ) ) {
+			$html_table['data'] = array_merge( $html_table['data'], $this->_import_html_rows( $table->thead[0]->tr ) );
+			$html_table['options']['table_head'] = true;
+		}
 		if ( isset( $table->tbody ) )
-			$rows = array_merge( $rows, $this->_import_html_rows( $table->tbody[0]->tr ) );
+			$html_table['data'] = array_merge( $html_table['data'], $this->_import_html_rows( $table->tbody[0]->tr ) );
 		if ( isset( $table->tr ) )
-			$rows = array_merge( $rows, $this->_import_html_rows( $table->tr ) );
-		if ( isset( $table->tfoot ) )
-			$rows = array_merge( $rows, $this->_import_html_rows( $table->tfoot[0]->tr ) );
+			$html_table['data'] = array_merge( $html_table['data'], $this->_import_html_rows( $table->tr ) );
+		if ( isset( $table->tfoot ) ) {
+			$html_table['data'] = array_merge( $html_table['data'], $this->_import_html_rows( $table->tfoot[0]->tr ) );
+			$html_table['options']['table_foot'] = true;
+		}
 
-		$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $rows ) );
+		$html_table['data'] = $this->pad_array_to_max_cols( $html_table['data'] );
+		$this->imported_table = $html_table;
 	}
 
 	/**

@@ -97,11 +97,35 @@ class TablePress_Export {
 				break;
 			case 'html':
 				$output = "<table>\n";
+				$last_row_idx = count( $table['data'] ) - 1;
+				// Tables with just one row don't get thead or tfoot
+				if ( 0 == $last_row_idx ) {
+					$table['options']['table_head'] = false;
+					$table['options']['table_foot'] = false;
+				}
 				foreach ( $table['data'] as $row_idx => $row ) {
-					$output .= "\t<tr>\n";
+					if ( 0 == $row_idx ) {
+						if ( $table['options']['table_head'] )
+							$output .= "\t<thead>\n";
+						else
+							$output .= "\t<tbody>\n";
+					} elseif ( $last_row_idx == $row_idx ) {
+						if ( $table['options']['table_foot'] )
+							$output .= "\t</tbody>\n\t<tfoot>\n";
+					}
+					$output .= "\t\t<tr>\n";
 					$row = array_map( array( $this, 'html_wrap_and_escape' ), $row );
 					$output .= implode( '', $row );
-					$output .= "\t</tr>\n";
+					$output .= "\t\t</tr>\n";
+					if ( $last_row_idx == $row_idx ) {
+						if ( $table['options']['table_foot'] )
+							$output .= "\t</tfoot>\n";
+						else
+							$output .= "\t</tbody>\n";
+					} elseif ( 0 == $row_idx ) {
+						if ( $table['options']['table_head'] )
+							$output .= "\t</thead>\n\t<tbody>\n";
+					}
 				}
 				$output .= '</table>';
 				break;
@@ -141,7 +165,7 @@ class TablePress_Export {
 	 * @return string Wrapped string for HTML export
 	 */
 	protected function html_wrap_and_escape( $string ) {
-		return "\t\t<td>{$string}</td>\n";
+		return "\t\t\t<td>{$string}</td>\n";
 	}
 
 } // class TablePress_Export
