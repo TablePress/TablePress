@@ -23,9 +23,8 @@
 	}
 	/* Admin Menu icon */
 	#toplevel_page_tablepress .wp-menu-image {
-		background-image: url(tablepress-icon-small-2x.png);
+		background: url(tablepress-icon-small-2x.png) no-repeat 7px 7px;
 		background-size: 16px 16px;
-		background-position: 7px 7px;
 	}
 	#toplevel_page_tablepress .wp-menu-image img {
 		display: none;
