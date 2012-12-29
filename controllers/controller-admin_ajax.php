@@ -29,6 +29,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+		ob_start(); // buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
+
 		parent::__construct();
 
 		$ajax_actions = array( 'hide_message', 'save_table', 'preview_table' );
@@ -146,6 +148,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		}
 
 		// Send the response
+		$response['output_buffer'] = ob_get_clean(); // buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
 		wp_send_json( $response );
 	}
 
@@ -241,6 +244,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		);
 
 		// Send the response
+		$response['output_buffer'] = ob_get_clean(); // buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
 		wp_send_json( $response );
 	}
 
