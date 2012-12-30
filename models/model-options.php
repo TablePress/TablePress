@@ -159,7 +159,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @return array Array of all Plugin Options
 	 */
-	public function get_plugin_options() {
+	public function _debug_get_plugin_options() {
 		return $this->plugin_options->get();
 	}
 
@@ -170,7 +170,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @return array Array of all User Options
 	 */
-	public function get_user_options() {
+	public function _debug_get_user_options() {
 		return $this->user_options->get();
 	}
 

@@ -186,7 +186,7 @@ abstract class TablePress_View {
 	 * @param string $text Text for the header message
 	 * @param string $class (optional) Additional CSS class for the header message
 	 */
-	public function add_header_message( $text, $class = 'updated' ) {
+	protected function add_header_message( $text, $class = 'updated' ) {
 		$this->header_messages[] = "<div class=\"{$class}\"><p>{$text}</p></div>\n";
 	}
 
@@ -197,7 +197,7 @@ abstract class TablePress_View {
 	 *
 	 * @param array $action_messages Action messages for the screen
 	 */
-	public function process_action_messages( $action_messages ) {
+	protected function process_action_messages( $action_messages ) {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
 			$class = ( 'error' == substr( $this->data['message'], 0, 5 ) ) ? 'error' : 'updated';
 			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>", $class );
@@ -214,7 +214,7 @@ abstract class TablePress_View {
 	 * @param string $context (optional) Context/position of the text box (normal, side, additional, header, submit)
 	 * @param bool $wrap Whether the content of the text box shall be wrapped in a <div> container
 	 */
-	public function add_text_box( $id, $callback, $context = 'normal', $wrap = false ) {
+	protected function add_text_box( $id, $callback, $context = 'normal', $wrap = false ) {
 		if ( ! isset( $this->textboxes[ $context ] ) )
 			$this->textboxes[ $context ] = array();
 
@@ -240,7 +240,7 @@ abstract class TablePress_View {
 	 * @param string $priority (optional) Order of the post meta box for the $context position (high, default, low)
 	 * @param bool $callback_args (optional) Additional data for the callback function (e.g. useful when in different class)
 	 */
-	public function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
+	protected function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
 		$this->has_meta_boxes = true;
 		add_meta_box( "tablepress_{$this->action}-{$id}", $title, $callback, null, $context, $priority, $callback_args );
 	}

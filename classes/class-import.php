@@ -95,7 +95,7 @@ class TablePress_Import {
 	 * @param array $data Data to import
 	 * @return bool|array False on error, table array on success
 	 */
-	function import_table( $format, $data ) {
+	public function import_table( $format, $data ) {
 		$this->import_data = $data;
 
 		$this->fix_table_encoding();
