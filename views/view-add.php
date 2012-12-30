@@ -33,13 +33,9 @@ class TablePress_Add_View extends TablePress_View {
 
 		$this->admin_page->enqueue_script( 'add', array( 'jquery' ) );
 
-		$this->action_messages = array(
+		$this->process_action_messages( array(
 			'error_add' => __( 'Error: The table could not be added.', 'tablepress' )
-		);
-		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
-			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
-		}
+		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'add-table', __( 'Add New Table', 'tablepress' ), array( $this, 'postbox_add_table' ), 'normal' );

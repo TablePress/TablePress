@@ -191,6 +191,20 @@ abstract class TablePress_View {
 	}
 
 	/**
+	 * Process header action messages, i.e. check if a message should be added to the page
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $action_messages Action messages for the screen
+	 */
+	public function process_action_messages( $action_messages ) {
+		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
+			$class = ( 'error' == substr( $this->data['message'], 0, 5 ) ) ? 'error' : 'updated';
+			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>", $class );
+		}
+	}
+
+	/**
 	 * Register a text box for the view
 	 *
 	 * @since 1.0.0

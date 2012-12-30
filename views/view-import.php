@@ -46,7 +46,7 @@ class TablePress_Import_View extends TablePress_View {
 			)
 		) );
 
-		$this->action_messages = array(
+		$this->process_action_messages( array(
 			'error_import' => __( 'Error: The import failed.', 'tablepress' ),
 			'error_no_zip_import' => __( 'Error: Import of ZIP files is not available on this server.', 'tablepress' ),
 			'error_import_zip_open' => __( 'Error: The ZIP file could not be opened.', 'tablepress' ),
@@ -58,11 +58,7 @@ class TablePress_Import_View extends TablePress_View {
 			'error_wp_table_reloaded_not_installed' => __( 'Error: Existing WP-Table Reloaded tables were not found in the database.', 'tablepress' ),
 			'error_import_wp_table_reloaded'=> __( 'Error: The tables from WP-Table Reloaded could not be imported.', 'tablepress' ),
 			'error_wp_table_reloaded_dump_file' => __( 'Error: The WP-Table Reloaded Dump File could not be imported!', 'tablepress' )
-		);
-		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
-			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
-		}
+		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( $this, 'postbox_import_form' ), 'normal' );

@@ -44,16 +44,12 @@ class TablePress_Options_View extends TablePress_View {
 		$this->admin_page->enqueue_script( 'codemirror', array(), false, true );
 		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror' ) );
 
-		$action_messages = array(
+		$this->process_action_messages( array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
 			'success_save_error_custom_css' => __( 'Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file.', 'tablepress' ),
 			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' ),
 			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &#8220;Custom CSS&#8221; was imported successfully.', 'tablepress' )
-		);
-		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
-			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
-			$this->add_header_message( "<strong>{$action_messages[ $data['message'] ]}</strong>", $class );
-		}
+		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		if ( current_user_can( 'tablepress_edit_options' ) )

@@ -31,15 +31,11 @@ class TablePress_Export_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->action_messages = array(
+		$this->process_action_messages( array(
 			'error_export' => __( 'Error: The export failed.', 'tablepress' ),
 			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' ),
 			'error_create_zip_file' => __( 'Error: The ZIP file could not be created.', 'tablepress' )
-		);
-		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
-			$class = ( 'error' == substr( $data['message'], 0, 5 ) ) ? 'error' : 'updated';
-			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
-		}
+		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		if ( 0 == $data['tables_count'] ) {

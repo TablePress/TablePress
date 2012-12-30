@@ -31,7 +31,7 @@ class TablePress_Edit_View extends TablePress_View {
 	public function setup( $action, $data ) {
 		parent::setup( $action, $data );
 
-		$this->action_messages = array(
+		$action_messages = array(
 			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
 			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
 			'success_import' => __( 'The table was imported successfully.', 'tablepress' ),
@@ -41,10 +41,10 @@ class TablePress_Edit_View extends TablePress_View {
 			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
 			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
 		);
-
-		if ( $data['message'] && isset( $this->action_messages[ $data['message'] ] ) ) {
+		// Custom handling instead of $this->process_action_messages(). Also, $action_messages is used below.
+		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
 			$class = ( 'error' == substr( $data['message'], 0, 5 ) || in_array( $data['message'], array( 'success_save_error_id_change' ) ) ) ? 'error' : 'updated' ;
-			$this->add_header_message( "<strong>{$this->action_messages[ $data['message'] ]}</strong>", $class );
+			$this->add_header_message( "<strong>{$action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
 		wp_enqueue_style( 'wp-jquery-ui-dialog' ); // do this here to get CSS into <head>
@@ -111,7 +111,7 @@ class TablePress_Edit_View extends TablePress_View {
 				'no_colspan_first_col' => __( 'You can not add colspan to the first column!', 'tablepress' ),
 				'no_rowspan_table_head' => __( 'You can not connect cells into the table head row!', 'tablepress' ),
 				'no_rowspan_table_foot' => __( 'You can not connect cells out of the table foot row!', 'tablepress' )
-			), $this->action_messages ) // merge this to have messages available for AJAX after save dialog
+			), $action_messages ) // merge this to have messages available for AJAX after save dialog
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
