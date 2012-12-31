@@ -35,7 +35,7 @@ If you are currently using WP-Table Reloaded, it is recommended that you switch 
 5. "Export" screen
 6. "Plugin Options" screen
 7. "About" screen
-8. Two example tables (as they can be seen on the [TablePress website](http://tablepress.org/features/))
+8. Two example tables (as they can be seen on the [TablePress website](http://tablepress.org/demo/))
 
 == Installation ==
 
