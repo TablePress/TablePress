@@ -809,7 +809,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	/**
 	 * Merge changes made for TablePress 0.6-beta:
 	 * Table Name/Table Description
-	 * @TODO: Remove in 1.0
 	 *
 	 * @since 0.6-beta
 	 */
@@ -840,12 +839,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Merge changes made for TablePress 0.9-RC:
+	 * Merge changes made for TablePress 0.8-beta:
 	 * Conversion of parameter "datatables_scrollX" to "datatables_scrollx"
+	 * Fixes a bug that affects about the first 600 downloaders of 0.8-beta
 	 *
-	 * @since 0.9-RC
+	 * @since 0.8-beta
 	 */
-	public function merge_table_options_tp09() {
+	public function merge_table_options_tp08() {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( empty( $table_post ) )
 			return;
