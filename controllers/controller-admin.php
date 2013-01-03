@@ -466,6 +466,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'name' => __( 'English', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
 				'translator_url' => 'http://tobias.baethge.com/'
+			),
+			'zh_CN' => array(
+				'name' => __( 'Chinese (Simplified)', 'tablepress' ),
+				'translator_name' => 'Haoxian Zeng',
+				'translator_url' => 'http://cnzhx.net/'
 			)
 		);
 		uasort( $languages, array( $this, '_get_plugin_languages_sort_cb' ) ); // to sort after the translation is done
