@@ -260,13 +260,13 @@ html[xmlns] .dataTables_wrapper { display: block; }
   (min-resolution: 120dpi) {
 
 	.dataTables_wrapper .sorting {
-		background-image: url(data:image/gif;base64,R0lGODlhJgASAPEAAB4eHo6Ojv///wAAACH5BAkAAAMALAAAAAAmABIAAAI8nI+Joe2vAmCwWgmm3Q1nzYXeB4bVSJZml7bUmqBt9sL2jcPyXN872cP9VDnDLlgcoJBJ5YfZdEKjSlgBADs=);
+		background-image: url(data:image/gif;base64,R0lGODlhJgASAPABAAAAACMtMCH5BAkKAAAALAAAAAAmABIAAAIwhI+py+0QwpszRoqVtbnv3VHfFzrjWC7nmbbuW64oDMkXbdg4su7J7ONxghoJcVcAADs=);
 	}
 	.dataTables_wrapper .sorting_asc {
-		background-image: url(data:image/gif;base64,R0lGODdhJgASAJEAAB4eHo6OjgAAAAAAACH5BAEAAAIALAAAAAAmABIAAAIrlI+py+0Po5y02nsDpgHoDXWABzriSJbKiaaqwbZuGcszVtv3y/f+DwwWAAA7);
+		background-image: url(data:image/gif;base64,R0lGODlhJgASAPABAAAAACMtMCH5BAkKAAAALAAAAAAmABIAAAIlhI+py+0Po5y02mtDwFNrDnke2IgiqZgmeqgq67rsTNf2jedQAQA7);
 	}
 	.dataTables_wrapper .sorting_desc {
-		background-image: url(data:image/gif;base64,R0lGODdhJgASAJEAAB4eHo6OjgAAAAAAACH5BAEAAAIALAAAAAAmABIAAAIrlI+py+0Po5y02gsD2LzzgCGa54GhSH6nMpbr0m7my6o0o803vPf+DwwCCwA7);
+		background-image: url(data:image/gif;base64,R0lGODlhJgASAPABAAAAACMtMCH5BAkKAAAALAAAAAAmABIAAAImhI+py+0Po5y02otzC7x7rx3fGIQI2ZkJqipju4BwXM72jee6WQAAOw==);
 	}
 
 	/* Pagination icons are loaded from files, as including them via Data URL causes extra load for most users */
