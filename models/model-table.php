@@ -167,7 +167,41 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['data'] = array( array( 'The internal data of this table is corrupted!' ) );
 			// mark table as broken
 			$table['name'] = '[ERROR] ' . $table['name'];
-			$table['description'] = "[ERROR] THE TABLE DATA IS CORRUPTED!  DO NOT EDIT THIS TABLE NOW!\nInstead, please ask for support at http://wordpress.org/support/plugin/tablepress\n\n" . $table['description'];
+
+			// if possible, try to find out what error prevented the JSON from being decoded
+			$json_error = '';
+			if ( function_exists( 'json_last_error' ) ) {
+				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3
+				if ( ! defined( 'JSON_ERROR_UTF8' ) )
+					define( 'JSON_ERROR_UTF8', 5 );
+
+				switch ( json_last_error() ) {
+					case JSON_ERROR_NONE:
+						$json_error = 'JSON_ERROR_NONE'; // should never happen here, as this is only called in case of an error
+						break;
+					case JSON_ERROR_DEPTH:
+						$json_error = 'JSON_ERROR_DEPTH';
+						break;
+					case JSON_ERROR_STATE_MISMATCH:
+						$json_error = 'JSON_ERROR_STATE_MISMATCH';
+						break;
+					case JSON_ERROR_CTRL_CHAR:
+						$json_error = 'JSON_ERROR_CTRL_CHAR';
+						break;
+					case JSON_ERROR_SYNTAX:
+						$json_error = 'JSON_ERROR_SYNTAX';
+						break;
+					case JSON_ERROR_UTF8:
+						$json_error = 'JSON_ERROR_UTF8';
+						break;
+					default:
+						$json_error = 'UNKNOWN ERROR';
+						break;
+				}
+				$json_error = " ({$json_error})";
+			}
+
+			$table['description'] = "[ERROR] TABLE IS CORRUPTED{$json_error}!  DO NOT EDIT THIS TABLE NOW!\nInstead, please ask for support at http://wordpress.org/support/plugin/tablepress\n-\n" . $table['description'];
 		}
 
 		return $table;
