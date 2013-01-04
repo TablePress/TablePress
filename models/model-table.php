@@ -295,6 +295,8 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// invalidate table output caches that belong to this table
 		$this->_invalidate_table_output_caches( $table['id'] );
+		// Flush caching plugins' caches
+		$this->_flush_caching_plugins_caches();
 
 		return $table['id'];
 	}
@@ -382,6 +384,8 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// invalidate table output caches that belong to this table
 		$this->_invalidate_table_output_caches( $table_id );
+		// Flush caching plugins' caches
+		$this->_flush_caching_plugins_caches();
 
 		return true;
 	}
@@ -432,6 +436,25 @@ class TablePress_Table_Model extends TablePress_Model {
 			}
 		}
 		delete_transient( $caches_list_transient_name );
+	}
+
+	/**
+	 * Flush the caches of the plugins W3 Total Cache, WP Supercache, and Cachify
+	 *
+	 * @since 1.0.0
+	 */
+	protected function _flush_caching_plugins_caches() {
+		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) )
+			return;
+
+		// W3 Total Cache
+		if ( function_exists( 'w3tc_pgcache_flush' ) )
+			w3tc_pgcache_flush();
+		// WP Super Cache
+		if ( function_exists( 'wp_cache_clear_cache' ) )
+			wp_cache_clear_cache();
+		// Cachify
+		do_action( 'cachify_flush_cache' );
 	}
 
 	/**
