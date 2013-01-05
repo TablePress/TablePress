@@ -352,8 +352,8 @@ JS;
 
 		// check if table output shall and can be loaded from the transient cache, otherwise generate the output
 		if ( $render_options['cache_table_output'] && ! is_user_logged_in() ) {
-			$shortcode_hash = md5( json_encode( $shortcode_atts ) ); // hash the Shortcode attributes to get a unique cache identifier
-			$transient_name = 'tablepress_' . $shortcode_hash; // Attention: This string must not be longer than 45 characters!
+			$table_hash = md5( json_encode( $render_options ) ); // hash the Render Options array to get a unique cache identifier
+			$transient_name = 'tablepress_' . $table_hash; // Attention: This string must not be longer than 45 characters!
 			$output = get_transient( $transient_name );
 			if ( false === $output || '' == $output ) {
 				// render/generate the table HTML, as it was not found in the cache
