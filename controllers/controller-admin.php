@@ -947,8 +947,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 			$download_data = $export_data;
 		} else {
-			// Zipping can use a lot of memory, but not this much hopefully
+			// Zipping can use a lot of memory and execution time, but not this much hopefully
 			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+			@set_time_limit( 300 );
 
 			$zip_file = new ZipArchive();
 			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', date_i18n( 'Y-m-d-H-i-s' ), $export['format'] );
@@ -1135,8 +1136,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			else
 				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_import' ) );
 		} else {
-			// Zipping can use a lot of memory, but not this much hopefully
+			// Zipping can use a lot of memory and execution time, but not this much hopefully
 			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+			@set_time_limit( 300 );
 
 			$zip = new ZipArchive();
 			if ( true !== $zip->open( $import_data['file_location'], ZIPARCHIVE::CHECKCONS ) ) {
