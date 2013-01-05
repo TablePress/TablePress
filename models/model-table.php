@@ -246,15 +246,12 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $table_post ) )
 			return array();
 
-		$table_ids = array_keys( $table_post );
-		$table_ids = array_map( 'strval', $table_ids ); // convert table IDs to strings
-		$post_ids = array_values( $table_post );
-
 		// load all table posts with one query, to prime the cache
-		$this->model_post->load_posts( $post_ids );
+		$this->model_post->load_posts( array_values( $table_post ) );
 
 		// this loop now uses the WP cache
-		foreach ( $table_ids as $table_id ) {
+		foreach ( $table_post as $table_id => $post_id ) {
+			$table_id = (string)$table_id;
 			$tables[ $table_id ] = $this->load( $table_id );
 			unset( $tables[ $table_id ]['data'] ); // remove table data, to save memory
 		}
@@ -810,16 +807,14 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $table_post ) )
 			return;
 
-		$post_ids = array_values( $table_post );
-
 		// load all table posts with one query, to prime the cache
-		$this->model_post->load_posts( $post_ids );
+		$this->model_post->load_posts( array_values( $table_post ) );
 
 		// get default Table with default Table Options
 		$default_table = $this->get_table_template();
 
 		// go through all tables (this loop now uses the WP cache)
-		foreach ( $post_ids as $post_id ) {
+		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
 			// remove old (i.e. no longer existing) Table Options:
 			$table_options = array_intersect_key( $table_options, $default_table['options'] );
@@ -840,10 +835,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $table_post ) )
 			return;
 
-		$post_ids = array_values( $table_post );
-
-		// go through all tables (this loop now uses the WP cache)
-		foreach ( $post_ids as $post_id ) {
+		// go through all tables
+		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
 
 			// Move "Print Name" to new format
@@ -873,10 +866,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $table_post ) )
 			return;
 
-		$post_ids = array_values( $table_post );
-
-		// go through all tables (this loop now uses the WP cache)
-		foreach ( $post_ids as $post_id ) {
+		// go through all tables
+		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
 
 			// Convert parameter "datatables_scrollX" to "datatables_scrollx"
