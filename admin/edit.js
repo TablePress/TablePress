@@ -254,7 +254,7 @@ jQuery(document).ready( function( $ ) {
 					.map( function() { return $(this).index(); } ).get();
 				return $( new_rows ).each( function( row_idx, row ) {
 					$(row).children()
-						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
+						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.addClass( 'column-hidden' );
 				} );
 			},
@@ -481,11 +481,11 @@ jQuery(document).ready( function( $ ) {
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().each( function( row_idx, row ) {
 					$(row).children()
-						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
+						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.before( tp.table.body_cell );
 				} );
 				$( '#edit-form-head' ).children()
-					.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
+					.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 					.before( tp.table.head_cell );
 				$selected_columns.before( tp.table.foot_cell );
 
@@ -504,7 +504,7 @@ jQuery(document).ready( function( $ ) {
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
-						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
+						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.addClass( 'column-hidden' );
 				} );
 				$selected_columns.addClass( 'column-hidden' ).find( '.visibility' ).val( '0' );
@@ -524,7 +524,7 @@ jQuery(document).ready( function( $ ) {
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
-						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
+						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.removeClass( 'column-hidden' );
 				} );
 				$selected_columns.removeClass( 'column-hidden' ).find( '.visibility' ).val( '1' );
@@ -556,7 +556,7 @@ jQuery(document).ready( function( $ ) {
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
-						.filter( function( idx ) { return ( -1 != jQuery.inArray( idx, column_idxs ) ); } )
+						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.remove();
 				} );
 				$selected_columns.remove();
