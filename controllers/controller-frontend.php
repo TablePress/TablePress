@@ -355,7 +355,7 @@ JS;
 			$shortcode_hash = md5( json_encode( $shortcode_atts ) ); // hash the Shortcode attributes to get a unique cache identifier
 			$transient_name = 'tablepress_' . $shortcode_hash; // Attention: This string must not be longer than 45 characters!
 			$output = get_transient( $transient_name );
-			if ( false === $output ) {
+			if ( false === $output || '' == $output ) {
 				// render/generate the table HTML, as it was not found in the cache
 				$_render->set_input( $table, $render_options );
 				$output = $_render->get_output();
@@ -364,10 +364,13 @@ JS;
 				// update output caches list transient (necessary for cache invalidation upon table saving)
 				$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
 				$caches_list = get_transient( $caches_list_transient_name );
-				if ( ! is_array( $caches_list ) )
+				if ( false === $caches_list )
 					$caches_list = array();
-				$caches_list[ $transient_name ] = 1; // 1 is a dummy value
-				set_transient( $caches_list_transient_name, $caches_list, 2*DAY_IN_SECONDS );
+				else
+					$caches_list = json_decode( $caches_list, true );
+				if ( ! in_array( $transient_name, $caches_list ) )
+					$caches_list[] = $transient_name;
+				set_transient( $caches_list_transient_name, json_encode( $caches_list ), 2*DAY_IN_SECONDS );
 			} else {
 				$output .= apply_filters( 'tablepress_cache_hit_comment', "<!-- #{$render_options['html_id']} from cache -->" );
 			}

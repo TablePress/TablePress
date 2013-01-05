@@ -103,6 +103,9 @@ abstract class TablePress_Controller {
 					'tablepress_version' => TablePress::version,
 					'message_plugin_update' => true
 				) );
+
+				// Clear table caches
+				$this->model_table->invalidate_table_output_caches();
 			}
 
 			$this->model_options->update( array(
