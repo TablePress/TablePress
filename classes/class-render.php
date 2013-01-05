@@ -201,7 +201,7 @@ class TablePress_Render {
 				}
 
 				// remove duplicate entries and sort the array
-				$this->render_options["{$action}_{$element}"] = array_unique( $this->render_options["{$action}_{$element}"], SORT_NUMERIC );
+				$this->render_options["{$action}_{$element}"] = array_unique( $this->render_options["{$action}_{$element}"] );
 				sort( $this->render_options["{$action}_{$element}"], SORT_NUMERIC );
 			}
 		}
