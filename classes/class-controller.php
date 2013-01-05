@@ -80,12 +80,13 @@ abstract class TablePress_Controller {
 	 */
 	protected function plugin_update_check() {
 		// First activation or plugin update
-		if ( $this->model_options->get( 'plugin_options_db_version' ) < TablePress::db_version ) {
+		$current_plugin_options_db_version = $this->model_options->get( 'plugin_options_db_version' );
+		if ( $current_plugin_options_db_version < TablePress::db_version ) {
 			// Allow more PHP execution time for update process
 			@set_time_limit( 300 );
 
-			// Add TablePress capabilities to the WP_Roles objects
-			if ( $this->model_options->get( 'plugin_options_db_version' ) < 12 )
+			// Add TablePress capabilities to the WP_Roles objects, for new installations and all versions below 12
+			if ( $current_plugin_options_db_version < 12 )
 				$this->model_options->add_access_capabilities();
 
 			if ( 0 == $this->model_options->get( 'first_activation' ) ) {
@@ -95,7 +96,7 @@ abstract class TablePress_Controller {
 					'plugin_options_db_version' => TablePress::db_version
 				) );
 			} else {
-				// Update Plugin Options and Table Options, if necessary
+				// Update Plugin Options Options, if necessary
 				$this->model_options->merge_plugin_options_defaults();
 				$this->model_options->update( array(
 					'plugin_options_db_version' => TablePress::db_version,
@@ -105,7 +106,10 @@ abstract class TablePress_Controller {
 				) );
 
 				// Clear table caches
-				$this->model_table->invalidate_table_output_caches();
+				if ( $current_plugin_options_db_version < 16 )
+					$this->model_table->invalidate_table_output_caches_tp09(); // for pre-0.9-RC, where the arrays are serialized and not JSON encoded
+				else
+					$this->model_table->invalidate_table_output_caches(); // for 0.9-RC and onwards
 			}
 
 			$this->model_options->update( array(
