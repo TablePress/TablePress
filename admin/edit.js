@@ -286,6 +286,25 @@ jQuery(document).ready( function( $ ) {
 				tp.rows.stripe();
 				tp.reindex();
 			},
+			duplicate: function( event ) {
+				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
+					.prop( 'checked', event.shiftKey ).closest( 'tr' );
+
+				if ( 0 === $selected_rows.length ) {
+					alert( tablepress_strings.no_rows_selected );
+					return;
+				}
+
+				$selected_rows.each( function( idx, row ) {
+					var $row = $(row),
+						$duplicated_row = $row.clone();
+					$duplicated_row.find( 'textarea' ).removeAttr( 'id' );
+					$row.after( $duplicated_row );
+				} );
+
+				tp.rows.stripe();
+				tp.reindex();
+			},
 			hide: function( event ) {
 				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.shiftKey ).closest( 'tr' );
@@ -1009,6 +1028,7 @@ jQuery(document).ready( function( $ ) {
 				'click': {
 					'#rows-insert':			tp.rows.insert,
 					'#columns-insert':		tp.columns.insert,
+					'#rows-duplicate':		tp.rows.duplicate,
 					'#rows-remove':			tp.rows.remove,
 					'#columns-remove':		tp.columns.remove,
 					'#rows-hide':			tp.rows.hide,
