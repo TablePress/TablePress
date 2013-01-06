@@ -297,8 +297,11 @@ jQuery(document).ready( function( $ ) {
 
 				$selected_rows.each( function( idx, row ) {
 					var $row = $(row),
+						$textareas = $row.find( 'textarea' ),
 						$duplicated_row = $row.clone();
-					$duplicated_row.find( 'textarea' ).removeAttr( 'id' );
+					$duplicated_row.find( 'textarea' ).removeAttr( 'id' ).each( function( idx, cell ) {
+						$(cell).val( $textareas.eq( idx ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
+					} );
 					$row.after( $duplicated_row );
 				} );
 
@@ -507,6 +510,30 @@ jQuery(document).ready( function( $ ) {
 					.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 					.before( tp.table.head_cell );
 				$selected_columns.before( tp.table.foot_cell );
+
+				tp.reindex();
+			},
+			duplicate: function( event ) {
+				var column_idxs,
+					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
+						.prop( 'checked', event.shiftKey ).closest( 'th' );
+
+				if ( 0 === $selected_columns.length ) {
+					alert( tablepress_strings.no_columns_selected );
+					return;
+				}
+
+				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
+				$( '#edit-form' ).find( 'tr' ).each( function( row_idx, row ) {
+					$(row).children().each( function( idx, cell ) {
+						if ( -1 != $.inArray( idx, column_idxs ) ) {
+							var $cell = $(cell),
+								$duplicated_cell = $cell.clone();
+								$duplicated_cell.find( 'textarea' ).removeAttr( 'id' ).val( $cell.find( 'textarea' ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
+							$cell.after( $duplicated_cell );
+						}
+					} );
+				} );
 
 				tp.reindex();
 			},
@@ -1029,6 +1056,7 @@ jQuery(document).ready( function( $ ) {
 					'#rows-insert':			tp.rows.insert,
 					'#columns-insert':		tp.columns.insert,
 					'#rows-duplicate':		tp.rows.duplicate,
+					'#columns-duplicate':	tp.columns.duplicate,
 					'#rows-remove':			tp.rows.remove,
 					'#columns-remove':		tp.columns.remove,
 					'#rows-hide':			tp.rows.hide,

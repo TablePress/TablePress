@@ -354,6 +354,7 @@ class TablePress_Edit_View extends TablePress_View {
 		</td>
 		<td class="column-2">
 			<?php _e( 'Selected columns', 'tablepress' ); ?>:&nbsp;
+			<input type="button" class="button" id="columns-duplicate" value="<?php _e( 'Duplicate', 'tablepress' ); ?>" />
 			<input type="button" class="button" id="columns-insert" value="<?php _e( 'Insert', 'tablepress' ); ?>" />
 			<input type="button" class="button" id="columns-remove" value="<?php _e( 'Delete', 'tablepress' ); ?>" />
 		</td>
