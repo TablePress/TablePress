@@ -168,6 +168,7 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; ZIP support: <?php echo $data['zip_support_available'] ? 'yes' : 'no'; ?>
 			<br />&middot; UTF-8 conversion: <?php echo ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) ? 'yes' : 'no'; ?>
 			<br />&middot; WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?>
+			<br />&middot; Server Memory Limit: <?php echo (int) @ini_get('memory_limit') . 'M'; ?>
 			<br />&middot; Magic Quotes: <?php echo get_magic_quotes_gpc() ? 'on' : 'off'; ?>
 			<br />&middot; WP_DEBUG: <?php echo WP_DEBUG ? 'true' : 'false'; ?>
 		</p>
