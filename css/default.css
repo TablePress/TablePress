@@ -236,6 +236,7 @@ html[xmlns] .dataTables_wrapper { display: block; }
 .dataTables_wrapper label select {
 	display: inline;
 	margin: 2px;
+	width: auto;
 }
 
 /* RTL languages */
