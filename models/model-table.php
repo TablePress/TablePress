@@ -680,8 +680,12 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Table Options
 		if ( isset( $new_table['options'] ) ) { // is for example not set for newly added tables
 			// specials check for certain options
-			if ( isset( $new_table['options']['extra_css_classes'] ) )
-				$new_table['options']['extra_css_classes'] = preg_replace( '/[^a-zA-Z0-9_ -]/', '', $new_table['options']['extra_css_classes'] );
+			if ( isset( $new_table['options']['extra_css_classes'] ) ) {
+				$new_table['options']['extra_css_classes'] = explode( ' ', $new_table['options']['extra_css_classes'] );
+				$new_table['options']['extra_css_classes'] = array_map( 'sanitize_html_class', $new_table['options']['extra_css_classes'] );
+				$new_table['options']['extra_css_classes'] = array_unique( $new_table['options']['extra_css_classes'] );
+				$new_table['options']['extra_css_classes'] = trim( implode( ' ', $new_table['options']['extra_css_classes'] ) );
+			}
 			if ( isset( $new_table['options']['datatables_paginate_entries'] ) ) {
 				$new_table['options']['datatables_paginate_entries'] = intval( $new_table['options']['datatables_paginate_entries'] );
 				if ( $new_table['options']['datatables_paginate_entries'] < 1 )
