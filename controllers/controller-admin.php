@@ -1477,7 +1477,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return false;
 
 		if ( ! current_user_can( 'tablepress_edit_options' ) )
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+			return false;
 
 		$imported_options = array();
 		if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
