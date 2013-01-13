@@ -205,7 +205,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				if ( ! $js_options['datatables_paginate'] )
 					$parameters['bPaginate'] = '"bPaginate":false';
 				if ( ! empty( $js_options['datatables_paginate_entries'] ) && 10 != $js_options['datatables_paginate_entries'] )
-					$parameters['iDisplayLength'] = '"iDisplayLength":'. $js_options['datatables_paginate_entries'];
+					$parameters['iDisplayLength'] = '"iDisplayLength":'. intval( $js_options['datatables_paginate_entries'] );
 				if ( ! $js_options['datatables_lengthchange'] )
 					$parameters['bLengthChange'] = '"bLengthChange":false';
 				if ( ! $js_options['datatables_filter'] )
@@ -215,7 +215,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				if ( $js_options['datatables_scrollx'] )
 					$parameters['sScrollX'] = '"sScrollX":"100%"';
 				if ( false !== $js_options['datatables_scrolly'] ) {
-					$parameters['sScrollY'] = "\"sScrollY\":\"{$js_options['datatables_scrolly']}\"";
+					$parameters['sScrollY'] = '"sScrollY":"' . preg_replace( '#[^0-9a-z.%]#', '', $js_options['datatables_scrolly'] ) . '"';
 					$parameters['bScrollCollapse'] = '"bScrollCollapse":true';
 				}
 				if ( ! empty( $js_options['datatables_custom_commands'] ) )

@@ -445,7 +445,7 @@ class TablePress_Render {
 		if ( ! empty( $this->render_options['edit_table_url'] ) ) {
 			if ( ! empty( $caption ) )
 				$caption .= '<br />';
-			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\" title=\"" . __( 'Edit', 'default' ) . "\">" . __( 'Edit', 'default' ) . "</a>";
+			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\" title=\"" . __( 'Edit', 'default' ) . '">' . __( 'Edit', 'default' ) . '</a>';
 			$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;margin:0;"';
 		}
 		if ( ! empty( $caption ) )
@@ -479,12 +479,16 @@ class TablePress_Render {
 		if ( is_rtl() )
 			$css_classes[] = 'tablepress-rtl';
 		$css_classes = apply_filters( 'tablepress_table_css_classes', $css_classes, $this->table['id'] );
-		$class = ( ! empty( $css_classes ) ) ? ' class="' . trim( implode( ' ', $css_classes ) ) . '"' : '';
+		$css_classes = explode( ' ', implode( ' ', $css_classes ) ); // $css_classes might contain several classes in one array entry
+		$css_classes = array_map( 'sanitize_html_class', $css_classes );
+		$css_classes = array_unique( $css_classes );
+		$css_classes = trim( implode( ' ', $css_classes ) );
+		$class = ( ! empty( $css_classes ) ) ? " class=\"{$css_classes}\"" : '';
 		$summary = apply_filters( 'tablepress_print_summary_attr', '', $this->table );
 		$summary = ( ! empty( $summary ) ) ? ' summary="' . esc_attr( $summary ) . '"' : '';
-		$cellspacing = ( false !== $this->render_options['cellspacing'] ) ? " cellspacing=\"{$this->render_options['cellspacing']}\"" : '';
-		$cellpadding = ( false !== $this->render_options['cellpadding'] ) ? " cellpadding=\"{$this->render_options['cellpadding']}\"" : '';
-		$border = ( false !== $this->render_options['border'] ) ? " border=\"{$this->render_options['border']}\"" : '';
+		$cellspacing = ( false !== $this->render_options['cellspacing'] ) ? ' cellspacing="' . intval( $this->render_options['cellspacing'] ) . '"' : '';
+		$cellpadding = ( false !== $this->render_options['cellpadding'] ) ? ' cellpadding="' . intval( $this->render_options['cellpadding'] ) . '"' : '';
+		$border = ( false !== $this->render_options['border'] ) ? ' border="' . intval( $this->render_options['border'] ) . '"' : '';
 
 		$output .= "\n<table{$id}{$class}{$summary}{$cellspacing}{$cellpadding}{$border}>\n";
 		$output .= $caption . $colgroup . $thead . $tfoot . $tbody;
@@ -562,7 +566,7 @@ class TablePress_Render {
 			$cell_class = 'column-' . ( $col_idx + 1 );
 			$cell_class = apply_filters( 'tablepress_cell_css_class', $cell_class, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
 			$class_attr = ( ! empty( $cell_class ) ) ? " class=\"{$cell_class}\"" : '';
-			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][$col_idx] ) ) ? " style=\"width:{$this->render_options['column_widths'][$col_idx]};\"" : '';
+			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][$col_idx] ) ) ? ' style="width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][$col_idx] ) . ';"' : '';
 
 			if ( $this->render_options['first_column_th'] && 0 == $col_idx )
 				$tag = 'th';
