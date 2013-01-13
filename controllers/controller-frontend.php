@@ -300,6 +300,10 @@ JS;
 			return $message;
 		}
 
+		// Disable the "datatables_custom_commands" Shortcode parameter by default, for security reasons
+		if ( ! is_null( $shortcode_atts['datatables_custom_commands'] ) && apply_filters( 'tablepress_disable_custom_commands_shortcode_parameter', true ) )
+			$shortcode_atts['datatables_custom_commands'] = null;
+
 		// determine options to use (if set in Shortcode, use those, otherwise use stored options, i.e. "Edit Table" screen)
 		$render_options = array();
 		foreach ( $shortcode_atts as $key => $value ) {
