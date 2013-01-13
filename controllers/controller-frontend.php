@@ -285,7 +285,7 @@ JS;
 		$shortcode_atts = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $shortcode_atts );
 
 		// check, if a table with the given ID exists
-		$table_id = $shortcode_atts['id'];
+		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
 		if ( ! $this->model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
@@ -408,7 +408,7 @@ JS;
 			return $overwrite;
 
 		// check, if a table with the given ID exists
-		$table_id = $shortcode_atts['id'];
+		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
 		if ( ! $this->model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
@@ -423,8 +423,8 @@ JS;
 			return $message;
 		}
 
-		$field = $shortcode_atts['field'];
-		$format = $shortcode_atts['format'];
+		$field = preg_replace( '/[^a-z_]/', '', strtolower( $shortcode_atts['field'] ) );
+		$format = preg_replace( '/[^a-z]/', '', strtolower( $shortcode_atts['format'] ) );
 
 		// generate output, depending on what information (field) was asked for
 		switch ( $field ) {
