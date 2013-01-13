@@ -830,7 +830,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( ! current_user_can( 'unfiltered_html' ) ) {
 					$csstidy->optimise = new csstidy_custom_sanitize( $csstidy );
 
-					$custom_css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $custom_css );
 					$custom_css = str_replace( '<=', '&lt;=', $custom_css ); // Let "arrows" survive, otherwise this might be recognized as the beginning of an HTML tag and removed with other stuff behind it
 					$custom_css = wp_kses( $custom_css, 'strip' ); // remove all HTML tags
 					$custom_css = str_replace( '&gt;', '>', $custom_css ); // KSES replaces single ">" with "&gt;", but ">" is valid in CSS selectors
