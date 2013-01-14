@@ -111,7 +111,6 @@
 .paginate_enabled_previous:hover,
 .paginate_enabled_next:hover {
 	cursor: pointer;
-	*cursor: hand;
 	text-decoration: none !important;
 }
 .paginate_disabled_previous,
@@ -194,7 +193,6 @@
 .dataTables_wrapper .sorting_desc {
 	padding-right: 19px; /* more right padding for sort arrows */
 	cursor: pointer;
-	*cursor: hand;
 	background-repeat: no-repeat;
 	background-position: center right;
 	background-size: 19px 9px;
