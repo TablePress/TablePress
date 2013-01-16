@@ -917,7 +917,7 @@ jQuery(document).ready( function( $ ) {
 							}
 							full_match = known_references[ first_cell ];
 
-							if ( 'undefined' != typeof second_cell ) {
+							if ( ( 'undefined' != typeof second_cell ) && ( '' != second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
 								if ( ! known_references.hasOwnProperty( second_cell ) ) {
 									$cell = $( '#cell-' + second_cell );
 									if ( $cell.length )
