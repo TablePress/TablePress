@@ -379,8 +379,8 @@ jQuery(document).ready( function( $ ) {
 				var column_idx = $(this).parent().index(),
 					direction = ( $(this).hasClass( 'sort-asc' ) ) ? 1 : -1,
 					$table_body = $('#edit-form-body'),
-					$head_rows = $table_body.find( '.head-row' ).prevAll().andSelf(),
-					$foot_rows = $table_body.find( '.foot-row' ).nextAll().andSelf(),
+					$head_rows = $table_body.find( '.head-row' ).prevAll().addBack(),
+					$foot_rows = $table_body.find( '.foot-row' ).nextAll().addBack(),
 					rows = $table_body.children().not( $head_rows ).not( $foot_rows ).get(),
 					/*
 					 * Natural Sort algorithm for Javascript - Version 0.7 - Released under MIT license
