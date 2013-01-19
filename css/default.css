@@ -227,8 +227,6 @@
 	line-height: 0;
 	height: 0;
 }
-html[xmlns] .dataTables_wrapper { display: block; }
-* html .dataTables_wrapper { height: 1%; }
 
 .dataTables_wrapper label input,
 .dataTables_wrapper label select {
