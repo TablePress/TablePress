@@ -556,6 +556,8 @@ class TablePress_Render {
 					continue;
 				// invalid span, so we set cell content from #span# to empty
 				$cell_content = '';
+			} elseif ( '' == $cell_content && 0 == $row_idx && $this->render_options['table_head'] ) {
+				$cell_content = '&nbsp;'; // make empty cells have a space in the table head, to give sorting arrows the correct position in IE9
 			}
 
 			$span_attr = '';
