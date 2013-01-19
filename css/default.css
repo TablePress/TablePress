@@ -114,13 +114,11 @@
 .dataTables_paginate a {
 	color: #111111 !important;
 	display: inline-block;
+	outline: none;
 }
 .dataTables_paginate .paginate_disabled_previous,
 .dataTables_paginate .paginate_disabled_next {
 	color: #999999 !important;
-}
-.dataTables_paginate a:active {
-	outline: none;
 }
 .paginate_disabled_next,
 .paginate_enabled_next {
@@ -201,6 +199,7 @@
 	padding-right: 19px; /* more right padding for sort arrows */
 	cursor: pointer;
 	position: relative;
+	outline: none;
 }
 .dataTables_wrapper .sorting:before,
 .dataTables_wrapper .sorting:after,
@@ -236,9 +235,6 @@
 .dataTables_wrapper .sorting_asc,
 .dataTables_wrapper .sorting_desc {
 	background-color: #049cdb;
-}
-.dataTables_wrapper th:active {
-	outline: none;
 }
 
 /* Self clearing - */
