@@ -41,6 +41,8 @@
 	border: none;
 	background: none;
 	text-align: left;
+}
+.tablepress tbody td {
 	vertical-align: top;
 }
 
@@ -61,6 +63,7 @@
 .tablepress tfoot th {
 	background-color: #d9edf7;
 	font-weight: bold;
+	vertical-align: middle;
 }
 .tablepress .odd td {
 	background-color: #f9f9f9;
@@ -115,6 +118,7 @@
 	color: #111111 !important;
 	display: inline-block;
 	outline: none;
+	text-decoration: none\0/IE; /* Hack for IE8, 9, and IE10pp4, as those have trouble with text-decoration in :after pseudo-elements */
 }
 .dataTables_paginate .paginate_disabled_previous,
 .dataTables_paginate .paginate_disabled_next {
@@ -196,17 +200,24 @@
 .dataTables_wrapper .sorting,
 .dataTables_wrapper .sorting_asc,
 .dataTables_wrapper .sorting_desc {
-	padding-right: 19px; /* more right padding for sort arrows */
+	padding-right: 20px; /* more right padding for sort arrows */
 	cursor: pointer;
-	position: relative;
 	outline: none;
 }
-.dataTables_wrapper .sorting:before,
-.dataTables_wrapper .sorting:after,
-.dataTables_wrapper .sorting_asc:before,
-.dataTables_wrapper .sorting_asc:after,
-.dataTables_wrapper .sorting_desc:before,
-.dataTables_wrapper .sorting_desc:after {
+.dataTables_wrapper .sorting div,
+.dataTables_wrapper .sorting_asc div,
+.dataTables_wrapper .sorting_desc div {
+	position: relative;
+	margin: 0 !important;
+	padding: 0 !important;
+	float: none !important;
+}
+.dataTables_wrapper .sorting div:before,
+.dataTables_wrapper .sorting div:after,
+.dataTables_wrapper .sorting_asc div:before,
+.dataTables_wrapper .sorting_asc div:after,
+.dataTables_wrapper .sorting_desc div:before,
+.dataTables_wrapper .sorting_desc div:after {
 	font-family: TablePress;
 	font-weight: normal;
 	font-size: 14px;
@@ -215,20 +226,20 @@
 	top: 0;
 	bottom: 0;
 	left: auto;
-	right: 6px;
+	right: -14px;
 	margin: auto;
 	height: 14px;
 	line-height: 1;
 }
-.dataTables_wrapper .sorting:after {
+.dataTables_wrapper .sorting div:after {
 	content: "\f0dc";
 	padding-top: 1px;
 }
-.dataTables_wrapper .sorting_asc:after {
+.dataTables_wrapper .sorting_asc div:after {
 	content: "\f0d8";
 	padding-bottom: 1px;
 }
-.dataTables_wrapper .sorting_desc:after {
+.dataTables_wrapper .sorting_desc div:after {
 	content: "\f0d7";
 }
 .dataTables_wrapper .sorting:hover,
@@ -263,25 +274,25 @@
 .dataTables_wrapper .tablepress-rtl .sorting_asc,
 .dataTables_wrapper .tablepress-rtl .sorting_desc {
 	padding-right: 8px;
-	padding-left: 19px; /* more left padding for sort arrows */
+	padding-left: 20px; /* more left padding for sort arrows */
 }
-.dataTables_wrapper .tablepress-rtl .sorting:before,
-.dataTables_wrapper .tablepress-rtl .sorting_asc:before,
-.dataTables_wrapper .tablepress-rtl .sorting_desc:before {
-	left: 6px;
+.dataTables_wrapper .tablepress-rtl .sorting div:before,
+.dataTables_wrapper .tablepress-rtl .sorting_asc div:before,
+.dataTables_wrapper .tablepress-rtl .sorting_desc div:before {
+	left: -14px;
 	right: auto;
 }
-.dataTables_wrapper .tablepress-rtl .sorting:after,
-.dataTables_wrapper .tablepress-rtl .sorting_asc:after,
-.dataTables_wrapper .tablepress-rtl .sorting_desc:after {
+.dataTables_wrapper .tablepress-rtl .sorting div:after,
+.dataTables_wrapper .tablepress-rtl .sorting_asc div:after,
+.dataTables_wrapper .tablepress-rtl .sorting_desc div:after {
 	content: "";
 }
-.dataTables_wrapper .tablepress-rtl .sorting:before {
+.dataTables_wrapper .tablepress-rtl .sorting div:before {
 	content: "\f0dc";
 }
-.dataTables_wrapper .tablepress-rtl .sorting_asc:before {
+.dataTables_wrapper .tablepress-rtl .sorting_asc div:before {
 	content: "\f0d8";
 }
-.dataTables_wrapper .tablepress-rtl .sorting_desc:before {
+.dataTables_wrapper .tablepress-rtl .sorting_desc div:before {
 	content: "\f0d7";
 }

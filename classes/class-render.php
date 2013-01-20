@@ -560,6 +560,9 @@ class TablePress_Render {
 				$cell_content = '&nbsp;'; // make empty cells have a space in the table head, to give sorting arrows the correct position in IE9
 			}
 
+			if ( 0 == $row_idx && $this->render_options['table_head'] )
+				$cell_content = '<div>' . $cell_content . '</div>';
+
 			$span_attr = '';
 			if ( $this->colspan[ $row_idx ] > 1 ) // we have colspaned cells
 				$span_attr .= " colspan=\"{$this->colspan[ $row_idx ]}\"";
