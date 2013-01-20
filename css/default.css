@@ -77,9 +77,8 @@
 
 /* Table wrapper */
 .dataTables_wrapper {
-	position: relative;
 	clear: both;
-	*zoom: 1;
+	*zoom: 1; /* IE 7 hack, for better float clearing */
 	margin-bottom: 1em;
 }
 .dataTables_wrapper .tablepress {
@@ -144,14 +143,17 @@
 	-webkit-font-smoothing: antialiased;
 	content: "\f053";
 	color: #d9edf7;
-	margin: 4px 5px 0 0;
+	margin: 2px 5px 0 0;
+	margin: 4px 5px 0 0\0/IE; /* Hack for IE8, 9, and IE10pp4 */
 	text-shadow: 0.1em 0.1em #666666;
+	line-height: 18px;
 }
 .paginate_disabled_next:after,
 .paginate_enabled_next:after {
 	float: right;
 	content: "\f054";
-	margin: 4px 2px 0 4px;
+	margin: 2px 2px 0 4px;
+	margin: 4px 2px 0 4px\0/IE; /* Hack for IE8, 9, and IE10pp4 */
 }
 .paginate_disabled_previous:before,
 .paginate_disabled_next:after {
@@ -192,7 +194,6 @@
 	clear: both;
 }
 .dataTables_scrollBody {
-	*margin-top: -1px;
 	-webkit-overflow-scrolling: touch;
 }
 
