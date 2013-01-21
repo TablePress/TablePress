@@ -231,14 +231,14 @@
 	margin: auto;
 	height: 14px;
 	line-height: 1;
+	padding: 1px 0 0;
 }
 .dataTables_wrapper .sorting div:after {
 	content: "\f0dc";
-	padding-top: 1px;
 }
 .dataTables_wrapper .sorting_asc div:after {
 	content: "\f0d8";
-	padding-bottom: 1px;
+	padding: 0 0 1px;
 }
 .dataTables_wrapper .sorting_desc div:after {
 	content: "\f0d7";
