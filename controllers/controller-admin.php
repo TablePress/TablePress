@@ -457,11 +457,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Tobias Bäthge',
 				'translator_url' => 'http://tobias.baethge.com/'
 			),
-			'fr_FR' => array(
-				'name' => __( 'French', 'tablepress' ),
-				'translator_name' => 'Loïc Herry',
-				'translator_url' => 'http://www.lherry.fr/'
-			),
 			'en_US' => array(
 				'name' => __( 'English', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
@@ -471,6 +466,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'name' => __( 'Spanish', 'tablepress' ),
 				'translator_name' => 'Darío Hereñú',
 				'translator_url' => ''
+			),
+			'fr_FR' => array(
+				'name' => __( 'French', 'tablepress' ),
+				'translator_name' => 'Loïc Herry',
+				'translator_url' => 'http://www.lherry.fr/'
 			),
 			'zh_CN' => array(
 				'name' => __( 'Chinese (Simplified)', 'tablepress' ),
