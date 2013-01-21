@@ -95,7 +95,6 @@
 /* Filter/Search */
 .dataTables_filter {
 	float: right;
-	text-align: right;
 	white-space: nowrap;
 }
 
@@ -103,25 +102,28 @@
 .dataTables_info {
 	clear: both;
 	float: left;
-	margin-top: 4px;
+	margin: 4px 0 0;
 }
 
 /* Pagination */
 .dataTables_paginate {
 	float: right;
-	text-align: right;
-	margin-top: 4px;
+	margin: 4px 0 0;
+	padding: 0 15px;
 }
 /* Two button pagination - previous/next */
 .dataTables_paginate a {
 	color: #111111 !important;
 	display: inline-block;
 	outline: none;
+	position: relative;
+	text-decoration: underline;
 	text-decoration: none\0/IE; /* Hack for IE8, 9, and IE10pp4, as those have trouble with text-decoration in :after pseudo-elements */
 }
 .dataTables_paginate .paginate_disabled_previous,
 .dataTables_paginate .paginate_disabled_next {
 	color: #999999 !important;
+	text-decoration: none;
 }
 .paginate_disabled_next,
 .paginate_enabled_next {
@@ -130,30 +132,36 @@
 .paginate_enabled_previous:hover,
 .paginate_enabled_next:hover {
 	cursor: pointer;
-	text-decoration: none !important;
+	text-decoration: none;
 }
 .paginate_disabled_previous:before,
 .paginate_enabled_previous:before,
 .paginate_disabled_next:after,
 .paginate_enabled_next:after {
 	float: left;
+	text-align: left;
 	font-family: TablePress;
 	font-size: 14px;
 	font-weight: bold;
 	-webkit-font-smoothing: antialiased;
 	content: "\f053";
 	color: #d9edf7;
-	margin: 2px 5px 0 0;
-	margin: 4px 5px 0 0\0/IE; /* Hack for IE8, 9, and IE10pp4 */
 	text-shadow: 0.1em 0.1em #666666;
-	line-height: 18px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -14px;
+	margin: auto;
+	height: 14px;
+	width: 14px;
+	line-height: 1;
 }
 .paginate_disabled_next:after,
 .paginate_enabled_next:after {
 	float: right;
+	text-align: right;
 	content: "\f054";
-	margin: 2px 2px 0 4px;
-	margin: 4px 2px 0 4px\0/IE; /* Hack for IE8, 9, and IE10pp4 */
+	left: auto;
 }
 .paginate_disabled_previous:before,
 .paginate_disabled_next:after {
