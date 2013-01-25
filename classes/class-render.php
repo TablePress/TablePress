@@ -324,8 +324,8 @@ class TablePress_Render {
 				$ref_col = TablePress::letter_to_number( $cell_reference[1] ) - 1;
 				$ref_row = $cell_reference[2] - 1;
 
-				if ( ! ( isset( $this->table['data'][$ref_row] ) && isset( $this->table['data'][$ref_row][$ref_col] ) ) )
-					return '!ERROR! Non-existing Cell';
+				if ( ! isset( $this->table['data'][$ref_row] ) || ! isset( $this->table['data'][$ref_row][$ref_col] ) )
+					return "!ERROR! Cell {$cell_reference[0]} does not exist";
 
 				$ref_parents = $parents;
 				$ref_parents[] = $cell_reference[0];
@@ -334,9 +334,12 @@ class TablePress_Render {
 				// Bail if there was an error already
 				if ( false !== strpos( $result, '!ERROR!' ) )
 					return $result;
+				// Treat empty cells as 0
+				if ( '' == $result )
+					$result = 0;
 				// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated)
 				if ( ! is_numeric( $result ) )
-					return '!ERROR! ' . $cell_reference[0] . ' does not contain a number or expression';
+					return "!ERROR! {$cell_reference[0]} does not contain a number or expression";
 
 				$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_reference[0], '#' ) . '(?![0-9])#', $result, $expression );
 			}
