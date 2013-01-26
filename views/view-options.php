@@ -105,9 +105,14 @@ class TablePress_Options_View extends TablePress_View {
 				printf( __( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'tablepress' ), 'http://tablepress.org/faq/' );
 				echo ' ';
 				printf( __( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' );
+				echo ' ';
+				_e( 'Please note that invalid CSS code will be stripped, if it can not be corrected automatically.', 'tablepress' );
 			?></p>
-			<label for="option-use-custom-css-file"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the &#8220;Custom CSS&#8221; code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label><br />
-			<input type="checkbox" style="visibility: hidden;" <?php // Dummy checkbox for space alignment ?>/> <?php echo content_url( 'tablepress-custom.css' ) . ' ' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? '(File exists.)' : '(File seems not to exist.)' ); ?>
+			<?php
+				$file_abbr = content_url( 'tablepress-custom.css' ) . ' (' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? __( 'File exists' ) : __( 'File seems not to exist' ) ) . ')';
+			?>
+			<br />
+			<label for="option-use-custom-css-file" title="<?php echo esc_attr( $file_abbr ); ?>"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the &#8220;Custom CSS&#8221; code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 </tbody>
