@@ -1673,6 +1673,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_get_action_editor_button_thickbox() {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
+		$this->init_i18n_support();
+
 		$view_data = array(
 			'tables' => $this->model_table->load_all() // does not contain table data
 		);
