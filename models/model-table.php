@@ -441,7 +441,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function _flush_caching_plugins_caches() {
+	public function _flush_caching_plugins_caches() {
 		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) )
 			return;
 

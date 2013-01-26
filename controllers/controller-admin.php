@@ -898,9 +898,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 		}
 
-		// save gathered new options (will be merged into existing ones)
-		if ( ! empty( $new_options ) )
+		// save gathered new options (will be merged into existing ones), and flush caches of caching plugins, to make sure that the new Custom CSS is used
+		if ( ! empty( $new_options ) ) {
 			$this->model_options->update( $new_options );
+			$this->model_table->_flush_caching_plugins_caches();
+		}
 
 		if ( $update_custom_css_file ) // capability check is performed above
 			TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
