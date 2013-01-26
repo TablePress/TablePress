@@ -120,7 +120,9 @@ body.wait * {
 
 #edit-form-body textarea {
 	display: block;
-	width: 150px;
+	min-width: 150px;
+	width: 100%;
+	width: auto\0/IE; /* IE hack, as cells will otherwise shrink and overlap instead of horizontal scrolling kicking in */
 	height: 100%;
 }
 #edit-form-body textarea:focus {
