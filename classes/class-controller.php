@@ -70,7 +70,7 @@ abstract class TablePress_Controller {
 
 		// Admin Page Menu entry, needed for construction of plugin URLs
 		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $this->model_options->get( 'admin_menu_parent_page' ) );
-		$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ) );
+		$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
 	}
 
 	/**

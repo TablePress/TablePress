@@ -275,7 +275,7 @@ class TablePress_Render {
 		// expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6)
 		if ( preg_match_all( '#([A-Z]+)([0-9]+):([A-Z]+)([0-9]+)#', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
 			foreach ( $referenced_cell_ranges as $cell_range ) {
-				if ( in_array( $cell_range[0], $replaced_ranges ) )
+				if ( in_array( $cell_range[0], $replaced_ranges, true ) )
 					continue;
 
 				$replaced_ranges[] = $cell_range[0];
@@ -313,10 +313,10 @@ class TablePress_Render {
 		// parse and evaluate single cell references (like A3 or XY312), while prohibiting circle references
 		if ( preg_match_all( '#([A-Z]+)([0-9]+)#', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
 			foreach ( $referenced_cells as $cell_reference ) {
-				if ( in_array( $cell_reference[0], $parents ) )
+				if ( in_array( $cell_reference[0], $parents, true ) )
 					return '!ERROR! Circle Reference';
 
-				if ( in_array( $cell_reference[0], $replaced_references ) )
+				if ( in_array( $cell_reference[0], $replaced_references, true ) )
 					continue;
 
 				$replaced_references[] = $cell_reference[0];

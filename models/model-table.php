@@ -845,12 +845,12 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table_options = $this->_get_table_options( $post_id );
 
 			// Move "Print Name" to new format
-			$print_name = in_array( $table_options['print_name'], array( 'above', 'below' ) );
+			$print_name = in_array( $table_options['print_name'], array( 'above', 'below' ), true );
 			if ( $print_name )
 				$table_options['print_name_position'] = $table_options['print_name'];
 			$table_options['print_name'] = $print_name;
 			// Move "Print Description" to new format
-			$print_description = in_array( $table_options['print_description'], array( 'above', 'below' ) );
+			$print_description = in_array( $table_options['print_description'], array( 'above', 'below' ), true );
 			if ( $print_description )
 				$table_options['print_description_position'] = $table_options['print_description'];
 			$table_options['print_description'] = $print_description;

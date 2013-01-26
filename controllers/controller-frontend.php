@@ -372,7 +372,7 @@ JS;
 					$caches_list = array();
 				else
 					$caches_list = json_decode( $caches_list, true );
-				if ( ! in_array( $transient_name, $caches_list ) )
+				if ( ! in_array( $transient_name, $caches_list, true ) )
 					$caches_list[] = $transient_name;
 				set_transient( $caches_list_transient_name, json_encode( $caches_list ), 2*DAY_IN_SECONDS );
 			} else {

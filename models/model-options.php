@@ -259,7 +259,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @return bool
 	 */
 	public function map_tablepress_meta_caps( $caps, $cap, $user_id, $args ) {
-		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ) ) )
+		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) )
 			return $caps;
 
 		// $user = get_userdata( $user_id );

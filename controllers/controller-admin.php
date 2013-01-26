@@ -217,7 +217,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_tablepress_hidpi_css() {
 		echo '<style type="text/css">@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){';
-		if ( ! empty( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php', 'post-new.php' ) ) && user_can_richedit() ) {
+		if ( ! empty( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php', 'post-new.php' ), true ) && user_can_richedit() ) {
 			echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
 			echo '#content_tablepress_insert_table img,'; // display:none of next selector is re-used, by combining selectors
 		}
@@ -615,7 +615,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		else
 			$bulk_action = false;
 
-		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ) ) )
+		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ), true ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_bulk_action_invalid' ) );
 
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
@@ -811,7 +811,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$new_options['admin_menu_parent_page'] = $posted_options['admin_menu_parent_page'];
 			// re-init parent information, as TablePress::redirect() URL might be wrong otherwise
 			$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $posted_options['admin_menu_parent_page'] );
-			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ) );
+			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
 		}
 		if ( ! empty( $posted_options['plugin_language'] ) && '-' != $posted_options['plugin_language'] ) {
 			// only allow "auto" language and all values that have a translation

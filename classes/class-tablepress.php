@@ -329,9 +329,9 @@ abstract class TablePress {
 			// top-level parent page needs special treatment for better action strings
 			if ( self::$controller->is_top_level_page ) {
 				$target = 'admin.php';
-				if ( in_array( $params['action'], array( 'add', 'import', 'export', 'options', 'about' ) ) )
+				if ( in_array( $params['action'], array( 'add', 'import', 'export', 'options', 'about' ), true ) )
 					$params['page'] .= '_' . $params['action'];
-				if ( in_array( $params['action'], array( 'list', 'add', 'import', 'export', 'options', 'about' ) ) )
+				if ( in_array( $params['action'], array( 'list', 'add', 'import', 'export', 'options', 'about' ), true ) )
 					$params['action'] = false;
 			} else {
 				$target = self::$controller->parent_page;
