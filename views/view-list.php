@@ -30,15 +30,6 @@ class TablePress_List_View extends TablePress_View {
 	protected $wp_list_table;
 
 	/**
-	 * List of WP feature pointers for this view
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array
-	 */
-	// protected $wp_pointers = array( 'tp100_navbar' ); // @TODO: Temporarily disabled
-
-	/**
 	 * Set up the view with data and do things that are specific for this view
 	 *
 	 * @since 1.0.0
@@ -245,21 +236,6 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	protected function help_tab_content() {
 		return 'Help for the List Tables screen';
-	}
-
-	/**
-	 * Set the content for the WP feature pointer about the TablePress nav bar
-	 *
-	 * @since 1.0.0
-	 */
-	public function wp_pointer_tp100_navbar() {
-		$content  = '<h3>' . __( 'TablePress Feature: Navigation', 'tablepress' ) . '</h3>';
-		$content .= '<p>' .	 __( 'Add a new table to get started!', 'tablepress' ) . '</p>';
-
-		$this->admin_page->print_wp_pointer_js( 'tp100_navbar', '#tablepress-nav', array(
-			'content'  => $content,
-			'position' => array( 'edge' => 'top', 'align' => 'left', 'offset' => '250 0' ),
-		) );
 	}
 
 } // class TablePress_List_View
