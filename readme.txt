@@ -12,9 +12,6 @@ TablePress enables you to create and manage tables, without having to write HTML
 
 == Description ==
 
-= ATTENTION: =
-**TablePress is in advanced beta stage now. It is already usable and quite stable, but a few things are still being worked on!**
-
 TablePress enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
 
 = More information =
@@ -54,7 +51,7 @@ Manual installation works just as for other WordPress plugins:
 
 = Where can I find answers to Frequently Asked Questions? =
 
-A wide group of questions, regarding different features or styling has been answered on the [FAQ page](http://tablepress.org/faq/) on the plugin website.
+Many questions, regarding different features or styling, have been answered on the [FAQ page](http://tablepress.org/faq/) on the plugin website.
 
 = Support? =
 
@@ -110,10 +107,13 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
-= Version 1.0 =
-This version is the initial release.
+= Version 0.8.1-beta =
+Initial version where most features are ready and pretty stable.
+
+= Version 0.9-RC =
+Release candidate in which all intended features are included and very stable.
 
 == Upgrade Notice ==
 
-= 1.0 =
-This version is the initial release.
+= 0.9-RC =
+This release contains many enhancements and bug fixes.

@@ -37,7 +37,7 @@ Manual installation works just as for other WordPress plugins:
 
 **Where can I find answers to Frequently Asked Questions?**
 
-A wide group of questions, regarding different features or styling has been answered on the [FAQ page](http://tablepress.org/faq/) on the plugin website.
+Many questions, regarding different features or styling, have been answered on the [FAQ page](http://tablepress.org/faq/) on the plugin website.
 
 **Support?**
 
@@ -99,6 +99,8 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 ## Changelog
 
-**Version 1.0**
+** Version 0.8.1-beta **
+Initial version where most features are ready and pretty stable.
 
-This version is the initial release.
+** Version 0.9-RC **
+Release candidate in which all intended features are included and very stable.
