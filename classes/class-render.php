@@ -376,7 +376,7 @@ class TablePress_Render {
 
 		// check if there are rows and columns in the table (might not be the case after removing hidden rows/columns!)
 		if ( 0 === $num_rows || 0 === $num_columns ) {
-			$this->output = sprintf( __( '<!-- The table with the ID %s is empty! -->', 'tablepress' ), $this->table['id'] ); // @TODO: Maybe use a more meaningful output here?
+			$this->output = sprintf( __( '<!-- The table with the ID %s is empty! -->', 'tablepress' ), $this->table['id'] );
 			return;
 		}
 
