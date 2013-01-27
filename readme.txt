@@ -107,11 +107,11 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
-= Version 0.8.1-beta =
-Initial version where most features are ready and pretty stable.
-
 = Version 0.9-RC =
 Release candidate in which all intended features are included and very stable.
+
+= Version 0.8.1-beta =
+Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
 
