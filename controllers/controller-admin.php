@@ -1626,6 +1626,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$table_id = ( ! empty( $_GET['item'] ) ) ? $_GET['item'] : false;
 		TablePress::check_nonce( 'preview_table', $table_id );
 
+		$this->init_i18n_support();
+
 		if ( false === $table_id ) // nonce check should actually catch this already
 			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 
