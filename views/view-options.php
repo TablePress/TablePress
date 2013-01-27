@@ -109,7 +109,7 @@ class TablePress_Options_View extends TablePress_View {
 				_e( 'Please note that invalid CSS code will be stripped, if it can not be corrected automatically.', 'tablepress' );
 			?></p>
 			<?php
-				$file_abbr = content_url( 'tablepress-custom.css' ) . ' (' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? __( 'File exists' ) : __( 'File seems not to exist' ) ) . ')';
+				$file_abbr = content_url( 'tablepress-custom.css' ) . ' (' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? __( 'File exists', 'tablepress' ) : __( 'File seems not to exist', 'tablepress' ) ) . ')';
 			?>
 			<br />
 			<label for="option-use-custom-css-file" title="<?php echo esc_attr( $file_abbr ); ?>"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the &#8220;Custom CSS&#8221; code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label>
