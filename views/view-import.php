@@ -255,6 +255,9 @@ class TablePress_Import_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function wp_pointer_tp100_wp_table_reloaded_import() {
+		if ( ! $this->data['wp_table_reloaded_installed'] )
+			return;
+
 		$content  = '<h3>' . __( 'TablePress Feature: Import from WP-Table Reloaded', 'tablepress' ) . '</h3>';
 		$content .= '<p>' . __( 'You can import your existing tables and &#8220;Custom CSS&#8221; from WP-Table Reloaded into TablePress.', 'tablepress' ) . '</p>';
 
