@@ -232,9 +232,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 				$parameters = apply_filters( 'tablepress_datatables_parameters', $parameters, $table_id, $html_id, $js_options );
 
-				// if "aaSorting", "bSortClasses", or "asStripeClasses" are set in "Custom Commands", remove their default value
+				// if an existing parameter is set in "Custom Commands", remove their default value
 				if ( isset( $parameters['custom_commands'] ) ) {
-					foreach ( array( 'aaSorting', 'bSortClasses', 'asStripeClasses' ) as $maybe_overwritten_parameter ) {
+					foreach ( array_keys( $parameters ) as $maybe_overwritten_parameter ) {
 						if ( false !== strpos( $parameters['custom_commands'], $maybe_overwritten_parameter ) )
 							unset( $parameters[ $maybe_overwritten_parameter ] );
 					}
