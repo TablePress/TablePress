@@ -64,6 +64,21 @@ class TablePress_Import_View extends TablePress_View {
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( $this, 'postbox_import_form' ), 'normal' );
 		if ( current_user_can( 'tablepress_import_tables_wptr' ) )
 			$this->add_meta_box( 'import-wp-table-reloaded', __( 'Import from WP-Table Reloaded', 'tablepress' ), array( $this, 'postbox_wp_table_reloaded_import' ), 'additional' );
+
+		add_filter( 'default_hidden_meta_boxes', array( $this, 'hide_import_wptr_postbox' ), 10, 2 );
+	}
+
+	/**
+	 * Hide the "Import from WP-Table Reloaded postbox" by default, if WP-Table Reloaded is not installed. It can still be opened manually from the "Screen Options"
+	 *
+	 * @since 1.0.0
+	 */
+	public function hide_import_wptr_postbox( $hidden, $screen ) {
+		if ( 'tablepress_import' != $screen->id )
+			return $hidden;
+		if ( ! $this->data['wp_table_reloaded_installed'] )
+			$hidden[] = 'tablepress_import-import-wp-table-reloaded' ;
+		return $hidden;
 	}
 
 	/**
