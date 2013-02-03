@@ -450,9 +450,6 @@ JS;
 					case 'raw':
 						$output = $table['last_modified'];
 						break 2;
-					case 'mysql':
-						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
-						break 2;
 					case 'human':
 						$modified_timestamp = strtotime( $table['last_modified'] );
 						$current_timestamp = current_time( 'timestamp' );
@@ -462,8 +459,10 @@ JS;
 						else
 							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
 						break 2;
+					case 'mysql':
 					default:
 						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
+						break 2;
 				}
 				break;
 			case 'last_editor':
@@ -472,9 +471,21 @@ JS;
 			case 'author':
 				$output = TablePress::get_user_display_name( $table['author'] );
 				break;
+			case 'number_rows':
+				$output = count( $table['data'] );
+				if ( 'raw' != $format ) {
+					if ( $table['options']['table_head'] )
+						$output = $output - 1;
+					if ( $table['options']['table_foot'] )
+						$output = $output - 1;
+				}
+				break;
+			case 'number_columns':
+				$output = count( $table['data'][0] );
+				break;
 			default:
-					$output = "[table-info field &#8220;{$field}&#8221; not found in table &#8220;{$table_id}&#8221; /]<br />\n";
-					$output = apply_filters( 'tablepress_table_info_not_found_message', $output, $table, $field, $format );
+				$output = "[table-info field &#8220;{$field}&#8221; not found in table &#8220;{$table_id}&#8221; /]<br />\n";
+				$output = apply_filters( 'tablepress_table_info_not_found_message', $output, $table, $field, $format );
 		}
 
 		$output = apply_filters( 'tablepress_shortcode_table_info_output', $output, $table, $shortcode_atts );
