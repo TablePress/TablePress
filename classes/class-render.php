@@ -525,7 +525,9 @@ class TablePress_Render {
 			// print formulas that are escaped with '= (like in Excel) as text:
 			if ( strlen( $cell_content ) > 2 && "'=" == substr( $cell_content, 0, 2 ) )
 				$cell_content = substr( $cell_content, 1 );
-			$cell_content = do_shortcode( $this->safe_output( $cell_content ) );
+			$cell_content = $this->safe_output( $cell_content );
+			if ( false !== strpos( $cell_content, '[' ) )
+				$cell_content = do_shortcode( $cell_content );
 			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 
 			if ( $this->span_trigger['rowspan'] == $cell_content ) { // there will be a rowspan
