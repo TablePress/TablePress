@@ -126,6 +126,7 @@ class TablePress_Render {
 	public function set_input( $table, $render_options ) {
 		$this->table = $table;
 		$this->render_options = $render_options;
+		$this->table = apply_filters( 'tablepress_table_raw_render_data', $this->table, $this->render_options );
 	}
 
 	/**
