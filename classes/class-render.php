@@ -444,13 +444,16 @@ class TablePress_Render {
 		// <caption> tag (possibly with "Edit" link)
 		$caption = apply_filters( 'tablepress_print_caption_text', '', $this->table );
 		$caption_style = $caption_class = '';
-		if ( ! empty( $caption ) )
+		if ( ! empty( $caption ) ) {
 			$caption_class = apply_filters( 'tablepress_print_caption_class', "tablepress-table-caption tablepress-table-caption-id-{$this->table['id']}", $this->table['id'] );
+			$caption_class = ' class="' . $caption_class . '"';
+		}
 		if ( ! empty( $this->render_options['edit_table_url'] ) ) {
-			if ( ! empty( $caption ) )
+			if ( empty( $caption ) )
+				$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;margin:0;padding:0;"';
+			else
 				$caption .= '<br />';
 			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\" title=\"" . __( 'Edit', 'default' ) . '">' . __( 'Edit', 'default' ) . '</a>';
-			$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;margin:0;"';
 		}
 		if ( ! empty( $caption ) )
 			$caption = "<caption{$caption_class}{$caption_style}>{$caption}</caption>\n";
