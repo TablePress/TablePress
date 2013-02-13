@@ -676,14 +676,31 @@ class TablePress_Render {
 	public function get_preview_css() {
 		return <<<CSS
 <style type="text/css">
+/* iframe */
 body {
 	font-family: sans-serif;
 }
+/* inline Shortcodes, in texts */
+.table-shortcode-inline {
+	background: transparent;
+	border: none;
+	color: #333333;
+	width: 100px;
+	margin: 0;
+	padding: 0;
+	font-size: 80%;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.table-shortcode {
+	cursor: text;
+}
+/* Default table styling */
 .tablepress {
 	border-collapse: collapse;
 	border-spacing: 0;
 	width: 100%;
-	margin-bottom: 10px auto;
+	margin-bottom: 1em;
 	border: none;
 }
 .tablepress td,
@@ -692,6 +709,8 @@ body {
 	border: none;
 	background: none;
 	text-align: left;
+}
+.tablepress tbody td {
 	vertical-align: top;
 }
 .tablepress tbody tr td,
@@ -708,6 +727,7 @@ body {
 .tablepress tfoot th {
 	background-color: #d9edf7;
 	font-weight: bold;
+	vertical-align: middle;
 }
 .tablepress tbody tr.odd td {
 	background-color: #f9f9f9;
@@ -717,6 +737,11 @@ body {
 }
 .tablepress .row-hover tr:hover td {
 	background-color: #f3f3f3;
+}
+/* RTL languages */
+.tablepress-rtl td,
+.tablepress-rtl th {
+	text-align: right;
 }
 </style>
 CSS;
