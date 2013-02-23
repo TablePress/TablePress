@@ -75,6 +75,14 @@
 	background-color: #f3f3f3;
 }
 
+/* Reset image layout in tables */
+.tablepress img {
+	margin: 0;
+	padding: 0;
+	border: none;
+	max-width: none;
+}
+
 /* Table wrapper */
 .dataTables_wrapper {
 	clear: both;
