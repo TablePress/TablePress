@@ -472,6 +472,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Loïc Herry',
 				'translator_url' => 'http://www.lherry.fr/'
 			),
+			'pl_PL' => array(
+				'name' => __( 'Polish', 'tablepress' ),
+				'translator_name' => 'Kuba Mikita',
+				'translator_url' => 'http://www.wpart.pl/'
+			),
 			'sk_SK' => array(
 				'name' => __( 'Slovak', 'tablepress' ),
 				'translator_name' => 'sle',
