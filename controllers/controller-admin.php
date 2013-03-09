@@ -356,6 +356,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
 				$data['frontend_options']['use_custom_css_file'] = $this->model_options->get( 'use_custom_css_file' );
 				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file( 'normal' );
+				$data['frontend_options']['custom_css_url'] = $this->model_options->get_custom_css_location( 'normal', 'url' );
 				$data['frontend_options']['custom_css_file_exists'] = ( false !== $data['frontend_options']['custom_css'] );
 				if ( $data['frontend_options']['use_custom_css_file'] ) {
 					// fall back to "Custom CSS" in options, if it could not be retrieved from file

@@ -98,16 +98,15 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				$custom_css_file_contents = '';
 				if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
 					$custom_css_file_contents = $this->model_options->load_custom_css_from_file( 'minified' );
-					$custom_css_file = 'tablepress-custom.min.css';
+					$custom_css_file_type = 'minified';
 				}
 				if ( empty( $custom_css_file_contents ) ) {
 					$custom_css_file_contents = $this->model_options->load_custom_css_from_file( 'normal' );
-					$custom_css_file = 'tablepress-custom.css';
+					$custom_css_file_type = 'normal';
 				}
 				if ( ! empty( $custom_css_file_contents ) ) {
 					$print_custom_css_inline = false;
-					$custom_css_url = content_url( $custom_css_file );
-					$custom_css_url = apply_filters( 'tablepress_custom_css_url', $custom_css_url, $custom_css_file );
+					$custom_css_url = $this->model_options->get_custom_css_location( $custom_css_file_type, 'url' );
 					$custom_css_dependencies = array();
 					if ( $use_default_css )
 						$custom_css_dependencies[] = 'tablepress-default'; // if default CSS is desired, but also handled internally
