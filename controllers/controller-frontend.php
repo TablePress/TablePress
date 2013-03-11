@@ -65,8 +65,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function init_shortcodes() {
 		// Remove previously registered [table /] Shortcodes (e.g. from WP-Table Reloaded), as these would otherwise be used instead of TablePress's Shortcodes
-		remove_shortcode( 'table' );
-		remove_shortcode( 'table-info' );
+		remove_shortcode( TablePress::$shortcode );
+		remove_shortcode( TablePress::$shortcode_info );
 		// Dequeue WP-Table Relaoded Default CSS, as it can influence TablePress table styling
 		if ( isset( $GLOBALS['WP_Table_Reloaded_Frontend'] ) )
 			remove_action( 'wp_head', array( $GLOBALS['WP_Table_Reloaded_Frontend'], 'add_frontend_css' ) );
