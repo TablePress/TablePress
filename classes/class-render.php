@@ -335,6 +335,8 @@ class TablePress_Render {
 				// Bail if there was an error already
 				if ( false !== strpos( $result, '!ERROR!' ) )
 					return $result;
+				// remove all whitespace characters
+				$result = preg_replace( '#[\r\n\t ]#', '', $result );
 				// Treat empty cells as 0
 				if ( '' == $result )
 					$result = 0;
