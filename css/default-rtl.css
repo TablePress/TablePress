@@ -1,5 +1,5 @@
 /**
- * TablePress Default CSS
+ * TablePress Default CSS for RTL languages
  *
  * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
  * on the "Plugin Options" screen of TablePress.
@@ -9,6 +9,7 @@
  * @author Tobias Bäthge, Allan Jardine
  * @since 1.0.0
  */
+
 
 @font-face {
 	font-family: 'TablePress';
@@ -40,7 +41,7 @@
 	padding: 8px;
 	border: none;
 	background: none;
-	text-align: left;
+	text-align: right;
 }
 .tablepress tbody td {
 	vertical-align: top;
@@ -118,6 +119,7 @@
 	float: right;
 	margin: 4px 0 0;
 	padding: 0 15px;
+	direction: rtl;
 }
 /* Two button pagination - previous/next */
 .dataTables_paginate a {
@@ -135,46 +137,47 @@
 }
 .paginate_disabled_next,
 .paginate_enabled_next {
-	margin-left: 10px;
+	margin-right: 10px;
 }
 .paginate_enabled_previous:hover,
 .paginate_enabled_next:hover {
 	cursor: pointer;
 	text-decoration: none;
 }
-.paginate_disabled_previous:before,
-.paginate_enabled_previous:before,
-.paginate_disabled_next:after,
-.paginate_enabled_next:after {
-	text-align: left;
+.paginate_disabled_previous:after,
+.paginate_enabled_previous:after,
+.paginate_disabled_next:before,
+.paginate_enabled_next:before {
+	text-align: right;
 	font-family: TablePress;
 	font-size: 14px;
 	font-weight: bold;
 	-webkit-font-smoothing: antialiased;
-	content: "\f053";
+	content: "\f054";
 	color: #d9edf7;
 	text-shadow: 0.1em 0.1em #666666;
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: -14px;
+	right: -14px;
 	margin: auto;
 	height: 14px;
 	width: 14px;
 	line-height: 1;
 }
-.paginate_disabled_next:after,
-.paginate_enabled_next:after {
-	text-align: right;
-	content: "\f054";
-	left: auto;
+.paginate_disabled_next:before,
+.paginate_enabled_next:before {
+	text-align: left;
+	content: "\f053";
+	right: auto;
+	left: -14px;
 }
-.paginate_disabled_previous:before,
-.paginate_disabled_next:after {
+.paginate_disabled_previous:after,
+.paginate_disabled_next:before {
 	color: #f9f9f9;
 }
-.paginate_enabled_previous:hover:before,
-.paginate_enabled_next:hover:after {
+.paginate_enabled_previous:hover:after,
+.paginate_enabled_next:hover:before {
 	color: #049cdb;
 }
 
@@ -215,7 +218,7 @@
 .dataTables_wrapper .sorting,
 .dataTables_wrapper .sorting_asc,
 .dataTables_wrapper .sorting_desc {
-	padding-right: 20px; /* more right padding for sort arrows */
+	padding-left: 20px; /* more left padding for sort arrows */
 	cursor: pointer;
 	outline: none;
 }
@@ -240,21 +243,21 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: auto;
-	right: -14px;
+	left: -14px;
+	right: auto;
 	margin: auto;
 	height: 14px;
 	line-height: 1;
 	padding: 1px 0 0;
 }
-.dataTables_wrapper .sorting div:after {
+.dataTables_wrapper .sorting div:before {
 	content: "\f0dc";
 }
-.dataTables_wrapper .sorting_asc div:after {
+.dataTables_wrapper .sorting_asc div:before {
 	content: "\f0d8";
 	padding: 0 0 1px;
 }
-.dataTables_wrapper .sorting_desc div:after {
+.dataTables_wrapper .sorting_desc div:before {
 	content: "\f0d7";
 }
 .dataTables_wrapper .sorting:hover,

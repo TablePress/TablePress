@@ -485,8 +485,6 @@ class TablePress_Render {
 		$id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}\"" : '';
 		// classes that will be added to <table class="...">, for CSS styling
 		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
-		if ( is_rtl() )
-			$css_classes[] = 'tablepress-rtl';
 		$css_classes = apply_filters( 'tablepress_table_css_classes', $css_classes, $this->table['id'] );
 		$css_classes = explode( ' ', implode( ' ', $css_classes ) ); // $css_classes might contain several classes in one array entry
 		$css_classes = array_map( 'sanitize_html_class', $css_classes );
@@ -676,11 +674,18 @@ class TablePress_Render {
 	 * @return string CSS for the Preview iframe
 	 */
 	public function get_preview_css() {
+		if ( is_rtl() ) {
+			$rtl = "\ndirection: rtl;";
+			$rtl_align = 'right';
+		} else {
+			$rtl = '';
+			$rtl_align = 'left';
+		}
 		return <<<CSS
 <style type="text/css">
 /* iframe */
 body {
-	font-family: sans-serif;
+	font-family: sans-serif;{$rtl}
 }
 /* inline Shortcodes, in texts */
 .table-shortcode-inline {
@@ -710,7 +715,7 @@ body {
 	padding: 8px;
 	border: none;
 	background: none;
-	text-align: left;
+	text-align: {$rtl_align};
 }
 .tablepress tbody td {
 	vertical-align: top;
@@ -739,11 +744,6 @@ body {
 }
 .tablepress .row-hover tr:hover td {
 	background-color: #f3f3f3;
-}
-/* RTL languages */
-.tablepress-rtl td,
-.tablepress-rtl th {
-	text-align: right;
 }
 </style>
 CSS;

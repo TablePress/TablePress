@@ -84,8 +84,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// add "Default CSS"
 		$use_default_css = apply_filters( 'tablepress_use_default_css', true );
 		if ( $use_default_css ) {
+			$rtl = ( is_rtl() ) ? '-rtl' : '';
 			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-			$default_css_url = plugins_url( "css/default{$suffix}.css", TABLEPRESS__FILE__ );
+			$default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
 			$default_css_url = apply_filters( 'tablepress_default_css_url', $default_css_url );
 			wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
 		}
