@@ -842,6 +842,15 @@ jQuery(document).ready( function( $ ) {
 			span: {
 				add: function( span ) {
 					var span_add_msg = ( '#rowspan#' == span ) ? tablepress_strings.rowspan_add : tablepress_strings.colspan_add ;
+
+					// Automatically deactivate DataTables, if cells are combined
+					if ( $( '#option-use-datatables' ).prop( 'checked' ) ) {
+						if ( confirm( tablepress_strings.span_add_datatables_warning ) )
+							$( '#option-use-datatables' ).prop( 'checked', false ).change();
+						else
+							return;
+					}
+
 					if ( ! confirm( span_add_msg ) )
 						return;
 

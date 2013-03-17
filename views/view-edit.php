@@ -98,6 +98,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'advanced_editor_open' => __( 'Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;.', 'tablepress' ),
 				'rowspan_add' => __( 'To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have.', 'tablepress' ),
 				'colspan_add' => __( 'To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have.', 'tablepress' ),
+				'span_add_datatables_warning' => __( 'Attention: You have enabled the usage of the DataTables JavaScript library for features like sorting, search, or pagination.', 'tablepress' ) . "\n" .
+								__( 'Unfortunately, these can not be used in tables with combined cells.', 'tablepress' ) . "\n" .
+								__( 'Do you want to proceed and automatically turn off the usage of DataTables for this table?', 'tablepress' ),
 				'link_add' => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ) . "\n" .
 								__( 'You can then enter the Link URL and Text or choose an existing page or post.', 'tablepress' ),
 				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
