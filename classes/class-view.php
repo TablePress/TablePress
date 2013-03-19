@@ -339,7 +339,7 @@ abstract class TablePress_View {
 			// "Import" screen has file upload
 			$enctype = ( 'import' == $this->action ) ? ' enctype="multipart/form-data"' : '';
 		?>
-		<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post"<?php echo $enctype; ?>>
+		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?>>
 			<?php
 			$this->do_text_boxes( 'header' );
 			?>

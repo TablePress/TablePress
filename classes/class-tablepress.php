@@ -382,7 +382,7 @@ abstract class TablePress {
 		// Message is not translated as it is shown on every admin screen, for which we don't want to load translations
 		echo '<div class="error"><p>' .
 			'<strong>Attention:</strong> ' .
-			'The installed version of WordPress is too old for the TablePress plugin! TablePress requires an up-to-date version! <strong>Please <a href="' . admin_url( 'update-core.php' ) . '">update your WordPress installation</a></strong>!' .
+			'The installed version of WordPress is too old for the TablePress plugin! TablePress requires an up-to-date version! <strong>Please <a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">update your WordPress installation</a></strong>!' .
 			"</p></div>\n";
 	}
 
