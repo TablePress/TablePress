@@ -53,7 +53,7 @@ jQuery(document).ready( function($) {
 				switch ( action ) {
 					case 'hide_message':
 						/* Donation message links show new message */
-						if ( 'donation_nag' == item && '' != target ) {
+						if ( 'donation_nag' == item && '' !== target ) {
 							$link.closest( 'div' ).after( '<div class="donation-message-after-click-message updated"><p><strong>' + tablepress_list['donation-message-' + target] + '</strong></p></div>' );
 							$( '.donation-message-after-click-message' ).delay( 10000 ).fadeOut( 2000, function() { $(this).remove(); } );
 						}
@@ -86,7 +86,7 @@ jQuery(document).ready( function($) {
 		// check whether an action was selected, and whether tables were selected
 		if ( '-1' == $( '#bulk-action-' + bulk_action ).val() )
 			return false;
-		if ( 0 == num_selected )
+		if ( 0 === num_selected )
 			return false;
 
 		// Show AYS prompt for deletion

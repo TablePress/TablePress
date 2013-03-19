@@ -19,7 +19,7 @@ jQuery(document).ready( function($) {
 			num_selected = ( selected_tables ) ? selected_tables.length : 0;
 
 		// only submit form, if at least one table was selected
-		if ( 0 == num_selected )
+		if ( 0 === num_selected )
 			return false;
 
 		// at this point, the form is valid and will be submitted
@@ -61,7 +61,7 @@ jQuery(document).ready( function($) {
 			.prop( 'checked', zip_file_required || zip_file_manually_checked );
 		$( '#tables-export-zip-file-description' ).toggle( zip_file_required );
 		// set state of "Select all" checkbox
-		$( '#tables-export-select-all' ).prop( 'checked', 0 == $(this).find( 'option' ).not( ':selected' ).length );
+		$( '#tables-export-select-all' ).prop( 'checked', 0 === $(this).find( 'option' ).not( ':selected' ).length );
 	} )
 	.change();
 

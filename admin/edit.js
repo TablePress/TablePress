@@ -199,7 +199,7 @@ jQuery(document).ready( function( $ ) {
 
 					return false;
 				},
-				ajax_success: function( data, status, jqXHR ) {
+				ajax_success: function( data, status /*, jqXHR */ ) {
 					if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
 						tp.table.preview.error( 'AJAX call successful, but unclear status.' );
 					else if ( ( 'undefined' == typeof data ) || ( null == data ) || ( '-1' == data ) || ( 'undefined' == typeof data.success ) || ( true !== data.success ) )
@@ -465,7 +465,7 @@ jQuery(document).ready( function( $ ) {
 			append: function( /* event */ ) {
 				var i,
 					num_columns = $( '#columns-append-number' ).val(),
-					new_body_cells = new_head_cells = new_foot_cells = '';
+					new_head_cells = '', new_body_cells = '', new_foot_cells = '';
 
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
 					alert( tablepress_strings.append_num_columns_invalid );
@@ -859,7 +859,7 @@ jQuery(document).ready( function( $ ) {
 							col_idx = $textarea.parent().index(),
 							row_idx = $textarea.closest( 'tr' ).index();
 						if ( '#rowspan#' == span ) {
-							if ( 0 == row_idx ) {
+							if ( 0 === row_idx ) {
 								alert( tablepress_strings.no_rowspan_first_row );
 								return;
 							}
@@ -910,7 +910,7 @@ jQuery(document).ready( function( $ ) {
 				$row.find( 'textarea' )
 					.val( function( column_idx, value ) {
 						// If the cell is not a formula, there's nothing to do here
-						if ( ( '' == value ) || ( '=' != value.charAt(0) ) )
+						if ( ( '' === value ) || ( '=' != value.charAt(0) ) )
 							return value;
 
 						return value.replace( /([A-Z]+[0-9]+)(?::([A-Z]+[0-9]+))?/g, function( full_match, first_cell, second_cell ) {
@@ -926,7 +926,7 @@ jQuery(document).ready( function( $ ) {
 							}
 							full_match = known_references[ first_cell ];
 
-							if ( ( 'undefined' != typeof second_cell ) && ( '' != second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
+							if ( ( 'undefined' != typeof second_cell ) && ( '' !== second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
 								if ( ! known_references.hasOwnProperty( second_cell ) ) {
 									$cell = $( '#cell-' + second_cell );
 									if ( $cell.length )
@@ -992,7 +992,7 @@ jQuery(document).ready( function( $ ) {
 					.success( tp.save_changes.ajax_success )
 					.error( tp.save_changes.ajax_error );
 			},
-			ajax_success: function( data, status, jqXHR ) {
+			ajax_success: function( data, status /*, jqXHR */ ) {
 				if ( ( 'undefined' == typeof status ) || ( 'success' != status ) )
 					tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the &#8220;Shift&#8221; key.' );
 				else if ( ( 'undefined' == typeof data ) || ( null == data ) || ( '-1' == data ) || ( 'undefined' == typeof data.success ) || ( true !== data.success ) )
@@ -1201,6 +1201,6 @@ jQuery(document).ready( function( $ ) {
 
 		try { tb_remove(); } catch( e ) {};
 		tp.table.set_table_changed();
-	}
+	};
 
 } );

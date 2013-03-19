@@ -30,7 +30,7 @@ jQuery(document).ready( function($) {
 		}
 	} )
 	.on( 'blur', '.placeholder', function() {
-		if ( '' == this.value ) {
+		if ( '' === this.value ) {
 			this.value = this.defaultValue;
 			$(this).addClass( 'placeholder-active' );
 		}
@@ -43,7 +43,7 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tablepress-page' ).on( 'blur', '.numbers-only, .form-field-numbers-only input', function( event ) {
+	$( '#tablepress-page' ).on( 'blur', '.numbers-only, .form-field-numbers-only input', function( /* event */ ) {
 		var $input = $(this);
 		$input.val( $input.val().replace( /[^0-9]/g, '' ) );
 	} );

@@ -99,7 +99,7 @@ jQuery(document).ready( function($) {
 
 		/* if replace is selected, a table must be selected */
 		if ( 'replace' == $( '#row-import-add_replace' ).find( 'input:checked' ).val() ) {
-			if ( '' == $( '#tables-import-replace-table' ).val() ) {
+			if ( '' === $( '#tables-import-replace-table' ).val() ) {
 				$( '#row-import-add_replace' )
 					.one( 'change', 'input', function() { $( '#tables-import-replace-table' ).removeClass( 'invalid' ); } );
 				$( '#tables-import-replace-table' )
@@ -124,7 +124,7 @@ jQuery(document).ready( function($) {
 		$( '#tablepress-page' ).find( 'form' ).off( 'submit.tablepress' );
 
 		/* File upload must have a file, if Dump File is selected as the source */
-		if ( $( '#import-wp-table-reloaded-source-dump-file' ).prop( 'checked' ) && '' == $( '#tables-import-wp-table-reloaded-dump-file' ).val() ) {
+		if ( $( '#import-wp-table-reloaded-source-dump-file' ).prop( 'checked' ) && '' === $( '#tables-import-wp-table-reloaded-dump-file' ).val() ) {
 			$( '#tables-import-wp-table-reloaded-dump-file' )
 				.addClass( 'invalid' )
 				.one( 'change', function() { $(this).removeClass( 'invalid' ); } )
