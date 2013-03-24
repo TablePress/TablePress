@@ -265,7 +265,7 @@ class TablePress_Import {
 	 * @param array $array Two-dimensional array to be padded
 	 * @return array Padded array
 	 */
-	protected function pad_array_to_max_cols( $array ) {
+	public function pad_array_to_max_cols( $array ) {
 		$rows = count( $array );
 		$rows = ( $rows > 0 ) ? $rows : 1;
 		$max_columns = $this->count_max_columns( $array );

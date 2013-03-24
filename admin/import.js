@@ -14,8 +14,8 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#row-import-add_replace' ).on( 'change', 'input', function() {
-		$( '#tables-import-replace-table' ).prop( 'disabled', 'replace' != $(this).val() );
+	$( '#row-import-type' ).on( 'change', 'input', function() {
+		$( '#tables-import-existing-table' ).prop( 'disabled', ( 'replace' != $(this).val() && 'append' != $(this).val() ) );
 	} )
 	.find( 'input:checked' ).change();
 
@@ -86,7 +86,8 @@ jQuery(document).ready( function($) {
 	$( '#tablepress-page' ).find( 'form' ).on( 'submit.tablepress', function( /* event */ ) {
 		var import_source = $( '#row-import-source' ).find( 'input:checked' ).val(),
 			selected_import_source_field = $( '#tables-import-' + import_source ).get(0),
-			valid_form = true;
+			valid_form = true,
+			import_type = $( '#row-import-type' ).find( 'input:checked' ).val();
 
 		/* the value of the selected import source field must be set/changed from the default */
 		if ( selected_import_source_field.defaultValue == selected_import_source_field.value ) {
@@ -97,12 +98,12 @@ jQuery(document).ready( function($) {
 			valid_form = false;
 		}
 
-		/* if replace is selected, a table must be selected */
-		if ( 'replace' == $( '#row-import-add_replace' ).find( 'input:checked' ).val() ) {
-			if ( '' === $( '#tables-import-replace-table' ).val() ) {
-				$( '#row-import-add_replace' )
-					.one( 'change', 'input', function() { $( '#tables-import-replace-table' ).removeClass( 'invalid' ); } );
-				$( '#tables-import-replace-table' )
+		/* if replace or append is selected, a table must be selected */
+		if ( 'replace' == import_type || 'append' == import_type ) {
+			if ( '' === $( '#tables-import-existing-table' ).val() ) {
+				$( '#row-import-type' )
+					.one( 'change', 'input', function() { $( '#tables-import-existing-table' ).removeClass( 'invalid' ); } );
+				$( '#tables-import-existing-table' )
 					.addClass( 'invalid' )
 					.one( 'change', function() { $(this).removeClass( 'invalid' ); } )
 					.focus().select();

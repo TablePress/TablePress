@@ -51,7 +51,7 @@ class TablePress_Import_View extends TablePress_View {
 			'error_no_zip_import' => __( 'Error: Import of ZIP files is not available on this server.', 'tablepress' ),
 			'error_import_zip_open' => __( 'Error: The ZIP file could not be opened.', 'tablepress' ),
 			'error_import_zip_content' => __( 'Error: The data in the ZIP file is invalid.', 'tablepress' ),
-			'error_import_no_replace_id' => __( 'Error: You selected to replace an existing table, but did not select a table.', 'tablepress' ),
+			'error_import_no_existing_id' => __( 'Error: You selected to replace or append to an existing table, but did not select a table.', 'tablepress' ),
 			'error_import_source_invalid' => __( 'Error: The source for the import is invalid or could not be accessed.', 'tablepress' ),
 			'error_import_data' => __( 'Error: The data for the import is invalid.', 'tablepress' ),
 			'error_wp_table_reloaded_nothing_selected' => __( 'Error: You did not select what to import from WP-Table Reloaded!', 'tablepress' ),
@@ -93,7 +93,7 @@ class TablePress_Import_View extends TablePress_View {
 			<?php _e( 'You can also import existing tables from the WP-Table Reloaded plugin below.', 'tablepress' ); ?>
 		</p>
 		<p>
-			<?php _e( 'To import a table, select and enter the import source in the following form.', 'tablepress' ); ?> <?php if ( 0 < $data['tables_count'] ) _e( 'You can also choose to import it as a new table or to replace an existing table.', 'tablepress' ); ?>
+			<?php _e( 'To import a table, select and enter the import source in the following form.', 'tablepress' ); ?> <?php if ( 0 < $data['tables_count'] ) _e( 'You can also choose to import it as a new table, to replace an existing table, or to append the rows to an existing table.', 'tablepress' ); ?>
 		</p>
 		<?php
 	}
@@ -169,17 +169,18 @@ class TablePress_Import_View extends TablePress_View {
 			?>
 		</td>
 	</tr>
-	<tr id="row-import-add_replace" class="top-border">
-		<th class="column-1" scope="row"><?php _e( 'Add or Replace?', 'tablepress' ); ?>:</th>
+	<tr id="row-import-type" class="top-border">
+		<th class="column-1" scope="row"><?php _e( 'Add, Replace, or Append?', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<label for="tables-import-add_replace-add"><input name="import[add_replace]" id="tables-import-add_replace-add" type="radio" value="add"<?php checked( $data['import_add_replace'], 'add', true ); ?> /> <?php _e( 'Add as new table', 'tablepress' ); ?></label>
-			<label for="tables-import-add_replace-replace"><input name="import[add_replace]" id="tables-import-add_replace-replace" type="radio" value="replace"<?php checked( $data['import_add_replace'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Replace existing table', 'tablepress' ); ?></label>
+			<label for="tables-import-type-add"><input name="import[type]" id="tables-import-type-add" type="radio" value="add"<?php checked( $data['import_type'], 'add', true ); ?> /> <?php _e( 'Add as new table', 'tablepress' ); ?></label>
+			<label for="tables-import-type-replace"><input name="import[type]" id="tables-import-type-replace" type="radio" value="replace"<?php checked( $data['import_type'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Replace existing table', 'tablepress' ); ?></label>
+			<label for="tables-import-type-append"><input name="import[type]" id="tables-import-type-append" type="radio" value="append"<?php checked( $data['import_type'], 'append', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Append rows to existing table', 'tablepress' ); ?></label>
 		</td>
 	</tr>
-	<tr id="row-import-replace-table" class="bottom-border">
-		<th class="column-1" scope="row"><label for="tables-import-replace-table"><?php _e( 'Table to replace', 'tablepress' ); ?>:</label></th>
+	<tr id="row-import-existing-table" class="bottom-border">
+		<th class="column-1" scope="row"><label for="tables-import-existing-table"><?php _e( 'Table to replace or append to', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
-			<select id="tables-import-replace-table" name="import[replace_table]"<?php disabled( $data['tables_count'] > 0, false, true ); ?>>
+			<select id="tables-import-existing-table" name="import[existing_table]"<?php disabled( $data['tables_count'] > 0, false, true ); ?>>
 				<option value=""><?php _e( 'Select:', 'tablepress' ); ?></option>
 			<?php
 				foreach ( $data['tables'] as $table ) {
@@ -188,7 +189,7 @@ class TablePress_Import_View extends TablePress_View {
 					if ( '' == trim( $table['name'] ) )
 						$table['name'] = __( '(no name)', 'tablepress' );
 					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
-					$selected = selected( $table['id'], $data['import_replace_table'], false );
+					$selected = selected( $table['id'], $data['import_existing_table'], false );
 					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
 				}
 			?>
