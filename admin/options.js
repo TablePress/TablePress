@@ -30,6 +30,7 @@ jQuery(document).ready( function($) {
 		var $this = $(this);
 		if ( ! $this.hasClass( 'disabled' ) ) {
 			$this.addClass( 'large' );
+			CM_custom_css.refresh();
 			$this.off( 'mousedown.codemirror' );
 		}
 	} );
