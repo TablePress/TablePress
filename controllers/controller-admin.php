@@ -131,7 +131,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_actions() {
 		// register the callbacks for processing action requests
 		$post_actions = array( 'list', 'add', 'edit', 'options', 'export', 'import' );
-		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox' );
+		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox', 'uninstall_tablepress' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( $this, "handle_post_action_{$action}" ) );
 		}
@@ -1723,6 +1723,40 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Prepare, initialize, and render the view
 		$this->view = TablePress::load_view( 'editor_button_thickbox', $view_data );
 		$this->view->render();
+	}
+
+
+	/**
+	 * Uninstall TablePress, and delete all tables and options
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_get_action_uninstall_tablepress() {
+		TablePress::check_nonce( 'uninstall_tablepress' );
+
+		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) )
+			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+
+		// Deactivate TablePress
+		$plugin = TABLEPRESS_BASENAME;
+		deactivate_plugins( $plugin );
+		update_option( 'recently_activated', array( $plugin => time() ) + (array) get_option( 'recently_activated', array() ) );
+
+		// Delete all tables and options
+		$this->model_table->delete_all();
+		$this->model_table->destroy();
+		$this->model_options->destroy();
+		// @TODO: Delete "Custom CSS" files
+
+		$this->init_i18n_support();
+
+		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />'
+			. __( 'All tables, data, and options were deleted. You may now manually delete the plugin\'s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the "Delete" link for TablePress on the WordPress "Plugins" page.', 'tablepress' )
+			. "</p>\n<p>"
+			. '<a class="button" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . __( 'Go to Plugins page', 'tablepress' ) . '</a> '
+			. '<a class="button" href="' . esc_url( admin_url( 'index.php' ) ) . '">' . __( 'Go to Dashboard', 'tablepress' ) . '</a>';
+
+		wp_die( $output, __( 'Uninstall TablePress', 'tablepress' ), array( 'response' => 200, 'back_link' => false ) );
 	}
 
 } // class TablePress_Admin_Controller

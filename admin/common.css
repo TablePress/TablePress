@@ -218,3 +218,7 @@
 #tables-import-server {
 	margin-bottom: 4px;
 }
+/* Red color for the Uninstall TablePress button on the "Plugin Options" screen */
+#uninstall-tablepress {
+	color: #BC0B0B;
+}

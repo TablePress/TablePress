@@ -33,7 +33,12 @@ class TablePress_Options_View extends TablePress_View {
 
 		$this->admin_page->enqueue_style( 'codemirror' );
 		$this->admin_page->enqueue_script( 'codemirror', array(), false, true );
-		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror' ) );
+		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror' ), array(
+			'strings' => array(
+		  	    'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
+		  	    'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' )
+			)
+		) );
 
 		$this->process_action_messages( array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
@@ -48,6 +53,8 @@ class TablePress_Options_View extends TablePress_View {
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( $this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Changes', 'tablepress' );
 		$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
+		if ( current_user_can( 'activate_plugins' ) && current_user_can( 'tablepress_edit_options' ) && current_user_can( 'tablepress_delete_tables' ) )
+			$this->add_text_box( 'uninstall-tablepress', array( $this, 'textbox_uninstall_tablepress' ), 'submit' );
 	}
 
 	/**
@@ -166,6 +173,24 @@ class TablePress_Options_View extends TablePress_View {
 </tbody>
 </table>
 <?php
+	}
+
+	/**
+	 * Print the content of the "Admin Options" post meta box
+	 *
+	 * @since 1.0.0
+	 */
+	public function textbox_uninstall_tablepress( $data, $box ) {
+		?>
+        <h2 style="margin-top:40px;"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></h2>
+        <p><?php
+         	echo __( 'Uninstalling <strong>will permanently delete</strong> all TablePress tables and options from the database.', 'tablepress' ) . '<br />'
+	           	. __( 'It is recommended that you create a backup of the tables (by exporting the tables in the JSON format), in case you later change your mind.', 'tablepress' ) . '<br />'
+	           	. __( 'You will manually need to remove the plugin\'s files from the plugin folder afterwards.', 'tablepress' ) . '<br />'
+	           	. __( 'Be very careful with this and only click the button if you know what you are doing!', 'tablepress' );
+		?></p>
+	    <p><a href="<?php echo TablePress::url( array( 'action' => 'uninstall_tablepress' ), true, 'admin-post.php' ); ?>" id="uninstall-tablepress" class="button"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></a></p>
+        <?php
 	}
 
 	/**

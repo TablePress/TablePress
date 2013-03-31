@@ -56,4 +56,16 @@ jQuery(document).ready( function($) {
 		$(this).find( 'input, select, textarea' ).prop( 'disabled', false );
 	} );
 
+	/**
+	 * Require double confirmation when wanting to uninstall TablePress
+	 *
+	 * @since 1.0.0
+	 */
+    $( '#uninstall-tablepress' ).on( 'click', function() {
+        if ( confirm( tablepress_strings.uninstall_warning_1 ) )
+            return confirm( tablepress_strings.uninstall_warning_1 );
+        else
+            return false;
+    } );
+
 } );

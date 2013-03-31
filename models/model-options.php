@@ -441,4 +441,14 @@ class TablePress_Options_Model extends TablePress_Model {
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
 
+	/**
+	 * Delete the WP_Option and the user option of the model
+	 *
+	 * @since 1.0.0
+	 */
+	public function destroy() {
+		$this->plugin_options->delete();
+		$this->user_options->delete_for_all_users();
+	}
+
 } // class TablePress_Options_Model

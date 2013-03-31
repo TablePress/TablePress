@@ -388,6 +388,27 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
+	 * Delete all tables
+	 *
+	 * @since 1.0.0
+	 */
+	public function delete_all() {
+		$tables = $this->tables->get();
+		if ( empty( $tables['table_post'] ) )
+			return;
+
+		foreach ( $tables['table_post'] as $table_id => $post_id ) {
+			$table_id = (string)$table_id;
+			$this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
+			unset( $tables['table_post'][ $table_id ] );
+			$this->_invalidate_table_output_cache( $table_id ); // invalidate table output caches that belong to this table
+		}
+
+		$this->tables->update( $tables );
+		$this->_flush_caching_plugins_caches(); // Flush caching plugins' caches
+	}
+
+	/**
 	 * Check if a table ID exists in the list of tables (this does not guarantee that the post with the table data exists!)
 	 *
 	 * @since 1.0.0
@@ -922,6 +943,15 @@ class TablePress_Table_Model extends TablePress_Model {
 			}
 			delete_transient( $caches_list_transient_name );
 		}
+	}
+
+	/**
+	 * Delete the WP_Option of the model
+	 *
+	 * @since 1.0.0
+	 */
+	public function destroy() {
+		$this->tables->delete();
 	}
 
 } // class TablePress_Table_Model
