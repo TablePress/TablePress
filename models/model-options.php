@@ -322,7 +322,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
  	 * @param string $type "normal" version or "minified" version
-	 * @param string $location "path" or "url",  for file path or URL
+	 * @param string $location "path" or "url", for file path or URL
 	 * @return string Full file path or full URL for the "Custom CSS" file
 	*/
 	public function get_custom_css_location( $type, $location ) {

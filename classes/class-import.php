@@ -169,7 +169,7 @@ class TablePress_Import {
 		$errors = libxml_get_errors();
 		libxml_clear_errors();
 		if ( ! empty( $errors ) ) {
-			$output = '<b>' . __( 'The imported file contains errors:', 'tablepress' ) . '</b><br /><br />';
+			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . '</strong><br /><br />';
 			foreach ( $errors as $error ) {
 				switch ( $error->level ) {
 					case LIBXML_ERR_WARNING:

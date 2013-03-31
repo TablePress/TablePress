@@ -1470,7 +1470,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// array key is the same in both plugins for the following options
 		foreach ( array( 'alternating_row_colors', 'row_hover',
 			'print_name', 'print_name_position', 'print_description', 'print_description_position',
-			'datatables_sort',  'datatables_filter', 'datatables_paginate',
+			'datatables_sort', 'datatables_filter', 'datatables_paginate',
 			'datatables_lengthchange', 'datatables_paginate_entries', 'datatables_info'
 		) as $_option ) {
 			if ( isset( $wptr_table['options'][ $_option ] ) )
