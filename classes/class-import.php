@@ -183,7 +183,7 @@ class TablePress_Import {
 						break;
 				}
 			}
-			wp_die( $output, 'Import Error', array( 'back_link' => true ) );
+			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
 		}
 
 		$table = $table_html->body->table;
