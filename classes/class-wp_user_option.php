@@ -80,7 +80,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 		if ( ! is_user_logged_in() )
 			return false;
 
-		return delete_option( get_current_user_id(), $option_name, false );
+		return delete_user_option( get_current_user_id(), $option_name, false );
 	}
 
 } // class TablePress_WP_User_Option
