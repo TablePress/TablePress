@@ -1734,12 +1734,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_get_action_uninstall_tablepress() {
 		TablePress::check_nonce( 'uninstall_tablepress' );
 
-		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) )
+		$plugin = TABLEPRESS_BASENAME;
+
+		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) || is_plugin_active_for_network( $plugin ) )
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 
-		// Deactivate TablePress
-		$plugin = TABLEPRESS_BASENAME;
-		deactivate_plugins( $plugin );
+		// Deactivate TablePress for the site (but not for the network)
+		deactivate_plugins( $plugin, false, false );
 		update_option( 'recently_activated', array( $plugin => time() ) + (array) get_option( 'recently_activated', array() ) );
 
 		// Delete all tables and options
