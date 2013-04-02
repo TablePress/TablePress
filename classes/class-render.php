@@ -745,6 +745,12 @@ body {
 .tablepress .row-hover tr:hover td {
 	background-color: #f3f3f3;
 }
+.tablepress img {
+	margin: 0;
+	padding: 0;
+	border: none;
+	max-width: none;
+}
 </style>
 CSS;
 	}
