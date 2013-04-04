@@ -441,6 +441,56 @@ class TablePress_Options_Model extends TablePress_Model {
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
 
+
+	/**
+	 * Delete the "Custom CSS" files, of possible
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool True on success, false on failure
+	 */
+	public function delete_custom_css_files() {
+		// Start capturing the output, to later prevent it
+		ob_start();
+
+		$url = ''; // same page
+		$credentials = request_filesystem_credentials( $url, '', false, false, null );
+		// do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
+		// or, if we have credentials, are they valid?
+		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) {
+			ob_end_clean();
+			return false;
+		}
+
+		// we have valid access to the filesystem now -> try to save the file
+		$filename = $this->get_custom_css_location( 'normal', 'path' );
+		$filename_min = $this->get_custom_css_location( 'minified', 'path' );
+		// Check if file name is valid (0 means yes)
+		if ( 0 !== validate_file( $filename ) || 0 !== validate_file( $filename_min ) )
+			return false;
+
+		global $wp_filesystem;
+
+		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
+		// We need to account for that by replacing the path difference in the filename
+		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
+		if ( '' != $path_difference ) {
+			$filename = str_replace( $path_difference, '', $filename );
+			$filename_min = str_replace( $path_difference, '', $filename_min );
+		}
+
+		$result = $result_min = true;
+		if ( $wp_filesystem->exists( $filename ) )
+			$result = $wp_filesystem->delete( $filename );
+		if ( $wp_filesystem->exists( $filename_min ) )
+			$result_min = $wp_filesystem->delete( $filename_min );
+
+		if ( ! $result || ! $result_min )
+			return false;
+
+		return true;
+	}
+
 	/**
 	 * Delete the WP_Option and the user option of the model
 	 *

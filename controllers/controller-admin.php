@@ -1743,19 +1743,32 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		deactivate_plugins( $plugin, false, false );
 		update_option( 'recently_activated', array( $plugin => time() ) + (array) get_option( 'recently_activated', array() ) );
 
-		// Delete all tables and options
+		// Delete all tables, "Custom CSS" files, and options
 		$this->model_table->delete_all();
+		$css_files_deleted = $this->model_options->delete_custom_css_files();
 		$this->model_table->destroy();
 		$this->model_options->destroy();
-		// @TODO: Delete "Custom CSS" files
 
 		$this->init_i18n_support();
 
-		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />'
-			. __( 'All tables, data, and options were deleted. You may now manually delete the plugin\'s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page.', 'tablepress' )
-			. "</p>\n<p>"
-			. '<a class="button" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . __( 'Go to &#8220;Plugins&#8221; page', 'tablepress' ) . '</a> '
-			. '<a class="button" href="' . esc_url( admin_url( 'index.php' ) ) . '">' . __( 'Go to Dashboard', 'tablepress' ) . '</a>';
+		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />';
+		$output .= __( 'All tables, data, and options were deleted.', 'tablepress' );
+		if ( is_multisite() )
+			$output .= ' ' . __( 'You may now ask the network admin to delete the plugin\'s folder <code>tablepress</code> from the server, if no other site in the network uses it.', 'tablepress' );
+		else
+			$output .= ' ' . __( 'You may now manually delete the plugin\'s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page.', 'tablepress' );
+		if ( $css_files_deleted ) {
+			$output .= ' ' . __( 'Your TablePress &#8220;Custom CSS&#8221; files have been deleted automatically.', 'tablepress' );
+		} else {
+			if ( is_multisite() )
+				$output .= ' ' . __( 'Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files from the server.', 'tablepress' );
+			else
+				$output .= ' ' . __( 'You may now also delete your TablePress &#8220;Custom CSS&#8221; files in the <code>wp-content</code> folder.', 'tablepress' );
+		}
+		$output .= "</p>\n<p>";
+		if ( ! is_multisite() || is_super_admin() )
+			$output .= '<a class="button" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . __( 'Go to &#8220;Plugins&#8221; page', 'tablepress' ) . '</a> ';
+		$output .= '<a class="button" href="' . esc_url( admin_url( 'index.php' ) ) . '">' . __( 'Go to Dashboard', 'tablepress' ) . '</a>';
 
 		wp_die( $output, __( 'Uninstall TablePress', 'tablepress' ), array( 'response' => 200, 'back_link' => false ) );
 	}
