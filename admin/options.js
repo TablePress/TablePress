@@ -63,7 +63,7 @@ jQuery(document).ready( function($) {
 	 */
     $( '#uninstall-tablepress' ).on( 'click', function() {
         if ( confirm( tablepress_strings.uninstall_warning_1 ) )
-            return confirm( tablepress_strings.uninstall_warning_1 );
+            return confirm( tablepress_strings.uninstall_warning_2 );
         else
             return false;
     } );
