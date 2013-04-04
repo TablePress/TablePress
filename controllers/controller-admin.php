@@ -1752,9 +1752,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->init_i18n_support();
 
 		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />'
-			. __( 'All tables, data, and options were deleted. You may now manually delete the plugin\'s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the "Delete" link for TablePress on the WordPress "Plugins" page.', 'tablepress' )
+			. __( 'All tables, data, and options were deleted. You may now manually delete the plugin\'s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page.', 'tablepress' )
 			. "</p>\n<p>"
-			. '<a class="button" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . __( 'Go to Plugins page', 'tablepress' ) . '</a> '
+			. '<a class="button" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . __( 'Go to &#8220;Plugins&#8221; page', 'tablepress' ) . '</a> '
 			. '<a class="button" href="' . esc_url( admin_url( 'index.php' ) ) . '">' . __( 'Go to Dashboard', 'tablepress' ) . '</a>';
 
 		wp_die( $output, __( 'Uninstall TablePress', 'tablepress' ), array( 'response' => 200, 'back_link' => false ) );
