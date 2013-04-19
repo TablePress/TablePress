@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v0.8.1-beta\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-04-15 18:25:34+00:00\n"
-"PO-Revision-Date: 2013-04-17 22:44+0100\n"
+"POT-Creation-Date: 2013-04-17 23:03+0100\n"
+"PO-Revision-Date: 2013-04-17 23:03+0100\n"
 "Last-Translator: sle <fooddrink@fooddrink.sk>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,7 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:79
+#, php-format
 msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
 msgstr "Podporte plugin svojím <a href=\"%s\">príspevkom</a>!"
 
@@ -66,6 +67,7 @@ msgstr "Importované súbory obsahujú chyby:"
 
 # @ tablepress
 #: classes/class-render.php:382
+#, php-format
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr "<!-- Tabuľka s ID %s je prázdna! -->"
 
@@ -82,6 +84,7 @@ msgstr "Pomoc Tablepress"
 
 # @ tablepress
 #: classes/class-view.php:112
+#, php-format
 msgid ""
 "More information about TablePress can be found on the <a href=\"%1$s"
 "\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress "
@@ -92,12 +95,14 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:113 views/view-about.php:106
+#, php-format
 msgid ""
 "For technical information, please see the <a href=\"%s\">documentation</a>."
 msgstr "Pre technické informácie pozrite <a href=\"%s\">dokumentáciu</a>."
 
 # @ tablepress
 #: classes/class-view.php:114
+#, php-format
 msgid ""
 "<a href=\"%1$s\">Support</a> is provided through the <a href=\"%2$s"
 "\">WordPress Support Forums</a>."
@@ -107,6 +112,7 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:115 views/view-about.php:139
+#, php-format
 msgid ""
 "Before asking for support, please carefully read the <a href=\"%s"
 "\">Frequently Asked Questions</a>, where you will find answers to the most "
@@ -118,6 +124,7 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:116
+#, php-format
 msgid ""
 "If you like the plugin, <a href=\"%1$s\"><strong>a donation</strong></a> is "
 "recommended."
@@ -135,6 +142,7 @@ msgstr "Pre viac informácií:"
 #: views/view-editor_button_thickbox.php:71
 #: views/view-editor_button_thickbox.php:132
 #: views/view-options_custom_css.php:36 views/view-preview_table.php:55
+#, php-format
 msgid "%1$s &lsaquo; %2$s"
 msgstr "%1$s &lsaquo; %2$s"
 
@@ -147,8 +155,6 @@ msgstr[1] "Skutočne chcete vymazať túto tabuľku?"
 msgstr[2] "Skutočne chcete vymazať tieto tabuľky?"
 
 # @ tablepress
-#. #-#-#-#-#  plugin.pot (TablePress 0.9-RC)  #-#-#-#-#
-#. Plugin Name of the plugin/theme
 #: classes/class-view.php:384
 msgid "TablePress"
 msgstr "TablePress"
@@ -258,9 +264,8 @@ msgstr "Francúzky"
 
 # @ tablepress
 #: controllers/controller-admin.php:477
-#, fuzzy
 msgid "Polish"
-msgstr "Anglicky"
+msgstr "Poľsky"
 
 #: controllers/controller-admin.php:482
 msgid "Slovak"
@@ -356,9 +361,8 @@ msgstr "Tabuľku nemožno načítať."
 
 # @ tablepress
 #: controllers/controller-admin.php:1754
-#, fuzzy
 msgid "TablePress was uninstalled successfully."
-msgstr "Tabuľka bola úspešne uložená."
+msgstr "Tabuľka bola úspešne odinštalovaná."
 
 #: controllers/controller-admin.php:1755
 msgid "All tables, data, and options were deleted."
@@ -386,11 +390,10 @@ msgstr ""
 
 # @ tablepress
 #: controllers/controller-admin.php:1761
-#, fuzzy
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
-msgstr "Potom vaše &#8220;Vlastné CSS&#8221; bude načítaný inline."
+msgstr "Potom vaše &#8220;Vlastné CSS&#8221; budú vymazané automaticky."
 
 #: controllers/controller-admin.php:1764
 msgid ""
@@ -410,9 +413,8 @@ msgstr ""
 
 # @ tablepress
 #: controllers/controller-admin.php:1770
-#, fuzzy
 msgid "Go to &#8220;Plugins&#8221; page"
-msgstr "Export &#8220;%s&#8221;"
+msgstr "Prejdite na &#8220;Moduly&#8221; stránku"
 
 #: controllers/controller-admin.php:1771
 msgid "Go to Dashboard"
@@ -421,9 +423,8 @@ msgstr "Prejsť na Nástenku"
 # @ tablepress
 #: controllers/controller-admin.php:1773 views/view-options.php:185
 #: views/view-options.php:192
-#, fuzzy
 msgid "Uninstall TablePress"
-msgstr "O Tablepress"
+msgstr "Odinštalovať TablePress"
 
 # @ tablepress
 #: controllers/controller-admin_ajax.php:229 views/view-preview_table.php:66
@@ -445,6 +446,7 @@ msgstr ""
 
 # @ tablepress
 #: controllers/controller-admin_ajax.php:232 views/view-preview_table.php:67
+#, php-format
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it into the editor."
@@ -454,6 +456,7 @@ msgstr ""
 
 # @ tablepress
 #: controllers/controller-frontend.php:458 views/view-list.php:479
+#, php-format
 msgid "%s ago"
 msgstr "%s pred"
 
@@ -465,6 +468,7 @@ msgstr "(bez mena)"
 
 # @ tablepress
 #: models/model-table.php:347
+#, php-format
 msgid "Copy of %s"
 msgstr "Kópia %s"
 
@@ -582,6 +586,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:85 views/view-list.php:183
+#, php-format
 msgid ""
 "To insert a table into a page, post, or text widget, copy its Shortcode %s "
 "and paste it at the desired place in the editor."
@@ -591,6 +596,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:86 views/view-list.php:185
+#, php-format
 msgid ""
 "You can also click the &#8220;%s&#8221; button in the editor toolbar to "
 "select and insert a table."
@@ -623,6 +629,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:92
+#, php-format
 msgid ""
 "Please see the <a href=\"%s\">documentation</a> for a list of these "
 "selectors and for styling examples."
@@ -632,6 +639,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:105
+#, php-format
 msgid ""
 "More information about TablePress can be found on the <a href=\"%s"
 "\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress "
@@ -643,6 +651,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:119
+#, php-format
 msgid ""
 "This plugin was written and developed by <a href=\"%s\">Tobias Bäthge</a>."
 msgstr "Tento plugin napísal a vyvinul <a href=\"%s\">Tobias Bäthge</a>."
@@ -656,6 +665,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:122
+#, php-format
 msgid ""
 "If you like the plugin, <a href=\"%s\"><strong>giving a donation</strong></"
 "a> is recommended."
@@ -664,6 +674,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:123
+#, php-format
 msgid ""
 "Please rate and review the plugin in the <a href=\"%s\">WordPress Plugin "
 "Directory</a>."
@@ -682,6 +693,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:138
+#, php-format
 msgid ""
 "<a href=\"%s\">Support</a> is provided through the <a href=\"%s\">WordPress "
 "Support Forums</a>."
@@ -691,6 +703,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:142
+#, php-format
 msgid ""
 "If you do not find an answer there, please <a href=\"%s\">open a new thread</"
 "a> in the WordPress Support Forums."
@@ -723,6 +736,7 @@ msgstr "Vďaka prekladateľom:"
 
 # @ tablepress
 #: views/view-about.php:195
+#, php-format
 msgid "%s (thanks to %s)"
 msgstr "%s (dakujem %s)"
 
@@ -767,11 +781,6 @@ msgid "Table Name"
 msgstr "Meno tabuľky"
 
 # @ tablepress
-#: views/view-add.php:72
-msgid "Enter Table Name here"
-msgstr "Zadajte názov tabuľky"
-
-# @ tablepress
 #: views/view-add.php:73
 msgid "The name or title of your table."
 msgstr "Meno alebo názov tabuľky."
@@ -801,12 +810,6 @@ msgstr "Popis obsahu tabuľky."
 #: views/view-add.php:81
 msgid "Number of Rows"
 msgstr "Počet riadkov"
-
-# @ tablepress
-#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:376
-#: views/view-edit.php:379
-msgid "This field must contain a positive number."
-msgstr "Toto pole musí obsahovať kladné číslo."
 
 # @ tablepress
 #: views/view-add.php:83
@@ -1021,6 +1024,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-edit.php:108
+#, php-format
 msgid "Click the &#8220;%s&#8221; button to insert the image."
 msgstr "Kliknite na &#8220;%s&#8221; tlačidlo pre vloženie obrázku."
 
@@ -1164,15 +1168,6 @@ msgid "Table ID"
 msgstr "ID tabuľky"
 
 # @ tablepress
-#: views/view-edit.php:193
-msgid ""
-"The Table ID can only consist of letters, numbers, hyphens (-), and "
-"underscores (_)."
-msgstr ""
-"ID tabuľky môže obsahovať len písmená, číslice, pomlčky (-), a znak "
-"podčiarknutia (_)."
-
-# @ tablepress
 #: views/view-edit.php:194
 msgid "Shortcode"
 msgstr "Shortcode"
@@ -1184,6 +1179,7 @@ msgstr "Posledné zmeny"
 
 # @ tablepress
 #: views/view-edit.php:208
+#, php-format
 msgid "%1$s by %2$s"
 msgstr "%1$s  %2$s"
 
@@ -1221,11 +1217,6 @@ msgstr "v riadku (colspan)"
 #: views/view-edit.php:336
 msgid "?"
 msgstr "?"
-
-# @ tablepress
-#: views/view-edit.php:336
-msgid "Help on combining cells"
-msgstr "Pomocník pri spájaní buniek"
 
 # @ tablepress
 #: views/view-edit.php:338
@@ -1327,8 +1318,14 @@ msgstr "Zmazať"
 
 # @ tablepress
 #: views/view-edit.php:376
+#, php-format
 msgid "Add %s row(s)"
 msgstr "Pridať %s riadok (riadky)"
+
+# @ tablepress
+#: views/view-edit.php:376 views/view-edit.php:379
+msgid "This field must contain a positive number."
+msgstr "Toto pole musí obsahovať kladné číslo."
 
 # @ tablepress
 #: views/view-edit.php:376 views/view-edit.php:379
@@ -1337,6 +1334,7 @@ msgstr "Pridať"
 
 # @ tablepress
 #: views/view-edit.php:379
+#, php-format
 msgid "Add %s column(s)"
 msgstr "Pridať %s stĺpec (stĺpce)"
 
@@ -1433,6 +1431,7 @@ msgstr "pod"
 
 # @ tablepress
 #: views/view-edit.php:491
+#, php-format
 msgid "The table name shall be written %s the table."
 msgstr "Názov tabuľky sa zobrazí %s tabuľkou."
 
@@ -1443,6 +1442,7 @@ msgstr "Vytlačiť popis tabuľky"
 
 # @ tablepress
 #: views/view-edit.php:501
+#, php-format
 msgid "The table description shall be written %s the table."
 msgstr "Popis tabuľkysa zobrazí %s tabuľkou."
 
@@ -1453,25 +1453,18 @@ msgstr "Extra CSS Triedy"
 
 # @ tablepress
 #: views/view-edit.php:505
-msgid ""
-"This field can only contain letters, numbers, spaces, hyphens (-), and "
-"underscores (_)."
-msgstr ""
-"Toto pole môže obsahovať len písmená, číslice, medzery, pomlčky (-) a "
-"podčiarknutia (_)."
-
-# @ tablepress
-#: views/view-edit.php:505
 msgid "Additional CSS classes for styling purposes can be entered here."
 msgstr "Ďalšie CSS triedy je možné zadať tu."
 
 # @ tablepress
 #: views/view-edit.php:505
+#, php-format
 msgid "This is NOT the place to enter <a href=\"%s\">Custom CSS</a> code!"
 msgstr "Toto nie je miesto pre <a href=\"%s\">Custom CSS</a> kód!"
 
 # @ tablepress
 #: views/view-edit.php:520
+#, php-format
 msgid ""
 "These features and options are only available, when the &#8220;%1$s&#8221; "
 "checkbox in the &#8220;%2$s&#8221; section is checked."
@@ -1531,6 +1524,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-edit.php:538
+#, php-format
 msgid "Show %s rows per page."
 msgstr "Zobraziť %s riadkov na stránku."
 
@@ -1594,6 +1588,7 @@ msgstr "Iba pre pokročilých."
 
 # @ tablepress
 #: views/view-edit.php:572
+#, php-format
 msgid ""
 "On this screen, you can edit the content and structure of the table with the "
 "ID %s."
@@ -1612,6 +1607,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-edit.php:576
+#, php-format
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it at the desired place in the editor."
@@ -1621,9 +1617,8 @@ msgstr ""
 
 # @ tablepress
 #: views/view-edit.php:596
-#, fuzzy
 msgid "TablePress Feature: Moving rows and columns"
-msgstr "TablePress Funkcia: Navigácia"
+msgstr "TablePress Funkcia: Presun riadkov a stĺpcov"
 
 #: views/view-edit.php:597
 msgid ""
@@ -1652,13 +1647,13 @@ msgstr "Tu môžete vložiť tabuľku do príspevku či stránky."
 
 # @ tablepress
 #: views/view-editor_button_thickbox.php:137
-#, fuzzy
+#, php-format
 msgid ""
 "Click the &#8220;%1$s&#8221; button for the desired table to automatically "
 "insert the<br />corresponding Shortcode (%2$s) into the editor."
 msgstr ""
-"Kliknite na &#8220;%s&#8221; tlačidlo pre automatické vloženie shortcode "
-"(%s) pre požadovanú tabuľku <br /> do editora."
+"Kliknite na tlačidlo&#8220;%1$s&#8221; pre požadovanú tabuľku nechať "
+"automaticky vložiť <br /> zodpovedajúce Shortcode (%2$s) do editora.."
 
 # @ tablepress
 #: views/view-editor_button_thickbox.php:137
@@ -1668,6 +1663,7 @@ msgstr "Vložiť shorcode"
 
 # @ tablepress
 #: views/view-editor_button_thickbox.php:141 views/view-list.php:197
+#, php-format
 msgid "Search results for &#8220;%s&#8221;"
 msgstr "Výsledky hľadania pre &#8220;%s&#8221;"
 
@@ -1772,6 +1768,7 @@ msgstr "Pre formát JSON, sú exportované dáta tabuľky a nastavenia tabuľky.
 
 # @ tablepress
 #: views/view-export.php:82 views/view-list.php:553
+#, php-format
 msgid ""
 "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to "
 "get started!"
@@ -1791,6 +1788,7 @@ msgstr "Vybrať všetky"
 
 # @ tablepress
 #: views/view-export.php:118 views/view-import.php:191
+#, php-format
 msgid "ID %1$s: %2$s"
 msgstr "ID %1$s: %2$s"
 
@@ -1868,7 +1866,6 @@ msgstr "Chyba: Údaje v ZIP súboru sú nesprávne."
 
 # @ tablepress
 #: views/view-import.php:54
-#, fuzzy
 msgid ""
 "Error: You selected to replace or append to an existing table, but did not "
 "select a table."
@@ -1938,7 +1935,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-import.php:96
-#, fuzzy
 msgid ""
 "You can also choose to import it as a new table, to replace an existing "
 "table, or to append the rows to an existing table."
@@ -2009,9 +2005,8 @@ msgstr "Import súborov HTML nie je k dispozícii na serveri."
 
 # @ tablepress
 #: views/view-import.php:173
-#, fuzzy
 msgid "Add, Replace, or Append?"
-msgstr "Pridať alebo nahradiť?"
+msgstr "Pridať, nahradiť, alebo pripojiť?"
 
 # @ tablepress
 #: views/view-import.php:175
@@ -2025,15 +2020,13 @@ msgstr "Nahradiť existujúce tabuľky"
 
 # @ tablepress
 #: views/view-import.php:177
-#, fuzzy
 msgid "Append rows to existing table"
-msgstr "Nahradiť existujúce tabuľky"
+msgstr "Pripojiť riadky k existujúcej tabuľke"
 
 # @ tablepress
 #: views/view-import.php:181
-#, fuzzy
 msgid "Table to replace or append to"
-msgstr "Nahradiť tabuľku"
+msgstr "Tabuľku nahradiť alebo pripojiť k"
 
 # @ tablepress
 #: views/view-import.php:184
@@ -2077,7 +2070,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-import.php:221
-#, fuzzy
+#, php-format
 msgid ""
 "Before doing this, it is highly recommended to read the <a href=\"%s"
 "\">migration guide</a> on the TablePress website."
@@ -2161,6 +2154,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:48
+#, php-format
 msgid ""
 "No problem! I still hope you enjoy the benefits that TablePress adds to your "
 "site. If you should change your mind, you'll always find the &#8220;"
@@ -2182,6 +2176,7 @@ msgstr "Ďakujem Vám za použitie TablePress!"
 
 # @ tablepress
 #: views/view-list.php:56
+#, php-format
 msgid ""
 "If you encounter any questions or problems, please visit the <a href=\"%1$s"
 "\">FAQ</a>, the <a href=\"%2$s\">documentation</a>, and the <a href=\"%3$s"
@@ -2222,7 +2217,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:65
-#, fuzzy
+#, php-format
 msgid ""
 "Please follow the <a href=\"%s\">migration guide</a> to move your tables and "
 "then deactivate WP-Table Reloaded!"
@@ -2255,6 +2250,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:75
+#, php-format
 msgid ""
 "If everything works and you are satisfied with the results of managing your "
 "%s table, isn't that worth a coffee or two?"
@@ -2273,6 +2269,7 @@ msgstr[2] ""
 
 # @ tablepress
 #: views/view-list.php:76
+#, php-format
 msgid ""
 "<a href=\"%s\">Donations</a> help me to continue user support and "
 "development of this <em>free</em> software &mdash; things for which I spend "
@@ -2304,17 +2301,20 @@ msgstr "Nie, vďaka. Nepýtajte sa znova."
 
 # @ tablepress
 #: views/view-list.php:84
+#, php-format
 msgid "Thank you for updating to TablePress %s!"
 msgstr "Ďakujeme za aktualizáciu na TablePress %s!"
 
 # @ tablepress
 #: views/view-list.php:87
+#, php-format
 msgid ""
 "Please read the <a href=\"%s\">release announcement</a> for more information."
 msgstr "Prečítajte si prosím <a href=\"%s\">novinky</a> pre viac informácií."
 
 # @ tablepress
 #: views/view-list.php:88
+#, php-format
 msgid ""
 "If you like the new features and enhancements, <a href=\"%s\">giving a "
 "donation</a> towards the further support and development of TablePress is "
@@ -2415,6 +2415,7 @@ msgstr "Posledné úpravy"
 
 # @ tablepress
 #: views/view-list.php:408 views/view-list.php:414
+#, php-format
 msgid "Edit &#8220;%s&#8221;"
 msgstr "Upraviť &#8220;%s&#8221;"
 
@@ -2425,6 +2426,7 @@ msgstr "Zobraziť Shortcode"
 
 # @ tablepress
 #: views/view-list.php:417
+#, php-format
 msgid "Copy &#8220;%s&#8221;"
 msgstr "Kópia &#8220;%s&#8221;"
 
@@ -2435,6 +2437,7 @@ msgstr "Kópia"
 
 # @ tablepress
 #: views/view-list.php:419
+#, php-format
 msgid "Export &#8220;%s&#8221;"
 msgstr "Export &#8220;%s&#8221;"
 
@@ -2446,11 +2449,13 @@ msgstr "Export"
 
 # @ tablepress
 #: views/view-list.php:421
+#, php-format
 msgid "Delete &#8220;%s&#8221;"
 msgstr "Vymazať &#8220;%s&#8221;"
 
 # @ tablepress
 #: views/view-list.php:423
+#, php-format
 msgid "Show a preview of &#8220;%s&#8221;"
 msgstr "Zobraziť náhľad &#8220;%s&#8221;"
 
@@ -2484,19 +2489,20 @@ msgstr "Použiť"
 
 # @ tablepress
 #: views/view-list.php:555
+#, php-format
 msgid "You should <a href=\"%s\">add</a> a table to get started!"
 msgstr "Na začiatok <a href=\"%s\">pridajte</a> tabuľku!"
 
 # @ tablepress
 #: views/view-list.php:557
+#, php-format
 msgid "You should <a href=\"%s\">import</a> a table to get started!"
 msgstr "Na začiatok <a href=\"%s\">importujte</a> tabuľku!"
 
 # @ tablepress
 #: views/view-options.php:38
-#, fuzzy
 msgid "Do you really want to uninstall TablePress and delete ALL data?"
-msgstr "Skutočne chcete vymazať tieto tabuľky?"
+msgstr "Skutočne chcete vymazať Tablepress a vyazať VŠETKY dáta?"
 
 #: views/view-options.php:39
 msgid "Are you really sure?"
@@ -2580,6 +2586,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-options.php:101
+#, php-format
 msgid ""
 "&#8220;Custom CSS&#8221; (<a href=\"%s\">Cascading Style Sheets</a>) can be "
 "used to change the styling or layout of a table."
@@ -2589,11 +2596,13 @@ msgstr ""
 
 # @ tablepress
 #: views/view-options.php:103
+#, php-format
 msgid "You can get styling examples from the <a href=\"%s\">FAQ</a>."
 msgstr "Príklady dizajnu nájdete na <a href=\"%s\">FAQ</a>."
 
 # @ tablepress
 #: views/view-options.php:105
+#, php-format
 msgid ""
 "Information on available CSS selectors can be found in the <a href=\"%s"
 "\">documentation</a>."
@@ -2645,11 +2654,13 @@ msgstr "Umiestnenie v admin menu"
 
 # @ tablepress
 #: views/view-options.php:158
+#, php-format
 msgid "TablePress shall be shown in this section of my admin menu: %s"
 msgstr "TablePress môže byť zobrazený v tejto sekcii admin menu: %s"
 
 # @ tablepress
 #: views/view-options.php:162
+#, php-format
 msgid "WordPress Default (currently %s)"
 msgstr "WordPress predvolené (práve %s)"
 
@@ -2660,6 +2671,7 @@ msgstr "Jazyk pluginu"
 
 # @ tablepress
 #: views/view-options.php:171
+#, php-format
 msgid "I want to use TablePress in this language: %s"
 msgstr "Chcem používať TablePress v tomto jazyku: %s"
 
@@ -2711,6 +2723,7 @@ msgstr ""
 
 # @ tablepress
 #: views/view-options_custom_css.php:106
+#, php-format
 msgid ""
 "To try again with the same method that you use for updating plugins or "
 "themes, please fill out the &#8220;%s&#8221; form below."
@@ -2764,29 +2777,3 @@ msgid ""
 msgstr ""
 "Vlastnosti DataTables JavaScript knižnice nie je tiež k dispozícii v tomto "
 "náhľade!"
-
-# @ tablepress
-#. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
-
-# @ tablepress
-#. Description of the plugin/theme
-msgid ""
-"TablePress enables you to create and manage tables in your posts and pages, "
-"without having to write HTML code, and it adds valuable functions for your "
-"visitors."
-msgstr ""
-"TablePress umožňuje vytvárať a spravovať tabuľky vo vašich príspevkoch a "
-"stránkach, bez nutnosti písať kód HTML a dodáva cenné funkcie pre vašich "
-"návštevníkov."
-
-# @ tablepress
-#. Author of the plugin/theme
-msgid "Tobias Bäthge"
-msgstr "Tobias Bäthge"
-
-# @ tablepress
-#. Author URI of the plugin/theme
-msgid "http://tobias.baethge.com/"
-msgstr "http://tobias.baethge.com/"
