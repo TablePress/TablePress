@@ -723,6 +723,7 @@ class csstidy {
 							$this->status = 'iv';
 							if (!$this->get_cfg('discard_invalid_properties') || $this->property_is_valid($this->property)) {
 								$this->property = $this->css_new_property($this->at,$this->selector,$this->property);
+								$this->property = strtolower( $this->property );
 								$this->_add_token(PROPERTY, $this->property);
 							}
 						} elseif ($string{$i} === '/' && @$string{$i + 1} === '*' && $this->property == '') {
@@ -1252,7 +1253,9 @@ class csstidy {
 	 * @version 1.0
 	 */
 	public function property_is_valid($property) {
-		if (in_array(trim($property), $this->data['csstidy']['multiple_properties'])) $property = trim($property);
+		$property = strtolower( $property );
+		if (in_array(trim($property), $this->data['csstidy']['multiple_properties']))
+			$property = trim($property);
 		$all_properties = & $this->data['csstidy']['all_properties'];
 		return (isset($all_properties[$property]) && strpos($all_properties[$property], strtoupper($this->get_cfg('css_level'))) !== false );
 	}
