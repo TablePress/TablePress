@@ -290,7 +290,7 @@ JS;
 		$default_shortcode_atts = $_render->get_default_render_options();
 		$default_shortcode_atts = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_shortcode_atts );
 		// parse Shortcode attributes, only allow those that are specified
-		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts );
+		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts ); // Optional third argument left out on purpose. Use filter in the next line instead.
 		$shortcode_atts = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $shortcode_atts );
 
 		// check, if a table with the given ID exists
@@ -412,7 +412,7 @@ JS;
 				'format' => ''
 		);
 		$default_shortcode_atts = apply_filters( 'tablepress_shortcode_table_info_default_shortcode_atts', $default_shortcode_atts );
-		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts );
+		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts ); // Optional third argument left out on purpose. Use filter in the next line instead.
 		$shortcode_atts = apply_filters( 'tablepress_shortcode_table_info_shortcode_atts', $shortcode_atts );
 
 		// allow a filter to determine behavior of this function, by overwriting its behavior, just need to return something other than false
