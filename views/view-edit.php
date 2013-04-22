@@ -67,7 +67,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		// See wp-includes/script-loader.php for default parameters
 		$wplink_url = plugins_url( "admin/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
-		wp_register_script( 'wplink', $wplink_url, array( 'jquery', 'wpdialogs' ), TablePress::version, true );
+		wp_enqueue_script( 'wplink', $wplink_url, array( 'jquery', 'wpdialogs' ), TablePress::version, true );
 		wp_localize_script( 'wplink', 'wpLinkL10n', array(
 			'title' => _x( 'Insert/edit link', 'Insert Link dialog', 'tablepress' ),
 			'update' => _x( 'Update', 'Insert Link dialog', 'tablepress' ),
