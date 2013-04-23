@@ -3,8 +3,8 @@ Contributors: TobiasBg
 Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.5
-Tested up to: 3.5.1
-Stable tag: 0.9-RC
+Tested up to: 3.6
+Stable tag: 1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,9 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
+= Version 1.0 =
+Official release with a few fixes and many enhancements and improvements
+
 = Version 0.9-RC =
 Release candidate in which all intended features are included and very stable.
 
@@ -114,6 +117,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.0 =
+This release contains a few bug fixed and many enhancements and new features, and is a recommended update.
 
 = 0.9-RC =
 This release contains many enhancements and bug fixes.

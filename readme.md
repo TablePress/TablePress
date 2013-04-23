@@ -104,3 +104,6 @@ Initial version where most features are ready and pretty stable.
 
 **Version 0.9-RC**
 Release candidate in which all intended features are included and very stable.
+
+**Version 0.9-RC**
+Official release with a few fixes and many enhancements and improvements.
