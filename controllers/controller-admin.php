@@ -163,6 +163,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function add_editor_buttons() {
+		if ( ! current_user_can( 'tablepress_list_tables' ) )
+			return;
+
 		$this->init_i18n_support();
 		add_thickbox(); // usually already loaded by media upload functions
 		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
@@ -1711,6 +1714,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function handle_get_action_editor_button_thickbox() {
 		TablePress::check_nonce( 'editor_button_thickbox' );
+
+		if ( ! current_user_can( 'tablepress_list_tables' ) )
+			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 
 		$this->init_i18n_support();
 
