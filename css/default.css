@@ -227,11 +227,8 @@
 	padding: 0 !important;
 	float: none !important;
 }
-.dataTables_wrapper .sorting div:before,
 .dataTables_wrapper .sorting div:after,
-.dataTables_wrapper .sorting_asc div:before,
 .dataTables_wrapper .sorting_asc div:after,
-.dataTables_wrapper .sorting_desc div:before,
 .dataTables_wrapper .sorting_desc div:after {
 	font-family: TablePress;
 	font-weight: normal;
