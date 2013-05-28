@@ -178,7 +178,7 @@ class EvalMath {
 
 	var $fc = array( // calc functions emulation
 		'average'=>array(-1), 'mean'=>array(-1),
-		'median'=>array(-1),  'mode'=>array(-1),
+		'median'=>array(-1),  'mode'=>array(-1), 'range'=>array(-1),
 		'max'=>array(-1),	  'min'=>array(-1),
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
 		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
@@ -571,6 +571,12 @@ class EvalMathFuncs {
         end( $v );
         return key( $v );
     }
+
+	static function range() {
+		$args = func_get_args();
+        sort( $args );
+		return end( $args ) - reset( $args );
+	}
 
 	static function max() {
 		$args = func_get_args();
