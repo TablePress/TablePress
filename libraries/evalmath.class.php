@@ -180,7 +180,8 @@ class EvalMath {
 		'sin','sinh','arcsin','asin','arcsinh','asinh',
 		'cos','cosh','arccos','acos','arccosh','acosh',
 		'tan','tanh','arctan','atan','arctanh','atanh',
-		'sqrt','abs','ln','log','exp','floor','ceil');
+		'sqrt','abs','ln','log','exp','floor','ceil'
+	);
 
 	var $fc = array( // calc functions emulation
 		'average'=>array(-1), 'mean'=>array(-1),
@@ -189,7 +190,9 @@ class EvalMath {
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
 		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
 		'rand_int'=>array(2), 'rand_float'=>array(0),
-		'arctan2'=>array(2),  'atan2'=>array(2));
+		'arctan2'=>array(2),  'atan2'=>array(2),
+		'if'=>array(3)
+	);
 
 	var $allowimplicitmultiplication;
 
@@ -462,7 +465,8 @@ class EvalMath {
 					for ($i = $count-1; $i >= 0; $i--) {
 						if (is_null($args[] = $stack->pop())) return $this->trigger(MoodleTranslations::get_string('internalerror', 'mathslib'));
 					}
-					if ($fnn == 'mean') $fnn = 'average';
+					if ($fnn == 'if') $fnn = 'func_if';
+					elseif ($fnn == 'mean') $fnn = 'average';
 					elseif ($fnn == 'arctan2') $fnn = 'atan2';
 					$res = call_user_func_array(array('EvalMathFuncs', $fnn), array_reverse($args));
 					if ($res === FALSE) {
@@ -560,6 +564,10 @@ class EvalMathStack {
 
 // spreadsheet functions emulation
 class EvalMathFuncs {
+
+	static function func_if( $condition, $then, $else ) { // "if" is not a valid function name, so prefix it
+		return ( (bool)$condition ? $then : $else );
+	}
 
 	static function average() {
 		$args = func_get_args();
