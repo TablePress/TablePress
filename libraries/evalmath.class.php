@@ -177,7 +177,8 @@ class EvalMath {
 		'sqrt','abs','ln','log','exp','floor','ceil');
 
 	var $fc = array( // calc functions emulation
-		'average'=>array(-1), 'max'=>array(-1),	 'min'=>array(-1),
+		'average'=>array(-1), 'mean'=>array(-1),
+		'max'=>array(-1),	  'min'=>array(-1),
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
 		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
 		'rand_int'=>array(2), 'rand_float'=>array(0));
@@ -450,6 +451,7 @@ class EvalMath {
 					for ($i = $count-1; $i >= 0; $i--) {
 						if (is_null($args[] = $stack->pop())) return $this->trigger(MoodleTranslations::get_string('internalerror', 'mathslib'));
 					}
+					if ($fnn == 'mean') $fnn = 'average';
 					$res = call_user_func_array(array('EvalMathFuncs', $fnn), array_reverse($args));
 					if ($res === FALSE) {
 						return $this->trigger(MoodleTranslations::get_string('internalerror', 'mathslib'));
