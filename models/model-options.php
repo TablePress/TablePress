@@ -215,7 +215,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		// Capabilities for all roles
 		$roles = array( 'administrator', 'editor', 'author' );
 		foreach ( $roles as $role ) {
-			$role =& get_role( $role );
+			$role = get_role( $role );
 			if ( empty( $role ) )
 				continue;
 
@@ -236,7 +236,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		}
 
 		// Capabilities for single roles
-		$role =& get_role( 'administrator' );
+		$role = get_role( 'administrator' );
 		if ( ! empty( $role ) ) {
 			$role->add_cap( 'tablepress_import_tables_wptr' );
 			$role->add_cap( 'tablepress_edit_options' );
