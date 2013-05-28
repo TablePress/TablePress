@@ -19,7 +19,7 @@ If you are currently using WP-Table Reloaded, it is recommended that you switch 
 
 ## Screenshots
 
-Screenshots of the TablePress interface are available at http://wordpress.org/extend/plugins/tablepress/screenshots/.
+Screenshots of the TablePress interface are available at http://wordpress.org/plugins/tablepress/screenshots/.
 
 ## Installation
 
@@ -53,7 +53,7 @@ The plugin currently includes the following languages:
 
 Chinese (Simplified), English, French, German, Polish, Slovak, and Spanish.
 
-I'd really appreciate it, if you would translate the plugin into your language! Using Heiko Rabe's WordPress plugin [Codestyling Localization](http://wordpress.org/extend/plugins/codestyling-localization/) that really is as easy as pie. Just install the plugin, add your language, create the .po-file, translate the strings in the comfortable editor and create the .mo-file. It will automatically be saved in TablePress's plugin folder. If you send me the .mo- and .po-file, I will gladly include them into future plugin releases.
+I'd really appreciate it, if you would translate the plugin into your language! Using Heiko Rabe's WordPress plugin [Codestyling Localization](http://wordpress.org/plugins/codestyling-localization/) that really is as easy as pie. Just install the plugin, add your language, create the .po-file, translate the strings in the comfortable editor and create the .mo-file. It will automatically be saved in TablePress's plugin folder. If you send me the .mo- and .po-file, I will gladly include them into future plugin releases.
 
 There is also a .pot-file available to use in the "i18n" subfolder. Of course you can also use [poEdit](http://www.poedit.net/) as your editor, which also works nicely.
 
