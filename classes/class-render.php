@@ -455,7 +455,7 @@ class TablePress_Render {
 				$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;margin:0;padding:0;"';
 			else
 				$caption .= '<br />';
-			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\" title=\"" . __( 'Edit', 'default' ) . '">' . __( 'Edit', 'default' ) . '</a>';
+			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\">" . __( 'Edit', 'default' ) . '</a>';
 		}
 		if ( ! empty( $caption ) )
 			$caption = "<caption{$caption_class}{$caption_style}>{$caption}</caption>\n";

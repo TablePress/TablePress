@@ -271,7 +271,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_plugin_action_links( $links ) {
 		if ( current_user_can( 'tablepress_list_tables' ) )
-			$links[] = '<a href="' . TablePress::url() . '" title="' . __( 'TablePress Plugin page', 'tablepress' ) . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
+			$links[] = '<a href="' . TablePress::url() . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
 		return $links;
 	}
 	/**
@@ -286,8 +286,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_plugin_row_meta( $links, $file ) {
 		if ( TABLEPRESS_BASENAME == $file ) {
 			$links[] = '<a href="http://tablepress.org/faq/" title="' . __( 'Frequently Asked Questions', 'tablepress' ) . '">' . __( 'FAQ', 'tablepress' ) . '</a>';
-			$links[] = '<a href="http://tablepress.org/documentation/" title="' . __( 'Plugin Documentation', 'tablepress' ) . '">' . __( 'Documentation', 'tablepress' ) . '</a>';
-			$links[] = '<a href="http://tablepress.org/support/" title="' . __( 'Support', 'tablepress' ) . '">' . __( 'Support', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tablepress.org/documentation/">' . __( 'Documentation', 'tablepress' ) . '</a>';
+			$links[] = '<a href="http://tablepress.org/support/">' . __( 'Support', 'tablepress' ) . '</a>';
 			$links[] = '<a href="http://tablepress.org/donate/" title="' . __( 'Support TablePress with your donation!', 'tablepress' ) . '"><strong>' . __( 'Donate', 'tablepress' ) . '</strong></a>';
 		}
 		return $links;
