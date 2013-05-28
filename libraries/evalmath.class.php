@@ -141,8 +141,14 @@ class MoodleTranslations {
 						continue;
 					}
 					if (is_object($value) or is_array($value)) {
-						// we support just string as value
-						continue;
+						$value = (array)$value;
+						if ( count( $value ) > 1 ) {
+							$value = implode( ' or ', $value );
+						} else {
+							$value = (string)$value[0];
+							if ( '-1' == $value )
+								$value = 'at least 1';
+						}
 					}
 					$search[]  = '{$a->'.$key.'}';
 					$replace[] = (string)$value;
@@ -391,10 +397,13 @@ class EvalMath {
 					$stack->pop();// 1
 					$fn = $stack->pop();
 					$fnn = $matches[1]; // get the function name
-					$counts = $this->fc[$fnn];
+					if ( isset( $this->fc[$fnn] ) )
+						$counts = $this->fc[$fnn]; // custom function
+					else
+						$counts = array(1); // default count for built-in functions
 					if (!in_array(0, $counts)){
 						$a= new stdClass();
-						$a->expected = $this->fc[$fnn];
+						$a->expected = $counts;
 						$a->given = 0;
 						return $this->trigger(MoodleTranslations::get_string('wrongnumberofarguments', 'mathslib', $a));
 					}
