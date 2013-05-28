@@ -178,7 +178,7 @@ class EvalMath {
 
 	var $fc = array( // calc functions emulation
 		'average'=>array(-1), 'mean'=>array(-1),
-		'median'=>array(-1),
+		'median'=>array(-1),  'mode'=>array(-1),
 		'max'=>array(-1),	  'min'=>array(-1),
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
 		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
@@ -563,6 +563,14 @@ class EvalMathFuncs {
 		$middle = floor( count( $args ) / 2 ); // upper median for even counts
         return $args[ $middle ];
 	}
+
+	static function mode() {
+		$args = func_get_args();
+		$v = array_count_values( $args );
+        asort( $v );
+        end( $v );
+        return key( $v );
+    }
 
 	static function max() {
 		$args = func_get_args();
