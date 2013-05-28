@@ -181,7 +181,8 @@ class EvalMath {
 		'max'=>array(-1),	  'min'=>array(-1),
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
 		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
-		'rand_int'=>array(2), 'rand_float'=>array(0));
+		'rand_int'=>array(2), 'rand_float'=>array(0),
+		'arctan2'=>array(2),  'atan2'=>array(2));
 
 	var $allowimplicitmultiplication;
 
@@ -452,6 +453,7 @@ class EvalMath {
 						if (is_null($args[] = $stack->pop())) return $this->trigger(MoodleTranslations::get_string('internalerror', 'mathslib'));
 					}
 					if ($fnn == 'mean') $fnn = 'average';
+					elseif ($fnn == 'arctan2') $fnn = 'atan2';
 					$res = call_user_func_array(array('EvalMathFuncs', $fnn), array_reverse($args));
 					if ($res === FALSE) {
 						return $this->trigger(MoodleTranslations::get_string('internalerror', 'mathslib'));
@@ -586,6 +588,10 @@ class EvalMathFuncs {
 
 	static function power($op1, $op2) {
 		return pow($op1, $op2);
+	}
+
+	static function atan2($op1, $op2) {
+		return atan2($op1, $op2);
 	}
 
 	static function round($val, $precision = 0) {
