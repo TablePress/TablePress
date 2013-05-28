@@ -24,6 +24,7 @@ additional modifications by Tobias Bäthge:
 - changed get_string() to MoodleTranslations::get_string(), which is a custom localization from Moodle
 - allow comparisons (x>4, x=5, etc.)
 - use array_sum() instead of loop in EvalMathFuncs::sum()
+- add "product()" function
 
 ================================================================================
 
@@ -178,8 +179,8 @@ class EvalMath {
 	var $fc = array( // calc functions emulation
 		'average'=>array(-1), 'max'=>array(-1),	 'min'=>array(-1),
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
-		'round'=>array(1, 2), 'sum'=>array(-1), 'rand_int'=>array(2),
-		'rand_float'=>array(0));
+		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
+		'rand_int'=>array(2), 'rand_float'=>array(0));
 
 	var $allowimplicitmultiplication;
 
@@ -591,6 +592,10 @@ class EvalMathFuncs {
 
 	static function sum() {
 		return array_sum( func_get_args() );
+	}
+
+	static function product() {
+		return array_product( func_get_args() );
 	}
 
 	protected static $randomseed = null;
