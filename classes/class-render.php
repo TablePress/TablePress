@@ -265,9 +265,6 @@ class TablePress_Render {
 
 		$expression = substr( $content, 1 );
 
-		if ( false !== strpos( $expression, '=' ) )
-			return '!ERROR! Too many "="';
-
 		$replaced_references = $replaced_ranges = array();
 
 		// remove all whitespace characters
