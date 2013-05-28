@@ -1,0 +1,2462 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TablePress v1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-05-15 22:31:46+0000\n"
+"Last-Translator: nethar <nethar@nethar.is>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: Icelandic\n"
+"X-Poedit-Country: ICELAND\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: classes/class-admin-page-helper.php:78
+#@ tablepress
+msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgstr "Takk fyrir að nota <a href=\"http://tablepress.org/\">TablePress</a>."
+
+#: classes/class-admin-page-helper.php:79
+#, php-format
+#@ tablepress
+msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
+msgstr "Styrktu Tablepress  <a href=\"%s\">Styrkja</a>!"
+
+#: classes/class-export.php:58
+#: classes/class-import.php:83
+#@ tablepress
+msgid "CSV - Character-Separated Values"
+msgstr "CSV - Character-Separated Values"
+
+#: classes/class-export.php:59
+#: classes/class-import.php:85
+#@ tablepress
+msgid "HTML - Hypertext Markup Language"
+msgstr "HTML - Hypertext Markup Language"
+
+#: classes/class-export.php:60
+#: classes/class-import.php:86
+#@ tablepress
+msgid "JSON - JavaScript Object Notation"
+msgstr "JSON - JavaScript Object Notation"
+
+#: classes/class-export.php:63
+#@ tablepress
+msgid "; (semicolon)"
+msgstr "; (semíkomma)"
+
+#: classes/class-export.php:64
+#@ tablepress
+msgid ", (comma)"
+msgstr ", (komma)"
+
+#: classes/class-export.php:65
+#@ tablepress
+msgid "\\t (tabulator)"
+msgstr "\\t (tabulator)"
+
+#: classes/class-import.php:172
+#@ tablepress
+msgid "The imported file contains errors:"
+msgstr "Skráin inniheldur villuna:"
+
+#: classes/class-render.php:382
+#, php-format
+#@ tablepress
+msgid "<!-- The table with the ID %s is empty! -->"
+msgstr "<!-- Taflan ID %s er tóm! -->"
+
+#: classes/class-render.php:458
+#: views/view-list.php:414
+#@ default
+#@ tablepress
+msgid "Edit"
+msgstr "Breyta"
+
+#: classes/class-view.php:110
+#@ tablepress
+msgid "TablePress Help"
+msgstr "TablePress Hjálp"
+
+#: classes/class-view.php:112
+#, php-format
+#@ tablepress
+msgid "More information about TablePress can be found on the <a href=\"%1$s\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress Plugin Directory</a>."
+msgstr "Nánari upplýsingar er að finna á <a href=\"%1$s\">plugin&#8217; síðunni</a> eða á síðunni <a href=\"%s\">WordPress Plugin Directory</a>."
+
+#: classes/class-view.php:113
+#: views/view-about.php:106
+#, php-format
+#@ tablepress
+msgid "For technical information, please see the <a href=\"%s\">documentation</a>."
+msgstr "Fyrir tæknilegar upplýsingar, skoðaðu <a href=\"%s\">Handbók</a>."
+
+#: classes/class-view.php:114
+#, php-format
+#@ tablepress
+msgid "<a href=\"%1$s\">Support</a> is provided through the <a href=\"%2$s\">WordPress Support Forums</a>."
+msgstr "<a href=\"%1$s\">Hjálp</a> is provided through the <a href=\"%2$s\">WordPress Support Forums</a>."
+
+#: classes/class-view.php:115
+#: views/view-about.php:139
+#, php-format
+#@ tablepress
+msgid "Before asking for support, please carefully read the <a href=\"%s\">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums."
+msgstr "Áður en spurt er um stuðning, vinsamlegast lesið  <a href=\"%s\">Algengar spurningar</a>, þar er að finna svör við algengustu spurningum, og leitið á spjallborðum."
+
+#: classes/class-view.php:116
+#, php-format
+#@ tablepress
+msgid "If you like the plugin, <a href=\"%1$s\"><strong>a donation</strong></a> is recommended."
+msgstr "Ef þér líkar við appið, <a href=\"%1$s\"><strong>styrkið</strong></a> endilega."
+
+#: classes/class-view.php:119
+#@ tablepress
+msgid "For more information:"
+msgstr "Fyrir nánari upplýsingar:"
+
+#: classes/class-view.php:153
+#: views/view-editor_button_thickbox.php:71
+#: views/view-options_custom_css.php:36
+#: views/view-preview_table.php:55
+#, php-format
+#@ tablepress
+msgid "%1$s &lsaquo; %2$s"
+msgstr ""
+
+#: classes/class-view.php:165
+#: classes/class-view.php:166
+#@ tablepress
+msgid "Do you really want to delete this table?"
+msgid_plural "Do you really want to delete these tables?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: plugin header field 'Name'
+#: classes/class-view.php:384
+#: tablepress.php:0
+#@ tablepress
+msgid "TablePress"
+msgstr "Töfluapp"
+
+#: classes/class-view.php:413
+#: views/view-edit.php:399
+#: views/view-edit.php:400
+#: views/view-options.php:54
+#@ tablepress
+msgid "Save Changes"
+msgstr "Vista breytingar"
+
+#: controllers/controller-admin.php:174
+#: views/view-about.php:86
+#: views/view-list.php:185
+#@ tablepress
+msgid "Table"
+msgstr "Tafla"
+
+#: controllers/controller-admin.php:175
+#: controllers/controller-admin.php:176
+#@ tablepress
+msgid "Insert a Table from TablePress"
+msgstr "Bættu við Töflu frá Töfluappi"
+
+#: controllers/controller-admin.php:247
+#@ tablepress
+msgid "TablePress Table"
+msgstr "Töfluapp Tafla"
+
+#: controllers/controller-admin.php:274
+#@ tablepress
+msgid "TablePress Plugin page"
+msgstr "Töfluapp Plugin síða"
+
+#: controllers/controller-admin.php:274
+#@ tablepress
+msgid "Plugin page"
+msgstr "Plugin síða"
+
+#: controllers/controller-admin.php:288
+#@ tablepress
+msgid "Frequently Asked Questions"
+msgstr "Algengar spurningar"
+
+#: controllers/controller-admin.php:288
+#@ tablepress
+msgid "FAQ"
+msgstr "FAQ"
+
+#: controllers/controller-admin.php:289
+#@ tablepress
+msgid "Plugin Documentation"
+msgstr "Plugin skjöl"
+
+#: controllers/controller-admin.php:289
+#@ tablepress
+msgid "Documentation"
+msgstr "Skjöl"
+
+#: controllers/controller-admin.php:290
+#@ tablepress
+msgid "Support"
+msgstr "Stuðningur"
+
+#: controllers/controller-admin.php:291
+#@ tablepress
+msgid "Support TablePress with your donation!"
+msgstr "Styddu Töfluapp með þínum styrkjum!"
+
+#: controllers/controller-admin.php:291
+#@ tablepress
+msgid "Donate"
+msgstr "Styrkja"
+
+#: controllers/controller-admin.php:317
+#: controllers/controller-admin.php:382
+#: controllers/controller-admin.php:700
+#: controllers/controller-admin.php:758
+#: controllers/controller-admin.php:808
+#: controllers/controller-admin.php:961
+#: controllers/controller-admin.php:1034
+#: controllers/controller-admin.php:1044
+#: controllers/controller-admin.php:1579
+#: controllers/controller-admin.php:1606
+#: controllers/controller-admin.php:1641
+#: controllers/controller-admin.php:1675
+#: controllers/controller-admin.php:1719
+#: controllers/controller-admin.php:1746
+#@ default
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: controllers/controller-admin.php:399
+#@ tablepress
+msgctxt "Default CSV delimiter in the translated language (\";\", \",\", or \"tab\")"
+msgid ","
+msgstr ""
+
+#: controllers/controller-admin.php:465
+#@ tablepress
+msgid "English"
+msgstr "Enska"
+
+#: controllers/controller-admin.php:470
+#@ tablepress
+msgid "Spanish"
+msgstr "Spænska"
+
+#: controllers/controller-admin.php:475
+#@ tablepress
+msgid "French"
+msgstr "Franska"
+
+#: controllers/controller-admin.php:480
+#@ tablepress
+msgid "Polish"
+msgstr "Pólska"
+
+#: controllers/controller-admin.php:485
+#@ tablepress
+msgid "Slovak"
+msgstr "Slóvakska"
+
+#: controllers/controller-admin.php:490
+#@ tablepress
+msgid "Chinese (Simplified)"
+msgstr "Kínverska (einfölduð)"
+
+#: controllers/controller-admin.php:542
+#: controllers/controller-admin.php:543
+#: controllers/controller-admin.php:544
+#@ tablepress
+msgid "All Tables"
+msgstr "Allar Töflur"
+
+#: controllers/controller-admin.php:549
+#: controllers/controller-admin.php:550
+#: views/view-add.php:41
+#@ tablepress
+msgid "Add New Table"
+msgstr "Bæta við nýrri töflu"
+
+#: controllers/controller-admin.php:551
+#@ tablepress
+msgid "Add New"
+msgstr "Bæta Nýrri"
+
+#: controllers/controller-admin.php:556
+#@ tablepress
+msgid "Edit Table"
+msgstr "Breyta Töflu"
+
+#: controllers/controller-admin.php:563
+#: controllers/controller-admin.php:564
+#@ tablepress
+msgid "Import a Table"
+msgstr "Sækja Töflu"
+
+#: controllers/controller-admin.php:565
+#@ tablepress
+msgctxt "navigation bar"
+msgid "Import"
+msgstr "Sækja"
+
+#: controllers/controller-admin.php:570
+#: controllers/controller-admin.php:571
+#@ tablepress
+msgid "Export a Table"
+msgstr "Flytja út Töflu"
+
+#: controllers/controller-admin.php:572
+#@ tablepress
+msgctxt "navigation bar"
+msgid "Export"
+msgstr "Flytja út"
+
+#: controllers/controller-admin.php:577
+#: controllers/controller-admin.php:578
+#: controllers/controller-admin.php:579
+#@ tablepress
+msgid "Plugin Options"
+msgstr "Plugin valkostir"
+
+#: controllers/controller-admin.php:584
+#: controllers/controller-admin.php:586
+#@ tablepress
+msgid "About"
+msgstr "Um"
+
+#: controllers/controller-admin.php:585
+#@ tablepress
+msgid "About TablePress"
+msgstr "Um Töfluapp"
+
+#: controllers/controller-admin.php:1114
+#@ tablepress
+msgid "Imported from Manual Input"
+msgstr "Innflutt með handvirkri aðferð"
+
+#: controllers/controller-admin.php:1672
+#: controllers/controller-admin_ajax.php:236
+#@ tablepress
+msgid "The preview could not be loaded."
+msgstr "Þetta sýnishorn gat ekki verið hlaðið."
+
+#: controllers/controller-admin.php:1672
+#: controllers/controller-admin.php:1680
+#: views/view-edit.php:397
+#: views/view-list.php:423
+#: views/view-preview_table.php:55
+#@ tablepress
+msgid "Preview"
+msgstr "Sýnishorn"
+
+#: controllers/controller-admin.php:1680
+#@ tablepress
+msgid "The table could not be loaded."
+msgstr "Þessi tafla gat ekki hlaðist."
+
+#: controllers/controller-admin.php:1760
+#@ tablepress
+msgid "TablePress was uninstalled successfully."
+msgstr "Töfluapp var fjarlægt með góðum árangri."
+
+#: controllers/controller-admin.php:1761
+#@ tablepress
+msgid "All tables, data, and options were deleted."
+msgstr "Allar töflur, gögn og möguleikar voru eyddir."
+
+#: controllers/controller-admin.php:1763
+#@ tablepress
+msgid "You may now ask the network admin to delete the plugin's folder <code>tablepress</code> from the server, if no other site in the network uses it."
+msgstr "Þú mátt núna spurja stjórnanda síðunnar um að eyða plugin möppunni <code>tablepress</code> frá þjóni, ef engin önnur síða hjá þessum þjónustu aðila er að nota það."
+
+#: controllers/controller-admin.php:1765
+#@ tablepress
+msgid "You may now manually delete the plugin's folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page."
+msgstr "Þú mátt núna eyða handvirkt plugin möppunni <code>tablepress</code> frá <code>plugins</code> svæði hýsingaraðila eða nota  &#8220;Eyða&#8221; línknum fyrir TablePress í WordPress &#8220;Plugins&#8221; síðunni."
+
+#: controllers/controller-admin.php:1767
+#@ tablepress
+msgid "Your TablePress &#8220;Custom CSS&#8221; files have been deleted automatically."
+msgstr "Þínar TablePress &#8220;Custom CSS&#8221; skrár hafa verið eyddar sjálfvirkt."
+
+#: controllers/controller-admin.php:1770
+#@ tablepress
+msgid "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files from the server."
+msgstr "Vinsamlegast spurðu hann að eyða þínum TablePress &#8220;Custom CSS&#8221; skrám af þjóni."
+
+#: controllers/controller-admin.php:1772
+#@ tablepress
+msgid "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in the <code>wp-content</code> folder."
+msgstr "Þú mátt núna eyða þínum TablePress &#8220;Custom CSS&#8221; skrám í <code>wp-content</code> möppunni."
+
+#: controllers/controller-admin.php:1776
+#@ tablepress
+msgid "Go to &#8220;Plugins&#8221; page"
+msgstr "Farðu á &#8220;Plugins&#8221; síðuna"
+
+#: controllers/controller-admin.php:1777
+#@ tablepress
+msgid "Go to Dashboard"
+msgstr "Farðu á Dashboard"
+
+#: controllers/controller-admin.php:1779
+#: views/view-options.php:185
+#: views/view-options.php:192
+#@ tablepress
+msgid "Uninstall TablePress"
+msgstr "Eyða TablePress"
+
+#: controllers/controller-admin_ajax.php:229
+#: views/view-preview_table.php:66
+#@ tablepress
+msgid "This is a preview of your table."
+msgstr "Þetta er sýnishorn af þinni töflu."
+
+#: controllers/controller-admin_ajax.php:230
+#@ tablepress
+msgid "Because of CSS styling, the table might look different on your page!"
+msgstr "Út af CSS stýlnum, þá gæti taflan litið öðruvísi út á þinni síðu!"
+
+#: controllers/controller-admin_ajax.php:231
+#@ tablepress
+msgid "The features of the DataTables JavaScript library are also not visible in this preview!"
+msgstr "Innihald DataTables JavaScript var ekki mögulegt að sjá!"
+
+#: controllers/controller-admin_ajax.php:232
+#: views/view-preview_table.php:67
+#, php-format
+#@ tablepress
+msgid "To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it into the editor."
+msgstr "Til að setja töflu inn á síðu,póst, eða texta widget, afritaðu þá stuttkóðann %s og límdu inn í ritstjóra."
+
+#: controllers/controller-frontend.php:458
+#: views/view-list.php:479
+#, php-format
+#@ tablepress
+msgid "%s ago"
+msgstr "%s síðan"
+
+#: models/model-table.php:346
+#: views/view-editor_button_thickbox.php:286
+#: views/view-export.php:117
+#: views/view-import.php:190
+#: views/view-list.php:405
+#@ tablepress
+msgid "(no name)"
+msgstr "(ekkert nafn)"
+
+#: models/model-table.php:347
+#, php-format
+#@ tablepress
+msgid "Copy of %s"
+msgstr "Afrit af %s"
+
+#. translators: plugin header field 'PluginURI'
+#: tablepress.php:0
+#@ tablepress
+msgid "http://tablepress.org/"
+msgstr "http://tablepress.org/"
+
+#. translators: plugin header field 'Description'
+#: tablepress.php:0
+#@ tablepress
+msgid "TablePress enables you to create and manage tables in your posts and pages, without having to write HTML code, and it adds valuable functions for your visitors."
+msgstr "Töfluapp getrir þér kleift að búa til og stjórna töflum í þínum póstum og síðum, án þess að þurfa að skrifa neinn HTML kóða, og þetta bætir gæði síðunnar fyrir þá sem skoða."
+
+#. translators: plugin header field 'Author'
+#: tablepress.php:0
+#@ tablepress
+msgid "Tobias Bäthge"
+msgstr "Tobias Bäthge"
+
+#. translators: plugin header field 'AuthorURI'
+#: tablepress.php:0
+#@ tablepress
+msgid "http://tobias.baethge.com/"
+msgstr "http://tobias.baethge.com/"
+
+#. translators: plugin header field 'Version'
+#: tablepress.php:0
+#@ tablepress
+msgid "1.0"
+msgstr "1.0"
+
+#: views/view-about.php:43
+#@ tablepress
+msgid "Plugin Purpose"
+msgstr "Plugin Tilgangur"
+
+#: views/view-about.php:44
+#@ tablepress
+msgid "Usage"
+msgstr "Notkun"
+
+#: views/view-about.php:45
+#@ tablepress
+msgid "More Information and Documentation"
+msgstr "Fleiri upplýsingar og skjöl"
+
+#: views/view-about.php:46
+#@ tablepress
+msgid "Help and Support"
+msgstr "Hjálp og aðstoð"
+
+#: views/view-about.php:47
+#@ tablepress
+msgid "Author and License"
+msgstr "Höfundur og Skýrteini"
+
+#: views/view-about.php:48
+#@ tablepress
+msgid "Credits and Thanks"
+msgstr "Heiður og Þökk"
+
+#: views/view-about.php:49
+#@ tablepress
+msgid "Debug and Version Information"
+msgstr "Afgalla og upplýsingar útgáfu"
+
+#: views/view-about.php:60
+#@ tablepress
+msgid "TablePress allows you to create and manage tables in the admin area of WordPress."
+msgstr "TablePress gerir þér kleift að búa til og stjórna töflum á admin svæði WordPress."
+
+#: views/view-about.php:61
+#@ tablepress
+msgid "Tables may contain text, numbers and even HTML (e.g. to include images or links)."
+msgstr "Töflur geta innihaldið texta, númer og jafnvel HTML(þ.e. inniheldur myndir eða hlekk)."
+
+#: views/view-about.php:62
+#@ tablepress
+msgid "You can then show the tables in your posts, on your pages, or in text widgets by using a Shortcode."
+msgstr "Þú getur þá sýnt töflur í þínum póstum, á þínum síðum, eða í texta widgets með því að nota stuttkóða."
+
+#: views/view-about.php:63
+#@ tablepress
+msgid "If you want to show your tables anywhere else in your theme, you can use a Template Tag function."
+msgstr "Ef þú villt sýna þínar töflur annarstaðar en í þínu þema, þá er hægt að nota snið stillinguna."
+
+#: views/view-about.php:76
+#@ tablepress
+msgid "At first, you should add or import a table."
+msgstr "Fyrst skalt þú bæta við eða flytja inn töflu."
+
+#: views/view-about.php:77
+#@ tablepress
+msgid "This means that you either let the plugin create an empty table for you or that you load an existing table from either a CSV, HTML, or JSON file."
+msgstr "Þetta þýðir að þú hefur annaðhvort látið pluginið búa til auða töflu fyrir þig eða að þú hleður inn núverandi töflu frá annaðhvort CSV, HTML, eða JSON skrá."
+
+#: views/view-about.php:80
+#@ tablepress
+msgid "Then you can edit your data or change the structure of your table (e.g. by inserting, deleting, moving, or swaping rows or columns or sorting them) and select specific table features like alternating row colors or whether to print the name or description, if you want."
+msgstr "Síðan getur þú breytt þínum gögnum eða breytt uppbyggingu af þinni töflu (þ.e. með því að setja,eyða,færa eða svissa röðum eða dálkum eða flokka þá) og velja sérstaklega töflu eiginleika eins og flokka litum raða og hvort eigi að prenta nafn eða lýsingu, ef þú villt."
+
+#: views/view-about.php:81
+#@ tablepress
+msgid "To easily add a link or an image to a cell, use the provided buttons."
+msgstr "Til að bæta auðveldlega hlekk eða mynd í dáln, notið tilheyrandi hnappa."
+
+#: views/view-about.php:82
+#@ tablepress
+msgid "Those will ask you for the necessary information and and corresponding HTML code will be added to the cell automatically."
+msgstr "Þessir munu spurja þig um nauðsynlegar upplýsingar og samsvarandi HTML kóði verður bættur við kassann sjálfkrafa."
+
+#: views/view-about.php:85
+#: views/view-list.php:183
+#, php-format
+#@ tablepress
+msgid "To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor."
+msgstr "Til að bæta við töflu í síðu, póst eða texta widget, afritaðu stuttkóðann %s og límdu hann á viðeigandi stað í ritstjóra."
+
+#: views/view-about.php:86
+#: views/view-list.php:185
+#, php-format
+#@ tablepress
+msgid "You can also click the &#8220;%s&#8221; button in the editor toolbar to select and insert a table."
+msgstr "Þú getur líka valið &#8220;%s&#8221; takkann í ritstjóra stiklunni til að velja og bæta við töflu."
+
+#: views/view-about.php:89
+#@ tablepress
+msgid "Tables can be styled by changing and adding CSS commands."
+msgstr "Hægt er að breyta stíl taflanna með því að breyta og bæta CSS skipunum."
+
+#: views/view-about.php:90
+#@ tablepress
+msgid "The plugin ships with default CSS stylesheets, which can be customized with own code or replaced with other stylesheets."
+msgstr "Pluginið kemur með sjálfgefnum CSS stillingum, það er hægt að breyta þeim með eiginn kóða eða eða setja í staðinn annan stíl."
+
+#: views/view-about.php:91
+#@ tablepress
+msgid "For this, each table is given certain CSS classes that can be used as CSS selectors."
+msgstr "Fyrir þetta, þá er hver tafla gefinn með sinn CSS klassa sem getur verið notaður sem CSS veljari."
+
+#: views/view-about.php:92
+#, php-format
+#@ tablepress
+msgid "Please see the <a href=\"%s\">documentation</a> for a list of these selectors and for styling examples."
+msgstr "Vinsamlegast skoðið  <a href=\"%s\">skjöl</a> til að fá lista yfir þessa valmöguleika og fyrir stíl dæmi."
+
+#: views/view-about.php:105
+#, php-format
+#@ tablepress
+msgid "More information about TablePress can be found on the <a href=\"%s\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress Plugin Directory</a>."
+msgstr "Fleiri upplýsingar um Töfluapp er hægt að finna í <a href=\"%s\">plugin&#8217;s website</a> eða á hennar síðu í  <a href=\"%s\">WordPress Plugin Directory</a>."
+
+#: views/view-about.php:119
+#, php-format
+#@ tablepress
+msgid "This plugin was written and developed by <a href=\"%s\">Tobias Bäthge</a>."
+msgstr "Þetta plugin var skrifað og þróað af <a href=\"%s\">Tobias Bäthge</a>."
+
+#: views/view-about.php:120
+#@ tablepress
+msgid "It is licensed as Free Software under GNU General Public License 2 (GPL 2)."
+msgstr "Þetta er frjáls hugbúnaður undir GNU General Public License 2 (GPL 2)."
+
+#: views/view-about.php:122
+#, php-format
+#@ tablepress
+msgid "If you like the plugin, <a href=\"%s\"><strong>giving a donation</strong></a> is recommended."
+msgstr "Ef þér líkar þetta plugin, <a href=\"%s\"><strong>styrktu</strong></a> endilega."
+
+#: views/view-about.php:123
+#, php-format
+#@ tablepress
+msgid "Please rate and review the plugin in the <a href=\"%s\">WordPress Plugin Directory</a>."
+msgstr "Vinsamlegast gefðu stjörnur og umsögn um pluginið í <a href=\"%s\">WordPress Plugin Directory</a>."
+
+#: views/view-about.php:125
+#@ tablepress
+msgid "Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!"
+msgstr "Styrkir og góð stjörnugjöf fá mig til að bæta þetta plugin og veita mikinn stuðning. Allir styrkir eru vel þegnir! Takk!"
+
+#: views/view-about.php:138
+#, php-format
+#@ tablepress
+msgid "<a href=\"%s\">Support</a> is provided through the <a href=\"%s\">WordPress Support Forums</a>."
+msgstr "<a href=\"%s\">Hjálp</a> er veitt í gegnum  <a href=\"%s\">WordPress Support Forums</a>."
+
+#: views/view-about.php:142
+#, php-format
+#@ tablepress
+msgid "If you do not find an answer there, please <a href=\"%s\">open a new thread</a> in the WordPress Support Forums."
+msgstr "Ef þú finnur ekki hjálp hér, endilega <a href=\"%s\">stofnaðu nýjan þráð</a>á WordPress Support Forums."
+
+#: views/view-about.php:155
+#@ tablepress
+msgid "Please provide this information in bug reports and support requests."
+msgstr "Vinsamlegast deildu þessum upplýsingum í villu skýrslum og hjálpar beiðnum."
+
+#: views/view-about.php:186
+#@ tablepress
+msgid "Special Thanks go to:"
+msgstr "Sérstakar þakkir fara til:"
+
+#: views/view-about.php:187
+#@ tablepress
+msgid "Allan Jardine for <a href=\"http://www.datatables.net/\">DataTables</a>,"
+msgstr "Allan Jardine fyrir <a href=\"http://www.datatables.net/\">DataTables</a>,"
+
+#: views/view-about.php:190
+#@ tablepress
+msgid "Thanks to the translators:"
+msgstr "Þakkir fyrir þýðendur:"
+
+#: views/view-about.php:195
+#, php-format
+#@ tablepress
+msgid "%s (thanks to %s)"
+msgstr "%s (þakkir til %s)"
+
+#: views/view-about.php:200
+#@ tablepress
+msgid "Thank you to all donors, contributors, supporters, reviewers and users of the plugin!"
+msgstr "Takk fyrir allta styrkjendur,hjálp,stuðning,stjörnugjöf og notendur af þessum plugin!"
+
+#: views/view-add.php:37
+#@ tablepress
+msgid "Error: The table could not be added."
+msgstr "Villa: Ekki var hægt að bæta við töflu."
+
+#: views/view-add.php:42
+#@ tablepress
+msgid "Add Table"
+msgstr "Bæta við töflu"
+
+#: views/view-add.php:54
+#@ tablepress
+msgid "To add a new table, enter its name, a description (optional), and the number of rows and columns into the form below."
+msgstr "Til að bæta við nýrri töflu, veldu nafn, lýsingu (mögulegt), og fjölda raða og dálka inn í formið fyrir neðan."
+
+#: views/view-add.php:57
+#@ tablepress
+msgid "You can always change the name, description, and size of your table later."
+msgstr "Þú getur alltaf breytt nafni, lýsingu og stærð af þinni töflu síðar."
+
+#: views/view-add.php:71
+#: views/view-edit.php:199
+#: views/view-editor_button_thickbox.php:236
+#: views/view-list.php:319
+#@ tablepress
+msgid "Table Name"
+msgstr "Nafn Töflu"
+
+#: views/view-add.php:72
+#@ tablepress
+msgid "Enter Table Name here"
+msgstr "Bættu við nafni á töflu hér"
+
+#: views/view-add.php:73
+#@ tablepress
+msgid "The name or title of your table."
+msgstr "Nafn eða titill af þinni töflu."
+
+#: views/view-add.php:76
+#: views/view-edit.php:203
+#: views/view-editor_button_thickbox.php:237
+#: views/view-list.php:320
+#@ tablepress
+msgid "Description"
+msgstr "Lýsing"
+
+#: views/view-add.php:76
+#@ tablepress
+msgid "(optional)"
+msgstr "(aukalegt)"
+
+#: views/view-add.php:77
+#@ tablepress
+msgid "Enter Description here"
+msgstr "Bættu við lýsingu hér"
+
+#: views/view-add.php:78
+#@ tablepress
+msgid "A description of the contents of your table."
+msgstr "Lýsing af innihaldi þinnar töflu."
+
+#: views/view-add.php:81
+#@ tablepress
+msgid "Number of Rows"
+msgstr "Fjöldi Raða"
+
+#: views/view-add.php:82
+#: views/view-add.php:87
+#: views/view-edit.php:376
+#: views/view-edit.php:379
+#@ tablepress
+msgid "This field must contain a positive number."
+msgstr "Þessi dálkur verður að hafa jákvæðann(plús) tölustaf."
+
+#: views/view-add.php:83
+#@ tablepress
+msgid "The number of rows in your table."
+msgstr "Fjöldi raða í þinni töflu."
+
+#: views/view-add.php:86
+#@ tablepress
+msgid "Number of Columns"
+msgstr "Fjöldi Dálka"
+
+#: views/view-add.php:88
+#@ tablepress
+msgid "The number of columns in your table."
+msgstr "Fjöldi dálka í þinni töflu."
+
+#: views/view-edit.php:44
+#@ tablepress
+msgid "The table was saved successfully."
+msgstr "Þessi tafla var vistuð með góðum árangri."
+
+#: views/view-edit.php:45
+#@ tablepress
+msgid "The table was added successfully."
+msgstr "Þessi tafla var bætt við með góðum árangri."
+
+#: views/view-edit.php:46
+#@ tablepress
+msgid "The table was imported successfully."
+msgstr "Taflan var flutt með góðum árangri."
+
+#: views/view-edit.php:47
+#@ tablepress
+msgid "The table was imported successfully from WP-Table Reloaded."
+msgstr "Taflan var flutt með góðum árangri frá WP-Table endurhlöðun."
+
+#: views/view-edit.php:48
+#: views/view-list.php:98
+#@ tablepress
+msgid "Error: The table could not be saved."
+msgstr "Villa: Taflan gat ekki verið vistuð."
+
+#: views/view-edit.php:49
+#: views/view-list.php:97
+#@ tablepress
+msgid "Error: The table could not be deleted."
+msgstr "Villa: Taflan gat ekki verið eydd."
+
+#: views/view-edit.php:50
+#@ tablepress
+msgid "The table was saved successfully, and the table ID was changed."
+msgstr "Taflan var vistuð með góðum árangri og töflu númerið hefur verið breytt."
+
+#: views/view-edit.php:51
+#@ tablepress
+msgid "The table was saved successfully, but the table ID could not be changed!"
+msgstr "Taflan var vistuð með góðum árangri, en töflu númerið var ekki breytt!"
+
+#: views/view-edit.php:72
+#@ tablepress
+msgctxt "Insert Link dialog"
+msgid "Insert/edit link"
+msgstr "Setja inn/breyta hlekk"
+
+#: views/view-edit.php:73
+#@ tablepress
+msgctxt "Insert Link dialog"
+msgid "Update"
+msgstr "Uppfæra"
+
+#: views/view-edit.php:74
+#@ tablepress
+msgctxt "Insert Link dialog"
+msgid "Add Link"
+msgstr "Bæta við hlekk"
+
+#: views/view-edit.php:75
+#@ tablepress
+msgctxt "Insert Link dialog"
+msgid "(no title)"
+msgstr "(enginn titill)"
+
+#: views/view-edit.php:76
+#@ tablepress
+msgctxt "Insert Link dialog"
+msgid "No matches found."
+msgstr "Ekkert fannst."
+
+#: views/view-edit.php:77
+#@ tablepress
+msgctxt "Insert Link dialog"
+msgid "Link Text"
+msgstr "Hlekkur Texta"
+
+#: views/view-edit.php:88
+#@ tablepress
+msgid "You can not delete all table rows!"
+msgstr "Það er ekki hægt að eyða öllum röðum tafla!"
+
+#: views/view-edit.php:89
+#@ tablepress
+msgid "You can not delete all table columns!"
+msgstr "Þú getur ekki eytt öllum dálkum tafla!"
+
+#: views/view-edit.php:90
+#@ tablepress
+msgid "You did not select any rows!"
+msgstr "Þú valdir ekki neinar raðir!"
+
+#: views/view-edit.php:91
+#@ tablepress
+msgid "You did not select any columns!"
+msgstr "Þú valdir ekki neina dálka!"
+
+#: views/view-edit.php:92
+#@ tablepress
+msgid "The value for the number of rows is invalid!"
+msgstr "Gildi fyrir fjölda raða er ógilt!"
+
+#: views/view-edit.php:93
+#@ tablepress
+msgid "The value for the number of columns is invalid!"
+msgstr "Gildi fyrir númer dálka er ógilt!"
+
+#: views/view-edit.php:94
+#: views/view-edit.php:95
+#@ tablepress
+msgid "Do you really want to delete the selected row?"
+msgid_plural "Do you really want to delete the selected rows?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: views/view-edit.php:96
+#: views/view-edit.php:97
+#@ tablepress
+msgid "Do you really want to delete the selected column?"
+msgid_plural "Do you really want to delete the selected columns?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: views/view-edit.php:98
+#@ tablepress
+msgid "Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;."
+msgstr "Vinsamlegast smelltu á reitinn þar sem þú villt breyta með því að nota &#8220;Advanced Editor&#8221;."
+
+#: views/view-edit.php:99
+#@ tablepress
+msgid "To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have."
+msgstr "Til að sameina staka dálka, smelltu á stakann dálk fyrir neða dálkinn sem hefur innihaldið og dálkar verða sameinaðir."
+
+#: views/view-edit.php:100
+#@ tablepress
+msgid "To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have."
+msgstr "Til að sameina dálka í röð, smelltu á dálk hægra megin við röðina sem hefur innihaldið og dálkar verða sameinaðir."
+
+#: views/view-edit.php:101
+#@ tablepress
+msgid "Attention: You have enabled the usage of the DataTables JavaScript library for features like sorting, search, or pagination."
+msgstr "Athugið: Þú hefur virkjað notkun á DataTables JavaScript sem innihalda atriði eins og röðun, leit og síðuskil."
+
+#: views/view-edit.php:102
+#@ tablepress
+msgid "Unfortunately, these can not be used in tables with combined cells."
+msgstr "Því miður, þá er ekki hægt að nota töflur með sameinuðum dálkum."
+
+#: views/view-edit.php:103
+#@ tablepress
+msgid "Do you want to proceed and automatically turn off the usage of DataTables for this table?"
+msgstr "Villt þú halda áfram og slökkva á sjálfvirkum DataTables í þessari töflu?"
+
+#: views/view-edit.php:104
+#@ tablepress
+msgid "Please click into the cell that you want to add a link to."
+msgstr "Vinsamlegast smellið á þann reit sem þú villt bæta við hlekk."
+
+#: views/view-edit.php:105
+#@ tablepress
+msgid "You can then enter the Link URL and Text or choose an existing page or post."
+msgstr "Þú getur bætt við hlekk og texta eða valið núverandi síðu eða póst."
+
+#: views/view-edit.php:106
+#@ tablepress
+msgid "Please click into the cell that you want to add an image to."
+msgstr "Vinsamlegast smelltu á þann reit sem þú villt bæta mynd við."
+
+#: views/view-edit.php:107
+#@ tablepress
+msgid "The Media Library will open, where you can select or upload the desired image or enter the image URL."
+msgstr "Skráarsafn mun opnast, þar er hægt að upphala myndum eða velja hlekk(URL)."
+
+#: views/view-edit.php:108
+#, php-format
+#@ tablepress
+msgid "Click the &#8220;%s&#8221; button to insert the image."
+msgstr "Smelltu á &#8220;%s&#8221; hnapp til að bæta við mynd."
+
+#: views/view-edit.php:108
+#@ default
+msgid "Insert into Post"
+msgstr ""
+
+#: views/view-edit.php:109
+#@ tablepress
+msgid "The changes to this table were not saved yet and will be lost if you navigate away from this page."
+msgstr "Þessar breytingar í töflu voru ekki vistaðar strax og gætu tapast ef þú ferð af þessari síðu."
+
+#: views/view-edit.php:110
+#@ tablepress
+msgid "The Table Preview is being loaded..."
+msgstr "Sýnishorn töflu er að hlaðast..."
+
+#: views/view-edit.php:111
+#@ tablepress
+msgid "The Table Preview could not be loaded."
+msgstr "Sýnishorn töflu gat ekki hlaðist."
+
+#: views/view-edit.php:112
+#@ tablepress
+msgid "Saving successful"
+msgstr "Vistun tókst"
+
+#: views/view-edit.php:113
+#@ tablepress
+msgid "Saving failed"
+msgstr "Vistun klikkaði"
+
+#: views/view-edit.php:114
+#@ tablepress
+msgid "Changes are being saved..."
+msgstr "Breytingar eru að vistast..."
+
+#: views/view-edit.php:115
+#@ tablepress
+msgid "The Table ID field can not be empty. Please enter a Table ID!"
+msgstr "Reitur fyrir töflu númer má ekki vera tómur. Vinsamlegast bættu við töflu númeri!"
+
+#: views/view-edit.php:116
+#@ tablepress
+msgid "The Table ID &#8220;0&#8221; is not supported. Please enter a different Table ID!"
+msgstr "Töflunúmer &#8220;0&#8221; er ekki hægt að nota. Vinsamlegast veldu annað töflunúmer!"
+
+#: views/view-edit.php:117
+#@ tablepress
+msgid "Do you really want to change the Table ID? All Shortcodes for this table in your pages and posts will have to be adjusted!"
+msgstr "Villt þú virkilega breyta töflu númeri? Allir stuttkóðar fyrir þessa töflu í þínum síðum og póstum verða aðlagaðir!"
+
+#: views/view-edit.php:118
+#@ tablepress
+msgid "The entered value in the field &#8220;Extra CSS classes&#8221; is invalid."
+msgstr "Valið gildi í reitnum &#8220;Extra CSS classes&#8221; er ógilt."
+
+#: views/view-edit.php:119
+#@ tablepress
+msgid "The entered value in the field &#8220;Pagination Entries&#8221; is not a number."
+msgstr "Valið gildi í reitnum  &#8220;Pagination Entries&#8221;er ekki tala."
+
+#: views/view-edit.php:120
+#: views/view-edit.php:258
+#@ tablepress
+msgid "Sort ascending"
+msgstr "Raða upp"
+
+#: views/view-edit.php:121
+#: views/view-edit.php:258
+#@ tablepress
+msgid "Sort descending"
+msgstr "Raða niður"
+
+#: views/view-edit.php:122
+#@ tablepress
+msgid "You can not add rowspan to the first row!"
+msgstr "Þú getur ekki sameinað dálka í fyrstu röð!"
+
+#: views/view-edit.php:123
+#@ tablepress
+msgid "You can not add colspan to the first column!"
+msgstr "Þú getur ekki sameinað lóðréttar í fyrsta dálki!"
+
+#: views/view-edit.php:124
+#@ tablepress
+msgid "You can not connect cells into the table head row!"
+msgstr "Þú getur ekki tengt reiti við efstu töflu röð!"
+
+#: views/view-edit.php:125
+#@ tablepress
+msgid "You can not connect cells out of the table foot row!"
+msgstr "Þú getur ekki tengt reiti við neðstu töfluröð!"
+
+#: views/view-edit.php:131
+#@ tablepress
+msgid "Table Information"
+msgstr "Töflu upplýsingar"
+
+#: views/view-edit.php:132
+#@ tablepress
+msgid "Table Content"
+msgstr "Töflu innihald"
+
+#: views/view-edit.php:133
+#@ tablepress
+msgid "Table Manipulation"
+msgstr "Töflu undantekningar"
+
+#: views/view-edit.php:134
+#: views/view-edit.php:520
+#@ tablepress
+msgid "Table Options"
+msgstr "Töflu Valkostir"
+
+#: views/view-edit.php:135
+#@ tablepress
+msgid "Features of the DataTables JavaScript library"
+msgstr "Lögun af DataTables JavaScript"
+
+#: views/view-edit.php:161
+#@ tablepress
+msgid "Insert into Table"
+msgstr "Bæta inn í Töflu"
+
+#: views/view-edit.php:190
+#@ tablepress
+msgid "Table ID"
+msgstr "Töflu ID"
+
+#: views/view-edit.php:193
+#@ tablepress
+msgid "The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_)."
+msgstr "Töflu ID getur einungis haft bókstafi, tölustafi, bandstrik (-) og undirstrik (_)."
+
+#: views/view-edit.php:194
+#@ tablepress
+msgid "Shortcode"
+msgstr "Stuttkóði"
+
+#: views/view-edit.php:207
+#: views/view-list.php:323
+#@ tablepress
+msgid "Last Modified"
+msgstr "Síðast Breytt"
+
+#: views/view-edit.php:208
+#, php-format
+#@ tablepress
+msgid "%1$s by %2$s"
+msgstr "%1$s eftir %2$s"
+
+#: views/view-edit.php:328
+#@ tablepress
+msgid "Insert Link"
+msgstr "Bæta við Hlekk"
+
+#: views/view-edit.php:329
+#@ tablepress
+msgid "Insert Image"
+msgstr "Bæta við Mynd"
+
+#: views/view-edit.php:330
+#@ tablepress
+msgid "Advanced Editor"
+msgstr "Flóknari aðgerðir"
+
+#: views/view-edit.php:333
+#@ tablepress
+msgid "Combine cells"
+msgstr "Sameina reiti"
+
+#: views/view-edit.php:334
+#@ tablepress
+msgid "in a column (rowspan)"
+msgstr "í dálki (lárétt)"
+
+#: views/view-edit.php:335
+#@ tablepress
+msgid "in a row (colspan)"
+msgstr "í röð (lóðrétt)"
+
+#: views/view-edit.php:336
+#@ tablepress
+msgid "?"
+msgstr "?"
+
+#: views/view-edit.php:336
+#@ tablepress
+msgid "Help on combining cells"
+msgstr "Hjálp við að sameina reiti"
+
+#: views/view-edit.php:338
+#@ tablepress
+msgid "Table cells can span across more than one column or row."
+msgstr "Töflu reitir geta náð yfir meira heldur en röð eða dálk."
+
+#: views/view-edit.php:339
+#@ tablepress
+msgid "Combining consecutive cells within the same row is called &#8220;colspanning&#8221;."
+msgstr "Með því að sameina dálka í sömu röð er kallað &#8220;dálka sameining&#8221;."
+
+#: views/view-edit.php:340
+#@ tablepress
+msgid "Combining consecutive cells within the same column is called &#8220;rowspanning&#8221;."
+msgstr "Með því að sameina dálka í sömu línu er kallað &#8220;dálka sameining&#8221;."
+
+#: views/view-edit.php:341
+#@ tablepress
+msgid "To combine adjacent cells in a row, add the keyword <code>#colspan#</code> to the cell to the right of the one with the content for the combined cell by using the corresponding button."
+msgstr "Til að sameina aðliggjandi reiti í röð, bættu við orðinu <code>#colspan#</code> í dálkinn hægra megin við innihaldið fyrir innihald af sameinuðu reitum með því að nota viðeigandi hnapp."
+
+#: views/view-edit.php:342
+#@ tablepress
+msgid "To combine adjacent cells in a column, add the keyword <code>#rowspan#</code> to the cell below the one with the content for the combined cell by using the corresponding button."
+msgstr "Til að sameina aðliggjandi reiti í dálk, bættu við orðinu <code>#rowspan#</code> svo að reiturinn fyrir neðan sameinist við aðliggjandi reit með því að nota viðeigandi hnapp."
+
+#: views/view-edit.php:343
+#@ tablepress
+msgid "Repeat this to add the keyword to all cells that shall be connected."
+msgstr "Endurtaktu þetta til að sameina alla reiti."
+
+#: views/view-edit.php:344
+#@ tablepress
+msgid "Be aware that the functions of the DataTables JavaScript library will not work on tables which have combined cells."
+msgstr "Athugið að stillingar DataTables JavaScript virka ekki á töflur sem hafa sameinaða reiti."
+
+#: views/view-edit.php:350
+#: views/view-edit.php:362
+#@ tablepress
+msgid "Selected rows"
+msgstr "Valdar raðir"
+
+#: views/view-edit.php:351
+#: views/view-edit.php:356
+#@ tablepress
+msgid "Hide"
+msgstr "Fela"
+
+#: views/view-edit.php:352
+#: views/view-edit.php:357
+#@ tablepress
+msgid "Show"
+msgstr "Sýna"
+
+#: views/view-edit.php:355
+#: views/view-edit.php:368
+#@ tablepress
+msgid "Selected columns"
+msgstr "Valdir dálkar"
+
+#: views/view-edit.php:363
+#: views/view-edit.php:369
+#@ tablepress
+msgid "Duplicate"
+msgstr "Afrita"
+
+#: views/view-edit.php:364
+#: views/view-edit.php:370
+#@ tablepress
+msgid "Insert"
+msgstr "Bæta við"
+
+#: views/view-edit.php:365
+#: views/view-edit.php:371
+#: views/view-list.php:421
+#@ tablepress
+msgid "Delete"
+msgstr "Eyða"
+
+#: views/view-edit.php:376
+#, php-format
+#@ tablepress
+msgid "Add %s row(s)"
+msgstr "Bæta við %s röð(um)"
+
+#: views/view-edit.php:376
+#: views/view-edit.php:379
+#@ tablepress
+msgid "Add"
+msgstr "Bæta"
+
+#: views/view-edit.php:379
+#, php-format
+#@ tablepress
+msgid "Add %s column(s)"
+msgstr "Bæta við %s dálk(um)"
+
+#: views/view-edit.php:383
+#@ tablepress
+msgid "To use the Table Manipulation features, JavaScript needs to be enabled in your browser."
+msgstr "Til að geta notað Töflu breyti möguleika, þá verður JavaScript að vera virkjað í þínum vafra."
+
+#: views/view-edit.php:418
+#@ tablepress
+msgid "Other Actions"
+msgstr "Aðrar aðgerðir"
+
+#: views/view-edit.php:420
+#@ tablepress
+msgid "Delete Table"
+msgstr "Eyða Töflu"
+
+#: views/view-edit.php:422
+#@ tablepress
+msgid "Export Table"
+msgstr "Flytja út Töflu"
+
+#: views/view-edit.php:446
+#@ tablepress
+msgid "Cancel"
+msgstr "Hætta við"
+
+#: views/view-edit.php:447
+#@ tablepress
+msgid "OK"
+msgstr "Í lagi"
+
+#: views/view-edit.php:468
+#: views/view-edit.php:520
+#@ tablepress
+msgid "Table Head Row"
+msgstr "Aðal röð töflu"
+
+#: views/view-edit.php:469
+#@ tablepress
+msgid "The first row of the table is the table header."
+msgstr "Fyrsta röð í töflunni er hausinn."
+
+#: views/view-edit.php:472
+#@ tablepress
+msgid "Table Foot Row"
+msgstr "Neðsta röð töflu"
+
+#: views/view-edit.php:473
+#@ tablepress
+msgid "The last row of the table is the table footer."
+msgstr "Síðasta röð töflu er í neðstu röð töflu."
+
+#: views/view-edit.php:476
+#@ tablepress
+msgid "Alternating Row Colors"
+msgstr "Breyta litum raða"
+
+#: views/view-edit.php:477
+#@ tablepress
+msgid "The background colors of consecutive rows shall alternate."
+msgstr "Bakgrunnslit samfelldra raða er hægt að breyta."
+
+#: views/view-edit.php:480
+#@ tablepress
+msgid "Row Hover Highlighting"
+msgstr "Raða Hálitun"
+
+#: views/view-edit.php:481
+#@ tablepress
+msgid "Highlight a row while the mouse cursor hovers above it by changing its background color."
+msgstr "Hálita röð meðan músin getur breytt bakgrunnslit."
+
+#: views/view-edit.php:484
+#@ tablepress
+msgid "Print Table Name"
+msgstr "Prenta töflu nafn"
+
+#: views/view-edit.php:487
+#: views/view-edit.php:497
+#@ tablepress
+msgid "above"
+msgstr "Fyrir ofan"
+
+#: views/view-edit.php:488
+#: views/view-edit.php:498
+#@ tablepress
+msgid "below"
+msgstr "Fyrir neðan"
+
+#: views/view-edit.php:491
+#, php-format
+#@ tablepress
+msgid "The table name shall be written %s the table."
+msgstr "Töflu nafn skal vera skrifað %s tafla."
+
+#: views/view-edit.php:494
+#@ tablepress
+msgid "Print Table Description"
+msgstr "Prenta upplýsingar um töflu"
+
+#: views/view-edit.php:501
+#, php-format
+#@ tablepress
+msgid "The table description shall be written %s the table."
+msgstr "Töflu nafn skal vera skrifað %s tafla."
+
+#: views/view-edit.php:504
+#@ tablepress
+msgid "Extra CSS Classes"
+msgstr "Auka CSS klassar"
+
+#: views/view-edit.php:505
+#@ tablepress
+msgid "This field can only contain letters, numbers, spaces, hyphens (-), and underscores (_)."
+msgstr "Þessi reitur getur einungis innihaldið stafi, tölur, bil, bandstrik(-) og undirstrik(_)."
+
+#: views/view-edit.php:505
+#@ tablepress
+msgid "Additional CSS classes for styling purposes can be entered here."
+msgstr "Auka CSS klassar fyrir tilgang stíls geta verið valdir hér."
+
+#: views/view-edit.php:505
+#, php-format
+#@ tablepress
+msgid "This is NOT the place to enter <a href=\"%s\">Custom CSS</a> code!"
+msgstr "Þetta er EKKI staðurinn sem skal skrifa <a href=\"%s\">Custom CSS</a> kóða!"
+
+#: views/view-edit.php:520
+#, php-format
+#@ tablepress
+msgid "These features and options are only available, when the &#8220;%1$s&#8221; checkbox in the &#8220;%2$s&#8221; section is checked."
+msgstr "Þessar aðgerðir og valkostir eru einungis í boði þegar &#8220;%1$s&#8221; tékkbox í &#8220;%2$s&#8221; valmöguleika er valið."
+
+#: views/view-edit.php:524
+#@ tablepress
+msgid "Use DataTables"
+msgstr "Nota GagnaTöflur"
+
+#: views/view-edit.php:525
+#@ tablepress
+msgid "Use the following features of the DataTables JavaScript library with this table:"
+msgstr "Nota eftirfarandi möguleika frá DataTables JavaScript með þessari töflu:"
+
+#: views/view-edit.php:528
+#@ tablepress
+msgid "Sorting"
+msgstr "Flokkun"
+
+#: views/view-edit.php:529
+#@ tablepress
+msgid "Enable sorting of the table by the visitor."
+msgstr "Virkja flokkun af töflu hjá gestum(visitor)."
+
+#: views/view-edit.php:532
+#@ tablepress
+msgid "Search/Filtering"
+msgstr "Leita/ Sortera"
+
+#: views/view-edit.php:533
+#@ tablepress
+msgid "Enable the visitor to filter or search the table. Only rows with the search word in them are shown."
+msgstr "Virkja leit hja gestum til að sortera þessa töflu. Einungis raðir í leitarorði sjást"
+
+#: views/view-edit.php:536
+#@ tablepress
+msgid "Pagination"
+msgstr "Síðuskil"
+
+#: views/view-edit.php:537
+#@ tablepress
+msgid "Enable pagination of the table (viewing only a certain number of rows at a time) by the visitor."
+msgstr "Virkja síðuskil á töflu (hægt að skoða ákveðið magn af röðum í einu) hjá gestum."
+
+#: views/view-edit.php:538
+#, php-format
+#@ tablepress
+msgid "Show %s rows per page."
+msgstr "Sýna %s raðir á síðu."
+
+#: views/view-edit.php:541
+#@ tablepress
+msgid "Pagination Length Change"
+msgstr "Síðuskil lengdar breyting"
+
+#: views/view-edit.php:542
+#@ tablepress
+msgid "Allow the visitor to change the number of rows shown when using pagination."
+msgstr "Leyfa gestum að breyta fjölda raða sem eru sýndar með síðuskilum."
+
+#: views/view-edit.php:545
+#@ tablepress
+msgid "Info"
+msgstr "Upplýsingar"
+
+#: views/view-edit.php:546
+#@ tablepress
+msgid "Enable the table information display, with information about the currently visible data, like the number of rows."
+msgstr "Virkja töflu upplýsingar, með upplýsingum um sýnileg gögn, eins og fjöldi raða."
+
+#: views/view-edit.php:549
+#@ tablepress
+msgid "Horizontal Scrolling"
+msgstr "Lárétt skrollun"
+
+#: views/view-edit.php:550
+#@ tablepress
+msgid "Enable horizontal scrolling, to make viewing tables with many columns easier."
+msgstr "Virkja lárétta skrollun, til að gera skoðun á töflum auðveldari."
+
+#: views/view-edit.php:556
+#@ tablepress
+msgid "Custom Commands"
+msgstr "Handvaldar skipanir"
+
+#: views/view-edit.php:557
+#@ tablepress
+msgid "Additional parameters from the <a href=\"http://www.datatables.net/\">DataTables documentation</a> to be added to the JS call."
+msgstr "Auka möguleikar frá <a href=\"http://www.datatables.net/\">DataTables documentation</a> bætast við JS lista."
+
+#: views/view-edit.php:557
+#@ tablepress
+msgid "For advanced use only."
+msgstr "Eingöngu fyrir lengra komna."
+
+#: views/view-edit.php:572
+#, php-format
+#@ tablepress
+msgid "On this screen, you can edit the content and structure of the table with the ID %s."
+msgstr "Á þessum skjá er hægt að breyta innihaldi og uppbyggingu töflu með ID %s."
+
+#: views/view-edit.php:573
+#@ tablepress
+msgid "For example, you can insert things like text, images, or links into the table, or change the used table features. You can also insert, delete, move, hide, and swap columns and rows."
+msgstr "Til dæmis, þú getur bætt við hlutum eins og texta, myndum, eða hlekkjum í töflu, eða breytt töflum. Þú getur einnig bætt, eytt, fært, falið og svissað dálkum og röðum."
+
+#: views/view-edit.php:576
+#, php-format
+#@ tablepress
+msgid "To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it at the desired place in the editor."
+msgstr "Til að setja töflu inn á síðu,póst, texta widget, afritaðu stuttkóðann %s og límdu hann á sinn stað í ritstjóra."
+
+#: views/view-edit.php:596
+#@ tablepress
+msgid "TablePress Feature: Moving rows and columns"
+msgstr "Töfluapp möguleikar: Færa raðir og dálka"
+
+#: views/view-edit.php:597
+#@ tablepress
+msgid "Did you know? You can drag and drop rows and columns via the row number and the column title. And the arrows next to the column title can be used for sorting."
+msgstr "Vissir þú? Það er hægt að draga og færa raðir og dálka með raða númeri og dálka titli. Örvarnar hliðiná dálka titlinum er hægt að nota í flokkun."
+
+#: views/view-editor_button_thickbox.php:71
+#: views/view-editor_button_thickbox.php:132
+#@ tablepress
+msgid "List of Tables"
+msgstr "Listi yfir Töflur"
+
+#: views/view-editor_button_thickbox.php:135
+#@ tablepress
+msgid "This is a list of all available tables."
+msgstr "Þetta er listi fyrir allar mögulegar töflur."
+
+#: views/view-editor_button_thickbox.php:135
+#@ tablepress
+msgid "You may insert a table into a post or page here."
+msgstr "Þú getur bætt við töflu inn í póst eða síðu hér."
+
+#: views/view-editor_button_thickbox.php:137
+#, php-format
+#@ tablepress
+msgid "Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor."
+msgstr "Smelltu á  &#8220;%1$s&#8221; takkann til að fá viðkomandi töflu setta sjálfkrafa bætta við <br />viðkomandi stuttkóði (%2$s) í ritstjóra."
+
+#: views/view-editor_button_thickbox.php:137
+#: views/view-editor_button_thickbox.php:313
+#@ tablepress
+msgid "Insert Shortcode"
+msgstr "Bæta við stuttkóða"
+
+#: views/view-editor_button_thickbox.php:141
+#: views/view-list.php:197
+#, php-format
+#@ tablepress
+msgid "Search results for &#8220;%s&#8221;"
+msgstr "Leitar niðurstöður fyrir &#8220;%s&#8221;"
+
+#: views/view-editor_button_thickbox.php:146
+#: views/view-list.php:203
+#@ tablepress
+msgid "Search Tables"
+msgstr "Leita af töflum"
+
+#: views/view-editor_button_thickbox.php:235
+#: views/view-list.php:318
+#@ tablepress
+msgid "ID"
+msgstr "ID"
+
+#: views/view-editor_button_thickbox.php:238
+#@ tablepress
+msgid "Action"
+msgstr "Aðgerð"
+
+#: views/view-editor_button_thickbox.php:300
+#: views/view-list.php:438
+#@ tablepress
+msgid "(no description)"
+msgstr "(engin lýsing)"
+
+#: views/view-editor_button_thickbox.php:322
+#: views/view-export.php:81
+#: views/view-list.php:544
+#@ tablepress
+msgid "No tables found."
+msgstr "Engar töflur fundust."
+
+#: views/view-editor_button_thickbox.php:324
+#@ tablepress
+msgid "You should add or import a table on the TablePress screens to get started!"
+msgstr "Þú ættir að bæta við eða flytja inn töflu á skjá TöfluAppsins til að geta byrjað!"
+
+#: views/view-export.php:35
+#@ tablepress
+msgid "Error: The export failed."
+msgstr "Villi:flutningur mistókst."
+
+#: views/view-export.php:36
+#: views/view-list.php:103
+#@ tablepress
+msgid "Error: This table could not be loaded!"
+msgstr "Villa: Tafla gat ekki hlaðist!"
+
+#: views/view-export.php:37
+#@ tablepress
+msgid "Error: The ZIP file could not be created."
+msgstr "Villa: Póstfang gat ekki verið búið til."
+
+#: views/view-export.php:42
+#: views/view-export.php:45
+#@ tablepress
+msgid "Export Tables"
+msgstr "Flytja út töflur"
+
+#: views/view-export.php:46
+#@ tablepress
+msgctxt "button"
+msgid "Download Export File"
+msgstr "Niðurhala útflutnings skjali"
+
+#: views/view-export.php:59
+#@ tablepress
+msgid "Exporting a table allows you to use it in other programs, like spreadsheets applications."
+msgstr "Flytja út töflu sem leyfir þér að nota hana í öðrum forritum, eins og spreadsheets forritum."
+
+#: views/view-export.php:60
+#@ tablepress
+msgid "Regularly exporting tables is also recommended as a backup of your data."
+msgstr "Reglulega flytja út töflur sem og taka afrit af þínum gögnum."
+
+#: views/view-export.php:63
+#@ tablepress
+msgid "To export, select the tables and the desired export format."
+msgstr "Til að flytja út, veldu þær töflur og hvaða útflutnings týpu þú villt."
+
+#: views/view-export.php:64
+#@ tablepress
+msgid "If you choose more than one table, the exported files will automatically be stored in a ZIP archive file."
+msgstr "Ef þú velur fleiri heldur en eina töflu, þá verða útfluttar töflur vistaðar í ZIP sniði."
+
+#: views/view-export.php:66
+#@ tablepress
+msgid "Be aware that for the CSV and HTML formats only the table data, but no table options are exported!"
+msgstr "Athugið að CSV og HTML skrár eru einungis fyrir töflu snið, engin önnur snið eru flutt út!"
+
+#: views/view-export.php:67
+#@ tablepress
+msgid "For the JSON format, the table data and the table options are exported."
+msgstr "Fyrir JSON snið, þá eru gögn töflu flutt og töflu valmöguleikar líka."
+
+#: views/view-export.php:82
+#: views/view-list.php:553
+#, php-format
+#@ tablepress
+msgid "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to get started!"
+msgstr "Þú ættir að <a href=\"%s\">add</a> or <a href=\"%s\">flytja inn </a> töflu til að geta byrjað!"
+
+#: views/view-export.php:97
+#@ tablepress
+msgid "Tables to Export"
+msgstr "Töflur til að flytja út"
+
+#: views/view-export.php:100
+#@ tablepress
+msgid "Select all"
+msgstr "Velja allar"
+
+#: views/view-export.php:118
+#: views/view-import.php:191
+#, php-format
+#@ tablepress
+msgid "ID %1$s: %2$s"
+msgstr "ID %1$s: %2$s"
+
+#: views/view-export.php:126
+#@ tablepress
+msgid "You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac)."
+msgstr "Þú getur valið margar töflur með því að halda niðri &#8220;Ctrl&#8221; takka (Windows) eða &#8220;Command&#8221; takka (Mac)."
+
+#: views/view-export.php:131
+#@ tablepress
+msgid "Export Format"
+msgstr "Flytja út snið"
+
+#: views/view-export.php:144
+#@ tablepress
+msgid "CSV Delimiter"
+msgstr "CSV Afmarkari"
+
+#: views/view-export.php:153
+#@ tablepress
+msgid "(Only needed for CSV export.)"
+msgstr "(Aðeins þarf CSV fyrir útflutning)"
+
+#: views/view-export.php:157
+#@ tablepress
+msgid "ZIP file"
+msgstr "ZIP skrá"
+
+#: views/view-export.php:163
+#@ tablepress
+msgid "Create a ZIP archive."
+msgstr "Búa til ZIP skjöl."
+
+#: views/view-export.php:163
+#@ tablepress
+msgid "(Mandatory if more than one table is selected.)"
+msgstr "(Skilyrði ef fleiri en ein tafla er valin)"
+
+#: views/view-export.php:166
+#@ tablepress
+msgid "Note: Support for ZIP file creation seems not to be available on this server."
+msgstr "Athugið: Stuðningur fyrir ZIP skrár virðast ekki vera mögulegar á þessum þjóni."
+
+#: views/view-import.php:45
+#: views/view-import.php:57
+#@ tablepress
+msgid "Error: You did not select what to import from WP-Table Reloaded!"
+msgstr "Villa: Þú valdir ekki hvað átti að flytja inn frá WP-Table endurhlöðun!"
+
+#: views/view-import.php:50
+#@ tablepress
+msgid "Error: The import failed."
+msgstr "Villa: Innflutningur mistókst."
+
+#: views/view-import.php:51
+#@ tablepress
+msgid "Error: Import of ZIP files is not available on this server."
+msgstr "Villa: Innflutningur af ZIP skrá er ekki mögulegur á þessum þjóni."
+
+#: views/view-import.php:52
+#@ tablepress
+msgid "Error: The ZIP file could not be opened."
+msgstr "Villa: ZIP skrá gat ekki verið opnuð."
+
+#: views/view-import.php:53
+#@ tablepress
+msgid "Error: The data in the ZIP file is invalid."
+msgstr "Villa: Gögnin í ZIP skrá eru ógild."
+
+#: views/view-import.php:54
+#@ tablepress
+msgid "Error: You selected to replace or append to an existing table, but did not select a table."
+msgstr "Villa: Þú valdir að skipta um eða bæta við núverandi töflu, en valdir ekki töflu."
+
+#: views/view-import.php:55
+#@ tablepress
+msgid "Error: The source for the import is invalid or could not be accessed."
+msgstr "Villa: Slóðin sem átti að flytja inn á er ekki til eða ekki hægt að komast inn á."
+
+#: views/view-import.php:56
+#@ tablepress
+msgid "Error: The data for the import is invalid."
+msgstr "Villa: Gögnin fyrir innfluting eru ógild."
+
+#: views/view-import.php:58
+#@ tablepress
+msgid "Error: Existing WP-Table Reloaded tables were not found in the database."
+msgstr "Villa:  WP-Table Reloaded töflur voru ekki fundnar í gagrunn."
+
+#: views/view-import.php:59
+#@ tablepress
+msgid "Error: The tables from WP-Table Reloaded could not be imported."
+msgstr "Villa: Þessar töflur  frá WP-Table Reloaded var ekki hægt að flytja inn."
+
+#: views/view-import.php:60
+#@ tablepress
+msgid "Error: The WP-Table Reloaded Dump File could not be imported!"
+msgstr "Villa:  WP-Table Reloaded dump skrá var ekki hægt að flytja inn!"
+
+#: views/view-import.php:64
+#@ tablepress
+msgid "Import Tables"
+msgstr "Flytja inn töflur"
+
+#: views/view-import.php:66
+#@ tablepress
+msgid "Import from WP-Table Reloaded"
+msgstr "Flytja inn frá  WP-Table Reloaded"
+
+#: views/view-import.php:92
+#@ tablepress
+msgid "TablePress can import tables from existing data, like from a CSV file from a spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or its own JSON format."
+msgstr "TöfluApp getur flutt inn töflur frá núverandi gögnum, eins og CSV skrá eða t.d. Excel, HTML skrá eins og vefsíða, eða frá JSON sniði."
+
+#: views/view-import.php:93
+#@ tablepress
+msgid "You can also import existing tables from the WP-Table Reloaded plugin below."
+msgstr "Þú getur einnig flutt inn töflur frá WP-Table Reloaded plugin fyrir neðan."
+
+#: views/view-import.php:96
+#@ tablepress
+msgid "To import a table, select and enter the import source in the following form."
+msgstr "Til að flytja inn töflu, veldu og skráðu inn innflutningsslóð frá eftirfarandi formi."
+
+#: views/view-import.php:96
+#@ tablepress
+msgid "You can also choose to import it as a new table, to replace an existing table, or to append the rows to an existing table."
+msgstr "Þú getur einnig valið að flytja inn nýja töflu, til að skrá yfir nýja töflu, eða bætt við röðum á núverandi töflu."
+
+#: views/view-import.php:111
+#: views/view-import.php:226
+#@ tablepress
+msgid "Import Source"
+msgstr "Flytja inn slóð"
+
+#: views/view-import.php:113
+#@ tablepress
+msgid "File Upload"
+msgstr "Skrá upphalað"
+
+#: views/view-import.php:114
+#@ tablepress
+msgid "URL"
+msgstr "URL"
+
+#: views/view-import.php:115
+#@ tablepress
+msgid "File on server"
+msgstr "Skrá á þjóni"
+
+#: views/view-import.php:116
+#@ tablepress
+msgid "Manual Input"
+msgstr "Handvirk skráning"
+
+#: views/view-import.php:120
+#: views/view-import.php:233
+#@ tablepress
+msgid "Select file"
+msgstr "Velja skrá"
+
+#: views/view-import.php:125
+#: views/view-import.php:135
+#: views/view-import.php:145
+#@ tablepress
+msgid "You can import multiple tables by placing them in a ZIP file."
+msgstr "Þú getur flutt inn margar töflur með því að setja þær í ZIP skrá."
+
+#: views/view-import.php:130
+#@ tablepress
+msgid "File URL"
+msgstr "URL skráar"
+
+#: views/view-import.php:140
+#@ tablepress
+msgid "Server Path to file"
+msgstr "Slóð þjónar til skráar"
+
+#: views/view-import.php:150
+#@ tablepress
+msgid "Import data"
+msgstr "Flytja inn gögn"
+
+#: views/view-import.php:156
+#@ tablepress
+msgid "Import Format"
+msgstr "Flytja inn gögn"
+
+#: views/view-import.php:168
+#@ tablepress
+msgid "Import of HTML files is not available on your server."
+msgstr "Flytja inn HTML skrár er ekki mögulegt á þínum þjóni."
+
+#: views/view-import.php:173
+#@ tablepress
+msgid "Add, Replace, or Append?"
+msgstr "Bæta, skipta eða auka við?"
+
+#: views/view-import.php:175
+#@ tablepress
+msgid "Add as new table"
+msgstr "Bæta við sem nýrri töflu"
+
+#: views/view-import.php:176
+#@ tablepress
+msgid "Replace existing table"
+msgstr "Skipta út töflu sem er til"
+
+#: views/view-import.php:177
+#@ tablepress
+msgid "Append rows to existing table"
+msgstr "Auka við raðir á núverandi töflu"
+
+#: views/view-import.php:181
+#@ tablepress
+msgid "Table to replace or append to"
+msgstr "Skipta út, bæta við töflu"
+
+#: views/view-import.php:184
+#@ tablepress
+msgid "Select:"
+msgstr "Velja:"
+
+#: views/view-import.php:201
+#@ tablepress
+msgctxt "button"
+msgid "Import"
+msgstr "Flytja inn"
+
+#: views/view-import.php:216
+#@ tablepress
+msgid "To import all tables from a WP-Table Reloaded installation, choose the relevant import source below."
+msgstr "Til að flytja inn allar töflur frá WP-Table Reloaded uppsetningu, veldu þá viðeigandi flutningsslóð og slóð hér að neðan."
+
+#: views/view-import.php:218
+#@ tablepress
+msgid "If WP-Table Reloaded is installed on this site, the &#8220;WordPress database&#8221; option is recommended."
+msgstr "Ef WP-Table Reloaded er sett upp á þessa síðu, þá er mælt með  &#8220;WordPress database&#8221; möguleikanum."
+
+#: views/view-import.php:219
+#@ tablepress
+msgid "If you want to import tables from another site, create a &#8220;WP-Table Reloaded Dump File&#8221; there and upload it below, after choosing &#8220;WP-Table Reloaded Dump File&#8221;."
+msgstr "Ef þú villt færa inn töflur frá öðrum síðum, búðu til &#8220;WP-Table Reloaded Dump File&#8221; og upphalaðu því eftir að hafa valið &#8220;WP-Table Reloaded Dump File&#8221;."
+
+#: views/view-import.php:221
+#, php-format
+#@ tablepress
+msgid "Before doing this, it is highly recommended to read the <a href=\"%s\">migration guide</a> on the TablePress website."
+msgstr "Áður en þetta er gert þá er mælt með því að lesa <a href=\"%s\">migration guide</a> á TablePress vefsíðunni."
+
+#: views/view-import.php:228
+#@ tablepress
+msgid "WordPress database"
+msgstr "WordPress gagnagrunnur"
+
+#: views/view-import.php:229
+#@ tablepress
+msgid "WP-Table Reloaded Dump File"
+msgstr "WP-Table Reloaded Dump Skrá"
+
+#: views/view-import.php:243
+#@ tablepress
+msgid "Import tables"
+msgstr "Innfluttar töflur"
+
+#: views/view-import.php:244
+#@ tablepress
+msgid "Import all tables and their settings from WP-Table Reloaded."
+msgstr "Flytja inn allar töflur og þeirra stillingar frá WP-Table Reloaded."
+
+#: views/view-import.php:244
+#: views/view-options.php:113
+#@ tablepress
+msgid "<span class=\"description\">(recommended)</span>"
+msgstr "<span class=\"description\">(recommended)</span>"
+
+#: views/view-import.php:247
+#@ tablepress
+msgid "Import styling"
+msgstr "Flytja inn stíl"
+
+#: views/view-import.php:248
+#@ tablepress
+msgid "Try to automatically convert the &#8220;Custom CSS&#8221; code from the &#8220;Plugin Options&#8221; screen of WP-Table Reloaded."
+msgstr "Prófaðu að láta sjálfvirkt færa  &#8220;Custom CSS&#8221; kóðann frá &#8220;Plugin Options&#8221; á skjáinn hjá WP-Table Reloaded."
+
+#: views/view-import.php:252
+#@ tablepress
+msgctxt "button"
+msgid "Import from WP-Table Reloaded"
+msgstr "Flytja inn frá WP-Table Reloaded"
+
+#: views/view-import.php:277
+#@ tablepress
+msgid "TablePress Feature: Import from WP-Table Reloaded"
+msgstr "TöfluApp Möguleiki: Flytja inn frá WP-Table Reloaded"
+
+#: views/view-import.php:278
+#@ tablepress
+msgid "You can import your existing tables and &#8220;Custom CSS&#8221; from WP-Table Reloaded into TablePress."
+msgstr "Þú getur flutt inn þínar núverandi töflur og  &#8220;Custom CSS&#8221; frá WP-Table Reloaded til TöfluAppsins"
+
+#: views/view-list.php:46
+#@ tablepress
+msgid "To embed this table into a post or page, use this Shortcode:"
+msgstr "Til að virkja þessa töflu í póst eða síðu notaðu stuttkóðann:"
+
+#: views/view-list.php:47
+#@ tablepress
+msgid "Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!"
+msgstr "Takk kærlega fyrir! Þinn styrkur er mikills metinn. Þú varst að styrkja frekari þróun á TöfluAppinu!"
+
+#: views/view-list.php:48
+#, php-format
+#@ tablepress
+msgid "No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you'll always find the &#8220;Donate&#8221; button on the <a href=\"%s\">TablePress website</a>."
+msgstr "Ekkert mál! Ég trúi því að þú nýtur möguleikanna sem TöfluAppið bætir við þína síðu. Ef þú breytir um skoðun þá er alltaf hægt að finna &#8220;Donate&#8221; takka á <a href=\"%s\">TablePress website</a>."
+
+#: views/view-list.php:54
+#@ tablepress
+msgid "Welcome!"
+msgstr "Velkomin(n)!"
+
+#: views/view-list.php:55
+#@ tablepress
+msgid "Thank you for using TablePress for the first time!"
+msgstr "Takk fyrir að nota TöfluAppið í fyrsta skipti!"
+
+#: views/view-list.php:56
+#, php-format
+#@ tablepress
+msgid "If you encounter any questions or problems, please visit the <a href=\"%1$s\">FAQ</a>, the <a href=\"%2$s\">documentation</a>, and the <a href=\"%3$s\">Support</a> section on the <a href=\"%4$s\">plugin website</a>."
+msgstr "Ef þú lendir í einhverjum vandræðum, endilega kíktu á þessa síðu  <a href=\"%1$s\">FAQ</a>, the <a href=\"%2$s\">documentation</a>, and the <a href=\"%3$s\">Support</a> section on the <a href=\"%4$s\">plugin website</a>."
+
+#: views/view-list.php:57
+#: views/view-list.php:90
+#@ tablepress
+msgid "Hide this message"
+msgstr "Fela þetta skilaboð"
+
+#: views/view-list.php:62
+#@ tablepress
+msgid "Attention!"
+msgstr "Athugið!"
+
+#: views/view-list.php:63
+#@ tablepress
+msgid "You have activated the plugin WP-Table Reloaded, which can not be used together with TablePress."
+msgstr "Þú hefur virkjað þetta plugin WP-Table Reloaded, sem er ekki hægt að nota saman með TöfluAppinu."
+
+#: views/view-list.php:64
+#@ tablepress
+msgid "It is strongly recommended that you switch from WP-Table Reloaded to TablePress, which not only fixes many problems, but also has more and better features than WP-Table Reloaded."
+msgstr "Það er sterklega mælt með því að þú skiptir frá WP-Table Reloaded yfir í TablePress, sem lagar mörg vandamál og hefur mikli fleirri og betri möguleika heldur en WP-Table Reloaded."
+
+#: views/view-list.php:65
+#, php-format
+#@ tablepress
+msgid "Please follow the <a href=\"%s\">migration guide</a> to move your tables and then deactivate WP-Table Reloaded!"
+msgstr "Vinsamlegast farðu á <a href=\"%s\">migration guide</a> til að færa ykkar töflur og afvirkja WP-Table Reloaded!"
+
+#: views/view-list.php:66
+#@ tablepress
+msgid "Import your tables from WP-Table Reloaded"
+msgstr "Flytja inn töflur frá WP-Table Reloaded"
+
+#: views/view-list.php:72
+#@ tablepress
+msgid "Tobias Bäthge, developer of TablePress"
+msgstr "Tobias Bäthge, developer of TablePress"
+
+#: views/view-list.php:73
+#@ tablepress
+msgid "Hi, my name is Tobias, I'm the developer of the TablePress plugin."
+msgstr "Hi, my name is Tobias, I'm the developer of the TablePress plugin."
+
+#: views/view-list.php:74
+#@ tablepress
+msgid "Thanks for using it! You've installed TablePress over a month ago."
+msgstr "Takk fyrir notkunina! Þú hefur vikjað TöfluAppið fyrir meira en mánuði."
+
+#: views/view-list.php:75
+#, php-format
+#@ tablepress
+msgid "If everything works and you are satisfied with the results of managing your %s table, isn't that worth a coffee or two?"
+msgid_plural "If everything works and you are satisfied with the results of managing your %s tables, isn't that worth a coffee or two?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: views/view-list.php:76
+#, php-format
+#@ tablepress
+msgid "<a href=\"%s\">Donations</a> help me to continue user support and development of this <em>free</em> software &mdash; things for which I spend countless hours of my free time! Thank you very much!"
+msgstr "<a href=\"%s\">Donations</a> hjálpið mér að halda áfram og styðjið þróun á þessum <em>free</em> software &mdash; er búinn að eyða miklum tíma í þetta! Takk kærlega fyrir!"
+
+#: views/view-list.php:77
+#@ tablepress
+msgid "Sincerly, Tobias"
+msgstr "Sincerly, Tobias"
+
+#: views/view-list.php:78
+#@ tablepress
+msgid "Sure, I'll buy you a coffee and support TablePress!"
+msgstr "Endilega, ég kaupi handa þér kaffibolla og styð TöfluAppið!"
+
+#: views/view-list.php:79
+#@ tablepress
+msgid "I already donated."
+msgstr "Hef þegar styrkt."
+
+#: views/view-list.php:80
+#@ tablepress
+msgid "No, thanks. Don't ask again."
+msgstr "Nei takk. Ekki spurja aftur."
+
+#: views/view-list.php:84
+#, php-format
+#@ tablepress
+msgid "Thank you for updating to TablePress %s!"
+msgstr "Takk fyrir að uppfæra Töfluappið %s!"
+
+#: views/view-list.php:87
+#, php-format
+#@ tablepress
+msgid "Please read the <a href=\"%s\">release announcement</a> for more information."
+msgstr "Endilega lesið <a href=\"%s\">release announcement</a> fyrir nánari upplýsingar."
+
+#: views/view-list.php:88
+#, php-format
+#@ tablepress
+msgid "If you like the new features and enhancements, <a href=\"%s\">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!"
+msgstr "Ef þér líkar við nýjar uppfærslur og bætur <a href=\"%s\">giving a donation</a> til að fá frekari stuðning og þróun af TöfluAppinu. Takk fyrir!"
+
+#: views/view-list.php:95
+#: views/view-list.php:96
+#@ tablepress
+msgid "The table was deleted successfully."
+msgid_plural "The tables were deleted successfully."
+msgstr[0] ""
+msgstr[1] ""
+
+#: views/view-list.php:99
+#: views/view-list.php:100
+#@ tablepress
+msgid "The table was copied successfully."
+msgid_plural "The tables were copied successfully."
+msgstr[0] ""
+msgstr[1] ""
+
+#: views/view-list.php:101
+#@ tablepress
+msgid "Error: The table could not be copied."
+msgstr "Villa: Tafla gat ekki verið afrituð"
+
+#: views/view-list.php:102
+#@ tablepress
+msgid "Error: You did not specify a valid table ID."
+msgstr "Villa: Þú gafst ekki upp ID af töflu sem var virkt."
+
+#: views/view-list.php:104
+#@ tablepress
+msgid "Error: This bulk action is invalid!"
+msgstr "Villa: Þessar fjölskipanir eru ekki í boði!"
+
+#: views/view-list.php:105
+#@ tablepress
+msgid "Error: You did not select any tables!"
+msgstr "Villa: Þú valdir engar töflur!"
+
+#: views/view-list.php:106
+#@ tablepress
+msgid "Notice: Not all selected tables could be deleted!"
+msgstr "Fyrirvari: Allar töflur sem voru valdar gat ekki verið eytt!"
+
+#: views/view-list.php:107
+#@ tablepress
+msgid "Notice: Not all selected tables could be copied!"
+msgstr "Fyrirvari: Allar töflur sem valdar voru var ekki hægt að afrita!"
+
+#: views/view-list.php:108
+#@ tablepress
+msgid "The tables were imported successfully."
+msgstr "Töflurnar voru fluttar inn með góðum árangri."
+
+#: views/view-list.php:109
+#@ tablepress
+msgid "The tables were imported successfully from WP-Table Reloaded."
+msgstr "Töflurnar voru fluttar inn frá  WP-Table Reloaded með góðum árangri."
+
+#: views/view-list.php:115
+#@ tablepress
+msgid "Tables"
+msgstr "Töflur"
+
+#: views/view-list.php:179
+#@ tablepress
+msgid "This is a list of your tables."
+msgstr "Þetta er listinn yfir þínar töflur."
+
+#: views/view-list.php:180
+#@ tablepress
+msgid "Click the corresponding links within the list to edit, copy, delete, or preview a table."
+msgstr "Smelltu á viðkomandi hlekki á listanum til að breyta, afrita, eyða eða skoða töflu."
+
+#: views/view-list.php:184
+#@ tablepress
+msgid "Each table has a unique ID that needs to be adjusted in that Shortcode."
+msgstr "Hver tafla hefur einstakt ID sem þarf að vera stillt á þann stuttkóða."
+
+#: views/view-list.php:321
+#@ tablepress
+msgid "Author"
+msgstr "Höfundur"
+
+#: views/view-list.php:322
+#@ tablepress
+msgid "Last Modified By"
+msgstr "Síðast breytt af"
+
+#: views/view-list.php:408
+#: views/view-list.php:414
+#, php-format
+#@ tablepress
+msgid "Edit &#8220;%s&#8221;"
+msgstr "Breyta &#8220;%s&#8221;"
+
+#: views/view-list.php:415
+#@ tablepress
+msgid "Show Shortcode"
+msgstr "Sýna Stuttkóða"
+
+#: views/view-list.php:417
+#, php-format
+#@ tablepress
+msgid "Copy &#8220;%s&#8221;"
+msgstr "Afrita &#8220;%s&#8221;"
+
+#: views/view-list.php:417
+#@ tablepress
+msgid "Copy"
+msgstr "Afrita"
+
+#: views/view-list.php:419
+#, php-format
+#@ tablepress
+msgid "Export &#8220;%s&#8221;"
+msgstr "Flytja út &#8220;%s&#8221;"
+
+#: views/view-list.php:419
+#@ tablepress
+msgctxt "row action"
+msgid "Export"
+msgstr "Flytja út"
+
+#: views/view-list.php:421
+#, php-format
+#@ tablepress
+msgid "Delete &#8220;%s&#8221;"
+msgstr "Eyða &#8220;%s&#8221;"
+
+#: views/view-list.php:423
+#, php-format
+#@ tablepress
+msgid "Show a preview of &#8220;%s&#8221;"
+msgstr "Sýna sýnishort af &#8220;%s&#8221;"
+
+#: views/view-list.php:498
+#@ tablepress
+msgctxt "bulk action"
+msgid "Copy"
+msgstr "Afrita"
+
+#: views/view-list.php:500
+#@ tablepress
+msgctxt "bulk action"
+msgid "Export"
+msgstr "Flytja út"
+
+#: views/view-list.php:502
+#@ tablepress
+msgctxt "bulk action"
+msgid "Delete"
+msgstr "Eyða"
+
+#: views/view-list.php:530
+#@ tablepress
+msgid "Bulk Actions"
+msgstr "Fjölskipanir"
+
+#: views/view-list.php:535
+#@ tablepress
+msgid "Apply"
+msgstr "Samþykja"
+
+#: views/view-list.php:555
+#, php-format
+#@ tablepress
+msgid "You should <a href=\"%s\">add</a> a table to get started!"
+msgstr "Þú ættir að <a href=\"%s\">velja</a> töflu til að byrja!"
+
+#: views/view-list.php:557
+#, php-format
+#@ tablepress
+msgid "You should <a href=\"%s\">import</a> a table to get started!"
+msgstr "Þú ættir að <a href=\"%s\">flytja inn</a> töflu til að byrja!"
+
+#: views/view-options.php:38
+#@ tablepress
+msgid "Do you really want to uninstall TablePress and delete ALL data?"
+msgstr "Villtu virkilega eyða TöfluAppinu og eyða öllum gögnum?"
+
+#: views/view-options.php:39
+#@ tablepress
+msgid "Are you really sure?"
+msgstr "Ertu alveg viss?"
+
+#: views/view-options.php:44
+#@ tablepress
+msgid "Options saved successfully."
+msgstr "Valkostir vistaðir með góðum árangri."
+
+#: views/view-options.php:45
+#@ tablepress
+msgid "Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file."
+msgstr "Valmöguleikar vistaðir með góðum árangri, en &#8220;Custom CSS&#8221; var ekki vistað í skrá."
+
+#: views/view-options.php:46
+#@ tablepress
+msgid "Error: Options could not be saved."
+msgstr "Villa: Valkostir ekki vistaðir."
+
+#: views/view-options.php:47
+#@ tablepress
+msgid "The WP-Table Reloaded &#8220;Custom CSS&#8221; was imported successfully."
+msgstr "The WP-Table Reloaded &#8220;Custom CSS&#8221; var flutt inn með góðum árangri."
+
+#: views/view-options.php:52
+#@ tablepress
+msgid "Frontend Options"
+msgstr "Viðmót Valkosta"
+
+#: views/view-options.php:53
+#@ tablepress
+msgid "User Options"
+msgstr "Notanda Stillingar"
+
+#: views/view-options.php:68
+#@ tablepress
+msgid "TablePress has several options which affect the plugin&#8217;s behavior in different areas."
+msgstr "TöfluAppið hefur marga valkosti sem hafa áhrif á plugin&#8217;s hegðun á nokkrum stöðum."
+
+#: views/view-options.php:73
+#@ tablepress
+msgid "Frontend Options influence the styling of tables in pages, posts, or text widgets, by defining which CSS code shall be loaded."
+msgstr "Viðmót Valkosta hefur áhrif á stíl taflanna á síðum, póstum, texta widgets, þessvegna skal CSS kóðinn vera hlaðinn upp."
+
+#: views/view-options.php:76
+#@ tablepress
+msgid "In the User Options, every TablePress user can choose the position of the plugin in his WordPress admin menu, and his desired plugin language."
+msgstr "Í notanda valmöguleikum, hver TöfluApp notandi getur valið staðsetningu á plugin í hans WordPress admin valmynd, og hans túngumál."
+
+#: views/view-options.php:92
+#@ tablepress
+msgid "Custom CSS"
+msgstr "Sérsniðinn CSS"
+
+#: views/view-options.php:93
+#@ tablepress
+msgid "Load these &#8220;Custom CSS&#8221; commands to influence the table styling:"
+msgstr "Hlaða þessum &#8220;Custom CSS&#8221; skipunum til að hafa áhrif á stílinn:"
+
+#: views/view-options.php:101
+#, php-format
+#@ tablepress
+msgid "&#8220;Custom CSS&#8221; (<a href=\"%s\">Cascading Style Sheets</a>) can be used to change the styling or layout of a table."
+msgstr "&#8220;Custom CSS&#8221; (<a href=\"%s\">Cascading Style Sheets</a>) getur verið notað til að breyta stíl eða formi á töflu."
+
+#: views/view-options.php:103
+#, php-format
+#@ tablepress
+msgid "You can get styling examples from the <a href=\"%s\">FAQ</a>."
+msgstr "Þú getur gert stíl sýnishorn frá <a href=\"%s\">FAQ</a>."
+
+#: views/view-options.php:105
+#, php-format
+#@ tablepress
+msgid "Information on available CSS selectors can be found in the <a href=\"%s\">documentation</a>."
+msgstr "Upplýsingar mögulegar frá CSS möguleikum og finnast í <a href=\"%s\">documentation</a>."
+
+#: views/view-options.php:107
+#@ tablepress
+msgid "Please note that invalid CSS code will be stripped, if it can not be corrected automatically."
+msgstr "Vinsamlegast athugið að rangur CSS kóði verður tekinn, ef hann getur ekki verið leiðréttur sjálfkrafa."
+
+#: views/view-options.php:110
+#@ tablepress
+msgid "File exists"
+msgstr "Skrá er til"
+
+#: views/view-options.php:110
+#@ tablepress
+msgid "File seems not to exist"
+msgstr "Skrá virðist ekki vera til"
+
+#: views/view-options.php:113
+#@ tablepress
+msgid "Use a file for storing and loading the &#8220;Custom CSS&#8221; code."
+msgstr "Notaðu skrá til að geyma eða hlaða &#8220;Custom CSS&#8221; kóðanum."
+
+#: views/view-options.php:146
+#@ tablepress
+msgid "Top-Level (top)"
+msgstr "Fara efst (upp)"
+
+#: views/view-options.php:147
+#@ tablepress
+msgid "Top-Level (middle)"
+msgstr "Fara efst (miðja)"
+
+#: views/view-options.php:148
+#@ tablepress
+msgid "Top-Level (bottom)"
+msgstr "Fara efst (neðst)"
+
+#: views/view-options.php:157
+#@ tablepress
+msgid "Admin menu entry"
+msgstr "Admin valmynd"
+
+#: views/view-options.php:158
+#, php-format
+#@ tablepress
+msgid "TablePress shall be shown in this section of my admin menu: %s"
+msgstr "TöfluApp skal vera sýnt á þessum stað á admin valmynd:%s"
+
+#: views/view-options.php:162
+#, php-format
+#@ tablepress
+msgid "WordPress Default (currently %s)"
+msgstr "WordPress Default (currently %s)"
+
+#: views/view-options.php:170
+#@ tablepress
+msgid "Plugin Language"
+msgstr "Plugin Tungumál"
+
+#: views/view-options.php:171
+#, php-format
+#@ tablepress
+msgid "I want to use TablePress in this language: %s"
+msgstr "Ég vil nota TöfluApp á þessu tungumáli: %s"
+
+#: views/view-options.php:187
+#@ tablepress
+msgid "Uninstalling <strong>will permanently delete</strong> all TablePress tables and options from the database."
+msgstr "Henda út <strong>þetta mun endanlega eyða</strong> öllum TöfluApp töflum og möguleikum frá gagnagrunni."
+
+#: views/view-options.php:188
+#@ tablepress
+msgid "It is recommended that you create a backup of the tables (by exporting the tables in the JSON format), in case you later change your mind."
+msgstr "Það er mælt með því að þú búir til afrit af þessum töflum (með því að flytja þær út á JSON sniði), ef þú breytir skyndilega um skoðun."
+
+#: views/view-options.php:189
+#@ tablepress
+msgid "You will manually need to remove the plugin's files from the plugin folder afterwards."
+msgstr "Þú þarft handvirkt að eyða plugin skrám frá plugin möppu eftirá."
+
+#: views/view-options.php:190
+#@ tablepress
+msgid "Be very careful with this and only click the button if you know what you are doing!"
+msgstr "Farðu varlega með þetta og einungis velja þann takka sem þú veist hvað gerir!"
+
+#: views/view-options_custom_css.php:38
+#@ tablepress
+msgid "Attention: Further action is required to save the changes to your &#8220;Custom CSS&#8221;!"
+msgstr "Athugið: Frekari aðgerðir eru skilyrði til að geta vistað breytingar á &#8220;Custom CSS&#8221;!"
+
+#: views/view-options_custom_css.php:105
+#@ tablepress
+msgid "Due to the configuration of your server, TablePress was not able to automatically save your &#8220;Custom CSS&#8221; to a file."
+msgstr "Vegna stillinga á þínum þjóni þá er TöfluAppið ekk sjálfkrafa vistað á &#8220;Custom CSS&#8221; skrá."
+
+#: views/view-options_custom_css.php:106
+#, php-format
+#@ tablepress
+msgid "To try again with the same method that you use for updating plugins or themes, please fill out the &#8220;%s&#8221; form below."
+msgstr "Til að reyna aftur með þessari aðferð sem þú notaðir við að uppfæra plugin eða þema, endilega fylltu út &#8220;%s&#8221; formið að neðan."
+
+#: views/view-options_custom_css.php:106
+#@ default
+msgid "Connection Information"
+msgstr ""
+
+#: views/view-options_custom_css.php:127
+#@ tablepress
+msgid "Proceed without saving a file"
+msgstr "Halda áfram án þess að vista gögn"
+
+#: views/view-options_custom_css.php:129
+#@ tablepress
+msgid "To proceed without trying to save the &#8220;Custom CSS&#8221; to a file, click the button below."
+msgstr "Til að halda áfram án þess að reyna að vista &#8220;Custom CSS&#8221; í skrá, smelltu á takkann fyrir neðan."
+
+#: views/view-options_custom_css.php:130
+#@ tablepress
+msgid "Your &#8220;Custom CSS&#8221; will then be loaded inline."
+msgstr "Þín &#8220;Custom CSS&#8221; verður hlaðið í sömu línu."
+
+#: views/view-options_custom_css.php:132
+#@ tablepress
+msgid "Proceed without saving &#8220;Custom CSS&#8221; to a file"
+msgstr "Halda áfram án þess að vista &#8220;Custom CSS&#8221; skrá"
+
+#: views/view-preview_table.php:66
+#@ tablepress
+msgid "Because of CSS styling in your theme, the table might look different on your page!"
+msgstr "Vegna CSS stíls í þínu þema, virðist taflan líta öðruvísi út á síðunni!"
+
+#: views/view-preview_table.php:66
+#@ tablepress
+msgid "The features of the DataTables JavaScript library are also not available or visible in this preview!"
+msgstr "Þessir möguleikar af DataTables JavaScript eru ekki mögulegir og sýnilegir í þessu sýnishorni!"
+
