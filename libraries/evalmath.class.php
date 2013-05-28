@@ -23,6 +23,7 @@ with modifications by Petr Skoda (skodak) from Moodle - http://moodle.org/
 additional modifications by Tobias Bäthge:
 - changed get_string() to MoodleTranslations::get_string(), which is a custom localization from Moodle
 - allow comparisons (x>4, x=5, etc.)
+- use array_sum() instead of loop in EvalMathFuncs::sum()
 
 ================================================================================
 
@@ -589,12 +590,7 @@ class EvalMathFuncs {
 	}
 
 	static function sum() {
-		$args = func_get_args();
-		$res = 0;
-		foreach($args as $a) {
-		   $res += $a;
-		}
-		return $res;
+		return array_sum( func_get_args() );
 	}
 
 	protected static $randomseed = null;
