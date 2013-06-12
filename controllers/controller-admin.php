@@ -486,6 +486,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Davíð Sævarsson',
 				'translator_url' => ''
 			),
+			'lt_LT' => array(
+				'name' => __( 'Latvian', 'tablepress' ),
+				'translator_name' => 'Johannes Rau',
+				'translator_url' => 'http://www.yamago.de/'
+			),
 			'nl_NL' => array(
 				'name' => __( 'Dutch', 'tablepress' ),
 				'translator_name' => 'Erik Vorstenbosch',
