@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/tablepress\n"
-"POT-Creation-Date: 2013-04-17 21:19+0100\n"
-"PO-Revision-Date: 2013-04-17 21:38+0100\n"
+"POT-Creation-Date: 2013-07-18 21:38+0100\n"
+"PO-Revision-Date: 2013-07-18 21:40+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language-Team: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language: de_DE\n"
@@ -13,10 +13,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
-"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"esc_attr_e\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: .\n"
 
 # @ tablepress
@@ -67,14 +68,14 @@ msgid "The imported file contains errors:"
 msgstr "Die importierte Datei enthält Fehler:"
 
 # @ tablepress
-#: classes/class-render.php:382
+#: classes/class-render.php:379
 #, php-format
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr "<!-- Die Tabelle mit der ID %s ist leer! -->"
 
 # @ default
 # @ tablepress
-#: classes/class-render.php:458 views/view-list.php:414
+#: classes/class-render.php:455 views/view-list.php:414
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -167,211 +168,226 @@ msgid "Save Changes"
 msgstr "Änderungen speichern"
 
 # @ tablepress
-#: controllers/controller-admin.php:171 views/view-about.php:86
+#: controllers/controller-admin.php:174 views/view-about.php:86
 #: views/view-list.php:185
 msgid "Table"
 msgstr "Tabelle"
 
 # @ tablepress
-#: controllers/controller-admin.php:172 controllers/controller-admin.php:173
+#: controllers/controller-admin.php:175 controllers/controller-admin.php:176
 msgid "Insert a Table from TablePress"
 msgstr "Eine TablePress-Tabelle einfügen"
 
 # @ tablepress
-#: controllers/controller-admin.php:244
+#: controllers/controller-admin.php:247
 msgid "TablePress Table"
 msgstr "TablePress-Tabelle"
 
 # @ tablepress
-#: controllers/controller-admin.php:271
-msgid "TablePress Plugin page"
-msgstr "TablePress-Plugin-Seite"
-
-# @ tablepress
-#: controllers/controller-admin.php:271
+#: controllers/controller-admin.php:274
 msgid "Plugin page"
 msgstr "Plugin-Seite"
 
 # @ tablepress
-#: controllers/controller-admin.php:285
+#: controllers/controller-admin.php:288
 msgid "Frequently Asked Questions"
 msgstr "Häufig gestellte Fragen"
 
 # @ tablepress
-#: controllers/controller-admin.php:285
+#: controllers/controller-admin.php:288
 msgid "FAQ"
 msgstr "FAQ"
 
 # @ tablepress
-#: controllers/controller-admin.php:286
-msgid "Plugin Documentation"
-msgstr "Plugin-Dokumentation"
-
-# @ tablepress
-#: controllers/controller-admin.php:286
+#: controllers/controller-admin.php:289
 msgid "Documentation"
 msgstr "Dokumentation"
 
 # @ tablepress
-#: controllers/controller-admin.php:287
+#: controllers/controller-admin.php:290
 msgid "Support"
 msgstr "Unterstützung"
 
 # @ tablepress
-#: controllers/controller-admin.php:288
+#: controllers/controller-admin.php:291
 msgid "Support TablePress with your donation!"
 msgstr "Unterstütze TablePress mit deiner Spende!"
 
 # @ tablepress
-#: controllers/controller-admin.php:288
+#: controllers/controller-admin.php:291
 msgid "Donate"
 msgstr "Spenden"
 
 # @ default
-#: controllers/controller-admin.php:314 controllers/controller-admin.php:379
-#: controllers/controller-admin.php:697 controllers/controller-admin.php:755
-#: controllers/controller-admin.php:805 controllers/controller-admin.php:928
-#: controllers/controller-admin.php:958 controllers/controller-admin.php:1031
-#: controllers/controller-admin.php:1041 controllers/controller-admin.php:1576
-#: controllers/controller-admin.php:1603 controllers/controller-admin.php:1638
-#: controllers/controller-admin.php:1672 controllers/controller-admin.php:1740
+#: controllers/controller-admin.php:317 controllers/controller-admin.php:382
+#: controllers/controller-admin.php:730 controllers/controller-admin.php:788
+#: controllers/controller-admin.php:838 controllers/controller-admin.php:961
+#: controllers/controller-admin.php:991 controllers/controller-admin.php:1064
+#: controllers/controller-admin.php:1074 controllers/controller-admin.php:1609
+#: controllers/controller-admin.php:1636 controllers/controller-admin.php:1671
+#: controllers/controller-admin.php:1705 controllers/controller-admin.php:1749
+#: controllers/controller-admin.php:1776
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 # @ tablepress
-#: controllers/controller-admin.php:396
+#: controllers/controller-admin.php:399
 msgctxt ""
 "Default CSV delimiter in the translated language (\";\", \",\", or \"tab\")"
 msgid ","
 msgstr ";"
 
-#: controllers/controller-admin.php:457
+#: controllers/controller-admin.php:460
 msgid "German"
 msgstr "Deutsch"
 
 # @ tablepress
-#: controllers/controller-admin.php:462
+#: controllers/controller-admin.php:465
 msgid "English"
 msgstr "Englisch"
 
 # @ tablepress
-#: controllers/controller-admin.php:467
+#: controllers/controller-admin.php:470
 msgid "Spanish"
 msgstr "Spanisch"
 
 # @ tablepress
-#: controllers/controller-admin.php:472
+#: controllers/controller-admin.php:475
 msgid "French"
 msgstr "Französisch"
 
+#: controllers/controller-admin.php:480
+msgid "Hebrew"
+msgstr "Hebräisch"
+
+#: controllers/controller-admin.php:485
+msgid "Italian"
+msgstr "Italienisch"
+
+#: controllers/controller-admin.php:490
+msgid "Icelandic"
+msgstr "Isländisch"
+
+#: controllers/controller-admin.php:495
+msgid "Latvian"
+msgstr "Lettisch"
+
+#: controllers/controller-admin.php:500
+msgid "Dutch"
+msgstr "Niederländisch"
+
 # @ tablepress
-#: controllers/controller-admin.php:477
+#: controllers/controller-admin.php:505
 msgid "Polish"
 msgstr "Polnisch"
 
+#: controllers/controller-admin.php:510
+msgid "Brazilian Portuguese"
+msgstr "Portugisisch (Brasilien)"
+
 # @ tablepress
-#: controllers/controller-admin.php:482
+#: controllers/controller-admin.php:515
 msgid "Slovak"
 msgstr "Slowakisch"
 
 # @ tablepress
-#: controllers/controller-admin.php:487
+#: controllers/controller-admin.php:520
 msgid "Chinese (Simplified)"
 msgstr "Chinesisch (vereinfacht)"
 
 # @ tablepress
-#: controllers/controller-admin.php:539 controllers/controller-admin.php:540
-#: controllers/controller-admin.php:541
+#: controllers/controller-admin.php:572 controllers/controller-admin.php:573
+#: controllers/controller-admin.php:574
 msgid "All Tables"
 msgstr "Alle Tabellen"
 
 # @ tablepress
-#: controllers/controller-admin.php:546 controllers/controller-admin.php:547
+#: controllers/controller-admin.php:579 controllers/controller-admin.php:580
 #: views/view-add.php:41
 msgid "Add New Table"
 msgstr "Neue Tabelle"
 
 # @ tablepress
-#: controllers/controller-admin.php:548
+#: controllers/controller-admin.php:581
 msgid "Add New"
 msgstr "Neue Tabelle"
 
 # @ tablepress
-#: controllers/controller-admin.php:553
+#: controllers/controller-admin.php:586
 msgid "Edit Table"
 msgstr "Tabelle bearbeiten"
 
 # @ tablepress
-#: controllers/controller-admin.php:560 controllers/controller-admin.php:561
+#: controllers/controller-admin.php:593 controllers/controller-admin.php:594
 msgid "Import a Table"
 msgstr "Tabelle importieren"
 
 # @ tablepress
-#: controllers/controller-admin.php:562
+#: controllers/controller-admin.php:595
 msgctxt "navigation bar"
 msgid "Import"
 msgstr "Import"
 
 # @ tablepress
-#: controllers/controller-admin.php:567 controllers/controller-admin.php:568
+#: controllers/controller-admin.php:600 controllers/controller-admin.php:601
 msgid "Export a Table"
 msgstr "Tabelle exportieren"
 
 # @ tablepress
-#: controllers/controller-admin.php:569
+#: controllers/controller-admin.php:602
 msgctxt "navigation bar"
 msgid "Export"
 msgstr "Export"
 
 # @ tablepress
-#: controllers/controller-admin.php:574 controllers/controller-admin.php:575
-#: controllers/controller-admin.php:576
+#: controllers/controller-admin.php:607 controllers/controller-admin.php:608
+#: controllers/controller-admin.php:609
 msgid "Plugin Options"
 msgstr "Einstellungen"
 
 # @ tablepress
-#: controllers/controller-admin.php:581 controllers/controller-admin.php:583
+#: controllers/controller-admin.php:614 controllers/controller-admin.php:616
 msgid "About"
 msgstr "Über"
 
 # @ tablepress
-#: controllers/controller-admin.php:582
+#: controllers/controller-admin.php:615
 msgid "About TablePress"
 msgstr "Über TablePress"
 
 # @ tablepress
-#: controllers/controller-admin.php:1111
+#: controllers/controller-admin.php:1144
 msgid "Imported from Manual Input"
 msgstr "aus Manueller Eingabe importiert"
 
 # @ tablepress
-#: controllers/controller-admin.php:1669
+#: controllers/controller-admin.php:1702
 #: controllers/controller-admin_ajax.php:236
 msgid "The preview could not be loaded."
 msgstr "Die Vorschau konnte nicht geladen werden."
 
 # @ tablepress
-#: controllers/controller-admin.php:1669 controllers/controller-admin.php:1677
+#: controllers/controller-admin.php:1702 controllers/controller-admin.php:1710
 #: views/view-edit.php:397 views/view-list.php:423
 #: views/view-preview_table.php:55
 msgid "Preview"
 msgstr "Vorschau"
 
 # @ tablepress
-#: controllers/controller-admin.php:1677
+#: controllers/controller-admin.php:1710
 msgid "The table could not be loaded."
 msgstr "Die Tabelle konnte nicht geladen werden."
 
 # @ tablepress
-#: controllers/controller-admin.php:1754
+#: controllers/controller-admin.php:1790
 msgid "TablePress was uninstalled successfully."
 msgstr "TablePress wurde erfolgreich deinstalliert."
 
-#: controllers/controller-admin.php:1755
+#: controllers/controller-admin.php:1791
 msgid "All tables, data, and options were deleted."
 msgstr "Alle Tabellen, Daten und Einstellungen wurden gelöscht."
 
-#: controllers/controller-admin.php:1757
+#: controllers/controller-admin.php:1793
 msgid ""
 "You may now ask the network admin to delete the plugin's folder "
 "<code>tablepress</code> from the server, if no other site in the network "
@@ -381,7 +397,7 @@ msgstr ""
 "Plugin-Ordner <code>tablepress</code> vom Server zu löschen, falls "
 "TablePress von keiner anderen Seite verwendet wird."
 
-#: controllers/controller-admin.php:1759
+#: controllers/controller-admin.php:1795
 msgid ""
 "You may now manually delete the plugin's folder <code>tablepress</code> from "
 "the <code>plugins</code> directory on your server or use the &#8220;"
@@ -394,13 +410,13 @@ msgstr ""
 "Seite nutzen."
 
 # @ tablepress
-#: controllers/controller-admin.php:1761
+#: controllers/controller-admin.php:1797
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
 msgstr "Die &#8220;Zusatz-CSS&#8221;-Dateien wurden automatisch gelöscht."
 
-#: controllers/controller-admin.php:1764
+#: controllers/controller-admin.php:1800
 msgid ""
 "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files "
 "from the server."
@@ -408,7 +424,7 @@ msgstr ""
 "Bitte ihn auch, die TablePress-&#8220;Zusatz-CSS&#8221;-Dateien vom Server "
 "zu löschen."
 
-#: controllers/controller-admin.php:1766
+#: controllers/controller-admin.php:1802
 msgid ""
 "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in "
 "the <code>wp-content</code> folder."
@@ -417,16 +433,16 @@ msgstr ""
 "<code>wp-content</code>-Ordner löschen."
 
 # @ tablepress
-#: controllers/controller-admin.php:1770
+#: controllers/controller-admin.php:1806
 msgid "Go to &#8220;Plugins&#8221; page"
 msgstr "zur &#8220;Plugins&#8221;-Seite gehen"
 
-#: controllers/controller-admin.php:1771
+#: controllers/controller-admin.php:1807
 msgid "Go to Dashboard"
 msgstr "zum Dashboard gehen"
 
 # @ tablepress
-#: controllers/controller-admin.php:1773 views/view-options.php:185
+#: controllers/controller-admin.php:1809 views/view-options.php:185
 #: views/view-options.php:192
 msgid "Uninstall TablePress"
 msgstr "TablePress deinstallieren"
@@ -798,6 +814,11 @@ msgid "Table Name"
 msgstr "Tabellen-Name"
 
 # @ tablepress
+#: views/view-add.php:72
+msgid "Enter Table Name here"
+msgstr "Tabellen-Name eingeben"
+
+# @ tablepress
 #: views/view-add.php:73
 msgid "The name or title of your table."
 msgstr "Name oder Titel der Tabelle."
@@ -827,6 +848,12 @@ msgstr "Eine Beschreibung des Inhalts der Tabelle."
 #: views/view-add.php:81
 msgid "Number of Rows"
 msgstr "Anzahl Zeilen"
+
+# @ tablepress
+#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:376
+#: views/view-edit.php:379
+msgid "This field must contain a positive number."
+msgstr "Dieses Feld muss eine positive Zahl enthalten."
 
 # @ tablepress
 #: views/view-add.php:83
@@ -1193,6 +1220,14 @@ msgstr "In die Tabelle einfügen"
 msgid "Table ID"
 msgstr "Tabellen-ID"
 
+#: views/view-edit.php:193
+msgid ""
+"The Table ID can only consist of letters, numbers, hyphens (-), and "
+"underscores (_)."
+msgstr ""
+"Die Tabellen-ID darf nur aus Buchstaben, Zahlen, Bindestrich (-) und "
+"Unterstrich (_) bestehen."
+
 # @ tablepress
 #: views/view-edit.php:194
 msgid "Shortcode"
@@ -1243,6 +1278,11 @@ msgstr "in Zeile"
 #: views/view-edit.php:336
 msgid "?"
 msgstr "?"
+
+# @ tablepress
+#: views/view-edit.php:336
+msgid "Help on combining cells"
+msgstr "Hilfe zum Verbinden von Zellen"
 
 # @ tablepress
 #: views/view-edit.php:338
@@ -1344,11 +1384,6 @@ msgstr "Löschen"
 #, php-format
 msgid "Add %s row(s)"
 msgstr "%s Zeile(n) hinzufügen"
-
-# @ tablepress
-#: views/view-edit.php:376 views/view-edit.php:379
-msgid "This field must contain a positive number."
-msgstr "Dieses Feld muss eine positive Zahl enthalten."
 
 # @ tablepress
 #: views/view-edit.php:376 views/view-edit.php:379
@@ -1476,6 +1511,14 @@ msgstr "Die Tabellenbeschreibung soll %s der Tabelle ausgegeben werden."
 #: views/view-edit.php:504
 msgid "Extra CSS Classes"
 msgstr "Weitere CSS-Klassen"
+
+#: views/view-edit.php:505
+msgid ""
+"This field can only contain letters, numbers, spaces, hyphens (-), and "
+"underscores (_)."
+msgstr ""
+"Dieses Feld darf nur aus Buchstaben, Zahlen, Leerzeichen, Bindestrich (-) "
+"und Unterstrich (_) bestehen."
 
 # @ tablepress
 #: views/view-edit.php:505
