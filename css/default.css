@@ -46,6 +46,11 @@
 	vertical-align: top;
 }
 
+/* Fix right column float in many themes */
+.tablepress [class*="column"]+[class*="column"]:last-child {
+	float: none;
+}
+
 /* Vertical lines / borders */
 .tablepress tbody td,
 .tablepress tfoot th {
