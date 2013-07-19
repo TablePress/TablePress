@@ -1,4 +1,4 @@
-# [TablePress](http://tablepress.org/) [![Flattr TablePress](http://api.flattr.com/button/flattr-badge-large.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2)
+# [TablePress](http://tablepress.org/) [![Flattr TablePress](http://api.flattr.com/button/flattr-badge-large.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Build Status](https://travis-ci.org/TobiasBg/TablePress.png)](https://travis-ci.org/TobiasBg/TablePress)
 
 TablePress is a plugin for the [WordPress](http://wordpress.org/) publishing platform.
 
