@@ -188,7 +188,9 @@ class EvalMath {
 		'median'=>array(-1),  'mode'=>array(-1), 'range'=>array(-1),
 		'max'=>array(-1),	  'min'=>array(-1),
 		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
-		'round'=>array(1, 2), 'sum'=>array(-1),	 'product'=>array(-1),
+		'round'=>array(1, 2),
+		'number_format'=>array(1, 2), 'number_format_eu'=>array(1, 2),
+		'sum'=>array(-1),	 'product'=>array(-1),
 		'rand_int'=>array(2), 'rand_float'=>array(0),
 		'arctan2'=>array(2),  'atan2'=>array(2),
 		'if'=>array(3)
@@ -635,6 +637,13 @@ class EvalMathFuncs {
 
 	static function round($val, $precision = 0) {
 		return round($val, $precision);
+	}
+
+	static function number_format($val, $decimals = 0) {
+		return number_format($val, $decimals, '.', ',');
+	}
+	static function number_format_eu($val, $decimals = 0) {
+		return number_format($val, $decimals, ',', ' ');
 	}
 
 	static function sum() {
