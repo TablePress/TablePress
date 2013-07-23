@@ -456,6 +456,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	protected function get_plugin_languages() {
 		$languages = array(
+			'cs_CZ' => array(
+				'name' => __( 'Czech', 'tablepress' ),
+				'translator_name' => 'Jiří Janda',
+				'translator_url' => 'http://gadjukin.net/'
+			),
 			'de_DE' => array(
 				'name' => __( 'German', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
