@@ -25,6 +25,12 @@ additional modifications by Tobias Bäthge:
 - allow comparisons (x>4, x=5, etc.)
 - use array_sum() instead of loop in EvalMathFuncs::sum()
 - add "product()" function
+- add "mean()" alias for "average()"
+- add "atan2()" and "arctan2()" alias
+- add "median()", "mode()", and "range()" statistic functions
+- add "if()" function
+- add "number_format()" and "number_format_eu()" functions
+- Fix displaying of expected number of arguments
 
 ================================================================================
 
