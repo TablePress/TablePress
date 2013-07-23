@@ -222,10 +222,12 @@ class TablePress_Import {
 		foreach ( $element as $row ) {
 			$new_row = array();
 			foreach ( $row as $cell ) {
-				if ( 1 === preg_match( '#<t(?:d|h).*?>(.*)</t(?:d|h)>#is', $cell->asXML(), $matches ) ) // get text between <td>...</td>, or <th>...</th>, possibly with attributes
+				if ( 1 === preg_match( '#<t(?:d|h).*?>(.*)</t(?:d|h)>#is', $cell->asXML(), $matches ) ) { // get text between <td>...</td>, or <th>...</th>, possibly with attributes
+					$matches[1] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' ); // decode HTML entities again, as there might be some left especially in attributes of HTML tags in the cells (see http://php.net/manual/en/simplexmlelement.asxml.php#107137 )
 					$new_row[] = $matches[1];
-				else
+				} else {
 					$new_row[] = '';
+				}
 			}
 			$rows[] = $new_row;
 		}
