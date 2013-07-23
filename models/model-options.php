@@ -248,6 +248,42 @@ class TablePress_Options_Model extends TablePress_Model {
 	}
 
 	/**
+	 * Remove all TablePress capabilities from all roles
+	 *
+	 * @see add_access_capabilities()
+	 *
+	 * @since 1.1.0
+	 */
+	public function remove_access_capabilities() {
+		// Capabilities for all roles
+		global $wp_roles;
+		if ( ! isset( $wp_roles ) )
+			$wp_roles = new WP_Roles();
+
+ 		foreach ( $wp_roles->roles as $role => $details ) {
+			$role = $wp_roles->get_role( $role );
+			if ( empty( $role ) )
+				continue;
+
+			$role->remove_cap( 'tablepress_edit_tables' );
+			$role->remove_cap( 'tablepress_delete_tables' );
+			$role->remove_cap( 'tablepress_list_tables' );
+			$role->remove_cap( 'tablepress_add_tables' );
+			$role->remove_cap( 'tablepress_copy_tables' );
+			$role->remove_cap( 'tablepress_import_tables' );
+			$role->remove_cap( 'tablepress_export_tables' );
+			$role->remove_cap( 'tablepress_access_options_screen' );
+			$role->remove_cap( 'tablepress_access_about_screen' );
+			$role->remove_cap( 'tablepress_import_tables_wptr' );
+			$role->remove_cap( 'tablepress_edit_options' );
+		}
+
+		// Refresh current set of capabilities of the user, to be able to directly use the new caps
+		$user = wp_get_current_user();
+		$user->get_role_caps();
+	}
+
+	/**
 	 * Map TablePress meta capabilities to primitive capabilities
 	 *
 	 * @since 1.0.0

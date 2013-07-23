@@ -1787,6 +1787,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Delete all tables, "Custom CSS" files, and options
 		$this->model_table->delete_all();
 		$css_files_deleted = $this->model_options->delete_custom_css_files();
+		$this->model_options->remove_access_capabilities();
+
 		$this->model_table->destroy();
 		$this->model_options->destroy();
 
