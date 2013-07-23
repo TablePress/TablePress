@@ -244,7 +244,7 @@ class TablePress_Edit_View extends TablePress_View {
 			}
 		}
 ?>
-<table id="edit-form">
+<table id="edit-form" class="tablepress-edit-screen-id-<?php echo esc_attr( $data['table']['id'] ); ?>">
 	<thead>
 		<tr id="edit-form-head">
 			<th></th>

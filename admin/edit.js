@@ -1010,6 +1010,8 @@ jQuery(document).ready( function( $ ) {
 					if ( ( 'pushState' in window.history ) && null !== window.history['pushState'] )
 						window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
 				}
+				// update CSS class for data field form
+				$( '#edit-form' ).removeClass( 'tablepress-edit-screen-id-' + tp.table.id ).addClass( 'tablepress-edit-screen-id-' + data.table_id );
 				// update table ID in input fields (type text and hidden)
 				tp.table.id = tp.table.new_id = data.table_id;
 				$( '#table-id' ).val( tp.table.id );
