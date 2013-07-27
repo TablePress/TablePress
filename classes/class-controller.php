@@ -98,12 +98,23 @@ abstract class TablePress_Controller {
 			} else {
 				// Update Plugin Options Options, if necessary
 				$this->model_options->merge_plugin_options_defaults();
-				$this->model_options->update( array(
+				$updated_options = array(
 					'plugin_options_db_version' => TablePress::db_version,
 					'prev_tablepress_version' => $this->model_options->get( 'tablepress_version' ),
 					'tablepress_version' => TablePress::version,
 					'message_plugin_update' => true
-				) );
+				);
+
+				// Re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed)
+				require_once ABSPATH . 'wp-admin/includes/file.php'; // to provide filesystem functions early
+				$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+				$result = $tablepress_css->save_custom_css_to_file( $this->model_options->get( 'custom_css' ), $this->model_options->get( 'custom_css_minified' ) );
+				$updated_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
+				// if saving was successful, increase the "Custom CSS" version number for cache busting
+				if ( $result )
+					$updated_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
+
+				$this->model_options->update( $updated_options );
 
 				// Clear table caches
 				if ( $current_plugin_options_db_version < 16 )
