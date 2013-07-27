@@ -84,6 +84,7 @@ class TablePress_Import {
 		if ( $this->html_import_support_available )
 			$this->import_formats['html'] = __( 'HTML - Hypertext Markup Language', 'tablepress' );
 		$this->import_formats['json'] = __( 'JSON - JavaScript Object Notation', 'tablepress' );
+		$this->import_formats['xls'] = __( 'XLS - Microsoft Excel 97-2003 (experimental)', 'tablepress' );
 	}
 
 	/**
@@ -98,7 +99,8 @@ class TablePress_Import {
 	public function import_table( $format, $data ) {
 		$this->import_data = $data;
 
-		$this->fix_table_encoding();
+		if ( 'xls' != $format )
+			$this->fix_table_encoding();
 
 		switch ( $format ) {
 			case 'csv':
@@ -109,6 +111,9 @@ class TablePress_Import {
 				break;
 			case 'json':
 				$this->import_json();
+				break;
+			case 'xls':
+				$this->import_xls();
 				break;
 			default:
 				return false;
@@ -257,6 +262,69 @@ class TablePress_Import {
 
 		$table['data'] = $this->pad_array_to_max_cols( $table['data'] );
 		$this->imported_table = $table;
+	}
+
+	/**
+	 * Import Microsoft Excel 97-2003 data
+	 *
+	 * @since 1.1.0
+	 */
+	protected function import_xls() {
+		$excel_reader = TablePress::load_class( 'Spreadsheet_Excel_Reader', 'excel-reader.class.php', 'libraries', $this->import_data );
+
+		// loop through Excel file and retrieve value and colspan/rowspan properties for each cell
+		$sheet = 0; // import first sheet of the Workbook
+		$table = array();
+		for ( $row = 1; $row <= $excel_reader->rowcount( $sheet ); $row++ ) {
+			$table_row = array();
+			for ( $col = 1; $col <= $excel_reader->colcount( $sheet ); $col++ ) {
+				$cell = array();
+				$cell['rowspan'] = $excel_reader->rowspan( $row, $col, $sheet );
+				$cell['colspan'] = $excel_reader->colspan( $row, $col, $sheet );
+				$cell['val'] = $excel_reader->val( $row, $col, $sheet );
+				$table_row[] = $cell;
+			}
+			$table[] = $table_row;
+		}
+
+		// transform colspan/rowspan properties to TablePress equivalent (cell content)
+		foreach ( $table as $row_idx => $row ) {
+			foreach ( $row as $col_idx => $cell ) {
+				if ( 1 == $cell['rowspan'] && 1 == $cell['colspan'] )
+					continue;
+
+				if ( 1 < $cell['colspan'] ) {
+					for ( $i = 1; $i < $cell['colspan']; $i++ ) {
+						$table[ $row_idx ][ $col_idx + $i ]['val'] = '#colspan#';
+					}
+				}
+				if ( 1 < $cell['rowspan'] ) {
+					for ( $i = 1; $i < $cell['rowspan']; $i++ ) {
+						$table[ $row_idx + $i ][ $col_idx ]['val'] = '#rowspan#';
+					}
+				}
+
+				if ( 1 < $cell['rowspan'] && 1 < $cell['colspan'] ) {
+					for ( $i = 1; $i < $cell['rowspan']; $i++ ) {
+						for ( $j = 1; $j < $cell['colspan']; $j++ ) {
+							$table[ $row_idx + $i ][ $col_idx + $j ]['val'] = '#span#';
+						}
+					}
+				}
+			}
+		}
+
+		// flatten value property to two-dimensional array
+		$result_table = array();
+		foreach ( $table as $row_idx => $row ) {
+			$table_row = array();
+			foreach ( $row as $col_idx => $cell ) {
+				$table_row[] = (string)$cell['val'];
+			}
+			$result_table[] = $table_row;
+		}
+
+		$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $result_table ) );
 	}
 
 	/**
