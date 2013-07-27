@@ -156,10 +156,9 @@ abstract class TablePress_View {
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$this->admin_page->enqueue_style( 'common' );
 		remove_action( 'admin_print_styles', array( TablePress::$controller, 'add_tablepress_hidpi_css' ), 21 ); // Don't load HiDPI CSS via <style> on TablePress pages, as it's part of common.css
-		/* // @TODO: maybe later necessary: RTL styles for admin interface
+		// RTL styles for the admin interface
 		if ( is_rtl() )
-			$this->admin_page->enqueue_style( 'common-rtl' );
-		*/
+			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
 		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ), array(
 			'common' => array(
 				'ays_delete_single_table' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
