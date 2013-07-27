@@ -81,47 +81,49 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function enqueue_css() {
-		// add "Default CSS"
 		$use_default_css = apply_filters( 'tablepress_use_default_css', true );
-		if ( $use_default_css ) {
-			$rtl = ( is_rtl() ) ? '-rtl' : '';
-			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-			$default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
-			$default_css_url = apply_filters( 'tablepress_default_css_url', $default_css_url );
-			wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
-		}
+		$custom_css = $this->model_options->get( 'custom_css' );
+		$use_custom_css = ( $this->model_options->get( 'use_custom_css' ) && '' != $custom_css );
+		$use_custom_css_file = ( $use_custom_css && $this->model_options->get( 'use_custom_css_file' ) );
+		$custom_css_version = apply_filters( 'tablepress_custom_css_version', $this->model_options->get( 'custom_css_version' ) );
+		$use_minified_css = ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG );
 
-		// add "Custom CSS"
-		if ( $this->model_options->get( 'use_custom_css' ) ) {
-			$print_custom_css_inline = true; // will be overwritten if file is used
-			if ( $this->model_options->get( 'use_custom_css_file' ) ) {
-				$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-				// fall back to "Custom CSS" in options, if it could not be retrieved from file
-				$custom_css_file_contents = '';
-				if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
-					$custom_css_file_contents = $tablepress_css->load_custom_css_from_file( 'minified' );
-					$custom_css_file_type = 'minified';
-				}
-				if ( empty( $custom_css_file_contents ) ) {
-					$custom_css_file_contents = $tablepress_css->load_custom_css_from_file( 'normal' );
-					$custom_css_file_type = 'normal';
-				}
-				if ( ! empty( $custom_css_file_contents ) ) {
-					$print_custom_css_inline = false;
-					$custom_css_url = $tablepress_css->get_custom_css_location( $custom_css_file_type, 'url' );
-					$custom_css_dependencies = array();
-					if ( $use_default_css )
-						$custom_css_dependencies[] = 'tablepress-default'; // if default CSS is desired, but also handled internally
-					$custom_css_version = apply_filters( 'tablepress_custom_css_version', $this->model_options->get( 'custom_css_version' ) );
-					wp_enqueue_style( 'tablepress-custom', $custom_css_url, $custom_css_dependencies, $custom_css_version );
-				}
+		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+
+		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $tablepress_css->load_custom_css_from_file( 'combined' ) );
+		if ( $use_custom_css_combined_file ) {
+			$custom_css_combined_url = $tablepress_css->get_custom_css_location( 'combined', 'url' );
+			wp_enqueue_style( 'tablepress-combined', $custom_css_combined_url, array(), $custom_css_version );
+		} else {
+			$custom_css_dependencies = array();
+			if ( $use_default_css ) {
+				$rtl = ( is_rtl() ) ? '-rtl' : '';
+				$suffix = ( $use_minified_css ) ? '.min' : '';
+				$default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
+				$default_css_url = apply_filters( 'tablepress_default_css_url', $default_css_url );
+				wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
+				$custom_css_dependencies[] = 'tablepress-default'; // to make sure that Custom CSS is printed after Default CSS
 			}
 
-			if ( $print_custom_css_inline ) {
+			$use_custom_css_minified_file = ( $use_custom_css_file && $use_minified_css && $tablepress_css->load_custom_css_from_file( 'minified' ) );
+			if ( $use_custom_css_minified_file ) {
+				$custom_css_minified_url = $tablepress_css->get_custom_css_location( 'minified', 'url' );
+				wp_enqueue_style( 'tablepress-custom', $custom_css_minified_url, $custom_css_dependencies, $custom_css_version );
+				return;
+			}
+
+			$use_custom_css_normal_file = ( $use_custom_css_file && $tablepress_css->load_custom_css_from_file( 'normal' ) );
+			if ( $use_custom_css_normal_file ) {
+				$custom_css_normal_url = $tablepress_css->get_custom_css_location( 'normal', 'url' );
+				wp_enqueue_style( 'tablepress-custom', $custom_css_normal_url, $custom_css_dependencies, $custom_css_version );
+				return;
+			}
+
+			if ( $use_custom_css ) {
 				// get "Custom CSS" from options, try minified Custom CSS first
-				$custom_css = trim( $this->model_options->get( 'custom_css_minified' ) );
-				if ( empty( $custom_css ) )
-					$custom_css = trim( $this->model_options->get( 'custom_css' ) );
+				$custom_css_minified = $this->model_options->get( 'custom_css_minified' );
+				if ( ! empty( $custom_css_minified ) )
+					$custom_css = $custom_css_minified;
 				$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 				if ( ! empty( $custom_css ) ) {
 					// wp_add_inline_style() requires a loaded CSS file, so we have to work around that if "Default CSS" is disabled
@@ -141,9 +143,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function _print_custom_css() {
 		// get "Custom CSS" from options, try minified Custom CSS first
-		$custom_css = trim( $this->model_options->get( 'custom_css_minified' ) );
+		$custom_css = $this->model_options->get( 'custom_css_minified' );
 		if ( empty( $custom_css ) )
-			$custom_css = trim( $this->model_options->get( 'custom_css' ) );
+			$custom_css = $this->model_options->get( 'custom_css' );
 		$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 		echo "<style type='text/css'>\n{$custom_css}\n</style>\n";
 	}
