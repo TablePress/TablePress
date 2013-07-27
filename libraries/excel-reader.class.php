@@ -1,5 +1,17 @@
 <?php
 /**
+ * PHP Excel Reader Class
+ *
+ * @package TablePress
+ * @subpackage Libraries
+ * @author Matt Kruse, Matt Roxburgh, Vadim Tkachenko, Tobias Bäthge
+ * @since 1.1.0
+ */
+
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
+/**
  * A class for reading Microsoft Excel (97/2003) Spreadsheets.
  *
  * Version 2.21
