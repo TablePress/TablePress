@@ -96,19 +96,14 @@ class OLERead {
 	var $data = '';
 	function OLERead(){ }
 
-	function read($sFileName){
-		// check if file exist and is readable (Darko Miljanovic)
-		if(!is_readable($sFileName)) {
-			$this->error = 1;
-			return false;
-		}
-		$this->data = @file_get_contents($sFileName);
+	function read($data){
+		$this->data = $data;
 		if (!$this->data) {
 			$this->error = 1;
 			return false;
 		}
 		if (substr($this->data, 0, 8) != IDENTIFIER_OLE) {
-			$this->error = 1;
+			$this->error = 2;
 			return false;
 		}
 		$this->numBigBlockDepotBlocks = GetInt4d($this->data, NUM_BIG_BLOCK_DEPOT_BLOCKS_POS);
@@ -315,7 +310,6 @@ class Spreadsheet_Excel_Reader {
 	var $colindexes = array();
 	var $standardColWidth = 0;
 	var $defaultColWidth = 0;
-
 	function myHex($d) {
 		if ($d < 16) return "0" . dechex($d);
 		return dechex($d);
@@ -911,7 +905,7 @@ class Spreadsheet_Excel_Reader {
 	 *
 	 * Some basic initialisation
 	 */
-	function Spreadsheet_Excel_Reader($file='',$store_extended_info=true,$outputEncoding='') {
+	function Spreadsheet_Excel_Reader($data='',$store_extended_info=false,$outputEncoding='') {
 		$this->_ole = new OLERead();
 		$this->setUTFEncoder('iconv');
 		if ($outputEncoding != '') {
@@ -923,8 +917,8 @@ class Spreadsheet_Excel_Reader {
 			$this->colindexes[$i] = $name;
 		}
 		$this->store_extended_info = $store_extended_info;
-		if ($file!="") {
-			$this->read($file);
+		if ($data!="") {
+			$this->read($data);
 		}
 	}
 
@@ -971,16 +965,18 @@ class Spreadsheet_Excel_Reader {
 	/**
 	 * Read the spreadsheet file using OLE, then parse
 	 */
-	function read($sFileName) {
-		$res = $this->_ole->read($sFileName);
+	function read($data) {
+		$res = $this->_ole->read($data);
 
 		// oops, something goes wrong (Darko Miljanovic)
 		if($res === false) {
 			// check error code
 			if($this->_ole->error == 1) {
-				// bad file
-				die('The filename ' . $sFileName . ' is not readable');
+				die( 'Data is not readable' );
+			} elseif($this->_ole->error == 2) {
+				die( 'OLE error' );
 			}
+
 			// check other error codes here (eg bad fileformat, etc...)
 		}
 		$this->data = $this->_ole->getWorkBook();
@@ -1001,9 +997,7 @@ class Spreadsheet_Excel_Reader {
 		$length = v($data,$pos+2);
 		$version = v($data,$pos+4);
 		$substreamType = v($data,$pos+6);
-
 		$this->version = $version;
-
 		if (($version != SPREADSHEET_EXCEL_READER_BIFF8) &&
 			($version != SPREADSHEET_EXCEL_READER_BIFF7)) {
 			return false;
@@ -1174,7 +1168,6 @@ class Spreadsheet_Excel_Reader {
 								'raw' => $this->dumpHexData($data, $pos+3, $length)
 								);
 						break;
-
 				case SPREADSHEET_EXCEL_READER_TYPE_PALETTE:
 						$colors = ord($data[$pos+4]) | ord($data[$pos+5]) << 8;
 						for ($coli = 0; $coli < $colors; $coli++) {
@@ -1185,7 +1178,6 @@ class Spreadsheet_Excel_Reader {
 							$this->colors[0x07 + $coli] = '#' . $this->myhex($colr) . $this->myhex($colg) . $this->myhex($colb);
 						}
 						break;
-
 				case SPREADSHEET_EXCEL_READER_TYPE_XF:
 						$fontIndexCode = (ord($data[$pos+4]) | ord($data[$pos+5]) << 8) - 1;
 						$fontIndexCode = max(0,$fontIndexCode);
@@ -1197,7 +1189,6 @@ class Spreadsheet_Excel_Reader {
 						$align = "";
 						if ($alignbit==3) { $align="right"; }
 						if ($alignbit==2) { $align="center"; }
-
 						$fillPattern = (ord($data[$pos+21]) & 0xFC) >> 2;
 						if ($fillPattern == 0) {
 							$bgcolor = "";
@@ -1219,10 +1210,8 @@ class Spreadsheet_Excel_Reader {
 						$xf['borderLeftColor'] = ($border & 0x7F0000) >> 16;
 						$xf['borderRightColor'] = ($border & 0x3F800000) >> 23;
 						$border = (ord($data[$pos+18]) | ord($data[$pos+19]) << 8);
-
 						$xf['borderTopColor'] = ($border & 0x7F);
 						$xf['borderBottomColor'] = ($border & 0x3F80) >> 7;
-
 						if (array_key_exists($indexCode, $this->dateFormats)) {
 							$xf['type'] = 'date';
 							$xf['format'] = $this->dateFormats[$indexCode];
@@ -1574,7 +1563,6 @@ class Spreadsheet_Excel_Reader {
 						$this->colInfo[$this->sn][$coli+1] = Array('width' => $cw, 'xf' => $cxf, 'hidden' => ($co & 0x01), 'collapsed' => ($co & 0x1000) >> 12);
 					}
 					break;
-
 				default:
 					break;
 			}
