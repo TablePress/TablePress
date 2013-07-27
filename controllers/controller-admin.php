@@ -346,24 +346,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['zip_support_available'] = $exporter->zip_support_available;
 				break;
 			case 'options':
-				// Maybe try saving "Custom CSS" to a file:
-				// (called here, as the credentials form posts to this handler again, due to how request_filesystem_credentials() works)
-				if ( isset( $_GET['item'] ) && 'save_custom_css' == $_GET['item'] ) {
-					TablePress::check_nonce( 'options', $_GET['item'] ); // nonce check here, as we don't have an explicit handler, and even viewing the screen needs to be checked
-					$action = 'options_custom_css'; // to load a different view
-					// try saving "Custom CSS" to a file, otherwise this gets the HTML for the credentials form
-					$result = $this->model_options->save_custom_css_to_file();
-					$data['credentials_form'] = $result;
-					break;
-				}
 				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
-				$data['frontend_options']['use_custom_css_file'] = $this->model_options->get( 'use_custom_css_file' );
-				$data['frontend_options']['custom_css'] = $this->model_options->load_custom_css_from_file( 'normal' );
-				$data['frontend_options']['custom_css_url'] = $this->model_options->get_custom_css_location( 'normal', 'url' );
-				$data['frontend_options']['custom_css_file_exists'] = ( false !== $data['frontend_options']['custom_css'] );
-				if ( $data['frontend_options']['use_custom_css_file'] ) {
+				if ( $this->model_options->get( 'use_custom_css_file' ) ) {
+					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+					$data['frontend_options']['custom_css'] = $tablepress_css->load_custom_css_from_file( 'normal' );
 					// fall back to "Custom CSS" in options, if it could not be retrieved from file
-					if ( ! $data['frontend_options']['custom_css_file_exists'] )
+					if ( false === $data['frontend_options']['custom_css'] )
 						$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
 				} else {
 					// get "Custom CSS" from options
@@ -864,80 +852,24 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Custom CSS can only be saved if the user is allowed to do so
-		$update_custom_css_file = false;
 		if ( current_user_can( 'tablepress_edit_options' ) ) {
-			// Checkboxes
-			foreach ( array( 'use_custom_css', 'use_custom_css_file' ) as $checkbox ) {
-				$new_options[ $checkbox ] = ( isset( $posted_options[ $checkbox ] ) && 'true' === $posted_options[ $checkbox ] );
-			}
+			// Checkbox
+			$new_options[ 'use_custom_css' ] = ( isset( $posted_options[ 'use_custom_css' ] ) && 'true' === $posted_options[ 'use_custom_css' ] );
+
 			if ( isset( $posted_options['custom_css'] ) ) {
-				$custom_css = $posted_options['custom_css'];
+				$new_options['custom_css'] = $posted_options['custom_css'];
 
-				$csstidy = TablePress::load_class( 'csstidy', 'class.csstidy.php', 'libraries/csstidy' );
-
-				// Sanitization and not just tidying for users without enough privileges
-				if ( ! current_user_can( 'unfiltered_html' ) ) {
-					$csstidy->optimise = new csstidy_custom_sanitize( $csstidy );
-
-					$custom_css = str_replace( '<=', '&lt;=', $custom_css ); // Let "arrows" survive, otherwise this might be recognized as the beginning of an HTML tag and removed with other stuff behind it
-					$custom_css = wp_kses( $custom_css, 'strip' ); // remove all HTML tags
-					$custom_css = str_replace( '&gt;', '>', $custom_css ); // KSES replaces single ">" with "&gt;", but ">" is valid in CSS selectors
-					$custom_css = strip_tags( $custom_css ); // strip_tags again, because of the just added ">" (KSES for a second time would again bring the ">" problem)
-				}
-
-				$csstidy->set_cfg( 'remove_bslash', false );
-				$csstidy->set_cfg( 'compress_colors', false );
-				$csstidy->set_cfg( 'compress_font-weight', false );
-				$csstidy->set_cfg( 'lowercase_s', false );
-				$csstidy->set_cfg( 'optimise_shorthands', false );
-				$csstidy->set_cfg( 'remove_last_;', false );
-				$csstidy->set_cfg( 'case_properties', false);
-				$csstidy->set_cfg( 'sort_properties', false );
-				$csstidy->set_cfg( 'sort_selectors', false );
-				$csstidy->set_cfg( 'discard_invalid_selectors', false );
-				$csstidy->set_cfg( 'discard_invalid_properties', true );
-				$csstidy->set_cfg( 'merge_selectors', false );
-				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
-				$csstidy->set_cfg( 'preserve_css', true );
-				$csstidy->set_cfg( 'timestamp', false );
-				$csstidy->set_cfg( 'template', dirname( TABLEPRESS__FILE__ ) . '/libraries/csstidy/tablepress-standard.tpl' );
-
-				$csstidy->parse( $custom_css );
-				$custom_css = $csstidy->print->plain();
-				// Save "Custom CSS" to option
-				$new_options['custom_css'] = $custom_css;
-
-				// Minify CSS
-				$minify_csstidy = new csstidy();
-				$minify_csstidy->optimise = new csstidy_custom_sanitize( $minify_csstidy );
-				$minify_csstidy->set_cfg( 'remove_bslash', false );
-				$minify_csstidy->set_cfg( 'compress_colors', true );
-				$minify_csstidy->set_cfg( 'compress_font-weight', true );
-				$minify_csstidy->set_cfg( 'lowercase_s', false );
-				$minify_csstidy->set_cfg( 'optimise_shorthands', 1 );
-				$minify_csstidy->set_cfg( 'remove_last_;', true );
-				$minify_csstidy->set_cfg( 'case_properties', false);
-				$minify_csstidy->set_cfg( 'sort_properties', false );
-				$minify_csstidy->set_cfg( 'sort_selectors', false );
-				$minify_csstidy->set_cfg( 'discard_invalid_selectors', false );
-				$minify_csstidy->set_cfg( 'discard_invalid_properties', true );
-				$minify_csstidy->set_cfg( 'merge_selectors', false );
-				$minify_csstidy->set_cfg( 'css_level', 'CSS3.0' );
-				$minify_csstidy->set_cfg( 'preserve_css', false );
-				$minify_csstidy->set_cfg( 'timestamp', false );
-				$minify_csstidy->set_cfg( 'template', 'highest' );
-
-				$minify_csstidy->parse( $custom_css );
-				$minified_custom_css = $minify_csstidy->print->plain();
-				// Save minified "Custom CSS" to option
-				$new_options['custom_css_minified'] = $minified_custom_css;
+				$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+				$new_options['custom_css'] = $tablepress_css->sanitize_css( $new_options['custom_css'] ); // Sanitize and tidy up Custom CSS
+				$new_options['custom_css_minified'] = $tablepress_css->minify_css( $new_options['custom_css'] ); // Minify Custom CSS
 
 				// Maybe update CSS files as well
-				if ( $new_options['use_custom_css_file']
-				&& $new_options['custom_css'] !== $this->model_options->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
-					$update_custom_css_file = true;
-					// Set to false again. As it was set here, it will be set true again, if file saving succeeds
-					$new_options['use_custom_css_file'] = false;
+				if ( $new_options['custom_css'] !== $tablepress_css->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
+					$result = $tablepress_css->save_custom_css_to_file( $new_options['custom_css'], $new_options['custom_css_minified'] );
+					$new_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
+					// if saving was successful, increase the "Custom CSS" version number for cache busting
+					if ( $result )
+						$new_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
 				}
 			}
 		}
@@ -947,9 +879,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->model_options->update( $new_options );
 			$this->model_table->_flush_caching_plugins_caches();
 		}
-
-		if ( $update_custom_css_file ) // capability check is performed above
-			TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
 
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
@@ -1564,24 +1493,26 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
 			$imported_options['use_custom_css'] = (bool)$wp_table_reloaded_options['use_custom_css'];
 		if ( isset( $wp_table_reloaded_options['custom_css'] ) ) {
+			// Automatically convert WP-Table Reloaded Custom CSS to TablePress Custom CSS by search/replacing classes and IDs
 			$imported_options['custom_css'] = stripslashes( $wp_table_reloaded_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '#wp-table-reloaded-id-', '#tablepress-', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '-no-1', '', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '.wp-table-reloaded-id-', '.tablepress-id-', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '.wp-table-reloaded', '.tablepress', $imported_options['custom_css'] );
-		}
 
-		/*
-			// @TODO:
-			// Maybe save it to file as well
-			$update_custom_css_file = false;
-			if ( $this->model_options->get( 'use_custom_css_file' )
-			&& $imported_options['custom_css'] !== $this->model_options->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
-				$update_custom_css_file = true;
-				// Set to false again. As it was set here, it will be set true again, if file saving succeeds
-				$imported_options['use_custom_css_file'] = false;
+			$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+			$imported_options['custom_css'] = $tablepress_css->sanitize_css( $imported_options['custom_css'] );	// Sanitize and tidy up Custom CSS
+			$imported_options['custom_css_minified'] = $tablepress_css->minify_css( $imported_options['custom_css'] ); // Minify Custom CSS
+
+			// Maybe update CSS files as well
+			if ( $imported_options['custom_css'] !== $tablepress_css->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
+				$result = $tablepress_css->save_custom_css_to_file( $imported_options['custom_css'], $imported_options['custom_css_minified'] );
+				$imported_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
+				// if saving was successful, increase the "Custom CSS" version number for cache busting
+				if ( $result )
+					$imported_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
 			}
-		*/
+		}
 
 		// Save gathered imported options
 		if ( empty( $imported_options ) )
@@ -1589,11 +1520,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$this->model_options->update( $imported_options );
 
-		// @TODO: Necessary if saving to file above is used
-		// if ( $update_custom_css_file )
-		//	TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
-
-		// Plugin Options import successful
 		return true;
 	}
 
@@ -1726,7 +1652,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		);
 
 		if ( $this->model_options->get( 'use_custom_css_file' ) ) {
-			$custom_css = $this->model_options->load_custom_css_from_file( 'normal' );
+			$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+			$custom_css = $tablepress_css->load_custom_css_from_file( 'normal' );
 			// fall back to "Custom CSS" in options, if it could not be retrieved from file
 			if ( false === $custom_css )
 				$custom_css = $this->model_options->get( 'custom_css' );
@@ -1786,7 +1713,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Delete all tables, "Custom CSS" files, and options
 		$this->model_table->delete_all();
-		$css_files_deleted = $this->model_options->delete_custom_css_files();
+		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+		$css_files_deleted = $tablepress_css->delete_custom_css_files();
 		$this->model_options->remove_access_capabilities();
 
 		$this->model_table->destroy();

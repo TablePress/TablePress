@@ -42,7 +42,6 @@ class TablePress_Options_View extends TablePress_View {
 
 		$this->process_action_messages( array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
-			'success_save_error_custom_css' => __( 'Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file.', 'tablepress' ),
 			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' ),
 			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &#8220;Custom CSS&#8221; was imported successfully.', 'tablepress' )
 		) );
@@ -106,11 +105,6 @@ class TablePress_Options_View extends TablePress_View {
 				echo ' ';
 				_e( 'Please note that invalid CSS code will be stripped, if it can not be corrected automatically.', 'tablepress' );
 			?></p>
-			<?php
-				$file_abbr = $data['frontend_options']['custom_css_url'] . ' (' . ( ( $data['frontend_options']['custom_css_file_exists'] ) ? __( 'File exists', 'tablepress' ) : __( 'File seems not to exist', 'tablepress' ) ) . ')';
-			?>
-			<br />
-			<label for="option-use-custom-css-file" title="<?php echo esc_attr( $file_abbr ); ?>"><input type="checkbox" id="option-use-custom-css-file" name="options[use_custom_css_file]" value="true"<?php checked( $data['frontend_options']['use_custom_css_file'] ); ?> /> <?php _e( 'Use a file for storing and loading the &#8220;Custom CSS&#8221; code.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 </tbody>

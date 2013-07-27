@@ -95,19 +95,20 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		if ( $this->model_options->get( 'use_custom_css' ) ) {
 			$print_custom_css_inline = true; // will be overwritten if file is used
 			if ( $this->model_options->get( 'use_custom_css_file' ) ) {
+				$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 				// fall back to "Custom CSS" in options, if it could not be retrieved from file
 				$custom_css_file_contents = '';
 				if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
-					$custom_css_file_contents = $this->model_options->load_custom_css_from_file( 'minified' );
+					$custom_css_file_contents = $tablepress_css->load_custom_css_from_file( 'minified' );
 					$custom_css_file_type = 'minified';
 				}
 				if ( empty( $custom_css_file_contents ) ) {
-					$custom_css_file_contents = $this->model_options->load_custom_css_from_file( 'normal' );
+					$custom_css_file_contents = $tablepress_css->load_custom_css_from_file( 'normal' );
 					$custom_css_file_type = 'normal';
 				}
 				if ( ! empty( $custom_css_file_contents ) ) {
 					$print_custom_css_inline = false;
-					$custom_css_url = $this->model_options->get_custom_css_location( $custom_css_file_type, 'url' );
+					$custom_css_url = $tablepress_css->get_custom_css_location( $custom_css_file_type, 'url' );
 					$custom_css_dependencies = array();
 					if ( $use_default_css )
 						$custom_css_dependencies[] = 'tablepress-default'; // if default CSS is desired, but also handled internally
