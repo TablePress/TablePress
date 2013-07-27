@@ -104,13 +104,23 @@ class TablePress_CSS {
 	 *
 	 * @since 1.0.0
 	 *
- 	 * @param string $type "normal" version or "minified" version
+ 	 * @param string $type "normal" version, "minified" version, or "combined" (with TablePress Default CSS) version
 	 * @param string $location "path" or "url", for file path or URL
 	 * @return string Full file path or full URL for the "Custom CSS" file
 	*/
 	public function get_custom_css_location( $type, $location ) {
-		$suffix = ( 'minified' == $type ) ? '.min' : '';
-		$file = "tablepress-custom{$suffix}.css";
+		switch ( $type ) {
+			case 'combined':
+				$file = 'tablepress-combined.min.css';
+				break;
+			case 'minified':
+				$file = 'tablepress-custom.min.css';
+				break;
+			case 'normal':
+			default:
+				$file = 'tablepress-custom.css';
+				break;
+		}
 
 		if ( is_multisite() ) {
 			// Multisite installation: /wp-content/uploads/sites/<ID>/
@@ -158,6 +168,25 @@ class TablePress_CSS {
 	}
 
 	/**
+	 * Load the contents of the file with the TablePress Default CSS
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return string|bool TablePress Default CSS on success, false on error
+	 */
+	public function load_default_css_from_file() {
+		$filename = TABLEPRESS_ABSPATH . 'css/default.min.css';
+		// Check if file name is valid (0 means yes)
+		if ( 0 !== validate_file( $filename ) )
+			return false;
+		if ( ! @is_file( $filename ) )
+			return false;
+		if ( ! @is_readable( $filename ) )
+			return false;
+		return file_get_contents( $filename );
+	}
+
+	/**
 	 * Save "Custom CSS" to a file, or return HTML for the credentials form
 	 *
 	 * @since 1.0.0
@@ -166,7 +195,7 @@ class TablePress_CSS {
 	 * @param string $minified_custom_css Minified CSS code to be saved
 	 * @return bool True on success, false on failure
 	 */
-	public function save_custom_css_to_file( $custom_css, $minified_custom_css ) {
+	public function save_custom_css_to_file( $custom_css_normal, $custom_css_minified ) {
 		// Hook to prevent saving to file
 		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) )
 			return false;
@@ -180,29 +209,38 @@ class TablePress_CSS {
 			return false;
 		}
 
-		// we have valid access to the filesystem now -> try to save the file
-		$filename = $this->get_custom_css_location( 'normal', 'path' );
-		$filename_min = $this->get_custom_css_location( 'minified', 'path' );
-		// Check if file name is valid (0 means yes)
-		if ( 0 !== validate_file( $filename ) || 0 !== validate_file( $filename_min ) )
-			return false;
-
 		global $wp_filesystem;
 
 		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
 		// We need to account for that by replacing the path difference in the filename
 		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
-		if ( '' != $path_difference ) {
-			$filename = str_replace( $path_difference, '', $filename );
-			$filename_min = str_replace( $path_difference, '', $filename_min );
+
+		$css_types = array( 'normal', 'minified', 'combined' );
+
+		$default_css = $this->load_default_css_from_file();
+		if ( false === $default_css )
+			$default_css = '';
+		$file_content = array(
+			'normal' => $custom_css_normal,
+			'minified' => $custom_css_minified,
+			'combined' => $default_css . "\n" . $custom_css_minified
+		);
+
+		$total_result = true; // whether all files were saved successfully
+		foreach ( $css_types as $css_type ) {
+			$filename = $this->get_custom_css_location( $css_type, 'path' );
+			// Check if filename is valid (0 means yes)
+			if ( 0 !== validate_file( $filename ) ) {
+				$total_result = false;
+				continue;
+			}
+			if ( '' != $path_difference )
+				$filename = str_replace( $path_difference, '', $filename );
+			$result = $wp_filesystem->put_contents( $filename, $file_content[ $css_type ], FS_CHMOD_FILE );
+			$total_result = ( $total_result && $result );
 		}
 
-		$result = $wp_filesystem->put_contents( $filename, $custom_css, FS_CHMOD_FILE );
-		$result_min = $wp_filesystem->put_contents( $filename_min, $minified_custom_css, FS_CHMOD_FILE );
-		if ( ! $result || ! $result_min )
-			return false;
-
-		return true;
+		return $total_result;
 	}
 
 	/**
@@ -222,33 +260,31 @@ class TablePress_CSS {
 			return false;
 		}
 
-		// we have valid access to the filesystem now -> try to save the file
-		$filename = $this->get_custom_css_location( 'normal', 'path' );
-		$filename_min = $this->get_custom_css_location( 'minified', 'path' );
-		// Check if file name is valid (0 means yes)
-		if ( 0 !== validate_file( $filename ) || 0 !== validate_file( $filename_min ) )
-			return false;
-
 		global $wp_filesystem;
 
 		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
 		// We need to account for that by replacing the path difference in the filename
 		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
-		if ( '' != $path_difference ) {
-			$filename = str_replace( $path_difference, '', $filename );
-			$filename_min = str_replace( $path_difference, '', $filename_min );
+
+		$css_types = array( 'normal', 'minified', 'combined' );
+		$total_result = true; // whether all files were deleted successfully
+		foreach ( $css_types as $css_type ) {
+			$filename = $this->get_custom_css_location( $css_type, 'path' );
+			// Check if filename is valid (0 means yes)
+			if ( 0 !== validate_file( $filename ) ) {
+				$total_result = false;
+				continue;
+			}
+			if ( '' != $path_difference )
+				$filename = str_replace( $path_difference, '', $filename );
+			// we have valid access to the filesystem now -> try to delete the file
+			if ( $wp_filesystem->exists( $filename ) ) {
+				$result = $wp_filesystem->delete( $filename );
+				$total_result = ( $total_result && $result );
+			}
 		}
 
-		$result = $result_min = true;
-		if ( $wp_filesystem->exists( $filename ) )
-			$result = $wp_filesystem->delete( $filename );
-		if ( $wp_filesystem->exists( $filename_min ) )
-			$result_min = $wp_filesystem->delete( $filename_min );
-
-		if ( ! $result || ! $result_min )
-			return false;
-
-		return true;
+		return $total_result;
 	}
 
 } // class TablePress_CSS
