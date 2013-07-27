@@ -118,8 +118,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 
 			if ( $print_custom_css_inline ) {
-				// get "Custom CSS" from options
-				$custom_css = trim( $this->model_options->get( 'custom_css' ) );
+				// get "Custom CSS" from options, try minified Custom CSS first
+				$custom_css = trim( $this->model_options->get( 'custom_css_minified' ) );
+				if ( empty( $custom_css ) )
+					$custom_css = trim( $this->model_options->get( 'custom_css' ) );
 				$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 				if ( ! empty( $custom_css ) ) {
 					// wp_add_inline_style() requires a loaded CSS file, so we have to work around that if "Default CSS" is disabled
@@ -138,7 +140,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function _print_custom_css() {
-		$custom_css = trim( $this->model_options->get( 'custom_css' ) );
+		// get "Custom CSS" from options, try minified Custom CSS first
+		$custom_css = trim( $this->model_options->get( 'custom_css_minified' ) );
+		if ( empty( $custom_css ) )
+			$custom_css = trim( $this->model_options->get( 'custom_css' ) );
 		$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 		echo "<style type='text/css'>\n{$custom_css}\n</style>\n";
 	}
