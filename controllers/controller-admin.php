@@ -347,16 +347,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'options':
 				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
-				if ( $this->model_options->get( 'use_custom_css_file' ) ) {
-					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-					$data['frontend_options']['custom_css'] = $tablepress_css->load_custom_css_from_file( 'normal' );
-					// fall back to "Custom CSS" in options, if it could not be retrieved from file
-					if ( false === $data['frontend_options']['custom_css'] )
-						$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
-				} else {
-					// get "Custom CSS" from options
-					$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
-				}
+				$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
 				$data['user_options']['parent_page'] = $this->parent_page;
 				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' );
 				$data['user_options']['plugin_languages'] = $this->get_plugin_languages();
@@ -1651,16 +1642,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'body_html' => $_render->get_output()
 		);
 
-		if ( $this->model_options->get( 'use_custom_css_file' ) ) {
-			$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-			$custom_css = $tablepress_css->load_custom_css_from_file( 'normal' );
-			// fall back to "Custom CSS" in options, if it could not be retrieved from file
-			if ( false === $custom_css )
-				$custom_css = $this->model_options->get( 'custom_css' );
-		} else {
-			// get "Custom CSS" from options
-			$custom_css = $this->model_options->get( 'custom_css' );
-		}
+		$custom_css = $this->model_options->get( 'custom_css' );
 		if ( ! empty( $custom_css ) )
 			$view_data['head_html'] .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
 
