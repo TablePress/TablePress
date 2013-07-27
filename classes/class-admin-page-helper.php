@@ -26,12 +26,13 @@ class TablePress_Admin_Page {
 	 * @since 1.0.0
 	 *
 	 * @param string $name Name of the CSS file, without extension(s)
+	 * @param array $dependencies List of names of CSS stylesheets that this stylesheet depends on, and which need to be included before this one
 	 */
-	public function enqueue_style( $name ) {
+	public function enqueue_style( $name, $dependencies = array() ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$css_file = "admin/{$name}{$suffix}.css";
 		$css_url = plugins_url( $css_file, TABLEPRESS__FILE__ );
-		wp_enqueue_style( "tablepress-{$name}", $css_url, array(), TablePress::version );
+		wp_enqueue_style( "tablepress-{$name}", $css_url, $dependencies, TablePress::version );
 	}
 
 	/**
