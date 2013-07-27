@@ -55,15 +55,13 @@ class OLERead {
 		$bigBlockDepotBlocks = array();
 		$pos = BIG_BLOCK_DEPOT_BLOCKS_POS;
 		$bbdBlocks = $this->numBigBlockDepotBlocks;
-		if ($this->numExtensionBlocks != 0) {
+		if ($this->numExtensionBlocks != 0)
 			$bbdBlocks = (BIG_BLOCK_SIZE - BIG_BLOCK_DEPOT_BLOCKS_POS)/4;
-		}
 
 		for ($i = 0; $i < $bbdBlocks; $i++) {
 			$bigBlockDepotBlocks[$i] = $this->_GetInt4d($this->data, $pos);
 			$pos += 4;
 		}
-
 
 		for ($j = 0; $j < $this->numExtensionBlocks; $j++) {
 			$pos = ($this->extensionBlock + 1) * BIG_BLOCK_SIZE;
@@ -75,9 +73,8 @@ class OLERead {
 			}
 
 			$bbdBlocks += $blocksToRead;
-			if ($bbdBlocks < $this->numBigBlockDepotBlocks) {
+			if ($bbdBlocks < $this->numBigBlockDepotBlocks)
 				$this->extensionBlock = $this->_GetInt4d($this->data, $pos);
-			}
 		}
 
 		// readBigBlockDepot
@@ -110,7 +107,6 @@ class OLERead {
 		  }
 		  $sbdBlock = $this->bigBlockChain[$sbdBlock];
 		}
-
 
 		// readData(rootStartBlock)
 		$block = $this->rootStartBlock;
@@ -149,15 +145,12 @@ class OLERead {
 				'type' => $type,
 				'startBlock' => $startBlock,
 				'size' => $size);
-			if ((strtolower($name) == "workbook") || ( strtolower($name) == "book")) {
+			if ((strtolower($name) == "workbook") || ( strtolower($name) == "book"))
 				$this->wrkbook = count($this->props) - 1;
-			}
-			if ($name == "Root Entry") {
+			if ($name == "Root Entry")
 				$this->rootentry = count($this->props) - 1;
-			}
 			$offset += PROPERTY_STORAGE_BLOCK_SIZE;
 		}
-
 	}
 
 	function getWorkBook(){
@@ -172,13 +165,14 @@ class OLERead {
 				  $block = $this->smallBlockChain[$block];
 			}
 			return $streamData;
-		}else{
+		} else {
 			$numBlocks = $this->props[$this->wrkbook]['size'] / BIG_BLOCK_SIZE;
 			if ($this->props[$this->wrkbook]['size'] % BIG_BLOCK_SIZE != 0) {
 				$numBlocks++;
 			}
 
-			if ($numBlocks == 0) return '';
+			if ($numBlocks == 0)
+				return '';
 			$streamData = '';
 			$block = $this->props[$this->wrkbook]['startBlock'];
 			$pos = 0;
@@ -193,9 +187,8 @@ class OLERead {
 
 	function _GetInt4d($data, $pos) {
 		$value = ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | (ord($data[$pos+3]) << 24);
-		if ($value>=4294967294) {
+		if ($value>=4294967294)
 			$value=-2;
-		}
 		return $value;
 	}
 
@@ -258,7 +251,8 @@ class Spreadsheet_Excel_Reader {
 	var $standardColWidth = 0;
 	var $defaultColWidth = 0;
 	function myHex($d) {
-		if ($d < 16) return "0" . dechex($d);
+		if ($d < 16)
+			return "0" . dechex($d);
 		return dechex($d);
 	}
 
@@ -273,9 +267,8 @@ class Spreadsheet_Excel_Reader {
 	function getCol($col) {
 		if (is_string($col)) {
 			$col = strtolower($col);
-			if (array_key_exists($col,$this->colnames)) {
+			if (array_key_exists($col,$this->colnames))
 				$col = $this->colnames[$col];
-			}
 		}
 		return $col;
 	}
@@ -285,9 +278,8 @@ class Spreadsheet_Excel_Reader {
 
 	function val($row,$col,$sheet=0) {
 		$col = $this->getCol($col);
-		if (array_key_exists($row,$this->sheets[$sheet]['cells']) && array_key_exists($col,$this->sheets[$sheet]['cells'][$row])) {
+		if (array_key_exists($row,$this->sheets[$sheet]['cells']) && array_key_exists($col,$this->sheets[$sheet]['cells'][$row]))
 			return $this->sheets[$sheet]['cells'][$row][$col];
-		}
 		return "";
 	}
 	function value($row,$col,$sheet=0) {
@@ -311,19 +303,20 @@ class Spreadsheet_Excel_Reader {
 	}
 	function rowspan($row,$col,$sheet=0) {
 		$val = $this->info($row,$col,'rowspan',$sheet);
-		if ($val=="") { return 1; }
+		if ($val=="")
+			return 1;
 		return $val;
 	}
 	function colspan($row,$col,$sheet=0) {
 		$val = $this->info($row,$col,'colspan',$sheet);
-		if ($val=="") { return 1; }
+		if ($val=="")
+			return 1;
 		return $val;
 	}
 	function hyperlink($row,$col,$sheet=0) {
 		$link = $this->sheets[$sheet]['cellsInfo'][$row][$col]['hyperlink'];
-		if ($link) {
+		if ($link)
 			return $link['link'];
-		}
 		return '';
 	}
 	function rowcount($sheet=0) {
@@ -351,38 +344,31 @@ class Spreadsheet_Excel_Reader {
 	function style($row,$col,$sheet=0,$properties='') {
 		$css = "";
 		$font=$this->font($row,$col,$sheet);
-		if ($font!="") {
+		if ($font!="")
 			$css .= "font-family:$font;";
-		}
 		$align=$this->align($row,$col,$sheet);
-		if ($align!="") {
+		if ($align!="")
 			$css .= "text-align:$align;";
-		}
 		$height=$this->height($row,$col,$sheet);
-		if ($height!="") {
+		if ($height!="")
 			$css .= "font-size:$height"."px;";
-		}
 		$bgcolor=$this->bgColor($row,$col,$sheet);
 		if ($bgcolor!="") {
 			$bgcolor = $this->colors[$bgcolor];
 			$css .= "background-color:$bgcolor;";
 		}
 		$color=$this->color($row,$col,$sheet);
-		if ($color!="") {
+		if ($color!="")
 			$css .= "color:$color;";
-		}
 		$bold=$this->bold($row,$col,$sheet);
-		if ($bold) {
+		if ($bold)
 			$css .= "font-weight:bold;";
-		}
 		$italic=$this->italic($row,$col,$sheet);
-		if ($italic) {
+		if ($italic)
 			$css .= "font-style:italic;";
-		}
 		$underline=$this->underline($row,$col,$sheet);
-		if ($underline) {
+		if ($underline)
 			$css .= "text-decoration:underline;";
-		}
 		// Borders
 		$bLeft = $this->borderLeft($row,$col,$sheet);
 		$bRight = $this->borderRight($row,$col,$sheet);
@@ -395,18 +381,25 @@ class Spreadsheet_Excel_Reader {
 		// Try to output the minimal required style
 		if ($bLeft!="" && $bLeft==$bRight && $bRight==$bTop && $bTop==$bBottom) {
 			$css .= "border:" . $this->lineStylesCss[$bLeft] .";";
-		}
-		else {
-			if ($bLeft!="") { $css .= "border-left:" . $this->lineStylesCss[$bLeft] .";"; }
-			if ($bRight!="") { $css .= "border-right:" . $this->lineStylesCss[$bRight] .";"; }
-			if ($bTop!="") { $css .= "border-top:" . $this->lineStylesCss[$bTop] .";"; }
-			if ($bBottom!="") { $css .= "border-bottom:" . $this->lineStylesCss[$bBottom] .";"; }
+		} else {
+			if ($bLeft!="")
+				$css .= "border-left:" . $this->lineStylesCss[$bLeft] .";";
+			if ($bRight!="")
+				$css .= "border-right:" . $this->lineStylesCss[$bRight] .";";
+			if ($bTop!="")
+				$css .= "border-top:" . $this->lineStylesCss[$bTop] .";";
+			if ($bBottom!="")
+				$css .= "border-bottom:" . $this->lineStylesCss[$bBottom] .";";
 		}
 		// Only output border colors if there is an actual border specified
-		if ($bLeft!="" && $bLeftCol!="") { $css .= "border-left-color:" . $bLeftCol .";"; }
-		if ($bRight!="" && $bRightCol!="") { $css .= "border-right-color:" . $bRightCol .";"; }
-		if ($bTop!="" && $bTopCol!="") { $css .= "border-top-color:" . $bTopCol . ";"; }
-		if ($bBottom!="" && $bBottomCol!="") { $css .= "border-bottom-color:" . $bBottomCol .";"; }
+		if ($bLeft!="" && $bLeftCol!="")
+			$css .= "border-left-color:" . $bLeftCol .";";
+		if ($bRight!="" && $bRightCol!="")
+			$css .= "border-right-color:" . $bRightCol .";";
+		if ($bTop!="" && $bTopCol!="")
+			$css .= "border-top-color:" . $bTopCol . ";";
+		if ($bBottom!="" && $bBottomCol!="")
+			$css .= "border-bottom-color:" . $bBottomCol .";";
 
 		return $css;
 	}
@@ -427,16 +420,14 @@ class Spreadsheet_Excel_Reader {
 	// ====================
 	function xfRecord($row,$col,$sheet=0) {
 		$xfIndex = $this->info($row,$col,'xfIndex',$sheet);
-		if ($xfIndex!="") {
+		if ($xfIndex!="")
 			return $this->xfRecords[$xfIndex];
-		}
 		return null;
 	}
 	function xfProperty($row,$col,$sheet,$prop) {
 		$xfRecord = $this->xfRecord($row,$col,$sheet);
-		if ($xfRecord!=null) {
+		if ($xfRecord!=null)
 			return $xfRecord[$prop];
-		}
 		return "";
 	}
 	function align($row,$col,$sheet=0) {
@@ -476,17 +467,15 @@ class Spreadsheet_Excel_Reader {
 		$xfRecord = $this->xfRecord($row,$col,$sheet);
 		if ($xfRecord!=null) {
 			$font = $xfRecord['fontIndex'];
-			if ($font!=null) {
+			if ($font!=null)
 				return $this->fontRecords[$font];
-			}
 		}
 		return null;
 	}
 	function fontProperty($row,$col,$sheet=0,$prop) {
 		$font = $this->fontRecord($row,$col,$sheet);
-		if ($font!=null) {
+		if ($font!=null)
 			return $font[$prop];
-		}
 		return false;
 	}
 	function fontIndex($row,$col,$sheet=0) {
@@ -494,16 +483,14 @@ class Spreadsheet_Excel_Reader {
 	}
 	function color($row,$col,$sheet=0) {
 		$formatColor = $this->formatColor($row,$col,$sheet);
-		if ($formatColor!="") {
+		if ($formatColor!="")
 			return $formatColor;
-		}
 		$ci = $this->fontProperty($row,$col,$sheet,'color');
-				return $this->rawColor($ci);
-		}
-		function rawColor($ci) {
-		if (($ci <> 0x7FFF) && ($ci <> '')) {
+		return $this->rawColor($ci);
+	}
+	function rawColor($ci) {
+		if (($ci <> 0x7FFF) && ($ci <> ''))
 			return $this->colors[$ci];
-		}
 		return "";
 	}
 	function bold($row,$col,$sheet=0) {
@@ -528,14 +515,12 @@ class Spreadsheet_Excel_Reader {
 		$out = "<table class=\"$table_class\" cellspacing=0>";
 		if ($col_letters) {
 			$out .= "<thead>\n\t<tr>";
-			if ($row_numbers) {
+			if ($row_numbers)
 				$out .= "\n\t\t<th>&nbsp</th>";
-			}
 			for($i=1;$i<=$this->colcount($sheet);$i++) {
 				$style = "width:" . ($this->colwidth($i,$sheet)*1) . "px;";
-				if ($this->colhidden($i,$sheet)) {
+				if ($this->colhidden($i,$sheet))
 					$style .= "display:none;";
-				}
 				$out .= "\n\t\t<th style=\"$style\">" . strtoupper($this->colindexes[$i]) . "</th>";
 			}
 			$out .= "</tr></thead>\n";
@@ -545,38 +530,34 @@ class Spreadsheet_Excel_Reader {
 		for($row=1;$row<=$this->rowcount($sheet);$row++) {
 			$rowheight = $this->rowheight($row,$sheet);
 			$style = "height:" . ($rowheight*(4/3)) . "px;";
-			if ($this->rowhidden($row,$sheet)) {
+			if ($this->rowhidden($row,$sheet))
 				$style .= "display:none;";
-			}
 			$out .= "\n\t<tr style=\"$style\">";
-			if ($row_numbers) {
+			if ($row_numbers)
 				$out .= "\n\t\t<th>$row</th>";
-			}
 			for($col=1;$col<=$this->colcount($sheet);$col++) {
 				// Account for Rowspans/Colspans
 				$rowspan = $this->rowspan($row,$col,$sheet);
 				$colspan = $this->colspan($row,$col,$sheet);
 				for($i=0;$i<$rowspan;$i++) {
 					for($j=0;$j<$colspan;$j++) {
-						if ($i>0 || $j>0) {
+						if ($i>0 || $j>0)
 							$this->sheets[$sheet]['cellsInfo'][$row+$i][$col+$j]['dontprint']=1;
-						}
 					}
 				}
 				if(!$this->sheets[$sheet]['cellsInfo'][$row][$col]['dontprint']) {
 					$style = $this->style($row,$col,$sheet);
-					if ($this->colhidden($col,$sheet)) {
+					if ($this->colhidden($col,$sheet))
 						$style .= "display:none;";
-					}
 					$out .= "\n\t\t<td style=\"$style\"" . ($colspan > 1?" colspan=$colspan":"") . ($rowspan > 1?" rowspan=$rowspan":"") . ">";
 					$val = $this->val($row,$col,$sheet);
-					if ($val=='') { $val="&nbsp;"; }
+					if ($val=='')
+						$val="&nbsp;";
 					else {
 						$val = htmlentities($val);
 						$link = $this->hyperlink($row,$col,$sheet);
-						if ($link!='') {
+						if ($link!='')
 							$val = "<a href=\"$link\">$val</a>";
-						}
 					}
 					$out .= "<nobr>".nl2br($val)."</nobr>";
 					$out .= "</td>";
@@ -590,7 +571,6 @@ class Spreadsheet_Excel_Reader {
 
 	// --------------
 	// END PUBLIC API
-
 
 	var $boundsheets = array();
 	var $formatRecords = array();
@@ -767,7 +747,9 @@ class Spreadsheet_Excel_Reader {
 
 	function read16bitstring($data, $start) {
 		$len = 0;
-		while (ord($data[$start + $len]) + ord($data[$start + $len + 1]) > 0) $len++;
+		while (ord($data[$start + $len]) + ord($data[$start + $len + 1]) > 0) {
+			$len++;
+		}
 		return substr($data, $start, $len);
 	}
 
@@ -775,18 +757,16 @@ class Spreadsheet_Excel_Reader {
 	function _format_value($format,$num,$f) {
 		// 49==TEXT format
 		// http://code.google.com/p/php-excel-reader/issues/detail?id=7
-		if ( (!$f && $format=="%s") || ($f==49) || ($format=="GENERAL") ) {
+		if ( (!$f && $format=="%s") || ($f==49) || ($format=="GENERAL") )
 			return array('string'=>$num, 'formatColor'=>null);
-		}
 
 		// Custom pattern can be POSITIVE;NEGATIVE;ZERO
 		// The "text" option as 4th parameter is not handled
 		$parts = explode(";",$format);
 		$pattern = $parts[0];
 		// Negative pattern
-		if (count($parts)>2 && $num==0) {
+		if (count($parts)>2 && $num==0)
 			$pattern = $parts[2];
-		}
 		// Zero pattern
 		if (count($parts)>1 && $num<0) {
 			$pattern = $parts[1];
@@ -815,9 +795,8 @@ class Spreadsheet_Excel_Reader {
 
 		// Find out if we need comma formatting
 		$has_commas = preg_match("/,/",$pattern);
-		if ($has_commas) {
+		if ($has_commas)
 			$pattern = preg_replace("/,/","",$pattern);
-		}
 
 		// Handle Percentages
 		if (preg_match("/\d(\%)([^\%]|$)/",$pattern,$matches)) {
@@ -833,8 +812,7 @@ class Spreadsheet_Excel_Reader {
 			$right = $matches[3];
 			if ($has_commas) {
 				$formatted = number_format($num,strlen($right));
-			}
-			else {
+			} else {
 				$sprintf_pattern = "%1.".strlen($right)."f";
 				$formatted = sprintf($sprintf_pattern, $num);
 			}
@@ -855,18 +833,16 @@ class Spreadsheet_Excel_Reader {
 	function Spreadsheet_Excel_Reader($data='',$store_extended_info=false,$outputEncoding='') {
 		$this->_ole = new OLERead();
 		$this->setUTFEncoder('iconv');
-		if ($outputEncoding != '') {
+		if ($outputEncoding != '')
 			$this->setOutputEncoding($outputEncoding);
-		}
 		for ($i=1; $i<245; $i++) {
 			$name = strtolower(( (($i-1)/26>=1)?chr(($i-1)/26+64):'') . chr(($i-1)%26+65));
 			$this->colnames[$name] = $i;
 			$this->colindexes[$i] = $name;
 		}
 		$this->store_extended_info = $store_extended_info;
-		if ($data!="") {
+		if ($data!="")
 			$this->read($data);
-		}
 	}
 
 	/**
@@ -883,11 +859,10 @@ class Spreadsheet_Excel_Reader {
 	 */
 	function setUTFEncoder($encoder = 'iconv') {
 		$this->_encoderFunction = '';
-		if ($encoder == 'iconv') {
+		if ($encoder == 'iconv')
 			$this->_encoderFunction = function_exists('iconv') ? 'iconv' : '';
-		} elseif ($encoder == 'mb') {
+		elseif ($encoder == 'mb')
 			$this->_encoderFunction = function_exists('mb_convert_encoding') ? 'mb_convert_encoding' : '';
-		}
 	}
 
 	function setRowColOffset($iOffset) {
@@ -918,12 +893,10 @@ class Spreadsheet_Excel_Reader {
 		// oops, something goes wrong (Darko Miljanovic)
 		if($res === false) {
 			// check error code
-			if($this->_ole->error == 1) {
+			if($this->_ole->error == 1)
 				die( 'Data is not readable' );
-			} elseif($this->_ole->error == 2) {
+			elseif($this->_ole->error == 2)
 				die( 'OLE error' );
-			}
-
 			// check other error codes here (eg bad fileformat, etc...)
 		}
 		$this->data = $this->_ole->getWorkBook();
@@ -950,9 +923,8 @@ class Spreadsheet_Excel_Reader {
 			return false;
 		}
 
-		if ($substreamType != SPREADSHEET_EXCEL_READER_WORKBOOKGLOBALS){
+		if ($substreamType != SPREADSHEET_EXCEL_READER_WORKBOOKGLOBALS)
 			return false;
-		}
 
 		$pos += $length + 4;
 
@@ -971,9 +943,8 @@ class Spreadsheet_Excel_Reader {
 						if ($spos == $limitpos) {
 							$opcode = $this->v($data,$spos);
 							$conlength = $this->v($data,$spos+2);
-							if ($opcode != 0x3c) {
+							if ($opcode != 0x3c)
 								return -1;
-							}
 							$spos += 4;
 							$limitpos = $spos + $conlength;
 						}
@@ -1014,9 +985,8 @@ class Spreadsheet_Excel_Reader {
 							while ($charsLeft > 0){
 								$opcode = $this->v($data,$spos);
 								$conlength = $this->v($data,$spos+2);
-								if ($opcode != 0x3c) {
+								if ($opcode != 0x3c)
 									return -1;
-								}
 								$spos += 4;
 								$limitpos = $spos + $conlength;
 								$option = ord($data[$spos]);
@@ -1059,14 +1029,12 @@ class Spreadsheet_Excel_Reader {
 						}
 						$retstr = ($asciiEncoding) ? $retstr : $this->_encodeUTF16($retstr);
 
-						if ($richString){
+						if ($richString)
 							$spos += 4 * $formattingRuns;
-						}
 
 						// For extended strings, skip over the extended string data
-						if ($extendedString) {
+						if ($extendedString)
 							$spos += $extendedRunLength;
-						}
 						$this->sst[]=$retstr;
 					}
 					break;
@@ -1079,11 +1047,10 @@ class Spreadsheet_Excel_Reader {
 					$indexCode = $this->v($data,$pos+4);
 					if ($version == SPREADSHEET_EXCEL_READER_BIFF8) {
 						$numchars = $this->v($data,$pos+6);
-						if (ord($data[$pos+8]) == 0){
+						if (ord($data[$pos+8]) == 0)
 							$formatString = substr($data, $pos+9, $numchars);
-						} else {
+						else
 							$formatString = substr($data, $pos+9, $numchars*2);
-						}
 					} else {
 						$numchars = ord($data[$pos+6]);
 						$formatString = substr($data, $pos+7, $numchars*2);
@@ -1134,12 +1101,13 @@ class Spreadsheet_Excel_Reader {
 						$bgcolor = ($bgi & 0x7F);
 //						$bgcolor = ($bgi & 0x3f80) >> 7;
 						$align = "";
-						if ($alignbit==3) { $align="right"; }
-						if ($alignbit==2) { $align="center"; }
+						if ($alignbit==3)
+							$align="right";
+						if ($alignbit==2)
+							$align="center";
 						$fillPattern = (ord($data[$pos+21]) & 0xFC) >> 2;
-						if ($fillPattern == 0) {
+						if ($fillPattern == 0)
 							$bgcolor = "";
-						}
 
 						$xf = array();
 						$xf['formatIndex'] = $indexCode;
@@ -1162,11 +1130,13 @@ class Spreadsheet_Excel_Reader {
 						if (array_key_exists($indexCode, $this->dateFormats)) {
 							$xf['type'] = 'date';
 							$xf['format'] = $this->dateFormats[$indexCode];
-							if ($align=='') { $xf['align'] = 'right'; }
+							if ($align=='')
+								$xf['align'] = 'right';
 						}elseif (array_key_exists($indexCode, $this->numberFormats)) {
 							$xf['type'] = 'number';
 							$xf['format'] = $this->numberFormats[$indexCode];
-							if ($align=='') { $xf['align'] = 'right'; }
+							if ($align=='')
+								$xf['align'] = 'right';
 						}else{
 							$isdate = FALSE;
 							$formatstr = '';
@@ -1200,15 +1170,16 @@ class Spreadsheet_Excel_Reader {
 							if ($isdate){
 								$xf['type'] = 'date';
 								$xf['format'] = $formatstr;
-								if ($align=='') { $xf['align'] = 'right'; }
+								if ($align=='')
+									$xf['align'] = 'right';
 							}else{
 								// If the format string has a 0 or # in it, we'll assume it's a number
 								if (preg_match("/[0#]/", $formatstr)) {
 									$xf['type'] = 'number';
-									if ($align=='') { $xf['align']='right'; }
-								}
-								else {
-								$xf['type'] = 'other';
+									if ($align=='')
+										$xf['align']='right';
+								} else {
+									$xf['type'] = 'other';
 								}
 								$xf['format'] = $formatstr;
 								$xf['code'] = $indexCode;
@@ -1227,17 +1198,15 @@ class Spreadsheet_Excel_Reader {
 
 						if ($version == SPREADSHEET_EXCEL_READER_BIFF8){
 							$chartype = ord($data[$pos+11]);
-							if ($chartype == 0){
+							if ($chartype == 0)
 								$rec_name	= substr($data, $pos+12, $rec_length);
-							} else {
+							else
 								$rec_name	= $this->_encodeUTF16(substr($data, $pos+12, $rec_length*2));
-							}
-						}elseif ($version == SPREADSHEET_EXCEL_READER_BIFF7){
+						} elseif ($version == SPREADSHEET_EXCEL_READER_BIFF7){
 								$rec_name	= substr($data, $pos+11, $rec_length);
 						}
 					$this->boundsheets[] = array('name'=>$rec_name,'offset'=>$rec_offset);
 					break;
-
 			}
 
 			$pos += $length + 4;
@@ -1265,17 +1234,16 @@ class Spreadsheet_Excel_Reader {
 		$version = ord($data[$spos + 4]) | ord($data[$spos + 5])<<8;
 		$substreamType = ord($data[$spos + 6]) | ord($data[$spos + 7])<<8;
 
-		if (($version != SPREADSHEET_EXCEL_READER_BIFF8) && ($version != SPREADSHEET_EXCEL_READER_BIFF7)) {
+		if (($version != SPREADSHEET_EXCEL_READER_BIFF8) && ($version != SPREADSHEET_EXCEL_READER_BIFF7))
 			return -1;
-		}
 
-		if ($substreamType != SPREADSHEET_EXCEL_READER_WORKSHEET){
+		if ($substreamType != SPREADSHEET_EXCEL_READER_WORKSHEET)
 			return -2;
-		}
 		$spos += $length + 4;
 		while($cont) {
 			$lowcode = ord($data[$spos]);
-			if ($lowcode == SPREADSHEET_EXCEL_READER_TYPE_EOF) break;
+			if ($lowcode == SPREADSHEET_EXCEL_READER_TYPE_EOF)
+				break;
 			$code = $lowcode | ord($data[$spos+1])<<8;
 			$length = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
 			$spos += 4;
@@ -1301,12 +1269,10 @@ class Spreadsheet_Excel_Reader {
 						$lr =  ord($data[$spos + 8*$i + 4]) | ord($data[$spos + 8*$i + 5])<<8;
 						$fc =  ord($data[$spos + 8*$i + 6]) | ord($data[$spos + 8*$i + 7])<<8;
 						$lc =  ord($data[$spos + 8*$i + 8]) | ord($data[$spos + 8*$i + 9])<<8;
-						if ($lr - $fr > 0) {
+						if ($lr - $fr > 0)
 							$this->sheets[$this->sn]['cellsInfo'][$fr+1][$fc+1]['rowspan'] = $lr - $fr + 1;
-						}
-						if ($lc - $fc > 0) {
+						if ($lc - $fc > 0)
 							$this->sheets[$this->sn]['cellsInfo'][$fr+1][$fc+1]['colspan'] = $lc - $fc + 1;
-						}
 					}
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_RK:
@@ -1319,17 +1285,17 @@ class Spreadsheet_Excel_Reader {
 					$this->addcell($row, $column, $info['string'],$info);
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_LABELSST:
-					$row		= ord($data[$spos]) | ord($data[$spos+1])<<8;
-					$column	 = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
-					$xfindex	= ord($data[$spos+4]) | ord($data[$spos+5])<<8;
-					$index	= $this->_GetInt4d($data, $spos + 6);
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$column = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
+					$xfindex = ord($data[$spos+4]) | ord($data[$spos+5])<<8;
+					$index = $this->_GetInt4d($data, $spos + 6);
 					$this->addcell($row, $column, $this->sst[$index], array('xfIndex'=>$xfindex) );
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_MULRK:
-					$row		= ord($data[$spos]) | ord($data[$spos+1])<<8;
-					$colFirst	= ord($data[$spos+2]) | ord($data[$spos+3])<<8;
-					$colLast	= ord($data[$spos + $length - 2]) | ord($data[$spos + $length - 1])<<8;
-					$columns	= $colLast - $colFirst + 1;
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$colFirst = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
+					$colLast = ord($data[$spos + $length - 2]) | ord($data[$spos + $length - 1])<<8;
+					$columns = $colLast - $colFirst + 1;
 					$tmppos = $spos+4;
 					for ($i = 0; $i < $columns; $i++) {
 						$numValue = $this->_GetIEEE754($this->_GetInt4d($data, $tmppos + 2));
@@ -1339,22 +1305,20 @@ class Spreadsheet_Excel_Reader {
 					}
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_NUMBER:
-					$row	= ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
 					$column = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
 					$tmp = unpack("ddouble", substr($data, $spos + 6, 8)); // It machine machine dependent
-					if ($this->isDate($spos)) {
+					if ($this->isDate($spos))
 						$numValue = $tmp['double'];
-					}
-					else {
+					else
 						$numValue = $this->createNumber($spos);
-					}
 					$info = $this->_getCellDetails($spos,$numValue,$column);
 					$this->addcell($row, $column, $info['string'], $info);
 					break;
 
 				case SPREADSHEET_EXCEL_READER_TYPE_FORMULA:
 				case SPREADSHEET_EXCEL_READER_TYPE_FORMULA2:
-					$row	= ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
 					$column = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
 					if ((ord($data[$spos+6])==0) && (ord($data[$spos+12])==255) && (ord($data[$spos+13])==255)) {
 						//String formula. Result follows in a STRING record
@@ -1365,11 +1329,10 @@ class Spreadsheet_Excel_Reader {
 					} elseif ((ord($data[$spos+6])==1) && (ord($data[$spos+12])==255) && (ord($data[$spos+13])==255)) {
 						//Boolean formula. Result is in +2; 0=false,1=true
 						// http://code.google.com/p/php-excel-reader/issues/detail?id=4
-						if (ord($this->data[$spos+8])==1) {
+						if (ord($this->data[$spos+8])==1)
 							$this->addcell($row, $column, "TRUE");
-						} else {
+						else
 							$this->addcell($row, $column, "FALSE");
-						}
 					} elseif ((ord($data[$spos+6])==2) && (ord($data[$spos+12])==255) && (ord($data[$spos+13])==255)) {
 						//Error formula. Error code is in +2;
 					} elseif ((ord($data[$spos+6])==3) && (ord($data[$spos+12])==255) && (ord($data[$spos+13])==255)) {
@@ -1378,18 +1341,16 @@ class Spreadsheet_Excel_Reader {
 					} else {
 						// result is a number, so first 14 bytes are just like a _NUMBER record
 						$tmp = unpack("ddouble", substr($data, $spos + 6, 8)); // It machine machine dependent
-							  if ($this->isDate($spos)) {
+							  if ($this->isDate($spos))
 								$numValue = $tmp['double'];
-							  }
-							  else {
+							  else
 								$numValue = $this->createNumber($spos);
-							  }
 						$info = $this->_getCellDetails($spos,$numValue,$column);
 						$this->addcell($row, $column, $info['string'], $info);
 					}
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_BOOLERR:
-					$row	= ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
 					$column = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
 					$string = ord($data[$spos+6]);
 					$this->addcell($row, $column, $string);
@@ -1432,15 +1393,14 @@ class Spreadsheet_Excel_Reader {
 					$this->addcell($previousRow, $previousCol, $retstr);
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_ROW:
-					$row	= ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
 					$rowInfo = ord($data[$spos + 6]) | ((ord($data[$spos+7]) << 8) & 0x7FFF);
-					if (($rowInfo & 0x8000) > 0) {
+					if (($rowInfo & 0x8000) > 0)
 						$rowHeight = -1;
-					} else {
+					else
 						$rowHeight = $rowInfo & 0x7FFF;
-					}
 					$rowHidden = (ord($data[$spos + 12]) & 0x20) >> 5;
-					$this->rowInfo[$this->sn][$row+1] = Array('height' => $rowHeight / 20, 'hidden'=>$rowHidden );
+					$this->rowInfo[$this->sn][$row+1] = array('height' => $rowHeight / 20, 'hidden'=>$rowHidden );
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_DBCELL:
 					break;
@@ -1454,7 +1414,7 @@ class Spreadsheet_Excel_Reader {
 					}
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_LABEL:
-					$row	= ord($data[$spos]) | ord($data[$spos+1])<<8;
+					$row = ord($data[$spos]) | ord($data[$spos+1])<<8;
 					$column = ord($data[$spos+2]) | ord($data[$spos+3])<<8;
 					$this->addcell($row, $column, substr($data, $spos + 8, ord($data[$spos + 6]) | ord($data[$spos + 7])<<8));
 					break;
@@ -1463,11 +1423,11 @@ class Spreadsheet_Excel_Reader {
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_HYPER:
 					//	Only handle hyperlinks to a URL
-					$row	= ord($this->data[$spos]) | ord($this->data[$spos+1])<<8;
-					$row2	= ord($this->data[$spos+2]) | ord($this->data[$spos+3])<<8;
+					$row = ord($this->data[$spos]) | ord($this->data[$spos+1])<<8;
+					$row2 = ord($this->data[$spos+2]) | ord($this->data[$spos+3])<<8;
 					$column = ord($this->data[$spos+4]) | ord($this->data[$spos+5])<<8;
 					$column2 = ord($this->data[$spos+6]) | ord($this->data[$spos+7])<<8;
-					$linkdata = Array();
+					$linkdata = array();
 					$flags = ord($this->data[$spos + 28]);
 					$udesc = "";
 					$ulink = "";
@@ -1482,9 +1442,8 @@ class Spreadsheet_Excel_Reader {
 							$uloc += 2 * $descLen;
 						}
 						$ulink = $this->read16bitstring($this->data, $spos + $uloc + 20);
-						if ($udesc == "") {
+						if ($udesc == "")
 							$udesc = $ulink;
-						}
 					}
 					$linkdata['desc'] = $udesc;
 					$linkdata['link'] = $this->_encodeUTF16($ulink);
@@ -1547,9 +1506,8 @@ class Spreadsheet_Excel_Reader {
 		$string = '';
 		$raw = '';
 
-		if (isset($this->_columnsFormat[$column + 1])){
+		if (isset($this->_columnsFormat[$column + 1]))
 			$format = $this->_columnsFormat[$column + 1];
-		}
 
 		if ($type == 'date') {
 			// See http://groups.google.com/group/php-excel-reader-discuss/browse_frm/thread/9c3f9790d12d8e10/f2045c2369ac79de
@@ -1568,16 +1526,15 @@ class Spreadsheet_Excel_Reader {
 			$hours = floor($totalseconds / (60 * 60));
 			$mins = floor($totalseconds / 60) % 60;
 			$string = date ($format, mktime($hours, $mins, $secs, $dateinfo["mon"], $dateinfo["mday"], $dateinfo["year"]));
-		} else if ($type == 'number') {
+		} elseif ($type == 'number') {
 			$rectype = 'number';
 			$formatted = $this->_format_value($format, $numValue, $formatIndex);
 			$string = $formatted['string'];
 			$formatColor = $formatted['formatColor'];
 			$raw = $numValue;
-		} else{
-			if ($format=="") {
+		} else {
+			if ($format=="")
 				$format = $this->_defaultFormat;
-			}
 			$rectype = 'unknown';
 			$formatted = $this->_format_value($format, $numValue, $formatIndex);
 			$string = $formatted['string'];
@@ -1595,7 +1552,6 @@ class Spreadsheet_Excel_Reader {
 			'formatColor'=>$formatColor,
 			'xfIndex'=>$xfindex
 		);
-
 	}
 
 	function createNumber($spos) {
@@ -1607,9 +1563,11 @@ class Spreadsheet_Excel_Reader {
 		$mantissalow1 = ($rknumlow & 0x80000000) >> 31;
 		$mantissalow2 = ($rknumlow & 0x7fffffff);
 		$value = $mantissa / pow( 2 , (20- ($exp - 1023)));
-		if ($mantissalow1 != 0) $value += 1 / pow (2 , (21 - ($exp - 1023)));
+		if ($mantissalow1 != 0)
+			$value += 1 / pow (2 , (21 - ($exp - 1023)));
 		$value += $mantissalow2 / pow (2 , (52 - ($exp - 1023)));
-		if ($sign) {$value = -1 * $value;}
+		if ($sign)
+			$value = -1 * $value;
 		return $value;
 	}
 
@@ -1638,35 +1596,33 @@ class Spreadsheet_Excel_Reader {
 			$exp = ($rknum & 0x7ff00000) >> 20;
 			$mantissa = (0x100000 | ($rknum & 0x000ffffc));
 			$value = $mantissa / pow( 2 , (20- ($exp - 1023)));
-			if ($sign) {
+			if ($sign)
 				$value = -1 * $value;
-			}
 			//end of changes by mmp
 		}
-		if (($rknum & 0x01) != 0) {
+		if (($rknum & 0x01) != 0)
 			$value /= 100;
-		}
 		return $value;
 	}
 
 	function _encodeUTF16($string) {
-		$result = $string;
 		if ($this->_defaultEncoding){
 			switch ($this->_encoderFunction){
-				case 'iconv' :	 $result = iconv('UTF-16LE', $this->_defaultEncoding, $string);
-								break;
-				case 'mb_convert_encoding' :	 $result = mb_convert_encoding($string, $this->_defaultEncoding, 'UTF-16LE' );
-								break;
+				case 'iconv':
+					$string = iconv('UTF-16LE', $this->_defaultEncoding, $string);
+					break;
+				case 'mb_convert_encoding':
+					$string = mb_convert_encoding($string, $this->_defaultEncoding, 'UTF-16LE' );
+					break;
 			}
 		}
-		return $result;
+		return $string;
 	}
 
 	function _GetInt4d($data, $pos) {
 		$value = ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | (ord($data[$pos+3]) << 24);
-		if ($value>=4294967294) {
+		if ($value>=4294967294)
 			$value=-2;
-		}
 		return $value;
 	}
 
