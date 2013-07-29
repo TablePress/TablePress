@@ -105,14 +105,16 @@ abstract class TablePress_Controller {
 					'message_plugin_update' => true
 				);
 
-				// Re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed)
-				require_once ABSPATH . 'wp-admin/includes/file.php'; // to provide filesystem functions early
-				$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-				$result = $tablepress_css->save_custom_css_to_file( $this->model_options->get( 'custom_css' ), $this->model_options->get( 'custom_css_minified' ) );
-				$updated_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
-				// if saving was successful, increase the "Custom CSS" version number for cache busting
-				if ( $result )
-					$updated_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
+				if ( $this->model_options->get( 'use_custom_css' ) && '' !== $this->model_options->get( 'custom_css' ) ) { // only write files, if "Custom CSS" is to be used, and if there is "Custom CSS"
+					// Re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed)
+					require_once ABSPATH . 'wp-admin/includes/file.php'; // to provide filesystem functions early
+					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+					$result = $tablepress_css->save_custom_css_to_file( $this->model_options->get( 'custom_css' ), $this->model_options->get( 'custom_css_minified' ) );
+					$updated_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
+					// if saving was successful, increase the "Custom CSS" version number for cache busting
+					if ( $result )
+						$updated_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
+				}
 
 				$this->model_options->update( $updated_options );
 

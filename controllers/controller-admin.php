@@ -1481,8 +1481,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return false;
 
 		$imported_options = array();
-		if ( isset( $wp_table_reloaded_options['use_custom_css'] ) )
-			$imported_options['use_custom_css'] = (bool)$wp_table_reloaded_options['use_custom_css'];
+		$imported_options['use_custom_css'] = ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) ? (bool)$wp_table_reloaded_options['use_custom_css'] : false;
 		if ( isset( $wp_table_reloaded_options['custom_css'] ) ) {
 			// Automatically convert WP-Table Reloaded Custom CSS to TablePress Custom CSS by search/replacing classes and IDs
 			$imported_options['custom_css'] = stripslashes( $wp_table_reloaded_options['custom_css'] );
@@ -1496,7 +1495,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$imported_options['custom_css_minified'] = $tablepress_css->minify_css( $imported_options['custom_css'] ); // Minify Custom CSS
 
 			// Maybe update CSS files as well
-			if ( $imported_options['custom_css'] !== $tablepress_css->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
+			if ( $imported_options['use_custom_css'] && '' !== $imported_options['custom_css'] ) { // only write files, if "Custom CSS" is to be used, and if there is "Custom CSS"
 				$result = $tablepress_css->save_custom_css_to_file( $imported_options['custom_css'], $imported_options['custom_css_minified'] );
 				$imported_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
 				// if saving was successful, increase the "Custom CSS" version number for cache busting
