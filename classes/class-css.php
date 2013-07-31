@@ -211,38 +211,8 @@ class TablePress_CSS {
 			return false;
 		}
 
-		global $wp_filesystem;
-
-		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
-		// We need to account for that by replacing the path difference in the filename
-		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
-
-		$css_types = array( 'normal', 'minified', 'combined' );
-
-		$default_css = $this->load_default_css_from_file();
-		if ( false === $default_css )
-			$default_css = '';
-		$file_content = array(
-			'normal' => $custom_css_normal,
-			'minified' => $custom_css_minified,
-			'combined' => $default_css . "\n" . $custom_css_minified
-		);
-
-		$total_result = true; // whether all files were saved successfully
-		foreach ( $css_types as $css_type ) {
-			$filename = $this->get_custom_css_location( $css_type, 'path' );
-			// Check if filename is valid (0 means yes)
-			if ( 0 !== validate_file( $filename ) ) {
-				$total_result = false;
-				continue;
-			}
-			if ( '' != $path_difference )
-				$filename = str_replace( $path_difference, '', $filename );
-			$result = $wp_filesystem->put_contents( $filename, $file_content[ $css_type ], FS_CHMOD_FILE );
-			$total_result = ( $total_result && $result );
-		}
-
-		return $total_result;
+		// we have valid access to the filesystem now -> try to save the files
+		return $this->_custom_css_save_helper( $custom_css_normal, $custom_css_minified );
 	}
 
 	/**
@@ -284,6 +254,25 @@ class TablePress_CSS {
 		}
 
 		// we have valid access to the filesystem now -> try to save the files
+		return $this->_custom_css_save_helper( $custom_css_normal, $custom_css_minified );
+	}
+
+	/**
+	 * Save "Custom CSS" to files, if validated access to the WP_Filesystem exists.
+	 * Helper function to prevent code duplication
+	 *
+	 * @see save_custom_css_to_file()
+	 * @see save_custom_css_to_file_plugin_options()
+	 *
+	 * @since 1.1.0
+	 *
+	 * @uses WP_Filesystem
+	 *
+	 * @param string $custom_css Custom CSS code to be saved
+	 * @param string $minified_custom_css Minified CSS code to be saved
+ 	 * @return bool True on success, false on failure
+	 */
+	protected function _custom_css_save_helper( $custom_css_normal, $custom_css_minified ) {
 		global $wp_filesystem;
 
 		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
@@ -314,7 +303,6 @@ class TablePress_CSS {
 			$result = $wp_filesystem->put_contents( $filename, $file_content[ $css_type ], FS_CHMOD_FILE );
 			$total_result = ( $total_result && $result );
 		}
-
 		return $total_result;
 	}
 
@@ -358,7 +346,6 @@ class TablePress_CSS {
 				$total_result = ( $total_result && $result );
 			}
 		}
-
 		return $total_result;
 	}
 
