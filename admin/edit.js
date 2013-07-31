@@ -9,6 +9,11 @@
 
 jQuery(document).ready( function( $ ) {
 
+	/* Wrapper to find elements in the page faster with JS-native functions */
+	$id = function( element_id ) {
+		return $( document.getElementById( element_id ) );
+	}
+
 	/**
 	 * TablePress object, mostly with functionality for the "Edit" screen
 	 *
@@ -17,12 +22,12 @@ jQuery(document).ready( function( $ ) {
 	window.tp = {
 		made_changes: false,
 		table: {
-			id: $( '#table-id' ).val(),
-			new_id: $( '#table-new-id' ).val(),
-			rows: $( '#number-rows' ).val(),
-			columns: $( '#number-columns' ).val(),
-			head: $( '#option-table-head' ).prop( 'checked' ),
-			foot: $( '#option-table-foot' ).prop( 'checked' ),
+			id: $id( 'table-id' ).val(),
+			new_id: $id( 'table-new-id' ).val(),
+			rows: $id( 'number-rows' ).val(),
+			columns: $id( 'number-columns' ).val(),
+			head: $id( 'option-table-head' ).prop( 'checked' ),
+			foot: $id( 'option-table-foot' ).prop( 'checked' ),
 			no_data_columns_pre: 2,
 			no_data_columns_post: 1,
 			body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][rows][]" value="1" /></td>',
@@ -35,21 +40,21 @@ jQuery(document).ready( function( $ ) {
 			},
 			unset_table_changed: function() {
 				tp.made_changes = false;
-				$( '#edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
+				$id( 'edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
 				// @TODO: maybe use .tablepress-postbox-table here and further below
 				$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
 			},
 			change_id: function( /* event */ ) {
 				// empty table IDs are not allowed
-				if ( '' === $.trim( $( '#table-new-id' ).val() ) ) {
+				if ( '' === $.trim( $id( 'table-new-id' ).val() ) ) {
 					alert( tablepress_strings.table_id_not_empty );
-					$( '#table-new-id' ).val( tp.table.new_id ).focus().select();
+					$id( 'table-new-id' ).val( tp.table.new_id ).focus().select();
 					return;
 				}
 				// the '0' table ID is not allowed
-				if ( '0' === $.trim( $( '#table-new-id' ).val() ) ) {
+				if ( '0' === $.trim( $id( 'table-new-id' ).val() ) ) {
 					alert( tablepress_strings.table_id_not_zero );
-					$( '#table-new-id' ).val( tp.table.new_id ).focus().select();
+					$id( 'table-new-id' ).val( tp.table.new_id ).focus().select();
 					return;
 				}
 
@@ -66,8 +71,8 @@ jQuery(document).ready( function( $ ) {
 			},
 			change_table_head: function( /* event */ ) {
 				tp.table.head = $(this).prop( 'checked' );
-				$( '#option-use-datatables' ).prop( 'disabled', ! tp.table.head ).change();
-				$( '#notice-datatables-head-row' ).toggle( ! tp.table.head );
+				$id( 'option-use-datatables' ).prop( 'disabled', ! tp.table.head ).change();
+				$id( 'notice-datatables-head-row' ).toggle( ! tp.table.head );
 				tp.rows.stripe();
 			},
 			change_table_foot: function( /* event */ ) {
@@ -75,22 +80,22 @@ jQuery(document).ready( function( $ ) {
 				tp.rows.stripe();
 			},
 			change_print_name_description: function( /* event */ ) {
-				$( '#' + this.id + '-position' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
+				$id( this.id + '-position' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
 			},
 			change_datatables: function() {
-				var $datatables_checkbox = $( '#option-use-datatables' ),
+				var $datatables_checkbox = $id( 'option-use-datatables' ),
 					checkboxes_disabled = ! ( $datatables_checkbox.prop( 'checked' ) && ! $datatables_checkbox.prop( 'disabled' ) );
 				$datatables_checkbox.closest( 'tbody' ).find( 'input' ).not( $datatables_checkbox ).prop( 'disabled', checkboxes_disabled );
 				tp.table.change_datatables_pagination();
 			},
 			change_datatables_pagination: function() {
-				var $pagination_checkbox = $( '#option-datatables-paginate' ),
+				var $pagination_checkbox = $id( 'option-datatables-paginate' ),
 					pagination_enabled = ( $pagination_checkbox.prop( 'checked' ) && ! $pagination_checkbox.prop( 'disabled' ) );
-				$( '#option-datatables-lengthchange' ).prop( 'disabled', ! pagination_enabled );
-				$( '#option-datatables-paginate_entries' ).prop( 'disabled', ! pagination_enabled );
+				$id( 'option-datatables-lengthchange' ).prop( 'disabled', ! pagination_enabled );
+				$id( 'option-datatables-paginate_entries' ).prop( 'disabled', ! pagination_enabled );
 			},
 			prepare_ajax_request: function( wp_action, wp_nonce ) {
-				var $table_body = $( '#edit-form-body' ),
+				var $table_body = $id( 'edit-form-body' ),
 					table_data = [],
 					table_options,
 					table_number = { rows: tp.table.rows, columns: tp.table.columns, hidden_rows: 0, hidden_columns: 0 },
@@ -111,23 +116,23 @@ jQuery(document).ready( function( $ ) {
 					// Table Options
 					table_head: tp.table.head,
 					table_foot: tp.table.foot,
-					alternating_row_colors: $( '#option-alternating-row-colors' ).prop( 'checked' ),
-					row_hover: $( '#option-row-hover' ).prop( 'checked' ),
-					print_name: $( '#option-print-name' ).prop( 'checked' ),
-					print_description: $( '#option-print-description' ).prop( 'checked' ),
-					print_name_position: $( '#option-print-name-position' ).val(),
-					print_description_position: $( '#option-print-description-position' ).val(),
-					extra_css_classes: $( '#option-extra-css-classes' ).val(),
+					alternating_row_colors: $id( 'option-alternating-row-colors' ).prop( 'checked' ),
+					row_hover: $id( 'option-row-hover' ).prop( 'checked' ),
+					print_name: $id( 'option-print-name' ).prop( 'checked' ),
+					print_description: $id( 'option-print-description' ).prop( 'checked' ),
+					print_name_position: $id( 'option-print-name-position' ).val(),
+					print_description_position: $id( 'option-print-description-position' ).val(),
+					extra_css_classes: $id( 'option-extra-css-classes' ).val(),
 					// DataTables JS features
-					use_datatables: $( '#option-use-datatables' ).prop( 'checked' ),
-					datatables_sort: $( '#option-datatables-sort' ).prop( 'checked' ),
-					datatables_filter: $( '#option-datatables-filter' ).prop( 'checked' ),
-					datatables_paginate: $( '#option-datatables-paginate' ).prop( 'checked' ),
-					datatables_lengthchange: $( '#option-datatables-lengthchange' ).prop( 'checked' ),
-					datatables_paginate_entries: $( '#option-datatables-paginate_entries' ).val(),
-					datatables_info: $( '#option-datatables-info' ).prop( 'checked' ),
-					datatables_scrollx: $( '#option-datatables-scrollx' ).prop( 'checked' ),
-					datatables_custom_commands: $( '#option-datatables-custom-commands' ).val()
+					use_datatables: $id( 'option-use-datatables' ).prop( 'checked' ),
+					datatables_sort: $id( 'option-datatables-sort' ).prop( 'checked' ),
+					datatables_filter: $id( 'option-datatables-filter' ).prop( 'checked' ),
+					datatables_paginate: $id( 'option-datatables-paginate' ).prop( 'checked' ),
+					datatables_lengthchange: $id( 'option-datatables-lengthchange' ).prop( 'checked' ),
+					datatables_paginate_entries: $id( 'option-datatables-paginate_entries' ).val(),
+					datatables_info: $id( 'option-datatables-info' ).prop( 'checked' ),
+					datatables_scrollx: $id( 'option-datatables-scrollx' ).prop( 'checked' ),
+					datatables_custom_commands: $id( 'option-datatables-custom-commands' ).val()
 				};
 				table_options = JSON.stringify( table_options );
 
@@ -139,7 +144,7 @@ jQuery(document).ready( function( $ ) {
 						return 0;
 					} )
 					.get();
-				table_visibility.columns = $( '#edit-form-foot' ).find( 'input[type="hidden"]' )
+				table_visibility.columns = $id( 'edit-form-foot' ).find( 'input[type="hidden"]' )
 					.map( function() {
 						if ( '1' == $(this).val() )
 							return 1;
@@ -156,8 +161,8 @@ jQuery(document).ready( function( $ ) {
 					tablepress: {
 						id: tp.table.id,
 						new_id: tp.table.new_id,
-						name: $( '#table-name' ).val(),
-						description: $( '#table-description' ).val(),
+						name: $id( 'table-name' ).val(),
+						description: $id( 'table-description' ).val(),
 						number: table_number,
 						data: table_data,
 						options: table_options,
@@ -173,20 +178,20 @@ jQuery(document).ready( function( $ ) {
 					}
 
 					// validation checks
-					if ( $( '#option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $( '#option-datatables-paginate_entries' ).val() ) ) {
+					if ( $id( 'option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $id( 'option-datatables-paginate_entries' ).val() ) ) {
 						alert( tablepress_strings.num_pagination_entries_invalid );
-						$( '#option-datatables-paginate_entries' ).focus().select();
+						$id( 'option-datatables-paginate_entries' ).focus().select();
 						return;
 					}
-					if ( ( /[^A-Za-z0-9- _]/ ).test( $( '#option-extra-css-classes' ).val() ) ) {
+					if ( ( /[^A-Za-z0-9- _]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
 						alert( tablepress_strings.extra_css_classes_invalid );
-						$( '#option-extra-css-classes' ).focus().select();
+						$id( 'option-extra-css-classes' ).focus().select();
 						return;
 					}
 
 					$(this).closest( 'p' ).append( '<span class="animation-preview spinner" title="' + tablepress_strings.preparing_preview + '"/>' );
 					$( 'body' ).addClass( 'wait' );
-					$( '#table-preview' ).empty(); // clear preview
+					$id( 'table-preview' ).empty(); // clear preview
 
 					$.post(
 							ajaxurl,
@@ -211,7 +216,7 @@ jQuery(document).ready( function( $ ) {
 					tp.table.preview.error( 'AJAX call failed: ' + status + ' - ' + error_thrown );
 				},
 				success: function( data ) {
-					$( '#table-preview' ).empty();
+					$id( 'table-preview' ).empty();
 					$( '<iframe id="table-preview-iframe" />' ).load( function() {
 						var $iframe = $(this).contents();
 						$iframe.find( 'head' ).append( data.head_html );
@@ -250,7 +255,7 @@ jQuery(document).ready( function( $ ) {
 					new_rows += tp.table.body_cells_post;
 				}
 
-				column_idxs = $( '#edit-form-foot' ).find( '.column-hidden' )
+				column_idxs = $id( 'edit-form-foot' ).find( '.column-hidden' )
 					.map( function() { return $(this).index(); } ).get();
 				return $( new_rows ).each( function( row_idx, row ) {
 					$(row).children()
@@ -259,21 +264,21 @@ jQuery(document).ready( function( $ ) {
 				} );
 			},
 			append: function( /* event */ ) {
-				var num_rows = $( '#rows-append-number' ).val();
+				var num_rows = $id( 'rows-append-number' ).val();
 
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
 					alert( tablepress_strings.append_num_rows_invalid );
-					$( '#rows-append-number' ).focus().select();
+					$id( 'rows-append-number' ).focus().select();
 					return;
 				}
 
-				$( '#edit-form-body' ).append( tp.rows.create( num_rows ) );
+				$id( 'edit-form-body' ).append( tp.rows.create( num_rows ) );
 
 				tp.rows.stripe();
 				tp.reindex();
 			},
 			insert: function( event ) {
-				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
+				var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
@@ -287,7 +292,7 @@ jQuery(document).ready( function( $ ) {
 				tp.reindex();
 			},
 			duplicate: function( event ) {
-				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
+				var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
@@ -309,7 +314,7 @@ jQuery(document).ready( function( $ ) {
 				tp.reindex();
 			},
 			hide: function( event ) {
-				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
+				var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
@@ -323,7 +328,7 @@ jQuery(document).ready( function( $ ) {
 				tp.table.set_table_changed();
 			},
 			unhide: function( event ) {
-				var $selected_rows = $( '#edit-form-body' ).find( 'input:checked' )
+				var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
 					.prop( 'checked', event.shiftKey ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
@@ -338,7 +343,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			remove: function( /* event */ ) {
 				var confirm_message,
-					$selected_rows = $( '#edit-form-body' ).find( 'input:checked' ).closest( 'tr' );
+					$selected_rows = $id( 'edit-form-body' ).find( 'input:checked' ).closest( 'tr' );
 
 				if ( 0 === $selected_rows.length ) {
 					alert( tablepress_strings.no_rows_selected );
@@ -450,7 +455,7 @@ jQuery(document).ready( function( $ ) {
 				if ( 'undefined' == typeof helper )
 					helper = null;
 				helper = $( helper );
-				var $rows = $( '#edit-form-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
+				var $rows = $id( 'edit-form-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
 				$rows.filter( ':even' ).addClass( 'odd' );
 				$rows = $rows.not( '.row-hidden' );
 				if ( helper.hasClass( 'row-hidden' ) )
@@ -464,12 +469,12 @@ jQuery(document).ready( function( $ ) {
 		columns: {
 			append: function( /* event */ ) {
 				var i,
-					num_columns = $( '#columns-append-number' ).val(),
+					num_columns = $id( 'columns-append-number' ).val(),
 					new_head_cells = '', new_body_cells = '', new_foot_cells = '';
 
 				if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
 					alert( tablepress_strings.append_num_columns_invalid );
-					$( '#columns-append-number' ).focus().select();
+					$id( 'columns-append-number' ).focus().select();
 					return;
 				}
 
@@ -479,20 +484,20 @@ jQuery(document).ready( function( $ ) {
 					new_foot_cells += tp.table.foot_cell;
 				}
 
-				$( '#edit-form-body' ).children().each( function( row_idx, row ) {
+				$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
 					$(row).children().slice( - tp.table.no_data_columns_post )
 						.before( new_body_cells );
 				} );
-				$( '#edit-form-head' ).children().slice( - tp.table.no_data_columns_post )
+				$id( 'edit-form-head' ).children().slice( - tp.table.no_data_columns_post )
 					.before( new_head_cells );
-				$( '#edit-form-foot' ).children().slice( - tp.table.no_data_columns_post )
+				$id( 'edit-form-foot' ).children().slice( - tp.table.no_data_columns_post )
 					.before( new_foot_cells );
 
 				tp.reindex();
 			},
 			insert: function( event ) {
 				var column_idxs,
-					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
+					$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -501,12 +506,12 @@ jQuery(document).ready( function( $ ) {
 				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#edit-form-body' ).children().each( function( row_idx, row ) {
+				$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.before( tp.table.body_cell );
 				} );
-				$( '#edit-form-head' ).children()
+				$id( 'edit-form-head' ).children()
 					.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 					.before( tp.table.head_cell );
 				$selected_columns.before( tp.table.foot_cell );
@@ -515,7 +520,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			duplicate: function( event ) {
 				var column_idxs,
-					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
+					$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -524,7 +529,7 @@ jQuery(document).ready( function( $ ) {
 				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#edit-form' ).find( 'tr' ).each( function( row_idx, row ) {
+				$id( 'edit-form' ).find( 'tr' ).each( function( row_idx, row ) {
 					$(row).children().each( function( idx, cell ) {
 						if ( -1 != $.inArray( idx, column_idxs ) ) {
 							var $cell = $(cell),
@@ -539,7 +544,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			hide: function( event ) {
 				var column_idxs,
-					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
+					$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -548,7 +553,7 @@ jQuery(document).ready( function( $ ) {
 				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
+				$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.addClass( 'column-hidden' );
@@ -559,7 +564,7 @@ jQuery(document).ready( function( $ ) {
 			},
 			unhide: function( event ) {
 				var column_idxs,
-					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' )
+					$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
 						.prop( 'checked', event.shiftKey ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
@@ -568,7 +573,7 @@ jQuery(document).ready( function( $ ) {
 				}
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
+				$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.removeClass( 'column-hidden' );
@@ -580,7 +585,7 @@ jQuery(document).ready( function( $ ) {
 			remove: function( /* event */ ) {
 				var column_idxs,
 					confirm_message,
-					$selected_columns = $( '#edit-form-foot' ).find( 'input:checked' ).closest( 'th' );
+					$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' ).closest( 'th' );
 
 				if ( 0 === $selected_columns.length ) {
 					alert( tablepress_strings.no_columns_selected );
@@ -600,7 +605,7 @@ jQuery(document).ready( function( $ ) {
 					return;
 
 				column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-				$( '#edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
+				$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 					$(row).children()
 						.filter( function( idx ) { return ( -1 != $.inArray( idx, column_idxs ) ); } )
 						.remove();
@@ -624,7 +629,7 @@ jQuery(document).ready( function( $ ) {
 
 					tp.columns.move.source_idx = $item.index();
 
-					tp.columns.move.$rows = $( '#edit-form-body' ).children().add( '#edit-form-foot' );
+					tp.columns.move.$rows = $id( 'edit-form-body' ).children().add( '#edit-form-foot' );
 
 					tp.columns.move.$cells = tp.columns.move.$rows
 						.find( ':nth-child(' + ( tp.columns.move.source_idx + 1 ) + ')' )
@@ -722,11 +727,11 @@ jQuery(document).ready( function( $ ) {
 					if ( ! event.shiftKey )
 						return;
 
-					var $advanced_editor = $( '#advanced-editor-content' );
+					var $advanced_editor = $id( 'advanced-editor-content' );
 					tp.cells.advanced_editor.thickbox_size();
 					tp.cells.$textarea = $(this).blur();
 					$advanced_editor.val( tp.cells.$textarea.val() );
-					$( '#advanced-editor' ).wpdialog( 'open' );
+					$id( 'advanced-editor' ).wpdialog( 'open' );
 					$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
 					$advanced_editor.focus();
 				},
@@ -734,18 +739,18 @@ jQuery(document).ready( function( $ ) {
 					if ( ! confirm( tablepress_strings.advanced_editor_open ) )
 						return;
 
-					$( '#edit-form-body' ).one( 'click', 'textarea', function() {
-						var $advanced_editor = $( '#advanced-editor-content' );
+					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
+						var $advanced_editor = $id( 'advanced-editor-content' );
 						tp.cells.advanced_editor.thickbox_size();
 						tp.cells.$textarea = $(this).blur();
 						$advanced_editor.val( tp.cells.$textarea.val() );
-						$( '#advanced-editor' ).wpdialog( 'open' );
+						$id( 'advanced-editor' ).wpdialog( 'open' );
 						$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
 						$advanced_editor.focus();
 					} );
 				},
 				save: function() {
-					var $ve_content = $( '#advanced-editor-content' ).blur().val();
+					var $ve_content = $id( 'advanced-editor-content' ).blur().val();
 					if ( tp.cells.$textarea.val() != $ve_content ) {
 						tp.cells.$textarea.val( $ve_content );
 						// position cursor at the end
@@ -756,11 +761,11 @@ jQuery(document).ready( function( $ ) {
 					tp.cells.advanced_editor.close();
 				},
 				close: function() {
-					$( '#advanced-editor' ).wpdialog( 'close' );
+					$id( 'advanced-editor' ).wpdialog( 'close' );
 					return false;
 				},
 				thickbox_size: function() {
-					var $link = $( '#advanced-editor-content-add_media' ),
+					var $link = $id( 'advanced-editor-content-add_media' ),
 						url,
 						width = $(window).width(),
 						W = ( 720 < width ) ? 720 : width,
@@ -810,7 +815,7 @@ jQuery(document).ready( function( $ ) {
 					// mousedown instead of click to allow selection of text
 					// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 					// other approaches can lead to the wrong textarea being selected
-					$( '#edit-form-body' ).one( 'mousedown', 'textarea', function() {
+					$id( 'edit-form-body' ).one( 'mousedown', 'textarea', function() {
 						wpActiveEditor = this.id;
 						$( document ).one( 'mouseup', function() {
 							wpLink.open();
@@ -822,11 +827,11 @@ jQuery(document).ready( function( $ ) {
 			image: {
 				add: function( /* event */ ) {
 					if ( confirm( tablepress_strings.image_add ) )
-						$( '#edit-form-body' ).one( 'click', 'textarea', function() {
+						$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 							wpActiveEditor = this.id;
 							// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
 							this.selectionStart = this.selectionEnd = this.value.length;
-							var $link = $( '#image-add' ),
+							var $link = $id( 'image-add' ),
 								width = $(window).width(),
 								W = ( 720 < width ) ? 720 : width,
 								H = $(window).height();
@@ -844,9 +849,9 @@ jQuery(document).ready( function( $ ) {
 					var span_add_msg = ( '#rowspan#' == span ) ? tablepress_strings.rowspan_add : tablepress_strings.colspan_add ;
 
 					// Automatically deactivate DataTables, if cells are combined
-					if ( $( '#option-use-datatables' ).prop( 'checked' ) ) {
+					if ( $id( 'option-use-datatables' ).prop( 'checked' ) ) {
 						if ( confirm( tablepress_strings.span_add_datatables_warning ) )
-							$( '#option-use-datatables' ).prop( 'checked', false ).change();
+							$id( 'option-use-datatables' ).prop( 'checked', false ).change();
 						else
 							return;
 					}
@@ -854,7 +859,7 @@ jQuery(document).ready( function( $ ) {
 					if ( ! confirm( span_add_msg ) )
 						return;
 
-					$( '#edit-form-body' ).one( 'click', 'textarea', function() {
+					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 						var $textarea = $(this),
 							col_idx = $textarea.parent().index(),
 							row_idx = $textarea.closest( 'tr' ).index();
@@ -895,7 +900,7 @@ jQuery(document).ready( function( $ ) {
 		},
 		reindex: function() {
 			var $row,
-				$rows = $( '#edit-form-body' ).children(),
+				$rows = $id( 'edit-form-body' ).children(),
 				$cell, known_references = {};
 
 			tp.table.rows = $rows.length;
@@ -918,7 +923,7 @@ jQuery(document).ready( function( $ ) {
 							// we will use full_match as our result variable, so that we don't need an extra one
 
 							if ( ! known_references.hasOwnProperty( first_cell ) ) {
-								$cell = $( '#cell-' + first_cell );
+								$cell = $id( 'cell-' + first_cell );
 								if ( $cell.length )
 									known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 								else
@@ -928,7 +933,7 @@ jQuery(document).ready( function( $ ) {
 
 							if ( ( 'undefined' != typeof second_cell ) && ( '' !== second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
 								if ( ! known_references.hasOwnProperty( second_cell ) ) {
-									$cell = $( '#cell-' + second_cell );
+									$cell = $id( 'cell-' + second_cell );
 									if ( $cell.length )
 										known_references[ second_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 									else
@@ -951,31 +956,31 @@ jQuery(document).ready( function( $ ) {
 					return 'cell-' + tp.columns.number_to_letter( column_idx + 1 ) + ( row_idx + 1 );
 				} );
 			});
-			$( '#edit-form-head' ).find( '.move-handle' )
+			$id( 'edit-form-head' ).find( '.move-handle' )
 				.html( function( idx ) { return tp.columns.number_to_letter( idx + 1 ); } );
 
-			$( '#number-rows' ).val( tp.table.rows );
-			$( '#number-columns' ).val( tp.table.columns );
+			$id( 'number-rows' ).val( tp.table.rows );
+			$id( 'number-columns' ).val( tp.table.columns );
 
 			tp.table.set_table_changed();
 		},
 		save_changes: {
 			trigger: function( event ) {
 				// validation checks
-				if ( $( '#option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $( '#option-datatables-paginate_entries' ).val() ) ) {
+				if ( $id( 'option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $id( 'option-datatables-paginate_entries' ).val() ) ) {
 					alert( tablepress_strings.num_pagination_entries_invalid );
-					$( '#option-datatables-paginate_entries' ).focus().select();
+					$id( 'option-datatables-paginate_entries' ).focus().select();
 					return;
 				}
-				if ( ( /[^A-Za-z0-9- _]/ ).test( $( '#option-extra-css-classes' ).val() ) ) {
+				if ( ( /[^A-Za-z0-9- _]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
 					alert( tablepress_strings.extra_css_classes_invalid );
-					$( '#option-extra-css-classes' ).focus().select();
+					$id( 'option-extra-css-classes' ).focus().select();
 					return;
 				}
 
 				if ( event.shiftKey ) {
 					tp.made_changes = false; // to prevent onunload warning
-					$( '#tablepress-page' ).find( 'form' ).submit();
+					$id( 'tablepress-page' ).find( 'form' ).submit();
 					return;
 				}
 
@@ -1011,16 +1016,16 @@ jQuery(document).ready( function( $ ) {
 						window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
 				}
 				// update CSS class for data field form
-				$( '#edit-form' ).removeClass( 'tablepress-edit-screen-id-' + tp.table.id ).addClass( 'tablepress-edit-screen-id-' + data.table_id );
+				$id( 'edit-form' ).removeClass( 'tablepress-edit-screen-id-' + tp.table.id ).addClass( 'tablepress-edit-screen-id-' + data.table_id );
 				// update table ID in input fields (type text and hidden)
 				tp.table.id = tp.table.new_id = data.table_id;
-				$( '#table-id' ).val( tp.table.id );
-				$( '#table-new-id' ).val( tp.table.new_id );
+				$id( 'table-id' ).val( tp.table.id );
+				$id( 'table-new-id' ).val( tp.table.new_id );
 				// update the Shortcode text field
 				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' );
 				// update the nonces
-				$( '#nonce-edit-table' ).val( data.new_edit_nonce );
-				$( '#nonce-preview-table' ).val( data.new_preview_nonce );
+				$id( 'nonce-edit-table' ).val( data.new_edit_nonce );
+				$id( 'nonce-preview-table' ).val( data.new_preview_nonce );
 				// update URLs in Preview links
 				var $show_preview_buttons = $( '.show-preview-button' );
 				if ( $show_preview_buttons.length ) { // check necessary, because Preview button might not be visible
@@ -1031,8 +1036,8 @@ jQuery(document).ready( function( $ ) {
 					);
 				}
 				// update last modified date and user nickname
-				$( '#last-modified' ).text( data.last_modified );
-				$( '#last-editor' ).text( data.last_editor );
+				$id( 'last-modified' ).text( data.last_modified );
+				$id( 'last-editor' ).text( data.last_editor );
 				tp.table.unset_table_changed();
 				tp.save_changes.after_saving_dialog( 'success', tablepress_strings[ data.message ] );
 			},
@@ -1106,7 +1111,7 @@ jQuery(document).ready( function( $ ) {
 					'#table-new-id':		tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
 				}
 			},
-			$table = $( '#edit-form-body' );
+			$table = $id( 'edit-form-body' );
 
 			$.each( callbacks, function( event, event_callbacks ) {
 				$.each( event_callbacks, function( selector, callback ) {
@@ -1117,9 +1122,9 @@ jQuery(document).ready( function( $ ) {
 			$( window ).on( 'beforeunload', tp.check.changes_saved );
 
 			// do this before the next lines, to not trigger set_table_changed()
-			$( '#option-table-head' ).change(); // init changed/disabled states of DataTables JS features checkboxes
-			$( '#option-print-name' ).change( tp.table.change_print_name_description ).change(); // init dropdowns for name and description position
-			$( '#option-print-description' ).change( tp.table.change_print_name_description ).change();
+			$id( 'option-table-head' ).change(); // init changed/disabled states of DataTables JS features checkboxes
+			$id( 'option-print-name' ).change( tp.table.change_print_name_description ).change(); // init dropdowns for name and description position
+			$id( 'option-print-description' ).change( tp.table.change_print_name_description ).change();
 
 			// just once is enough, will be reset after saving
 			$table.one( 'change', 'textarea', tp.table.set_table_changed );
@@ -1127,37 +1132,37 @@ jQuery(document).ready( function( $ ) {
 
 			if ( tablepress_options.cells_advanced_editor ) {
 				$table.on( 'click', 'textarea', tp.cells.advanced_editor.keyopen );
-				$( '#advanced-editor-open' ).on( 'click', tp.cells.advanced_editor.buttonopen );
-				$( '#advanced-editor-confirm' ).on( 'click', tp.cells.advanced_editor.save );
-				$( '#advanced-editor-cancel' ).on( 'click', tp.cells.advanced_editor.close );
-				$( '#advanced-editor' ).wpdialog( {
+				$id( 'advanced-editor-open' ).on( 'click', tp.cells.advanced_editor.buttonopen );
+				$id( 'advanced-editor-confirm' ).on( 'click', tp.cells.advanced_editor.save );
+				$id( 'advanced-editor-cancel' ).on( 'click', tp.cells.advanced_editor.close );
+				$id( 'advanced-editor' ).wpdialog( {
 					autoOpen: false,
-					title: $( '#advanced-editor-open' ).val(),
+					title: $id( 'advanced-editor-open' ).val(),
 					width: 600,
 					modal: true,
 					dialogClass: 'wp-dialog',
 					resizable: false
 				} );
 			} else {
-				$( '#advanced-editor-open' ).hide();
+				$id( 'advanced-editor-open' ).hide();
 			}
 
 			if ( tablepress_options.cells_auto_grow )
 				$table.on( 'focus', 'textarea', tp.cells.autogrow );
 
-			$( '#edit-form-body' ).on( 'click', 'input:checkbox', { parent: '#edit-form-body' }, tp.cells.checkboxes.multi_select );
-			$( '#edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
+			$id( 'edit-form-body' ).on( 'click', 'input:checkbox', { parent: '#edit-form-body' }, tp.cells.checkboxes.multi_select );
+			$id( 'edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
 
-			$( '#edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
+			$id( 'edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
 
 			// on form submit: Enable disabled fields, so that they are transmitted in the POST request
-			$( '#tablepress-page' ).find( 'form' ).on( 'submit', function() {
+			$id( 'tablepress-page' ).find( 'form' ).on( 'submit', function() {
 				$(this).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
 			} );
 
 			$table.sortable( {
 				axis: 'y',
-				containment: $( '#edit-form' ), // to get better behavior when dragging before/after the first/last row
+				containment: $id( 'edit-form' ), // to get better behavior when dragging before/after the first/last row
 				forceHelperSize: true, // necessary?
 				handle: '.move-handle',
 				start: tp.rows.move.start,
@@ -1166,7 +1171,7 @@ jQuery(document).ready( function( $ ) {
 				update: tp.reindex
 			} ); // disableSelection() prohibits selection of text in textareas via keyboard
 
-			$( '#edit-form-head' ).sortable( {
+			$id( 'edit-form-head' ).sortable( {
 				axis: 'x',
 				items: '.head',
 				containment: 'parent',
