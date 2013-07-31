@@ -723,6 +723,7 @@ jQuery(document).ready( function( $ ) {
 				tp.cells.$focus = $(this).closest( 'tr' ).addClass( 'focus' );
 			},
 			advanced_editor: {
+				prompt_shown: false,
 				keyopen: function( event ) {
 					if ( ! event.shiftKey )
 						return;
@@ -736,9 +737,11 @@ jQuery(document).ready( function( $ ) {
 					$advanced_editor.focus();
 				},
 				buttonopen: function() {
-					if ( ! confirm( tablepress_strings.advanced_editor_open ) )
-						return;
+					if ( ! tp.cells.advanced_editor.prompt_shown )
+						if ( ! confirm( tablepress_strings.advanced_editor_open ) )
+							return;
 
+					tp.cells.advanced_editor.prompt_shown = true;
 					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 						var $advanced_editor = $id( 'advanced-editor-content' );
 						tp.cells.advanced_editor.thickbox_size();
@@ -808,10 +811,13 @@ jQuery(document).ready( function( $ ) {
 		},
 		content: {
 			link: {
+				prompt_shown: false,
 				add: function( /* event */ ) {
-					if ( ! confirm( tablepress_strings.link_add ) )
-						return;
+					if ( ! tp.content.link.prompt_shown )
+						if ( ! confirm( tablepress_strings.link_add ) )
+							return;
 
+					tp.content.link.prompt_shown = true;
 					// mousedown instead of click to allow selection of text
 					// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 					// other approaches can lead to the wrong textarea being selected
@@ -825,28 +831,40 @@ jQuery(document).ready( function( $ ) {
 				}
 			},
 			image: {
+				prompt_shown: false,
 				add: function( /* event */ ) {
-					if ( confirm( tablepress_strings.image_add ) )
-						$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-							wpActiveEditor = this.id;
-							// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
-							this.selectionStart = this.selectionEnd = this.value.length;
-							var $link = $id( 'image-add' ),
-								width = $(window).width(),
-								W = ( 720 < width ) ? 720 : width,
-								H = $(window).height();
-							if ( $( 'body.admin-bar' ).length )
-								H -= 28;
-							tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
-							$(this).blur();
-						} );
+					if ( ! tp.content.image.prompt_shown )
+						if ( ! confirm( tablepress_strings.image_add ) )
+							return false; // because it's a link
 
-					return false;
+					tp.content.image.prompt_shown = true;
+					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
+						wpActiveEditor = this.id;
+						// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
+						this.selectionStart = this.selectionEnd = this.value.length;
+						var $link = $id( 'image-add' ),
+							width = $(window).width(),
+							W = ( 720 < width ) ? 720 : width,
+							H = $(window).height();
+						if ( $( 'body.admin-bar' ).length )
+							H -= 28;
+						tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
+						$(this).blur();
+					} );
+
+					return false; // because it's a link
 				}
 			},
 			span: {
+				prompt_shown: false,
 				add: function( span ) {
-					var span_add_msg = ( '#rowspan#' == span ) ? tablepress_strings.rowspan_add : tablepress_strings.colspan_add ;
+					var span_add_msg = ( '#rowspan#' == span ) ? tablepress_strings.rowspan_add : tablepress_strings.colspan_add;
+
+					// init object, due to string keys
+					if ( false === tp.content.span.prompt_shown ) {
+						tp.content.span.prompt_shown = {};
+						tp.content.span.prompt_shown['#rowspan#'] = tp.content.span.prompt_shown['#colspan#'] = false;
+					}
 
 					// Automatically deactivate DataTables, if cells are combined
 					if ( $id( 'option-use-datatables' ).prop( 'checked' ) ) {
@@ -856,9 +874,11 @@ jQuery(document).ready( function( $ ) {
 							return;
 					}
 
-					if ( ! confirm( span_add_msg ) )
-						return;
+					if ( ! tp.content.span.prompt_shown[ span ] )
+						if ( ! confirm( span_add_msg ) )
+							return;
 
+					tp.content.span.prompt_shown[ span ] = true;
 					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 						var $textarea = $(this),
 							col_idx = $textarea.parent().index(),
