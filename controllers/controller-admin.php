@@ -879,7 +879,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$new_options['custom_css_minified'] = $tablepress_css->minify_css( $new_options['custom_css'] ); // Minify Custom CSS
 
 				// Maybe update CSS files as well
-				if ( $new_options['custom_css'] !== $tablepress_css->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
+				$custom_css_file_contents = $tablepress_css->load_custom_css_from_file( 'normal' );
+				if ( false === $custom_css_file_contents )
+					$custom_css_file_contents = '';
+				if ( $new_options['custom_css'] !== $custom_css_file_contents ) { // don't write to file if it already has the desired content
 					$update_custom_css_files = true;
 					// Set to false again. As it was set here, it will be set true again, if file saving succeeds
 					$new_options['use_custom_css_file'] = false;

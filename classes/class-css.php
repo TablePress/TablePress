@@ -193,8 +193,8 @@ class TablePress_CSS {
 	 *
 	 * @uses WP_Filesystem
 	 *
-	 * @param string $custom_css Custom CSS code to be saved
-	 * @param string $minified_custom_css Minified CSS code to be saved
+	 * @param string $custom_css_normal Custom CSS code to be saved
+	 * @param string $custom_css_minified Minified CSS code to be saved
 	 * @return bool True on success, false on failure
 	 */
 	public function save_custom_css_to_file( $custom_css_normal, $custom_css_minified ) {
@@ -216,15 +216,16 @@ class TablePress_CSS {
 	}
 
 	/**
-	 * Save "Custom CSS" to a file, or return HTML for the credentials form, only used for saving "Custom CSS" on "Plugin Options" screen,
+	 * Save "Custom CSS" to files, delete "Custom CSS" files, or return HTML for the credentials form.
+	 * Only used from "Plugin Options" screen,
 	 * @see save_custom_css_to_file() is used in cases where no form output/redirection is possible (plugin updates, WP-Table Reloaded Import)
 	 *
 	 * @since 1.0.0
 	 *
 	 * @uses WP_Filesystem
 	 *
-	 * @param string $custom_css Custom CSS code to be saved
-	 * @param string $minified_custom_css Minified CSS code to be saved
+	 * @param string $custom_css_normal Custom CSS code to be saved. If empty, files will be deleted
+	 * @param string $custom_css_minified Minified CSS code to be saved
  	 * @return bool|string True on success, false on failure, or string of HTML for the credentials form for the WP_Filesystem API, if necessary
 	 */
 	public function save_custom_css_to_file_plugin_options( $custom_css_normal, $custom_css_minified ) {
@@ -253,8 +254,11 @@ class TablePress_CSS {
 			return $form_data;
 		}
 
-		// we have valid access to the filesystem now -> try to save the files
-		return $this->_custom_css_save_helper( $custom_css_normal, $custom_css_minified );
+		// we have valid access to the filesystem now -> try to save the files, or delete them if the "Custom CSS" is empty
+		if ( '' !== $custom_css_normal )
+			return $this->_custom_css_save_helper( $custom_css_normal, $custom_css_minified );
+		else
+			return $this->_custom_css_delete_helper();
 	}
 
 	/**
@@ -268,8 +272,8 @@ class TablePress_CSS {
 	 *
 	 * @uses WP_Filesystem
 	 *
-	 * @param string $custom_css Custom CSS code to be saved
-	 * @param string $minified_custom_css Minified CSS code to be saved
+	 * @param string $custom_css_normal Custom CSS code to be saved
+	 * @param string $custom_css_minified Minified CSS code to be saved
  	 * @return bool True on success, false on failure
 	 */
 	protected function _custom_css_save_helper( $custom_css_normal, $custom_css_minified ) {
@@ -323,6 +327,24 @@ class TablePress_CSS {
 			return false;
 		}
 
+		// we have valid access to the filesystem now -> try to delete the files
+		return $this->_custom_css_delete_helper();
+	}
+
+	/**
+	 * Delete "Custom CSS" files, if validated access to the WP_Filesystem exists.
+	 * Helper function to prevent code duplication
+	 *
+	 * @see delete_custom_css_files()
+	 * @see save_custom_css_to_file_plugin_options()
+	 *
+	 * @since 1.1.0
+	 *
+	 * @uses WP_Filesystem
+	 *
+ 	 * @return bool True on success, false on failure
+	 */
+	protected function _custom_css_delete_helper() {
 		global $wp_filesystem;
 
 		// WP_CONTENT_DIR and (FTP-)Content-Dir can be different (e.g. if FTP working dir is /)
