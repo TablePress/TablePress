@@ -346,6 +346,29 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['zip_support_available'] = $exporter->zip_support_available;
 				break;
 			case 'options':
+				// Maybe try saving "Custom CSS" to a file:
+				// (called here, as the credentials form posts to this handler again, due to how request_filesystem_credentials() works)
+				if ( isset( $_GET['item'] ) && 'save_custom_css' == $_GET['item'] ) {
+					TablePress::check_nonce( 'options', $_GET['item'] ); // nonce check here, as we don't have an explicit handler, and even viewing the screen needs to be checked
+					$action = 'options_custom_css'; // to load a different view
+					// try saving "Custom CSS" to a file, otherwise this gets the HTML for the credentials form
+					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+					$result = $tablepress_css->save_custom_css_to_file_plugin_options( $this->model_options->get( 'custom_css' ), $this->model_options->get( 'custom_css_minified' ) );
+					if ( is_string( $result ) ) {
+						$data['credentials_form'] = $result; // this will only be called if the save function doesn't do a redirect
+					} elseif ( true === $result ) {
+						// at this point, saving was successful, so enable usage of CSS in files again,
+						// and also increase the "Custom CSS" version number (for cache busting)
+						$this->model_options->update( array(
+							'use_custom_css_file' => true,
+							'custom_css_version' => $this->model_options->get( 'custom_css_version' ) + 1
+						) );
+						TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
+					} else { // leaves only $result = false
+						TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) );
+					}
+					break;
+				}
 				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
 				$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
 				$data['user_options']['parent_page'] = $this->parent_page;
@@ -843,6 +866,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Custom CSS can only be saved if the user is allowed to do so
+		$update_custom_css_files = false;
 		if ( current_user_can( 'tablepress_edit_options' ) ) {
 			// Checkbox
 			$new_options[ 'use_custom_css' ] = ( isset( $posted_options[ 'use_custom_css' ] ) && 'true' === $posted_options[ 'use_custom_css' ] );
@@ -856,11 +880,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 				// Maybe update CSS files as well
 				if ( $new_options['custom_css'] !== $tablepress_css->load_custom_css_from_file( 'normal' ) ) { // only write to file, if CSS really changed
-					$result = $tablepress_css->save_custom_css_to_file( $new_options['custom_css'], $new_options['custom_css_minified'] );
-					$new_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
-					// if saving was successful, increase the "Custom CSS" version number for cache busting
-					if ( $result )
-						$new_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
+					$update_custom_css_files = true;
+					// Set to false again. As it was set here, it will be set true again, if file saving succeeds
+					$new_options['use_custom_css_file'] = false;
 				}
 			}
 		}
@@ -870,6 +892,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->model_options->update( $new_options );
 			$this->model_table->_flush_caching_plugins_caches();
 		}
+
+		if ( $update_custom_css_files ) // capability check is performed above
+			TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
 
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
