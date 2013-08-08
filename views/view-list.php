@@ -96,7 +96,7 @@ class TablePress_List_View extends TablePress_View {
 			'success_delete_plural' => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
-			'success_copy' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ),
+			'success_copy' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ( ( false !== $data['table_id'] ) ? ' ' . sprintf( __( 'The copied table has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table_id'] ) ) : '' ),
 			'success_copy_plural' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
 			'error_copy' => __( 'Error: The table could not be copied.', 'tablepress' ),
 			'error_no_table' => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
@@ -391,8 +391,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	protected function column_table_name( $item ) {
 		$user_can_edit_table = current_user_can( 'tablepress_edit_table', $item['id'] );
 		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $item['id'] );
-		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $item['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $item['id'] );
+		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $item['id'] );
 		$user_can_preview_table = current_user_can( 'tablepress_preview_table', $item['id'] );
 
 		$edit_url = TablePress::url( array( 'action' => 'edit', 'table_id' => $item['id'] ) );

@@ -43,6 +43,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$action_messages = array(
 			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
 			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
+			'success_copy' => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ' ' . sprintf( __( 'You are now seeing the copied table, which has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table']['id'] ) ),
 			'success_import' => __( 'The table was imported successfully.', 'tablepress' ),
 			'success_import_wp_table_reloaded' => __( 'The table was imported successfully from WP-Table Reloaded.', 'tablepress' ),
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
@@ -408,18 +409,21 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function textbox_other_actions( $data, $box ) {
-		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
+		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $data['table']['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
+		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
 
-		if ( ! $user_can_delete_table && ! $user_can_export_table )
+		if ( ! $user_can_copy_table && ! $user_can_export_table && ! $user_can_delete_table )
 			return;
 
 		echo '<p class="submit">';
-		echo __( 'Other Actions', 'tablepress' ) . ':&nbsp;';
-		if ( $user_can_delete_table )
-			echo '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) . '" class="button delete-link">' . __( 'Delete Table', 'tablepress' ) . '</a> ';
+		echo __( 'Other Actions', 'tablepress' ) . ':&nbsp; ';
+		if ( $user_can_copy_table )
+			echo '<a href="' . TablePress::url( array( 'action' => 'copy_table', 'item' => $data['table']['id'], 'return' => 'edit' ), true, 'admin-post.php' ) . '" class="button">' . __( 'Copy Table', 'tablepress' ) . '</a> ';
 		if ( $user_can_export_table )
-			echo '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ) . '" class="button">' . __( 'Export Table', 'tablepress' ) . '</a>';
+			echo '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ) . '" class="button">' . __( 'Export Table', 'tablepress' ) . '</a> ';
+		if ( $user_can_delete_table )
+			echo '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) . '" class="button delete-link">' . __( 'Delete Table', 'tablepress' ) . '</a>';
 		echo '</p>';
 	}
 

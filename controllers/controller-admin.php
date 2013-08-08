@@ -328,6 +328,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// depending on action, load more necessary data for the corresponding view
 		switch ( $action ) {
 			case 'list':
+				$data['table_id'] = ( ! empty( $_GET['table_id'] ) ) ? $_GET['table_id'] : false;
 				$data['tables'] = $this->model_table->load_all(); // does not contain table data
 				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
 				if ( current_user_can( 'tablepress_import_tables_wptr' ) )
@@ -1622,15 +1623,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$copy_table_id = $this->model_table->copy( $table_id );
 		if ( false === $copy_table_id )
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
+		else
+			$return_item = $copy_table_id;
 
 		// slightly more complex redirect method, to account for sort, search, and pagination in the WP_List_Table on the List View
 		// but only if this action succeeds, to have everything fresh in the event of an error
 		$sendback = wp_get_referer();
 		if ( ! $sendback ) {
-			$sendback = TablePress::url( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ) );
+			$sendback = TablePress::url( array( 'action' => $return, 'message' => 'success_copy', 'table_id' => $return_item ) );
 		} else {
 			$sendback = remove_query_arg( array( 'action', 'message', 'table_id' ), $sendback );
-			$sendback = add_query_arg( array( 'action' => 'list', 'message' => 'success_copy', 'table_id' => $return_item ), $sendback );
+			$sendback = add_query_arg( array( 'action' => $return, 'message' => 'success_copy', 'table_id' => $return_item ), $sendback );
 		}
 		wp_redirect( $sendback );
 		exit;
