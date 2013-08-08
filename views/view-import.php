@@ -129,7 +129,7 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-source-url" class="bottom-border">
 		<th class="column-1 top-align" scope="row"><label for="tables-import-url"><?php _e( 'File URL', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
-			<input type="text" name="import[url]" id="tables-import-url" class="large-text" value="<?php echo $data['import_url']; ?>" />
+			<input type="text" name="import[url]" id="tables-import-url" class="large-text" value="<?php echo esc_attr( $data['import_url'] ); ?>" />
 			<?php
 				if ( $data['zip_support_available'] )
 					echo '<br /><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
@@ -139,7 +139,7 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-source-server" class="bottom-border">
 		<th class="column-1 top-align" scope="row"><label for="tables-import-server"><?php _e( 'Server Path to file', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
-			<input type="text" name="import[server]" id="tables-import-server" class="large-text" value="<?php echo $data['import_server']; ?>" />
+			<input type="text" name="import[server]" id="tables-import-server" class="large-text" value="<?php echo esc_attr( $data['import_server'] ); ?>" />
 			<?php
 				if ( $data['zip_support_available'] )
 					echo '<br /><span class="description">' . __( 'You can import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
@@ -149,7 +149,7 @@ class TablePress_Import_View extends TablePress_View {
 	<tr id="row-import-source-form-field" class="bottom-border">
 		<th class="column-1 top-align" scope="row"><label for="tables-import-form-field"><?php _e( 'Import data', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
-			<textarea name="import[form_field]" id="tables-import-form-field" rows="15" cols="40" class="large-text"><?php echo $data['import_form_field']; ?></textarea>
+			<textarea name="import[form_field]" id="tables-import-form-field" rows="15" cols="40" class="large-text"><?php echo esc_textarea( $data['import_form_field'] ); ?></textarea>
 		</td>
 	</tr>
 	<tr class="top-border bottom-border">
@@ -198,7 +198,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"></th>
-		<td class="column-2"><input type="submit" value="<?php echo esc_attr( _x( 'Import', 'button', 'tablepress' ) ); ?>" class="button button-primary button-large" name="submit" /></td>
+		<td class="column-2"><input type="submit" value="<?php echo _x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" name="submit" /></td>
 	</tr>
 </tbody>
 </table>
@@ -249,7 +249,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"></th>
-		<td class="column-2"><input type="submit" value="<?php echo esc_attr( _x( 'Import from WP-Table Reloaded', 'button', 'tablepress' ) ); ?>" class="button button-large" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
+		<td class="column-2"><input type="submit" value="<?php echo _x( 'Import from WP-Table Reloaded', 'button', 'tablepress' ); ?>" class="button button-large" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
 	</tr>
 </tbody>
 </table>
