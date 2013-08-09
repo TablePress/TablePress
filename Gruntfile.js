@@ -1,7 +1,31 @@
 module.exports = function( grunt ) {
 
-	// Task Configuration
+	// Task configuration
 	grunt.initConfig( {
+		jshint: {
+			all: [
+				'Gruntfile.js',
+				'<%= uglify.all.src %>'
+			],
+			options: {
+				curly:   false,
+				eqeqeq:  false,
+				immed:   true,
+				latedef: true,
+				newcap:  true,
+				noarg:   true,
+				sub:     true,
+				undef:   false,
+				boss:    true,
+				eqnull:  true,
+				laxbreak: true,
+				globals: {
+					exports: true,
+					module:  false
+				}
+			}
+		},
+
 		uglify: {
 			all: {
 				expand: true,
@@ -30,8 +54,8 @@ module.exports = function( grunt ) {
 
 		watch: {
 			js: {
-				files: '<%= uglify.all.src %>',
-				tasks: [ 'uglify' ]
+				files: '<%= jshint.all %>',
+				tasks: [ 'jshint', 'uglify' ]
 			},
 			css: {
 				files: '<%= cssmin.all.src %>',
@@ -41,12 +65,13 @@ module.exports = function( grunt ) {
 	} );
 
 	// Load tasks
+	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
 	// Register tasks
-	grunt.registerTask( 'build', [ 'cssmin', 'uglify' ] );
+	grunt.registerTask( 'build', [ 'jshint', 'cssmin', 'uglify' ] );
 
 	// Default task
 	grunt.registerTask( 'default', [ 'build' ] );
