@@ -1,7 +1,7 @@
 /**
  * JavaScript code for the "Insert Link" button on the "Edit" screen
  *
- * Copy of wplink.js of WP 3.5, with three changes to change "Title" to "Link Text"
+ * Copy of wplink.js of WP 3.6, with three changes to change "Title" to "Link Text"
  *
  * @package TablePress
  * @subpackage Views JavaScript
@@ -82,8 +82,7 @@ var wpLink;
 					width: 480,
 					height: 'auto',
 					modal: true,
-					dialogClass: 'wp-dialog',
-					zIndex: 300000
+					dialogClass: 'wp-dialog'
 				});
 			}
 
@@ -125,8 +124,7 @@ var wpLink;
 				inputs.url.val( ed.dom.getAttrib(e, 'href') );
 				inputs.title.val( ed.dom.getAttrib(e, 'title') );
 				// Set open in new tab.
-				if ( "_blank" == ed.dom.getAttrib(e, 'target') )
-					inputs.openInNewTab.prop('checked', true);
+				inputs.openInNewTab.prop('checked', ( "_blank" == ed.dom.getAttrib( e, 'target' ) ) );
 				// Update save prompt.
 				inputs.submit.val( wpLinkL10n.update );
 
@@ -194,7 +192,7 @@ var wpLink;
 
 			html += '>';
 
-			// TablePress: Inser the value of the Title field as the Link Text
+			// TablePress: Insert the value of the Title field as the Link Text
 			if ( attrs.title )
 				html += attrs.title;
 
@@ -297,10 +295,27 @@ var wpLink;
 				inputs.url.focus();
 		},
 		setDefaultValues : function() {
+			var selectedText,
+				textarea = wpLink.textarea;
+
 			// Set URL and description to defaults.
 			// Leave the new tab setting as-is.
 			inputs.url.val('http://');
 			inputs.title.val('');
+			if ( wpLink.isMCE() ) {
+				selectedText = tinyMCEPopup.editor.selection.getContent( { format: 'text' } );
+			} else {
+				if ( document.selection && wpLink.range ) {
+					selectedText = wpLink.range.text;
+				} else if ( typeof textarea.selectionStart !== 'undefined' ) {
+					selectedText = textarea.value.substring( textarea.selectionStart, textarea.selectionEnd );
+				}
+			}
+			if ( selectedText && ( selectedText = selectedText.replace( /^\s+|\s+$/g, '' ) ) ) {
+				if ( ! $('#search-panel').is(':visible') )
+					$('#internal-toggle').trigger('click');
+				inputs.search.val( selectedText ).trigger('keyup');
+			}
 
 			// Update save prompt.
 			inputs.submit.val( wpLinkL10n.save );
