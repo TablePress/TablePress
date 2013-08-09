@@ -32,7 +32,7 @@ jQuery(document).ready( function($) {
 		// validate numerical values (.form-field-numbers-only): only 1 < x < 9...9 (up to maxlength) are allowed
 		$( '#tablepress-page' ).find( '.form-field-numbers-only' ).find( 'input' ).each( function() {
 			var $field = $(this),
-				maxlength = parseInt( $field.attr( 'maxlength' ) ),
+				maxlength = parseInt( $field.attr( 'maxlength' ), 10 ),
 				regexp_number;
 
 			if ( ! isNaN( maxlength ) )

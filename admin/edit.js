@@ -12,7 +12,7 @@ jQuery(document).ready( function( $ ) {
 	/* Wrapper to find elements in the page faster with JS-native functions */
 	$id = function( element_id ) {
 		return $( document.getElementById( element_id ) );
-	}
+	};
 
 	/**
 	 * TablePress object, mostly with functionality for the "Edit" screen
@@ -405,8 +405,8 @@ jQuery(document).ready( function( $ ) {
 							xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 							yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 							// numeric, hex or date detection
-							xD = parseInt(x.match(hre)) || (xN.length != 1 && x.match(dre) && Date.parse(x)),
-							yD = parseInt(y.match(hre)) || xD && y.match(dre) && Date.parse(y) || null,
+							xD = parseInt(x.match(hre), 10) || (xN.length != 1 && x.match(dre) && Date.parse(x)),
+							yD = parseInt(y.match(hre), 10) || xD && y.match(dre) && Date.parse(y) || null,
 							oFxNcL, oFyNcL;
 						// first try and sort Hex codes or Dates
 						if (yD) {
@@ -1226,7 +1226,7 @@ jQuery(document).ready( function( $ ) {
 		else
 			document.getElementById( wpActiveEditor ).value += new_html;
 
-		try { tb_remove(); } catch( e ) {};
+		try { tb_remove(); } catch( e ) {}
 		tp.table.set_table_changed();
 	};
 

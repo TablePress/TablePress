@@ -222,8 +222,8 @@ var wpLink;
 					cursor -= '</a>'.length;
 
 				textarea.value = textarea.value.substring( 0, begin )
-				               + html
-				               + textarea.value.substring( end, textarea.value.length );
+								+ html
+								+ textarea.value.substring( end, textarea.value.length );
 
 				// Update cursor position
 				textarea.selectionStart = textarea.selectionEnd = cursor;
@@ -344,6 +344,8 @@ var wpLink;
 			switch( event.which ) {
 				case key.UP:
 					fn = 'prev';
+					// next comment is necessary to prevent a JSHint error
+					/* falls through */
 				case key.DOWN:
 					fn = fn || 'next';
 					clearInterval( wpLink.keyInterval );
@@ -365,7 +367,7 @@ var wpLink;
 						wpLink.close();
 
 					return false;
-					break;
+					// break; // commented to prevent a JSHint error
 				case key.UP:
 				case key.DOWN:
 					clearInterval( wpLink.keyInterval );
@@ -427,7 +429,7 @@ var wpLink;
 			});
 			event.preventDefault();
 		}
-	}
+	};
 
 	River = function( element, search ) {
 		var self = this;
