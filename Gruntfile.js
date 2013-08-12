@@ -40,6 +40,34 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		csslint: {
+			options: {
+				'important': false,
+				'ids': false,
+				'regex-selectors': false,
+				'unqualified-attributes': false,
+				'outline-none': false,
+				'box-model': false,
+				'display-property-grouping': false,
+				'adjoining-classes': false,
+				'empty-rules': false,
+				'overqualified-elements': false,
+				'known-properties': false,
+				'compatible-vendor-prefixes': false,
+				'universal-selector': false,
+				'bulletproof-font-face': false
+			},
+			all: {
+				src: [
+					'css/*.css',
+					'admin/*.css',
+					// Exceptions
+					'!css/*.min.css',
+					'!admin/*.min.css'
+				]
+			},
+		},
+
 		cssmin: {
 			options: {
 				removeEmpty: true
@@ -64,7 +92,7 @@ module.exports = function( grunt ) {
 			},
 			css: {
 				files: '<%= cssmin.all.src %>',
-				tasks: [ 'cssmin' ]
+				tasks: [ 'csslint', 'cssmin' ]
 			}
 		}
 	} );
@@ -72,11 +100,12 @@ module.exports = function( grunt ) {
 	// Load tasks
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
 	// Register tasks
-	grunt.registerTask( 'build', [ 'jshint', 'cssmin', 'uglify' ] );
+	grunt.registerTask( 'build', [ 'jshint', 'uglify', 'csslint', 'cssmin' ] );
 
 	// Default task
 	grunt.registerTask( 'default', [ 'build' ] );
