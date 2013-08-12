@@ -52,7 +52,7 @@ class TablePress_Import {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var array
+	 * @var string
 	 */
 	protected $import_data;
 
@@ -93,7 +93,7 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 *
 	 * @param string $format Import format
-	 * @param array $data Data to import
+	 * @param string $data Data to import
 	 * @return bool|array False on error, table array on success
 	 */
 	public function import_table( $format, $data ) {
