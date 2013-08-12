@@ -1,13 +1,17 @@
+/*
+ * TablePress Grunt configuration
+ *
+ * Performs syntax checks and minifies CSS and JS files.
+ * To run, use "npm install" and "grunt" in the main plugin folder.
+ */
 module.exports = function( grunt ) {
 
 	// Task configuration
 	grunt.initConfig( {
+		// JavaScript syntax validation
 		jshint: {
 			all: {
-				src: [
-					'Gruntfile.js',
-					'<%= uglify.all.src %>'
-				]
+				src: [ 'Gruntfile.js', '<%= uglify.all.src %>' ]
 			},
 			options: {
 				curly:   false,
@@ -28,18 +32,16 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		// JavaScript minification
 		uglify: {
 			all: {
 				expand: true,
 				ext: '.min.js',
-				src: [
-					'admin/js/*.js',
-					// Exceptions
-					'!admin/js/*.min.js'
-				]
+				src: [ 'admin/js/*.js', '!admin/js/*.min.js' ]
 			}
 		},
 
+		// CSS syntax validation
 		csslint: {
 			options: {
 				'important': false,
@@ -59,15 +61,13 @@ module.exports = function( grunt ) {
 			},
 			all: {
 				src: [
-					'css/*.css',
-					'admin/css/*.css',
-					// Exceptions
-					'!css/*.min.css',
-					'!admin/css/*.min.css'
+					'css/*.css', '!css/*.min.css',
+					'admin/css/*.css', '!admin/css/*.min.css'
 				]
 			},
 		},
 
+		// CSS minification
 		cssmin: {
 			options: {
 				removeEmpty: true
@@ -76,15 +76,13 @@ module.exports = function( grunt ) {
 				expand: true,
 				ext: '.min.css',
 				src: [
-					'css/*.css',
-					'admin/css/*.css',
-					// Exceptions
-					'!css/*.min.css',
-					'!admin/css/*.min.css'
+					'css/*.css', '!css/*.min.css',
+					'admin/css/*.css', '!admin/css/*.min.css'
 				]
 			}
 		},
 
+		// Watch files for changes
 		watch: {
 			js: {
 				files: '<%= jshint.all.src %>',
@@ -104,11 +102,10 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
-	// Register tasks
+	// Register "build" task
 	grunt.registerTask( 'build', [ 'jshint', 'uglify', 'csslint', 'cssmin' ] );
 
-	// Default task
+	// Make "build" the default task
 	grunt.registerTask( 'default', [ 'build' ] );
-	// grunt.registerTask( 'default', [ 'watch' ] );
 
 };
