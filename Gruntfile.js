@@ -3,10 +3,12 @@ module.exports = function( grunt ) {
 	// Task configuration
 	grunt.initConfig( {
 		jshint: {
-			all: [
-				'Gruntfile.js',
-				'<%= uglify.all.src %>'
-			],
+			all: {
+				src: [
+					'Gruntfile.js',
+					'<%= uglify.all.src %>'
+				]
+			},
 			options: {
 				curly:   false,
 				eqeqeq:  false,
@@ -50,14 +52,14 @@ module.exports = function( grunt ) {
 					'admin/*.css',
 					// Exceptions
 					'!css/*.min.css',
-					'!admin/*.min.css',
+					'!admin/*.min.css'
 				]
 			}
 		},
 
 		watch: {
 			js: {
-				files: '<%= jshint.all %>',
+				files: '<%= jshint.all.src %>',
 				tasks: [ 'jshint', 'uglify' ]
 			},
 			css: {
