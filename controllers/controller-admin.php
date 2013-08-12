@@ -95,7 +95,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->init_view_actions(); // after init_i18n_support(), as it requires translation
 			$min_access_cap = $this->view_actions['list']['required_cap'];
 
-			$icon_url = plugins_url( 'admin/tablepress-icon-small.png', TABLEPRESS__FILE__ );
+			$icon_url = plugins_url( 'admin/img/tablepress-icon-small.png', TABLEPRESS__FILE__ );
 			switch ( $this->parent_page ) {
 				case 'top':
 					$position = 3; // position of Dashboard + 1
@@ -208,7 +208,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	public function add_tinymce_plugin( $plugins ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$js_file = "admin/tinymce-button{$suffix}.js";
+		$js_file = "admin/js/tinymce-button{$suffix}.js";
 		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		return $plugins;
 	}
@@ -221,11 +221,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_tablepress_hidpi_css() {
 		echo '<style type="text/css">@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){';
 		if ( ! empty( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php', 'post-new.php' ), true ) && user_can_richedit() ) {
-			echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
+			echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
 			echo '#content_tablepress_insert_table img,'; // display:none of next selector is re-used, by combining selectors
 		}
 		echo '#toplevel_page_tablepress .wp-menu-image img{display:none}';
-		echo '#toplevel_page_tablepress .wp-menu-image{background:url(' . plugins_url( 'admin/tablepress-icon-small-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 7px 7px;background-size:16px 16px}';
+		echo '#toplevel_page_tablepress .wp-menu-image{background:url(' . plugins_url( 'admin/img/tablepress-icon-small-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 7px 7px;background-size:16px 16px}';
 		echo '}</style>' . "\n";
 	}
 

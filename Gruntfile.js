@@ -33,9 +33,9 @@ module.exports = function( grunt ) {
 				expand: true,
 				ext: '.min.js',
 				src: [
-					'admin/*.js',
+					'admin/js/*.js',
 					// Exceptions
-					'!admin/*.min.js'
+					'!admin/js/*.min.js'
 				]
 			}
 		},
@@ -60,10 +60,10 @@ module.exports = function( grunt ) {
 			all: {
 				src: [
 					'css/*.css',
-					'admin/*.css',
+					'admin/css/*.css',
 					// Exceptions
 					'!css/*.min.css',
-					'!admin/*.min.css'
+					'!admin/css/*.min.css'
 				]
 			},
 		},
@@ -77,10 +77,10 @@ module.exports = function( grunt ) {
 				ext: '.min.css',
 				src: [
 					'css/*.css',
-					'admin/*.css',
+					'admin/css/*.css',
 					// Exceptions
 					'!css/*.min.css',
-					'!admin/*.min.css'
+					'!admin/css/*.min.css'
 				]
 			}
 		},

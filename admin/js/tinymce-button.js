@@ -25,7 +25,7 @@
 			ed.addButton( 'tablepress_insert_table', {
 				title: tablepress_editor_button.title,
 				cmd: 'TablePress_insert_table',
-				image: url + '/tablepress-editor-button.png'
+				image: url.slice( 0, url.length - 2 ) + 'img/tablepress-editor-button.png'
 			} );
 		}
 /* // no real need for getInfo(), as it is not displayed/used anywhere

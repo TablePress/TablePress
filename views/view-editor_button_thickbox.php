@@ -75,7 +75,7 @@ body {
 }
 
 #icon-tablepress {
-	background: transparent url(<?php echo plugins_url( 'admin/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>) no-repeat;
+	background: transparent url(<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>) no-repeat;
 }
 /* HiDPI images */
 @media print,
@@ -84,7 +84,7 @@ body {
  (min-resolution: 120dpi) {
 	/* Screen icon */
 	#icon-tablepress {
-		background-image: url(<?php echo plugins_url( 'admin/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>);
+		background-image: url(<?php echo plugins_url( 'admin/img/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>);
 		background-size: 36px 36px;
 	}
 }

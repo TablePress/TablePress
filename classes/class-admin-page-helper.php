@@ -30,7 +30,7 @@ class TablePress_Admin_Page {
 	 */
 	public function enqueue_style( $name, $dependencies = array() ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$css_file = "admin/{$name}{$suffix}.css";
+		$css_file = "admin/css/{$name}{$suffix}.css";
 		$css_url = plugins_url( $css_file, TABLEPRESS__FILE__ );
 		wp_enqueue_style( "tablepress-{$name}", $css_url, $dependencies, TablePress::version );
 	}
@@ -47,7 +47,7 @@ class TablePress_Admin_Page {
 	 */
 	public function enqueue_script( $name, $dependencies = array(), $localize_script = false, $force_minified = false ) {
 		$suffix = ( ! $force_minified && defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$js_file = "admin/{$name}{$suffix}.js";
+		$js_file = "admin/js/{$name}{$suffix}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		wp_enqueue_script( "tablepress-{$name}", $js_url, $dependencies, TablePress::version, true );
 		if ( ! empty( $localize_script ) ) {

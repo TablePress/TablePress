@@ -9,7 +9,7 @@
 
 /* Screen icon */
 #icon-tablepress {
-	background-image: url(tablepress-icon.png);
+	background-image: url(../img/tablepress-icon.png);
 }
 /* HiDPI images */
 @media print,
@@ -18,12 +18,12 @@
  (min-resolution: 120dpi) {
 	/* Screen icon */
 	#icon-tablepress {
-		background-image: url(tablepress-icon-2x.png);
+		background-image: url(../img/tablepress-icon-2x.png);
 		background-size: 36px 36px;
 	}
 	/* Admin Menu icon */
 	#toplevel_page_tablepress .wp-menu-image {
-		background: url(tablepress-icon-small-2x.png) no-repeat 7px 7px;
+		background: url(../img/tablepress-icon-small-2x.png) no-repeat 7px 7px;
 		background-size: 16px 16px;
 	}
 	#toplevel_page_tablepress .wp-menu-image img {
