@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v1.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/tablepress\n"
-"POT-Creation-Date: 2013-07-18 21:38+0100\n"
-"PO-Revision-Date: 2013-07-18 21:40+0100\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
+"POT-Creation-Date: 2013-08-12 20:09:25+00:00\n"
+"PO-Revision-Date: 2013-08-12 22:20+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language-Team: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language: de_DE\n"
@@ -21,14 +21,13 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 # @ tablepress
-#: classes/class-admin-page-helper.php:78
+#: classes/class-admin-page-helper.php:79
 msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
 msgstr ""
 "Danke, dass du <a href=\"http://tablepress.org/\">TablePress</a> benutzt."
 
 # @ tablepress
-#: classes/class-admin-page-helper.php:79
-#, php-format
+#: classes/class-admin-page-helper.php:80
 msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
 msgstr "Unterstütze das Plugin mit deiner <a href=\"%s\">Spende</a>!"
 
@@ -62,14 +61,17 @@ msgstr ", (Komma)"
 msgid "\\t (tabulator)"
 msgstr "\\t (Tabulator)"
 
+#: classes/class-import.php:87
+msgid "XLS - Microsoft Excel 97-2003 (experimental)"
+msgstr "XLS - Microsoft Excel 97-2003 (experimentell)"
+
 # @ tablepress
-#: classes/class-import.php:172
+#: classes/class-import.php:179
 msgid "The imported file contains errors:"
 msgstr "Die importierte Datei enthält Fehler:"
 
 # @ tablepress
 #: classes/class-render.php:379
-#, php-format
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr "<!-- Die Tabelle mit der ID %s ist leer! -->"
 
@@ -86,7 +88,6 @@ msgstr "TablePress-Hilfe"
 
 # @ tablepress
 #: classes/class-view.php:112
-#, php-format
 msgid ""
 "More information about TablePress can be found on the <a href=\"%1$s"
 "\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress "
@@ -97,7 +98,6 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:113 views/view-about.php:106
-#, php-format
 msgid ""
 "For technical information, please see the <a href=\"%s\">documentation</a>."
 msgstr ""
@@ -106,7 +106,6 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:114
-#, php-format
 msgid ""
 "<a href=\"%1$s\">Support</a> is provided through the <a href=\"%2$s"
 "\">WordPress Support Forums</a>."
@@ -116,7 +115,6 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:115 views/view-about.php:139
-#, php-format
 msgid ""
 "Before asking for support, please carefully read the <a href=\"%s"
 "\">Frequently Asked Questions</a>, where you will find answers to the most "
@@ -127,7 +125,6 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-view.php:116
-#, php-format
 msgid ""
 "If you like the plugin, <a href=\"%1$s\"><strong>a donation</strong></a> is "
 "recommended."
@@ -145,24 +142,23 @@ msgstr "Für weitere Informationen:"
 #: views/view-editor_button_thickbox.php:71
 #: views/view-editor_button_thickbox.php:132
 #: views/view-options_custom_css.php:36 views/view-preview_table.php:55
-#, php-format
 msgid "%1$s &lsaquo; %2$s"
 msgstr "%1$s &lsaquo; %2$s"
 
 # @ tablepress
-#: classes/class-view.php:165 classes/class-view.php:166
+#: classes/class-view.php:164 classes/class-view.php:165
 msgid "Do you really want to delete this table?"
 msgid_plural "Do you really want to delete these tables?"
 msgstr[0] "Willst du diese Tabelle wirklich löschen?"
 msgstr[1] "Willst du diese Tabellen wirklich löschen?"
 
 # @ tablepress
-#: classes/class-view.php:384
+#: classes/class-view.php:383
 msgid "TablePress"
 msgstr "TablePress"
 
 # @ tablepress
-#: classes/class-view.php:413 views/view-edit.php:399 views/view-edit.php:400
+#: classes/class-view.php:412 views/view-edit.php:400 views/view-edit.php:401
 #: views/view-options.php:54
 msgid "Save Changes"
 msgstr "Änderungen speichern"
@@ -219,175 +215,191 @@ msgid "Donate"
 msgstr "Spenden"
 
 # @ default
-#: controllers/controller-admin.php:317 controllers/controller-admin.php:382
-#: controllers/controller-admin.php:730 controllers/controller-admin.php:788
-#: controllers/controller-admin.php:838 controllers/controller-admin.php:961
-#: controllers/controller-admin.php:991 controllers/controller-admin.php:1064
-#: controllers/controller-admin.php:1074 controllers/controller-admin.php:1609
-#: controllers/controller-admin.php:1636 controllers/controller-admin.php:1671
-#: controllers/controller-admin.php:1705 controllers/controller-admin.php:1749
-#: controllers/controller-admin.php:1776
+#: controllers/controller-admin.php:317 controllers/controller-admin.php:385
+#: controllers/controller-admin.php:753 controllers/controller-admin.php:811
+#: controllers/controller-admin.php:861 controllers/controller-admin.php:930
+#: controllers/controller-admin.php:960 controllers/controller-admin.php:1033
+#: controllers/controller-admin.php:1043 controllers/controller-admin.php:1574
+#: controllers/controller-admin.php:1601 controllers/controller-admin.php:1636
+#: controllers/controller-admin.php:1672 controllers/controller-admin.php:1708
+#: controllers/controller-admin.php:1735
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 # @ tablepress
-#: controllers/controller-admin.php:399
+#: controllers/controller-admin.php:402
 msgctxt ""
 "Default CSV delimiter in the translated language (\";\", \",\", or \"tab\")"
 msgid ","
 msgstr ";"
 
-#: controllers/controller-admin.php:460
+#: controllers/controller-admin.php:463
+msgid "Czech"
+msgstr "Tschechisch"
+
+#: controllers/controller-admin.php:468
 msgid "German"
 msgstr "Deutsch"
 
 # @ tablepress
-#: controllers/controller-admin.php:465
+#: controllers/controller-admin.php:473
 msgid "English"
 msgstr "Englisch"
 
 # @ tablepress
-#: controllers/controller-admin.php:470
+#: controllers/controller-admin.php:478
 msgid "Spanish"
 msgstr "Spanisch"
 
+#: controllers/controller-admin.php:483
+msgid "Finnish"
+msgstr "Finnisch"
+
 # @ tablepress
-#: controllers/controller-admin.php:475
+#: controllers/controller-admin.php:488
 msgid "French"
 msgstr "Französisch"
 
-#: controllers/controller-admin.php:480
+#: controllers/controller-admin.php:493
 msgid "Hebrew"
 msgstr "Hebräisch"
 
-#: controllers/controller-admin.php:485
+#: controllers/controller-admin.php:498
 msgid "Italian"
 msgstr "Italienisch"
 
-#: controllers/controller-admin.php:490
+#: controllers/controller-admin.php:503
 msgid "Icelandic"
 msgstr "Isländisch"
 
-#: controllers/controller-admin.php:495
+#: controllers/controller-admin.php:508
 msgid "Latvian"
 msgstr "Lettisch"
 
-#: controllers/controller-admin.php:500
+#: controllers/controller-admin.php:513
 msgid "Dutch"
 msgstr "Niederländisch"
 
 # @ tablepress
-#: controllers/controller-admin.php:505
+#: controllers/controller-admin.php:518
 msgid "Polish"
 msgstr "Polnisch"
 
-#: controllers/controller-admin.php:510
+#: controllers/controller-admin.php:523
 msgid "Brazilian Portuguese"
 msgstr "Portugisisch (Brasilien)"
 
+#: controllers/controller-admin.php:528
+msgid "Russian"
+msgstr "Russisch"
+
 # @ tablepress
-#: controllers/controller-admin.php:515
+#: controllers/controller-admin.php:533
 msgid "Slovak"
 msgstr "Slowakisch"
 
+#: controllers/controller-admin.php:538
+msgid "Turkish"
+msgstr "Türkisch"
+
 # @ tablepress
-#: controllers/controller-admin.php:520
+#: controllers/controller-admin.php:543
 msgid "Chinese (Simplified)"
 msgstr "Chinesisch (vereinfacht)"
 
 # @ tablepress
-#: controllers/controller-admin.php:572 controllers/controller-admin.php:573
-#: controllers/controller-admin.php:574
+#: controllers/controller-admin.php:595 controllers/controller-admin.php:596
+#: controllers/controller-admin.php:597
 msgid "All Tables"
 msgstr "Alle Tabellen"
 
 # @ tablepress
-#: controllers/controller-admin.php:579 controllers/controller-admin.php:580
+#: controllers/controller-admin.php:602 controllers/controller-admin.php:603
 #: views/view-add.php:41
 msgid "Add New Table"
 msgstr "Neue Tabelle"
 
 # @ tablepress
-#: controllers/controller-admin.php:581
+#: controllers/controller-admin.php:604
 msgid "Add New"
 msgstr "Neue Tabelle"
 
 # @ tablepress
-#: controllers/controller-admin.php:586
+#: controllers/controller-admin.php:609
 msgid "Edit Table"
 msgstr "Tabelle bearbeiten"
 
 # @ tablepress
-#: controllers/controller-admin.php:593 controllers/controller-admin.php:594
+#: controllers/controller-admin.php:616 controllers/controller-admin.php:617
 msgid "Import a Table"
 msgstr "Tabelle importieren"
 
 # @ tablepress
-#: controllers/controller-admin.php:595
+#: controllers/controller-admin.php:618
 msgctxt "navigation bar"
 msgid "Import"
 msgstr "Import"
 
 # @ tablepress
-#: controllers/controller-admin.php:600 controllers/controller-admin.php:601
+#: controllers/controller-admin.php:623 controllers/controller-admin.php:624
 msgid "Export a Table"
 msgstr "Tabelle exportieren"
 
 # @ tablepress
-#: controllers/controller-admin.php:602
+#: controllers/controller-admin.php:625
 msgctxt "navigation bar"
 msgid "Export"
 msgstr "Export"
 
 # @ tablepress
-#: controllers/controller-admin.php:607 controllers/controller-admin.php:608
-#: controllers/controller-admin.php:609
+#: controllers/controller-admin.php:630 controllers/controller-admin.php:631
+#: controllers/controller-admin.php:632
 msgid "Plugin Options"
 msgstr "Einstellungen"
 
 # @ tablepress
-#: controllers/controller-admin.php:614 controllers/controller-admin.php:616
+#: controllers/controller-admin.php:637 controllers/controller-admin.php:639
 msgid "About"
 msgstr "Über"
 
 # @ tablepress
-#: controllers/controller-admin.php:615
+#: controllers/controller-admin.php:638
 msgid "About TablePress"
 msgstr "Über TablePress"
 
 # @ tablepress
-#: controllers/controller-admin.php:1144
+#: controllers/controller-admin.php:1113
 msgid "Imported from Manual Input"
 msgstr "aus Manueller Eingabe importiert"
 
 # @ tablepress
-#: controllers/controller-admin.php:1702
-#: controllers/controller-admin_ajax.php:236
+#: controllers/controller-admin.php:1669
+#: controllers/controller-admin_ajax.php:227
 msgid "The preview could not be loaded."
 msgstr "Die Vorschau konnte nicht geladen werden."
 
 # @ tablepress
-#: controllers/controller-admin.php:1702 controllers/controller-admin.php:1710
-#: views/view-edit.php:397 views/view-list.php:423
+#: controllers/controller-admin.php:1669 controllers/controller-admin.php:1677
+#: views/view-edit.php:398 views/view-list.php:423
 #: views/view-preview_table.php:55
 msgid "Preview"
 msgstr "Vorschau"
 
 # @ tablepress
-#: controllers/controller-admin.php:1710
+#: controllers/controller-admin.php:1677
 msgid "The table could not be loaded."
 msgstr "Die Tabelle konnte nicht geladen werden."
 
 # @ tablepress
-#: controllers/controller-admin.php:1790
+#: controllers/controller-admin.php:1752
 msgid "TablePress was uninstalled successfully."
 msgstr "TablePress wurde erfolgreich deinstalliert."
 
-#: controllers/controller-admin.php:1791
+#: controllers/controller-admin.php:1753
 msgid "All tables, data, and options were deleted."
 msgstr "Alle Tabellen, Daten und Einstellungen wurden gelöscht."
 
-#: controllers/controller-admin.php:1793
+#: controllers/controller-admin.php:1755
 msgid ""
 "You may now ask the network admin to delete the plugin's folder "
 "<code>tablepress</code> from the server, if no other site in the network "
@@ -397,7 +409,7 @@ msgstr ""
 "Plugin-Ordner <code>tablepress</code> vom Server zu löschen, falls "
 "TablePress von keiner anderen Seite verwendet wird."
 
-#: controllers/controller-admin.php:1795
+#: controllers/controller-admin.php:1757
 msgid ""
 "You may now manually delete the plugin's folder <code>tablepress</code> from "
 "the <code>plugins</code> directory on your server or use the &#8220;"
@@ -410,13 +422,13 @@ msgstr ""
 "Seite nutzen."
 
 # @ tablepress
-#: controllers/controller-admin.php:1797
+#: controllers/controller-admin.php:1759
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
 msgstr "Die &#8220;Zusatz-CSS&#8221;-Dateien wurden automatisch gelöscht."
 
-#: controllers/controller-admin.php:1800
+#: controllers/controller-admin.php:1762
 msgid ""
 "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files "
 "from the server."
@@ -424,7 +436,7 @@ msgstr ""
 "Bitte ihn auch, die TablePress-&#8220;Zusatz-CSS&#8221;-Dateien vom Server "
 "zu löschen."
 
-#: controllers/controller-admin.php:1802
+#: controllers/controller-admin.php:1764
 msgid ""
 "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in "
 "the <code>wp-content</code> folder."
@@ -433,34 +445,34 @@ msgstr ""
 "<code>wp-content</code>-Ordner löschen."
 
 # @ tablepress
-#: controllers/controller-admin.php:1806
+#: controllers/controller-admin.php:1768
 msgid "Go to &#8220;Plugins&#8221; page"
 msgstr "zur &#8220;Plugins&#8221;-Seite gehen"
 
-#: controllers/controller-admin.php:1807
+#: controllers/controller-admin.php:1769
 msgid "Go to Dashboard"
 msgstr "zum Dashboard gehen"
 
 # @ tablepress
-#: controllers/controller-admin.php:1809 views/view-options.php:185
-#: views/view-options.php:192
+#: controllers/controller-admin.php:1771 views/view-options.php:180
+#: views/view-options.php:187
 msgid "Uninstall TablePress"
 msgstr "TablePress deinstallieren"
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:229 views/view-preview_table.php:66
+#: controllers/controller-admin_ajax.php:220 views/view-preview_table.php:66
 msgid "This is a preview of your table."
 msgstr "Dies ist eine Vorschau der Tabelle."
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:230
+#: controllers/controller-admin_ajax.php:221
 msgid "Because of CSS styling, the table might look different on your page!"
 msgstr ""
 "Die Tabelle könnte aufgrund des CSS-Stylings deines Themes auf deiner Seite "
 "anders aussehen!"
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:231
+#: controllers/controller-admin_ajax.php:222
 msgid ""
 "The features of the DataTables JavaScript library are also not visible in "
 "this preview!"
@@ -469,8 +481,7 @@ msgstr ""
 "ebenfalls nicht verfügbar."
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:232 views/view-preview_table.php:67
-#, php-format
+#: controllers/controller-admin_ajax.php:223 views/view-preview_table.php:67
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it into the editor."
@@ -479,8 +490,7 @@ msgstr ""
 "kopiere den Shortcode %s und füge ihn im Texteditor ein."
 
 # @ tablepress
-#: controllers/controller-frontend.php:458 views/view-list.php:479
-#, php-format
+#: controllers/controller-frontend.php:466 views/view-list.php:479
 msgid "%s ago"
 msgstr "vor %s"
 
@@ -492,7 +502,6 @@ msgstr "(kein Name)"
 
 # @ tablepress
 #: models/model-table.php:347
-#, php-format
 msgid "Copy of %s"
 msgstr "Kopie von %s"
 
@@ -576,11 +585,11 @@ msgstr "Als Erstes solltest du eine neue Tabelle anlegen oder importieren."
 #: views/view-about.php:77
 msgid ""
 "This means that you either let the plugin create an empty table for you or "
-"that you load an existing table from either a CSV, HTML, or JSON file."
+"that you load an existing table from either a CSV, HTML, JSON, or XLS file."
 msgstr ""
 "Das bedeutet, dass du das Plugin entweder eine leere Tabelle anlegen lassen "
-"kannst, oder dass du eine existierende Tabelle aus einer CSV-, HTML- oder "
-"JSON-Datei lädst."
+"kannst, oder dass du eine existierende Tabelle aus einer CSV-, HTML-, JSON- "
+"oder XLS-Datei lädst."
 
 # @ tablepress
 #: views/view-about.php:80
@@ -613,7 +622,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:85 views/view-list.php:183
-#, php-format
 msgid ""
 "To insert a table into a page, post, or text widget, copy its Shortcode %s "
 "and paste it at the desired place in the editor."
@@ -624,7 +632,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:86 views/view-list.php:185
-#, php-format
 msgid ""
 "You can also click the &#8220;%s&#8221; button in the editor toolbar to "
 "select and insert a table."
@@ -657,7 +664,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:92
-#, php-format
 msgid ""
 "Please see the <a href=\"%s\">documentation</a> for a list of these "
 "selectors and for styling examples."
@@ -667,7 +673,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:105
-#, php-format
 msgid ""
 "More information about TablePress can be found on the <a href=\"%s"
 "\">plugin&#8217;s website</a> or on its page in the <a href=\"%s\">WordPress "
@@ -679,7 +684,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:119
-#, php-format
 msgid ""
 "This plugin was written and developed by <a href=\"%s\">Tobias Bäthge</a>."
 msgstr ""
@@ -696,7 +700,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:122
-#, php-format
 msgid ""
 "If you like the plugin, <a href=\"%s\"><strong>giving a donation</strong></"
 "a> is recommended."
@@ -706,7 +709,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:123
-#, php-format
 msgid ""
 "Please rate and review the plugin in the <a href=\"%s\">WordPress Plugin "
 "Directory</a>."
@@ -725,7 +727,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:138
-#, php-format
 msgid ""
 "<a href=\"%s\">Support</a> is provided through the <a href=\"%s\">WordPress "
 "Support Forums</a>."
@@ -735,7 +736,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-about.php:142
-#, php-format
 msgid ""
 "If you do not find an answer there, please <a href=\"%s\">open a new thread</"
 "a> in the WordPress Support Forums."
@@ -768,7 +768,6 @@ msgstr "Vielen Dank an die Übersetzer:"
 
 # @ tablepress
 #: views/view-about.php:195
-#, php-format
 msgid "%s (thanks to %s)"
 msgstr "%s (danke an %s)"
 
@@ -808,7 +807,7 @@ msgstr ""
 "Name, Beschreibung und Größe der Tabelle können später auch geändert werden."
 
 # @ tablepress
-#: views/view-add.php:71 views/view-edit.php:199
+#: views/view-add.php:71 views/view-edit.php:200
 #: views/view-editor_button_thickbox.php:236 views/view-list.php:319
 msgid "Table Name"
 msgstr "Tabellen-Name"
@@ -824,7 +823,7 @@ msgid "The name or title of your table."
 msgstr "Name oder Titel der Tabelle."
 
 # @ tablepress
-#: views/view-add.php:76 views/view-edit.php:203
+#: views/view-add.php:76 views/view-edit.php:204
 #: views/view-editor_button_thickbox.php:237 views/view-list.php:320
 msgid "Description"
 msgstr "Beschreibung"
@@ -850,8 +849,8 @@ msgid "Number of Rows"
 msgstr "Anzahl Zeilen"
 
 # @ tablepress
-#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:376
-#: views/view-edit.php:379
+#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:377
+#: views/view-edit.php:380
 msgid "This field must contain a positive number."
 msgstr "Dieses Feld muss eine positive Zahl enthalten."
 
@@ -881,33 +880,46 @@ msgid "The table was added successfully."
 msgstr "Die Tabelle wurde erfolgreich hinzugefügt."
 
 # @ tablepress
+#: views/view-edit.php:46 views/view-list.php:99 views/view-list.php:100
+msgid "The table was copied successfully."
+msgid_plural "The tables were copied successfully."
+msgstr[0] "Die Tabelle wurde erfolgreich kopiert."
+msgstr[1] "Die Tabellen wurde erfolgreich kopiert."
+
 #: views/view-edit.php:46
+msgid ""
+"You are now seeing the copied table, which has the table ID &#8220;%s&#8221;."
+msgstr ""
+"Du bearbeitest jetzt die kopierte Tabelle, die die ID &#8220;%s&#8221; hat."
+
+# @ tablepress
+#: views/view-edit.php:47
 msgid "The table was imported successfully."
 msgstr "Die Tabelle wurde erfolgreich importiert."
 
 # @ tablepress
-#: views/view-edit.php:47
+#: views/view-edit.php:48
 msgid "The table was imported successfully from WP-Table Reloaded."
 msgstr "Die Tabelle wurde erfolgreich aus WP-Table Reloaded importiert."
 
 # @ tablepress
-#: views/view-edit.php:48 views/view-list.php:98
+#: views/view-edit.php:49 views/view-list.php:98
 msgid "Error: The table could not be saved."
 msgstr "Fehler: Die Tabelle konnte nicht gespeichert werden."
 
 # @ tablepress
-#: views/view-edit.php:49 views/view-list.php:97
+#: views/view-edit.php:50 views/view-list.php:97
 msgid "Error: The table could not be deleted."
 msgstr "Fehler: Die Tabelle konnte nicht gelöscht werden."
 
 # @ tablepress
-#: views/view-edit.php:50
+#: views/view-edit.php:51
 msgid "The table was saved successfully, and the table ID was changed."
 msgstr ""
 "Die Tabelle wurde erfolgreich gespeichert und die Tabellen-ID wurde geändert."
 
 # @ tablepress
-#: views/view-edit.php:51
+#: views/view-edit.php:52
 msgid ""
 "The table was saved successfully, but the table ID could not be changed!"
 msgstr ""
@@ -915,87 +927,87 @@ msgstr ""
 "geändert werden."
 
 # @ tablepress
-#: views/view-edit.php:72
+#: views/view-edit.php:73
 msgctxt "Insert Link dialog"
 msgid "Insert/edit link"
 msgstr "Link einfügen/ändern"
 
 # @ tablepress
-#: views/view-edit.php:73
+#: views/view-edit.php:74
 msgctxt "Insert Link dialog"
 msgid "Update"
 msgstr "Aktualisieren"
 
 # @ tablepress
-#: views/view-edit.php:74
+#: views/view-edit.php:75
 msgctxt "Insert Link dialog"
 msgid "Add Link"
 msgstr "Link einfügen"
 
 # @ tablepress
-#: views/view-edit.php:75
+#: views/view-edit.php:76
 msgctxt "Insert Link dialog"
 msgid "(no title)"
 msgstr "(kein Titel)"
 
 # @ tablepress
-#: views/view-edit.php:76
+#: views/view-edit.php:77
 msgctxt "Insert Link dialog"
 msgid "No matches found."
 msgstr "Keine Übereinstimmungen gefunden."
 
 # @ tablepress
-#: views/view-edit.php:77
+#: views/view-edit.php:78
 msgctxt "Insert Link dialog"
 msgid "Link Text"
 msgstr "Link-Text"
 
 # @ tablepress
-#: views/view-edit.php:88
+#: views/view-edit.php:89
 msgid "You can not delete all table rows!"
 msgstr "Du kannst nicht alle Zeilen löschen!"
 
 # @ tablepress
-#: views/view-edit.php:89
+#: views/view-edit.php:90
 msgid "You can not delete all table columns!"
 msgstr "Du kannst nicht alle Spalten löschen!"
 
 # @ tablepress
-#: views/view-edit.php:90
+#: views/view-edit.php:91
 msgid "You did not select any rows!"
 msgstr "Du hast keine Zeilen ausgewählt!"
 
 # @ tablepress
-#: views/view-edit.php:91
+#: views/view-edit.php:92
 msgid "You did not select any columns!"
 msgstr "Du hast keine Spalten ausgewählt!"
 
 # @ tablepress
-#: views/view-edit.php:92
+#: views/view-edit.php:93
 msgid "The value for the number of rows is invalid!"
 msgstr "Die eingebene Anzahl der Zeilen ist ungültig!"
 
 # @ tablepress
-#: views/view-edit.php:93
+#: views/view-edit.php:94
 msgid "The value for the number of columns is invalid!"
 msgstr "Die eingebene Anzahl der Spalten ist ungültig!"
 
 # @ tablepress
-#: views/view-edit.php:94 views/view-edit.php:95
+#: views/view-edit.php:95 views/view-edit.php:96
 msgid "Do you really want to delete the selected row?"
 msgid_plural "Do you really want to delete the selected rows?"
 msgstr[0] "Willst du die gewählte Zeile wirklich löschen?"
 msgstr[1] "Willst du die gewählten Zeilen wirklich löschen?"
 
 # @ tablepress
-#: views/view-edit.php:96 views/view-edit.php:97
+#: views/view-edit.php:97 views/view-edit.php:98
 msgid "Do you really want to delete the selected column?"
 msgid_plural "Do you really want to delete the selected columns?"
 msgstr[0] "Willst du die gewählte Spalte wirklich löschen?"
 msgstr[1] "Willst du die gewählten Spalten wirklich löschen?"
 
 # @ tablepress
-#: views/view-edit.php:98
+#: views/view-edit.php:99
 msgid ""
 "Please click into the cell that you want to edit using the &#8220;Advanced "
 "Editor&#8221;."
@@ -1004,7 +1016,7 @@ msgstr ""
 "Editors&#8221; bearbeiten willst."
 
 # @ tablepress
-#: views/view-edit.php:99
+#: views/view-edit.php:100
 msgid ""
 "To combine cells within a column, click into the cell below the cell that "
 "has the content the combined cells shall have."
@@ -1013,7 +1025,7 @@ msgstr ""
 "von der, die den Inhalt der verbundenen Zellen beinhaltet."
 
 # @ tablepress
-#: views/view-edit.php:100
+#: views/view-edit.php:101
 msgid ""
 "To combine cells within a row, click into the cell to the right of the cell "
 "that has the content the combined cells shall have."
@@ -1021,7 +1033,7 @@ msgstr ""
 "Um Zellen innerhalb einer Zeile zu verbinden, klicke in die Zelle rechts von "
 "der, die den Inhalt der verbundenen Zellen beinhaltet."
 
-#: views/view-edit.php:101
+#: views/view-edit.php:102
 msgid ""
 "Attention: You have enabled the usage of the DataTables JavaScript library "
 "for features like sorting, search, or pagination."
@@ -1029,12 +1041,12 @@ msgstr ""
 "Achtung: Du hast die Nutzung der DataTables-JavaScript-Bibliothek, mit "
 "Funktionen wie Sortieren, Filtern/Suche und Umblättern, aktiviert."
 
-#: views/view-edit.php:102
+#: views/view-edit.php:103
 msgid "Unfortunately, these can not be used in tables with combined cells."
 msgstr ""
 "Leider können diese nicht in Tabellen mit verbundenen Zellen genutzt werden."
 
-#: views/view-edit.php:103
+#: views/view-edit.php:104
 msgid ""
 "Do you want to proceed and automatically turn off the usage of DataTables "
 "for this table?"
@@ -1043,23 +1055,23 @@ msgstr ""
 "Tabelle deaktivieren?"
 
 # @ tablepress
-#: views/view-edit.php:104
+#: views/view-edit.php:105
 msgid "Please click into the cell that you want to add a link to."
 msgstr "Bitte klicke in die Zelle, in die du einen Link einfügen möchtest."
 
 # @ tablepress
-#: views/view-edit.php:105
+#: views/view-edit.php:106
 msgid ""
 "You can then enter the Link URL and Text or choose an existing page or post."
 msgstr "Danach kannst du die Adresse und den Link-Text eingeben."
 
 # @ tablepress
-#: views/view-edit.php:106
+#: views/view-edit.php:107
 msgid "Please click into the cell that you want to add an image to."
 msgstr "Bitte klicke in die Zelle, in die du ein Bild einfügen möchtest."
 
 # @ tablepress
-#: views/view-edit.php:107
+#: views/view-edit.php:108
 msgid ""
 "The Media Library will open, where you can select or upload the desired "
 "image or enter the image URL."
@@ -1068,18 +1080,17 @@ msgstr ""
 "auswählen oder hochladen."
 
 # @ tablepress
-#: views/view-edit.php:108
-#, php-format
+#: views/view-edit.php:109
 msgid "Click the &#8220;%s&#8221; button to insert the image."
 msgstr "Klicke dann die &#8220;%s&#8221;-Schaltfläche, um das Bild einzufügen."
 
 # @ default
-#: views/view-edit.php:108
+#: views/view-edit.php:109
 msgid "Insert into Post"
 msgstr ""
 
 # @ tablepress
-#: views/view-edit.php:109
+#: views/view-edit.php:110
 msgid ""
 "The changes to this table were not saved yet and will be lost if you "
 "navigate away from this page."
@@ -1088,37 +1099,37 @@ msgstr ""
 "Verlassen der Seite werden diese Änderungen verworfen."
 
 # @ tablepress
-#: views/view-edit.php:110
+#: views/view-edit.php:111
 msgid "The Table Preview is being loaded..."
 msgstr "Die Vorschau wird geladen..."
 
 # @ tablepress
-#: views/view-edit.php:111
+#: views/view-edit.php:112
 msgid "The Table Preview could not be loaded."
 msgstr "Die Vorschau konnte nicht geladen werden."
 
 # @ tablepress
-#: views/view-edit.php:112
+#: views/view-edit.php:113
 msgid "Saving successful"
 msgstr "Speichern erfolgreich"
 
 # @ tablepress
-#: views/view-edit.php:113
+#: views/view-edit.php:114
 msgid "Saving failed"
 msgstr "Speichern fehlgeschlagen"
 
 # @ tablepress
-#: views/view-edit.php:114
+#: views/view-edit.php:115
 msgid "Changes are being saved..."
 msgstr "Die Änderungen werden gespeichert..."
 
 # @ tablepress
-#: views/view-edit.php:115
+#: views/view-edit.php:116
 msgid "The Table ID field can not be empty. Please enter a Table ID!"
 msgstr "Die Tabellen-ID kann nicht leer sein. Bitte gib eine Tabellen-ID ein."
 
 # @ tablepress
-#: views/view-edit.php:116
+#: views/view-edit.php:117
 msgid ""
 "The Table ID &#8220;0&#8221; is not supported. Please enter a different "
 "Table ID!"
@@ -1127,7 +1138,7 @@ msgstr ""
 "ID!"
 
 # @ tablepress
-#: views/view-edit.php:117
+#: views/view-edit.php:118
 msgid ""
 "Do you really want to change the Table ID? All Shortcodes for this table in "
 "your pages and posts will have to be adjusted!"
@@ -1136,7 +1147,7 @@ msgstr ""
 "in deinen Seiten und Beiträgen müssen dann angepasst werden."
 
 # @ tablepress
-#: views/view-edit.php:118
+#: views/view-edit.php:119
 msgid ""
 "The entered value in the field &#8220;Extra CSS classes&#8221; is invalid."
 msgstr ""
@@ -1144,7 +1155,7 @@ msgstr ""
 "ungültig."
 
 # @ tablepress
-#: views/view-edit.php:119
+#: views/view-edit.php:120
 msgid ""
 "The entered value in the field &#8220;Pagination Entries&#8221; is not a "
 "number."
@@ -1152,75 +1163,75 @@ msgstr ""
 "Der in das Feld &#8220;Umblättern&#8221; eingegebene Wert ist keine Zahl."
 
 # @ tablepress
-#: views/view-edit.php:120 views/view-edit.php:258
+#: views/view-edit.php:121 views/view-edit.php:259
 msgid "Sort ascending"
 msgstr "Aufsteigend Sortieren"
 
 # @ tablepress
-#: views/view-edit.php:121 views/view-edit.php:258
+#: views/view-edit.php:122 views/view-edit.php:259
 msgid "Sort descending"
 msgstr "Absteigend Sortieren"
 
 # @ tablepress
-#: views/view-edit.php:122
+#: views/view-edit.php:123
 msgid "You can not add rowspan to the first row!"
 msgstr "Die erste Zeile kann nicht verbunden werden."
 
 # @ tablepress
-#: views/view-edit.php:123
+#: views/view-edit.php:124
 msgid "You can not add colspan to the first column!"
 msgstr "Die erste Spalte kann nicht verbunden werden."
 
 # @ tablepress
-#: views/view-edit.php:124
+#: views/view-edit.php:125
 msgid "You can not connect cells into the table head row!"
 msgstr ""
 "Diese Zelle kann nicht mit der darüber liegenden Zelle der Kopfzeile "
 "verbunden werden."
 
 # @ tablepress
-#: views/view-edit.php:125
+#: views/view-edit.php:126
 msgid "You can not connect cells out of the table foot row!"
 msgstr ""
 "Diese Zelle der Fußzeile kann nicht mit der darüber liegenden Zelle "
 "verbunden werden."
 
 # @ tablepress
-#: views/view-edit.php:131
+#: views/view-edit.php:132
 msgid "Table Information"
 msgstr "Informationen über die Tabelle"
 
 # @ tablepress
-#: views/view-edit.php:132
+#: views/view-edit.php:133
 msgid "Table Content"
 msgstr "Tabellen-Inhalt"
 
 # @ tablepress
-#: views/view-edit.php:133
+#: views/view-edit.php:134
 msgid "Table Manipulation"
 msgstr "Bearbeitungsfunktionen"
 
 # @ tablepress
-#: views/view-edit.php:134 views/view-edit.php:520
+#: views/view-edit.php:135 views/view-edit.php:524
 msgid "Table Options"
 msgstr "Tabellen-Einstellungen"
 
 # @ tablepress
-#: views/view-edit.php:135
+#: views/view-edit.php:136
 msgid "Features of the DataTables JavaScript library"
 msgstr "Funktionen der DataTables-JavaScript-Bibliothek"
 
 # @ tablepress
-#: views/view-edit.php:161
+#: views/view-edit.php:162
 msgid "Insert into Table"
 msgstr "In die Tabelle einfügen"
 
 # @ tablepress
-#: views/view-edit.php:190
+#: views/view-edit.php:191
 msgid "Table ID"
 msgstr "Tabellen-ID"
 
-#: views/view-edit.php:193
+#: views/view-edit.php:194
 msgid ""
 "The Table ID can only consist of letters, numbers, hyphens (-), and "
 "underscores (_)."
@@ -1229,68 +1240,67 @@ msgstr ""
 "Unterstrich (_) bestehen."
 
 # @ tablepress
-#: views/view-edit.php:194
+#: views/view-edit.php:195
 msgid "Shortcode"
 msgstr "Shortcode"
 
 # @ tablepress
-#: views/view-edit.php:207 views/view-list.php:323
+#: views/view-edit.php:208 views/view-list.php:323
 msgid "Last Modified"
 msgstr "Zuletzt geändert"
 
 # @ tablepress
-#: views/view-edit.php:208
-#, php-format
+#: views/view-edit.php:209
 msgid "%1$s by %2$s"
 msgstr "%1$s von %2$s"
 
 # @ tablepress
-#: views/view-edit.php:328
+#: views/view-edit.php:329
 msgid "Insert Link"
 msgstr "Link einfügen"
 
 # @ tablepress
-#: views/view-edit.php:329
+#: views/view-edit.php:330
 msgid "Insert Image"
 msgstr "Bild einfügen"
 
 # @ tablepress
-#: views/view-edit.php:330
+#: views/view-edit.php:331
 msgid "Advanced Editor"
 msgstr "Erweiterter Editor"
 
 # @ tablepress
-#: views/view-edit.php:333
+#: views/view-edit.php:334
 msgid "Combine cells"
 msgstr "Zellen verbinden"
 
 # @ tablepress
-#: views/view-edit.php:334
+#: views/view-edit.php:335
 msgid "in a column (rowspan)"
 msgstr "in Spalte"
 
 # @ tablepress
-#: views/view-edit.php:335
+#: views/view-edit.php:336
 msgid "in a row (colspan)"
 msgstr "in Zeile"
 
 # @ tablepress
-#: views/view-edit.php:336
+#: views/view-edit.php:337
 msgid "?"
 msgstr "?"
 
 # @ tablepress
-#: views/view-edit.php:336
+#: views/view-edit.php:337
 msgid "Help on combining cells"
 msgstr "Hilfe zum Verbinden von Zellen"
 
 # @ tablepress
-#: views/view-edit.php:338
+#: views/view-edit.php:339
 msgid "Table cells can span across more than one column or row."
 msgstr "Tabellenzellen können mit ihren Nachbarzellen verbunden werden."
 
 # @ tablepress
-#: views/view-edit.php:339
+#: views/view-edit.php:340
 msgid ""
 "Combining consecutive cells within the same row is called &#8220;"
 "colspanning&#8221;."
@@ -1299,7 +1309,7 @@ msgstr ""
 "colspan&#8221; genannt."
 
 # @ tablepress
-#: views/view-edit.php:340
+#: views/view-edit.php:341
 msgid ""
 "Combining consecutive cells within the same column is called &#8220;"
 "rowspanning&#8221;."
@@ -1308,7 +1318,7 @@ msgstr ""
 "rowspan&#8221; genannt."
 
 # @ tablepress
-#: views/view-edit.php:341
+#: views/view-edit.php:342
 msgid ""
 "To combine adjacent cells in a row, add the keyword <code>#colspan#</code> "
 "to the cell to the right of the one with the content for the combined cell "
@@ -1319,7 +1329,7 @@ msgstr ""
 "verbundenen Zelle enthält, ein, oder nutze die entsprechende Schaltfläche."
 
 # @ tablepress
-#: views/view-edit.php:342
+#: views/view-edit.php:343
 msgid ""
 "To combine adjacent cells in a column, add the keyword <code>#rowspan#</"
 "code> to the cell below the one with the content for the combined cell by "
@@ -1330,13 +1340,13 @@ msgstr ""
 "verbundenen Zelle enthält, ein, oder nutze die entsprechende Schaltfläche."
 
 # @ tablepress
-#: views/view-edit.php:343
+#: views/view-edit.php:344
 msgid "Repeat this to add the keyword to all cells that shall be connected."
 msgstr ""
 "Wiederhole diese Schritte mit allen Zellen, die verbunden werden sollen."
 
 # @ tablepress
-#: views/view-edit.php:344
+#: views/view-edit.php:345
 msgid ""
 "Be aware that the functions of the DataTables JavaScript library will not "
 "work on tables which have combined cells."
@@ -1345,59 +1355,57 @@ msgstr ""
 "Tabellen mit verbundenen Zellen nicht zur Verfügung stehen."
 
 # @ tablepress
-#: views/view-edit.php:350 views/view-edit.php:362
+#: views/view-edit.php:351 views/view-edit.php:363
 msgid "Selected rows"
 msgstr "Gewählte Zeilen"
 
 # @ tablepress
-#: views/view-edit.php:351 views/view-edit.php:356
+#: views/view-edit.php:352 views/view-edit.php:357
 msgid "Hide"
 msgstr "Verstecken"
 
 # @ tablepress
-#: views/view-edit.php:352 views/view-edit.php:357
+#: views/view-edit.php:353 views/view-edit.php:358
 msgid "Show"
 msgstr "Zeigen"
 
 # @ tablepress
-#: views/view-edit.php:355 views/view-edit.php:368
+#: views/view-edit.php:356 views/view-edit.php:369
 msgid "Selected columns"
 msgstr "Gewählte Spalten"
 
 # @ tablepress
-#: views/view-edit.php:363 views/view-edit.php:369
+#: views/view-edit.php:364 views/view-edit.php:370
 msgid "Duplicate"
 msgstr "Duplizieren"
 
 # @ tablepress
-#: views/view-edit.php:364 views/view-edit.php:370
+#: views/view-edit.php:365 views/view-edit.php:371
 msgid "Insert"
 msgstr "Einfügen"
 
 # @ tablepress
-#: views/view-edit.php:365 views/view-edit.php:371 views/view-list.php:421
+#: views/view-edit.php:366 views/view-edit.php:372 views/view-list.php:421
 msgid "Delete"
 msgstr "Löschen"
 
 # @ tablepress
-#: views/view-edit.php:376
-#, php-format
+#: views/view-edit.php:377
 msgid "Add %s row(s)"
 msgstr "%s Zeile(n) hinzufügen"
 
 # @ tablepress
-#: views/view-edit.php:376 views/view-edit.php:379
+#: views/view-edit.php:377 views/view-edit.php:380
 msgid "Add"
 msgstr "Hinzufügen"
 
 # @ tablepress
-#: views/view-edit.php:379
-#, php-format
+#: views/view-edit.php:380
 msgid "Add %s column(s)"
 msgstr "%s Spalte(n) hinzufügen"
 
 # @ tablepress
-#: views/view-edit.php:383
+#: views/view-edit.php:384
 msgid ""
 "To use the Table Manipulation features, JavaScript needs to be enabled in "
 "your browser."
@@ -1406,68 +1414,73 @@ msgstr ""
 "aktiviert sein."
 
 # @ tablepress
-#: views/view-edit.php:418
+#: views/view-edit.php:420
 msgid "Other Actions"
 msgstr "Andere Aktionen"
 
 # @ tablepress
-#: views/view-edit.php:420
-msgid "Delete Table"
-msgstr "Tabelle löschen"
+#: views/view-edit.php:422
+msgid "Copy Table"
+msgstr "Tabelle kopieren"
 
 # @ tablepress
-#: views/view-edit.php:422
+#: views/view-edit.php:424
 msgid "Export Table"
 msgstr "Tabelle exportieren"
 
 # @ tablepress
-#: views/view-edit.php:446
+#: views/view-edit.php:426
+msgid "Delete Table"
+msgstr "Tabelle löschen"
+
+# @ tablepress
+#: views/view-edit.php:450
 msgid "Cancel"
 msgstr "Abbrechen"
 
 # @ tablepress
-#: views/view-edit.php:447
+#: views/view-edit.php:451
 msgid "OK"
 msgstr "OK"
 
 # @ tablepress
-#: views/view-edit.php:468 views/view-edit.php:520
+#: views/view-edit.php:472 views/view-edit.php:524
 msgid "Table Head Row"
 msgstr "Tabellen-Kopfzeile"
 
 # @ tablepress
-#: views/view-edit.php:469
+#: views/view-edit.php:473
 msgid "The first row of the table is the table header."
 msgstr "Die erste Zeile der Tabelle ist der Tabellenkopf."
 
 # @ tablepress
-#: views/view-edit.php:472
+#: views/view-edit.php:476
 msgid "Table Foot Row"
 msgstr "Tabellen-Fußzeile"
 
 # @ tablepress
-#: views/view-edit.php:473
+#: views/view-edit.php:477
 msgid "The last row of the table is the table footer."
 msgstr "Die letzte Zeile der Tabelle ist der Tabellenfuß."
 
 # @ tablepress
-#: views/view-edit.php:476
+#: views/view-edit.php:480
 msgid "Alternating Row Colors"
 msgstr "Alternierende Zeilenfarben"
 
 # @ tablepress
-#: views/view-edit.php:477
+#: views/view-edit.php:481
 msgid "The background colors of consecutive rows shall alternate."
 msgstr ""
 "Die Hintergrundfarben aufeinanderfolgender Zeilen sollen sich abwechseln."
 
 # @ tablepress
-#: views/view-edit.php:480
+#: views/view-edit.php:484
 msgid "Row Hover Highlighting"
 msgstr "Zeilenhervorhebung"
 
 # @ tablepress
-#: views/view-edit.php:481
+#: views/view-edit.php:485
 msgid ""
 "Highlight a row while the mouse cursor hovers above it by changing its "
 "background color."
@@ -1476,43 +1489,41 @@ msgstr ""
 "darüber befindet."
 
 # @ tablepress
-#: views/view-edit.php:484
+#: views/view-edit.php:488
 msgid "Print Table Name"
 msgstr "Tabellen-Name"
 
 # @ tablepress
-#: views/view-edit.php:487 views/view-edit.php:497
+#: views/view-edit.php:491 views/view-edit.php:501
 msgid "above"
 msgstr "über"
 
 # @ tablepress
-#: views/view-edit.php:488 views/view-edit.php:498
+#: views/view-edit.php:492 views/view-edit.php:502
 msgid "below"
 msgstr "unter"
 
 # @ tablepress
-#: views/view-edit.php:491
-#, php-format
-msgid "The table name shall be written %s the table."
-msgstr "Der Tabellenname soll %s der Tabelle ausgegeben werden."
+#: views/view-edit.php:495
+msgid "Show the table name %s the table."
+msgstr "Zeige den Tabellennamen %s der Tabelle."
 
 # @ tablepress
-#: views/view-edit.php:494
+#: views/view-edit.php:498
 msgid "Print Table Description"
 msgstr "Tabellen-Beschreibung"
 
 # @ tablepress
-#: views/view-edit.php:501
-#, php-format
-msgid "The table description shall be written %s the table."
-msgstr "Die Tabellenbeschreibung soll %s der Tabelle ausgegeben werden."
+#: views/view-edit.php:505
+msgid "Show the table description %s the table."
+msgstr "Zeige die Tabellenbeschreibung %s der Tabelle."
 
 # @ tablepress
-#: views/view-edit.php:504
+#: views/view-edit.php:508
 msgid "Extra CSS Classes"
 msgstr "Weitere CSS-Klassen"
 
-#: views/view-edit.php:505
+#: views/view-edit.php:509
 msgid ""
 "This field can only contain letters, numbers, spaces, hyphens (-), and "
 "underscores (_)."
@@ -1521,19 +1532,17 @@ msgstr ""
 "und Unterstrich (_) bestehen."
 
 # @ tablepress
-#: views/view-edit.php:505
+#: views/view-edit.php:509
 msgid "Additional CSS classes for styling purposes can be entered here."
 msgstr "Hier können weitere CSS-Klassen für das Styling eingegeben werden."
 
 # @ tablepress
-#: views/view-edit.php:505
-#, php-format
+#: views/view-edit.php:509
 msgid "This is NOT the place to enter <a href=\"%s\">Custom CSS</a> code!"
 msgstr "Dies ist nicht das Feld für <a href=\"%s\">Zusatz-CSS</a>!"
 
 # @ tablepress
-#: views/view-edit.php:520
-#, php-format
+#: views/view-edit.php:524
 msgid ""
 "These features and options are only available, when the &#8220;%1$s&#8221; "
 "checkbox in the &#8220;%2$s&#8221; section is checked."
@@ -1542,12 +1551,12 @@ msgstr ""
 "%1$s&#8221;-Kästchen im Abschnitt &#8220;%2$s&#8221; aktiviert ist."
 
 # @ tablepress
-#: views/view-edit.php:524
+#: views/view-edit.php:528
 msgid "Use DataTables"
 msgstr "DataTables nutzen"
 
 # @ tablepress
-#: views/view-edit.php:525
+#: views/view-edit.php:529
 msgid ""
 "Use the following features of the DataTables JavaScript library with this "
 "table:"
@@ -1556,22 +1565,22 @@ msgstr ""
 "diese Tabelle:"
 
 # @ tablepress
-#: views/view-edit.php:528
+#: views/view-edit.php:532
 msgid "Sorting"
 msgstr "Sortieren"
 
 # @ tablepress
-#: views/view-edit.php:529
+#: views/view-edit.php:533
 msgid "Enable sorting of the table by the visitor."
 msgstr "Aktiviere das Sortieren der Tabelle durch den Seiten-Besucher."
 
 # @ tablepress
-#: views/view-edit.php:532
+#: views/view-edit.php:536
 msgid "Search/Filtering"
 msgstr "Filtern/Suche"
 
 # @ tablepress
-#: views/view-edit.php:533
+#: views/view-edit.php:537
 msgid ""
 "Enable the visitor to filter or search the table. Only rows with the search "
 "word in them are shown."
@@ -1580,30 +1589,29 @@ msgstr ""
 "die ein Suchwort enthalten, angezeigt."
 
 # @ tablepress
-#: views/view-edit.php:536
+#: views/view-edit.php:540
 msgid "Pagination"
 msgstr "Umblättern"
 
 # @ tablepress
-#: views/view-edit.php:537
+#: views/view-edit.php:541
 msgid ""
 "Enable pagination of the table (viewing only a certain number of rows at a "
 "time) by the visitor."
 msgstr "Ermögliche das seitenweise Blättern in der Tabelle durch den Besucher."
 
 # @ tablepress
-#: views/view-edit.php:538
-#, php-format
+#: views/view-edit.php:542
 msgid "Show %s rows per page."
 msgstr "Zeige %s Zeilen pro Seite."
 
 # @ tablepress
-#: views/view-edit.php:541
+#: views/view-edit.php:545
 msgid "Pagination Length Change"
 msgstr "Anzahl Zeilen"
 
 # @ tablepress
-#: views/view-edit.php:542
+#: views/view-edit.php:546
 msgid ""
 "Allow the visitor to change the number of rows shown when using pagination."
 msgstr ""
@@ -1611,12 +1619,12 @@ msgstr ""
 "Blättern zu ändern."
 
 # @ tablepress
-#: views/view-edit.php:545
+#: views/view-edit.php:549
 msgid "Info"
 msgstr "Info-Zeile"
 
 # @ tablepress
-#: views/view-edit.php:546
+#: views/view-edit.php:550
 msgid ""
 "Enable the table information display, with information about the currently "
 "visible data, like the number of rows."
@@ -1625,12 +1633,12 @@ msgstr ""
 "unter der Tabelle an."
 
 # @ tablepress
-#: views/view-edit.php:549
+#: views/view-edit.php:553
 msgid "Horizontal Scrolling"
 msgstr "Horizontales Scrollen"
 
 # @ tablepress
-#: views/view-edit.php:550
+#: views/view-edit.php:554
 msgid ""
 "Enable horizontal scrolling, to make viewing tables with many columns easier."
 msgstr ""
@@ -1638,12 +1646,12 @@ msgstr ""
 "zu machen."
 
 # @ tablepress
-#: views/view-edit.php:556
+#: views/view-edit.php:560
 msgid "Custom Commands"
 msgstr "Eigene Befehle"
 
 # @ tablepress
-#: views/view-edit.php:557
+#: views/view-edit.php:561
 msgid ""
 "Additional parameters from the <a href=\"http://www.datatables.net/"
 "\">DataTables documentation</a> to be added to the JS call."
@@ -1652,13 +1660,12 @@ msgstr ""
 "\">DataTables-Dokumentation</a>."
 
 # @ tablepress
-#: views/view-edit.php:557
+#: views/view-edit.php:561
 msgid "For advanced use only."
 msgstr "Für fortgeschrittene Benutzer."
 
 # @ tablepress
-#: views/view-edit.php:572
-#, php-format
+#: views/view-edit.php:576
 msgid ""
 "On this screen, you can edit the content and structure of the table with the "
 "ID %s."
@@ -1667,7 +1674,7 @@ msgstr ""
 "ID %s bearbeiten."
 
 # @ tablepress
-#: views/view-edit.php:573
+#: views/view-edit.php:577
 msgid ""
 "For example, you can insert things like text, images, or links into the "
 "table, or change the used table features. You can also insert, delete, move, "
@@ -1679,8 +1686,7 @@ msgstr ""
 "sortiert werden."
 
 # @ tablepress
-#: views/view-edit.php:576
-#, php-format
+#: views/view-edit.php:580
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it at the desired place in the editor."
@@ -1690,11 +1696,11 @@ msgstr ""
 "Texteditor ein."
 
 # @ tablepress
-#: views/view-edit.php:596
+#: views/view-edit.php:600
 msgid "TablePress Feature: Moving rows and columns"
 msgstr "TablePress-Funktion: Zeilen und Spalten verschieben"
 
-#: views/view-edit.php:597
+#: views/view-edit.php:601
 msgid ""
 "Did you know? You can drag and drop rows and columns via the row number and "
 "the column title. And the arrows next to the column title can be used for "
@@ -1722,7 +1728,6 @@ msgstr "Hier kannst du eine Tabelle in einen Beitrag oder eine Seite einfügen."
 
 # @ tablepress
 #: views/view-editor_button_thickbox.php:137
-#, php-format
 msgid ""
 "Click the &#8220;%1$s&#8221; button for the desired table to automatically "
 "insert the<br />corresponding Shortcode (%2$s) into the editor."
@@ -1738,7 +1743,6 @@ msgstr "Shortcode einfügen"
 
 # @ tablepress
 #: views/view-editor_button_thickbox.php:141 views/view-list.php:197
-#, php-format
 msgid "Search results for &#8220;%s&#8221;"
 msgstr "Such-Ergebnisse für &#8220;%s&#8221;"
 
@@ -1851,7 +1855,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-export.php:82 views/view-list.php:553
-#, php-format
 msgid ""
 "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to "
 "get started!"
@@ -1871,7 +1874,6 @@ msgstr "Alle auswählen"
 
 # @ tablepress
 #: views/view-export.php:118 views/view-import.php:191
-#, php-format
 msgid "ID %1$s: %2$s"
 msgstr "ID %1$s: %2$s"
 
@@ -2005,13 +2007,13 @@ msgstr "Import aus WP-Table Reloaded"
 # @ tablepress
 #: views/view-import.php:92
 msgid ""
-"TablePress can import tables from existing data, like from a CSV file from a "
-"spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or "
-"its own JSON format."
+"TablePress can import tables from existing data, like from a CSV or XLS file "
+"from a spreadsheet application (e.g. Excel), an HTML file resembling a "
+"webpage, or its own JSON format."
 msgstr ""
 "TablePress kann Tabellen aus bestehenden Daten importieren, etwa aus einer "
-"CSV-Datei aus einem Tabellenkalkulationsprogramm (wie Excel), einer HTML-"
-"Datei einer Webseite, oder seines eigenen JSON-Dateiformats."
+"CSV- oder XLS-Datei aus einem Tabellenkalkulationsprogramm (wie Excel), "
+"einer HTML-Datei einer Webseite, oder seines eigenen JSON-Dateiformats."
 
 # @ tablepress
 #: views/view-import.php:93
@@ -2170,7 +2172,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-import.php:221
-#, php-format
 msgid ""
 "Before doing this, it is highly recommended to read the <a href=\"%s"
 "\">migration guide</a> on the TablePress website."
@@ -2199,7 +2200,7 @@ msgid "Import all tables and their settings from WP-Table Reloaded."
 msgstr "Importiere alle Tabellen und ihre Einstellungen aus WP-Table Reloaded."
 
 # @ tablepress
-#: views/view-import.php:244 views/view-options.php:113
+#: views/view-import.php:244
 msgid "<span class=\"description\">(recommended)</span>"
 msgstr "<span class=\"description\">(empfohlen)</span>"
 
@@ -2255,7 +2256,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:48
-#, php-format
 msgid ""
 "No problem! I still hope you enjoy the benefits that TablePress adds to your "
 "site. If you should change your mind, you'll always find the &#8220;"
@@ -2277,7 +2277,6 @@ msgstr "Danke, dass du TablePress benutzt!"
 
 # @ tablepress
 #: views/view-list.php:56
-#, php-format
 msgid ""
 "If you encounter any questions or problems, please visit the <a href=\"%1$s"
 "\">FAQ</a>, the <a href=\"%2$s\">documentation</a>, and the <a href=\"%3$s"
@@ -2319,7 +2318,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:65
-#, php-format
 msgid ""
 "Please follow the <a href=\"%s\">migration guide</a> to move your tables and "
 "then deactivate WP-Table Reloaded!"
@@ -2351,7 +2349,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:75
-#, php-format
 msgid ""
 "If everything works and you are satisfied with the results of managing your "
 "%s table, isn't that worth a coffee or two?"
@@ -2367,7 +2364,6 @@ msgstr[1] ""
 
 # @ tablepress
 #: views/view-list.php:76
-#, php-format
 msgid ""
 "<a href=\"%s\">Donations</a> help me to continue user support and "
 "development of this <em>free</em> software &mdash; things for which I spend "
@@ -2399,13 +2395,11 @@ msgstr "Nein, danke. Frag nicht wieder."
 
 # @ tablepress
 #: views/view-list.php:84
-#, php-format
 msgid "Thank you for updating to TablePress %s!"
 msgstr "Danke, dass du TablePress auf Version %s aktualisiert hast!"
 
 # @ tablepress
 #: views/view-list.php:87
-#, php-format
 msgid ""
 "Please read the <a href=\"%s\">release announcement</a> for more information."
 msgstr ""
@@ -2414,7 +2408,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-list.php:88
-#, php-format
 msgid ""
 "If you like the new features and enhancements, <a href=\"%s\">giving a "
 "donation</a> towards the further support and development of TablePress is "
@@ -2431,12 +2424,9 @@ msgid_plural "The tables were deleted successfully."
 msgstr[0] "Die Tabelle wurde erfolgreich gelöscht."
 msgstr[1] "Die Tabellen wurden erfolgreich gelöscht."
 
-# @ tablepress
-#: views/view-list.php:99 views/view-list.php:100
-msgid "The table was copied successfully."
-msgid_plural "The tables were copied successfully."
-msgstr[0] "Die Tabelle wurde erfolgreich kopiert."
-msgstr[1] "Die Tabellen wurde erfolgreich kopiert."
+#: views/view-list.php:99
+msgid "The copied table has the table ID &#8220;%s&#8221;."
+msgstr "Die kopierte Tabelle hat die ID &#8220;%s&#8221;."
 
 # @ tablepress
 #: views/view-list.php:101
@@ -2516,7 +2506,6 @@ msgstr "Zuletzt geändert von"
 
 # @ tablepress
 #: views/view-list.php:408 views/view-list.php:414
-#, php-format
 msgid "Edit &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; bearbeiten"
 
@@ -2527,7 +2516,6 @@ msgstr "Shortcode"
 
 # @ tablepress
 #: views/view-list.php:417
-#, php-format
 msgid "Copy &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; kopieren"
 
@@ -2538,7 +2526,6 @@ msgstr "Kopieren"
 
 # @ tablepress
 #: views/view-list.php:419
-#, php-format
 msgid "Export &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; exportieren"
 
@@ -2550,13 +2537,11 @@ msgstr "Exportieren"
 
 # @ tablepress
 #: views/view-list.php:421
-#, php-format
 msgid "Delete &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; löschen"
 
 # @ tablepress
 #: views/view-list.php:423
-#, php-format
 msgid "Show a preview of &#8220;%s&#8221;"
 msgstr "Vorschau von &#8220;%s&#8221; anzeigen"
 
@@ -2590,14 +2575,12 @@ msgstr "Übernehmen"
 
 # @ tablepress
 #: views/view-list.php:555
-#, php-format
 msgid "You should <a href=\"%s\">add</a> a table to get started!"
 msgstr ""
 "Du solltest eine <a href=\"%s\">neue Tabelle anlegen</a>, um loszulegen!"
 
 # @ tablepress
 #: views/view-list.php:557
-#, php-format
 msgid "You should <a href=\"%s\">import</a> a table to get started!"
 msgstr ""
 "Du solltest eine <a href=\"%s\">Tabelle importieren</a>, um loszulegen!"
@@ -2692,7 +2675,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-options.php:101
-#, php-format
 msgid ""
 "&#8220;Custom CSS&#8221; (<a href=\"%s\">Cascading Style Sheets</a>) can be "
 "used to change the styling or layout of a table."
@@ -2702,13 +2684,11 @@ msgstr ""
 
 # @ tablepress
 #: views/view-options.php:103
-#, php-format
 msgid "You can get styling examples from the <a href=\"%s\">FAQ</a>."
 msgstr "Styling-Beispiele findest du in der <a href=\"%s\">FAQ</a>."
 
 # @ tablepress
 #: views/view-options.php:105
-#, php-format
 msgid ""
 "Information on available CSS selectors can be found in the <a href=\"%s"
 "\">documentation</a>."
@@ -2726,66 +2706,47 @@ msgstr ""
 "automatisch korrigiert werden kann."
 
 # @ tablepress
-#: views/view-options.php:110
-msgid "File exists"
-msgstr "Datei existiert"
-
-# @ tablepress
-#: views/view-options.php:110
-msgid "File seems not to exist"
-msgstr "Datei scheint nicht zu existieren"
-
-# @ tablepress
-#: views/view-options.php:113
-msgid "Use a file for storing and loading the &#8220;Custom CSS&#8221; code."
-msgstr ""
-"Speichere den &#8220;Zusatz-CSS&#8221;-Code in einer Datei und lade diese."
-
-# @ tablepress
-#: views/view-options.php:146
+#: views/view-options.php:141
 msgid "Top-Level (top)"
 msgstr "Hauptebene (oben)"
 
 # @ tablepress
-#: views/view-options.php:147
+#: views/view-options.php:142
 msgid "Top-Level (middle)"
 msgstr "Hauptebene (Mitte)"
 
 # @ tablepress
-#: views/view-options.php:148
+#: views/view-options.php:143
 msgid "Top-Level (bottom)"
 msgstr "Hauptebene (unten)"
 
 # @ tablepress
-#: views/view-options.php:157
+#: views/view-options.php:152
 msgid "Admin menu entry"
 msgstr "Admin-Menü-Eintrag"
 
 # @ tablepress
-#: views/view-options.php:158
-#, php-format
+#: views/view-options.php:153
 msgid "TablePress shall be shown in this section of my admin menu: %s"
 msgstr ""
 "TablePress soll in diesem Abschnitt dies Admin-Menüs angezeigt werden: %s"
 
 # @ tablepress
-#: views/view-options.php:162
-#, php-format
+#: views/view-options.php:157
 msgid "WordPress Default (currently %s)"
 msgstr "WordPress-Standard (aktuell %s)"
 
 # @ tablepress
-#: views/view-options.php:170
+#: views/view-options.php:165
 msgid "Plugin Language"
 msgstr "Plugin-Sprache"
 
 # @ tablepress
-#: views/view-options.php:171
-#, php-format
+#: views/view-options.php:166
 msgid "I want to use TablePress in this language: %s"
 msgstr "Ich möchte TablePress in dieser Sprache nutzen: %s"
 
-#: views/view-options.php:187
+#: views/view-options.php:182
 msgid ""
 "Uninstalling <strong>will permanently delete</strong> all TablePress tables "
 "and options from the database."
@@ -2793,7 +2754,7 @@ msgstr ""
 "Das Deinstallieren wird alle TablePress-Tabellen und -Einstellungen in der "
 "Datenbank <strong>dauerhaft löschen</strong>."
 
-#: views/view-options.php:188
+#: views/view-options.php:183
 msgid ""
 "It is recommended that you create a backup of the tables (by exporting the "
 "tables in the JSON format), in case you later change your mind."
@@ -2802,13 +2763,13 @@ msgstr ""
 "Format) eine Sicherungskopie der Tabellen anzulegen, falls du später deine "
 "Meinung änderst."
 
-#: views/view-options.php:189
+#: views/view-options.php:184
 msgid ""
 "You will manually need to remove the plugin's files from the plugin folder "
 "afterwards."
 msgstr "Du musst hinterher nur die Plugin-Dateien vom Server löschen."
 
-#: views/view-options.php:190
+#: views/view-options.php:185
 msgid ""
 "Be very careful with this and only click the button if you know what you are "
 "doing!"
@@ -2836,7 +2797,6 @@ msgstr ""
 
 # @ tablepress
 #: views/view-options_custom_css.php:106
-#, php-format
 msgid ""
 "To try again with the same method that you use for updating plugins or "
 "themes, please fill out the &#8220;%s&#8221; form below."
@@ -2892,3 +2852,25 @@ msgid ""
 msgstr ""
 "Die Funktionen der DataTables-JavaScript-Bibliothek stehen in dieser "
 "Vorschau nicht zur Verfügung!"
+
+#. Plugin URI of the plugin/theme
+msgid "http://tablepress.org/"
+msgstr "http://tablepress.org/"
+
+#. Description of the plugin/theme
+msgid ""
+"TablePress enables you to create and manage tables in your posts and pages, "
+"without having to write HTML code, and it adds valuable functions for your "
+"visitors."
+msgstr ""
+"TablePress ermöglicht es, Tabellen in Artikeln und Seiten zu erstellen und "
+"zu verwalten, ohne HTML-Code nutzen zu müssen, und fügt der Tabelle "
+"wertvolle Funktionen hinzu."
+
+#. Author of the plugin/theme
+msgid "Tobias Bäthge"
+msgstr "Tobias Bäthge"
+
+#. Author URI of the plugin/theme
+msgid "http://tobias.baethge.com/"
+msgstr "http://tobias.baethge.com/"
