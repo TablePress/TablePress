@@ -39,6 +39,9 @@ module.exports = function( grunt ) {
 		},
 
 		cssmin: {
+			options: {
+				removeEmpty: true
+			},
 			all: {
 				expand: true,
 				ext: '.min.css',
