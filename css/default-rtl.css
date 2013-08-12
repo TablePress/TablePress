@@ -91,7 +91,6 @@
 /* Table wrapper */
 .dataTables_wrapper {
 	clear: both;
-	*zoom: 1; /* IE 7 hack, for better float clearing */
 	margin-bottom: 1em;
 }
 .dataTables_wrapper .tablepress {

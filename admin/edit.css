@@ -60,7 +60,7 @@ body.wait * {
 	padding: 3px;
 }
 #advanced-editor .submitbox {
-	padding: 6px 6px 0px;
+	padding: 6px 6px 0;
 	font-size: 11px;
 	overflow: auto;
 	height: 30px;
@@ -99,7 +99,7 @@ body.wait * {
 
 /* table cells */
 #edit-form-body td {
-	padding: 2px 2px 2px 0px;
+	padding: 2px 2px 2px 0;
 	height: 32px;
 }
 

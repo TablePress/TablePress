@@ -159,9 +159,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   padding-bottom: 30px;
   margin-bottom: -32px;
   display: inline-block;
-  /* Hack to make IE7 behave */
-  *zoom:1;
-  *display:inline;
 }
 .CodeMirror-gutter-elt {
   position: absolute;
@@ -224,7 +221,8 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 
 .CodeMirror-measure {
   position: absolute;
-  width: 100%; height: 0px;
+  width: 100%;
+  height: 0;
   overflow: hidden;
   visibility: hidden;
 }
@@ -247,9 +245,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   background: #ffa;
   background: rgba(255, 255, 0, .4);
 }
-
-/* IE7 hack to prevent it from returning funny offsetTops on the spans */
-.CodeMirror span { *vertical-align: text-bottom; }
 
 @media print {
   /* Hide the cursor when printing */
@@ -286,7 +281,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	padding: 3px;
 }
 #tablepress-page .CodeMirror pre {
-	padding: 0px;
+	padding: 0;
 }
 #tablepress-page .CodeMirror.disabled .CodeMirror-scroll {
 	background-color: #eeeeee;

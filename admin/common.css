@@ -110,7 +110,7 @@
 /* Search results for WP_List_Table */
 #tablepress-page .subtitle {
 	float: left;
-	padding-left: 0px;
+	padding-left: 0;
 }
 
 /* remove outlines from all textareas */
@@ -147,7 +147,7 @@
 
 /* tables for in postboxes (on the "Edit" and "Plugin Options" screens) */
 .tablepress-postbox-table {
-	border-spacing: 0px;
+	border-spacing: 0;
 	width: 800px;
 }
 /* default column widths */
@@ -168,7 +168,7 @@
 .tablepress-postbox-table th,
 .tablepress-postbox-table td {
 	padding: 6px 6px 2px 2px;
-	border-spacing: 0px;
+	border-spacing: 0;
 	word-wrap: break-word;
 }
 .tablepress-postbox-table .top-border th,
