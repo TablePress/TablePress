@@ -156,10 +156,12 @@ class TablePress_Import {
 			return;
 		}
 
+		$temp_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $temp_data; // Prepend XML declaration, for better encoding support
+		if ( function_exists( 'libxml_disable_entity_loader' ) )
+			libxml_disable_entity_loader( true ); // don't expand external entities (see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html)
 		libxml_use_internal_errors( true ); // no warnings/errors raised, but stored internally
 		$dom = new DOMDocument( '1.0', 'UTF-8' );
 		$dom->strictErrorChecking = false; // no strict checking for invalid HTML
-		$temp_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $temp_data; // Prepend XML declaration, for better encoding support
 		$dom->loadHTML( $temp_data );
 		if ( false === $dom ) {
 			$this->imported_table = false;
