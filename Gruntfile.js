@@ -2,7 +2,9 @@
  * TablePress Grunt configuration
  *
  * Performs syntax checks and minifies CSS and JS files.
- * To run, use "npm install" and "grunt" in the main plugin folder.
+ * To run, use "npm install" and "grunt build" in the main plugin folder.
+ * Running just "grunt" will run the "watch" task, which will automatically
+ * lint and minify all changed CSS or JS files.
  */
 module.exports = function( grunt ) {
 
@@ -12,6 +14,9 @@ module.exports = function( grunt ) {
 		jshint: {
 			all: {
 				src: [ 'Gruntfile.js', '<%= uglify.all.src %>' ]
+			},
+			changed: {
+				src: []
 			},
 			options: {
 				curly:   false,
@@ -38,6 +43,11 @@ module.exports = function( grunt ) {
 				expand: true,
 				ext: '.min.js',
 				src: [ 'admin/js/*.js', '!admin/js/*.min.js' ]
+			},
+			changed: {
+				expand: true,
+				ext: '.min.js',
+				src: []
 			}
 		},
 
@@ -65,6 +75,9 @@ module.exports = function( grunt ) {
 					'admin/css/*.css', '!admin/css/*.min.css'
 				]
 			},
+			changed: {
+				src: []
+			}
 		},
 
 		// CSS minification
@@ -79,18 +92,27 @@ module.exports = function( grunt ) {
 					'css/*.css', '!css/*.min.css',
 					'admin/css/*.css', '!admin/css/*.min.css'
 				]
+			},
+			changed: {
+				expand: true,
+				ext: '.min.css',
+				src: []
 			}
 		},
 
 		// Watch files for changes
 		watch: {
+			options: {
+				event: [ 'changed' ],
+				spawn: false
+			},
 			js: {
 				files: '<%= jshint.all.src %>',
-				tasks: [ 'jshint', 'uglify' ]
+				tasks: [ 'jshint:changed', 'uglify:changed' ]
 			},
 			css: {
 				files: '<%= cssmin.all.src %>',
-				tasks: [ 'csslint', 'cssmin' ]
+				tasks: [ 'csslint:changed', 'cssmin:changed' ]
 			}
 		}
 	} );
@@ -103,9 +125,21 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
 	// Register "build" task
-	grunt.registerTask( 'build', [ 'jshint', 'uglify', 'csslint', 'cssmin' ] );
+	grunt.registerTask( 'build', [ 'jshint:all', 'uglify:all', 'csslint:all', 'cssmin:all' ] );
 
-	// Make "build" the default task
-	grunt.registerTask( 'default', [ 'build' ] );
+	// Make "watch" the default task
+	grunt.registerTask( 'default', [ 'watch' ] );
+
+	// Add a listener to the "watch" task
+	//
+	// On "watch", automatically updates the "changed" target for the
+	// "jshint", "uglify", "csslint", and "cssmin" task configurations,
+	// so that only the changed files are linted/minified.
+	grunt.event.on( 'watch', function( action, filepath, target ) {
+		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
+		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
+		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
+		grunt.config( [ 'cssmin', 'changed', 'src' ], filepath );
+	} );
 
 };
