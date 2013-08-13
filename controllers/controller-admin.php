@@ -504,6 +504,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Davíð Sævarsson',
 				'translator_url' => ''
 			),
+			'ja' => array(
+				'name' => __( 'Japanese', 'tablepress' ),
+				'translator_name' => 'Naoko Azuma',
+				'translator_url' => 'http://www.goju-on.com/profile_en/'
+			),
 			'lt_LT' => array(
 				'name' => __( 'Latvian', 'tablepress' ),
 				'translator_name' => 'Johannes Rau',
