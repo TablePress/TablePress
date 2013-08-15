@@ -85,6 +85,7 @@ class TablePress_Import {
 			$this->import_formats['html'] = __( 'HTML - Hypertext Markup Language', 'tablepress' );
 		$this->import_formats['json'] = __( 'JSON - JavaScript Object Notation', 'tablepress' );
 		$this->import_formats['xls'] = __( 'XLS - Microsoft Excel 97-2003 (experimental)', 'tablepress' );
+		$this->import_formats['xlsx'] = __( 'XLSX - Microsoft Excel 2007-2013 (experimental)', 'tablepress' );
 	}
 
 	/**
@@ -99,7 +100,7 @@ class TablePress_Import {
 	public function import_table( $format, $data ) {
 		$this->import_data = $data;
 
-		if ( 'xls' != $format )
+		if ( ! in_array( $format, array( 'xlsx', 'xls' ) ) )
 			$this->fix_table_encoding();
 
 		switch ( $format ) {
@@ -111,6 +112,9 @@ class TablePress_Import {
 				break;
 			case 'json':
 				$this->import_json();
+				break;
+			case 'xlsx':
+				$this->import_xlsx();
 				break;
 			case 'xls':
 				$this->import_xls();
@@ -327,6 +331,21 @@ class TablePress_Import {
 		}
 
 		$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $result_table ) );
+	}
+
+	/**
+	 * Import Microsoft Excel 2007-2013 data
+	 *
+	 * @since 1.1.0
+	 */
+	protected function import_xlsx() {
+		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
+		$simplexlsx = new SimpleXLSX( $this->import_data, true );
+
+		if ( $simplexlsx->success() )
+			$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $simplexlsx->rows() ) );
+		else
+			return false; // echo $simplexlsx->error();
 	}
 
 	/**

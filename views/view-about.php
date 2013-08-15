@@ -74,7 +74,7 @@ class TablePress_About_View extends TablePress_View {
 		?>
 	<p>
 		<?php _e( 'At first, you should add or import a table.', 'tablepress' ); ?>
-		<?php _e( 'This means that you either let the plugin create an empty table for you or that you load an existing table from either a CSV, HTML, JSON, or XLS file.', 'tablepress' ); ?>
+		<?php _e( 'This means that you either let the plugin create an empty table for you or that you load an existing table from either a CSV, HTML, JSON, XLS, or XLSX file.', 'tablepress' ); ?>
 	</p>
 	<p>
 		<?php _e( 'Then you can edit your data or change the structure of your table (e.g. by inserting, deleting, moving, or swaping rows or columns or sorting them) and select specific table features like alternating row colors or whether to print the name or description, if you want.', 'tablepress' ); ?>

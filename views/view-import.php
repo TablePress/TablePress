@@ -89,7 +89,7 @@ class TablePress_Import_View extends TablePress_View {
 	public function textbox_head( $data, $box ) {
 		?>
 		<p>
-			<?php _e( 'TablePress can import tables from existing data, like from a CSV or XLS file from a spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or its own JSON format.', 'tablepress' ); ?>
+			<?php _e( 'TablePress can import tables from existing data, like from a CSV, XLS, or XLSX file from a spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or its own JSON format.', 'tablepress' ); ?>
 			<?php _e( 'You can also import existing tables from the WP-Table Reloaded plugin below.', 'tablepress' ); ?>
 		</p>
 		<p>
