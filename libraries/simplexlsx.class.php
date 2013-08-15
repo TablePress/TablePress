@@ -1,54 +1,19 @@
 <?php
+/**
+ * PHP Excel (2007) Reader Class
+ *
+ * @package TablePress
+ * @subpackage Libraries
+ * @author Sergey Schuchkin
+ * @since 1.1.0
+ */
+
+// Prohibit direct script loading
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
 /*
 	SimpleXLSX php class v0.6.7
 	MS Excel 2007 workbooks reader
-
-	Example 1: 
-	$xlsx = new SimpleXLSX('book.xlsx');
-	print_r( $xlsx->rows() );
-
-	Example 2: 
-	$xlsx = new SimpleXLSX('book.xlsx');
-	print_r( $xlsx->rowsEx() );
-
-	Example 3: 
-	$xlsx = new SimpleXLSX('book.xlsx');
-	print_r( $xlsx->rows(2) ); // second worksheet
-
-	Example 4.1:
-	$xlsx = new SimpleXLSX('book.xlsx');
-	print_r( $xlsx->sheetNames() ); // array( 1 => 'Sheet 1', 3 => 'Catalog' );
-	
-	Example 4.2:
-	$xlsx = new SimpleXLSX('book.xlsx');	
-	echo 'Sheet Name 2 = '.$xlsx->sheetName(2);
-	
-	Example 5:
-	$xlsx = new SimpleXLSX('book.xlsx');
-	if ($xslx->success())
-		print_r( $xlsx->rows() );
-	else
-		echo 'xlsx error: '.$xslx->error();
-	
-	Example 6:
-	$xslx = new SimpleXLSX( file_get_contents('http://www.example.com/example.xlsx'), true);
-	list($num_cols, $num_rows) = $xlsx->dimension(2);
-	echo $xlsx->sheetName(2).':'.$num_cols.'x'.$num_rows;
-	
-	v0.6.7 (2013-08-10) fixed unzip (mac), added $debug param to _constructor to display errors
-	v0.6.6 (2013-06-03) +entryExists(),
-	v0.6.5 (2013-03-18) fixed sheetName()
-	v0.6.4 (2013-03-13) rowsEx(), _parse(): fixed date column type & format detection
-	v0.6.3 (2013-03-13) rowsEx(): fixed formulas, added date type 'd', added format 'format'
-						dimension(): fixed empty sheet dimension
-	                    + sheetNames() - returns array( sheet_id => sheet_name, sheet_id2 => sheet_name2 ...)
-	v0.6.2 (2012-10-04) fixed empty cells, rowsEx() returns type and formulas now
-	v0.6.1 (2012-09-14) removed "raise exception" and fixed _unzip
-	v0.6 (2012-09-13) success(), error(), __constructor( $filename, $is_data = false )
-	v0.5.1 (2012-09-13) sheetName() fixed
-	v0.5 (2012-09-12) sheetName()
-	v0.4 sheets(), sheetsCount(), unixstamp( $excelDateTime )
-	v0.3 - fixed empty cells (Gonzo patch)
 */
 
 class SimpleXLSX {
@@ -72,7 +37,7 @@ class SimpleXLSX {
 	const SCHEMA_REL_SHAREDSTRINGS =  'http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings';
 	const SCHEMA_REL_WORKSHEET =  'http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet';
 	const SCHEMA_REL_STYLES = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles';
-	
+
 	private $workbook_cell_formats = array();
 	private $built_in_cell_formats = array(
 		0 => 'General',
@@ -94,25 +59,25 @@ class SimpleXLSX {
 		20 => 'h:mm',
 		21 => 'h:mm:ss',
 		22 => 'm/d/yy h:mm',
-		
+
 		37 => '#,##0 ;(#,##0)',
 		38 => '#,##0 ;[Red](#,##0)',
 		39 => '#,##0.00;(#,##0.00)',
 		40 => '#,##0.00;[Red](#,##0.00)',
-		
+
 		44 => '_("$"* #,##0.00_);_("$"* \(#,##0.00\);_("$"* "-"??_);_(@_)',
 		45 => 'mm:ss',
 		46 => '[h]:mm:ss',
 		47 => 'mmss.0',
 		48 => '##0.0E+0',
 		49 => '@',
-		
+
 		27 => '[$-404]e/m/d',
 		30 => 'm/d/yy',
 		36 => '[$-404]e/m/d',
 		50 => '[$-404]e/m/d',
 		57 => '[$-404]e/m/d',
-		
+
 		59 => 't0',
 		60 => 't0.00',
 		61 => 't#,##0',
@@ -122,7 +87,7 @@ class SimpleXLSX {
 		69 => 't# ?/?',
 		70 => 't# ??/??',
 	);
-	
+
 	function __construct( $filename, $is_data = false, $debug = false ) {
 		$this->debug = $debug;
 		$this->_unzip( $filename, $is_data );
@@ -137,7 +102,7 @@ class SimpleXLSX {
 	function sheetName( $worksheet_id) {
 
 		foreach( $this->workbook->sheets->sheet as $s ) {
-			
+
 			if ( $s->attributes('r',true)->id == 'rId'.$worksheet_id)
 				return (string) $s['name'];
 
@@ -145,11 +110,11 @@ class SimpleXLSX {
 		return false;
 	}
 	function sheetNames() {
-		
+
 		$result = array();
 
 		foreach( $this->workbook->sheets->sheet as $s ) {
-			
+
 			$result[ substr( $s->attributes('r',true)->id, 3) ] = (string) $s['name'];
 
 		}
@@ -158,14 +123,14 @@ class SimpleXLSX {
 	function worksheet( $worksheet_id ) {
 		if ( isset( $this->sheets[ $worksheet_id ] ) ) {
 			$ws = $this->sheets[ $worksheet_id ];
-			
+
 			if (isset($ws->hyperlinks)) {
 				$this->hyperlinks = array();
 				foreach( $ws->hyperlinks->hyperlink as $hyperlink ) {
 					$this->hyperlinks[ (string) $hyperlink['ref'] ] = (string) $hyperlink['display'];
 				}
 			}
-			
+
 			return $ws;
 		} else {
 			$this->error( 'Worksheet '.$worksheet_id.' not found. Try $xlsx->rows('.implode(') or $xlsx->rows(', array_keys($this->sheets)).')' );
@@ -173,16 +138,16 @@ class SimpleXLSX {
 		}
 	}
 	function dimension( $worksheet_id = 1 ) {
-		
+
 		if (($ws = $this->worksheet( $worksheet_id)) === false)
 			return false;
-		
+
 		$ref = (string) $ws->dimension['ref'];
 		if( strpos( $ref, ':') !== false ) {
 			$d = explode(':', $ref);
 			if(!isset($d[1]))
 				return array(0,0);
-			$index = $this->_columnIndex( $d[1] );		
+			$index = $this->_columnIndex( $d[1] );
 			return array( $index[0]+1, $index[1]+1);
 		} else
 			return array(0,0);
@@ -190,15 +155,15 @@ class SimpleXLSX {
 	}
 	// sheets numeration: 1,2,3....
 	function rows( $worksheet_id = 1 ) {
-		
+
 		if (($ws = $this->worksheet( $worksheet_id)) === false)
 			return false;
-		
+
 		$rows = array();
 		$curR = 0;
-		
+
 		list($cols,) = $this->dimension( $worksheet_id );
-				
+
 		foreach ($ws->sheetData->row as $row) {
 //			echo 'row<br />';
 			foreach ($row->c as $c) {
@@ -210,22 +175,22 @@ class SimpleXLSX {
 					$rows[ $curR ][ $i ] = '';
 
 			ksort( $rows[ $curR ] );
-			
+
 			$curR++;
 		}
 		return $rows;
 	}
 	function rowsEx( $worksheet_id = 1 ) {
-		
+
 		if (($ws = $this->worksheet( $worksheet_id)) === false)
 			return false;
-		
+
 		$rows = array();
 		$curR = 0;
 		list($cols,) = $this->dimension( $worksheet_id );
-		
+
 		foreach ($ws->sheetData->row as $row) {
-			
+
 			foreach ($row->c as $c) {
 				list($curC,) = $this->_columnIndex((string) $c['r']);
 				$t = (string)$c['t'];
@@ -236,7 +201,7 @@ class SimpleXLSX {
 						$t = 'd';
 				} else
 					$format = '';
-				
+
 				$rows[ $curR ][ $curC ] = array(
 					'type' => $t,
 					'name' => (string) $c['r'],
@@ -256,9 +221,9 @@ class SimpleXLSX {
 						'f' => '',
 						'formatCode' => ''
 					);
-					
+
 			ksort( $rows[ $curR ] );
-			
+
 			$curR++;
 		}
 		return $rows;
@@ -266,12 +231,12 @@ class SimpleXLSX {
 	}
 	// thx Gonzo
 	function _columnIndex( $cell = 'A1' ) {
-		
+
 		if (preg_match("/([A-Z]+)(\d+)/", $cell, $matches)) {
-			
+
 			$col = $matches[1];
 			$row = $matches[2];
-			
+
 			$colLen = strlen($col);
 			$index = 0;
 
@@ -296,7 +261,7 @@ class SimpleXLSX {
 				}
 
 				break;
-				
+
 			case "b":
 				// Value is boolean
 				$value = (string)$cell->v;
@@ -309,13 +274,13 @@ class SimpleXLSX {
 				}
 
 				break;
-				
+
 			case "inlineStr":
 				// Value is rich text inline
 				$value = $this->_parseRichText($cell->is);
-							
+
 				break;
-				
+
 			case "e":
 				// Value is an error message
 				if ((string)$cell->v != '') {
@@ -329,7 +294,7 @@ class SimpleXLSX {
 			default:
 				// Value is a string
 				$value = (string)$cell->v;
-								
+
 				// Check for numeric values
 				if (is_numeric($value) && $dataType != 's') {
 					if ($value == (int)$value) $value = (int)$value;
@@ -345,24 +310,24 @@ class SimpleXLSX {
 		return $this->styles;
 	}
 	function _unzip( $filename, $is_data = false ) {
-		
+
 		// Clear current file
 		$this->datasec = array();
-			
+
 		if ($is_data) {
 
 			$this->package['filename'] = 'default.xlsx';
 			$this->package['mtime'] = time();
 			$this->package['size'] = strlen( $filename );
-			
+
 			$vZ = $filename;
 		} else {
-			
+
 			if (!is_readable($filename)) {
 				$this->error( 'File not found' );
 				return false;
 			}
-			
+
 			// Package information
 			$this->package['filename'] = $filename;
 			$this->package['mtime'] = filemtime( $filename );
@@ -376,7 +341,7 @@ class SimpleXLSX {
 		}
 		// Cut end of central directory
 /*		$aE = explode("\x50\x4b\x05\x06", $vZ);
-		
+
 		if (count($aE) == 1) {
 			$this->error('Unknown format');
 			return false;
@@ -548,7 +513,7 @@ class SimpleXLSX {
 			&&  ($entry_xmlobj = simplexml_load_string( $entry_xml )))
 			return $entry_xmlobj;
 
-			
+
 		$this->error('Entry not found: '.$name );
 		return false;
 	}
@@ -577,41 +542,41 @@ class SimpleXLSX {
 
 		// Read relations and search for officeDocument
 		if ( $relations = $this->getEntryXML("_rels/.rels" ) ) {
-			
+
 			foreach ($relations->Relationship as $rel) {
-				
+
 				if ($rel["Type"] == SimpleXLSX::SCHEMA_REL_OFFICEDOCUMENT) {
-					
+
 //						echo 'workbook found<br />';
 					// Found office document! Read workbook & relations...
-					
+
 					// Workbook
 					if ( $this->workbook = $this->getEntryXML( $rel['Target'] )) {
-						
+
 //						echo 'workbook read<br />';
-						
+
 						if ( $workbookRelations = $this->getEntryXML( dirname($rel['Target']) . '/_rels/workbook.xml.rels' )) {
-							
+
 //							echo 'workbook relations<br />';
-		
+
 							// Loop relations for workbook and extract sheets...
 							foreach ($workbookRelations->Relationship as $workbookRelation) {
 
 								$path = dirname($rel['Target']) . '/' . $workbookRelation['Target'];
-								
+
 								if ($workbookRelation['Type'] == SimpleXLSX::SCHEMA_REL_WORKSHEET) { // Sheets
-								
+
 //									echo 'sheet<br />';
-								
+
 									if ( $sheet = $this->getEntryXML( $path ) ) {
 										$this->sheets[ str_replace( 'rId', '', (string) $workbookRelation['Id']) ] = $sheet;
 //										echo '<pre>'.htmlspecialchars( print_r( $sheet, true ) ).'</pre>';
 									}
-													
+
 								} else if ($workbookRelation['Type'] == SimpleXLSX::SCHEMA_REL_SHAREDSTRINGS && $this->entryExists( $path )) { // 0.6.6
-									
+
 //									echo 'sharedstrings<br />';
-									
+
 									if ( $sharedStrings = $this->getEntryXML( $path ) ) {
 										foreach ($sharedStrings->si as $val) {
 											if (isset($val->t)) {
@@ -623,13 +588,13 @@ class SimpleXLSX {
 									}
 								} else if ($workbookRelation['Type'] == SimpleXLSX::SCHEMA_REL_STYLES) {
 									$this->styles = $this->getEntryXML( $path );
-									
+
 									$nf = array();
 									if ( $this->styles->numFmts->numFmt != NULL )
 										foreach( $this->styles->numFmts->numFmt as $v )
 											$nf[ (int) $v['numFmtId'] ] = (string) $v['formatCode'];
 
-									if ( $this->styles->cellXfs->xf != NULL )	
+									if ( $this->styles->cellXfs->xf != NULL )
 										foreach( $this->styles->cellXfs->xf as $v ) {
 											$v = (array) $v->attributes();
 											$v = $v['@attributes'];
@@ -644,7 +609,7 @@ class SimpleXLSX {
 //									print_r( $this->workbook_cell_formats );
 								}
 							}
-							
+
 							break;
 						}
 					}
@@ -668,4 +633,3 @@ class SimpleXLSX {
         return implode(' ', $value);
     }
 }
-?>
