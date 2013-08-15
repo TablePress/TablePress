@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP Excel Reader Class
+ * PHP Excel (97/2003) Reader Class
  *
  * @package TablePress
  * @subpackage Libraries
