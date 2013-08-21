@@ -181,7 +181,7 @@ class TablePress_Options_View extends TablePress_View {
         <p><?php
          	echo __( 'Uninstalling <strong>will permanently delete</strong> all TablePress tables and options from the database.', 'tablepress' ) . '<br />'
 	           	. __( 'It is recommended that you create a backup of the tables (by exporting the tables in the JSON format), in case you later change your mind.', 'tablepress' ) . '<br />'
-	           	. __( 'You will manually need to remove the plugin\'s files from the plugin folder afterwards.', 'tablepress' ) . '<br />'
+	           	. __( 'You will manually need to remove the plugin&#8217;s files from the plugin folder afterwards.', 'tablepress' ) . '<br />'
 	           	. __( 'Be very careful with this and only click the button if you know what you are doing!', 'tablepress' );
 		?></p>
 	    <p><a href="<?php echo TablePress::url( array( 'action' => 'uninstall_tablepress' ), true, 'admin-post.php' ); ?>" id="uninstall-tablepress" class="button"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></a></p>

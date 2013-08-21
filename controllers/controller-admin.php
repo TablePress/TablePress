@@ -1757,9 +1757,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />';
 		$output .= __( 'All tables, data, and options were deleted.', 'tablepress' );
 		if ( is_multisite() )
-			$output .= ' ' . __( 'You may now ask the network admin to delete the plugin\'s folder <code>tablepress</code> from the server, if no other site in the network uses it.', 'tablepress' );
+			$output .= ' ' . __( 'You may now ask the network admin to delete the plugin&#8217;s folder <code>tablepress</code> from the server, if no other site in the network uses it.', 'tablepress' );
 		else
-			$output .= ' ' . __( 'You may now manually delete the plugin\'s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page.', 'tablepress' );
+			$output .= ' ' . __( 'You may now manually delete the plugin&#8217;s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page.', 'tablepress' );
 		if ( $css_files_deleted ) {
 			$output .= ' ' . __( 'Your TablePress &#8220;Custom CSS&#8221; files have been deleted automatically.', 'tablepress' );
 		} else {
