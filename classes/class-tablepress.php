@@ -370,7 +370,7 @@ abstract class TablePress {
 			$redirect = add_query_arg( '_wpnonce', wp_create_nonce( self::nonce( $params['action'], $params['item'] ) ), $redirect );
 		}
 		wp_redirect( $redirect );
-		die();
+		exit;
 	}
 
 	/**
