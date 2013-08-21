@@ -229,15 +229,6 @@ class TablePress_List_View extends TablePress_View {
 		return "<a class=\"ajax-link\" href=\"{$url}\" data-action=\"{$action}\" data-item=\"{$item}\" data-target=\"{$target}\">{$text}</a>";
 	}
 
-	/**
-	 * Return the content for the help tab for this screen
-	 *
-	 * @since 1.0.0
-	 */
-	protected function help_tab_content() {
-		return 'Help for the List Tables screen';
-	}
-
 } // class TablePress_List_View
 
 /**

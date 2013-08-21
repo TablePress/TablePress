@@ -92,13 +92,4 @@ class TablePress_Add_View extends TablePress_View {
 		<?php
 	}
 
-	/**
-	 * Return the content for the help tab for this screen
-	 *
-	 * @since 1.0.0
-	 */
-	protected function help_tab_content() {
-		return 'Help for the Add New Table screen';
-	}
-
 } // class TablePress_Add_View

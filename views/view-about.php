@@ -202,13 +202,4 @@ class TablePress_About_View extends TablePress_View {
 		<?php
 	}
 
-	/**
-	 * Return the content for the help tab for this screen
-	 *
-	 * @since 1.0.0
-	 */
-	protected function help_tab_content() {
-		return 'Help for the About TablePress screen';
-	}
-
 } // class TablePress_About_View

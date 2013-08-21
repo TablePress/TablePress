@@ -583,15 +583,6 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Return the content for the help tab for this screen
-	 *
-	 * @since 1.0.0
-	 */
-	protected function help_tab_content() {
-		return 'Help for the Edit Table screen';
-	}
-
-	/**
 	 * Set the content for the WP feature pointer about the drag and drop and sort on the "Edit" screen
 	 *
 	 * @since 1.0.0

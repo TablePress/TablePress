@@ -257,15 +257,6 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Return the content for the help tab for this screen
-	 *
-	 * @since 1.0.0
-	 */
-	protected function help_tab_content() {
-		return 'Help for the Import Table screen';
-	}
-
-	/**
 	 * Set the content for the WP feature pointer about the WP-Table Reloaded import feature
 	 *
 	 * @since 1.0.0
