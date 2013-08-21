@@ -89,7 +89,7 @@ class TablePress_About_View extends TablePress_View {
 		<?php _e( 'Tables can be styled by changing and adding CSS commands.', 'tablepress' ); ?>
 		<?php _e( 'The plugin ships with default CSS stylesheets, which can be customized with own code or replaced with other stylesheets.', 'tablepress' ); ?>
 		<?php _e( 'For this, each table is given certain CSS classes that can be used as CSS selectors.', 'tablepress' ); ?>
-		<?php printf ( __( 'Please see the <a href="%s">documentation</a> for a list of these selectors and for styling examples.', 'tablepress' ), 'http://tablepress.org/documentation/' ); ?>
+		<?php printf( __( 'Please see the <a href="%s">documentation</a> for a list of these selectors and for styling examples.', 'tablepress' ), 'http://tablepress.org/documentation/' ); ?>
 	</p>
 		<?php
 	}
@@ -192,7 +192,7 @@ class TablePress_About_View extends TablePress_View {
 				foreach ( $data['plugin_languages'] as $lang_abbr => $language ) {
 					$link_template = ( ! empty( $language['translator_url'] ) ) ? '<a href="%1$s">%2$s</a>' : '%2$s';
 					$link = sprintf( $link_template, $language['translator_url'], $language['translator_name'] );
-					echo "<br />&middot; " . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
+					echo '<br />&middot; ' . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
 				}
 			?>
 		</p>
