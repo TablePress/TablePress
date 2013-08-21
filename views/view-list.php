@@ -69,7 +69,7 @@ class TablePress_List_View extends TablePress_View {
 
 		if ( $data['messages']['donation_message'] )
 			$this->add_header_message(
-				'<img alt="' . __( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=94" height="94" width="94" style="float:left;margin-right:10px;" />' .
+				'<img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=94" height="94" width="94" style="float:left;margin-right:10px;" />' .
 				__( 'Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin.', 'tablepress' ) . '<br /><br />' .
 				__( 'Thanks for using it! You&#8217;ve installed TablePress over a month ago.', 'tablepress' ) . ' ' .
 				sprintf( _n( 'If everything works and you are satisfied with the results of managing your %s table, isn&#8217;t that worth a coffee or two?', 'If everything works and you are satisfied with the results of managing your %s tables, isn&#8217;t that worth a coffee or two?', $data['table_count'], 'tablepress' ), $data['table_count'] ) . '<br />' .
@@ -180,7 +180,7 @@ class TablePress_List_View extends TablePress_View {
 			<?php _e( 'Click the corresponding links within the list to edit, copy, delete, or preview a table.', 'tablepress' ); ?>
 		</p>
 		<p>
-			<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="[' . TablePress::$shortcode . ' id=&lt;ID&gt; /]" readonly="readonly" />' ); ?>
+			<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id=<ID> /]" ) . '" readonly="readonly" />' ); ?>
 			<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
 			<?php printf( __( 'You can also click the &#8220;%s&#8221; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
 		</p>
@@ -396,22 +396,22 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$item['name'] = __( '(no name)', 'tablepress' );
 
 		if ( $user_can_edit_table )
-			$row_text = '<strong><a title="' . sprintf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ) . '" class="row-title" href="' . $edit_url . '">' . esc_html( $item['name'] ) . '</a></strong>';
+			$row_text = '<strong><a title="' . esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ) ) . '" class="row-title" href="' . $edit_url . '">' . esc_html( $item['name'] ) . '</a></strong>';
 		else
 			$row_text = '<strong>' . esc_html( $item['name'] ) . '</strong>';
 
 		$row_actions = array();
 		if ( $user_can_edit_table )
-			$row_actions['edit'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $edit_url, sprintf ( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Edit', 'tablepress' ) );
-		$row_actions['shortcode hide-if-no-js'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', '[' . TablePress::$shortcode . ' id=' . esc_attr( $item['id'] ) . ' /]', __( 'Show Shortcode', 'tablepress' ) );
+			$row_actions['edit'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $edit_url, esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Edit', 'tablepress' ) );
+		$row_actions['shortcode hide-if-no-js'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ), __( 'Show Shortcode', 'tablepress' ) );
 		if ( $user_can_copy_table )
-			$row_actions['copy'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, sprintf ( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Copy', 'tablepress' ) );
+			$row_actions['copy'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, esc_attr( sprintf( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Copy', 'tablepress' ) );
 		if ( $user_can_export_table )
-			$row_actions['export'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $export_url, sprintf ( __( 'Export &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), _x( 'Export', 'row action', 'tablepress' ) );
+			$row_actions['export'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $export_url, esc_attr( sprintf( __( 'Export &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), _x( 'Export', 'row action', 'tablepress' ) );
 		if ( $user_can_delete_table )
-			$row_actions['delete'] = sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, sprintf ( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Delete', 'tablepress' ) );
+			$row_actions['delete'] = sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, esc_attr( sprintf( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Delete', 'tablepress' ) );
 		if ( $user_can_preview_table )
-			$row_actions['table-preview'] = sprintf( '<a href="%1$s" title="%2$s" target="_blank">%3$s</a>', $preview_url, sprintf ( __( 'Show a preview of &#8220;%s&#8221;', 'tablepress' ), esc_attr( $item['name'] ) ), __( 'Preview', 'tablepress' ) );
+			$row_actions['table-preview'] = sprintf( '<a href="%1$s" title="%2$s" target="_blank">%3$s</a>', $preview_url, esc_attr( sprintf( __( 'Show a preview of &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Preview', 'tablepress' ) );
 
 		return $row_text . $this->row_actions( $row_actions );
 	}
@@ -472,7 +472,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br />' );
 
 		$readable_time = TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' );
-		return '<abbr title="' . $readable_time . '">' . $time_diff . '</abbr>';
+		return '<abbr title="' . esc_attr( $readable_time ) . '">' . $time_diff . '</abbr>';
 	}
 
 	/**
@@ -523,7 +523,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			echo "\t<option value='$name'$>$title</option>\n";
 		}
 		echo "</select>\n";
-		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . __( 'Apply', 'tablepress' ) . '" />' . "\n";
+		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . esc_attr__( 'Apply', 'tablepress' ) . '" />' . "\n";
 	}
 
 	/**
