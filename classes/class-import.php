@@ -374,10 +374,12 @@ class TablePress_Import {
 		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
 		$simplexlsx = new SimpleXLSX( $this->import_data, true );
 
-		if ( $simplexlsx->success() )
+		if ( $simplexlsx->success() ) {
 			$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $simplexlsx->rows() ) );
-		else
-			return false; // echo $simplexlsx->error();
+		} else {
+			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . '</strong><br /><br />' . $simplexlsx->error() . '<br />';
+			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
+		}
 	}
 
 	/**
