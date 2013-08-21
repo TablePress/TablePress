@@ -531,8 +531,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			),
 			'ru_RU' => array(
 				'name' => __( 'Russian', 'tablepress' ),
-				'translator_name' => 'Tomasina',
-				'translator_url' => 'http://tomasina.ru'
+				'translator_name' => 'Tomasina, Сергей Лапин',
+				'translator_url' => ''
 			),
 			'sk_SK' => array(
 				'name' => __( 'Slovak', 'tablepress' ),
