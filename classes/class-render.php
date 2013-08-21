@@ -582,7 +582,7 @@ class TablePress_Render {
 			if ( $this->render_options['first_column_th'] && 0 == $col_idx )
 				$tag = 'th';
 
-			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}>{$cell_content}</${tag}>";
+			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}>{$cell_content}</{$tag}>";
 			$this->colspan[ $row_idx ] = 1; // reset
 			$this->rowspan[ $col_idx ] = 1; // reset
 		}

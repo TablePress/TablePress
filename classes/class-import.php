@@ -190,7 +190,7 @@ class TablePress_Import {
 						$output .= "Error {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br />";
 						break;
 					case LIBXML_ERR_FATAL:
-						$output .= "Fatal {Error $error->code}: {$error->message} in line {$error->line}, column {$error->column}<br />";
+						$output .= "Fatal Error {$error->code}: {$error->message} in line {$error->line}, column {$error->column}<br />";
 						break;
 				}
 			}
