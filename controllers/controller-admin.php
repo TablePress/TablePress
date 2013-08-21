@@ -412,9 +412,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['import_type'] = ( ! empty( $_GET['import_type'] ) ) ? $_GET['import_type'] : 'add';
 				$data['import_existing_table'] = ( ! empty( $_GET['import_existing_table'] ) ) ? $_GET['import_existing_table'] : false;
 				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
-				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? $_GET['import_url'] : 'http://';
-				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? $_GET['import_server'] : ABSPATH;
-				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? $_GET['import_form_field'] : '';
+				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? stripslashes( $_GET['import_url'] ) : 'http://';
+				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? stripslashes( $_GET['import_server'] ) : ABSPATH;
+				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? stripslashes( $_GET['import_form_field'] ) : '';
 				$data['wp_table_reloaded_installed'] = ( false !== get_option( 'wp_table_reloaded_options', false ) && false !== get_option( 'wp_table_reloaded_tables', false ) );
 				$data['import_wp_table_reloaded_source'] = ( ! empty( $_GET['import_wp_table_reloaded_source'] ) ) ? $_GET['import_wp_table_reloaded_source'] : ( $data['wp_table_reloaded_installed'] ? 'db' : 'dump-file' );
 				break;
