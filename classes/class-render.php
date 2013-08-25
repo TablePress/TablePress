@@ -208,10 +208,10 @@ class TablePress_Render {
 		}
 
 		// load information about hidden rows and columns
-		$hidden_rows = array_keys( $this->table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0))
+		$hidden_rows = array_keys( $this->table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0)
 		$hidden_rows = array_merge( $hidden_rows, $this->render_options['hide_rows'] );
 		$hidden_rows = array_diff( $hidden_rows, $this->render_options['show_rows'] );
-		$hidden_columns = array_keys( $this->table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0))
+		$hidden_columns = array_keys( $this->table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0)
 		$hidden_columns = array_merge( $hidden_columns, $this->render_options['hide_columns'] );
 		$hidden_columns = array_merge( array_diff( $hidden_columns, $this->render_options['show_columns'] ) );
 
