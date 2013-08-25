@@ -593,7 +593,7 @@ $data['csstidy']['quoted_string_properties'] = array('content', 'font', 'font-fa
  *
  * @global array $data['csstidy']['quoted_string_properties']
  */
-$data['csstidy']['multiple_properties'] = array_merge( $data['csstidy']['color_values'], $data['csstidy']['unit_values'], array('background-image', 'transition') );
+$data['csstidy']['multiple_properties'] = array_merge( $data['csstidy']['color_values'], $data['csstidy']['unit_values'], array( 'transition', 'background-image', 'border-image', 'list-style-image' ) );
 
 /**
  * An array containing all predefined templates.
