@@ -1683,8 +1683,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
-		// Merge desired options with default render options (as not all of them are stored in the table options, but are just Shortcode parameters)
-		$render_options = shortcode_atts( $_render->get_default_render_options(), $table['options'] );
+		// Merge desired options with default render options (see TablePress_Controller_Frontend::shortcode_table())
+		$default_render_options = $_render->get_default_render_options();
+		$default_render_options = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_render_options );
+		$render_options = shortcode_atts( $default_render_options, $table['options'] );
+		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
 			'table_id' => $table_id,
