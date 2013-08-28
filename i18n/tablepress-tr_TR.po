@@ -2,27 +2,27 @@
 # This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress 1.0\n"
+"Project-Id-Version: TablePress 1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-04-15 18:25:34+00:00\n"
+"POT-Creation-Date: 2013-08-25 16:35:36+00:00\n"
+"PO-Revision-Date: 2013-08-28 03:06+0200\n"
+"Last-Translator: HakanEr <hakanerwptr@gmail.com>\n"
+"Language-Team: hakaner <hakanerwptr@gmail.com>\n"
+"Language: turkish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-08-02 21:51+0200\n"
-"Last-Translator: HakanEr <hakanerwptr@gmail.com>\n"
-"Language-Team: hakaner <hakanerwptr@gmail.com>\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"Language: turkish\n"
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: classes/class-admin-page-helper.php:78
+#: classes/class-admin-page-helper.php:79
 msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
 msgstr ""
 "<a href=\"http://tablepress.org/\">TablePress</a> kullandığınız için "
 "teşekkürler."
 
-#: classes/class-admin-page-helper.php:79
+#: classes/class-admin-page-helper.php:80
 msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
 msgstr "<a href=\"%s\">Bağışınız</a> ile eklentiye destek olun!"
 
@@ -50,15 +50,24 @@ msgstr ", (virgül)"
 msgid "\\t (tabulator)"
 msgstr "\\t (tabülatör)"
 
-#: classes/class-import.php:172
+#: classes/class-import.php:87
+msgid "XLS - Microsoft Excel 97-2003 (experimental)"
+msgstr "XLS - Microsoft Excel 97-2003 (deneysel)"
+
+#: classes/class-import.php:88
+msgid "XLSX - Microsoft Excel 2007-2013 (experimental)"
+msgstr "XLSX - Microsoft Excel 2007-2013 (deneysel)"
+
+#: classes/class-import.php:183 classes/class-import.php:286
+#: classes/class-import.php:380
 msgid "The imported file contains errors:"
 msgstr "İçe aktarılan dosyada hatalar mevcut:"
 
-#: classes/class-render.php:382
+#: classes/class-render.php:379
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr "<!-- %s ID kimliğine sahip tablo boş! -->"
 
-#: classes/class-render.php:458 views/view-list.php:414
+#: classes/class-render.php:455 views/view-list.php:405
 msgid "Edit"
 msgstr "Düzenle"
 
@@ -118,222 +127,257 @@ msgstr "Daha fazla bilgi:"
 msgid "%1$s &lsaquo; %2$s"
 msgstr "%1$s &lsaquo; %2$s"
 
-#: classes/class-view.php:165 classes/class-view.php:166
+#: classes/class-view.php:164 classes/class-view.php:165
 msgid "Do you really want to delete this table?"
 msgid_plural "Do you really want to delete these tables?"
 msgstr[0] "Bu tabloyu gerçekten silmek istiyor musunuz?"
 msgstr[1] "Bu tabloları gerçekten silmek istiyor musunuz?"
 
-#. #-#-#-#-#  plugin.pot (TablePress 0.9-RC)  #-#-#-#-#
-#. Plugin Name of the plugin/theme
-#: classes/class-view.php:384
+#: classes/class-view.php:383
 msgid "TablePress"
 msgstr "TablePress"
 
-#: classes/class-view.php:413 views/view-edit.php:399 views/view-edit.php:400
+#: classes/class-view.php:412 views/view-edit.php:400 views/view-edit.php:401
 #: views/view-options.php:54
 msgid "Save Changes"
 msgstr "Değişiklikleri Kaydet"
 
-#: controllers/controller-admin.php:171 views/view-about.php:86
+#: controllers/controller-admin.php:174 views/view-about.php:86
 #: views/view-list.php:185
 msgid "Table"
 msgstr "Tablo"
 
-#: controllers/controller-admin.php:172 controllers/controller-admin.php:173
+#: controllers/controller-admin.php:175 controllers/controller-admin.php:176
 msgid "Insert a Table from TablePress"
 msgstr "TablePress'den Bir Tablo Ekle"
 
-#: controllers/controller-admin.php:244
+#: controllers/controller-admin.php:247
 msgid "TablePress Table"
 msgstr "TablePress Tablosu"
 
-#: controllers/controller-admin.php:271
-msgid "TablePress Plugin page"
-msgstr "TablePress Eklenti sayfası"
-
-#: controllers/controller-admin.php:271
+#: controllers/controller-admin.php:274
 msgid "Plugin page"
 msgstr "Eklenti sayfası"
 
-#: controllers/controller-admin.php:285
+#: controllers/controller-admin.php:288
 msgid "Frequently Asked Questions"
 msgstr "Sıkça Sorulan Sorular"
 
-#: controllers/controller-admin.php:285
+#: controllers/controller-admin.php:288
 msgid "FAQ"
 msgstr "SSS"
 
-#: controllers/controller-admin.php:286
-msgid "Plugin Documentation"
-msgstr "Eklenti Belgeleri"
-
-#: controllers/controller-admin.php:286
+#: controllers/controller-admin.php:289
 msgid "Documentation"
 msgstr "Belgeler"
 
-#: controllers/controller-admin.php:287
+#: controllers/controller-admin.php:290
 msgid "Support"
 msgstr "Destek"
 
-#: controllers/controller-admin.php:288
+#: controllers/controller-admin.php:291
 msgid "Support TablePress with your donation!"
 msgstr "Bağış yaparak TablePress'i destekleyin!"
 
-#: controllers/controller-admin.php:288
+#: controllers/controller-admin.php:291
 msgid "Donate"
 msgstr "Bağış Yap"
 
-#: controllers/controller-admin.php:314 controllers/controller-admin.php:379
-#: controllers/controller-admin.php:697 controllers/controller-admin.php:755
-#: controllers/controller-admin.php:805 controllers/controller-admin.php:928
-#: controllers/controller-admin.php:958 controllers/controller-admin.php:1031
-#: controllers/controller-admin.php:1041 controllers/controller-admin.php:1576
-#: controllers/controller-admin.php:1603 controllers/controller-admin.php:1638
-#: controllers/controller-admin.php:1672 controllers/controller-admin.php:1740
+#: controllers/controller-admin.php:317 controllers/controller-admin.php:385
+#: controllers/controller-admin.php:758 controllers/controller-admin.php:816
+#: controllers/controller-admin.php:866 controllers/controller-admin.php:935
+#: controllers/controller-admin.php:965 controllers/controller-admin.php:1038
+#: controllers/controller-admin.php:1048 controllers/controller-admin.php:1579
+#: controllers/controller-admin.php:1606 controllers/controller-admin.php:1641
+#: controllers/controller-admin.php:1677 controllers/controller-admin.php:1716
+#: controllers/controller-admin.php:1743
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Bu sayfaya erişmek için yeterli izniniz yok."
 
-#: controllers/controller-admin.php:396
+#: controllers/controller-admin.php:402
 msgctxt ""
 "Default CSV delimiter in the translated language (\";\", \",\", or \"tab\")"
 msgid ","
 msgstr ","
 
-#: controllers/controller-admin.php:457
+#: controllers/controller-admin.php:463
+msgid "Czech"
+msgstr "Çekçe"
+
+#: controllers/controller-admin.php:468
 msgid "German"
 msgstr "Almanca"
 
-#: controllers/controller-admin.php:462
+#: controllers/controller-admin.php:473
 msgid "English"
 msgstr "İngilizce"
 
-#: controllers/controller-admin.php:467
+#: controllers/controller-admin.php:478
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: controllers/controller-admin.php:472
+#: controllers/controller-admin.php:483
+msgid "Finnish"
+msgstr "Fince"
+
+#: controllers/controller-admin.php:488
 msgid "French"
 msgstr "Fransızca"
 
-#: controllers/controller-admin.php:477
+#: controllers/controller-admin.php:493
+msgid "Hebrew"
+msgstr "İbranice"
+
+#: controllers/controller-admin.php:498
+msgid "Italian"
+msgstr "İtalyanca"
+
+#: controllers/controller-admin.php:503
+msgid "Icelandic"
+msgstr "İzlandaca"
+
+#: controllers/controller-admin.php:508
+msgid "Japanese"
+msgstr "Japonca"
+
+#: controllers/controller-admin.php:513
+msgid "Latvian"
+msgstr "Letonca"
+
+#: controllers/controller-admin.php:518
+msgid "Dutch"
+msgstr "Felemenkçe"
+
+#: controllers/controller-admin.php:523
 msgid "Polish"
 msgstr "Lehçe"
 
-#: controllers/controller-admin.php:482
+#: controllers/controller-admin.php:528
+msgid "Brazilian Portuguese"
+msgstr "Brezilya Portekizcesi"
+
+#: controllers/controller-admin.php:533
+msgid "Russian"
+msgstr "Rusça"
+
+#: controllers/controller-admin.php:538
 msgid "Slovak"
 msgstr "Slovakça"
 
-#: controllers/controller-admin.php:487
+#: controllers/controller-admin.php:543
+msgid "Turkish"
+msgstr "Türkçe"
+
+#: controllers/controller-admin.php:548
 msgid "Chinese (Simplified)"
 msgstr "Çince (Basitleştirilmiş)"
 
-#: controllers/controller-admin.php:539 controllers/controller-admin.php:540
-#: controllers/controller-admin.php:541
+#: controllers/controller-admin.php:600 controllers/controller-admin.php:601
+#: controllers/controller-admin.php:602
 msgid "All Tables"
 msgstr "Tüm Tablolar"
 
-#: controllers/controller-admin.php:546 controllers/controller-admin.php:547
+#: controllers/controller-admin.php:607 controllers/controller-admin.php:608
 #: views/view-add.php:41
 msgid "Add New Table"
 msgstr "Yeni Tablo Ekle"
 
-#: controllers/controller-admin.php:548
+#: controllers/controller-admin.php:609
 msgid "Add New"
 msgstr "Yeni Ekle"
 
-#: controllers/controller-admin.php:553
+#: controllers/controller-admin.php:614
 msgid "Edit Table"
 msgstr "Tabloyu Düzenle"
 
-#: controllers/controller-admin.php:560 controllers/controller-admin.php:561
+#: controllers/controller-admin.php:621 controllers/controller-admin.php:622
 msgid "Import a Table"
 msgstr "Bir Tablo İçe Aktar"
 
-#: controllers/controller-admin.php:562
+#: controllers/controller-admin.php:623
 msgctxt "navigation bar"
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: controllers/controller-admin.php:567 controllers/controller-admin.php:568
+#: controllers/controller-admin.php:628 controllers/controller-admin.php:629
 msgid "Export a Table"
 msgstr "Bir Tablo Dışa Aktar"
 
-#: controllers/controller-admin.php:569
+#: controllers/controller-admin.php:630
 msgctxt "navigation bar"
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: controllers/controller-admin.php:574 controllers/controller-admin.php:575
-#: controllers/controller-admin.php:576
+#: controllers/controller-admin.php:635 controllers/controller-admin.php:636
+#: controllers/controller-admin.php:637
 msgid "Plugin Options"
 msgstr "Eklenti Seçenekleri"
 
-#: controllers/controller-admin.php:581 controllers/controller-admin.php:583
+#: controllers/controller-admin.php:642 controllers/controller-admin.php:644
 msgid "About"
 msgstr "Hakkında"
 
-#: controllers/controller-admin.php:582
+#: controllers/controller-admin.php:643
 msgid "About TablePress"
 msgstr "TablePress Hakkında"
 
-#: controllers/controller-admin.php:1111
+#: controllers/controller-admin.php:1118
 msgid "Imported from Manual Input"
 msgstr "Manuel Girdiden İçe Aktarıldı"
 
-#: controllers/controller-admin.php:1669
-#: controllers/controller-admin_ajax.php:236
+#: controllers/controller-admin.php:1674
+#: controllers/controller-admin_ajax.php:230
 msgid "The preview could not be loaded."
 msgstr "Önizleme yüklenemedi."
 
-#: controllers/controller-admin.php:1669 controllers/controller-admin.php:1677
-#: views/view-edit.php:397 views/view-list.php:423
+#: controllers/controller-admin.php:1674 controllers/controller-admin.php:1682
+#: views/view-edit.php:398 views/view-list.php:414
 #: views/view-preview_table.php:55
 msgid "Preview"
 msgstr "Önizleme"
 
-#: controllers/controller-admin.php:1677
+#: controllers/controller-admin.php:1682
 msgid "The table could not be loaded."
 msgstr "Tablo yüklenemedi."
 
-#: controllers/controller-admin.php:1754
+#: controllers/controller-admin.php:1760
 msgid "TablePress was uninstalled successfully."
 msgstr "TablePress başarıyla kaldırıldı."
 
-#: controllers/controller-admin.php:1755
+#: controllers/controller-admin.php:1761
 msgid "All tables, data, and options were deleted."
 msgstr "Tüm tablolar, veri ve seçenekler silindi."
 
-#: controllers/controller-admin.php:1757
+#: controllers/controller-admin.php:1763
 msgid ""
-"You may now ask the network admin to delete the plugin's folder "
+"You may now ask the network admin to delete the plugin&#8217;s folder "
 "<code>tablepress</code> from the server, if no other site in the network "
 "uses it."
 msgstr ""
-"Eğer ağdaki başka bir sitede kullanılmıyorsa, artık ağ yöneticisinden "
-"sunucudaki <code>tablepress</code> eklenti klasörünü silmesini "
+"Eğer ağdaki başka bir sitede kullanılmıyorsa, ağ yöneticisinden "
+"<code>tablepress</code> eklenti klasörünü sunucudan silmesini "
 "isteyebilirsiniz."
 
-#: controllers/controller-admin.php:1759
+#: controllers/controller-admin.php:1765
 msgid ""
-"You may now manually delete the plugin's folder <code>tablepress</code> from "
-"the <code>plugins</code> directory on your server or use the &#8220;"
-"Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; "
-"page."
+"You may now manually delete the plugin&#8217;s folder <code>tablepress</"
+"code> from the <code>plugins</code> directory on your server or use the "
+"&#8220;Delete&#8221; link for TablePress on the WordPress &#8220;"
+"Plugins&#8221; page."
 msgstr ""
-"Artık el ile sunucunuz üzerinde bulunan <code>plugins</code> dizinindeki "
+"Şimdi el ile sunucunuzda bulunan <code>plugins</code> dizinindeki "
 "<code>tablepress</code> eklenti klasörünü silebilir veya WordPress &#8220;"
-"Eklentiler&#8221; sayfasından TablePress için &#8220;Sil&#8221; bağlantısını "
-"kullanabilirsiniz."
+"Eklentiler&#8221; sayfasındaki TablePress için &#8220;Sil&#8221; "
+"bağlantısını kullanabilirsiniz."
 
-#: controllers/controller-admin.php:1761
+#: controllers/controller-admin.php:1767
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
 msgstr ""
 "TablePress &#8220;Kişisel CSS&#8221; dosyalarınız otomatik olarak silindi."
 
-#: controllers/controller-admin.php:1764
+#: controllers/controller-admin.php:1770
 msgid ""
 "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files "
 "from the server."
@@ -341,7 +385,7 @@ msgstr ""
 "Ayrıca lütfen ondan sunucudan TablePress &#8220;Kişisel CSS&#8221; "
 "dosyalarını silmesini isteyin."
 
-#: controllers/controller-admin.php:1766
+#: controllers/controller-admin.php:1772
 msgid ""
 "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in "
 "the <code>wp-content</code> folder."
@@ -349,35 +393,35 @@ msgstr ""
 "Şimdi de <code>wp-content</code> klasöründeki TablePress &#8220;Kişisel "
 "CSS&#8221; dosyalarını silebilirsiniz."
 
-#: controllers/controller-admin.php:1770
+#: controllers/controller-admin.php:1776
 msgid "Go to &#8220;Plugins&#8221; page"
 msgstr "&#8220;Eklentiler&#8221; sayfasına gidin"
 
-#: controllers/controller-admin.php:1771
+#: controllers/controller-admin.php:1777
 msgid "Go to Dashboard"
 msgstr "Yönetici paneline gidin"
 
-#: controllers/controller-admin.php:1773 views/view-options.php:185
-#: views/view-options.php:192
+#: controllers/controller-admin.php:1779 views/view-options.php:180
+#: views/view-options.php:187
 msgid "Uninstall TablePress"
 msgstr "TablePress'i Kaldır"
 
-#: controllers/controller-admin_ajax.php:229 views/view-preview_table.php:66
+#: controllers/controller-admin_ajax.php:223 views/view-preview_table.php:66
 msgid "This is a preview of your table."
 msgstr "Bu, tablonuzun bir önizlemesidir."
 
-#: controllers/controller-admin_ajax.php:230
+#: controllers/controller-admin_ajax.php:224
 msgid "Because of CSS styling, the table might look different on your page!"
 msgstr "CSS stili nedeniyle, tablo sayfanız üzerinde farklı görünebilir!"
 
-#: controllers/controller-admin_ajax.php:231
+#: controllers/controller-admin_ajax.php:225
 msgid ""
 "The features of the DataTables JavaScript library are also not visible in "
 "this preview!"
 msgstr ""
 "Ayrıca, DataTable JavaScript kütüphane özellikleri de bu önizlemede görünmez!"
 
-#: controllers/controller-admin_ajax.php:232 views/view-preview_table.php:67
+#: controllers/controller-admin_ajax.php:226 views/view-preview_table.php:67
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it into the editor."
@@ -385,12 +429,12 @@ msgstr ""
 "Bir sayfa, yazı veya metin bileşeni içine tabloyu eklemek için, %s Kısa "
 "kodunu kopyalayıp düzenleyiciye yapıştırın."
 
-#: controllers/controller-frontend.php:458 views/view-list.php:479
+#: controllers/controller-frontend.php:466 views/view-list.php:470
 msgid "%s ago"
 msgstr "%s önce"
 
 #: models/model-table.php:346 views/view-editor_button_thickbox.php:286
-#: views/view-export.php:117 views/view-import.php:190 views/view-list.php:405
+#: views/view-export.php:117 views/view-import.php:190 views/view-list.php:396
 msgid "(no name)"
 msgstr "(isimsiz)"
 
@@ -465,11 +509,12 @@ msgstr "İlk önce, bir tablo eklemeniz veya içe aktarmanız gerekir."
 #: views/view-about.php:77
 msgid ""
 "This means that you either let the plugin create an empty table for you or "
-"that you load an existing table from either a CSV, HTML, or JSON file."
+"that you load an existing table from either a CSV, HTML, JSON, XLS, or XLSX "
+"file."
 msgstr ""
 "Bu, ya eklentinin sizin için boş bir tablo oluşturmasına izin vermeniz ya da "
-"bir CSV, HTML veya JSON dosyasından mevcut bir tablo yüklemeniz anlamına "
-"gelir."
+"bir CSV, HTML, JSON, XLS, veya XLSX dosyasındaki mevcut bir tabloyu "
+"yüklemeniz anlamına gelir."
 
 #: views/view-about.php:80
 msgid ""
@@ -481,7 +526,7 @@ msgstr ""
 "Sonra, verileri düzenleyebilir ya da tablonun yapısını değiştirebilirsiniz "
 "(örn. satır veya sütun eklemek, silmek, taşımak, yerdeğiştirmek ya da onları "
 "sıralamak) ve eğer isterseniz alternatif satır renkleri veya ad ve "
-"açıklamanın yazdırılıp yazdırılmayacağı gibi belirli tablo özelliklerini "
+"açıklamanın yazılıp yazılmayacağı gibi belirli tablo özelliklerini "
 "seçebilirsiniz."
 
 #: views/view-about.php:81
@@ -661,8 +706,8 @@ msgstr ""
 "Daha sonra istediğiniz zaman tablonuzun adını, açıklamasını, ve boyutunu "
 "değiştirebilirsiniz."
 
-#: views/view-add.php:71 views/view-edit.php:199
-#: views/view-editor_button_thickbox.php:236 views/view-list.php:319
+#: views/view-add.php:71 views/view-edit.php:200
+#: views/view-editor_button_thickbox.php:236 views/view-list.php:310
 msgid "Table Name"
 msgstr "Tablo Adı"
 
@@ -674,8 +719,8 @@ msgstr "Tablo Adını Buraya Girin"
 msgid "The name or title of your table."
 msgstr "Tablonuzun adı veya başlığı."
 
-#: views/view-add.php:76 views/view-edit.php:203
-#: views/view-editor_button_thickbox.php:237 views/view-list.php:320
+#: views/view-add.php:76 views/view-edit.php:204
+#: views/view-editor_button_thickbox.php:237 views/view-list.php:311
 msgid "Description"
 msgstr "Açıklama"
 
@@ -695,8 +740,8 @@ msgstr "Tablo içeriğinizin bir açıklaması."
 msgid "Number of Rows"
 msgstr "Satır sayısı"
 
-#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:376
-#: views/view-edit.php:379
+#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:377
+#: views/view-edit.php:380
 msgid "This field must contain a positive number."
 msgstr "Bu alan pozitif bir sayı içermelidir."
 
@@ -720,98 +765,111 @@ msgstr "Tablo başarıyla kaydedildi."
 msgid "The table was added successfully."
 msgstr "Tablo başarıyla eklendi."
 
+#: views/view-edit.php:46 views/view-list.php:99 views/view-list.php:100
+msgid "The table was copied successfully."
+msgid_plural "The tables were copied successfully."
+msgstr[0] "Tablo başarıyla kopyalandı."
+msgstr[1] "Tablolar başarıyla kopyalandı."
+
 #: views/view-edit.php:46
+msgid ""
+"You are now seeing the copied table, which has the table ID &#8220;%s&#8221;."
+msgstr ""
+"Şu an tablo ID kimliği &#8220;%s&#8221; XXT1 olan kopyalanmış tabloyu "
+"görüyorsunuz."
+
+#: views/view-edit.php:47
 msgid "The table was imported successfully."
 msgstr "Tablo başarıyla içe aktarıldı."
 
-#: views/view-edit.php:47
+#: views/view-edit.php:48
 msgid "The table was imported successfully from WP-Table Reloaded."
 msgstr "Tablo WP-Tablo Reloaded tarafından başarıyla içe aktarıldı."
 
-#: views/view-edit.php:48 views/view-list.php:98
+#: views/view-edit.php:49 views/view-list.php:98
 msgid "Error: The table could not be saved."
 msgstr "Hata: Tablo kaydedilemedi."
 
-#: views/view-edit.php:49 views/view-list.php:97
+#: views/view-edit.php:50 views/view-list.php:97
 msgid "Error: The table could not be deleted."
 msgstr "Hata: Tablo silinemedi."
 
-#: views/view-edit.php:50
+#: views/view-edit.php:51
 msgid "The table was saved successfully, and the table ID was changed."
 msgstr "Tablo başarıyla kaydedildi ve tablo ID kimliği değiştirildi."
 
-#: views/view-edit.php:51
+#: views/view-edit.php:52
 msgid ""
 "The table was saved successfully, but the table ID could not be changed!"
 msgstr "Tablo başarıyla kaydedildi fakat tablo ID kimliği değiştirilemedi!"
 
-#: views/view-edit.php:72
+#: views/view-edit.php:73
 msgctxt "Insert Link dialog"
 msgid "Insert/edit link"
 msgstr "Bağlantı ekle/düzenle"
 
-#: views/view-edit.php:73
+#: views/view-edit.php:74
 msgctxt "Insert Link dialog"
 msgid "Update"
 msgstr "Güncelle"
 
-#: views/view-edit.php:74
+#: views/view-edit.php:75
 msgctxt "Insert Link dialog"
 msgid "Add Link"
 msgstr "Bağlantı Ekle"
 
-#: views/view-edit.php:75
+#: views/view-edit.php:76
 msgctxt "Insert Link dialog"
 msgid "(no title)"
 msgstr "(başlıksız)"
 
-#: views/view-edit.php:76
+#: views/view-edit.php:77
 msgctxt "Insert Link dialog"
 msgid "No matches found."
 msgstr "Eşleşme bulunamadı."
 
-#: views/view-edit.php:77
+#: views/view-edit.php:78
 msgctxt "Insert Link dialog"
 msgid "Link Text"
 msgstr "Bağlantı Metni"
 
-#: views/view-edit.php:88
+#: views/view-edit.php:89
 msgid "You can not delete all table rows!"
 msgstr "Tüm tablo satırlarını silemezsiniz!"
 
-#: views/view-edit.php:89
+#: views/view-edit.php:90
 msgid "You can not delete all table columns!"
 msgstr "Tüm tablo sütunlarını silemezsiniz!"
 
-#: views/view-edit.php:90
+#: views/view-edit.php:91
 msgid "You did not select any rows!"
 msgstr "Herhangi bir satır seçmediniz!"
 
-#: views/view-edit.php:91
+#: views/view-edit.php:92
 msgid "You did not select any columns!"
 msgstr "Herhangi bir sütun seçmediniz!"
 
-#: views/view-edit.php:92
+#: views/view-edit.php:93
 msgid "The value for the number of rows is invalid!"
 msgstr "Satır sayısı değeri geçersiz!"
 
-#: views/view-edit.php:93
+#: views/view-edit.php:94
 msgid "The value for the number of columns is invalid!"
 msgstr "Sütun sayısı değeri geçersiz!"
 
-#: views/view-edit.php:94 views/view-edit.php:95
+#: views/view-edit.php:95 views/view-edit.php:96
 msgid "Do you really want to delete the selected row?"
 msgid_plural "Do you really want to delete the selected rows?"
 msgstr[0] "Seçilen satırı gerçekten silmek istiyor musunuz?"
 msgstr[1] "Seçilen satırları gerçekten silmek istiyor musunuz?"
 
-#: views/view-edit.php:96 views/view-edit.php:97
+#: views/view-edit.php:97 views/view-edit.php:98
 msgid "Do you really want to delete the selected column?"
 msgid_plural "Do you really want to delete the selected columns?"
 msgstr[0] "Seçilen sütunu gerçekten silmek istiyor musunuz?"
 msgstr[1] "Seçilen sütunları gerçekten silmek istiyor musunuz?"
 
-#: views/view-edit.php:98
+#: views/view-edit.php:99
 msgid ""
 "Please click into the cell that you want to edit using the &#8220;Advanced "
 "Editor&#8221;."
@@ -819,7 +877,7 @@ msgstr ""
 "&#8220;Gelişmiş Düzenleyici&#8221; kullanarak düzenlemek istediğiniz hücreye "
 "tıklayınız."
 
-#: views/view-edit.php:99
+#: views/view-edit.php:100
 msgid ""
 "To combine cells within a column, click into the cell below the cell that "
 "has the content the combined cells shall have."
@@ -827,7 +885,7 @@ msgstr ""
 "Bir sütundaki hücreleri birleştirmek için, birleştirilecek hücrelerin sahip "
 "olacağı içeriğe sahip olan hücreye tıklayınız."
 
-#: views/view-edit.php:100
+#: views/view-edit.php:101
 msgid ""
 "To combine cells within a row, click into the cell to the right of the cell "
 "that has the content the combined cells shall have."
@@ -835,7 +893,7 @@ msgstr ""
 "Bir satırdaki hücreleri birleştirmek için, birleştirilecek hücrelerin sahip "
 "olacağı içeriğe sahip olan hücrenin sağındaki hücreye tıklayınız."
 
-#: views/view-edit.php:101
+#: views/view-edit.php:102
 msgid ""
 "Attention: You have enabled the usage of the DataTables JavaScript library "
 "for features like sorting, search, or pagination."
@@ -843,12 +901,12 @@ msgstr ""
 "Dikkat: Sıralama, arama ya da sayfalama gibi özellikler için DataTables "
 "JavaScript kütüphane kullanımını etkinleştirdiniz."
 
-#: views/view-edit.php:102
+#: views/view-edit.php:103
 msgid "Unfortunately, these can not be used in tables with combined cells."
 msgstr ""
 "Ne yazık ki, bu birleştirilmiş hücrelere sahip tablolarda kullanılamaz."
 
-#: views/view-edit.php:103
+#: views/view-edit.php:104
 msgid ""
 "Do you want to proceed and automatically turn off the usage of DataTables "
 "for this table?"
@@ -856,22 +914,22 @@ msgstr ""
 "Devam etmek ve bu tablonun DataTables kullanımını otomatik olarak kapatmak "
 "istiyor musunuz?"
 
-#: views/view-edit.php:104
+#: views/view-edit.php:105
 msgid "Please click into the cell that you want to add a link to."
 msgstr "Bir bağlantı eklemek istediğiniz hücreye tıklayınız."
 
-#: views/view-edit.php:105
+#: views/view-edit.php:106
 msgid ""
 "You can then enter the Link URL and Text or choose an existing page or post."
 msgstr ""
 "Bağlantı URL'i ve Metin girebilir veya mevcut bir sayfa veya yazıyı "
 "seçebilirsiniz."
 
-#: views/view-edit.php:106
+#: views/view-edit.php:107
 msgid "Please click into the cell that you want to add an image to."
 msgstr "Bir resim eklemek istediğiniz hücreye tıklayınız."
 
-#: views/view-edit.php:107
+#: views/view-edit.php:108
 msgid ""
 "The Media Library will open, where you can select or upload the desired "
 "image or enter the image URL."
@@ -879,15 +937,15 @@ msgstr ""
 "İstediğiniz resmi seçmeniz, yüklemeniz veya resim URL'ini girebilmeniz için "
 "Ortam Kitaplığı açılacaktır."
 
-#: views/view-edit.php:108
+#: views/view-edit.php:109
 msgid "Click the &#8220;%s&#8221; button to insert the image."
 msgstr "Resim eklemek için &#8220;%s&#8221; butonuna tıklayınız."
 
-#: views/view-edit.php:108
+#: views/view-edit.php:109
 msgid "Insert into Post"
 msgstr "Yazıya Ekle"
 
-#: views/view-edit.php:109
+#: views/view-edit.php:110
 msgid ""
 "The changes to this table were not saved yet and will be lost if you "
 "navigate away from this page."
@@ -895,31 +953,31 @@ msgstr ""
 "Bu tablodaki değişiklikler henüz kaydedilmedi ve eğer bu sayfadan "
 "ayrılırsanız onlar kaybolacaktır."
 
-#: views/view-edit.php:110
+#: views/view-edit.php:111
 msgid "The Table Preview is being loaded..."
 msgstr "Tablo Önizlemesi yükleniyor..."
 
-#: views/view-edit.php:111
+#: views/view-edit.php:112
 msgid "The Table Preview could not be loaded."
 msgstr "Tablo Önizlemesi yüklenemedi."
 
-#: views/view-edit.php:112
+#: views/view-edit.php:113
 msgid "Saving successful"
 msgstr "Kaydetme başarılı"
 
-#: views/view-edit.php:113
+#: views/view-edit.php:114
 msgid "Saving failed"
 msgstr "Kaydetme başarısız"
 
-#: views/view-edit.php:114
+#: views/view-edit.php:115
 msgid "Changes are being saved..."
 msgstr "Değişiklikler kaydediliyor..."
 
-#: views/view-edit.php:115
+#: views/view-edit.php:116
 msgid "The Table ID field can not be empty. Please enter a Table ID!"
 msgstr "Tablo kimlik ID alanı boş bırakılamaz. Lütfen bir tablo kimliği girin!"
 
-#: views/view-edit.php:116
+#: views/view-edit.php:117
 msgid ""
 "The Table ID &#8220;0&#8221; is not supported. Please enter a different "
 "Table ID!"
@@ -927,7 +985,7 @@ msgstr ""
 "&#8220;0&#8221; tablo kimliği desteklenmiyor. Lütfen farklı bir tablo ID "
 "kimliği girin!"
 
-#: views/view-edit.php:117
+#: views/view-edit.php:118
 msgid ""
 "Do you really want to change the Table ID? All Shortcodes for this table in "
 "your pages and posts will have to be adjusted!"
@@ -935,71 +993,71 @@ msgstr ""
 "Tablo kimliğini gerçekten değiştirmek istiyor musunuz? Bu tablo için sayfa "
 "ve yazılarınızdaki tüm Kısa kodların ayarlanması gerekir!"
 
-#: views/view-edit.php:118
+#: views/view-edit.php:119
 msgid ""
 "The entered value in the field &#8220;Extra CSS classes&#8221; is invalid."
 msgstr "&#8220;İlave CSS sınıfları&#8221; alanına girilen değer geçersiz."
 
-#: views/view-edit.php:119
+#: views/view-edit.php:120
 msgid ""
 "The entered value in the field &#8220;Pagination Entries&#8221; is not a "
 "number."
 msgstr ""
 "&#8220;Sayfalandırma Girdileri&#8221; alanına girilen değer bir sayı değil."
 
-#: views/view-edit.php:120 views/view-edit.php:258
+#: views/view-edit.php:121 views/view-edit.php:259
 msgid "Sort ascending"
 msgstr "Artan sıralama"
 
-#: views/view-edit.php:121 views/view-edit.php:258
+#: views/view-edit.php:122 views/view-edit.php:259
 msgid "Sort descending"
 msgstr "Azalan sıralama"
 
-#: views/view-edit.php:122
+#: views/view-edit.php:123
 msgid "You can not add rowspan to the first row!"
 msgstr "İlk satıra rowspan ekleyemezsiniz!"
 
-#: views/view-edit.php:123
+#: views/view-edit.php:124
 msgid "You can not add colspan to the first column!"
 msgstr "ilk sütuna colspan ekleyemezsiniz!"
 
-#: views/view-edit.php:124
+#: views/view-edit.php:125
 msgid "You can not connect cells into the table head row!"
 msgstr "Tablonun baş satırına hücre bağlayamazsınız!"
 
-#: views/view-edit.php:125
+#: views/view-edit.php:126
 msgid "You can not connect cells out of the table foot row!"
 msgstr "Tablonun alt bölüm satırına hücre bağlayamazsınız!"
 
-#: views/view-edit.php:131
+#: views/view-edit.php:132
 msgid "Table Information"
 msgstr "Tablo Bilgileri"
 
-#: views/view-edit.php:132
+#: views/view-edit.php:133
 msgid "Table Content"
 msgstr "Tablo İçeriği"
 
-#: views/view-edit.php:133
+#: views/view-edit.php:134
 msgid "Table Manipulation"
 msgstr "Tablo Manipülasyon"
 
-#: views/view-edit.php:134 views/view-edit.php:520
+#: views/view-edit.php:135 views/view-edit.php:524
 msgid "Table Options"
 msgstr "Tablo Seçenekleri"
 
-#: views/view-edit.php:135
+#: views/view-edit.php:136
 msgid "Features of the DataTables JavaScript library"
 msgstr "DataTables JavaScript kütüphanesi özellikleri"
 
-#: views/view-edit.php:161
+#: views/view-edit.php:162
 msgid "Insert into Table"
 msgstr "Tablo içine ekle"
 
-#: views/view-edit.php:190
+#: views/view-edit.php:191
 msgid "Table ID"
 msgstr "Tablo ID kimliği"
 
-#: views/view-edit.php:193
+#: views/view-edit.php:194
 msgid ""
 "The Table ID can only consist of letters, numbers, hyphens (-), and "
 "underscores (_)."
@@ -1007,55 +1065,55 @@ msgstr ""
 "Tablo kimliği sadece harfler, sayılar, tire (-) ve alt çizgiden (_) "
 "oluşabilir."
 
-#: views/view-edit.php:194
+#: views/view-edit.php:195
 msgid "Shortcode"
 msgstr "Kısa kod"
 
-#: views/view-edit.php:207 views/view-list.php:323
+#: views/view-edit.php:208 views/view-list.php:314
 msgid "Last Modified"
 msgstr "Son Değişiklik"
 
-#: views/view-edit.php:208
+#: views/view-edit.php:209
 msgid "%1$s by %2$s"
 msgstr "%2$s ile %1$s"
 
-#: views/view-edit.php:328
+#: views/view-edit.php:329
 msgid "Insert Link"
 msgstr "Bağlantı Ekle"
 
-#: views/view-edit.php:329
+#: views/view-edit.php:330
 msgid "Insert Image"
 msgstr "Resim Ekle"
 
-#: views/view-edit.php:330
+#: views/view-edit.php:331
 msgid "Advanced Editor"
 msgstr "Gelişmiş Düzenleyici"
 
-#: views/view-edit.php:333
+#: views/view-edit.php:334
 msgid "Combine cells"
 msgstr "Hücreleri birleştir"
 
-#: views/view-edit.php:334
+#: views/view-edit.php:335
 msgid "in a column (rowspan)"
 msgstr "bir sütuna (rowspan)"
 
-#: views/view-edit.php:335
+#: views/view-edit.php:336
 msgid "in a row (colspan)"
 msgstr "bir satıra (colspan)"
 
-#: views/view-edit.php:336
+#: views/view-edit.php:337
 msgid "?"
 msgstr "?"
 
-#: views/view-edit.php:336
+#: views/view-edit.php:337
 msgid "Help on combining cells"
 msgstr "Hücreleri birleştirme yardımı"
 
-#: views/view-edit.php:338
+#: views/view-edit.php:339
 msgid "Table cells can span across more than one column or row."
 msgstr "Tablo hücreleri birden fazla sütun veya satıra yayılabilir."
 
-#: views/view-edit.php:339
+#: views/view-edit.php:340
 msgid ""
 "Combining consecutive cells within the same row is called &#8220;"
 "colspanning&#8221;."
@@ -1063,7 +1121,7 @@ msgstr ""
 "Aynı satır içinde art arda olan hücreleri birleştirmeye &#8220;"
 "colspanning&#8221; denir."
 
-#: views/view-edit.php:340
+#: views/view-edit.php:341
 msgid ""
 "Combining consecutive cells within the same column is called &#8220;"
 "rowspanning&#8221;."
@@ -1071,7 +1129,7 @@ msgstr ""
 "Aynı sütun içinde art arda olan hücreleri birleştirmeye &#8220;"
 "rowspanning&#8221; denir."
 
-#: views/view-edit.php:341
+#: views/view-edit.php:342
 msgid ""
 "To combine adjacent cells in a row, add the keyword <code>#colspan#</code> "
 "to the cell to the right of the one with the content for the combined cell "
@@ -1081,7 +1139,7 @@ msgstr ""
 "kullanarak içeriğe sahip olan hücre ile bir sağındaki hücre içine "
 "<code>#colspan#</code> anahtar kelimesini ekleyin."
 
-#: views/view-edit.php:342
+#: views/view-edit.php:343
 msgid ""
 "To combine adjacent cells in a column, add the keyword <code>#rowspan#</"
 "code> to the cell below the one with the content for the combined cell by "
@@ -1091,13 +1149,13 @@ msgstr ""
 "kullanarak içeriğe sahip olan hücre ile bir sağındaki hücre içine "
 "<code>#rowspan#</code> anahtar kelimesini ekleyin."
 
-#: views/view-edit.php:343
+#: views/view-edit.php:344
 msgid "Repeat this to add the keyword to all cells that shall be connected."
 msgstr ""
 "Bağlanması gereken tüm hücrelere bu anahtar kelimeyi ekleyerek bunu "
 "tekrarlayın."
 
-#: views/view-edit.php:344
+#: views/view-edit.php:345
 msgid ""
 "Be aware that the functions of the DataTables JavaScript library will not "
 "work on tables which have combined cells."
@@ -1105,47 +1163,47 @@ msgstr ""
 "DataTables JavaScript kütüphanesi fonksiyonlarının birleştirilmiş hücrelere "
 "sahip tablolarda çalışmayacağını unutmayın."
 
-#: views/view-edit.php:350 views/view-edit.php:362
+#: views/view-edit.php:351 views/view-edit.php:363
 msgid "Selected rows"
 msgstr "Seçilen satırlar"
 
-#: views/view-edit.php:351 views/view-edit.php:356
+#: views/view-edit.php:352 views/view-edit.php:357
 msgid "Hide"
 msgstr "Gizle"
 
-#: views/view-edit.php:352 views/view-edit.php:357
+#: views/view-edit.php:353 views/view-edit.php:358
 msgid "Show"
 msgstr "Göster"
 
-#: views/view-edit.php:355 views/view-edit.php:368
+#: views/view-edit.php:356 views/view-edit.php:369
 msgid "Selected columns"
 msgstr "Seçilen sütunlar"
 
-#: views/view-edit.php:363 views/view-edit.php:369
+#: views/view-edit.php:364 views/view-edit.php:370
 msgid "Duplicate"
 msgstr "Çoğalt"
 
-#: views/view-edit.php:364 views/view-edit.php:370
+#: views/view-edit.php:365 views/view-edit.php:371
 msgid "Insert"
 msgstr "Ekle"
 
-#: views/view-edit.php:365 views/view-edit.php:371 views/view-list.php:421
+#: views/view-edit.php:366 views/view-edit.php:372 views/view-list.php:412
 msgid "Delete"
 msgstr "Sil"
 
-#: views/view-edit.php:376
+#: views/view-edit.php:377
 msgid "Add %s row(s)"
 msgstr "%s satır ekle"
 
-#: views/view-edit.php:376 views/view-edit.php:379
+#: views/view-edit.php:377 views/view-edit.php:380
 msgid "Add"
 msgstr "Ekle"
 
-#: views/view-edit.php:379
+#: views/view-edit.php:380
 msgid "Add %s column(s)"
 msgstr "%s sütun ekle"
 
-#: views/view-edit.php:383
+#: views/view-edit.php:384
 msgid ""
 "To use the Table Manipulation features, JavaScript needs to be enabled in "
 "your browser."
@@ -1153,55 +1211,59 @@ msgstr ""
 "Tablo Manipülasyon özelliklerini kullanmak için, tarayıcınızda JavaScript'in "
 "etkin olması gerekir."
 
-#: views/view-edit.php:418
+#: views/view-edit.php:420
 msgid "Other Actions"
 msgstr "Diğer İşlemler"
 
-#: views/view-edit.php:420
-msgid "Delete Table"
-msgstr "Tabloyu Sil"
-
 #: views/view-edit.php:422
+msgid "Copy Table"
+msgstr "Tabloyu Kopyala"
+
+#: views/view-edit.php:424
 msgid "Export Table"
 msgstr "Tabloyu Dışa Aktar"
 
-#: views/view-edit.php:446
+#: views/view-edit.php:426
+msgid "Delete Table"
+msgstr "Tabloyu Sil"
+
+#: views/view-edit.php:450
 msgid "Cancel"
 msgstr "İptal"
 
-#: views/view-edit.php:447
+#: views/view-edit.php:451
 msgid "OK"
 msgstr "Tamam"
 
-#: views/view-edit.php:468 views/view-edit.php:520
+#: views/view-edit.php:472 views/view-edit.php:524
 msgid "Table Head Row"
 msgstr "Tablo Baş Satırı"
 
-#: views/view-edit.php:469
+#: views/view-edit.php:473
 msgid "The first row of the table is the table header."
 msgstr "Tablonun ilk satırı tablo başlığıdır."
 
-#: views/view-edit.php:472
+#: views/view-edit.php:476
 msgid "Table Foot Row"
 msgstr "Tablo Alt Bölüm Satırı"
 
-#: views/view-edit.php:473
+#: views/view-edit.php:477
 msgid "The last row of the table is the table footer."
 msgstr "Tablonun son satırı, tablonun alt bölümüdür."
 
-#: views/view-edit.php:476
+#: views/view-edit.php:480
 msgid "Alternating Row Colors"
 msgstr "Alternatif Satır Renkleri"
 
-#: views/view-edit.php:477
+#: views/view-edit.php:481
 msgid "The background colors of consecutive rows shall alternate."
 msgstr "Ardışık satırların arka plan renklerine alternatif olacaktır."
 
-#: views/view-edit.php:480
+#: views/view-edit.php:484
 msgid "Row Hover Highlighting"
 msgstr "Satır Üzerindeyken Vurgulama"
 
-#: views/view-edit.php:481
+#: views/view-edit.php:485
 msgid ""
 "Highlight a row while the mouse cursor hovers above it by changing its "
 "background color."
@@ -1209,35 +1271,35 @@ msgstr ""
 "Arkaplan rengini değiştirerek fare imleci onun üzerindeyken bir satırı "
 "vurgular."
 
-#: views/view-edit.php:484
+#: views/view-edit.php:488
 msgid "Print Table Name"
-msgstr "Tablo Adını Yazdır"
+msgstr "Tablo Adını Yaz"
 
-#: views/view-edit.php:487 views/view-edit.php:497
+#: views/view-edit.php:491 views/view-edit.php:501
 msgid "above"
 msgstr "üstünde"
 
-#: views/view-edit.php:488 views/view-edit.php:498
+#: views/view-edit.php:492 views/view-edit.php:502
 msgid "below"
 msgstr "altında"
 
-#: views/view-edit.php:491
-msgid "The table name shall be written %s the table."
-msgstr "Tablo adı tablonun %s yazılacaktır."
+#: views/view-edit.php:495
+msgid "Show the table name %s the table."
+msgstr "Tablo adını, tablonun %s göster."
 
-#: views/view-edit.php:494
+#: views/view-edit.php:498
 msgid "Print Table Description"
-msgstr "Tablo Açıklamasını Yazdır"
+msgstr "Tablo Açıklamasını Yaz"
 
-#: views/view-edit.php:501
-msgid "The table description shall be written %s the table."
-msgstr "Tablo açıklaması tablonun %s yazılacaktır."
+#: views/view-edit.php:505
+msgid "Show the table description %s the table."
+msgstr "Tablo açıklamasını, tablonun %s göster."
 
-#: views/view-edit.php:504
+#: views/view-edit.php:508
 msgid "Extra CSS Classes"
 msgstr "İlave CSS Sınıfları"
 
-#: views/view-edit.php:505
+#: views/view-edit.php:509
 msgid ""
 "This field can only contain letters, numbers, spaces, hyphens (-), and "
 "underscores (_)."
@@ -1245,15 +1307,15 @@ msgstr ""
 "Bu alan sadece harfler, sayılar, boşluklar, tire (-) ve alt çizgiden (_) "
 "oluşabilir."
 
-#: views/view-edit.php:505
+#: views/view-edit.php:509
 msgid "Additional CSS classes for styling purposes can be entered here."
 msgstr "Tasarım amaçlı ilave CSS sınıfları buraya girilebilir."
 
-#: views/view-edit.php:505
+#: views/view-edit.php:509
 msgid "This is NOT the place to enter <a href=\"%s\">Custom CSS</a> code!"
 msgstr "Burası <a href=\"%s\">Kişisel CSS</a> kodu girme alanı değildir!"
 
-#: views/view-edit.php:520
+#: views/view-edit.php:524
 msgid ""
 "These features and options are only available, when the &#8220;%1$s&#8221; "
 "checkbox in the &#8220;%2$s&#8221; section is checked."
@@ -1261,11 +1323,11 @@ msgstr ""
 "Bu özellikler ve seçenekler sadece &#8220;%2$s&#8221; bölümündeki &#8220;"
 "%1$s&#8221; onay kutusunu işaretlendiğinde kullanılabilir."
 
-#: views/view-edit.php:524
+#: views/view-edit.php:528
 msgid "Use DataTables"
 msgstr "DataTables Kullan"
 
-#: views/view-edit.php:525
+#: views/view-edit.php:529
 msgid ""
 "Use the following features of the DataTables JavaScript library with this "
 "table:"
@@ -1273,31 +1335,31 @@ msgstr ""
 "Bu tablo ile DataTables JavaScript kütüphanesinin aşağıdaki özelliklerini "
 "kullanın:"
 
-#: views/view-edit.php:528
+#: views/view-edit.php:532
 msgid "Sorting"
 msgstr "Sıralama"
 
-#: views/view-edit.php:529
+#: views/view-edit.php:533
 msgid "Enable sorting of the table by the visitor."
 msgstr "Ziyaretçi tarafından tablonun sıralanmasını etkinleştirin."
 
-#: views/view-edit.php:532
+#: views/view-edit.php:536
 msgid "Search/Filtering"
 msgstr "Arama/Filtreleme"
 
-#: views/view-edit.php:533
+#: views/view-edit.php:537
 msgid ""
 "Enable the visitor to filter or search the table. Only rows with the search "
 "word in them are shown."
 msgstr ""
-"Ziyaretçinin tabloda filtreleme veya arama yapsını etkinleştirin. Sadece "
+"Ziyaretçinin tabloda filtreleme veya arama yapmasını etkinleştirin. Sadece "
 "arama sözcüğüne sahip satır gösterilir."
 
-#: views/view-edit.php:536
+#: views/view-edit.php:540
 msgid "Pagination"
 msgstr "Sayfalama"
 
-#: views/view-edit.php:537
+#: views/view-edit.php:541
 msgid ""
 "Enable pagination of the table (viewing only a certain number of rows at a "
 "time) by the visitor."
@@ -1305,26 +1367,26 @@ msgstr ""
 "Tablonun ziyaretçi tarafından sayfalanmasını (aynı anda sadece belirli "
 "sayıdaki satırlar görüntülenir) etkinleştirin."
 
-#: views/view-edit.php:538
+#: views/view-edit.php:542
 msgid "Show %s rows per page."
 msgstr "Sayfa başına %s satır göster."
 
-#: views/view-edit.php:541
+#: views/view-edit.php:545
 msgid "Pagination Length Change"
 msgstr "Sayfalama Boyu  Değiştirme"
 
-#: views/view-edit.php:542
+#: views/view-edit.php:546
 msgid ""
 "Allow the visitor to change the number of rows shown when using pagination."
 msgstr ""
 "Sayfalama kullanırken ziyaretçinin gösterilen satır sayısını değiştirmesine "
 "izin verin."
 
-#: views/view-edit.php:545
+#: views/view-edit.php:549
 msgid "Info"
 msgstr "Bilgi"
 
-#: views/view-edit.php:546
+#: views/view-edit.php:550
 msgid ""
 "Enable the table information display, with information about the currently "
 "visible data, like the number of rows."
@@ -1332,22 +1394,22 @@ msgstr ""
 "Satır sayısı gibi görüntülenmekte olan verilerle ilgili bilgilere sahip "
 "tablo bilgi göstergesini etkinleştirin."
 
-#: views/view-edit.php:549
+#: views/view-edit.php:553
 msgid "Horizontal Scrolling"
 msgstr "Yatay Kaydırma"
 
-#: views/view-edit.php:550
+#: views/view-edit.php:554
 msgid ""
 "Enable horizontal scrolling, to make viewing tables with many columns easier."
 msgstr ""
 "Çok sayıda sütuna sahip tabloların daha kolay görünmesini sağlamak için, "
 "yatay kaydırmayı etkinleştirin."
 
-#: views/view-edit.php:556
+#: views/view-edit.php:560
 msgid "Custom Commands"
 msgstr "Kişisel Komutlar"
 
-#: views/view-edit.php:557
+#: views/view-edit.php:561
 msgid ""
 "Additional parameters from the <a href=\"http://www.datatables.net/"
 "\">DataTables documentation</a> to be added to the JS call."
@@ -1355,11 +1417,11 @@ msgstr ""
 "JS çağrısına eklenecek <a href=\"http://www.datatables.net/\">DataTables "
 "belgelerindeki</a> ek parametreler."
 
-#: views/view-edit.php:557
+#: views/view-edit.php:561
 msgid "For advanced use only."
 msgstr "Sadece gelişmiş kullanım için."
 
-#: views/view-edit.php:572
+#: views/view-edit.php:576
 msgid ""
 "On this screen, you can edit the content and structure of the table with the "
 "ID %s."
@@ -1367,7 +1429,7 @@ msgstr ""
 "Bu ekranda, %s ID kimliğine sahip olan tablonun içerik ve yapısını "
 "düzenleyebilirsiniz."
 
-#: views/view-edit.php:573
+#: views/view-edit.php:577
 msgid ""
 "For example, you can insert things like text, images, or links into the "
 "table, or change the used table features. You can also insert, delete, move, "
@@ -1378,7 +1440,7 @@ msgstr ""
 "satırlar ekleme, silme, taşıma, gizleme ve yer değiştirme işlemlerini "
 "yapabilirsiniz."
 
-#: views/view-edit.php:576
+#: views/view-edit.php:580
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it at the desired place in the editor."
@@ -1386,11 +1448,11 @@ msgstr ""
 "Bir sayfa, yazı veya metin bileşenine tablo eklemek için, %s Kısa kodunu "
 "kopyalayıp düzenleyicide istediğiniz yere yapıştırın."
 
-#: views/view-edit.php:596
+#: views/view-edit.php:591
 msgid "TablePress Feature: Moving rows and columns"
 msgstr "TablePress Özelliği: Satır ve sütunları taşıma"
 
-#: views/view-edit.php:597
+#: views/view-edit.php:592
 msgid ""
 "Did you know? You can drag and drop rows and columns via the row number and "
 "the column title. And the arrows next to the column title can be used for "
@@ -1434,7 +1496,7 @@ msgstr "&#8220;%s&#8221; için arama sonuçları"
 msgid "Search Tables"
 msgstr "Tablo Ara"
 
-#: views/view-editor_button_thickbox.php:235 views/view-list.php:318
+#: views/view-editor_button_thickbox.php:235 views/view-list.php:309
 msgid "ID"
 msgstr "ID"
 
@@ -1442,12 +1504,12 @@ msgstr "ID"
 msgid "Action"
 msgstr "İşlem"
 
-#: views/view-editor_button_thickbox.php:300 views/view-list.php:438
+#: views/view-editor_button_thickbox.php:300 views/view-list.php:429
 msgid "(no description)"
 msgstr "(açıklama yok)"
 
 #: views/view-editor_button_thickbox.php:322 views/view-export.php:81
-#: views/view-list.php:544
+#: views/view-list.php:535
 msgid "No tables found."
 msgstr "Herhangi bir tablo bulunamadı."
 
@@ -1519,7 +1581,7 @@ msgid "For the JSON format, the table data and the table options are exported."
 msgstr ""
 "JSON formatında, tablo verileri ve tablo seçenekleri de dışa aktarılmaktadır."
 
-#: views/view-export.php:82 views/view-list.php:553
+#: views/view-export.php:82 views/view-list.php:544
 msgid ""
 "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to "
 "get started!"
@@ -1636,13 +1698,13 @@ msgstr "WP-Table Reloaded üzerinden İçe Aktar"
 
 #: views/view-import.php:92
 msgid ""
-"TablePress can import tables from existing data, like from a CSV file from a "
-"spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or "
-"its own JSON format."
+"TablePress can import tables from existing data, like from a CSV, XLS, or "
+"XLSX file from a spreadsheet application (e.g. Excel), an HTML file "
+"resembling a webpage, or its own JSON format."
 msgstr ""
-"TablePress, bir spreadsheet uygulamasından CSV dosyası (örn. Excel), bir web "
-"sayfası benzeri HTML dosyası veya kendine ait JSON biçimi gibi mevcut "
-"verilerden tabloları içe aktarabilir."
+"TablePress, bir spreadsheet uygulamasındaki CSV, XLS, veya XLSX dosyası "
+"(örn. Excel), web sayfasına benzeyen bir HTML dosyası veya kendine ait JSON "
+"biçimi gibi mevcut verilerden tabloları içe aktarabilir."
 
 #: views/view-import.php:93
 msgid ""
@@ -1795,7 +1857,7 @@ msgstr "Tabloları İçe Aktar"
 msgid "Import all tables and their settings from WP-Table Reloaded."
 msgstr "WP-Table Reloaded üzerinden tüm tabloları ve ayarlarını alın."
 
-#: views/view-import.php:244 views/view-options.php:113
+#: views/view-import.php:244
 msgid "<span class=\"description\">(recommended)</span>"
 msgstr "<span class=\"description\">(önerilir)</span>"
 
@@ -1816,11 +1878,11 @@ msgctxt "button"
 msgid "Import from WP-Table Reloaded"
 msgstr "WP-Table Reloaded üzerinden içe aktar"
 
-#: views/view-import.php:277
+#: views/view-import.php:268
 msgid "TablePress Feature: Import from WP-Table Reloaded"
 msgstr "TablePress Özelliği: WP-Table Reloaded üzerinden içe aktar"
 
-#: views/view-import.php:278
+#: views/view-import.php:269
 msgid ""
 "You can import your existing tables and &#8220;Custom CSS&#8221; from WP-"
 "Table Reloaded into TablePress."
@@ -1844,13 +1906,13 @@ msgstr ""
 #: views/view-list.php:48
 msgid ""
 "No problem! I still hope you enjoy the benefits that TablePress adds to your "
-"site. If you should change your mind, you'll always find the &#8220;"
+"site. If you should change your mind, you&#8217;ll always find the &#8220;"
 "Donate&#8221; button on the <a href=\"%s\">TablePress website</a>."
 msgstr ""
 "Sorun değil! Ben yine de TablePress'in sitenize kattığı avantajlardan "
 "yararlandığınızı umuyorum. Eğer fikrinizi değiştirirseniz, <a href=\"%s"
-"\">TablePress'in web sitesinde</a> her zaman &#8220;Bağış&#8221; butonunu "
-"göreceksiniz."
+"\">TablePress'in web sitesinde</a> &#8220;Bağış&#8221; butonunu her zaman "
+"bulabilirsiniz."
 
 #: views/view-list.php:54
 msgid "Welcome!"
@@ -1913,28 +1975,30 @@ msgid "Tobias Bäthge, developer of TablePress"
 msgstr "Tobias Bäthge, TablePress geliştiricisi"
 
 #: views/view-list.php:73
-msgid "Hi, my name is Tobias, I'm the developer of the TablePress plugin."
+msgid ""
+"Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin."
 msgstr ""
-"Merhaba, benim adım Tobias. Ben TablePress eklentisinin geliştiricisiyim."
+"Merhaba, benim adım Tobias, Ben TablePress eklentisinin geliştiricisiyim."
 
 #: views/view-list.php:74
-msgid "Thanks for using it! You've installed TablePress over a month ago."
+msgid ""
+"Thanks for using it! You&#8217;ve installed TablePress over a month ago."
 msgstr ""
-"Onu kullandığınız için teşekkurler! TablePress'i bir ay önce yüklediniz."
+"Onu kullandığınız için teşekkürler! TablePress'i bir ay önce yüklediniz."
 
 #: views/view-list.php:75
 msgid ""
 "If everything works and you are satisfied with the results of managing your "
-"%s table, isn't that worth a coffee or two?"
+"%s table, isn&#8217;t that worth a coffee or two?"
 msgid_plural ""
 "If everything works and you are satisfied with the results of managing your "
-"%s tables, isn't that worth a coffee or two?"
+"%s tables, isn&#8217;t that worth a coffee or two?"
 msgstr[0] ""
 "Eğer her şey çalışıyor ve %s tablonuzun yönetim sonuçlarından memnunsanız, "
-"bir ya da iki kahve buna değmez mi?"
+"buna bir veya iki kahve değmez mi?"
 msgstr[1] ""
 "Eğer her şey çalışıyor ve %s tablonuzun yönetim sonuçlarından memnunsanız, "
-"bir ya da iki kahve buna değmez mi?"
+"buna bir veya iki kahve değmez mi?"
 
 #: views/view-list.php:76
 msgid ""
@@ -1951,16 +2015,16 @@ msgid "Sincerly, Tobias"
 msgstr "İyi dileklerimle, Tobias"
 
 #: views/view-list.php:78
-msgid "Sure, I'll buy you a coffee and support TablePress!"
-msgstr "Elbette, ben sana bir kahve alacağım ve TablePress'i destekleyeceğim!"
+msgid "Sure, I&#8217;ll buy you a coffee and support TablePress!"
+msgstr "Elbette, sana bir kahve alacağım ve TablePress'i destekleyeceğim!"
 
 #: views/view-list.php:79
 msgid "I already donated."
 msgstr "Zaten bağış yaptım."
 
 #: views/view-list.php:80
-msgid "No, thanks. Don't ask again."
-msgstr "Hayır, teşekkürler. Bir daha sorma."
+msgid "No, thanks. Don&#8217;t ask again."
+msgstr "Hayır, teşekkürler. Tekrar sorma."
 
 #: views/view-list.php:84
 msgid "Thank you for updating to TablePress %s!"
@@ -1988,11 +2052,9 @@ msgid_plural "The tables were deleted successfully."
 msgstr[0] "Tablo başarıyla silindi."
 msgstr[1] "Tablolar başarıyla silindi."
 
-#: views/view-list.php:99 views/view-list.php:100
-msgid "The table was copied successfully."
-msgid_plural "The tables were copied successfully."
-msgstr[0] "Tablo başarıyla kopyalandı."
-msgstr[1] "Tablolar başarıyla kopyalandı."
+#: views/view-list.php:99
+msgid "The copied table has the table ID &#8220;%s&#8221;."
+msgstr "Kopyalanan tablo, &#8220;%s&#8221; tablo ID kimliğine sahiptir."
 
 #: views/view-list.php:101
 msgid "Error: The table could not be copied."
@@ -2048,75 +2110,75 @@ msgstr ""
 "Her tablo, bu Kısa kod içinde ayarlanması gereken benzersiz bir ID kimliğine "
 "sahiptir."
 
-#: views/view-list.php:321
+#: views/view-list.php:312
 msgid "Author"
 msgstr "Yazar"
 
-#: views/view-list.php:322
+#: views/view-list.php:313
 msgid "Last Modified By"
 msgstr "Son Değiştiren"
 
-#: views/view-list.php:408 views/view-list.php:414
+#: views/view-list.php:399 views/view-list.php:405
 msgid "Edit &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; Düzenle"
 
-#: views/view-list.php:415
+#: views/view-list.php:406
 msgid "Show Shortcode"
 msgstr "Kısa kodu Göster"
 
-#: views/view-list.php:417
+#: views/view-list.php:408
 msgid "Copy &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; Kopyala"
 
-#: views/view-list.php:417
+#: views/view-list.php:408
 msgid "Copy"
 msgstr "Kopyala"
 
-#: views/view-list.php:419
+#: views/view-list.php:410
 msgid "Export &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; Dışa Aktar"
 
-#: views/view-list.php:419
+#: views/view-list.php:410
 msgctxt "row action"
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: views/view-list.php:421
+#: views/view-list.php:412
 msgid "Delete &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; Sil"
 
-#: views/view-list.php:423
+#: views/view-list.php:414
 msgid "Show a preview of &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; için bir önizleme göster"
 
-#: views/view-list.php:498
+#: views/view-list.php:489
 msgctxt "bulk action"
 msgid "Copy"
 msgstr "Kopyala"
 
-#: views/view-list.php:500
+#: views/view-list.php:491
 msgctxt "bulk action"
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: views/view-list.php:502
+#: views/view-list.php:493
 msgctxt "bulk action"
 msgid "Delete"
 msgstr "Sil"
 
-#: views/view-list.php:530
+#: views/view-list.php:521
 msgid "Bulk Actions"
 msgstr "Toplu İşlemler"
 
-#: views/view-list.php:535
+#: views/view-list.php:526
 msgid "Apply"
 msgstr "Uygula"
 
-#: views/view-list.php:555
+#: views/view-list.php:546
 msgid "You should <a href=\"%s\">add</a> a table to get started!"
 msgstr "Başlamak için bir tablo <a href=\"%s\">eklemeniz</a> gerekir!"
 
-#: views/view-list.php:557
+#: views/view-list.php:548
 msgid "You should <a href=\"%s\">import</a> a table to get started!"
 msgstr "Başlamak için bir tablo <a href=\"%s\">içe aktarmanız</a> gerekir!"
 
@@ -2223,53 +2285,39 @@ msgstr ""
 "Eğer otomatik olarak düzeltilemez ise, geçersiz CSS kodunun bozuk olacağını "
 "unutmayın."
 
-#: views/view-options.php:110
-msgid "File exists"
-msgstr "Dosya var"
-
-#: views/view-options.php:110
-msgid "File seems not to exist"
-msgstr "Dosya mevcut değil gibi görünüyor"
-
-#: views/view-options.php:113
-msgid "Use a file for storing and loading the &#8220;Custom CSS&#8221; code."
-msgstr ""
-"&#8220;Kişisel CSS&#8221; kodunun saklanması ve yüklenmesi için bir dosya "
-"kullanın."
-
-#: views/view-options.php:146
+#: views/view-options.php:141
 msgid "Top-Level (top)"
 msgstr "Üst Seviye (en üstte)"
 
-#: views/view-options.php:147
+#: views/view-options.php:142
 msgid "Top-Level (middle)"
 msgstr "Üst Seviye (ortada)"
 
-#: views/view-options.php:148
+#: views/view-options.php:143
 msgid "Top-Level (bottom)"
 msgstr "Üst Seviye (en altta)"
 
-#: views/view-options.php:157
+#: views/view-options.php:152
 msgid "Admin menu entry"
 msgstr "Yönetici menüsü konumu"
 
-#: views/view-options.php:158
+#: views/view-options.php:153
 msgid "TablePress shall be shown in this section of my admin menu: %s"
 msgstr "TablePress, yönetici menümün bu bölümünde gösterilmelidir: %s"
 
-#: views/view-options.php:162
+#: views/view-options.php:157
 msgid "WordPress Default (currently %s)"
 msgstr "WordPress Varsayılanı (şu anda %s)"
 
-#: views/view-options.php:170
+#: views/view-options.php:165
 msgid "Plugin Language"
 msgstr "Eklenti Dili"
 
-#: views/view-options.php:171
+#: views/view-options.php:166
 msgid "I want to use TablePress in this language: %s"
 msgstr "TablePress'i bu dilde kullanmak istiyorum: %s"
 
-#: views/view-options.php:187
+#: views/view-options.php:182
 msgid ""
 "Uninstalling <strong>will permanently delete</strong> all TablePress tables "
 "and options from the database."
@@ -2277,7 +2325,7 @@ msgstr ""
 "Kaldırılması ile tüm TablePress tablo ve seçenekleri veritabanından "
 "<strong>kalıcı olarak silinecektir</strong>."
 
-#: views/view-options.php:188
+#: views/view-options.php:183
 msgid ""
 "It is recommended that you create a backup of the tables (by exporting the "
 "tables in the JSON format), in case you later change your mind."
@@ -2285,15 +2333,15 @@ msgstr ""
 "Daha sonra fikrinizi değiştirmeniz durumunda, tabloların bir yedeğini "
 "oluşturmanız (tabloları JSON formatında dışa aktararak) tavsiye edilir."
 
-#: views/view-options.php:189
+#: views/view-options.php:184
 msgid ""
-"You will manually need to remove the plugin's files from the plugin folder "
-"afterwards."
+"You will manually need to remove the plugin&#8217;s files from the plugin "
+"folder afterwards."
 msgstr ""
-"Daha sonra eklenti klasöründen eklenti dosyalarını el ile kaldırmanız "
+"Daha sonra, eklenti klasöründen eklenti dosyalarını el ile kaldırmanız "
 "gerekecektir."
 
-#: views/view-options.php:190
+#: views/view-options.php:185
 msgid ""
 "Be very careful with this and only click the button if you know what you are "
 "doing!"
@@ -2386,3 +2434,21 @@ msgstr "Tobias Bäthge"
 #. Author URI of the plugin/theme
 msgid "http://tobias.baethge.com/"
 msgstr "http://tobias.baethge.com/"
+
+#~ msgid "TablePress Plugin page"
+#~ msgstr "TablePress Eklenti sayfası"
+
+#~ msgid "Plugin Documentation"
+#~ msgstr "Eklenti Belgeleri"
+
+#~ msgid "File exists"
+#~ msgstr "Dosya var"
+
+#~ msgid "File seems not to exist"
+#~ msgstr "Dosya mevcut değil gibi görünüyor"
+
+#~ msgid ""
+#~ "Use a file for storing and loading the &#8220;Custom CSS&#8221; code."
+#~ msgstr ""
+#~ "&#8220;Kişisel CSS&#8221; kodunun saklanması ve yüklenmesi için bir dosya "
+#~ "kullanın."
