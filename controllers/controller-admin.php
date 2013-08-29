@@ -497,7 +497,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'it_IT' => array(
 				'name' => __( 'Italian', 'tablepress' ),
 				'translator_name' => 'Stefano Cotterli',
-				'translator_url' => ''
+				'translator_url' => 'http://faina09.it/'
 			),
 			'is_IS' => array(
 				'name' => __( 'Icelandic', 'tablepress' ),
