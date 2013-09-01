@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-08-25 16:35:36+00:00\n"
-"PO-Revision-Date: 2013-08-26 16:58+0100\n"
+"POT-Creation-Date: 2013-09-01 13:58:13+00:00\n"
+"PO-Revision-Date: 2013-09-01 16:00+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language-Team: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language: de_DE\n"
@@ -76,13 +76,13 @@ msgid "The imported file contains errors:"
 msgstr "Die importierte Datei enthält Fehler:"
 
 # @ tablepress
-#: classes/class-render.php:379
+#: classes/class-render.php:400
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr "<!-- Die Tabelle mit der ID %s ist leer! -->"
 
 # @ default
 # @ tablepress
-#: classes/class-render.php:455 views/view-list.php:405
+#: classes/class-render.php:476 views/view-list.php:405
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -158,6 +158,8 @@ msgstr[0] "Willst du diese Tabelle wirklich löschen?"
 msgstr[1] "Willst du diese Tabellen wirklich löschen?"
 
 # @ tablepress
+#. #-#-#-#-#  tablepress.pot (TablePress 1.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
 #: classes/class-view.php:383
 msgid "TablePress"
 msgstr "TablePress"
