@@ -260,7 +260,7 @@ class TablePress_Render {
 	 * @return string Result of the parsing/evaluation
 	 */
 	protected function _evaluate_cell( $content, $parents = array() ) {
-		if ( ( '' == $content ) || ( '=' != $content[0] ) )
+		if ( '' == $content || '=' != $content[0] )
 			return $content;
 
 		$expression = substr( $content, 1 );
@@ -341,7 +341,7 @@ class TablePress_Render {
 				if ( ! is_numeric( $result ) )
 					return "!ERROR! {$cell_reference[0]} does not contain a number or expression";
 
-				$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_reference[0], '#' ) . '(?![0-9])#', $result, $expression );
+				$expression = preg_replace( '#(?<![A-Z])' . $cell_reference[0] . '(?![0-9])#', $result, $expression );
 			}
 		}
 
