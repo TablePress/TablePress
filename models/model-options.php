@@ -330,9 +330,7 @@ class TablePress_Options_Model extends TablePress_Model {
 				break;
 		}
 
-		$caps = apply_filters( 'tablepress_map_meta_caps', $caps, $cap, $user_id, $args );
-
-		return $caps;
+		return apply_filters( 'tablepress_map_meta_caps', $caps, $cap, $user_id, $args );
 	}
 
 	/**
