@@ -292,14 +292,12 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @param string $cap Meta cap that is to be checked/mapped
 	 * @param int $user_id User ID for which meta cap is to be checked
 	 * @param array $args Arguments for the check, here e.g. the table ID
-	 * @return bool
+	 * @return array $caps Modified set of primitive caps
 	 */
 	public function map_tablepress_meta_caps( $caps, $cap, $user_id, $args ) {
 		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) )
 			return $caps;
 
-		// $user = get_userdata( $user_id );
-		// $username = $user->user_login);
 		// $table_id = ( ! empty( $args ) ) ? $args[0] : false;
 
 		// reset current set of primitive caps
