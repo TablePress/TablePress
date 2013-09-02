@@ -304,9 +304,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table ($table['id'] is not necessary)
+	 * @param string|bool $copied_table_id ID of the copied table, if table is a copy, false otherwise
 	 * @return mixed False on error, string table ID of the new table on success
 	 */
-	public function add( $table ) {
+	public function add( $table, $copied_table_id = false ) {
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
@@ -325,6 +326,12 @@ class TablePress_Table_Model extends TablePress_Model {
 		// at this point, post was successfully added, now get an unused table ID
 		$table_id = $this->_get_new_table_id();
 		$this->_update_post_id( $table_id, $new_post_id );
+
+		if ( false !== $copied_table_id )
+			do_action( 'tablepress_event_copied_table', $table_id, $copied_table_id );
+		else
+			do_action( 'tablepress_event_added_table', $table_id );
+
 		return $table_id;
 	}
 
@@ -355,7 +362,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			return false;
 
 		// Add the copied table
-		return $this->add( $table );
+		return $this->add( $table, $table_id );
 	}
 
 	/**
@@ -384,6 +391,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Flush caching plugins' caches
 		$this->_flush_caching_plugins_caches();
 
+		do_action( 'tablepress_event_deleted_table', $table_id );
+
 		return true;
 	}
 
@@ -406,6 +415,8 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$this->tables->update( $tables );
 		$this->_flush_caching_plugins_caches(); // Flush caching plugins' caches
+
+		do_action( 'tablepress_event_deleted_all_tables' );
 	}
 
 	/**
@@ -543,6 +554,9 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$this->_update_post_id( $new_id, $post_id );
 		$this->_remove_post_id( $old_id );
+
+		do_action( 'tablepress_event_changed_table_id', $new_id, $old_id );
+
 		return true;
 	}
 
