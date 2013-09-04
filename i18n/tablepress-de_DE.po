@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-09-01 13:58:13+00:00\n"
-"PO-Revision-Date: 2013-09-01 16:00+0100\n"
+"POT-Creation-Date: 2013-09-04 16:50:41+00:00\n"
+"PO-Revision-Date: 2013-09-04 18:52+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language-Team: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language: de_DE\n"
@@ -85,6 +85,10 @@ msgstr "<!-- Die Tabelle mit der ID %s ist leer! -->"
 #: classes/class-render.php:476 views/view-list.php:405
 msgid "Edit"
 msgstr "Bearbeiten"
+
+#: classes/class-tablepress.php:305
+msgid "<em>unknown</em>"
+msgstr "<em>unbekannt</em>"
 
 # @ tablepress
 #: classes/class-view.php:110
@@ -506,13 +510,13 @@ msgid "%s ago"
 msgstr "vor %s"
 
 # @ tablepress
-#: models/model-table.php:346 views/view-editor_button_thickbox.php:286
+#: models/model-table.php:353 views/view-editor_button_thickbox.php:286
 #: views/view-export.php:117 views/view-import.php:190 views/view-list.php:396
 msgid "(no name)"
 msgstr "(kein Name)"
 
 # @ tablepress
-#: models/model-table.php:347
+#: models/model-table.php:354
 msgid "Copy of %s"
 msgstr "Kopie von %s"
 
