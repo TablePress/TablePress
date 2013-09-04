@@ -38,7 +38,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		parent::__construct();
 
 		// enqueue CSS files
-		if ( apply_filters( 'tablepress_use_default_css', true ) || $this->model_options->get( 'use_custom_css' ) )
+		if ( apply_filters( 'tablepress_use_default_css', true ) || TablePress::$model_options->get( 'use_custom_css' ) )
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
 
 		// add DataTables invocation calls
@@ -82,10 +82,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function enqueue_css() {
 		$use_default_css = apply_filters( 'tablepress_use_default_css', true );
-		$custom_css = $this->model_options->get( 'custom_css' );
-		$use_custom_css = ( $this->model_options->get( 'use_custom_css' ) && '' != $custom_css );
-		$use_custom_css_file = ( $use_custom_css && $this->model_options->get( 'use_custom_css_file' ) );
-		$custom_css_version = apply_filters( 'tablepress_custom_css_version', $this->model_options->get( 'custom_css_version' ) );
+		$custom_css = TablePress::$model_options->get( 'custom_css' );
+		$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' != $custom_css );
+		$use_custom_css_file = ( $use_custom_css && TablePress::$model_options->get( 'use_custom_css_file' ) );
+		$custom_css_version = apply_filters( 'tablepress_custom_css_version', TablePress::$model_options->get( 'custom_css_version' ) );
 		$use_minified_css = ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG );
 
 		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
@@ -125,7 +125,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 			if ( $use_custom_css ) {
 				// get "Custom CSS" from options, try minified Custom CSS first
-				$custom_css_minified = $this->model_options->get( 'custom_css_minified' );
+				$custom_css_minified = TablePress::$model_options->get( 'custom_css_minified' );
 				if ( ! empty( $custom_css_minified ) )
 					$custom_css = $custom_css_minified;
 				$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
@@ -147,9 +147,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function _print_custom_css() {
 		// get "Custom CSS" from options, try minified Custom CSS first
-		$custom_css = $this->model_options->get( 'custom_css_minified' );
+		$custom_css = TablePress::$model_options->get( 'custom_css_minified' );
 		if ( empty( $custom_css ) )
-			$custom_css = $this->model_options->get( 'custom_css' );
+			$custom_css = TablePress::$model_options->get( 'custom_css' );
 		$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 		echo "<style type='text/css'>\n{$custom_css}\n</style>\n";
 	}
@@ -307,14 +307,14 @@ JS;
 
 		// check, if a table with the given ID exists
 		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
-		if ( ! $this->model_table->table_exists( $table_id ) ) {
+		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
 			return $message;
 		}
 
 		// load the table
-		$table = $this->model_table->load( $table_id );
+		$table = TablePress::$model_table->load( $table_id );
 		if ( false === $table ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
@@ -438,14 +438,14 @@ JS;
 
 		// check, if a table with the given ID exists
 		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
-		if ( ! $this->model_table->table_exists( $table_id ) ) {
+		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
 			return $message;
 		}
 
 		// load the table
-		$table = $this->model_table->load( $table_id );
+		$table = TablePress::$model_table->load( $table_id );
 		if ( false === $table ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
@@ -560,9 +560,9 @@ JS;
 		// load all tables, and remove hidden cells, as those will not be searched
 		// do this here once, so that we don't have to do it in each loop for each search term again
 		$search_tables = array();
-		$tables = $this->model_table->load_all(); // does not contain table data
+		$tables = TablePress::$model_table->load_all(); // does not contain table data
 		foreach ( $tables as $table_id => $table ) {
-			$table = $this->model_table->load( $table_id ); // load table again, to also get table data
+			$table = TablePress::$model_table->load( $table_id ); // load table again, to also get table data
 			// load information about hidden rows and columns
 			$hidden_rows = array_keys( $table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0)
 			$hidden_columns = array_keys( $table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0)

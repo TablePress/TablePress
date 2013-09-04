@@ -71,7 +71,7 @@ abstract class TablePress_Controller {
 		$this->plugin_update_check(); // should be done very early
 
 		// Admin Page Menu entry, needed for construction of plugin URLs
-		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $this->model_options->get( 'admin_menu_parent_page' ) );
+		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', TablePress::$model_options->get( 'admin_menu_parent_page' ) );
 		$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
 	}
 
@@ -82,80 +82,80 @@ abstract class TablePress_Controller {
 	 */
 	protected function plugin_update_check() {
 		// First activation or plugin update
-		$current_plugin_options_db_version = $this->model_options->get( 'plugin_options_db_version' );
+		$current_plugin_options_db_version = TablePress::$model_options->get( 'plugin_options_db_version' );
 		if ( $current_plugin_options_db_version < TablePress::db_version ) {
 			// Allow more PHP execution time for update process
 			@set_time_limit( 300 );
 
 			// Add TablePress capabilities to the WP_Roles objects, for new installations and all versions below 12
 			if ( $current_plugin_options_db_version < 12 )
-				$this->model_options->add_access_capabilities();
+				TablePress::$model_options->add_access_capabilities();
 
-			if ( 0 == $this->model_options->get( 'first_activation' ) ) {
+			if ( 0 == TablePress::$model_options->get( 'first_activation' ) ) {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation
-				$this->model_options->update( array(
+				TablePress::$model_options->update( array(
 					'first_activation' => current_time( 'timestamp' ),
 					'plugin_options_db_version' => TablePress::db_version
 				) );
 			} else {
 				// Update Plugin Options Options, if necessary
-				$this->model_options->merge_plugin_options_defaults();
+				TablePress::$model_options->merge_plugin_options_defaults();
 				$updated_options = array(
 					'plugin_options_db_version' => TablePress::db_version,
-					'prev_tablepress_version' => $this->model_options->get( 'tablepress_version' ),
+					'prev_tablepress_version' => TablePress::$model_options->get( 'tablepress_version' ),
 					'tablepress_version' => TablePress::version,
 					'message_plugin_update' => true
 				);
 
-				if ( $this->model_options->get( 'use_custom_css' ) && '' !== $this->model_options->get( 'custom_css' ) ) { // only write files, if "Custom CSS" is to be used, and if there is "Custom CSS"
+				if ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== TablePress::$model_options->get( 'custom_css' ) ) { // only write files, if "Custom CSS" is to be used, and if there is "Custom CSS"
 					// Re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed)
 					require_once ABSPATH . 'wp-admin/includes/file.php'; // to provide filesystem functions early
 					require_once ABSPATH . 'wp-admin/includes/screen.php'; // to provide `screen_icon()` which is necessary for `request_filesystem_credentials()`
 					require_once ABSPATH . 'wp-admin/includes/template.php'; // to provide `submit_button()` which is necessary for `request_filesystem_credentials()`
 					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-					$result = $tablepress_css->save_custom_css_to_file( $this->model_options->get( 'custom_css' ), $this->model_options->get( 'custom_css_minified' ) );
+					$result = $tablepress_css->save_custom_css_to_file( TablePress::$model_options->get( 'custom_css' ), TablePress::$model_options->get( 'custom_css_minified' ) );
 					$updated_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
 					// if saving was successful, increase the "Custom CSS" version number for cache busting
 					if ( $result )
-						$updated_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
+						$updated_options['custom_css_version'] = TablePress::$model_options->get( 'custom_css_version' ) + 1;
 				}
 
-				$this->model_options->update( $updated_options );
+				TablePress::$model_options->update( $updated_options );
 
 				// Clear table caches
 				if ( $current_plugin_options_db_version < 16 )
-					$this->model_table->invalidate_table_output_caches_tp09(); // for pre-0.9-RC, where the arrays are serialized and not JSON encoded
+					TablePress::$model_table->invalidate_table_output_caches_tp09(); // for pre-0.9-RC, where the arrays are serialized and not JSON encoded
 				else
-					$this->model_table->invalidate_table_output_caches(); // for 0.9-RC and onwards
+					TablePress::$model_table->invalidate_table_output_caches(); // for 0.9-RC and onwards
 			}
 
-			$this->model_options->update( array(
-				'message_plugin_update_content' => $this->model_options->plugin_update_message( $this->model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() )
+			TablePress::$model_options->update( array(
+				'message_plugin_update_content' => TablePress::$model_options->plugin_update_message( TablePress::$model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() )
 			) );
 		}
 
 		// Maybe update the table scheme in each existing table, independently from updating the plugin options
-		if ( $this->model_options->get( 'table_scheme_db_version' ) < TablePress::table_scheme_version ) {
+		if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < TablePress::table_scheme_version ) {
 			// Convert parameter "datatables_scrollX" to "datatables_scrollx", has to be done before merge_table_options_defaults() is called!
-			if ( $this->model_options->get( 'table_scheme_db_version' ) < 3 )
-				$this->model_table->merge_table_options_tp08();
+			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 3 )
+				TablePress::$model_table->merge_table_options_tp08();
 
-			$this->model_table->merge_table_options_defaults();
+			TablePress::$model_table->merge_table_options_defaults();
 
 			// Merge print_name/print_description changes made for 0.6-beta
-			if ( $this->model_options->get( 'table_scheme_db_version' ) < 2 )
-				$this->model_table->merge_table_options_tp06();
+			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 2 )
+				TablePress::$model_table->merge_table_options_tp06();
 
-			$this->model_options->update( array(
+			TablePress::$model_options->update( array(
 				'table_scheme_db_version' => TablePress::table_scheme_version
 			) );
 		}
 
 		// Update User Options, if necessary
 		// User Options are not saved in DB until first change occurs
-		if ( is_user_logged_in() && ( $this->model_options->get( 'user_options_db_version' ) < TablePress::db_version ) ) {
-			$this->model_options->merge_user_options_defaults();
-			$this->model_options->update( array(
+		if ( is_user_logged_in() && ( TablePress::$model_options->get( 'user_options_db_version' ) < TablePress::db_version ) ) {
+			TablePress::$model_options->merge_user_options_defaults();
+			TablePress::$model_options->update( array(
 				'user_options_db_version' => TablePress::db_version
 			) );
 		}

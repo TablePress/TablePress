@@ -58,7 +58,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$updated_options = array( "message_{$message_item}" => false );
 		if ( 'plugin_update' == $message_item )
 			$updated_options['message_plugin_update_content'] = '';
-		$this->model_options->update( $updated_options );
+		TablePress::$model_options->update( $updated_options );
 
 		wp_die( '1' );
 	}
@@ -86,8 +86,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$message = 'error_save';
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
-			$existing_table = $this->model_table->load( $edit_table['id'] );
-			if ( false === $existing_table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
+			$existing_table = TablePress::$model_table->load( $edit_table['id'] );
+			if ( false === $existing_table ) // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				break;
 
 			// Check and convert data that was transmitted as JSON
@@ -100,7 +100,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
-			$table = $this->model_table->prepare_table( $existing_table, $edit_table, true, true );
+			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
 			if ( false === $table )
 				break;
 
@@ -109,7 +109,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 
 			// Save updated table
-			$saved = $this->model_table->save( $table );
+			$saved = TablePress::$model_table->save( $table );
 			if ( false === $saved )
 				break;
 
@@ -123,7 +123,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// Change table ID
 			if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) )
-				$id_changed = $this->model_table->change_table_id( $table['id'], $table['new_id'] );
+				$id_changed = TablePress::$model_table->change_table_id( $table['id'], $table['new_id'] );
 			else
 				$id_changed = false;
 			if ( $id_changed ) {
@@ -174,8 +174,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$success = false;
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
-			$existing_table = $this->model_table->load( $preview_table['id'] );
-			if ( false === $existing_table ) // maybe somehow load a new table here? ($this->model_table->get_table_template())?
+			$existing_table = TablePress::$model_table->load( $preview_table['id'] );
+			if ( false === $existing_table ) // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				break;
 
 			// Check and convert data that was transmitted as JSON
@@ -188,7 +188,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$preview_table['visibility'] = json_decode( $preview_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
-			$table = $this->model_table->prepare_table( $existing_table, $preview_table, true, true );
+			$table = TablePress::$model_table->prepare_table( $existing_table, $preview_table, true, true );
 			if ( false === $table )
 				break;
 
@@ -215,7 +215,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$_render->set_input( $table, $render_options );
 			$head_html = '<style type="text/css">body{margin:10px;}</style>';
 			$head_html .= $_render->get_preview_css();
-			$custom_css = $this->model_options->get( 'custom_css' );
+			$custom_css = TablePress::$model_options->get( 'custom_css' );
 			if ( ! empty( $custom_css ) )
 				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
 
