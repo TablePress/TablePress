@@ -62,8 +62,10 @@ abstract class TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->model_options = TablePress::load_model( 'options' );
-		$this->model_table = TablePress::load_model( 'table' );
+		// References to the TablePress models (only for backwards compatibility in TablePress Extensions!)
+		// Using `TablePress::$model_options` and `TablePress::$model_table` is recommended!
+		$this->model_options = TablePress::$model_options;
+		$this->model_table = TablePress::$model_table;
 
 		// update check, in all controllers (frontend and admin), to make sure we always have up-to-date options
 		$this->plugin_update_check(); // should be done very early

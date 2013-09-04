@@ -53,6 +53,24 @@ abstract class TablePress {
 	const table_scheme_version = 3;
 
 	/**
+	 * Instance of the Options Model
+	 *
+	 * @since 1.3.0
+	 *
+	 * @var object
+	 */
+	public static $model_options;
+
+	/**
+	 * Instance of the Table Model
+	 *
+	 * @since 1.3.0
+	 *
+	 * @var object
+	 */
+	public static $model_table;
+
+	/**
 	 * Instance of the controller
 	 *
 	 * @since 1.0.0
@@ -109,6 +127,10 @@ abstract class TablePress {
 		// some filtering of "global" class variables
 		self::$shortcode = apply_filters( 'tablepress_table_shortcode', self::$shortcode );
 		self::$shortcode_info = apply_filters( 'tablepress_table_info_shortcode', self::$shortcode_info );
+
+		// Load modals for table and options, to be accessible from everywhere via `TablePress::$model_options` and `TablePress::$model_table`
+		self::$model_options = self::load_model( 'options' );
+		self::$model_table = self::load_model( 'table' );
 
 		if ( is_admin() ) {
 			$controller = 'admin';
