@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TablePress 1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-09-01 13:58:13+00:00\n"
+"POT-Creation-Date: 2013-09-04 16:50:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -63,6 +63,10 @@ msgstr ""
 
 #: classes/class-render.php:476 views/view-list.php:405
 msgid "Edit"
+msgstr ""
+
+#: classes/class-tablepress.php:305
+msgid "<em>unknown</em>"
 msgstr ""
 
 #: classes/class-view.php:110
@@ -404,12 +408,12 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: models/model-table.php:346 views/view-editor_button_thickbox.php:286
+#: models/model-table.php:353 views/view-editor_button_thickbox.php:286
 #: views/view-export.php:117 views/view-import.php:190 views/view-list.php:396
 msgid "(no name)"
 msgstr ""
 
-#: models/model-table.php:347
+#: models/model-table.php:354
 msgid "Copy of %s"
 msgstr ""
 
