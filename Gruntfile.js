@@ -118,11 +118,7 @@ module.exports = function( grunt ) {
 	} );
 
 	// Load tasks
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
-	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
+	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
 	// Register "build" task
 	grunt.registerTask( 'build', [ 'jshint:all', 'uglify:all', 'csslint:all', 'cssmin:all' ] );
