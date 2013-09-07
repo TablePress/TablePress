@@ -1056,7 +1056,7 @@ class csstidy {
 	 * @version 1.02
 	 */
 	public function escaped(&$string, $pos) {
-		return!(@($string{$pos - 1} !== '\\') || $this->escaped($string, $pos - 1));
+		return $pos ? !(@($string{$pos - 1} !== '\\') || csstidy::escaped($string, $pos - 1)) : false;
 	}
 
 	/**
