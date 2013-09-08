@@ -107,3 +107,15 @@ Release candidate in which all intended features are included and very stable.
 
 **Version 1.0**
 Official release with a few fixes and many enhancements and improvements.
+
+**Version 1.1**
+* Experimental import for Excel files (.xls and .xlsx)
+* More math functions in formulas (including if-conditionals, statistical functions, ...)
+* Better "Custom CSS" saving for higher performance
+* Bugfix: Encoding problem during HTML import
+* Bugfix: Roles are now deleted during uninstallation
+* Bugfix: Search for tables was broken, if Shortcode had been changed
+* Plugin Unit Tests for automated code testing
+* Added several new translations (Brazilian Portuguese, Czech, Dutch, Finnish, Hebrew, Icelandic, Italian, Japanese, Latvian, Russian, and Turkish)
+* Many more internal improvements of code and usability
+* Updated external libraries

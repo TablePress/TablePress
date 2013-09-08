@@ -3,8 +3,8 @@ Contributors: TobiasBg
 Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.5
-Tested up to: 3.6
-Stable tag: 1.0
+Tested up to: 3.7-alpha
+Stable tag: 1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,18 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
+= Version 1.1 =
+* Experimental import for Excel files (.xls and .xlsx)
+* More math functions in formulas (including if-conditionals, statistical functions, ...)
+* Better "Custom CSS" saving for higher performance
+* Bugfix: Encoding problem during HTML import
+* Bugfix: Roles are now deleted during uninstallation
+* Bugfix: Search for tables was broken, if Shortcode had been changed
+* Plugin Unit Tests for automated code testing
+* Added several new translations (Brazilian Portuguese, Czech, Dutch, Finnish, Hebrew, Icelandic, Italian, Japanese, Latvian, Russian, and Turkish)
+* Many more internal improvements of code and usability
+* Updated external libraries
+
 = Version 1.0 =
 Official release with a few fixes and many enhancements and improvements
 
@@ -117,6 +129,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.1 =
+This upgrade includes several new features, enhancements, and bugfixes, and is a recommended maintenance release.
 
 = 1.0 =
 This release contains a few bug fixed and many enhancements and new features, and is a recommended update.
