@@ -90,7 +90,14 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 
-		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $tablepress_css->load_custom_css_from_file( 'combined' ) );
+		// Determine default CSS URL
+		$rtl = ( is_rtl() ) ? '-rtl' : '';
+		$suffix = ( $use_minified_css ) ? '.min' : '';
+		$unfiltered_default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
+		$default_css_url = apply_filters( 'tablepress_default_css_url', $unfiltered_default_css_url );
+
+		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $unfiltered_default_css_url == $default_css_url && $tablepress_css->load_custom_css_from_file( 'combined' ) );
+
 		if ( $use_custom_css_combined_file ) {
 			$custom_css_combined_url = $tablepress_css->get_custom_css_location( 'combined', 'url' );
 			// need to use 'tablepress-default' instead of 'tablepress-combined' to not break existing TablePress Extensions
@@ -98,10 +105,6 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		} else {
 			$custom_css_dependencies = array();
 			if ( $use_default_css ) {
-				$rtl = ( is_rtl() ) ? '-rtl' : '';
-				$suffix = ( $use_minified_css ) ? '.min' : '';
-				$default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
-				$default_css_url = apply_filters( 'tablepress_default_css_url', $default_css_url );
 				wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
 				$custom_css_dependencies[] = 'tablepress-default'; // to make sure that Custom CSS is printed after Default CSS
 			}
