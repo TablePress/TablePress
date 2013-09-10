@@ -4,7 +4,7 @@ Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.5
 Tested up to: 3.7-alpha
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,9 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
+= Version 1.1.1 =
+* Fixed a bug with CSS handling that broke some TablePress Extensions
+
 = Version 1.1 =
 * Experimental import for Excel files (.xls and .xlsx)
 * More math functions in formulas (including if-conditionals, statistical functions, ...)
@@ -129,6 +132,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+This upgrade includes several new features, enhancements, and bugfixes, and is a recommended maintenance release.
 
 = 1.1 =
 This upgrade includes several new features, enhancements, and bugfixes, and is a recommended maintenance release.

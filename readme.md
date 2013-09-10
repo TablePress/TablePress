@@ -100,13 +100,13 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 ## Changelog
 
 **Version 0.8.1-beta**
-Initial version where most features are ready and pretty stable.
+* Initial version where most features are ready and pretty stable.
 
 **Version 0.9-RC**
-Release candidate in which all intended features are included and very stable.
+* Release candidate in which all intended features are included and very stable.
 
 **Version 1.0**
-Official release with a few fixes and many enhancements and improvements.
+* Official release with a few fixes and many enhancements and improvements.
 
 **Version 1.1**
 * Experimental import for Excel files (.xls and .xlsx)
@@ -119,3 +119,6 @@ Official release with a few fixes and many enhancements and improvements.
 * Added several new translations (Brazilian Portuguese, Czech, Dutch, Finnish, Hebrew, Icelandic, Italian, Japanese, Latvian, Russian, and Turkish)
 * Many more internal improvements of code and usability
 * Updated external libraries
+
+**Version 1.1.1**
+* Fixed a bug with CSS handling that broke some TablePress Extensions
