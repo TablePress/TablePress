@@ -93,7 +93,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $tablepress_css->load_custom_css_from_file( 'combined' ) );
 		if ( $use_custom_css_combined_file ) {
 			$custom_css_combined_url = $tablepress_css->get_custom_css_location( 'combined', 'url' );
-			wp_enqueue_style( 'tablepress-combined', $custom_css_combined_url, array(), $custom_css_version );
+			// need to use 'tablepress-default' instead of 'tablepress-combined' to not break existing TablePress Extensions
+			wp_enqueue_style( 'tablepress-default', $custom_css_combined_url, array(), $custom_css_version );
 		} else {
 			$custom_css_dependencies = array();
 			if ( $use_default_css ) {
