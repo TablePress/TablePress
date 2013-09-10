@@ -286,8 +286,15 @@ class TablePress_CSS {
 		$css_types = array( 'normal', 'minified', 'combined' );
 
 		$default_css = $this->load_default_css_from_file();
-		if ( false === $default_css )
+		if ( false === $default_css ) {
 			$default_css = '';
+		} else {
+			// Change relative URLs to web font files to absolute URLs, as combining the CSS files and saving to another directory breaks the relative URLs
+			$absolute_path = plugins_url( 'css/tablepress.', TABLEPRESS__FILE__ );
+			// Make the absolute URL protocol-relative to prevent mixed content warnings
+			$absolute_path = str_replace( array( 'http:', 'https:' ), '', $absolute_path );
+			$default_css = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css );
+		}
 		$file_content = array(
 			'normal' => $custom_css_normal,
 			'minified' => $custom_css_minified,
