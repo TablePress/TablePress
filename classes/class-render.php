@@ -544,7 +544,7 @@ class TablePress_Render {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
 			// print formulas that are escaped with '= (like in Excel) as text:
-			if ( strlen( $cell_content ) > 2 && "'=" == substr( $cell_content, 0, 2 ) )
+			if ( "'=" == substr( $cell_content, 0, 2 ) )
 				$cell_content = substr( $cell_content, 1 );
 			$cell_content = $this->safe_output( $cell_content );
 			if ( false !== strpos( $cell_content, '[' ) )
