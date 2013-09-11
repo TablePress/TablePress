@@ -1381,7 +1381,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			@unlink( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_dump_file' ) );
 		}
-		if ( empty( $dump_file['options'] ) )
+		if ( empty( $dump_file['options'] ) || ! is_array( $dump_file['options'] ) )
 			$dump_file['options'] = array();
 
 		// Import WP-Table Reloaded tables
@@ -1523,9 +1523,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @return bool Whether the import was successful or not (on at least on option)
 	 */
 	protected function _import_wp_table_reloaded_plugin_options( array $wp_table_reloaded_options ) {
-		if ( ! is_array( $wp_table_reloaded_options ) )
-			return false;
-
 		if ( ! current_user_can( 'tablepress_edit_options' ) )
 			return false;
 

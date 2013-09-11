@@ -411,9 +411,6 @@ class TablePress_Import {
 	 */
 	protected function count_max_columns( array $array ) {
 		$max_columns = 0;
-		if ( ! is_array( $array ) || 0 == count( $array ) )
-			return $max_columns;
-
 		foreach ( $array as $row_idx => $row ) {
 			$num_columns = count( $row );
 			$max_columns = max( $num_columns, $max_columns );
