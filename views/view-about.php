@@ -37,7 +37,7 @@ class TablePress_About_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
 		$this->add_meta_box( 'plugin-purpose', __( 'Plugin Purpose', 'tablepress' ), array( $this, 'postbox_plugin_purpose' ), 'normal' );

@@ -48,7 +48,7 @@ class TablePress_WP_Option {
 	 * @param array $params Name of the Option in string $params['option_name'],
 	 *						Default values for the Option in array $params['default_value']
 	 */
-	public function __construct( $params ) {
+	public function __construct( array $params ) {
 		$this->option_name = $params['option_name'];
 
 		$option_value = $this->_get_option( $this->option_name, null );
@@ -98,7 +98,7 @@ class TablePress_WP_Option {
 	 * @param array $new_options New options ( name => value )
 	 * @return bool True on success, false on failure
 	 */
-	public function update( $new_options ) {
+	public function update( array $new_options ) {
 		$this->option_value = $new_options;
 		return $this->_update_option( $this->option_name, json_encode( $this->option_value ) );
 	}

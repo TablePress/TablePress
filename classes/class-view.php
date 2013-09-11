@@ -145,7 +145,7 @@ abstract class TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		$this->action = $action;
 		$this->data = $data;
 
@@ -196,7 +196,7 @@ abstract class TablePress_View {
 	 *
 	 * @param array $action_messages Action messages for the screen
 	 */
-	protected function process_action_messages( $action_messages ) {
+	protected function process_action_messages( array $action_messages ) {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
 			$class = ( 'error' == substr( $this->data['message'], 0, 5 ) ) ? 'error' : 'updated';
 			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>", $class );
@@ -288,7 +288,7 @@ abstract class TablePress_View {
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
 	 */
-	protected function default_nonce_fields( $data, $box ) {
+	protected function default_nonce_fields( array $data, array $box ) {
 		if ( ! $this->has_meta_boxes )
 			return;
 		wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); echo "\n";
@@ -304,7 +304,7 @@ abstract class TablePress_View {
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
 	 */
-	protected function action_nonce_field( $data, $box ) {
+	protected function action_nonce_field( array $data, array $box ) {
 		wp_nonce_field( TablePress::nonce( $this->action ) ); echo "\n";
 	}
 
@@ -316,7 +316,7 @@ abstract class TablePress_View {
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
 	 */
-	protected function action_field( $data, $box ) {
+	protected function action_field( array $data, array $box ) {
 		echo "<input type=\"hidden\" name=\"action\" value=\"tablepress_{$this->action}\" />\n";
 	}
 
@@ -408,7 +408,7 @@ abstract class TablePress_View {
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
 	 */
-	protected function textbox_submit_button( $data, $box ) {
+	protected function textbox_submit_button( array $data, array $box ) {
 		$caption = isset( $data['submit_button_caption'] ) ? $data['submit_button_caption'] : __( 'Save Changes', 'tablepress' );
 		?>
 		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary button-large" name="submit" /></p>

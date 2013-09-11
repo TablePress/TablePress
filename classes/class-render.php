@@ -123,7 +123,7 @@ class TablePress_Render {
 	 * @param array $table Table to be rendered
 	 * @param array $render_options Options for rendering, from both "Edit" screen and Shortcode
 	 */
-	public function set_input( $table, $render_options ) {
+	public function set_input( array $table, array $render_options ) {
 		$this->table = $table;
 		$this->render_options = $render_options;
 		$this->table = apply_filters( 'tablepress_table_raw_render_data', $this->table, $this->render_options );
@@ -259,7 +259,7 @@ class TablePress_Render {
 	 * @param array $parents List of cells that depend on this cell (to prevent circle references)
 	 * @return string Result of the parsing/evaluation
 	 */
-	protected function _evaluate_cell( $content, $parents = array() ) {
+	protected function _evaluate_cell( $content, array $parents = array() ) {
 		if ( '' == $content || '=' == $content || '=' != $content[0] )
 			return $content;
 

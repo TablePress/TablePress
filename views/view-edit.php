@@ -37,7 +37,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
 		$action_messages = array(
@@ -158,7 +158,7 @@ class TablePress_Edit_View extends TablePress_View {
  	 * @param array $strings Current set of Media View strings
 	 * @return array Changed Media View strings
 	 */
-	public function change_media_view_strings( $strings ) {
+	public function change_media_view_strings( array $strings ) {
 		$strings['insertIntoPost'] = __( 'Insert into Table', 'tablepress' );
 		return $strings;
 	}
@@ -172,7 +172,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
 	 */
-	protected function action_nonce_field( $data, $box ) {
+	protected function action_nonce_field( array $data, array $box ) {
 		// use custom nonce field here, that includes the table ID
 		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ), 'nonce-edit-table' ); echo "\n";
 		wp_nonce_field( TablePress::nonce( 'preview_table', $data['table']['id'] ), 'nonce-preview-table', false, true );

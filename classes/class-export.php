@@ -80,7 +80,7 @@ class TablePress_Export {
 	 * @param string $csv_delimiter Delimiter for CSV export
 	 * @return string Exported table (only data for CSV and HTML, full tables (including options) for JSON)
 	 */
-	public function export_table( $table, $export_format, $csv_delimiter ) {
+	public function export_table( array $table, $export_format, $csv_delimiter ) {
 		switch ( $export_format ) {
 			case 'csv':
 				$output = '';

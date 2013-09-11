@@ -133,7 +133,7 @@ class CSV_Parser {
 	 * @param int $number_lines
 	 * @return bool|string False if delimiter is not possible, string to be used as a sort key if character could be a delimiter
 	 */
-	protected function _check_delimiter_count( $char, $line_counts, $number_lines ) {
+	protected function _check_delimiter_count( $char, array $line_counts, $number_lines ) {
 		// was potential delimiter found in every line?
 		if ( count( $line_counts ) != $number_lines )
 			return false;

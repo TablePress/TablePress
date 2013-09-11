@@ -48,7 +48,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		$this->action = $action;
 		$this->data = $data;
 
@@ -205,7 +205,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @param array $items Tables to be displayed in the List Table
 	 */
-	public function set_items( $items ) {
+	public function set_items( array $items ) {
 		$this->items = $items;
 		$this->items_count = count( $items );
 	}
@@ -269,7 +269,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_id( $item ) {
+	protected function column_table_id( array $item ) {
 		return esc_html( $item['id'] );
 	}
 
@@ -281,7 +281,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_name( $item ) {
+	protected function column_table_name( array $item ) {
 		if ( '' == trim( $item['name'] ) )
 			$item['name'] = __( '(no name)', 'tablepress' );
 		return esc_html( $item['name'] );
@@ -295,7 +295,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_description( $item ) {
+	protected function column_table_description( array $item ) {
 		if ( '' == trim( $item['description'] ) )
 			$item['description'] = __( '(no description)', 'tablepress' );
 		return esc_html( $item[ 'description' ] );
@@ -309,7 +309,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_action( $item ) {
+	protected function column_table_action( array $item ) {
 		return '<input type="button" class="insert-shortcode button" title="' . esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ) . '" value="' . esc_attr__( 'Insert Shortcode', 'tablepress' ) . '" />';
 	}
 
@@ -357,7 +357,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Item that shall be searched
 	 * @return bool Whether the search term was found or not
 	 */
-	protected function _search_callback( $item ) {
+	protected function _search_callback( array $item ) {
 		static $term;
 		if ( is_null( $term ) )
 			$term = stripslashes( $_GET['s'] );
@@ -385,7 +385,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item_b the second item
 	 * @return int (-1, 0, 1) depending on which item sorts "higher"
 	 */
-	protected function _order_callback( $item_a, $item_b ) {
+	protected function _order_callback( array $item_a, array $item_b ) {
 		global $orderby, $order;
 
 		if ( $item_a[$orderby] == $item_b[$orderby] )

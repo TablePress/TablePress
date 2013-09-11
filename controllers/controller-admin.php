@@ -193,7 +193,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $buttons Current set of buttons in the TinyMCE toolbar
 	 * @return array Current set of buttons in the TinyMCE toolbar, including "Table" button
 	 */
-	public function add_tinymce_button( $buttons ) {
+	public function add_tinymce_button( array $buttons ) {
 		$buttons[] = 'tablepress_insert_table';
 		return $buttons;
 	}
@@ -206,7 +206,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $plugins Current set of registered TinyMCE plugins
 	 * @return array Current set of registered TinyMCE plugins, including "Table" button plugin
 	 */
-	public function add_tinymce_plugin( $plugins ) {
+	public function add_tinymce_plugin( array $plugins ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$js_file = "admin/js/tinymce-button{$suffix}.js";
 		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
@@ -269,7 +269,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $links List of links to print in the "Plugin" column on the Plugins page
 	 * @return array Extended list of links to print in the "Plugin" column on the Plugins page
 	 */
-	public function add_plugin_action_links( $links ) {
+	public function add_plugin_action_links( array $links ) {
 		if ( current_user_can( 'tablepress_list_tables' ) )
 			$links[] = '<a href="' . TablePress::url() . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
 		return $links;
@@ -283,7 +283,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param string $file Name of the plugin
 	 * @return array Extended list of links to print in the "Description" column on the Plugins page
 	 */
-	public function add_plugin_row_meta( $links, $file ) {
+	public function add_plugin_row_meta( array $links, $file ) {
 		if ( TABLEPRESS_BASENAME == $file ) {
 			$links[] = '<a href="http://tablepress.org/faq/" title="' . esc_attr__( 'Frequently Asked Questions', 'tablepress' ) . '">' . __( 'FAQ', 'tablepress' ) . '</a>';
 			$links[] = '<a href="http://tablepress.org/documentation/">' . __( 'Documentation', 'tablepress' ) . '</a>';
@@ -564,7 +564,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $b Second language to sort
 	 * @return array -1, 0, 1, depending on sort
 	 */
-	protected function _get_plugin_languages_sort_cb( $a, $b ) {
+	protected function _get_plugin_languages_sort_cb( array $a, array $b ) {
 		return strnatcasecmp( $a['name'], $b['name'] );
 	}
 
@@ -1069,7 +1069,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @param array $import Submitted form data
 	 */
-	protected function _import_tablepress_regular( $import ) {
+	protected function _import_tablepress_regular( array $import ) {
 		if ( ! isset( $import['type'] ) )
 			$import['type'] = 'add';
 		if ( ! isset( $import['existing_table'] ) )
@@ -1219,7 +1219,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param string $import_type What to do with the imported data: "add", "replace", "append"
 	 * @return bool|string False on error, table ID on success
 	 */
-	protected function _import_tablepress_table( $format, $data, $name, $description, $existing_table_id, $import_type ) {
+	protected function _import_tablepress_table( $format, array $data, $name, $description, $existing_table_id, $import_type ) {
 		$imported_table = $this->importer->import_table( $format, $data );
 		if ( false === $imported_table )
 			return false;
@@ -1431,7 +1431,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $wp_table_reloaded_options WP-Table Reloaded Plugin Options
 	 * @return int Import status: 0=Import failed; 1=Imported with ID change; 2=Imported without ID change
 	 */
-	protected function _import_wp_table_reloaded_table( $wptr_table, $wp_table_reloaded_options ) {
+	protected function _import_wp_table_reloaded_table( array $wptr_table, array $wp_table_reloaded_options ) {
 		if ( empty( $wptr_table ) )
 			return 0; // Import failed
 
@@ -1522,7 +1522,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $wp_table_reloaded_options Plugin Options of WP-Table Reloaded that shall be imported
 	 * @return bool Whether the import was successful or not (on at least on option)
 	 */
-	protected function _import_wp_table_reloaded_plugin_options( $wp_table_reloaded_options ) {
+	protected function _import_wp_table_reloaded_plugin_options( array $wp_table_reloaded_options ) {
 		if ( ! is_array( $wp_table_reloaded_options ) )
 			return false;
 

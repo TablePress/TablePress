@@ -390,7 +390,7 @@ class TablePress_Import {
 	 * @param array $array Two-dimensional array to be padded
 	 * @return array Padded array
 	 */
-	public function pad_array_to_max_cols( $array ) {
+	public function pad_array_to_max_cols( array $array ) {
 		$rows = count( $array );
 		$rows = ( $rows > 0 ) ? $rows : 1;
 		$max_columns = $this->count_max_columns( $array );
@@ -409,7 +409,7 @@ class TablePress_Import {
 	 * @param array $array Two-dimensional array
 	 * @return int Highest number of columns in the rows of the array
 	 */
-	protected function count_max_columns( $array ) {
+	protected function count_max_columns( array $array ) {
 		$max_columns = 0;
 		if ( ! is_array( $array ) || 0 == count( $array ) )
 			return $max_columns;

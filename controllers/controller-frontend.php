@@ -296,7 +296,7 @@ JS;
 	 * @param array $shortcode_atts List of attributes that where included in the Shortcode
 	 * @return string Resulting HTML code for the table with the ID <ID>
 	 */
-	public function shortcode_table( $shortcode_atts ) {
+	public function shortcode_table( array $shortcode_atts ) {
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
 
 		$default_shortcode_atts = $_render->get_default_render_options();
@@ -416,7 +416,7 @@ JS;
 	 * @param array $atts list of attributes that where included in the Shortcode
 	 * @return string Text that replaces the Shortcode (error message or asked-for information)
 	 */
-	public function shortcode_table_info( $shortcode_atts ) {
+	public function shortcode_table_info( array $shortcode_atts ) {
 		// parse Shortcode attributes, only allow those that are specified
 		$default_shortcode_atts = array(
 				'id' => 0,

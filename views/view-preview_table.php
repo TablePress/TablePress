@@ -39,7 +39,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		$this->action = $action;
 		$this->data = $data;
 	}

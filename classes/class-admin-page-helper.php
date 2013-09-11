@@ -28,7 +28,7 @@ class TablePress_Admin_Page {
 	 * @param string $name Name of the CSS file, without extension(s)
 	 * @param array $dependencies List of names of CSS stylesheets that this stylesheet depends on, and which need to be included before this one
 	 */
-	public function enqueue_style( $name, $dependencies = array() ) {
+	public function enqueue_style( $name, array $dependencies = array() ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$css_file = "admin/css/{$name}{$suffix}.css";
 		$css_url = plugins_url( $css_file, TABLEPRESS__FILE__ );
@@ -45,7 +45,7 @@ class TablePress_Admin_Page {
 	 * @param bool|array $localize_script (optional) An array with strings that gets transformed into a JS object and is added to the page before the script is included
 	 * @param bool $force_minified Always load the minified version, regardless of SCRIPT_DEBUG constant value
 	 */
-	public function enqueue_script( $name, $dependencies = array(), $localize_script = false, $force_minified = false ) {
+	public function enqueue_script( $name, array $dependencies = array(), $localize_script = false, $force_minified = false ) {
 		$suffix = ( ! $force_minified && defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$js_file = "admin/js/{$name}{$suffix}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
@@ -90,7 +90,7 @@ class TablePress_Admin_Page {
 	 * @param string $selector The HTML elements, on which the pointer should be attached.
 	 * @param array $args Arguments to be passed to the pointer JS (see wp-pointer.js).
 	 */
-	public function print_wp_pointer_js( $pointer_id, $selector, $args ) {
+	public function print_wp_pointer_js( $pointer_id, $selector, array $args ) {
 		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args ) || empty( $args['content'] ) )
 			return;
 		?>

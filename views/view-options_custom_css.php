@@ -28,7 +28,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		$this->action = 'options'; // set this manually here, to get correct page title and nav bar entries
 		$this->data = $data;
 

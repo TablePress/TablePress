@@ -73,7 +73,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param array $post Post to insert
 	 * @return int Post ID of the inserted post on success, int 0 on error
 	 */
-	public function insert( $post ) {
+	public function insert( array $post ) {
 		$default_post = array(
 			'ID' => false, // false on new insert, but existing post ID on update
 			'comment_status' => 'closed',
@@ -120,7 +120,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param array $post Post
 	 * @return int Post ID of the updated post on success, int 0 on error
 	 */
-	public function update( $post ) {
+	public function update( array $post ) {
 		$default_post = array(
 			'ID' => false, // false on new insert, but existing post ID on update
 			'comment_status' => 'closed',
@@ -226,7 +226,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 *
 	 * @param array $all_post_ids List of Post IDs
 	 */
-	public function load_posts( $all_post_ids ) {
+	public function load_posts( array $all_post_ids ) {
 		global $wpdb;
 
 		// Split post loading, to save memory

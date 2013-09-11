@@ -28,7 +28,7 @@ class TablePress_Export_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
 		$this->process_action_messages( array(
