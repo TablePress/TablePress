@@ -236,7 +236,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @param object $wp_admin_bar The current WP Admin Bar object
 	 */
-	public function add_wp_admin_bar_new_content_menu_entry( $wp_admin_bar ) {
+	public function add_wp_admin_bar_new_content_menu_entry( WP_Admin_Bar $wp_admin_bar ) {
 		if ( ! current_user_can( 'tablepress_add_tables' ) )
 			return;
 		// @TODO: Translation might not work, as textdomain might not yet be loaded here (for submenu entries)
