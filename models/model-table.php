@@ -25,7 +25,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Post_Model
 	 */
 	protected $model_post;
 
@@ -68,7 +68,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_WP_Option
 	 */
 	protected $tables;
 

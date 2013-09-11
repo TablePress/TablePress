@@ -53,7 +53,7 @@ abstract class TablePress {
 	const table_scheme_version = 3;
 
 	/**
-	 * Instance of the controller object
+	 * Instance of the controller
 	 *
 	 * @since 1.0.0
 	 *

@@ -25,7 +25,7 @@ class TablePress_List_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_All_Tables_List_Table
 	 */
 	protected $wp_list_table;
 

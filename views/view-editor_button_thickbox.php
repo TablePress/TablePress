@@ -36,7 +36,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Editor_Button_Thickbox_List_Table
 	 */
 	protected $wp_list_table;
 

@@ -25,7 +25,7 @@ abstract class TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Options_Model
 	 */
 	public $model_options;
 
@@ -34,7 +34,7 @@ abstract class TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Table_Model
 	 */
 	public $model_table;
 

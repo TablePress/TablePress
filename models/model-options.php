@@ -62,7 +62,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_WP_Option
 	 */
 	protected $plugin_options;
 
@@ -71,7 +71,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_WP_User_Option
 	 */
 	protected $user_options;
 

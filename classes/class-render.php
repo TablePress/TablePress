@@ -52,7 +52,7 @@ class TablePress_Render {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var EvalMath
 	 */
 	protected $evalmath;
 

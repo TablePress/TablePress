@@ -52,7 +52,7 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Admin_Page
 	 */
 	protected $admin_page;
 
