@@ -264,7 +264,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table (needs to have $table['id']!)
-	 * @return mixed False on error, string table ID on success
+	 * @return string|bool False on error, string table ID on success
 	 */
 	public function save( array $table ) {
 		if ( empty( $table['id'] ) )
@@ -305,7 +305,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param array $table Table ($table['id'] is not necessary)
 	 * @param string|bool $copied_table_id ID of the copied table, if table is a copy, false otherwise
-	 * @return mixed False on error, string table ID of the new table on success
+	 * @return string|bool False on error, string table ID of the new table on success
 	 */
 	public function add( array $table, $copied_table_id = false ) {
 		$post_id = false; // to insert table
@@ -341,7 +341,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id ID of the table to be copied
-	 * @return mixed False on error, string table ID of the new table on success
+	 * @return string|bool False on error, string table ID of the new table on success
 	 */
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id );
