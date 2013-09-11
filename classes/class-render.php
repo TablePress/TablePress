@@ -260,7 +260,7 @@ class TablePress_Render {
 	 * @return string Result of the parsing/evaluation
 	 */
 	protected function _evaluate_cell( $content, $parents = array() ) {
-		if ( '' == $content || '=' != $content[0] )
+		if ( '' == $content || '=' == $content || '=' != $content[0] )
 			return $content;
 
 		$content = substr( $content, 1 );
