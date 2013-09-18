@@ -30,6 +30,7 @@ additional modifications by Tobias Bäthge:
 - add "median()", "mode()", and "range()" statistic functions
 - add "if()" function
 - add "number_format()" and "number_format_eu()" functions
+- add "log10" function
 - Fix displaying of expected number of arguments
 
 ================================================================================
@@ -186,7 +187,7 @@ class EvalMath {
 		'sin','sinh','arcsin','asin','arcsinh','asinh',
 		'cos','cosh','arccos','acos','arccosh','acosh',
 		'tan','tanh','arctan','atan','arctanh','atanh',
-		'sqrt','abs','ln','log','exp','floor','ceil'
+		'sqrt','abs','ln','log','log10', 'exp','floor','ceil'
 	);
 
 	var $fc = array( // calc functions emulation
