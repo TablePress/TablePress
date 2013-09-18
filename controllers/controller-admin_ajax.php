@@ -72,7 +72,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) )
 			wp_die( '-1' );
 		else
-			$edit_table = stripslashes_deep( $_POST['tablepress'] );
+			$edit_table = wp_unslash( $_POST['tablepress'] );
 
 		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
 		TablePress::check_nonce( 'edit', $edit_table['id'], '_ajax_nonce', true );
@@ -161,7 +161,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) )
 			wp_die( '-1' );
 		else
-			$preview_table = stripslashes_deep( $_POST['tablepress'] );
+			$preview_table = wp_unslash( $_POST['tablepress'] );
 
 		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
 		TablePress::check_nonce( 'preview_table', $preview_table['id'], '_ajax_nonce', true );

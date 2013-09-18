@@ -412,9 +412,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['import_type'] = ( ! empty( $_GET['import_type'] ) ) ? $_GET['import_type'] : 'add';
 				$data['import_existing_table'] = ( ! empty( $_GET['import_existing_table'] ) ) ? $_GET['import_existing_table'] : false;
 				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
-				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? stripslashes( $_GET['import_url'] ) : 'http://';
-				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? stripslashes( $_GET['import_server'] ) : ABSPATH;
-				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? stripslashes( $_GET['import_form_field'] ) : '';
+				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? wp_unslash( $_GET['import_url'] ) : 'http://';
+				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? wp_unslash( $_GET['import_server'] ) : ABSPATH;
+				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? wp_unslash( $_GET['import_form_field'] ) : '';
 				$data['wp_table_reloaded_installed'] = ( false !== get_option( 'wp_table_reloaded_options', false ) && false !== get_option( 'wp_table_reloaded_tables', false ) );
 				$data['import_wp_table_reloaded_source'] = ( ! empty( $_GET['import_wp_table_reloaded_source'] ) ) ? $_GET['import_wp_table_reloaded_source'] : ( $data['wp_table_reloaded_installed'] ? 'db' : 'dump-file' );
 				break;
@@ -688,7 +688,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_selection' ) );
 		else
-			$tables = stripslashes_deep( $_POST['table'] );
+			$tables = wp_unslash( $_POST['table'] );
 
 		$no_success = array(); // to store table IDs that failed
 
@@ -750,7 +750,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( empty( $_POST['table'] ) || empty( $_POST['table']['id'] ) )
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
 		else
-			$edit_table = stripslashes_deep( $_POST['table'] );
+			$edit_table = wp_unslash( $_POST['table'] );
 
 		TablePress::check_nonce( 'edit', $edit_table['id'], 'nonce-edit-table' );
 
@@ -818,7 +818,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 		else
-			$add_table = stripslashes_deep( $_POST['table'] );
+			$add_table = wp_unslash( $_POST['table'] );
 
 		// Perform sanity checks of posted data
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
@@ -868,7 +868,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( empty( $_POST['options'] ) || ! is_array( $_POST['options'] ) )
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'error_save' ) );
 		else
-			$posted_options = stripslashes_deep( $_POST['options'] );
+			$posted_options = wp_unslash( $_POST['options'] );
 
 		// Valid new options that will be merged into existing ones
 		$new_options = array();
@@ -937,7 +937,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( empty( $_POST['export'] ) || ! is_array( $_POST['export'] ) )
 			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
 		else
-			$export = stripslashes_deep( $_POST['export'] );
+			$export = wp_unslash( $_POST['export'] );
 
 		$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
 
@@ -1040,7 +1040,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( empty( $_POST['import'] ) || ! is_array( $_POST['import'] ) )
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
 		else
-			$import = stripslashes_deep( $_POST['import'] );
+			$import = wp_unslash( $_POST['import'] );
 
 		// Determine if this is a regular import or an import from WP-Table Reloaded
 		if ( isset( $_POST['submit_wp_table_reloaded_import'] ) && isset( $import['wp_table_reloaded'] ) && isset( $import['wp_table_reloaded']['source'] ) ) {
@@ -1442,7 +1442,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			|| empty( $wptr_table['options'] ) )
 			return 0; // Import failed
 
-		$wptr_table = stripslashes_deep( $wptr_table ); // slashed in WP-Table Reloaded
+		$wptr_table = wp_unslash( $wptr_table ); // slashed in WP-Table Reloaded
 
 		// Table was loaded, import the data, table options, and visibility
 		// Create a new table array with information from the imported table
@@ -1530,7 +1530,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$imported_options['use_custom_css'] = ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) ? (bool)$wp_table_reloaded_options['use_custom_css'] : false;
 		if ( isset( $wp_table_reloaded_options['custom_css'] ) ) {
 			// Automatically convert WP-Table Reloaded Custom CSS to TablePress Custom CSS by search/replacing classes and IDs
-			$imported_options['custom_css'] = stripslashes( $wp_table_reloaded_options['custom_css'] );
+			$imported_options['custom_css'] = wp_unslash( $wp_table_reloaded_options['custom_css'] ); // Be careful when removing this, as it might break CSS comments from old Dump Files
 			$imported_options['custom_css'] = str_replace( '#wp-table-reloaded-id-', '#tablepress-', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '-no-1', '', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '.wp-table-reloaded-id-', '.tablepress-id-', $imported_options['custom_css'] );

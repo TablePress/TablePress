@@ -90,7 +90,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'to_ping' => ''
 		);
 		$post = array_merge( $default_post, $post );
-		$post = add_magic_quotes( $post ); // WP expects everything to be slashed
+		$post = wp_slash( $post ); // WP expects everything to be slashed
 
 		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
@@ -137,7 +137,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'to_ping' => ''
 		);
 		$post = array_merge( $default_post, $post );
-		$post = add_magic_quotes( $post ); // WP expects everything to be slashed
+		$post = wp_slash( $post ); // WP expects everything to be slashed
 
 		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
@@ -274,7 +274,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error
 	 */
 	public function add_meta_field( $post_id, $field, $value ) {
-		$value = addslashes( $value ); // WP expects a slashed value...
+		$value = wp_slash( $value ); // WP expects a slashed value...
 		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique
 		$success = ( false === $success ) ? false : true; // make sure that $success is a boolean, as add_post_meta() returns an ID or false
 		return $success;
@@ -294,7 +294,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error
 	 */
 	public function update_meta_field( $post_id, $field, $value, $prev_value = '' ) {
-		$value = addslashes( $value ); // WP expects a slashed value...
+		$value = wp_slash( $value ); // WP expects a slashed value...
 		$success = update_post_meta( $post_id, $field, $value, $prev_value );
 		return $success;
 	}

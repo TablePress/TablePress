@@ -194,7 +194,7 @@ class TablePress_List_View extends TablePress_View {
 	 */
 	public function textbox_tables_list( $data, $box ) {
 		if ( ! empty( $_GET['s'] ) )
-			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( wp_unslash( $_GET['s'] ) ) );
 	?>
 <form method="get" action="">
 	<?php
@@ -585,7 +585,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	protected function _search_callback( array $item ) {
 		static $term;
 		if ( is_null( $term ) )
-			$term = stripslashes( $_GET['s'] );
+			$term = wp_unslash( $_GET['s'] );
 
 		$item = TablePress::$controller->model_table->load( $item['id'] ); // load table again, with data
 
