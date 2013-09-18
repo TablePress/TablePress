@@ -591,7 +591,6 @@ JS;
 		// for all search terms loop through all tables's cells (those cells are all visible, because we filtered before!)
 		$query_result = array(); // array of all search words that were found, and the table IDs where they were found
 		foreach ( $search_terms as $search_term ) {
-			$search_term = addslashes_gpc( $search_term ); // escapes with esc_sql
 			foreach ( $search_tables as $table_id => $table ) {
 				if ( false !== stripos( $table['name'], $search_term ) || false !== stripos( $table['description'], $search_term ) ) {
 					// we found the $search_term in the name or description (and they are shown)
@@ -614,6 +613,7 @@ JS;
 		$exact = get_query_var( 'exact' ); // if $_GET['exact'] is set, WordPress doesn't use % in SQL LIKE clauses
 		$n = ( empty( $exact ) ) ? '%' : '';
 		foreach ( $query_result as $search_term => $tables ) {
+			$search_term = addslashes_gpc( $search_term );
 			$old_or = "OR ({$wpdb->posts}.post_content LIKE '{$n}{$search_term}{$n}')";
 			$table_ids = implode( '|', $tables );
 			$regexp = '\\\\[' . TablePress::$shortcode . ' id=(["\\\']?)(' . $table_ids . ')(["\\\' /])'; // ' needs to be single escaped, [ double escaped (with \\) in mySQL
