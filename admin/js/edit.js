@@ -729,7 +729,6 @@ jQuery(document).ready( function( $ ) {
 						return;
 
 					var $advanced_editor = $id( 'advanced-editor-content' );
-					tp.cells.advanced_editor.thickbox_size();
 					tp.cells.$textarea = $(this).blur();
 					$advanced_editor.val( tp.cells.$textarea.val() );
 					$id( 'advanced-editor' ).wpdialog( 'open' );
@@ -744,7 +743,6 @@ jQuery(document).ready( function( $ ) {
 					tp.cells.advanced_editor.prompt_shown = true;
 					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 						var $advanced_editor = $id( 'advanced-editor-content' );
-						tp.cells.advanced_editor.thickbox_size();
 						tp.cells.$textarea = $(this).blur();
 						$advanced_editor.val( tp.cells.$textarea.val() );
 						$id( 'advanced-editor' ).wpdialog( 'open' );
@@ -766,25 +764,6 @@ jQuery(document).ready( function( $ ) {
 				close: function() {
 					$id( 'advanced-editor' ).wpdialog( 'close' );
 					return false;
-				},
-				thickbox_size: function() {
-					var $link = $id( 'advanced-editor-content-add_media' ),
-						url,
-						width = $(window).width(),
-						W = ( 720 < width ) ? 720 : width,
-						H = $(window).height();
-
-					if ( ! $link.length ) // for temporary 3.5 compatibility
-						return;
-
-					url = $link.attr( 'href' );
-
-					if ( $( 'body.admin-bar' ).length )
-						H -= 28;
-
-					url = url.replace( /&width=[0-9]+/g, '' ).replace( /&height=[0-9]+/g, '' );
-					url += '&width=' + ( W - 80 ) + '&height=' + ( H - 85 );
-					$link.attr( 'href', url );
 				}
 			},
 			checkboxes: {
