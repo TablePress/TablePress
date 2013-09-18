@@ -31,6 +31,7 @@ additional modifications by Tobias Bäthge:
 - add "if()" function
 - add "number_format()" and "number_format_eu()" functions
 - add "log10" function
+- make "log" support the natural logarithm (with just one argument), and other bases (with second argument)
 - Fix displaying of expected number of arguments
 
 ================================================================================
@@ -187,14 +188,15 @@ class EvalMath {
 		'sin','sinh','arcsin','asin','arcsinh','asinh',
 		'cos','cosh','arccos','acos','arccosh','acosh',
 		'tan','tanh','arctan','atan','arctanh','atanh',
-		'sqrt','abs','ln','log','log10', 'exp','floor','ceil'
+		'sqrt','abs','ln','log10', 'exp','floor','ceil'
 	);
 
 	var $fc = array( // calc functions emulation
 		'average'=>array(-1), 'mean'=>array(-1),
 		'median'=>array(-1),  'mode'=>array(-1), 'range'=>array(-1),
 		'max'=>array(-1),	  'min'=>array(-1),
-		'mod'=>array(2),	  'pi'=>array(0),	 'power'=>array(2),
+		'mod'=>array(2),	  'pi'=>array(0),
+		'power'=>array(2),	  'log'=>array(1, 2),
 		'round'=>array(1, 2),
 		'number_format'=>array(1, 2), 'number_format_eu'=>array(1, 2),
 		'sum'=>array(-1),	 'product'=>array(-1),
@@ -466,7 +468,7 @@ class EvalMath {
 				if (in_array($fnn, $this->fb)) { // built-in function:
 					if (is_null($op1 = $stack->pop())) return $this->trigger(MoodleTranslations::get_string('internalerror', 'mathslib'));
 					$fnn = preg_replace("/^arc/", "a", $fnn); // for the 'arc' trig synonyms
-					if ($fnn == 'ln') $fnn = 'log';
+					if ($fnn == 'ln') $fnn = 'log'; // rewrite 'ln' (only allows one argument) to 'log' (natural logarithm)
 					eval('$stack->push(' . $fnn . '($op1));'); // perfectly safe eval()
 				} elseif (array_key_exists($fnn, $this->fc)) { // calc emulation function
 					// get args
@@ -636,6 +638,10 @@ class EvalMathFuncs {
 
 	static function power($op1, $op2) {
 		return pow($op1, $op2);
+	}
+
+	static function log($number, $base = M_E) {
+		return log($number, $base);
 	}
 
 	static function atan2($op1, $op2) {
