@@ -67,7 +67,8 @@ module.exports = function( grunt ) {
 				'known-properties': false,
 				'compatible-vendor-prefixes': false,
 				'universal-selector': false,
-				'bulletproof-font-face': false
+				'bulletproof-font-face': false,
+				'box-sizing': false
 			},
 			all: {
 				src: [
