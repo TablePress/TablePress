@@ -509,7 +509,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Naoko Azuma',
 				'translator_url' => 'http://www.goju-on.com/profile_en/'
 			),
-			'lt_LT' => array(
+			'lv_LV' => array(
 				'name' => __( 'Latvian', 'tablepress' ),
 				'translator_name' => 'Johannes Rau',
 				'translator_url' => 'http://www.yamago.de/'
