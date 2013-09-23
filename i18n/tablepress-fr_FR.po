@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: TablePress v1.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-08-27 18:12+0100\n"
+"PO-Revision-Date: 2013-09-23 21:13+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2851,7 +2851,7 @@ msgstr "Japonais"
 # @ tablepress
 #: controllers/controller-admin.php:513
 msgid "Latvian"
-msgstr "Latin"
+msgstr "Letton"
 
 # @ tablepress
 #: controllers/controller-admin.php:518
