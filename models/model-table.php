@@ -765,10 +765,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _update_table_options( $post_id, array $options ) {
 		$options = json_encode( $options );
-		// we need to pass the previous value to make sure that an update takes place, to really get a successful (true) return result from the WP API
-		$prev_options = json_encode( $this->_get_table_options( $post_id ) );
-		$success = $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options, $prev_options );
-		return $success;
+		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options );
 	}
 
 	/**
@@ -813,10 +810,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _update_table_visibility( $post_id, array $visibility ) {
 		$visibility = json_encode( $visibility );
-		// we need to pass the previous value to make sure that an update takes place, to really get a successful (true) return result from the WP API
-		$prev_visibility = json_encode( $this->_get_table_visibility( $post_id ) );
-		$success = $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility, $prev_visibility );
-		return $success;
+		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
 	}
 
 	/**

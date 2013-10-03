@@ -290,10 +290,14 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param int $post_id ID of the post for which the field shall be updated
 	 * @param string $field Name of the post meta field
 	 * @param string $value Value of the post meta field (not slashed)
-	 * @param string $prev_value (optional) Previous value of the post meta field
 	 * @return bool True on success, false on error
 	 */
-	public function update_meta_field( $post_id, $field, $value, $prev_value = '' ) {
+	public function update_meta_field( $post_id, $field, $value ) {
+		$prev_value = get_post_meta( $post_id, $field, true );
+		// No need to update, if values are equal (also, update_post_meta() would return false for this)
+		if ( $prev_value == $value )
+			return true;
+
 		$value = wp_slash( $value ); // WP expects a slashed value...
 		$success = update_post_meta( $post_id, $field, $value, $prev_value );
 		return $success;
