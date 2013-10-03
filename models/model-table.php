@@ -750,8 +750,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _add_table_options( $post_id, array $options ) {
 		$options = json_encode( $options );
-		$success = $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
-		return $success;
+		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
 	}
 
 	/**
@@ -780,8 +779,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$options = $this->model_post->get_meta_field( $post_id, $this->table_options_field_name );
 		if ( empty( $options ) )
 			return array();
-		$options = json_decode( $options, true );
-		return $options;
+		return json_decode( $options, true );
 	}
 
 	/**
@@ -795,8 +793,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _add_table_visibility( $post_id, array $visibility ) {
 		$visibility = json_encode( $visibility );
-		$success = $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
-		return $success;
+		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
 	}
 
 	/**
@@ -825,8 +822,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$visibility = $this->model_post->get_meta_field( $post_id, $this->table_visibility_field_name );
 		if ( empty( $visibility ) )
 			return array();
-		$visibility = json_decode( $visibility, true );
-		return $visibility;
+		return json_decode( $visibility, true );
 	}
 
 	/**

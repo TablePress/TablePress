@@ -184,8 +184,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return mixed|bool Post on success, false on error
 	 */
 	public function delete( $post_id ) {
-		$post = wp_delete_post( $post_id, true ); // force delete, although for CPTs this is automatic in this function
-		return $post;
+		return wp_delete_post( $post_id, true ); // force delete, although for CPTs this is automatic in this function
 	}
 
 	/**
@@ -199,8 +198,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return mixed|bool Post on success, false on error
 	 */
 	public function trash( $post_id ) {
-		$post = wp_trash_post( $post_id );
-		return $post;
+		return wp_trash_post( $post_id );
 	}
 
 	/**
@@ -214,8 +212,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return array|bool Post on success, false on error
 	 */
 	public function untrash( $post_id ) {
-		$post = wp_untrash_post( $post_id );
-		return $post;
+		return wp_untrash_post( $post_id );
 	}
 
 	/**
@@ -258,8 +255,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return int Number of posts
 	 */
 	public function count_posts() {
-		$count = array_sum( (array)wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
-		return $count;
+		return array_sum( (array)wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
 	}
 
 	/**
@@ -299,8 +295,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			return true;
 
 		$value = wp_slash( $value ); // WP expects a slashed value...
-		$success = update_post_meta( $post_id, $field, $value, $prev_value );
-		return $success;
+		return update_post_meta( $post_id, $field, $value, $prev_value );
 	}
 
 	/**
@@ -314,8 +309,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return string Value of the meta field
 	 */
 	public function get_meta_field( $post_id, $field ) {
-		$value = get_post_meta( $post_id, $field, true ); // true means single value
-		return $value;
+		return get_post_meta( $post_id, $field, true ); // true means single value
 	}
 
 	/**
@@ -330,8 +324,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error
 	 */
 	public function delete_meta_field( $post_id, $field ) {
-		$success = delete_post_meta( $post_id, $field, true ); // true means single value
-		return $success;
+		return delete_post_meta( $post_id, $field, true ); // true means single value
 	}
 
 } // class TablePress_Post_Model
