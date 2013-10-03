@@ -680,7 +680,8 @@ class TablePress_Render {
 			'hide_columns' => '',
 			'cellspacing' => false,
 			'cellpadding' => false,
-			'border' => false
+			'border' => false,
+			'shortcode_debug' => false
 		);
 	}
 

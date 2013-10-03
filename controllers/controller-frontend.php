@@ -405,6 +405,10 @@ JS;
 			$output = $_render->get_output();
 		}
 
+		// Maybe print a list of used render options
+		if ( $render_options['shortcode_debug'] && is_user_logged_in() )
+			$output .= '<pre>' . var_export( $render_options, true ) . '</pre>';
+
 		return $output;
 	}
 
