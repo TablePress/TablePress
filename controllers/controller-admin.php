@@ -1212,14 +1212,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 *
 	 * @param string $format Import format
-	 * @param array $data Data to import
+	 * @param string $data Data to import
 	 * @param string $name Name of the table
 	 * @param string $description Description of the table
 	 * @param bool|string $existing_table_id False if table shall be added new, ID of the table to be replaced or appended to otherwise
 	 * @param string $import_type What to do with the imported data: "add", "replace", "append"
 	 * @return bool|string False on error, table ID on success
 	 */
-	protected function _import_tablepress_table( $format, array $data, $name, $description, $existing_table_id, $import_type ) {
+	protected function _import_tablepress_table( $format, $data, $name, $description, $existing_table_id, $import_type ) {
 		$imported_table = $this->importer->import_table( $format, $data );
 		if ( false === $imported_table )
 			return false;
