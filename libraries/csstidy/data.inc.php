@@ -663,4 +663,4 @@ $data['csstidy']['predefined_templates']['low_compression'][] = '</span>'."\n"; 
 $data['csstidy']['predefined_templates']['low_compression'][] = "\n";
 
 // Add TablePress specific modifications, based on Jetpack modifications
-require 'data-tp.inc.php';
+require( dirname( __FILE__ ) . '/data-tp.inc.php' );
