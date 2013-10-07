@@ -355,7 +355,7 @@ JS;
 
 		// generate "Edit Table" link
 		$render_options['edit_table_url'] = '';
-		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true ) && current_user_can( 'tablepress_edit_table', $table['id'] ) )
+		if ( is_user_logged_in() && apply_filters( 'tablepress_edit_link_below_table', true, $table['id'] ) && current_user_can( 'tablepress_edit_table', $table['id'] ) )
 			$render_options['edit_table_url'] = TablePress::url( array( 'action' => 'edit', 'table_id' => $table['id'] ) );
 
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
