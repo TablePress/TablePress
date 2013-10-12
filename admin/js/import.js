@@ -75,6 +75,10 @@ jQuery(document).ready( function($) {
 		if ( 'htm' == extension )
 			extension = 'html';
 
+		// Don't change the format for ZIP archives
+		if ( 'zip' == extension )
+			return;
+
 		$( '#tables-import-format' ).val( extension );
 	} );
 
