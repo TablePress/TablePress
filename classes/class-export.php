@@ -165,6 +165,9 @@ class TablePress_Export {
 	 * @return string Wrapped string for HTML export
 	 */
 	protected function html_wrap_and_escape( $string ) {
+		// replace any & with &amp; that is not already an encoded entity (from function htmlentities2 in WP 2.8)
+		// complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want
+		$string = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $string );
 		return "\t\t\t<td>{$string}</td>\n";
 	}
 
