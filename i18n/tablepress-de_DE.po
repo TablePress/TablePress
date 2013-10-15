@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: TablePress v1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: 2013-09-04 16:50:41+00:00\n"
-"PO-Revision-Date: 2013-09-04 18:52+0100\n"
+"PO-Revision-Date: 2013-10-15 19:15+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language-Team: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
 "Language: de_DE\n"
@@ -67,7 +67,7 @@ msgstr "XLS - Microsoft Excel 97-2003 (experimentell)"
 
 #: classes/class-import.php:88
 msgid "XLSX - Microsoft Excel 2007-2013 (experimental)"
-msgstr "XLSS - Microsoft Excel 2007-2013 (experimentell)"
+msgstr "XLSX - Microsoft Excel 2007-2013 (experimentell)"
 
 # @ tablepress
 #: classes/class-import.php:183 classes/class-import.php:286
