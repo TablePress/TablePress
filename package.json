@@ -15,6 +15,6 @@
 		"grunt-contrib-csslint": "~0.1.2",
 		"grunt-contrib-jshint": "~0.6.4",
 		"grunt-contrib-watch": "~0.5.3",
-		"matchdep": "~0.1.2"
+		"matchdep": "~0.3.0"
 	}
 }
