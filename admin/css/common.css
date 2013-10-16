@@ -30,10 +30,6 @@
 		display: none;
 	}
 }
-/* Hide second Screen icon (above the credentials form to save "Custom CSS" */
-#icon-tablepress_options_invisible {
-	display: none;
-}
 
 /* Margins for messages on screens */
 #tablepress-page div.updated,
