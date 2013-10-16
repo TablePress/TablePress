@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /*
-	SimpleXLSX php class v0.6.7
+	SimpleXLSX php class v0.6.8
 	MS Excel 2007 workbooks reader
 */
 
@@ -143,11 +143,15 @@ class SimpleXLSX {
 			return false;
 
 		$ref = (string) $ws->dimension['ref'];
+
 		if( strpos( $ref, ':') !== false ) {
 			$d = explode(':', $ref);
 			if(!isset($d[1]))
 				return array(0,0);
 			$index = $this->_columnIndex( $d[1] );
+			return array( $index[0]+1, $index[1]+1);
+		} else if ( strlen( $ref ) ) { // 0.6.8
+			$index = $this->_columnIndex( $ref );
 			return array( $index[0]+1, $index[1]+1);
 		} else
 			return array(0,0);
@@ -211,16 +215,25 @@ class SimpleXLSX {
 					'format' => $format
 				);
 			}
-			for ($i = 0; $i < $cols; $i++)
-				if (!isset($rows[$curR][$i]))
+			for ($i = 0; $i < $cols; $i++) {
+
+				if ( !isset($rows[$curR][$i]) ) {
+
+					// 0.6.8
+					for ($c = '', $j = $i; $j >= 0; $j = intval($j / 26) - 1)
+						$c = chr( $j % 26 + 65 ) . $c;
+
 					$rows[ $curR ][$i] = array(
 						'type' => '',
-						'name' => chr($i + 65).($curR+1),
+//						'name' => chr($i + 65).($curR+1),
+						'name' => $c.($curR+1),
 						'value' => '',
 						'href' => '',
 						'f' => '',
-						'formatCode' => ''
+						'format' => ''
 					);
+				}
+			}
 
 			ksort( $rows[ $curR ] );
 
@@ -230,7 +243,7 @@ class SimpleXLSX {
 
 	}
 	// thx Gonzo
-	function _columnIndex( $cell = 'A1' ) {
+	private function _columnIndex( $cell = 'A1' ) {
 
 		if (preg_match("/([A-Z]+)(\d+)/", $cell, $matches)) {
 
