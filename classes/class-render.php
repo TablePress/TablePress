@@ -481,7 +481,7 @@ class TablePress_Render {
 		// <colgroup> tag
 		$colgroup = '';
 		if ( apply_filters( 'tablepress_print_colgroup_tag', false, $this->table['id'] ) ) {
-			for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
+			for ( $col_idx = 0; $col_idx < $num_columns; $col_idx++ ) {
 				$attributes = ' class="colgroup-column-' . ( $col_idx + 1 ) . ' "';
 				$attributes = apply_filters( 'tablepress_colgroup_tag_attributes', $attributes, $this->table['id'], $col_idx + 1 );
 				$colgroup .= "\t<col{$attributes}/>\n";
