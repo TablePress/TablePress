@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress 1.1\n"
+"Project-Id-Version: TablePress 1.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-09-04 16:50:41+00:00\n"
+"POT-Creation-Date: 2013-10-21 17:23:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -121,7 +121,7 @@ msgid_plural "Do you really want to delete these tables?"
 msgstr[0] ""
 msgstr[1] ""
 
-#. #-#-#-#-#  tablepress.pot (TablePress 1.1)  #-#-#-#-#
+#. #-#-#-#-#  tablepress.pot (TablePress 1.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/class-view.php:383
 msgid "TablePress"
@@ -177,10 +177,10 @@ msgstr ""
 #: controllers/controller-admin.php:758 controllers/controller-admin.php:816
 #: controllers/controller-admin.php:866 controllers/controller-admin.php:935
 #: controllers/controller-admin.php:965 controllers/controller-admin.php:1038
-#: controllers/controller-admin.php:1048 controllers/controller-admin.php:1579
-#: controllers/controller-admin.php:1606 controllers/controller-admin.php:1641
-#: controllers/controller-admin.php:1677 controllers/controller-admin.php:1716
-#: controllers/controller-admin.php:1743
+#: controllers/controller-admin.php:1048 controllers/controller-admin.php:1576
+#: controllers/controller-admin.php:1603 controllers/controller-admin.php:1638
+#: controllers/controller-admin.php:1674 controllers/controller-admin.php:1713
+#: controllers/controller-admin.php:1740
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
@@ -315,37 +315,37 @@ msgstr ""
 msgid "Imported from Manual Input"
 msgstr ""
 
-#: controllers/controller-admin.php:1674
+#: controllers/controller-admin.php:1671
 #: controllers/controller-admin_ajax.php:230
 msgid "The preview could not be loaded."
 msgstr ""
 
-#: controllers/controller-admin.php:1674 controllers/controller-admin.php:1682
+#: controllers/controller-admin.php:1671 controllers/controller-admin.php:1679
 #: views/view-edit.php:398 views/view-list.php:414
 #: views/view-preview_table.php:55
 msgid "Preview"
 msgstr ""
 
-#: controllers/controller-admin.php:1682
+#: controllers/controller-admin.php:1679
 msgid "The table could not be loaded."
 msgstr ""
 
-#: controllers/controller-admin.php:1760
+#: controllers/controller-admin.php:1757
 msgid "TablePress was uninstalled successfully."
 msgstr ""
 
-#: controllers/controller-admin.php:1761
+#: controllers/controller-admin.php:1758
 msgid "All tables, data, and options were deleted."
 msgstr ""
 
-#: controllers/controller-admin.php:1763
+#: controllers/controller-admin.php:1760
 msgid ""
 "You may now ask the network admin to delete the plugin&#8217;s folder "
 "<code>tablepress</code> from the server, if no other site in the network "
 "uses it."
 msgstr ""
 
-#: controllers/controller-admin.php:1765
+#: controllers/controller-admin.php:1762
 msgid ""
 "You may now manually delete the plugin&#8217;s folder <code>tablepress</"
 "code> from the <code>plugins</code> directory on your server or use the "
@@ -353,33 +353,33 @@ msgid ""
 "Plugins&#8221; page."
 msgstr ""
 
-#: controllers/controller-admin.php:1767
+#: controllers/controller-admin.php:1764
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
 msgstr ""
 
-#: controllers/controller-admin.php:1770
+#: controllers/controller-admin.php:1767
 msgid ""
 "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files "
 "from the server."
 msgstr ""
 
-#: controllers/controller-admin.php:1772
+#: controllers/controller-admin.php:1769
 msgid ""
 "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in "
 "the <code>wp-content</code> folder."
 msgstr ""
 
-#: controllers/controller-admin.php:1776
+#: controllers/controller-admin.php:1773
 msgid "Go to &#8220;Plugins&#8221; page"
 msgstr ""
 
-#: controllers/controller-admin.php:1777
+#: controllers/controller-admin.php:1774
 msgid "Go to Dashboard"
 msgstr ""
 
-#: controllers/controller-admin.php:1779 views/view-options.php:180
+#: controllers/controller-admin.php:1776 views/view-options.php:180
 #: views/view-options.php:187
 msgid "Uninstall TablePress"
 msgstr ""
@@ -404,7 +404,7 @@ msgid ""
 "and paste it into the editor."
 msgstr ""
 
-#: controllers/controller-frontend.php:466 views/view-list.php:470
+#: controllers/controller-frontend.php:474 views/view-list.php:470
 msgid "%s ago"
 msgstr ""
 
