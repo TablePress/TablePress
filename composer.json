@@ -1,5 +1,6 @@
 {
 	"name": "tobiasbg/tablepress",
+	"version": "1.2.0",
 	"description": "TablePress plugin for WordPress",
 	"keywords": ["wordpress", "plugin", "table"],
 	"homepage": "http://tablepress.org/",

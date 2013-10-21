@@ -4,14 +4,14 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 1.1.1
+ * @version 1.2
  */
 
 /*
 Plugin Name: TablePress
 Plugin URI: http://tablepress.org/
 Description: TablePress enables you to create and manage tables in your posts and pages, without having to write HTML code, and it adds valuable functions for your visitors.
-Version: 1.1.1
+Version: 1.2
 Author: Tobias Bäthge
 Author URI: http://tobias.baethge.com/
 Author email: wordpress@tobias.baethge.com

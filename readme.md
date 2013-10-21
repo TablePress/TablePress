@@ -122,3 +122,17 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 **Version 1.1.1**
 * Fixed a bug with CSS handling that broke some TablePress Extensions
+
+**Version 1.2**
+* Compatiblity with WordPress 3.7
+* Bugfix: WordPress search did not find tables in some cases
+* Bugfix: Cells were sometimes erroneously interpreted as formulas
+* Bugfix: HTML export did not encode entities properly
+* Bugfix: Wrong variable name in table render code
+* Enhancement: Add logarithm to math functions for formulas
+* Enhancement: Better internal code documentation and variable type checks
+* Enhancement: Add parameter to Shortcode that allows showing debug information
+* Updated external libraries
+* Updated several translations (Brazilian Portuguese, Czech, French, German, Latvian)
+* Many more internal code improvements
+* TablePress now requires WordPress 3.6!
