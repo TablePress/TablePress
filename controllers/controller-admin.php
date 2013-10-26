@@ -1329,7 +1329,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $import_tables ) {
 			$wp_table_reloaded_tables_list = get_option( 'wp_table_reloaded_tables', array() );
 			foreach ( $wp_table_reloaded_tables_list as $wptr_table_id => $table_option_name ) {
-				$wptr_table = get_option( $table_option_name, false );
+				$wptr_table = get_option( $table_option_name, array() );
 				$import_status = $this->_import_wp_table_reloaded_table( $wptr_table, $wp_table_reloaded_options );
 				switch ( $import_status ) {
 					case 0:
