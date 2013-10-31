@@ -252,7 +252,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		// this loop now uses the WP cache
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_id = (string)$table_id;
-			$tables[ $table_id ] = $this->load( $table_id );
+			$table = $this->load( $table_id );
+			// Skip tables that could not be read properly
+			if ( false === $table )
+				continue;
+			$tables[ $table_id ] = $table;
 			unset( $tables[ $table_id ]['data'] ); // remove table data, to save memory
 		}
 		return $tables;
