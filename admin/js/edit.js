@@ -1131,8 +1131,8 @@ jQuery( document ).ready( function( $ ) {
 					'.show-help-box':		function() {
 						$( this ).next().wpdialog( {
 						title: $( this ).attr( 'title' ),
-						height: 400,
-						width: 300,
+						height: 420,
+						width: 320,
 						modal: true,
 						dialogClass: 'wp-dialog',
 						resizable: false
