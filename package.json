@@ -16,5 +16,24 @@
 		"grunt-contrib-jshint": "~0.7.1",
 		"grunt-contrib-watch": "~0.5.3",
 		"matchdep": "~0.3.0"
+	},
+	"jshintConfig": {
+		"boss": true,
+		"curly": true,
+		"eqeqeq": true,
+		"eqnull": true,
+		"es3": true,
+		"expr": true,
+		"immed": true,
+		"noarg": true,
+		"onevar": true,
+		"quotmark": "single",
+		"trailing": true,
+		"undef": true,
+		"unused": true,
+		"browser": true,
+		"globals": {
+			"jQuery": false
+		}
 	}
 }

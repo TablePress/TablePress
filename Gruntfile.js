@@ -6,34 +6,23 @@
  * Running just "grunt" will run the "watch" task, which will automatically
  * lint and minify all changed CSS or JS files.
  */
+
+/* jshint node: true */
+
 module.exports = function( grunt ) {
 
 	// Task configuration
 	grunt.initConfig( {
+		pkg: grunt.file.readJSON( 'package.json' ),
+
 		// JavaScript syntax validation
 		jshint: {
+			options: '<%= pkg.jshintConfig %>',
 			all: {
 				src: [ 'Gruntfile.js', '<%= uglify.all.src %>' ]
 			},
 			changed: {
 				src: []
-			},
-			options: {
-				curly:   false,
-				eqeqeq:  false,
-				immed:   true,
-				latedef: true,
-				newcap:  true,
-				noarg:   true,
-				sub:     true,
-				undef:   false,
-				boss:    true,
-				eqnull:  true,
-				laxbreak: true,
-				globals: {
-					exports: true,
-					module:  false
-				}
 			}
 		},
 
@@ -132,7 +121,7 @@ module.exports = function( grunt ) {
 	// On "watch", automatically updates the "changed" target for the
 	// "jshint", "uglify", "csslint", and "cssmin" task configurations,
 	// so that only the changed files are linted/minified.
-	grunt.event.on( 'watch', function( action, filepath, target ) {
+	grunt.event.on( 'watch', function( action, filepath /*, target */ ) {
 		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
