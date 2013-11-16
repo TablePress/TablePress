@@ -29,8 +29,8 @@ jQuery( document ).ready( function( $ ) {
 		table: {
 			id: $id( 'table-id' ).val(),
 			new_id: $id( 'table-new-id' ).val(),
-			rows: $id( 'number-rows' ).val(),
-			columns: $id( 'number-columns' ).val(),
+			rows: parseInt( $id( 'number-rows' ).val(), 10 ),
+			columns: parseInt( $id( 'number-columns' ).val(), 10 ),
 			head: $id( 'option-table-head' ).prop( 'checked' ),
 			foot: $id( 'option-table-foot' ).prop( 'checked' ),
 			no_data_columns_pre: 2,
