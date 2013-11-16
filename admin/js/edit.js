@@ -108,7 +108,7 @@ jQuery( document ).ready( function( $ ) {
 					table_visibility = { rows: [], columns: [] };
 
 				$table_body.children().each( function( idx, row ) {
-					table_data[idx] = $(row).find( 'textarea' )
+					table_data[ idx ] = $( row ).find( 'textarea' )
 						.map( function() {
 							return $( this ).val();
 						} )
@@ -269,7 +269,7 @@ jQuery( document ).ready( function( $ ) {
 				column_idxs = $id( 'edit-form-foot' ).find( '.column-hidden' )
 					.map( function() { return $( this ).index(); } ).get();
 				return $( new_rows ).each( function( row_idx, row ) {
-					$(row).children()
+					$( row ).children()
 						.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
 						.addClass( 'column-hidden' );
 				} );
@@ -312,11 +312,11 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				$selected_rows.each( function( idx, row ) {
-					var $row = $(row),
+					var $row = $( row ),
 						$textareas = $row.find( 'textarea' ),
 						$duplicated_row = $row.clone();
 					$duplicated_row.find( 'textarea' ).removeAttr( 'id' ).each( function( idx, cell ) {
-						$(cell).val( $textareas.eq( idx ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
+						$( cell ).val( $textareas.eq( idx ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
 					} );
 					$row.after( $duplicated_row );
 				} );
@@ -445,7 +445,7 @@ jQuery( document ).ready( function( $ ) {
 					};
 
 				$.each( rows, function( row_idx, row ) {
-					row.sort_key = ( '' + $(row).children().eq( column_idx ).find( 'textarea' ).val() ).toLowerCase(); // convert to string, and lower case for case insensitive sorting
+					row.sort_key = ( '' + $( row ).children().eq( column_idx ).find( 'textarea' ).val() ).toLowerCase(); // convert to string, and lower case for case insensitive sorting
 				} );
 
 				rows.sort( function( a, b ) {
@@ -502,7 +502,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
-					$(row).children().slice( - tp.table.no_data_columns_post )
+					$( row ).children().slice( - tp.table.no_data_columns_post )
 						.before( new_body_cells );
 				} );
 				$id( 'edit-form-head' ).children().slice( - tp.table.no_data_columns_post )
@@ -524,7 +524,7 @@ jQuery( document ).ready( function( $ ) {
 
 				column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
 				$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
-					$(row).children()
+					$( row ).children()
 						.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
 						.before( tp.table.body_cell );
 				} );
@@ -547,9 +547,9 @@ jQuery( document ).ready( function( $ ) {
 
 				column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
 				$id( 'edit-form' ).find( 'tr' ).each( function( row_idx, row ) {
-					$(row).children().each( function( idx, cell ) {
+					$( row ).children().each( function( idx, cell ) {
 						if ( -1 !== $.inArray( idx, column_idxs ) ) {
-							var $cell = $(cell),
+							var $cell = $( cell ),
 								$duplicated_cell = $cell.clone();
 								$duplicated_cell.find( 'textarea' ).removeAttr( 'id' ).val( $cell.find( 'textarea' ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
 							$cell.after( $duplicated_cell );
@@ -571,7 +571,7 @@ jQuery( document ).ready( function( $ ) {
 
 				column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
 				$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
-					$(row).children()
+					$( row ).children()
 						.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
 						.addClass( 'column-hidden' );
 				} );
@@ -591,7 +591,7 @@ jQuery( document ).ready( function( $ ) {
 
 				column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
 				$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
-					$(row).children()
+					$( row ).children()
 						.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
 						.removeClass( 'column-hidden' );
 				} );
@@ -625,7 +625,7 @@ jQuery( document ).ready( function( $ ) {
 
 				column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
 				$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
-					$(row).children()
+					$( row ).children()
 						.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
 						.remove();
 				} );
