@@ -7,11 +7,14 @@
  * @since 1.0.0
  */
 
+/* global tinymce , tablepress_editor_button*/
+
 ( function() {
 
 	// only do this if TinyMCE is available
-	if ( typeof( tinymce ) == 'undefined' )
+	if ( 'undefined' === typeof( tinymce ) ) {
 		return;
+	}
 
 	/**
 	 * Register a button for the TinyMCE (aka Visual Editor) toolbar
@@ -20,7 +23,7 @@
 	 */
 	tinymce.create( 'tinymce.plugins.TablePressPlugin', {
 		init: function( ed, url ) {
-			ed.addCommand( 'TablePress_insert_table', tablepress_open_shortcode_thickbox );
+			ed.addCommand( 'TablePress_insert_table', window.tablepress_open_shortcode_thickbox );
 
 			ed.addButton( 'tablepress_insert_table', {
 				title: tablepress_editor_button.title,

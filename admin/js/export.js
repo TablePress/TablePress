@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready( function($) {
+jQuery( document ).ready( function( $ ) {
 
 	/**
 	 * Check, whether inputs are valid
@@ -19,8 +19,9 @@ jQuery(document).ready( function($) {
 			num_selected = ( selected_tables ) ? selected_tables.length : 0;
 
 		// only submit form, if at least one table was selected
-		if ( 0 === num_selected )
+		if ( 0 === num_selected ) {
 			return false;
+		}
 
 		// at this point, the form is valid and will be submitted
 

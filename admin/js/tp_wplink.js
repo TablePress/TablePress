@@ -1,13 +1,17 @@
 /**
  * JavaScript code for the "Insert Link" button on the "Edit" screen
  *
- * Copy of wplink.js of WP 3.7, with three changes to change "Title" to "Link Text"
+ * Copy of wplink.js of WP 3.8, with three changes to change "Title" to "Link Text"
  *
  * @package TablePress
  * @subpackage Views JavaScript
  * @author Tobias Bäthge
  * @since 1.0.0
  */
+
+/* global ajaxurl, tinymce, wpLinkL10n, tinyMCEPopup, setUserSetting, wpActiveEditor */
+// Don't check for "curly" and "eqeqeq" JSHint options until they are in WP core
+/* jshint curly: false, eqeqeq: false */
 
 var wpLink;
 
@@ -124,7 +128,7 @@ var wpLink;
 				inputs.url.val( ed.dom.getAttrib(e, 'href') );
 				inputs.title.val( ed.dom.getAttrib(e, 'title') );
 				// Set open in new tab.
-				inputs.openInNewTab.prop('checked', ( "_blank" == ed.dom.getAttrib( e, 'target' ) ) );
+				inputs.openInNewTab.prop('checked', ( '_blank' == ed.dom.getAttrib( e, 'target' ) ) );
 				// Update save prompt.
 				inputs.submit.val( wpLinkL10n.update );
 
@@ -167,7 +171,7 @@ var wpLink;
 		},
 
 		htmlUpdate : function() {
-			var attrs, html, begin, end, cursor,
+			var attrs, html, begin, end, cursor, selection,
 				textarea = wpLink.textarea;
 
 			if ( ! textarea )
@@ -217,9 +221,8 @@ var wpLink;
 				if ( begin == end )
 					cursor -= '</a>'.length;
 
-				textarea.value = textarea.value.substring( 0, begin )
-				               + html
-				               + textarea.value.substring( end, textarea.value.length );
+				textarea.value = textarea.value.substring( 0, begin ) + html +
+					textarea.value.substring( end, textarea.value.length );
 
 				// Update cursor position
 				textarea.selectionStart = textarea.selectionEnd = cursor;
@@ -243,17 +246,17 @@ var wpLink;
 					b = ed.selection.getBookmark();
 					ed.dom.remove(e, 1);
 					ed.selection.moveToBookmark(b);
-					tinyMCEPopup.execCommand("mceEndUndoLevel");
+					tinyMCEPopup.execCommand('mceEndUndoLevel');
 					wpLink.close();
 				}
 				return;
 			}
 
 			if (e == null) {
-				ed.getDoc().execCommand("unlink", false, null);
-				tinyMCEPopup.execCommand("mceInsertLink", false, "#mce_temp_url#", {skip_undo : 1});
+				ed.getDoc().execCommand('unlink', false, null);
+				tinyMCEPopup.execCommand('mceInsertLink', false, '#mce_temp_url#', {skip_undo : 1});
 
-				tinymce.each(ed.dom.select("a"), function(n) {
+				tinymce.each(ed.dom.select('a'), function(n) {
 					if (ed.dom.getAttrib(n, 'href') == '#mce_temp_url#') {
 						e = n;
 						ed.dom.setAttribs(e, attrs);
@@ -278,7 +281,7 @@ var wpLink;
 				tinyMCEPopup.storeSelection();
 			}
 
-			ed.execCommand("mceEndUndoLevel");
+			ed.execCommand('mceEndUndoLevel');
 			wpLink.close();
 			ed.focus();
 		},
@@ -286,7 +289,7 @@ var wpLink;
 		updateFields : function( e, li, originalEvent ) {
 			inputs.url.val( li.children('.item-permalink').val() );
 			inputs.title.val( li.hasClass('no-title') ? '' : li.children('.item-title').text() );
-			if ( originalEvent && originalEvent.type == "click" )
+			if ( originalEvent && originalEvent.type == 'click' )
 				inputs.url.focus();
 		},
 		setDefaultValues : function() {
@@ -334,41 +337,31 @@ var wpLink;
 		keydown : function( event ) {
 			var fn, key = $.ui.keyCode;
 
-			switch( event.which ) {
-				case key.UP:
-					fn = 'prev';
-					// next comment is necessary to prevent a JSHint error
-					/* falls through */
-				case key.DOWN:
-					fn = fn || 'next';
-					clearInterval( wpLink.keyInterval );
-					wpLink[ fn ]();
-					wpLink.keyInterval = setInterval( wpLink[ fn ], wpLink.keySensitivity );
-					break;
-				default:
-					return;
+			if ( event.which !== key.UP && event.which !== key.DOWN ) {
+				return;
 			}
+
+			fn = event.which === key.UP ? 'prev' : 'next';
+			clearInterval( wpLink.keyInterval );
+			wpLink[ fn ]();
+			wpLink.keyInterval = setInterval( wpLink[ fn ], wpLink.keySensitivity );
 			event.preventDefault();
 		},
+
 		keyup: function( event ) {
 			var key = $.ui.keyCode;
 
-			switch( event.which ) {
-				case key.ESCAPE:
-					event.stopImmediatePropagation();
-					if ( ! $(document).triggerHandler( 'wp_CloseOnEscape', [{ event: event, what: 'wplink', cb: wpLink.close }] ) )
-						wpLink.close();
-
-					return false;
-					// break; // commented to prevent a JSHint error
-				case key.UP:
-				case key.DOWN:
-					clearInterval( wpLink.keyInterval );
-					break;
-				default:
-					return;
+			if ( event.which === key.ESCAPE ) {
+				event.stopImmediatePropagation();
+				if ( ! $(document).triggerHandler( 'wp_CloseOnEscape', [{ event: event, what: 'wplink', cb: wpLink.close }] ) )
+					wpLink.close();
+				return false;
 			}
-			event.preventDefault();
+
+			if ( event.which === key.UP || event.which === key.DOWN ) {
+				clearInterval( wpLink.keyInterval );
+				event.preventDefault();
+			}
 		},
 
 		delayedCallback : function( func, delay ) {
@@ -525,19 +518,18 @@ var wpLink;
 
 			if ( !results ) {
 				if ( firstPage ) {
-					list += '<li class="unselectable"><span class="item-title"><em>'
-					+ wpLinkL10n.noMatchesFound
-					+ '</em></span></li>';
+					list += '<li class="unselectable"><span class="item-title"><em>' +
+						wpLinkL10n.noMatchesFound + '</em></span></li>';
 				}
 			} else {
 				$.each( results, function() {
 					classes = alt ? 'alternate' : '';
-					classes += this['title'] ? '' : ' no-title';
+					classes += this.title ? '' : ' no-title';
 					list += classes ? '<li class="' + classes + '">' : '<li>';
-					list += '<input type="hidden" class="item-permalink" value="' + this['permalink'] + '" />';
+					list += '<input type="hidden" class="item-permalink" value="' + this.permalink + '" />';
 					list += '<span class="item-title">';
-					list += this['title'] ? this['title'] : wpLinkL10n.noTitle;
-					list += '</span><span class="item-info">' + this['info'] + '</span></li>';
+					list += this.title ? this.title : wpLinkL10n.noTitle;
+					list += '</span><span class="item-info">' + this.info + '</span></li>';
 					alt = ! alt;
 				});
 			}
@@ -596,7 +588,7 @@ var wpLink;
 				self.querying = false;
 				self.allLoaded = !r;
 				callback( r, query );
-			}, "json" );
+			}, 'json' );
 		}
 	});
 

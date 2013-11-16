@@ -7,7 +7,9 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready( function($) {
+/* global validateForm */
+
+jQuery( document ).ready( function( $ ) {
 
 	/**
 	 * Check, whether entered numbers for rows and columns are valid
@@ -19,15 +21,16 @@ jQuery(document).ready( function($) {
 
 		// remove default values from required placeholders, if no value was entered
 		$( '#tablepress-page' ).find( '.form-required' ).find( '.placeholder' ).each( function() {
-			if ( this.value == this.defaultValue ) {
+			if ( this.value === this.defaultValue ) {
 				this.value = '';
 				$(this).removeClass( 'placeholder-active' );
 			}
 		} );
 
 		// WordPress validation function, checks if required fields (.form-required) are non-empty
-		if ( ! validateForm( $(this) ) )
+		if ( ! validateForm( $(this) ) ) {
 			valid_form = false;
+		}
 
 		// validate numerical values (.form-field-numbers-only): only 1 < x < 9...9 (up to maxlength) are allowed
 		$( '#tablepress-page' ).find( '.form-field-numbers-only' ).find( 'input' ).each( function() {
@@ -35,14 +38,16 @@ jQuery(document).ready( function($) {
 				maxlength = parseInt( $field.attr( 'maxlength' ), 10 ),
 				regexp_number;
 
-			if ( ! isNaN( maxlength ) )
+			if ( ! isNaN( maxlength ) ) {
 				maxlength += -1; // first number is handled already in RegExp
-			else
+			} else {
 				maxlength = '';
+			}
 
 			regexp_number = new RegExp( '^[1-9][0-9]{0,' + maxlength + '}$' );
-			if ( regexp_number.test( $field.val() ) )
+			if ( regexp_number.test( $field.val() ) ) {
 				return; // field is valid
+			}
 
 			$field
 				.one( 'change', function() { $(this).closest( '.form-invalid' ).removeClass( 'form-invalid' ); } )
@@ -51,14 +56,16 @@ jQuery(document).ready( function($) {
 			valid_form = false;
 		} );
 
-		if ( ! valid_form )
+		if ( ! valid_form ) {
 			return false;
+		}
 		// at this point, the form is valid and will be submitted
 
 		// remove the default values of optional fields, as we don't want to save those
 		$( '#tablepress-page' ).find( '.placeholder' ).each( function() {
-			if ( this.value == this.defaultValue )
+			if ( this.value === this.defaultValue ) {
 				this.value = '';
+			}
 		} );
 	} );
 

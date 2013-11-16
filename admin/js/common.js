@@ -7,7 +7,9 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready( function($) {
+/* global confirm, postboxes, pagenow, tp, tablepress_common */
+
+jQuery( document ).ready( function( $ ) {
 
 	/**
 	 * Enable toggle/order functionality for post meta boxes
@@ -24,7 +26,7 @@ jQuery(document).ready( function($) {
 	 */
 	$( '#tablepress-page' )
 	.on( 'focus', '.placeholder', function() {
-		if ( this.value == this.defaultValue ) {
+		if ( this.value === this.defaultValue ) {
 			this.value = '';
 			$(this).removeClass( 'placeholder-active' );
 		}
@@ -54,11 +56,13 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' ).on( 'click', '.delete-link', function() {
-		if ( ! confirm( tablepress_common.ays_delete_single_table ) )
+		if ( ! confirm( tablepress_common.ays_delete_single_table ) ) {
 			return false;
+		}
 
-		if ( 'undefined' != typeof tp )
+		if ( 'undefined' !== typeof tp ) {
 			tp.made_changes = false; // to prevent onunload warning
+		}
 	} );
 
 	/**

@@ -7,7 +7,9 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready( function($) {
+/* global alert, tablepress_import */
+
+jQuery( document ).ready( function( $ ) {
 
 	/**
 	 * Show select box for table to replace only if needed
@@ -15,7 +17,7 @@ jQuery(document).ready( function($) {
 	 * @since 1.0.0
 	 */
 	$( '#row-import-type' ).on( 'change', 'input', function() {
-		$( '#tables-import-existing-table' ).prop( 'disabled', ( 'replace' != $(this).val() && 'append' != $(this).val() ) );
+		$( '#tables-import-existing-table' ).prop( 'disabled', ( 'replace' !== $(this).val() && 'append' !== $(this).val() ) );
 	} )
 	.find( 'input:checked' ).change();
 
@@ -54,30 +56,34 @@ jQuery(document).ready( function($) {
 			extension = 'csv';
 
 		// default extension: CSV for file upload and server, HTML for URL
-		if ( 'tables-import-url' == event.target.id )
+		if ( 'tables-import-url' === event.target.id ) {
 			extension = 'html';
+		}
 		// determine filename from full path
 		filename_start = path.lastIndexOf( '\\' );
-		if ( -1 != filename_start ) { // Windows-based path
+		if ( -1 !== filename_start ) { // Windows-based path
 			filename = path.substr( filename_start + 1 );
 		} else {
 			filename_start = path.lastIndexOf( '/' );
-			if ( -1 != filename_start ) { // Windows-based path
+			if ( -1 !== filename_start ) { // Windows-based path
 				filename = path.substr( filename_start + 1 );
 			}
 		}
 		// determine extension from filename
 		extension_start = filename.lastIndexOf( '.' );
-		if ( -1 != extension_start )
+		if ( -1 !== extension_start ) {
 			extension = filename.substr( extension_start + 1 ).toLowerCase();
+		}
 
 		// allow .htm for HTML as well
-		if ( 'htm' == extension )
+		if ( 'htm' === extension ) {
 			extension = 'html';
+		}
 
 		// Don't change the format for ZIP archives
-		if ( 'zip' == extension )
+		if ( 'zip' === extension ) {
 			return;
+		}
 
 		$( '#tables-import-format' ).val( extension );
 	} );
@@ -94,7 +100,7 @@ jQuery(document).ready( function($) {
 			import_type = $( '#row-import-type' ).find( 'input:checked' ).val();
 
 		/* the value of the selected import source field must be set/changed from the default */
-		if ( selected_import_source_field.defaultValue == selected_import_source_field.value ) {
+		if ( selected_import_source_field.defaultValue === selected_import_source_field.value ) {
 			$( selected_import_source_field )
 				.addClass( 'invalid' )
 				.one( 'change', function() { $(this).removeClass( 'invalid' ); } )
@@ -103,7 +109,7 @@ jQuery(document).ready( function($) {
 		}
 
 		/* if replace or append is selected, a table must be selected */
-		if ( 'replace' == import_type || 'append' == import_type ) {
+		if ( 'replace' === import_type || 'append' === import_type ) {
 			if ( '' === $( '#tables-import-existing-table' ).val() ) {
 				$( '#row-import-type' )
 					.one( 'change', 'input', function() { $( '#tables-import-existing-table' ).removeClass( 'invalid' ); } );
@@ -115,8 +121,9 @@ jQuery(document).ready( function($) {
 			}
 		}
 
-		if ( ! valid_form )
+		if ( ! valid_form ) {
 			return false;
+		}
 		// at this point, the form is valid and will be submitted
 	} );
 
