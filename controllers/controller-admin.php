@@ -1527,7 +1527,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return false;
 
 		$imported_options = array();
-		$imported_options['use_custom_css'] = ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) ? (bool)$wp_table_reloaded_options['use_custom_css'] : false;
+		$imported_options['use_custom_css'] = ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) ? (bool) $wp_table_reloaded_options['use_custom_css'] : false;
 		if ( isset( $wp_table_reloaded_options['custom_css'] ) ) {
 			// Automatically convert WP-Table Reloaded Custom CSS to TablePress Custom CSS by search/replacing classes and IDs
 			$imported_options['custom_css'] = wp_unslash( $wp_table_reloaded_options['custom_css'] ); // Be careful when removing this, as it might break CSS comments from old Dump Files

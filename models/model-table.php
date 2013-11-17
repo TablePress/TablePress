@@ -251,7 +251,7 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// this loop now uses the WP cache
 		foreach ( $table_post as $table_id => $post_id ) {
-			$table_id = (string)$table_id;
+			$table_id = (string) $table_id;
 			$table = $this->load( $table_id );
 			// Skip tables that could not be read properly
 			if ( false === $table )
@@ -411,7 +411,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			return;
 
 		foreach ( $tables['table_post'] as $table_id => $post_id ) {
-			$table_id = (string)$table_id;
+			$table_id = (string) $table_id;
 			$this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
 			unset( $tables['table_post'][ $table_id ] );
 			$this->_invalidate_table_output_cache( $table_id ); // invalidate table output caches that belong to this table

@@ -23,7 +23,7 @@ function tablepress_get_table( $table_query ) {
 	if ( is_array( $table_query ) )
 		$atts = $table_query;
 	else
-		parse_str( (string)$table_query, $atts );
+		parse_str( (string) $table_query, $atts );
 	return TablePress::$controller->shortcode_table( $atts );
 }
 
@@ -54,7 +54,7 @@ function tablepress_get_table_info( $table_query ) {
 	if ( is_array( $table_query ) )
 		$atts = $table_query;
 	else
-		parse_str( (string)$table_query, $atts );
+		parse_str( (string) $table_query, $atts );
 	return TablePress::$controller->shortcode_table_info( $atts );
 }
 

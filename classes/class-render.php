@@ -198,7 +198,7 @@ class TablePress_Render {
 				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
 					if ( ! is_numeric( $value ) )
 						$value = TablePress::letter_to_number( $value );
-					$this->render_options["{$action}_{$element}"][$key] = (int)$value - 1;
+					$this->render_options["{$action}_{$element}"][$key] = (int) $value - 1;
 				}
 
 				// remove duplicate entries and sort the array

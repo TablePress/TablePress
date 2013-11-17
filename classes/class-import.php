@@ -357,7 +357,7 @@ class TablePress_Import {
 		foreach ( $table as $row_idx => $row ) {
 			$table_row = array();
 			foreach ( $row as $col_idx => $cell ) {
-				$table_row[] = (string)$cell['val'];
+				$table_row[] = (string) $cell['val'];
 			}
 			$result_table[] = $table_row;
 		}

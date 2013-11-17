@@ -255,7 +255,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return int Number of posts
 	 */
 	public function count_posts() {
-		return array_sum( (array)wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
+		return array_sum( (array) wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
 	}
 
 	/**
