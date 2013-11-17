@@ -95,7 +95,7 @@ class TablePress_Admin_Page {
 			return;
 		?>
 		<script type="text/javascript">
-		(function($){
+		( function( $ ) {
 			var options = <?php echo json_encode( $args ); ?>, setup;
 
 			if ( ! options )
@@ -106,19 +106,19 @@ class TablePress_Admin_Page {
 					$.post( ajaxurl, {
 						pointer: '<?php echo $pointer_id; ?>',
 						action: 'dismiss-wp-pointer'
-					});
+					} );
 				}
-			});
+			} );
 
 			setup = function() {
-				$('<?php echo $selector; ?>').pointer( options ).pointer('open');
+				$( '<?php echo $selector; ?>' ).pointer( options ).pointer( 'open' );
 			};
 
 			if ( options.position && options.position.defer_loading )
-				$(window).bind( 'load.wp-pointers', setup );
+				$( window ).bind( 'load.wp-pointers', setup );
 			else
-				$(document).ready( setup );
-		})( jQuery );
+				$( document ).ready( setup );
+		} )( jQuery );
 		</script>
 		<?php
 	}
