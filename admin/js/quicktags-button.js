@@ -11,6 +11,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Open a Thickbox with the List of tables, for adding a Shortcode to the editor
 	 * used by both the TinyMCE editor button and the Quicktags toolbar button

@@ -11,6 +11,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Show a popup box with the table's Shortcode
 	 *

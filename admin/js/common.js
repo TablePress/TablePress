@@ -11,6 +11,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Enable toggle/order functionality for post meta boxes
 	 * For TablePress, pagenow has the form "tablepress_{$action}"

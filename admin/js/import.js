@@ -11,6 +11,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Show select box for table to replace only if needed
 	 *

@@ -11,6 +11,8 @@
 
 ( function() {
 
+	'use strict';
+
 	// only do this if TinyMCE is available
 	if ( 'undefined' === typeof( tinymce ) ) {
 		return;

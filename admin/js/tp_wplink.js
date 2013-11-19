@@ -16,6 +16,9 @@
 var wpLink;
 
 (function($){
+
+	'use strict';
+
 	var inputs = {}, rivers = {}, ed, River, Query;
 
 	wpLink = {

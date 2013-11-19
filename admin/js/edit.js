@@ -12,6 +12,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	var $id, tp;
 
 	/* Wrapper to find elements in the page faster with JS-native functions */

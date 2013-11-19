@@ -9,6 +9,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Check, whether inputs are valid
 	 *

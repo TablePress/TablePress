@@ -11,6 +11,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Check, whether entered numbers for rows and columns are valid
 	 *

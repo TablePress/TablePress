@@ -11,6 +11,8 @@
 
 jQuery( document ).ready( function( $ ) {
 
+	'use strict';
+
 	/**
 	 * Invoke CodeMirror on the "Custom CSS" textarea
 	 *
