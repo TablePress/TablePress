@@ -8,7 +8,6 @@
  */
 
 /* global alert, confirm, tablepress_strings, tablepress_options, ajaxurl, QTags, wpLink, tb_show, tb_remove */
-/* global wpActiveEditor: true */
 
 jQuery( document ).ready( function( $ ) {
 
@@ -830,7 +829,7 @@ jQuery( document ).ready( function( $ ) {
 					// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 					// other approaches can lead to the wrong textarea being selected
 					$id( 'edit-form-body' ).one( 'mousedown', 'textarea', function() {
-						wpActiveEditor = this.id;
+						window.wpActiveEditor = this.id;
 						$( document ).one( 'mouseup', function() {
 							wpLink.open();
 							tp.table.set_table_changed();
@@ -849,7 +848,7 @@ jQuery( document ).ready( function( $ ) {
 
 					tp.content.image.prompt_shown = true;
 					$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-						wpActiveEditor = this.id;
+						window.wpActiveEditor = this.id;
 						// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
 						this.selectionStart = this.selectionEnd = this.value.length;
 						var $link = $id( 'image-add' ),
@@ -1248,7 +1247,7 @@ jQuery( document ).ready( function( $ ) {
 		if ( 'undefined' !== typeof( QTags ) ) {
 			QTags.insertContent( new_html );
 		} else {
-			document.getElementById( wpActiveEditor ).value += new_html;
+			document.getElementById( window.wpActiveEditor ).value += new_html;
 		}
 
 		try {
