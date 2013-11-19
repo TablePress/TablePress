@@ -182,11 +182,13 @@ class TablePress_Render {
 					if ( false !== $range_dash ) {
 						unset( $this->render_options["{$action}_{$element}"][$key] );
 						$start = substr( $value, 0, $range_dash );
-						if ( ! is_numeric( $start ) )
+						if ( ! is_numeric( $start ) ) {
 							$start = TablePress::letter_to_number( $start );
+						}
 						$end = substr( $value, $range_dash + 1 );
-						if ( ! is_numeric( $end ) )
+						if ( ! is_numeric( $end ) ) {
 							$end = TablePress::letter_to_number( $end );
+						}
 						$current_range = range( $start, $end );
 						$range_cells = array_merge( $range_cells, $current_range );
 					}
@@ -196,8 +198,9 @@ class TablePress_Render {
 				// change from regular numbering to zero-based numbering,
 				// as rows/columns are indexed from 0 internally, but from 1 externally
 				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
-					if ( ! is_numeric( $value ) )
+					if ( ! is_numeric( $value ) ) {
 						$value = TablePress::letter_to_number( $value );
+					}
 					$this->render_options["{$action}_{$element}"][$key] = (int) $value - 1;
 				}
 
@@ -260,8 +263,9 @@ class TablePress_Render {
 	 * @return string Result of the parsing/evaluation
 	 */
 	protected function _evaluate_cell( $content, array $parents = array() ) {
-		if ( '' == $content || '=' == $content || '=' != $content[0] )
+		if ( '' == $content || '=' == $content || '=' != $content[0] ) {
 			return $content;
+		}
 
 		$content = substr( $content, 1 );
 
@@ -286,8 +290,9 @@ class TablePress_Render {
 			// expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6)
 			if ( preg_match_all( '#([A-Z]+)([0-9]+):([A-Z]+)([0-9]+)#', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
 				foreach ( $referenced_cell_ranges as $cell_range ) {
-					if ( in_array( $cell_range[0], $replaced_ranges, true ) )
+					if ( in_array( $cell_range[0], $replaced_ranges, true ) ) {
 						continue;
+					}
 
 					$replaced_ranges[] = $cell_range[0];
 
@@ -324,35 +329,41 @@ class TablePress_Render {
 			// parse and evaluate single cell references (like A3 or XY312), while prohibiting circle references
 			if ( preg_match_all( '#([A-Z]+)([0-9]+)#', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
 				foreach ( $referenced_cells as $cell_reference ) {
-					if ( in_array( $cell_reference[0], $parents, true ) )
+					if ( in_array( $cell_reference[0], $parents, true ) ) {
 						return '!ERROR! Circle Reference';
+					}
 
-					if ( in_array( $cell_reference[0], $replaced_references, true ) )
+					if ( in_array( $cell_reference[0], $replaced_references, true ) ) {
 						continue;
+					}
 
 					$replaced_references[] = $cell_reference[0];
 
 					$ref_col = TablePress::letter_to_number( $cell_reference[1] ) - 1;
 					$ref_row = $cell_reference[2] - 1;
 
-					if ( ! isset( $this->table['data'][$ref_row] ) || ! isset( $this->table['data'][$ref_row][$ref_col] ) )
+					if ( ! isset( $this->table['data'][$ref_row] ) || ! isset( $this->table['data'][$ref_row][$ref_col] ) ) {
 						return "!ERROR! Cell {$cell_reference[0]} does not exist";
+					}
 
 					$ref_parents = $parents;
 					$ref_parents[] = $cell_reference[0];
 
 					$result = $this->table['data'][$ref_row][$ref_col] = $this->_evaluate_cell( $this->table['data'][$ref_row][$ref_col], $ref_parents );
 					// Bail if there was an error already
-					if ( false !== strpos( $result, '!ERROR!' ) )
+					if ( false !== strpos( $result, '!ERROR!' ) ) {
 						return $result;
+					}
 					// remove all whitespace characters
 					$result = preg_replace( '#[\r\n\t ]#', '', $result );
 					// Treat empty cells as 0
-					if ( '' == $result )
+					if ( '' == $result ) {
 						$result = 0;
+					}
 					// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated)
-					if ( ! is_numeric( $result ) )
+					if ( ! is_numeric( $result ) ) {
 						return "!ERROR! {$cell_reference[0]} does not contain a number or expression";
+					}
 
 					$expression = preg_replace( '#(?<![A-Z])' . $cell_reference[0] . '(?![0-9])#', $result, $expression );
 				}
@@ -360,10 +371,11 @@ class TablePress_Render {
 
 			$result = $this->_evaluate_math_expression( $expression );
 			// Support putting formulas in strings, like =Total: {A3+A4}
-			if ( $formula_in_string )
+			if ( $formula_in_string ) {
 				$content = str_replace( $orig_expression, $result, $content );
-			else
+			} else {
 				$content = $result;
+			}
 		}
 
 		return $content;
@@ -380,10 +392,11 @@ class TablePress_Render {
 	protected function _evaluate_math_expression( $expression ) {
 		// straight up evaluation, without parsing of variable or function assignments (which is why we only need one instance of the object)
 		$result = $this->evalmath->pfx( $this->evalmath->nfx( $expression ) );
-		if ( false === $result )
+		if ( false === $result ) {
 			return '!ERROR! ' . $this->evalmath->last_error;
-		else
+		} else {
 			return $result;
+		}
 	}
 
 	/**
@@ -426,14 +439,17 @@ class TablePress_Render {
 			$print_description_html = "<{$print_description_html_tag} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
 		}
 
-		if ( $this->render_options['print_name'] && 'above' == $this->render_options['print_name_position'] )
+		if ( $this->render_options['print_name'] && 'above' == $this->render_options['print_name_position'] ) {
 			$output .= $print_name_html;
-		if ( $this->render_options['print_description'] && 'above' == $this->render_options['print_description_position'] )
+		}
+		if ( $this->render_options['print_description'] && 'above' == $this->render_options['print_description_position'] ) {
 			$output .= $print_description_html;
+		}
 
 		// Deactivate nl2br() for this render process, if "convert_line_breaks" Shortcode parameter is set to false
-		if ( ! $this->render_options['convert_line_breaks'] )
+		if ( ! $this->render_options['convert_line_breaks'] ) {
 			add_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // priority 9, so that this filter can easily be overwritten at the default priority
+		}
 
 		$thead = '';
 		$tfoot = '';
@@ -458,8 +474,9 @@ class TablePress_Render {
 		}
 
 		// Re-instate nl2br() behavior after this render process, if "convert_line_breaks" Shortcode parameter is set to false
-		if ( ! $this->render_options['convert_line_breaks'] )
+		if ( ! $this->render_options['convert_line_breaks'] ) {
 			remove_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // priority 9, so that this filter can easily be overwritten at the default priority
+		}
 
 		// <caption> tag (possibly with "Edit" link)
 		$caption = apply_filters( 'tablepress_print_caption_text', '', $this->table );
@@ -469,14 +486,16 @@ class TablePress_Render {
 			$caption_class = ' class="' . $caption_class . '"';
 		}
 		if ( ! empty( $this->render_options['edit_table_url'] ) ) {
-			if ( empty( $caption ) )
+			if ( empty( $caption ) ) {
 				$caption_style = ' style="caption-side:bottom;text-align:left;border:none;background:none;margin:0;padding:0;"';
-			else
+			} else {
 				$caption .= '<br />';
+			}
 			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\">" . __( 'Edit', 'default' ) . '</a>';
 		}
-		if ( ! empty( $caption ) )
+		if ( ! empty( $caption ) ) {
 			$caption = "<caption{$caption_class}{$caption_style}>{$caption}</caption>\n";
+		}
 
 		// <colgroup> tag
 		$colgroup = '';
@@ -487,14 +506,17 @@ class TablePress_Render {
 				$colgroup .= "\t<col{$attributes}/>\n";
 			}
 		}
-		if ( ! empty( $colgroup ) )
+		if ( ! empty( $colgroup ) ) {
 			$colgroup = "<colgroup>\n{$colgroup}</colgroup>\n";
+		}
 
 		// <thead>, <tfoot>, and <tbody> tags
-		if ( ! empty( $thead ) )
+		if ( ! empty( $thead ) ) {
 			$thead = "<thead>\n{$thead}</thead>\n";
-		if ( ! empty( $tfoot ) )
+		}
+		if ( ! empty( $tfoot ) ) {
 			$tfoot = "<tfoot>\n{$tfoot}</tfoot>\n";
+		}
 		$tbody_class = ( $this->render_options['row_hover'] ) ? ' class="row-hover"' : '';
 		$tbody = array_reverse( $tbody ); // because we looped through the rows in reverse order
 		$tbody = "<tbody{$tbody_class}>\n" . implode( '', $tbody ) . "</tbody>\n";
@@ -520,10 +542,12 @@ class TablePress_Render {
 		$output .= "</table>\n";
 
 		// name/description below table (HTML already generated above)
-		if ( $this->render_options['print_name'] && 'below' == $this->render_options['print_name_position'] )
+		if ( $this->render_options['print_name'] && 'below' == $this->render_options['print_name_position'] ) {
 			$output .= $print_name_html;
-		if ( $this->render_options['print_description'] && 'below' == $this->render_options['print_description_position'] )
+		}
+		if ( $this->render_options['print_description'] && 'below' == $this->render_options['print_description_position'] ) {
 			$output .= $print_description_html;
+		}
 
 		$this->output = apply_filters( 'tablepress_table_output', $output, $this->table, $this->render_options );
 	}
@@ -544,11 +568,13 @@ class TablePress_Render {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
 			// print formulas that are escaped with '= (like in Excel) as text:
-			if ( "'=" == substr( $cell_content, 0, 2 ) )
+			if ( "'=" == substr( $cell_content, 0, 2 ) ) {
 				$cell_content = substr( $cell_content, 1 );
+			}
 			$cell_content = $this->safe_output( $cell_content );
-			if ( false !== strpos( $cell_content, '[' ) )
+			if ( false !== strpos( $cell_content, '[' ) ) {
 				$cell_content = do_shortcode( $cell_content );
+			}
 			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 
 			if ( $this->span_trigger['rowspan'] == $cell_content ) { // there will be a rowspan
@@ -587,21 +613,25 @@ class TablePress_Render {
 				$cell_content = '&nbsp;'; // make empty cells have a space in the table head, to give sorting arrows the correct position in IE9
 			}
 
-			if ( 0 == $row_idx && $this->render_options['table_head'] )
+			if ( 0 == $row_idx && $this->render_options['table_head'] ) {
 				$cell_content = '<div>' . $cell_content . '</div>';
+			}
 
 			$span_attr = '';
-			if ( $this->colspan[ $row_idx ] > 1 ) // we have colspaned cells
+			if ( $this->colspan[ $row_idx ] > 1 ) { // we have colspaned cells
 				$span_attr .= " colspan=\"{$this->colspan[ $row_idx ]}\"";
-			if ( $this->rowspan[ $col_idx ] > 1 ) // we have rowspaned cells
+			}
+			if ( $this->rowspan[ $col_idx ] > 1 ) { // we have rowspaned cells
 				$span_attr .= " rowspan=\"{$this->rowspan[ $col_idx ]}\"";
+			}
 			$cell_class = 'column-' . ( $col_idx + 1 );
 			$cell_class = apply_filters( 'tablepress_cell_css_class', $cell_class, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
 			$class_attr = ( ! empty( $cell_class ) ) ? " class=\"{$cell_class}\"" : '';
 			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][$col_idx] ) ) ? ' style="width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][$col_idx] ) . ';"' : '';
 
-			if ( $this->render_options['first_column_th'] && 0 == $col_idx )
+			if ( $this->render_options['first_column_th'] && 0 == $col_idx ) {
 				$tag = 'th';
+			}
 
 			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}>{$cell_content}</{$tag}>";
 			$this->colspan[ $row_idx ] = 1; // reset
@@ -609,11 +639,13 @@ class TablePress_Render {
 		}
 
 		$row_class = 'row-' . ( $row_idx + 1 ) ;
-		if ( $this->render_options['alternating_row_colors'] )
+		if ( $this->render_options['alternating_row_colors'] ) {
 			$row_class .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
+		}
 		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_cells, $row_idx + 1, $this->table['data'][ $row_idx ] );
-		if ( ! empty( $row_class ) )
+		if ( ! empty( $row_class ) ) {
 			$row_class = " class=\"{$row_class}\"";
+		}
 
 		$row_cells = array_reverse( $row_cells ); // because we looped through the cells in reverse order
 		return "<tr{$row_class}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
@@ -634,8 +666,9 @@ class TablePress_Render {
 		// complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want
 		$string = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $string );
 		// substitute line breaks with HTML <br> tags, nl2br can be overwritten to false, if not wanted
-		if ( apply_filters( 'tablepress_apply_nl2br', true, $this->table['id'] ) )
+		if ( apply_filters( 'tablepress_apply_nl2br', true, $this->table['id'] ) ) {
 			$string = nl2br( $string );
+		}
 		return $string;
 	}
 

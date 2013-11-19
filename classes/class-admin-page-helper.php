@@ -91,15 +91,17 @@ class TablePress_Admin_Page {
 	 * @param array $args Arguments to be passed to the pointer JS (see wp-pointer.js).
 	 */
 	public function print_wp_pointer_js( $pointer_id, $selector, array $args ) {
-		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args ) || empty( $args['content'] ) )
+		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args ) || empty( $args['content'] ) ) {
 			return;
+		}
 		?>
 		<script type="text/javascript">
 		( function( $ ) {
 			var options = <?php echo json_encode( $args ); ?>, setup;
 
-			if ( ! options )
+			if ( ! options ) {
 				return;
+			}
 
 			options = $.extend( options, {
 				close: function() {
@@ -114,10 +116,11 @@ class TablePress_Admin_Page {
 				$( '<?php echo $selector; ?>' ).pointer( options ).pointer( 'open' );
 			};
 
-			if ( options.position && options.position.defer_loading )
+			if ( options.position && options.position.defer_loading ) {
 				$( window ).bind( 'load.wp-pointers', setup );
-			else
+			} else {
 				$( document ).ready( setup );
+			}
 		} )( jQuery );
 		</script>
 		<?php

@@ -253,8 +253,9 @@ class TablePress_Edit_View extends TablePress_View {
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
-		if ( 0 === $visibility['columns'][$col_idx] )
+		if ( 0 === $visibility['columns'][$col_idx] ) {
 			$column_class = ' column-hidden';
+		}
 		$column = TablePress::number_to_letter( $col_idx + 1 );
 		echo "\t\t\t<th class=\"head{$column_class}\"><span class=\"sort-control sort-desc hide-if-no-js\" title=\"" . esc_attr__( 'Sort descending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"sort-control sort-asc hide-if-no-js\" title=\"" . esc_attr__( 'Sort ascending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"move-handle\">{$column}</span></th>\n";
 	}
@@ -269,8 +270,9 @@ class TablePress_Edit_View extends TablePress_View {
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
-		if ( 0 === $visibility['columns'][$col_idx] )
+		if ( 0 === $visibility['columns'][$col_idx] ) {
 			$column_class = ' class="column-hidden"';
+		}
 		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
 		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
 	}
@@ -283,14 +285,17 @@ class TablePress_Edit_View extends TablePress_View {
 	foreach ( $table as $row_idx => $row_data ) {
 		$row = $row_idx + 1;
 		$classes = array();
-		if ( $row_idx % 2 == 0 )
+		if ( $row_idx % 2 == 0 ) {
 			$classes[] = 'odd';
-		if ( $head_row_idx == $row_idx )
+		}
+		if ( $head_row_idx == $row_idx ) {
 			$classes[] = 'head-row';
-		elseif ( $foot_row_idx == $row_idx )
+		} elseif ( $foot_row_idx == $row_idx ) {
 			$classes[] = 'foot-row';
-		if ( 0 === $visibility['rows'][$row_idx] )
+		}
+		if ( 0 === $visibility['rows'][$row_idx] ) {
 			$classes[] = 'row-hidden';
+		}
 		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
@@ -298,8 +303,9 @@ class TablePress_Edit_View extends TablePress_View {
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
 			$column_class = '';
-			if ( 0 === $visibility['columns'][$col_idx] )
+			if ( 0 === $visibility['columns'][$col_idx] ) {
 				$column_class = ' class="column-hidden"';
+			}
 			$cell = esc_textarea( $cell ); // sanitize, so that HTML is possible in table cells
 			echo "<td{$column_class}><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
 		}
@@ -394,8 +400,9 @@ class TablePress_Edit_View extends TablePress_View {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 
 		echo '<p class="submit">';
-		if ( current_user_can( 'tablepress_preview_table', $data['table']['id'] ) )
+		if ( current_user_can( 'tablepress_preview_table', $data['table']['id'] ) ) {
 			echo '<a href="' . $preview_url . '" class="button button-large show-preview-button" target="_blank">' . __( 'Preview', 'tablepress' ) . '</a>';
+		}
 		?>
 			<input type="button" class="button button-primary button-large save-changes-button hide-if-no-js" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" />
 			<input type="submit" class="button button-primary button-large hide-if-js" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" />
@@ -413,17 +420,21 @@ class TablePress_Edit_View extends TablePress_View {
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
 
-		if ( ! $user_can_copy_table && ! $user_can_export_table && ! $user_can_delete_table )
+		if ( ! $user_can_copy_table && ! $user_can_export_table && ! $user_can_delete_table ) {
 			return;
+		}
 
 		echo '<p class="submit">';
 		echo __( 'Other Actions', 'tablepress' ) . ':&nbsp; ';
-		if ( $user_can_copy_table )
+		if ( $user_can_copy_table ) {
 			echo '<a href="' . TablePress::url( array( 'action' => 'copy_table', 'item' => $data['table']['id'], 'return' => 'edit' ), true, 'admin-post.php' ) . '" class="button">' . __( 'Copy Table', 'tablepress' ) . '</a> ';
-		if ( $user_can_export_table )
+		}
+		if ( $user_can_export_table ) {
 			echo '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ) . '" class="button">' . __( 'Export Table', 'tablepress' ) . '</a> ';
-		if ( $user_can_delete_table )
+		}
+		if ( $user_can_delete_table ) {
 			echo '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) . '" class="button delete-link">' . __( 'Delete Table', 'tablepress' ) . '</a>';
+		}
 		echo '</p>';
 	}
 

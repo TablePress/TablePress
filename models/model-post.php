@@ -105,8 +105,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		// re-add KSES filtering, if necessary
-		if ( ! current_user_can( 'unfiltered_html' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		}
 
 		return $post_id;
 	}
@@ -152,8 +153,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		// re-add KSES filtering, if necessary
-		if ( ! current_user_can( 'unfiltered_html' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		}
 
 		return $post_id;
 	}
@@ -169,8 +171,9 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function get( $post_id ) {
 		$post = get_post( $post_id );
-		if ( is_null( $post ) )
+		if ( is_null( $post ) ) {
 			return false;
+		}
 		return $post;
 	}
 
@@ -291,8 +294,9 @@ class TablePress_Post_Model extends TablePress_Model {
 	public function update_meta_field( $post_id, $field, $value ) {
 		$prev_value = get_post_meta( $post_id, $field, true );
 		// No need to update, if values are equal (also, update_post_meta() would return false for this)
-		if ( $prev_value == $value )
+		if ( $prev_value == $value ) {
 			return true;
+		}
 
 		$value = wp_slash( $value ); // WP expects a slashed value...
 		return update_post_meta( $post_id, $field, $value, $prev_value );

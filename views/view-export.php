@@ -96,8 +96,9 @@ class TablePress_Export_View extends TablePress_View {
 		<th class="column-1 top-align" scope="row">
 			<label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label>
 			<?php
-				if ( $data['zip_support_available'] )
+				if ( $data['zip_support_available'] ) {
 					echo '<br /><br /><label for="tables-export-select-all"><input type="checkbox" id="tables-export-select-all"> ' . __( 'Select all', 'tablepress' ) . '</label>';
+				}
 			?>
 		</th>
 		<td class="column-2">
@@ -111,10 +112,12 @@ class TablePress_Export_View extends TablePress_View {
 			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
 			<?php
 				foreach ( $data['tables'] as $table ) {
-					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) )
+					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) ) {
 						continue;
-					if ( '' == trim( $table['name'] ) )
+					}
+					if ( '' == trim( $table['name'] ) ) {
 						$table['name'] = __( '(no name)', 'tablepress' );
+					}
 					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
 					$selected = selected( true, in_array( $table['id'], $data['export_ids'], true ), false );
 					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
@@ -122,8 +125,9 @@ class TablePress_Export_View extends TablePress_View {
 			?>
 			</select>
 			<?php
-				if ( $data['zip_support_available'] )
+				if ( $data['zip_support_available'] ) {
 					echo '<br /><span class="description">' . __( 'You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac).', 'tablepress' ) . '</span>';
+				}
 			?>
 		</td>
 	</tr>

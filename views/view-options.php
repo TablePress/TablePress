@@ -48,13 +48,15 @@ class TablePress_Options_View extends TablePress_View {
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
-		if ( current_user_can( 'tablepress_edit_options' ) )
+		if ( current_user_can( 'tablepress_edit_options' ) ) {
 			$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
+		}
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( $this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Changes', 'tablepress' );
 		$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
-		if ( current_user_can( 'activate_plugins' ) && current_user_can( 'tablepress_edit_options' ) && current_user_can( 'tablepress_delete_tables' ) && ! is_plugin_active_for_network( TABLEPRESS_BASENAME ) )
+		if ( current_user_can( 'activate_plugins' ) && current_user_can( 'tablepress_edit_options' ) && current_user_can( 'tablepress_delete_tables' ) && ! is_plugin_active_for_network( TABLEPRESS_BASENAME ) ) {
 			$this->add_text_box( 'uninstall-tablepress', array( $this, 'textbox_uninstall_tablepress' ), 'submit' );
+		}
 	}
 
 	/**
@@ -126,15 +128,18 @@ class TablePress_Options_View extends TablePress_View {
 		// get list of current admin menu entries
 		$entries = array();
 		foreach ( $GLOBALS['menu'] as $entry ) {
-			if ( false !== strpos( $entry[2], '.php' ) )
+			if ( false !== strpos( $entry[2], '.php' ) ) {
 				$entries[ $entry[2] ] = $entry[0];
+			}
 		}
 
 		// remove <span> elements with notification bubbles (e.g. update or comment count)
-		if ( isset( $entries['plugins.php'] ) )
+		if ( isset( $entries['plugins.php'] ) ) {
 			$entries['plugins.php'] = preg_replace( '/ <span.*span>/', '', $entries['plugins.php'] );
-		if ( isset( $entries['edit-comments.php'] ) )
+		}
+		if ( isset( $entries['edit-comments.php'] ) ) {
 			$entries['edit-comments.php'] = preg_replace( '/ <span.*span>/', '', $entries['edit-comments.php'] );
+		}
 
 		// add separator and generic positions
 		$entries['-'] = '---';

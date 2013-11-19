@@ -45,19 +45,22 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_hide_message() {
-		if ( empty( $_GET['item'] ) )
+		if ( empty( $_GET['item'] ) ) {
 			wp_die( '0' );
-		else
+		} else {
 			$message_item = $_GET['item'];
+		}
 
 		TablePress::check_nonce( 'hide_message', $message_item, '_wpnonce', true );
 
-		if ( ! current_user_can( 'tablepress_list_tables' ) )
+		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
 			wp_die( '-1' );
+		}
 
 		$updated_options = array( "message_{$message_item}" => false );
-		if ( 'plugin_update' == $message_item )
+		if ( 'plugin_update' == $message_item ) {
 			$updated_options['message_plugin_update_content'] = '';
+		}
 		TablePress::$model_options->update( $updated_options );
 
 		wp_die( '1' );
@@ -69,17 +72,19 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_save_table() {
-		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) )
+		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
-		else
+		} else {
 			$edit_table = wp_unslash( $_POST['tablepress'] );
+		}
 
 		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
 		TablePress::check_nonce( 'edit', $edit_table['id'], '_ajax_nonce', true );
 
 		// ignore the request if the current user doesn't have sufficient permissions
-		if ( ! current_user_can( 'tablepress_edit_table', $edit_table['id'] ) )
+		if ( ! current_user_can( 'tablepress_edit_table', $edit_table['id'] ) ) {
 			wp_die( '-1' );
+		}
 
 		// default response data:
 		$success = false;
@@ -87,45 +92,52 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
 			$existing_table = TablePress::$model_table->load( $edit_table['id'] );
-			if ( false === $existing_table ) // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+			if ( false === $existing_table ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				break;
+			}
 
 			// Check and convert data that was transmitted as JSON
 			if ( empty( $edit_table['data'] )
 			|| empty( $edit_table['options'] )
-			|| empty( $edit_table['visibility'] ) )
+			|| empty( $edit_table['visibility'] ) ) {
 				break;
+			}
 			$edit_table['data'] = json_decode( $edit_table['data'], true );
 			$edit_table['options'] = json_decode( $edit_table['options'], true );
 			$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
-			if ( false === $table )
+			if ( false === $table ) {
 				break;
+			}
 
 			// DataTables Custom Commands can only be edit by trusted users
-			if ( ! current_user_can( 'unfiltered_html' ) )
+			if ( ! current_user_can( 'unfiltered_html' ) ) {
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
+			}
 
 			// Save updated table
 			$saved = TablePress::$model_table->save( $table );
-			if ( false === $saved )
+			if ( false === $saved ) {
 				break;
+			}
 
 			// at this point, the table was saved successfully, possible ID change remains
 			$success = true;
 			$message = 'success_save';
 
 			// Check if ID change is desired
-			if ( $table['id'] === $table['new_id'] ) // if not, we are done
+			if ( $table['id'] === $table['new_id'] ) { // if not, we are done
 				break;
+			}
 
 			// Change table ID
-			if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) )
+			if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) ) {
 				$id_changed = TablePress::$model_table->change_table_id( $table['id'], $table['new_id'] );
-			else
+			} else {
 				$id_changed = false;
+			}
 			if ( $id_changed ) {
 				$message = 'success_save_success_id_change';
 				$table['id'] = $table['new_id'];
@@ -158,47 +170,54 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_preview_table() {
-		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) )
+		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
-		else
+		} else {
 			$preview_table = wp_unslash( $_POST['tablepress'] );
+		}
 
 		// check to see if the submitted nonce matches with the generated nonce we created earlier, dies -1 on fail
 		TablePress::check_nonce( 'preview_table', $preview_table['id'], '_ajax_nonce', true );
 
 		// ignore the request if the current user doesn't have sufficient permissions
-		if ( ! current_user_can( 'tablepress_preview_table', $preview_table['id'] ) )
+		if ( ! current_user_can( 'tablepress_preview_table', $preview_table['id'] ) ) {
 			wp_die( '-1' );
+		}
 
 		// default response data:
 		$success = false;
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
 			$existing_table = TablePress::$model_table->load( $preview_table['id'] );
-			if ( false === $existing_table ) // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+			if ( false === $existing_table ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				break;
+			}
 
 			// Check and convert data that was transmitted as JSON
 			if ( empty( $preview_table['data'] )
 			|| empty( $preview_table['options'] )
-			|| empty( $preview_table['visibility'] ) )
+			|| empty( $preview_table['visibility'] ) ) {
 				break;
+			}
 			$preview_table['data'] = json_decode( $preview_table['data'], true );
 			$preview_table['options'] = json_decode( $preview_table['options'], true );
 			$preview_table['visibility'] = json_decode( $preview_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $preview_table, true, true );
-			if ( false === $table )
+			if ( false === $table ) {
 				break;
+			}
 
 			// DataTables Custom Commands can only be edit by trusted users
-			if ( ! current_user_can( 'unfiltered_html' ) )
+			if ( ! current_user_can( 'unfiltered_html' ) ) {
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
+			}
 
 			// If the ID has changed, and the new ID is valid, render with the new ID (important e.g. for CSS classes/HTML ID)
-			if ( $table['id'] !== $table['new_id'] && 0 === preg_match( '/[^a-zA-Z0-9_-]/', $table['new_id'] ) )
+			if ( $table['id'] !== $table['new_id'] && 0 === preg_match( '/[^a-zA-Z0-9_-]/', $table['new_id'] ) ) {
 				$table['id'] = $table['new_id'];
+			}
 
 			// at this point, the table data is valid and can be rendered
 			$success = true;
@@ -216,8 +235,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$head_html = '<style type="text/css">body{margin:10px;}</style>';
 			$head_html .= $_render->get_preview_css();
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
-			if ( ! empty( $custom_css ) )
+			if ( ! empty( $custom_css ) ) {
 				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
+			}
 
 			$body_html = '<div id="tablepress-page"><p>'
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '

@@ -137,8 +137,9 @@ body {
 <?php printf( __( 'Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id=<ID> /]" ) . '" readonly="readonly" />' ); ?>
 </p>
 <?php
-	if ( ! empty( $_GET['s'] ) )
+	if ( ! empty( $_GET['s'] ) ) {
 		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( wp_unslash( $_GET['s'] ) ) );
+	}
 ?>
 <form method="get" action="">
 	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
@@ -250,8 +251,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		// no sorting on the Empty List placeholder
-		if ( ! $this->has_items() )
+		if ( ! $this->has_items() ) {
 			return array();
+		}
 
 		$sortable_columns = array(
 			'table_id' => array( 'id', true ), //true means its already sorted
@@ -282,8 +284,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell
 	 */
 	protected function column_table_name( array $item ) {
-		if ( '' == trim( $item['name'] ) )
+		if ( '' == trim( $item['name'] ) ) {
 			$item['name'] = __( '(no name)', 'tablepress' );
+		}
 		return esc_html( $item['name'] );
 	}
 
@@ -296,8 +299,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell
 	 */
 	protected function column_table_description( array $item ) {
-		if ( '' == trim( $item['description'] ) )
+		if ( '' == trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
+		}
 		return esc_html( $item[ 'description' ] );
 	}
 
@@ -320,8 +324,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	public function no_items() {
 		_e( 'No tables found.', 'tablepress' );
-		if ( 0 === $this->items_count )
+		if ( 0 === $this->items_count ) {
 			echo ' ' . __( 'You should add or import a table on the TablePress screens to get started!', 'tablepress' );
+		}
 	}
 
 	/**
@@ -333,8 +338,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param string $which Location ("top" or "bottom")
 	 */
 	public function display_tablenav( $which ) {
-		if ( ! $this->has_items() )
+		if ( ! $this->has_items() ) {
 			return;
+		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 			<div class="alignleft actions">
@@ -359,8 +365,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	protected function _search_callback( array $item ) {
 		static $term;
-		if ( is_null( $term ) )
+		if ( is_null( $term ) ) {
 			$term = wp_unslash( $_GET['s'] );
+		}
 
 		$item = TablePress::$model_table->load( $item['id'] ); // load table again, with data
 
@@ -370,8 +377,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		|| false !== stripos( $item['description'], $term )
 		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
-		|| false !== stripos( json_encode( $item['data'] ), $term ) )
+		|| false !== stripos( json_encode( $item['data'] ), $term ) ) {
 			return true;
+		}
 
 		return false;
 	}
@@ -388,8 +396,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	protected function _order_callback( array $item_a, array $item_b ) {
 		global $orderby, $order;
 
-		if ( $item_a[$orderby] == $item_b[$orderby] )
+		if ( $item_a[$orderby] == $item_b[$orderby] ) {
 			return 0;
+		}
 
 		// fields in this list table are all strings
 		$result = strnatcasecmp( $item_a[$orderby], $item_b[$orderby] );
@@ -407,13 +416,15 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		wp_reset_vars( array( 'orderby', 'order', 's' ) );
 
 		// Maybe search in the items
-		if ( $s )
+		if ( $s ) {
 			$this->items = array_filter( $this->items, array( $this, '_search_callback' ) );
+		}
 
 		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();
-		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) )
+		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) ) {
 			usort( $this->items, array( $this, '_order_callback' ) );
+		}
 
 		// number of records to show per page
 		$per_page = 15; // hard-coded, as there's no possibility to change this in the Thickbox

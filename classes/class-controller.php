@@ -88,8 +88,9 @@ abstract class TablePress_Controller {
 			@set_time_limit( 300 );
 
 			// Add TablePress capabilities to the WP_Roles objects, for new installations and all versions below 12
-			if ( $current_plugin_options_db_version < 12 )
+			if ( $current_plugin_options_db_version < 12 ) {
 				TablePress::$model_options->add_access_capabilities();
+			}
 
 			if ( 0 == TablePress::$model_options->get( 'first_activation' ) ) {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation
@@ -116,17 +117,19 @@ abstract class TablePress_Controller {
 					$result = $tablepress_css->save_custom_css_to_file( TablePress::$model_options->get( 'custom_css' ), TablePress::$model_options->get( 'custom_css_minified' ) );
 					$updated_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
 					// if saving was successful, increase the "Custom CSS" version number for cache busting
-					if ( $result )
+					if ( $result ) {
 						$updated_options['custom_css_version'] = TablePress::$model_options->get( 'custom_css_version' ) + 1;
+					}
 				}
 
 				TablePress::$model_options->update( $updated_options );
 
 				// Clear table caches
-				if ( $current_plugin_options_db_version < 16 )
+				if ( $current_plugin_options_db_version < 16 ) {
 					TablePress::$model_table->invalidate_table_output_caches_tp09(); // for pre-0.9-RC, where the arrays are serialized and not JSON encoded
-				else
+				} else {
 					TablePress::$model_table->invalidate_table_output_caches(); // for 0.9-RC and onwards
+				}
 			}
 
 			TablePress::$model_options->update( array(
@@ -137,14 +140,16 @@ abstract class TablePress_Controller {
 		// Maybe update the table scheme in each existing table, independently from updating the plugin options
 		if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < TablePress::table_scheme_version ) {
 			// Convert parameter "datatables_scrollX" to "datatables_scrollx", has to be done before merge_table_options_defaults() is called!
-			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 3 )
+			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 3 ) {
 				TablePress::$model_table->merge_table_options_tp08();
+			}
 
 			TablePress::$model_table->merge_table_options_defaults();
 
 			// Merge print_name/print_description changes made for 0.6-beta
-			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 2 )
+			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 2 ) {
 				TablePress::$model_table->merge_table_options_tp06();
+			}
 
 			TablePress::$model_options->update( array(
 				'table_scheme_db_version' => TablePress::table_scheme_version

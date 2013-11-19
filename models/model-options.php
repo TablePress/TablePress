@@ -109,8 +109,9 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	public function update( $new_options, $single_value = null ) {
 		// allow saving of single options that are not in an array
-		if ( ! is_array( $new_options ) )
+		if ( ! is_array( $new_options ) ) {
 			$new_options = array( $new_options => $single_value );
+		}
 
 		$plugin_options = $this->plugin_options->get();
 		$user_options = $this->user_options->get();
@@ -138,8 +139,9 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @return mixed Value of the retrieved option $name, or $default_value if it does not exist, or array of all options
 	 */
 	public function get( $name = false, $default_value = null ) {
-		if ( false === $name )
+		if ( false === $name ) {
 			return array_merge( $this->plugin_options->get(), $this->user_options->get() );
+		}
 
 		// Single Option wanted
 		if ( $this->plugin_options->is_set( $name ) ) {
@@ -216,8 +218,9 @@ class TablePress_Options_Model extends TablePress_Model {
 		$roles = array( 'administrator', 'editor', 'author' );
 		foreach ( $roles as $role ) {
 			$role = get_role( $role );
-			if ( empty( $role ) )
+			if ( empty( $role ) ) {
 				continue;
+			}
 
 			// from get_post_type_capabilities()
 			$role->add_cap( 'tablepress_edit_tables' );
@@ -257,13 +260,15 @@ class TablePress_Options_Model extends TablePress_Model {
 	public function remove_access_capabilities() {
 		// Capabilities for all roles
 		global $wp_roles;
-		if ( ! isset( $wp_roles ) )
+		if ( ! isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles();
+		}
 
  		foreach ( $wp_roles->roles as $role => $details ) {
 			$role = $wp_roles->get_role( $role );
-			if ( empty( $role ) )
+			if ( empty( $role ) ) {
 				continue;
+			}
 
 			$role->remove_cap( 'tablepress_edit_tables' );
 			$role->remove_cap( 'tablepress_delete_tables' );
@@ -295,8 +300,9 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @return array $caps Modified set of primitive caps
 	 */
 	public function map_tablepress_meta_caps( array $caps, $cap, $user_id, $args ) {
-		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) )
+		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) ) {
 			return $caps;
+		}
 
 		// $table_id = ( ! empty( $args ) ) ? $args[0] : false;
 
@@ -343,8 +349,9 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	public function plugin_update_message( $current_version, $new_version, $locale ) {
 		$update_message = wp_remote_fopen( "http://dev.tablepress.org/plugin/update/{$current_version}/{$new_version}/{$locale}/" );
-		if ( empty( $update_message ) )
+		if ( empty( $update_message ) ) {
 			$update_message = '';
+		}
 		return $update_message;
 	}
 

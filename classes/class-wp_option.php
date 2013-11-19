@@ -52,10 +52,11 @@ class TablePress_WP_Option {
 		$this->option_name = $params['option_name'];
 
 		$option_value = $this->_get_option( $this->option_name, null );
-		if ( ! is_null( $option_value ) )
+		if ( ! is_null( $option_value ) ) {
 			$this->option_value = json_decode( $option_value, true ); // decode JSON as associative array
-		else
+		} else {
 			$this->option_value = $params['default_value'];
+		}
 	}
 
 	/**
@@ -80,14 +81,16 @@ class TablePress_WP_Option {
 	 * @return mixed|array Value of the retrieved option $name or $default_value if it does not exist, or all options
 	 */
 	public function get( $name = false, $default_value = null ) {
-		if ( false === $name )
+		if ( false === $name ) {
 			return $this->option_value;
+		}
 
 		// Single Option wanted
-		if ( isset( $this->option_value[ $name ] ) )
+		if ( isset( $this->option_value[ $name ] ) ) {
 			return $this->option_value[ $name ];
-		else
+		} else {
 			return $default_value;
+		}
 	}
 
 	/**

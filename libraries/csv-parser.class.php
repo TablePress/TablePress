@@ -62,8 +62,9 @@ class CSV_Parser {
 	 */
 	public function load_data( $data ) {
 		// check for mandatory trailing line break
-		if ( substr( $data, -1 ) != "\n" )
+		if ( substr( $data, -1 ) != "\n" ) {
 			$data .= "\n";
+		}
 		$this->import_data = &$data;
 	}
 
@@ -91,21 +92,24 @@ class CSV_Parser {
 
 			if ( $curr_char == $this->enclosure ) {
 				// open and closing quotes
-				if ( ! $enclosed || $next_char != $this->enclosure )
+				if ( ! $enclosed || $next_char != $this->enclosure ) {
 					$enclosed = ! $enclosed; // flip bool
-				elseif ( $enclosed )
+				} elseif ( $enclosed ) {
 					$i++; // skip next character
+				}
 			} elseif ( ( "\n" == $curr_char && "\r" != $prev_char || "\r" == $curr_char ) && ! $enclosed ) {
 				// reached end of a line
 				$current_line++;
-				if ( $current_line >= $this->delimiter_search_max_lines )
+				if ( $current_line >= $this->delimiter_search_max_lines ) {
 					break;
+				}
 			} elseif ( ! $enclosed ) {
 				// at this point $curr_char seems to be used as a delimiter, as it is not enclosed
 				// count $curr_char if it is not in the non_delimiter_chars list
 				if ( 0 === preg_match( '#[' . $this->non_delimiter_chars . ']#i', $curr_char ) ) {
-					if ( ! isset( $delimiter_count[$curr_char][$current_line] ) )
+					if ( ! isset( $delimiter_count[$curr_char][$current_line] ) ) {
 						$delimiter_count[$curr_char][$current_line] = 0; // init empty
+					}
 					$delimiter_count[$curr_char][$current_line]++;
 				}
 			}
@@ -115,8 +119,9 @@ class CSV_Parser {
 		$potential_delimiters = array();
 		foreach ( $delimiter_count as $char => $line_counts ) {
 			$is_possible_delimiter = $this->_check_delimiter_count( $char, $line_counts, $current_line );
-			if ( false !== $is_possible_delimiter )
+			if ( false !== $is_possible_delimiter ) {
 				$potential_delimiters[$is_possible_delimiter] = $char;
+			}
 		}
 		ksort( $potential_delimiters );
 		// return first array element, as that has the highest count
@@ -135,8 +140,9 @@ class CSV_Parser {
 	 */
 	protected function _check_delimiter_count( $char, array $line_counts, $number_lines ) {
 		// was potential delimiter found in every line?
-		if ( count( $line_counts ) != $number_lines )
+		if ( count( $line_counts ) != $number_lines ) {
 			return false;
+		}
 
 		// check if count in every line is the same (or one higher for "almost")
 		$first = null;
@@ -155,8 +161,9 @@ class CSV_Parser {
 			}
 		}
 		// check equality only if more than one row
-		if ( $number_lines > 1 && ! $equal )
+		if ( $number_lines > 1 && ! $equal ) {
 			return false;
+		}
 
 		// at this point, count is equal in all lines, determine a string to sort priority
 		$match = ( $almost ) ? 2 : 1 ;
@@ -222,8 +229,9 @@ class CSV_Parser {
 						$enclosed = false;
 						$i = $x;
 					} else {
-						if ( $this->error < 1 )
+						if ( $this->error < 1 ) {
 							$this->error = 1;
+						}
 						$error_line = count( $rows ) + 1;
 						$error_column = $column + 1;
 						if ( ! isset( $this->error_info[ $error_line.'-'.$error_column ] ) ) {
@@ -255,8 +263,9 @@ class CSV_Parser {
 					$rows[] = $row;
 					$row = array();
 					$column = 0;
-					if ( "\r" == $curr_char && "\n" == $next_char )
+					if ( "\r" == $curr_char && "\n" == $next_char ) {
 						$i++; // skip next character in \r\n line breaks
+					}
 				}
 			} else {
 				// append character to current cell

@@ -158,12 +158,15 @@ class TablePress_CSS {
 	public function load_custom_css_from_file( $type = 'normal' ) {
 		$filename = $this->get_custom_css_location( $type, 'path' );
 		// Check if file name is valid (0 means yes)
-		if ( 0 !== validate_file( $filename ) )
+		if ( 0 !== validate_file( $filename ) ) {
 			return false;
-		if ( ! @is_file( $filename ) )
+		}
+		if ( ! @is_file( $filename ) ) {
 			return false;
-		if ( ! @is_readable( $filename ) )
+		}
+		if ( ! @is_readable( $filename ) ) {
 			return false;
+		}
 		return file_get_contents( $filename );
 	}
 
@@ -177,12 +180,15 @@ class TablePress_CSS {
 	public function load_default_css_from_file() {
 		$filename = TABLEPRESS_ABSPATH . 'css/default.min.css';
 		// Check if file name is valid (0 means yes)
-		if ( 0 !== validate_file( $filename ) )
+		if ( 0 !== validate_file( $filename ) ) {
 			return false;
-		if ( ! @is_file( $filename ) )
+		}
+		if ( ! @is_file( $filename ) ) {
 			return false;
-		if ( ! @is_readable( $filename ) )
+		}
+		if ( ! @is_readable( $filename ) ) {
 			return false;
+		}
 		return file_get_contents( $filename );
 	}
 
@@ -199,8 +205,9 @@ class TablePress_CSS {
 	 */
 	public function save_custom_css_to_file( $custom_css_normal, $custom_css_minified ) {
 		// Hook to prevent saving to file
-		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) )
+		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) ) {
 			return false;
+		}
 
 		ob_start(); // Start capturing the output, to later prevent it
 		$credentials = request_filesystem_credentials( '', '', false, false, null );
@@ -230,8 +237,9 @@ class TablePress_CSS {
 	 */
 	public function save_custom_css_to_file_plugin_options( $custom_css_normal, $custom_css_minified ) {
 		// Hook to prevent saving to file
-		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) )
+		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) ) {
 			return false;
+		}
 
 		// Set current screen to get Screen Icon to have a custom HTML ID, so that we can hide it with CSS
 		set_current_screen( 'tablepress_options_invisible' );
@@ -255,10 +263,11 @@ class TablePress_CSS {
 		}
 
 		// we have valid access to the filesystem now -> try to save the files, or delete them if the "Custom CSS" is empty
-		if ( '' !== $custom_css_normal )
+		if ( '' !== $custom_css_normal ) {
 			return $this->_custom_css_save_helper( $custom_css_normal, $custom_css_minified );
-		else
+		} else {
 			return $this->_custom_css_delete_helper();
+		}
 	}
 
 	/**
@@ -309,8 +318,9 @@ class TablePress_CSS {
 				$total_result = false;
 				continue;
 			}
-			if ( '' != $path_difference )
+			if ( '' != $path_difference ) {
 				$filename = str_replace( $path_difference, '', $filename );
+			}
 			$result = $wp_filesystem->put_contents( $filename, $file_content[ $css_type ], FS_CHMOD_FILE );
 			$total_result = ( $total_result && $result );
 		}
@@ -367,8 +377,9 @@ class TablePress_CSS {
 				$total_result = false;
 				continue;
 			}
-			if ( '' != $path_difference )
+			if ( '' != $path_difference ) {
 				$filename = str_replace( $path_difference, '', $filename );
+			}
 			// we have valid access to the filesystem now -> try to delete the file
 			if ( $wp_filesystem->exists( $filename ) ) {
 				$result = $wp_filesystem->delete( $filename );
