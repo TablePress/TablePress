@@ -7,20 +7,11 @@
  * @since 1.0.0
  */
 
-/* Screen icon */
-#icon-tablepress {
-	background-image: url(../img/tablepress-icon.png);
-}
 /* HiDPI images */
 @media print,
  (-o-min-device-pixel-ratio: 5/4),
  (-webkit-min-device-pixel-ratio: 1.25),
  (min-resolution: 120dpi) {
-	/* Screen icon */
-	#icon-tablepress {
-		background-image: url(../img/tablepress-icon-2x.png);
-		background-size: 36px 36px;
-	}
 	/* Admin Menu icon */
 	#toplevel_page_tablepress .wp-menu-image {
 		background: url(../img/tablepress-icon-small-2x.png) no-repeat 7px 7px;
@@ -29,10 +20,6 @@
 	#toplevel_page_tablepress .wp-menu-image img {
 		display: none;
 	}
-}
-/* Hide second Screen icon (above the credentials form to save "Custom CSS" */
-#icon-tablepress_options_invisible {
-	display: none;
 }
 
 /* Margins for messages on screens */

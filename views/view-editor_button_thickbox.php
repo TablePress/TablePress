@@ -71,22 +71,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 <title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">
 body {
-	margin: -26px 0px 15px 15px; /* top has -28px offset to account for html.wp-toolbar */
-}
-
-#icon-tablepress {
-	background: transparent url(<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>) no-repeat;
-}
-/* HiDPI images */
-@media print,
- (-o-min-device-pixel-ratio: 5/4),
- (-webkit-min-device-pixel-ratio: 1.25),
- (min-resolution: 120dpi) {
-	/* Screen icon */
-	#icon-tablepress {
-		background-image: url(<?php echo plugins_url( 'admin/img/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>);
-		background-size: 36px 36px;
-	}
+	margin: -26px 0 15px 15px; /* top has -28px offset to account for html.wp-toolbar */
 }
 
 /* width and font weight for the columns */
@@ -122,13 +107,12 @@ body {
 /* Search results for WP_List_Table */
 #tablepress-page .subtitle {
 	float: left;
-	padding-left: 0px;
+	padding-left: 0;
 }
 </style>
 </head>
 <body class="wp-admin wp-core-ui js iframe">
 <div id="tablepress-page" class="wrap">
-<?php screen_icon( 'tablepress' ); ?>
 <h2><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h2>
 <div id="poststuff">
 <p>

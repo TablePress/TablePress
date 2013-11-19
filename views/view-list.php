@@ -133,7 +133,6 @@ class TablePress_List_View extends TablePress_View {
 	public function render() {
 		?>
 		<div id="tablepress-page" class="wrap">
-		<?php screen_icon( 'tablepress' ); ?>
 		<?php
 			$this->print_nav_tab_menu();
 			// print all header messages

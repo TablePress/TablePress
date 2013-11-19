@@ -56,7 +56,6 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	public function render() {
 		?>
 		<div id="tablepress-page" class="wrap">
-		<?php screen_icon( 'tablepress' ); ?>
 		<?php
 			$this->print_nav_tab_menu();
 			// print all header messages

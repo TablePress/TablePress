@@ -241,9 +241,6 @@ class TablePress_CSS {
 			return false;
 		}
 
-		// Set current screen to get Screen Icon to have a custom HTML ID, so that we can hide it with CSS
-		set_current_screen( 'tablepress_options_invisible' );
-
 		ob_start(); // Start capturing the output, to get HTML of the credentials form (if needed)
 		$credentials = request_filesystem_credentials( '', '', false, false, null );
 		// do we have credentials already? (Otherwise the form will have been rendered already.)

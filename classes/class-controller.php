@@ -111,7 +111,6 @@ abstract class TablePress_Controller {
 				if ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== TablePress::$model_options->get( 'custom_css' ) ) { // only write files, if "Custom CSS" is to be used, and if there is "Custom CSS"
 					// Re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed)
 					require_once ABSPATH . 'wp-admin/includes/file.php'; // to provide filesystem functions early
-					require_once ABSPATH . 'wp-admin/includes/screen.php'; // to provide `screen_icon()` which is necessary for `request_filesystem_credentials()`
 					require_once ABSPATH . 'wp-admin/includes/template.php'; // to provide `submit_button()` which is necessary for `request_filesystem_credentials()`
 					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 					$result = $tablepress_css->save_custom_css_to_file( TablePress::$model_options->get( 'custom_css' ), TablePress::$model_options->get( 'custom_css_minified' ) );
