@@ -7,7 +7,10 @@
  * @since 1.0.0
  */
 
-/* global confirm, postboxes, pagenow, tp, tablepress_common */
+/* global confirm, tp, postboxes, pagenow, tp, tablepress_common */
+
+// Ensure the global `tp` object exists.
+window.tp = window.tp || {};
 
 jQuery( document ).ready( function( $ ) {
 
@@ -62,9 +65,8 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 
-		if ( 'undefined' !== typeof tp ) {
-			tp.made_changes = false; // to prevent onunload warning
-		}
+		// Prevent onunload warning.
+		tp.made_changes = false;
 	} );
 
 	/**
