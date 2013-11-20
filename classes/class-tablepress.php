@@ -237,7 +237,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 *
 	 * @param string $action Action for which the nonce is needed
-	 * @param string $item (optional) Item for which the action will be performed, like "table"
+	 * @param string|bool $item (optional) Item for which the action will be performed, like "table"
 	 * @return string The resulting nonce string
 	 */
 	public static function nonce( $action, $item = false ) {
@@ -255,7 +255,7 @@ abstract class TablePress {
 	 * @uses nonce()
 	 *
 	 * @param string $action Action for which the nonce should be checked
-	 * @param string $item (optional) Item for which the action should be performed, like "table"
+	 * @param string|bool $item (optional) Item for which the action should be performed, like "table"
 	 * @param string $query_arg (optional) Name of the nonce query string argument in $_POST
 	 * @param bool $ajax Whether the nonce comes from an AJAX request
 	 */

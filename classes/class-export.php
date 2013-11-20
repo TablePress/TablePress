@@ -151,6 +151,7 @@ class TablePress_Export {
 	 * @since 1.0.0
 	 *
 	 * @param string $string Content of a cell
+	 * @param string $delimiter CSV delimiter character
 	 * @return string Wrapped string for CSV export
 	 */
 	protected function csv_wrap_and_escape( $string, $delimiter ) {

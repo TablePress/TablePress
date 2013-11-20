@@ -445,7 +445,7 @@ JS;
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $atts list of attributes that where included in the Shortcode
+	 * @param array $shortcode_atts List of attributes that where included in the Shortcode
 	 * @return string Text that replaces the Shortcode (error message or asked-for information)
 	 */
 	public function shortcode_table_info( array $shortcode_atts ) {
@@ -575,7 +575,7 @@ JS;
 	 * @since 1.0.0
 	 * @uses $wpdb
 	 *
-	 * @param string $search Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching
+	 * @param string $search_sql Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching
 	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them
 	 */
 	public function posts_search_filter( $search_sql ) {
