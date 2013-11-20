@@ -23,6 +23,8 @@ body.wait * {
 }
 
 /* allow wide tables to scroll sideways, only on "Edit" screen */
+body,
+#wpwrap,
 #wpbody-content {
 	overflow: visible !important; /* !important is necessary to override an inline style that postboxes.js sets via JS */
 }
@@ -46,8 +48,6 @@ body.wait * {
 #table-preview-iframe {
 	width: 100%;
 	height: 100%;
-	margin: 0;
-	border: none;
 }
 /* To account for additional padding of #TB_WindowContent in direct preview */
 #table-preview {
@@ -57,13 +57,14 @@ body.wait * {
 
 /* Content of the Advanced Editor jQueryUI dialog */
 #advanced-editor {
-	padding: 3px;
+	padding: 5px;
+}
+#advanced-editor .wp-editor-container {
+	border: none;
 }
 #advanced-editor .submitbox {
-	padding: 6px 6px 0;
-	font-size: 11px;
-	overflow: auto;
-	height: 30px;
+	padding: 5px 0 0;
+	font-size: 12px;
 }
 #advanced-editor-confirm {
 	float: right;
@@ -77,21 +78,17 @@ body.wait * {
 .spinner.animation-preview {
 	display: inline-block;
 	float: none;
-	margin: 7px 0 0 7px;
-	vertical-align: top;
+	margin: 0 0 0 6px;
+	vertical-align: middle;
 }
 
 /* Margins from dynamically created (inline) .error/.updated messages */
 #tablepress-page div.save-changes-success,
 #tablepress-page div.save-changes-error,
 #tablepress-page div.preview-error {
-	margin: 0 0 15px;
+	margin: -10px 0 15px;
 }
 
-/* make postboxes at least as wide as their contents, to prevent overlapping elements */
-#tablepress-page .postbox {
-	min-width: 836px; /* sum of inner table width, padding, border, ... */
-}
 #tablepress-page #tablepress_edit-table-data {
 	display: inline-block; /* stretch to the width of the table */
 	min-width: 99.9%; /* but use the full width, but minus like 1px as the box is wider than the others otherwise */
@@ -99,6 +96,11 @@ body.wait * {
 /* Re-instate hide-if-js functionality, due to higher specificity of ID selectors (necessary when hiding postbox) */
 #tablepress-page #tablepress_edit-table-data.hide-if-js {
 	display: none;
+}
+
+#tablepress-page .small-text {
+	width: 65px;
+	padding: 3px 5px;
 }
 
 /* table cells */
@@ -117,10 +119,6 @@ body.wait * {
 #edit-form-body .odd {
 	background-color: #eeeeee;
 }
-/* alternating row colors for the blue color scheme */
-.admin-color-classic #edit-form-body .odd {
-	background-color: #e5f6ff;
-}
 
 #edit-form-body textarea {
 	display: block;
@@ -128,21 +126,18 @@ body.wait * {
 	width: 100%;
 	width: auto\0/IE; /* IE hack, as cells will otherwise shrink and overlap instead of horizontal scrolling kicking in */
 	height: 100%;
+	box-shadow: none; /* for faster drawing performance, and hopefully faster scrolling */
 }
 #edit-form-body textarea:focus {
-	border-color: #000000;
+	border-color: #333333;
 }
 
-#edit-form-body input[type="checkbox"] {
-	margin-right: 3px;
-}
 #edit-form-foot input[type="checkbox"] {
-	margin-top: 6px;
+	margin: 6px 0 3px;
 }
 
 #edit-form {
 	border-collapse: collapse;
-	margin-bottom: 5px; /* spacing for the scroll bar */
 }
 
 /* row and column moving with jQueryUI sortable */
@@ -168,40 +163,32 @@ body.wait * {
 	z-index: 1000;
 	height: 26px; /* height of "#edit-form-body td" - 6px */
 }
-
 #edit-form .focus .move-hover {
-	height: 54px; /* height of "#edit-form-body .focus td" - 6px */
+	height: 58px; /* height of "#edit-form-body .focus td" - 6px */
 }
 
 /* hightlighting of table head and foot in table cells */
 #edit-form-body .head-row,
-#edit-form-body .foot-row,
-.admin-color-classic #edit-form-body .head-row,
-.admin-color-classic #edit-form-body .foot-row {
+#edit-form-body .foot-row {
 	background-color: #d9edf7;
 }
 
 /* head cells (column letters) and sorting */
-#edit-form-head th {
-	height: 16px;
-	vertical-align: top;
-}
 #edit-form-head .sort-control {
 	float: right;
-	width: 12px;
-	height: 12px;
+	height: 18px;
 	cursor: pointer;
-	margin: 2px 3px 0 0;
+	margin-right: 2px;
 }
 #edit-form-head .sorting-indicator {
 	display: block;
-	margin: 4px 2px 0 0;
 }
-#edit-form-head .sort-asc .sorting-indicator {
-	background-position: 0 0;
+#edit-form-head .sort-asc .sorting-indicator:before {
+	content: '\f142';
 }
-#edit-form-head .sort-desc .sorting-indicator {
-	background-position: -7px 0;
+
+#edit-form-head .sort-desc .sorting-indicator:before {
+	content: '\f140';
 }
 
 /* (red) highlighting of hidden rows and columns */
@@ -218,9 +205,4 @@ body.wait * {
 }
 #tablepress_edit-table-manipulation .column-2 {
 	width: 55%;
-}
-
-/* gray background for disabled "Pagination entries" field */
-#option-datatables-paginate_entries[disabled] {
-	background-color: #eeeeee;
 }

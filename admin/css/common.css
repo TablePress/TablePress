@@ -33,31 +33,16 @@
 	margin: 6px;
 }
 #tablepress-nav .nav-tab {
-	color: #21759b;
-}
-#tablepress-nav .nav-tab:hover {
-	color: #d54e21;
-}
-#tablepress-nav .nav-tab-active {
-	padding-bottom: 5px;
-	text-shadow: 1px 1px 1px #ffffff;
-	color: #333333;
-}
-#tablepress-nav .nav-tab-active:hover {
-	color: #464646;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
 }
 
 /* Add New Table form */
-#tablepress_add-add-table div.inside {
-	margin: 6px;
-	padding: 0;
-}
 #tablepress_add-add-table .form-wrap {
 	max-width: 500px;
 }
 #tablepress_add-add-table .form-field {
 	margin: 0;
-	padding: 5px;
 }
 /* Number of rows/columns in the "Add New Table" form */
 #tablepress_add-add-table .form-field-small {
@@ -88,11 +73,6 @@
 .tablepress-all-tables tbody .column-table_id {
 	font-weight: bold;
 }
-/* width of the bulk actions select box */
-.tablenav #bulk-action-top,
-.tablenav #bulk-action-bottom {
-	width: 130px;
-}
 
 /* Search results for WP_List_Table */
 #tablepress-page .subtitle {
@@ -100,17 +80,12 @@
 	padding-left: 0;
 }
 
-/* remove outlines from all textareas */
-#tablepress-page textarea {
-	outline: none;
-}
-
 /* inline Shortcodes, in texts */
 #tablepress-page .table-shortcode-inline {
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 90px;
+	width: 120px;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
@@ -122,8 +97,9 @@
 }
 
 /* table dropdown on "Export" screen */
-#tables-export {
+#tablepress-page #tables-export {
 	width: 100%;
+	height: auto;
 }
 
 /* red border for form fields that have invalid values */
@@ -135,77 +111,57 @@
 /* tables for in postboxes (on the "Edit" and "Plugin Options" screens) */
 .tablepress-postbox-table {
 	border-spacing: 0;
-	width: 800px;
+	max-width: 1000px;
+	width: 100%;
 }
 /* default column widths */
 .tablepress-postbox-table .column-1 {
-	width: 175px;
+	width: 25%;
 }
 .tablepress-postbox-table .column-2 {
-	width: 625px;
+	width: 75%;
 }
 .tablepress-postbox-table th {
 	text-align:left;
 	font-weight: normal;
 }
-.tablepress-postbox-table .top-align {
-	vertical-align: top;
-	padding-top: 7px;
-}
 .tablepress-postbox-table th,
 .tablepress-postbox-table td {
-	padding: 6px 6px 2px 2px;
-	border-spacing: 0;
+	padding: 2px;
 	word-wrap: break-word;
 }
 .tablepress-postbox-table .top-border th,
 .tablepress-postbox-table .top-border td {
-	padding: 6px 6px 2px 2px;
-	border-top: 1px solid #ffffff;
+	padding-top: 6px;
 }
 .tablepress-postbox-table .bottom-border th,
 .tablepress-postbox-table .bottom-border td {
-	padding: 2px 6px 6px 2px;
-	border-bottom: 1px solid #dfdfdf;
-}
-.tablepress-postbox-table .no-border th,
-.tablepress-postbox-table .no-border td {
-	padding: 2px 6px 2px 2px;
-}
-/* padding for both borders: */
-.tablepress-postbox-table .top-border.bottom-border th,
-.tablepress-postbox-table .top-border.bottom-border td {
-	padding: 6px 6px 6px 2px;
+	padding-bottom: 6px;
+	border-bottom: 1px solid #eeeeee;
 }
 .tablepress-postbox-table .top-align {
 	vertical-align: top;
-	padding-top: 7px;
+	padding-top: 6px;
 }
-.tablepress-postbox-table .top-border .top-align {
-	padding-top: 7px;
+/* adjust positioning of labels in relation to checkboxes/radio buttons */
+#tablepress_edit-table-options .column-2 label,
+#tablepress_edit-datatables-features .column-2 label {
+	vertical-align: top;
 }
-.tablepress-postbox-table .bottom-border .top-align {
-	padding-top: 4px;
-}
-/* adjust positioning of labels in relation to checkboxes/radio buttons on "Export" and "Import" screen, some margin on radio buttons */
-#tablepress_export-export-form .column-2 label,
 #tablepress_import-import-form .column-2 label,
 #tablepress_import-import-wp-table-reloaded .column-2 label {
 	vertical-align: top;
-	margin-right: 5px;
+	margin-right: 20px; /* some margin on radio buttons */
 }
-/* adjust margin on radio buttons on "Import" screen */
-#tablepress_export-export-form input[type="radio"],
-#tablepress_import-import-form input[type="radio"],
-#tablepress_import-import-wp-table-reloaded input[type="radio"] {
-	margin: 0;
+#tablepress-page input,
+#tablepress-page .button,
+#tablepress-page select {
+	vertical-align: middle;
 }
-/* adjust padding on source fields on "Import" screen */
-#tables-import-url,
-#tables-import-server {
-	margin-bottom: 4px;
+#tablepress-page .widefat th input {
+	vertical-align: text-top;
 }
-/* Red color for the Uninstall TablePress button on the "Plugin Options" screen */
+/* Red color for the "Uninstall TablePress" button on the "Plugin Options" screen */
 #uninstall-tablepress {
 	color: #BC0B0B;
 }
