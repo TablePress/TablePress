@@ -70,11 +70,43 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 ?>
 <title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">
+/* Account for .wp-toolbar */
+html {
+	padding-top: 0 !important;
+}
 body {
-	margin: -26px 0 15px 15px; /* top has -28px offset to account for html.wp-toolbar */
+	margin: 0 0 15px 15px;
 }
 
-/* width and font weight for the columns */
+/* Fix search field positioning */
+#tablepress-page .search-box {
+	float: right;
+	margin: 0;
+}
+#tablepress-page .search-box input[name="s"] {
+	float: left;
+	height: 28px;
+	width: auto;
+}
+
+/* Fix pagination layout */
+#tablepress-page .tablenav-pages {
+	text-align: left;
+}
+#tablepress-page .tablenav .tablenav-pages a {
+	padding: 5px 12px;
+	font-size: 16px;
+}
+#tablepress-page .tablenav-pages .pagination-links .paging-input {
+	font-size: 16px;
+}
+
+#tablepress-page .tablenav-pages .pagination-links .current-page {
+	padding: 4px;
+	font-size: 16px;
+}
+
+/* Width and font weight for the columns */
 .tablepress-editor-button-list thead .column-table_id {
 	width: 50px;
 }
@@ -89,14 +121,16 @@ body {
 	padding: 4px 7px;
 }
 
+/* Shortcode input field */
 #tablepress-page .table-shortcode-inline {
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 90px;
+	width: 100px;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
+	font-size: 13px;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
@@ -108,6 +142,16 @@ body {
 #tablepress-page .subtitle {
 	float: left;
 	padding-left: 0;
+}
+
+/* Fix buttons */
+.wp-core-ui #tablepress-page .button:active {
+	padding: 1px 10px;
+	line-height: 26px;
+	font-size: 13px;
+	vertical-align: top;
+	height: 28px;
+	margin-bottom: 0;
 }
 </style>
 </head>
