@@ -589,20 +589,20 @@ class EvalMathFuncs {
 		$args = func_get_args();
 		sort( $args );
 		$middle = floor( count( $args ) / 2 ); // upper median for even counts
-        return $args[ $middle ];
+		return $args[ $middle ];
 	}
 
 	static function mode() {
 		$args = func_get_args();
 		$v = array_count_values( $args );
-        asort( $v );
-        end( $v );
-        return key( $v );
-    }
+		asort( $v );
+		end( $v );
+		return key( $v );
+	}
 
 	static function range() {
 		$args = func_get_args();
-        sort( $args );
+		sort( $args );
 		return end( $args ) - reset( $args );
 	}
 

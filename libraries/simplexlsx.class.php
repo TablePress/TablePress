@@ -632,17 +632,17 @@ class SimpleXLSX {
 		// Sort sheets
 		ksort($this->sheets);
 	}
-    private function _parseRichText($is = null) {
-        $value = array();
+	private function _parseRichText($is = null) {
+		$value = array();
 
-        if (isset($is->t)) {
-            $value[] = (string)$is->t;
-        } else {
-            foreach ($is->r as $run) {
-                $value[] = (string)$run->t;
-            }
-        }
+		if (isset($is->t)) {
+			$value[] = (string)$is->t;
+		} else {
+			foreach ($is->r as $run) {
+				$value[] = (string)$run->t;
+			}
+		}
 
-        return implode(' ', $value);
-    }
+		return implode(' ', $value);
+	}
 }
