@@ -861,7 +861,7 @@ jQuery( document ).ready( function( $ ) {
 						W = ( 720 < width ) ? 720 : width,
 						H = $( window ).height();
 					if ( $( 'body.admin-bar' ).length ) {
-						H -= 28;
+						H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
 					}
 					tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
 					$( this ).blur();

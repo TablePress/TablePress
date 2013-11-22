@@ -24,7 +24,7 @@ jQuery( document ).ready( function( $ ) {
 			W = ( 720 < width ) ? 720 : width,
 			H = $( window ).height();
 		if ( $( 'body.admin-bar' ).length ) {
-			H -= 28;
+			H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
 		}
 
 		tb_show( tablepress_editor_button.thickbox_title, tablepress_editor_button.thickbox_url + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
