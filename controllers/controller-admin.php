@@ -457,10 +457,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $this->i18n_support_loaded ) {
 			return;
 		}
-		add_filter( 'locale', array( $this, 'change_plugin_locale' ) ); // allow changing the plugin language
+		add_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 ); // allow changing the plugin language
 		$language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
 		load_plugin_textdomain( 'tablepress', false, $language_directory );
-		remove_filter( 'locale', array( $this, 'change_plugin_locale' ) );
+		remove_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 );
 		$this->i18n_support_loaded = true;
 	}
 
@@ -671,9 +671,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 *
 	 * @param string $locale Current WordPress locale
+	 * @param string $textdomain Text domain of the currently filtered plugin
 	 * @return string TablePress locale
 	 */
-	public function change_plugin_locale( $locale ) {
+	public function change_plugin_locale( $locale, $textdomain ) {
+		if ( 'tablepress' != $textdomain ) {
+			return $locale;
+		}
 		$new_locale = TablePress::$model_options->get( 'plugin_language' );
 		$locale = ( ! empty( $new_locale ) && 'auto' != $new_locale ) ? $new_locale : $locale;
 		return $locale;
