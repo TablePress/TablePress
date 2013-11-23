@@ -713,6 +713,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		switch ( $bulk_action ) {
 			case 'copy':
+				$this->init_i18n_support(); // for the translation of "Copy of"
 				foreach ( $tables as $table_id ) {
 					if ( current_user_can( 'tablepress_copy_table', $table_id ) ) {
 						$copy_table_id = TablePress::$model_table->copy( $table_id );
@@ -1762,6 +1763,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! current_user_can( 'tablepress_copy_table', $table_id ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 		}
+
+		$this->init_i18n_support(); // for the translation of "Copy of"
 
 		$copy_table_id = TablePress::$model_table->copy( $table_id );
 		if ( false === $copy_table_id ) {
