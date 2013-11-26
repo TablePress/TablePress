@@ -81,11 +81,15 @@ body {
 /* Fix search field positioning */
 #tablepress-page .search-box {
 	float: right;
+	clear: none;
 	margin: 0;
+}
+#tablepress-page .subtitle {
+	float: left;
+	padding: 10px 0 0;
 }
 #tablepress-page .search-box input[name="s"] {
 	float: left;
-	height: 28px;
 	width: auto;
 }
 
@@ -118,7 +122,7 @@ body {
 	width: 150px;
 }
 .tablepress-editor-button-list tbody .column-table_action {
-	padding: 4px 7px;
+	padding: 4px 7px 1px;
 }
 
 /* Shortcode input field */
@@ -136,22 +140,6 @@ body {
 }
 #tablepress-page .table-shortcode {
 	cursor: text;
-}
-
-/* Search results for WP_List_Table */
-#tablepress-page .subtitle {
-	float: left;
-	padding-left: 0;
-}
-
-/* Fix buttons */
-.wp-core-ui #tablepress-page .button:active {
-	padding: 1px 10px;
-	line-height: 26px;
-	font-size: 13px;
-	vertical-align: top;
-	height: 28px;
-	margin-bottom: 0;
 }
 </style>
 </head>

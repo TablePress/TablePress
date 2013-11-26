@@ -154,8 +154,7 @@
 	margin-right: 20px; /* some margin on radio buttons */
 }
 #tablepress-page input,
-#tablepress-page .button,
-#tablepress-page select {
+#tablepress-page .button {
 	vertical-align: middle;
 }
 #tablepress-page .widefat th input {
