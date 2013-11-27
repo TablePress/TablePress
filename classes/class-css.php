@@ -104,7 +104,7 @@ class TablePress_CSS {
 	 *
 	 * @since 1.0.0
 	 *
- 	 * @param string $type "normal" version, "minified" version, or "combined" (with TablePress Default CSS) version
+	 * @param string $type "normal" version, "minified" version, or "combined" (with TablePress Default CSS) version
 	 * @param string $location "path" or "url", for file path or URL
 	 * @return string Full file path or full URL for the "Custom CSS" file
 	*/
@@ -233,7 +233,7 @@ class TablePress_CSS {
 	 *
 	 * @param string $custom_css_normal Custom CSS code to be saved. If empty, files will be deleted
 	 * @param string $custom_css_minified Minified CSS code to be saved
- 	 * @return bool|string True on success, false on failure, or string of HTML for the credentials form for the WP_Filesystem API, if necessary
+	 * @return bool|string True on success, false on failure, or string of HTML for the credentials form for the WP_Filesystem API, if necessary
 	 */
 	public function save_custom_css_to_file_plugin_options( $custom_css_normal, $custom_css_minified ) {
 		// Hook to prevent saving to file
@@ -280,7 +280,7 @@ class TablePress_CSS {
 	 *
 	 * @param string $custom_css_normal Custom CSS code to be saved
 	 * @param string $custom_css_minified Minified CSS code to be saved
- 	 * @return bool True on success, false on failure
+	 * @return bool True on success, false on failure
 	 */
 	protected function _custom_css_save_helper( $custom_css_normal, $custom_css_minified ) {
 		global $wp_filesystem;
@@ -356,7 +356,7 @@ class TablePress_CSS {
 	 *
 	 * @uses WP_Filesystem
 	 *
- 	 * @return bool True on success, false on failure
+	 * @return bool True on success, false on failure
 	 */
 	protected function _custom_css_delete_helper() {
 		global $wp_filesystem;

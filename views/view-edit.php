@@ -155,7 +155,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
- 	 * @param array $strings Current set of Media View strings
+	 * @param array $strings Current set of Media View strings
 	 * @return array Changed Media View strings
 	 */
 	public function change_media_view_strings( array $strings ) {

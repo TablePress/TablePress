@@ -264,7 +264,7 @@ class TablePress_Options_Model extends TablePress_Model {
 			$wp_roles = new WP_Roles();
 		}
 
- 		foreach ( $wp_roles->roles as $role => $details ) {
+		foreach ( $wp_roles->roles as $role => $details ) {
 			$role = $wp_roles->get_role( $role );
 			if ( empty( $role ) ) {
 				continue;
