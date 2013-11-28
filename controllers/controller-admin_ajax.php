@@ -20,9 +20,6 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  */
 class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
-/*	protected $table = array();
-	protected $known_ranges = array();
-*/
 	/**
 	 * Initiate Admin AJAX functionality
 	 *
