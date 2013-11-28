@@ -1025,6 +1025,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_load_table', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
 			}
 			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+			$download_filename = sanitize_file_name( $download_filename );
 			// export table
 			$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 			$download_data = $export_data;
@@ -1035,6 +1036,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 			$zip_file = new ZipArchive();
 			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', date_i18n( 'Y-m-d-H-i-s' ), $export['format'] );
+			$download_filename = sanitize_file_name( $download_filename );
 			$full_filename = wp_tempnam( $download_filename );
 			if ( true !== $zip_file->open( $full_filename, ZIPARCHIVE::OVERWRITE ) ) {
 				@unlink( $full_filename );
@@ -1053,6 +1055,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+				$export_filename = sanitize_file_name( $export_filename );
 				$zip_file->addFromString( $export_filename, $export_data );
 			}
 
