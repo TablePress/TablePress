@@ -229,7 +229,7 @@ class TablePress_Edit_View extends TablePress_View {
 		// determine row index of the table head row, by excluding all hidden rows from the beginning
 		if ( $options['table_head'] ) {
 			for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
-				if ( 1 === $visibility['rows'][$row_idx] ) {
+				if ( 1 === $visibility['rows'][ $row_idx ] ) {
 					$head_row_idx = $row_idx;
 					break;
 				}
@@ -238,7 +238,7 @@ class TablePress_Edit_View extends TablePress_View {
 		// determine row index of the table foot row, by excluding all hidden rows from the end
 		if ( $options['table_foot'] ) {
 			for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
-				if ( 1 === $visibility['rows'][$row_idx] ) {
+				if ( 1 === $visibility['rows'][ $row_idx ] ) {
 					$foot_row_idx = $row_idx;
 					break;
 				}
@@ -253,7 +253,7 @@ class TablePress_Edit_View extends TablePress_View {
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
-		if ( 0 === $visibility['columns'][$col_idx] ) {
+		if ( 0 === $visibility['columns'][ $col_idx ] ) {
 			$column_class = ' column-hidden';
 		}
 		$column = TablePress::number_to_letter( $col_idx + 1 );
@@ -270,11 +270,11 @@ class TablePress_Edit_View extends TablePress_View {
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
-		if ( 0 === $visibility['columns'][$col_idx] ) {
+		if ( 0 === $visibility['columns'][ $col_idx ] ) {
 			$column_class = ' class="column-hidden"';
 		}
 		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
+		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
 	}
 ?>
 			<th></th>
@@ -293,17 +293,17 @@ class TablePress_Edit_View extends TablePress_View {
 		} elseif ( $foot_row_idx == $row_idx ) {
 			$classes[] = 'foot-row';
 		}
-		if ( 0 === $visibility['rows'][$row_idx] ) {
+		if ( 0 === $visibility['rows'][ $row_idx ] ) {
 			$classes[] = 'row-hidden';
 		}
 		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][$row_idx]}\" /></td>";
+		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
 			$column_class = '';
-			if ( 0 === $visibility['columns'][$col_idx] ) {
+			if ( 0 === $visibility['columns'][ $col_idx ] ) {
 				$column_class = ' class="column-hidden"';
 			}
 			$cell = esc_textarea( $cell ); // sanitize, so that HTML is possible in table cells
