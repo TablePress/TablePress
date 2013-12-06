@@ -80,6 +80,9 @@ body {
 
 /* Fix search field positioning */
 #tablepress-page .search-box {
+	position: relative;
+	height: auto;
+	width: auto;
 	float: right;
 	clear: none;
 	margin: 0;
@@ -130,13 +133,14 @@ body {
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 100px;
+	width: 110px;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
-	font-size: 13px;
+	font-size: 14px;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+	vertical-align: top;
 }
 #tablepress-page .table-shortcode {
 	cursor: text;

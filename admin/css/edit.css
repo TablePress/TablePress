@@ -63,7 +63,7 @@ body,
 	border: none;
 }
 #advanced-editor .submitbox {
-	padding: 5px 0 0;
+	padding: 5px 5px 0;
 	font-size: 12px;
 }
 #advanced-editor-confirm {
@@ -112,7 +112,7 @@ body,
 /* cells of currently focussed row/autogrow, and automatically increase cells if JS is disabled */
 .no-js #edit-form-body td,
 #edit-form-body .focus td {
-	height: 64px;
+	height: 70px;
 }
 
 /* alternating row colors */
@@ -164,7 +164,7 @@ body,
 	height: 26px; /* height of "#edit-form-body td" - 6px */
 }
 #edit-form .focus .move-hover {
-	height: 58px; /* height of "#edit-form-body .focus td" - 6px */
+	height: 64px; /* height of "#edit-form-body .focus td" - 6px */
 }
 
 /* hightlighting of table head and foot in table cells */
