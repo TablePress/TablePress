@@ -59,7 +59,7 @@ $data['csstidy']['tokens'] = '/@}{;:=\'"(,\\!$%&)*+.<>?[]^`|~';
  * @global array $data['csstidy']['units']
  * @version 1.0
  */
-$data['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','ms','s','khz','hz');
+$data['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','turn','ms','s','khz','hz','ch','vmin','vmax','dpi','dpcm','dppx');
 
 /**
  * Available at-rules
