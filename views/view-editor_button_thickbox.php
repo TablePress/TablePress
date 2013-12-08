@@ -153,6 +153,7 @@ body.rtl {
 	font-size: 14px;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+	text-align: center;
 	vertical-align: top;
 }
 .rtl #tablepress-page .table-shortcode-inline {
