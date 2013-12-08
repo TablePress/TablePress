@@ -579,7 +579,7 @@ JS;
 	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them
 	 */
 	public function posts_search_filter( $search_sql ) {
-		if ( ! is_search() ) {
+		if ( ! is_search() || ! is_main_query() ) {
 			return $search_sql;
 		}
 
