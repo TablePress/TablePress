@@ -96,7 +96,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->init_view_actions(); // after init_i18n_support(), as it requires translation
 			$min_access_cap = $this->view_actions['list']['required_cap'];
 
-			$icon_url = plugins_url( 'admin/img/tablepress-icon-small.png', TABLEPRESS__FILE__ );
+			$icon_url = 'dashicons-list-view';
 			switch ( $this->parent_page ) {
 				case 'top':
 					$position = 3; // position of Dashboard + 1
@@ -156,8 +156,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			add_action( 'admin_bar_menu', array( $this, 'add_wp_admin_bar_new_content_menu_entry' ), 71 );
 		}
 
-		add_action( 'admin_print_styles', array( $this, 'add_tablepress_hidpi_css' ), 21 );
-
 		add_action( 'load-plugins.php', array( $this, 'plugins_page' ) );
 	}
 
@@ -187,6 +185,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( user_can_richedit() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'add_tinymce_plugin' ) );
 			add_filter( 'mce_buttons', array( $this, 'add_tinymce_button' ) );
+			add_action( 'admin_print_styles', array( $this, 'add_tablepress_hidpi_css' ), 21 );
 		}
 	}
 
@@ -219,18 +218,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Print TablePress HiDPI CSS to the <head>, for Admin Menu icon, and maybe for TinyMCE button
+	 * Print TablePress HiDPI CSS to the <head> for TinyMCE button
 	 *
 	 * @since 1.0.0
 	 */
 	public function add_tablepress_hidpi_css() {
 		echo '<style type="text/css">@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){';
-		if ( ! empty( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php', 'post-new.php' ), true ) && user_can_richedit() ) {
-			echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
-			echo '#content_tablepress_insert_table img,'; // display:none of next selector is re-used, by combining selectors
-		}
-		echo '#toplevel_page_tablepress .wp-menu-image img{display:none}';
-		echo '#toplevel_page_tablepress .wp-menu-image{background:url(' . plugins_url( 'admin/img/tablepress-icon-small-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 7px 7px;background-size:16px 16px}';
+		echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
+		echo '#content_tablepress_insert_table img{display:none}';
 		echo '}</style>' . "\n";
 	}
 

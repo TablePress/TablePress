@@ -157,7 +157,6 @@ abstract class TablePress_View {
 		// admin page helpers, like script/style loading, could be moved to view
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$this->admin_page->enqueue_style( 'common' );
-		remove_action( 'admin_print_styles', array( TablePress::$controller, 'add_tablepress_hidpi_css' ), 21 ); // Don't load HiDPI CSS via <style> on TablePress pages, as it's part of common.css
 		// RTL styles for the admin interface
 		if ( is_rtl() ) {
 			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );

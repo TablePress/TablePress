@@ -7,21 +7,6 @@
  * @since 1.0.0
  */
 
-/* HiDPI images */
-@media print,
- (-o-min-device-pixel-ratio: 5/4),
- (-webkit-min-device-pixel-ratio: 1.25),
- (min-resolution: 120dpi) {
-	/* Admin Menu icon */
-	#toplevel_page_tablepress .wp-menu-image {
-		background: url(../img/tablepress-icon-small-2x.png) no-repeat 7px 7px;
-		background-size: 16px 16px;
-	}
-	#toplevel_page_tablepress .wp-menu-image img {
-		display: none;
-	}
-}
-
 /* Margins for messages on screens */
 #tablepress-page div.updated,
 #tablepress-page div.error {
