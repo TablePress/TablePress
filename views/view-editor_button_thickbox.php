@@ -63,6 +63,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function render() {
+ 		register_admin_color_schemes(); // To fix SCRIPT_DEBUG issues that result in wrong colors.css file being loaded
 		_wp_admin_html_begin();
 
 		wp_print_styles( 'colors' );
