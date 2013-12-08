@@ -1372,6 +1372,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) ) {
 					$existing_table['visibility']['rows'] = array_merge( $existing_table['visibility']['rows'], $imported_table['visibility']['rows'] );
 				}
+				// When appending, do not overwrite options
+				if ( isset( $imported_table['options'] ) ) {
+					unset( $imported_table['options'] );
+				}
 				break;
 			default:
 				return false;
