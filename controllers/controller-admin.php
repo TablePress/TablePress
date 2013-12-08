@@ -1337,6 +1337,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( ! isset( $imported_table['description'] ) ) {
 					$imported_table['description'] = $description;
 				}
+				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) && isset( $imported_table['visibility']['columns'] ) ) {
+					$existing_table['visibility']['rows'] = $imported_table['visibility']['rows'];
+					$existing_table['visibility']['columns'] = $imported_table['visibility']['columns'];
+				}
 				break;
 			case 'replace':
 				// Load existing table from DB
@@ -1347,6 +1351,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// don't change name and description when a table is replaced
 				$imported_table['name'] = $existing_table['name'];
 				$imported_table['description'] = $existing_table['description'];
+				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) && isset( $imported_table['visibility']['columns'] ) ) {
+					$existing_table['visibility']['rows'] = $imported_table['visibility']['rows'];
+					$existing_table['visibility']['columns'] = $imported_table['visibility']['columns'];
+				}
 				break;
 			case 'append':
 				// Load existing table from DB
@@ -1360,6 +1368,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Actual appending:
 				$imported_table['data'] = array_merge( $existing_table['data'], $imported_table['data'] );
 				$imported_table['data'] = $this->importer->pad_array_to_max_cols( $imported_table['data'] );
+				// Append visibility information for rows
+				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) ) {
+					$existing_table['visibility']['rows'] = array_merge( $existing_table['visibility']['rows'], $imported_table['visibility']['rows'] );
+				}
 				break;
 			default:
 				return false;
