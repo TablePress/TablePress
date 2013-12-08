@@ -10,12 +10,21 @@
 /*
  * Fixes for certain elements that should remain LTR
  */
-#tablepress_about-debug-version-information .inside p,
-#table-information-shortcode,
+#tablepress_about-debug-version-information .inside p {
+	direction: ltr;
+}
 #row-import-source td.column-2,
 #row-import-type td.column-2 {
 	direction: ltr;
+	text-align: right;
 }
+#tablepress_add-add-table .form-field-small,
 #table-new-id {
 	float:right;
+}
+#tablepress-page .table-shortcode {
+	width: 125px;
+	direction: ltr;
+	font-size: 13px;
+	vertical-align: baseline;
 }

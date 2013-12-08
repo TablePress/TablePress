@@ -78,6 +78,9 @@ html {
 body {
 	margin: 0 0 15px 15px;
 }
+body.rtl {
+	margin: 0 15px 15px 0;
+}
 
 /* Fix search field positioning */
 #tablepress-page .search-box {
@@ -88,13 +91,22 @@ body {
 	clear: none;
 	margin: 0;
 }
+.rtl #tablepress-page .search-box {
+	float: left;
+}
 #tablepress-page .subtitle {
 	float: left;
 	padding: 10px 0 0;
 }
+.rtl #tablepress-page .subtitle {
+	float: right;
+}
 #tablepress-page .search-box input[name="s"] {
 	float: left;
 	width: auto;
+}
+.rtl #tablepress-page .search-box input[name="s"] {
+	float: right;
 }
 
 /* Fix pagination layout */
@@ -143,12 +155,18 @@ body {
 	box-shadow: none;
 	vertical-align: top;
 }
+.rtl #tablepress-page .table-shortcode-inline {
+	width: 125px;
+	direction: ltr;
+	font-size: 13px;
+	vertical-align: baseline;
+}
 #tablepress-page .table-shortcode {
 	cursor: text;
 }
 </style>
 </head>
-<body class="wp-admin wp-core-ui js iframe">
+<body class="wp-admin wp-core-ui js iframe<?php echo is_rtl() ? ' rtl' : ''; ?>">
 <div id="tablepress-page" class="wrap">
 <h2><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h2>
 <div id="poststuff">
