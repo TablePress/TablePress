@@ -126,7 +126,8 @@ body,
 	width: 100%;
 	width: auto\0/IE; /* IE hack, as cells will otherwise shrink and overlap instead of horizontal scrolling kicking in */
 	height: 100%;
-	box-shadow: none; /* for faster drawing performance, and hopefully faster scrolling */
+	-webkit-box-shadow: none; /* for faster drawing performance, and hopefully faster scrolling */
+	box-shadow: none;
 }
 #edit-form-body textarea:focus {
 	border-color: #333333;
