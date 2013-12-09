@@ -78,9 +78,6 @@ html {
 body {
 	margin: 0 0 15px 15px;
 }
-body.rtl {
-	margin: 0 15px 15px 0;
-}
 
 /* Fix search field positioning */
 #tablepress-page .search-box {
@@ -91,22 +88,13 @@ body.rtl {
 	clear: none;
 	margin: 0;
 }
-.rtl #tablepress-page .search-box {
-	float: left;
-}
 #tablepress-page .subtitle {
 	float: left;
 	padding: 10px 0 0;
 }
-.rtl #tablepress-page .subtitle {
-	float: right;
-}
 #tablepress-page .search-box input[name="s"] {
 	float: left;
 	width: auto;
-}
-.rtl #tablepress-page .search-box input[name="s"] {
-	float: right;
 }
 
 /* Fix pagination layout */
@@ -156,15 +144,30 @@ body.rtl {
 	text-align: center;
 	vertical-align: top;
 }
+#tablepress-page .table-shortcode {
+	cursor: text;
+}
+<?php if ( is_rtl() ) : ?>
+/* RTL CSS */
+body.rtl {
+	margin: 0 15px 15px 0;
+}
+.rtl #tablepress-page .search-box {
+	float: left;
+}
+.rtl #tablepress-page .subtitle {
+	float: right;
+}
+.rtl #tablepress-page .search-box input[name="s"] {
+	float: right;
+}
 .rtl #tablepress-page .table-shortcode-inline {
 	width: 125px;
 	direction: ltr;
 	font-size: 13px;
 	vertical-align: baseline;
 }
-#tablepress-page .table-shortcode {
-	cursor: text;
-}
+<?php endif; ?>
 </style>
 </head>
 <body class="wp-admin wp-core-ui js iframe<?php echo is_rtl() ? ' rtl' : ''; ?>">
