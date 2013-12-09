@@ -45,7 +45,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 **Requirements?**
 
-In short: WordPress 3.7 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 3.8 or higher, while the latest version of WordPress is always recommended.
 
 **Languages and Localization?**
 
