@@ -193,12 +193,12 @@ body.rtl {
 </div>
 </div>
 <script type="text/javascript">
-	jQuery(document).ready( function($) {
-		$( '.tablepress-editor-button-list' ).on( 'click', '.insert-shortcode', function() {
-			var win = window.dialogArguments || opener || parent || top;
-			win.send_to_editor( $(this).attr( 'title' ) );
-		} );
+jQuery( document ).ready( function( $ ) {
+	$( '.tablepress-editor-button-list' ).on( 'click', '.insert-shortcode', function() {
+		var win = window.dialogArguments || opener || parent || top;
+		win.send_to_editor( $(this).attr( 'title' ) );
 	} );
+} );
 </script>
 </body>
 </html>
@@ -286,7 +286,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 	/**
 	 * Get a list of columns that are sortable
-	 * Format: 'internal-name' => array( $field for $item[$field], true for already sorted )
+	 * Format: 'internal-name' => array( $field for $item[ $field ], true for already sorted )
 	 *
 	 * @since 1.0.0
 	 *
@@ -345,7 +345,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		if ( '' == trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
 		}
-		return esc_html( $item[ 'description' ] );
+		return esc_html( $item['description'] );
 	}
 
 	/**
@@ -439,12 +439,12 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	protected function _order_callback( array $item_a, array $item_b ) {
 		global $orderby, $order;
 
-		if ( $item_a[$orderby] == $item_b[$orderby] ) {
+		if ( $item_a[ $orderby ] == $item_b[ $orderby ] ) {
 			return 0;
 		}
 
 		// fields in this list table are all strings
-		$result = strnatcasecmp( $item_a[$orderby], $item_b[$orderby] );
+		$result = strnatcasecmp( $item_a[ $orderby ], $item_b[ $orderby ] );
 
 		return ( 'asc' == $order ) ? $result : - $result;
 	}

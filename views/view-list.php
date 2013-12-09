@@ -324,7 +324,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 	/**
 	 * Get a list of columns that are sortable
-	 * Format: 'internal-name' => array( $field for $item[$field], true for already sorted )
+	 * Format: 'internal-name' => array( $field for $item[ $field ], true for already sorted )
 	 *
 	 * @since 1.0.0
 	 *
@@ -443,7 +443,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( '' == trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
 		}
-		return esc_html( $item[ 'description' ] );
+		return esc_html( $item['description'] );
 	}
 
 	/**
@@ -640,7 +640,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		global $orderby, $order;
 
 		if ( 'last_modified_by' != $orderby ) {
-			if ( $item_a[$orderby] == $item_b[$orderby] ) {
+			if ( $item_a[ $orderby ] == $item_b[ $orderby ] ) {
 				return 0;
 			}
 		} else {
@@ -665,7 +665,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 				break;
 			default:
 				// other fields (ID, name, description) are sorted as strings
-				$result = strnatcasecmp( $item_a[$orderby], $item_b[$orderby] );
+				$result = strnatcasecmp( $item_a[ $orderby ], $item_b[ $orderby ] );
 		}
 
 		return ( 'asc' == $order ) ? $result : - $result;

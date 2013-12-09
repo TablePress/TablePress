@@ -798,7 +798,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollx' // DataTables JS Features
 		);
 		foreach ( $checkbox_options as $option ) {
-			$edit_table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' === $edit_table['options'][$option] );
+			$edit_table['options'][ $option ] = ( isset( $edit_table['options'][ $option ] ) && 'true' === $edit_table['options'][ $option ] );
 		}
 
 		// Load existing table from DB
@@ -937,7 +937,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$update_custom_css_files = false;
 		if ( current_user_can( 'tablepress_edit_options' ) ) {
 			// Checkbox
-			$new_options[ 'use_custom_css' ] = ( isset( $posted_options[ 'use_custom_css' ] ) && 'true' === $posted_options[ 'use_custom_css' ] );
+			$new_options['use_custom_css'] = ( isset( $posted_options['use_custom_css'] ) && 'true' === $posted_options['use_custom_css'] );
 
 			if ( isset( $posted_options['custom_css'] ) ) {
 				$new_options['custom_css'] = $posted_options['custom_css'];

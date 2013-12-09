@@ -352,25 +352,25 @@ JS;
 		foreach ( $shortcode_atts as $key => $value ) {
 			// have to check this, because strings 'true' or 'false' are not recognized as boolean!
 			if ( 'true' == strtolower( $value ) ) {
-				$render_options[$key] = true;
+				$render_options[ $key ] = true;
 			} elseif ( 'false' == strtolower( $value ) ) {
-				$render_options[$key] = false;
-			} elseif ( is_null( $value ) && isset( $table['options'][$key] ) ) {
-				$render_options[$key] = $table['options'][$key];
+				$render_options[ $key ] = false;
+			} elseif ( is_null( $value ) && isset( $table['options'][ $key ] ) ) {
+				$render_options[ $key ] = $table['options'][ $key ];
 			} else {
-				$render_options[$key] = $value;
+				$render_options[ $key ] = $value;
 			}
 		}
 
 		// generate unique HTML ID, depending on how often this table has already been shown on this page
-		if ( ! isset( $this->shown_tables[$table_id] ) ) {
-			$this->shown_tables[$table_id] = array(
+		if ( ! isset( $this->shown_tables[ $table_id ] ) ) {
+			$this->shown_tables[ $table_id ] = array(
 				'count' => 0,
 				'instances' => array()
 			);
 		}
-		$this->shown_tables[$table_id]['count']++;
-		$count = $this->shown_tables[$table_id]['count'];
+		$this->shown_tables[ $table_id ]['count']++;
+		$count = $this->shown_tables[ $table_id ]['count'];
 		$render_options['html_id'] = "tablepress-{$table_id}";
 		if ( $count > 1 ) {
 			$render_options['html_id'] .= "-no-{$count}";
@@ -396,7 +396,7 @@ JS;
 				$js_options[ $option ] = $render_options[ $option ];
 			}
 			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options ); // need this filter to e.g. set JS parameters depending on Shortcode attributes
-			$this->shown_tables[$table_id]['instances'][ $render_options['html_id'] ] = $js_options;
+			$this->shown_tables[ $table_id ]['instances'][ $render_options['html_id'] ] = $js_options;
 			$this->_enqueue_datatables();
 		}
 
@@ -602,15 +602,15 @@ JS;
 			$hidden_columns = array_keys( $table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0)
 			// remove hidden rows and re-index
 			foreach ( $hidden_rows as $row_idx ) {
-				unset( $table['data'][$row_idx] );
+				unset( $table['data'][ $row_idx ] );
 			}
 			$table['data'] = array_merge( $table['data'] );
 			// remove hidden columns and re-index
 			foreach ( $table['data'] as $row_idx => $row ) {
 				foreach ( $hidden_columns as $col_idx ) {
-					unset( $row[$col_idx] );
+					unset( $row[ $col_idx ] );
 				}
-				$table['data'][$row_idx] = array_merge( $row );
+				$table['data'][ $row_idx ] = array_merge( $row );
 			}
 
 			// @TODO: Cells are not evaluated here, so math formulas are searched

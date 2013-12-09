@@ -180,7 +180,7 @@ class TablePress_Render {
 				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
 					$range_dash = strpos( $value, '-' );
 					if ( false !== $range_dash ) {
-						unset( $this->render_options["{$action}_{$element}"][$key] );
+						unset( $this->render_options["{$action}_{$element}"][ $key ] );
 						$start = substr( $value, 0, $range_dash );
 						if ( ! is_numeric( $start ) ) {
 							$start = TablePress::letter_to_number( $start );
@@ -201,7 +201,7 @@ class TablePress_Render {
 					if ( ! is_numeric( $value ) ) {
 						$value = TablePress::letter_to_number( $value );
 					}
-					$this->render_options["{$action}_{$element}"][$key] = (int) $value - 1;
+					$this->render_options["{$action}_{$element}"][ $key ] = (int) $value - 1;
 				}
 
 				// remove duplicate entries and sort the array
@@ -220,15 +220,15 @@ class TablePress_Render {
 
 		// remove hidden rows and re-index
 		foreach ( $hidden_rows as $row_idx ) {
-			unset( $this->table['data'][$row_idx] );
+			unset( $this->table['data'][ $row_idx ] );
 		}
 		$this->table['data'] = array_merge( $this->table['data'] );
 		// remove hidden columns and re-index
 		foreach ( $this->table['data'] as $row_idx => $row ) {
 			foreach ( $hidden_columns as $col_idx ) {
-				unset( $row[$col_idx] );
+				unset( $row[ $col_idx ] );
 			}
-			$this->table['data'][$row_idx] = array_merge( $row );
+			$this->table['data'][ $row_idx ] = array_merge( $row );
 		}
 
 		$this->table = apply_filters( 'tablepress_table_render_data', $this->table, $orig_table, $this->render_options );
@@ -246,7 +246,7 @@ class TablePress_Render {
 		$columns = count( $this->table['data'][0] );
 		for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
 			for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-				$this->table['data'][$row_idx][$col_idx] = $this->_evaluate_cell( $this->table['data'][$row_idx][$col_idx] );
+				$this->table['data'][ $row_idx ][ $col_idx ] = $this->_evaluate_cell( $this->table['data'][ $row_idx ][ $col_idx ] );
 			}
 		}
 
@@ -342,14 +342,14 @@ class TablePress_Render {
 					$ref_col = TablePress::letter_to_number( $cell_reference[1] ) - 1;
 					$ref_row = $cell_reference[2] - 1;
 
-					if ( ! isset( $this->table['data'][$ref_row] ) || ! isset( $this->table['data'][$ref_row][$ref_col] ) ) {
+					if ( ! isset( $this->table['data'][ $ref_row ] ) || ! isset( $this->table['data'][ $ref_row ][ $ref_col ] ) ) {
 						return "!ERROR! Cell {$cell_reference[0]} does not exist";
 					}
 
 					$ref_parents = $parents;
 					$ref_parents[] = $cell_reference[0];
 
-					$result = $this->table['data'][$ref_row][$ref_col] = $this->_evaluate_cell( $this->table['data'][$ref_row][$ref_col], $ref_parents );
+					$result = $this->table['data'][ $ref_row ][ $ref_col ] = $this->_evaluate_cell( $this->table['data'][ $ref_row ][ $ref_col ], $ref_parents );
 					// Bail if there was an error already
 					if ( false !== strpos( $result, '!ERROR!' ) ) {
 						return $result;
@@ -627,7 +627,7 @@ class TablePress_Render {
 			$cell_class = 'column-' . ( $col_idx + 1 );
 			$cell_class = apply_filters( 'tablepress_cell_css_class', $cell_class, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
 			$class_attr = ( ! empty( $cell_class ) ) ? " class=\"{$cell_class}\"" : '';
-			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][$col_idx] ) ) ? ' style="width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][$col_idx] ) . ';"' : '';
+			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][ $col_idx ] ) ) ? ' style="width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][ $col_idx ] ) . ';"' : '';
 
 			if ( $this->render_options['first_column_th'] && 0 == $col_idx ) {
 				$tag = 'th';
