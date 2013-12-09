@@ -105,7 +105,7 @@ body,
 
 /* table cells */
 #edit-form-body td {
-	padding: 2px 2px 2px 0;
+	padding: 2px 1px;
 	height: 32px;
 }
 
@@ -117,7 +117,7 @@ body,
 
 /* alternating row colors */
 #edit-form-body .odd {
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 }
 
 #edit-form-body textarea {
