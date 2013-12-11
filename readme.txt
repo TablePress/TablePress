@@ -4,7 +4,7 @@ Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.8
 Tested up to: 3.8
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,18 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
+= Version 1.3 =
+* Compatiblity with WordPress 3.8 and the new admin styling
+* Bugfix: Import of JSON files did not take row/column visibility into account
+* Bugfix: File names of exported files were sometimes broken
+* Bugfix: Translations for some strings were not loaded properly
+* Enhancement: Don't search for tables outside of the main search query
+* Enhancement: Broken tables are now skipped
+* Updated external libraries
+* Added Chinese (Taiwan) translation
+* Internal improvements to coding standards, inline documentation, and build tools
+* TablePress 1.3 requires WordPress 3.8!
+
 = Version 1.2 =
 * Compatiblity with WordPress 3.7
 * Bugfix: WordPress search did not find tables in some cases
@@ -146,6 +158,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.3 =
+This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
 = 1.2 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.

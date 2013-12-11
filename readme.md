@@ -136,3 +136,15 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * Updated several translations (Brazilian Portuguese, Czech, French, German, Latvian)
 * Many more internal code improvements
 * TablePress now requires WordPress 3.6!
+
+** Version 1.3 **
+* Compatiblity with WordPress 3.8 and the new admin styling
+* Bugfix: Import of JSON files did not take row/column visibility into account
+* Bugfix: File names of exported files were sometimes broken
+* Bugfix: Translations for some strings were not loaded properly
+* Enhancement: Don't search for tables outside of the main search query
+* Enhancement: Broken tables are now skipped
+* Updated external libraries
+* Added Chinese (Taiwan) translation
+* Internal improvements to coding standards, inline documentation, and build tools
+* TablePress 1.3 requires WordPress 3.8!
