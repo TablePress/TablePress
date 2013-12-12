@@ -108,7 +108,7 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 == Changelog ==
 
 = Version 1.3 =
-* Compatiblity with WordPress 3.8 and the new admin styling
+* Compatibility with WordPress 3.8 and the new admin styling
 * Bugfix: Import of JSON files did not take row/column visibility into account
 * Bugfix: File names of exported files were sometimes broken
 * Bugfix: Translations for some strings were not loaded properly
@@ -120,7 +120,7 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * TablePress 1.3 requires WordPress 3.8!
 
 = Version 1.2 =
-* Compatiblity with WordPress 3.7
+* Compatibility with WordPress 3.7
 * Bugfix: WordPress search did not find tables in some cases
 * Bugfix: Cells were sometimes erroneously interpreted as formulas
 * Bugfix: HTML export did not encode entities properly
