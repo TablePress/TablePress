@@ -305,7 +305,10 @@ class TablePress_Import {
 			$table = $json_table;
 		} else {
 			// JSON data contained only the data of a table, but no options
-			$table = array( 'data' => $json_table );
+			$table = array( 'data' => array() );
+			foreach ( $json_table as $row ) {
+				$table['data'][] = array_values( $row );
+			}
 		}
 
 		$table['data'] = $this->pad_array_to_max_cols( $table['data'] );
