@@ -307,7 +307,7 @@ class TablePress_Import {
 			// JSON data contained only the data of a table, but no options
 			$table = array( 'data' => array() );
 			foreach ( $json_table as $row ) {
-				$table['data'][] = array_values( $row );
+				$table['data'][] = array_values( (array) $row );
 			}
 		}
 
