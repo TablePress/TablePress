@@ -51,7 +51,7 @@
 	float: none;
 }
 
-/* Vertical lines / borders */
+/* Horizontal borders */
 .tablepress tbody td,
 .tablepress tfoot th {
 	border-top: 1px solid #dddddd;
