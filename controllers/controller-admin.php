@@ -739,10 +739,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				foreach ( $tables as $table_id ) {
 					if ( current_user_can( 'tablepress_delete_table', $table_id ) ) {
 						$deleted = TablePress::$model_table->delete( $table_id );
+						if ( is_wp_error( $deleted ) ) {
+							$no_success[] = $table_id;
+						}
 					} else {
-						$deleted = false;
-					}
-					if ( false === $deleted ) {
 						$no_success[] = $table_id;
 					}
 				}
@@ -1749,7 +1749,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		$deleted = TablePress::$model_table->delete( $table_id );
-		if ( false === $deleted ) {
+		if ( is_wp_error( $deleted ) ) {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
 		}
 

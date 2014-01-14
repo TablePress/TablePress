@@ -397,18 +397,17 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id ID of the table to be deleted
-	 * @return bool False on error, true on success
+	 * @return bool|WP_Error WP_Error on error, true on success
 	 */
 	public function delete( $table_id ) {
 		if ( ! $this->table_exists( $table_id ) ) {
-			return false;
+			return new WP_Error( 'table_delete_table_does_not_exist' );
 		}
 
 		$post_id = $this->_get_post_id( $table_id ); // no !false check necessary, as this is covered by table_exists() check above
 		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
-
 		if ( false === $deleted ) {
-			return false;
+			return new WP_Error( 'table_delete_post_could_not_be_deleted' );
 		}
 
 		// if post was deleted successfully, remove the table ID from the list of tables
