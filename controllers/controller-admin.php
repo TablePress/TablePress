@@ -1233,7 +1233,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				@unlink( $import_data['file_location'] );
 			}
 
-			if ( false === $table_id ) {
+			if ( is_wp_error( $table_id ) ) {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_data' ) );
 			} else {
 				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_import' ) );
@@ -1269,7 +1269,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$description = $file_name;
 				$existing_table_id = ( in_array( $import['type'], array( 'replace', 'append' ), true ) ) ? false : false; // @TODO: Find a way to extract the replace/append ID from the filename, maybe?
 				$table_id = $this->_import_tablepress_table( $import['format'], $data, $name, $description, $existing_table_id, 'add' );
-				if ( false === $table_id ) {
+				if ( is_wp_error( $table_id ) ) {
 					continue;
 				} else {
 					$imported_files[] = $table_id;
@@ -1303,12 +1303,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param string $description Description of the table
 	 * @param bool|string $existing_table_id False if table shall be added new, ID of the table to be replaced or appended to otherwise
 	 * @param string $import_type What to do with the imported data: "add", "replace", "append"
-	 * @return bool|string False on error, table ID on success
+	 * @return string|WP_Error WP_Error on error, table ID on success
 	 */
 	protected function _import_tablepress_table( $format, $data, $name, $description, $existing_table_id, $import_type ) {
 		$imported_table = $this->importer->import_table( $format, $data );
 		if ( false === $imported_table ) {
-			return false;
+			return new WP_Error( 'table_import_import_failed' );
 		}
 
 		if ( false === $existing_table_id ) {
@@ -1317,7 +1317,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// to be able to replace or append to a table, editing that table must be allowed
 		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! current_user_can( 'tablepress_edit_table', $existing_table_id ) ) {
-			return false;
+			return new WP_Error( 'table_import_replace_append_capability_check_failed' );
 		}
 
 		// Full JSON format table can contain a table ID, try to keep that
@@ -1345,7 +1345,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Load existing table from DB
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
 				if ( is_wp_error( $existing_table ) ) {
-					return false;
+					return new WP_Error( 'table_import_replace_table_does_not_exist-' . $existing_table->get_error_code() );
 				}
 				// don't change name and description when a table is replaced
 				$imported_table['name'] = $existing_table['name'];
@@ -1359,7 +1359,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Load existing table from DB
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
 				if ( is_wp_error( $existing_table ) ) {
-					return false;
+					return new WP_Error( 'table_import_append_table_does_not_exist-' . $existing_table->get_error_code() );
 				}
 				// don't change name and description when a table is appended to
 				$imported_table['name'] = $existing_table['name'];
@@ -1377,7 +1377,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				break;
 			default:
-				return false;
+				return new WP_Error( 'table_import_import_type_invalid' );
 		}
 
 		// Merge new or existing table with information from the imported table
@@ -1393,7 +1393,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Check if new data is ok
 		$table = TablePress::$model_table->prepare_table( $existing_table, $imported_table, false );
 		if ( is_wp_error( $table ) ) {
-			return false;
+			return new WP_Error( 'table_import_prepare_failed-' . $table->get_error_code() );
 		}
 
 		// DataTables Custom Commands can only be edit by trusted users
@@ -1409,7 +1409,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( is_wp_error( $table_id ) ) {
-			return false;
+			return new WP_Error( 'table_import_save_or_add_failed-' . $table_id->get_error_code() );
 		}
 
 		// Try to use ID from imported file (e.g. in full JSON format table)
