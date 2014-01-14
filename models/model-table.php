@@ -262,8 +262,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			if ( false === $table ) {
 				continue;
 			}
+			unset( $table['data'] ); // remove table data, to save memory
 			$tables[ $table_id ] = $table;
-			unset( $tables[ $table_id ]['data'] ); // remove table data, to save memory
 		}
 		return $tables;
 	}
