@@ -721,10 +721,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				foreach ( $tables as $table_id ) {
 					if ( current_user_can( 'tablepress_copy_table', $table_id ) ) {
 						$copy_table_id = TablePress::$model_table->copy( $table_id );
+						if ( is_wp_error( $copy_table_id ) ) {
+							$no_success[] = $table_id;
+						}
 					} else {
-						$copy_table_id = false;
-					}
-					if ( false === $copy_table_id ) {
 						$no_success[] = $table_id;
 					}
 				}
@@ -1789,7 +1789,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->init_i18n_support(); // for the translation of "Copy of"
 
 		$copy_table_id = TablePress::$model_table->copy( $table_id );
-		if ( false === $copy_table_id ) {
+		if ( is_wp_error( $copy_table_id ) ) {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
 		} else {
 			$return_item = $copy_table_id;

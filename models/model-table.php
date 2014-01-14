@@ -362,12 +362,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id ID of the table to be copied
-	 * @return string|bool False on error, string table ID of the new table on success
+	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success
 	 */
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id );
 		if ( is_wp_error( $table ) ) {
-			return false;
+			return new WP_Error( 'table_copy-' . $table->get_error_code() );
 		}
 
 		// Adjust name of copied table
@@ -379,11 +379,16 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Merge this data into an empty table template
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
 		if ( false === $table ) {
-			return false;
+			return new WP_Error( 'table_copy_prepare_table_failed' );
 		}
 
 		// Add the copied table
-		return $this->add( $table, $table_id );
+		$table = $this->add( $table, $table_id );
+		if ( is_wp_error( $table ) ) {
+			return new WP_Error( 'table_copy-' . $table->get_error_code() );
+		}
+
+		return $table;
 	}
 
 	/**
