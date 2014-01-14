@@ -519,7 +519,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
-	 * @return int Post ID on success, false on error
+	 * @return int|bool Post ID on success, false on error
 	 */
 	protected function _get_post_id( $table_id ) {
 		$table_post = $this->tables->get( 'table_post' );
