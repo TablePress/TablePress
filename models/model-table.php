@@ -274,33 +274,35 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table (needs to have $table['id']!)
-	 * @return string|bool False on error, string table ID on success
+	 * @return string|WP_Error WP_Error on error, string table ID on success
 	 */
 	public function save( array $table ) {
 		if ( empty( $table['id'] ) ) {
-			return false;
+			return new WP_Error( 'table_save_empty_table_id' );
 		}
 
 		$post_id = $this->_get_post_id( $table['id'] );
 		if ( false === $post_id ) {
-			return false;
+			return new WP_Error( 'table_save_no_post_id_for_table_id' );
 		}
 
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
-
-		if ( 0 === $new_post_id || $post_id !== $new_post_id ) {
-			return false;
+		if ( 0 === $new_post_id ) {
+			return new WP_Error( 'table_save_new_post_id_is_0' );
+		}
+		if ( $post_id !== $new_post_id ) {
+			return new WP_Error( 'table_save_new_post_id_does_not_match' );
 		}
 
 		$options_saved = $this->_update_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved ) {
-			return false;
+			return new WP_Error( 'table_save_update_table_options_failed' );
 		}
 
 		$visibility_saved = $this->_update_table_visibility( $new_post_id, $table['visibility'] );
 		if ( ! $visibility_saved ) {
-			return false;
+			return new WP_Error( 'table_save_update_table_visibility_failed' );
 		}
 
 		// at this point, post was successfully added

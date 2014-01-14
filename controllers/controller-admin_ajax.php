@@ -121,8 +121,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// Save updated table
 			$saved = TablePress::$model_table->save( $table );
-			if ( false === $saved ) {
-				$error_details = 'table_could_not_be_saved';
+			if ( is_wp_error( $saved ) ) {
+				$error_details = 'table_could_not_be_saved: ' . $saved->get_error_code();
 				break;
 			}
 

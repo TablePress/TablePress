@@ -820,7 +820,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Save updated table
 		$saved = TablePress::$model_table->save( $table );
-		if ( false === $saved ) {
+		if ( is_wp_error( $saved ) ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'error_save' ) );
 		}
 
@@ -1408,7 +1408,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$table_id = TablePress::$model_table->add( $table ); // Add the imported table (and get its first ID)
 		}
 
-		if ( false === $table_id ) {
+		if ( is_wp_error( $table_id ) || false === $table_id ) {
 			return false;
 		}
 
