@@ -322,7 +322,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param array $table Table ($table['id'] is not necessary)
 	 * @param string|bool $copied_table_id ID of the copied table, if table is a copy, false otherwise
-	 * @return string|bool False on error, string table ID of the new table on success
+	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success
 	 */
 	public function add( array $table, $copied_table_id = false ) {
 		$post_id = false; // to insert table
@@ -330,17 +330,17 @@ class TablePress_Table_Model extends TablePress_Model {
 		$new_post_id = $this->model_post->insert( $post );
 
 		if ( 0 === $new_post_id ) {
-			return false;
+			return new WP_Error( 'table_add_new_post_id_is_0' );
 		}
 
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved ) {
-			return false;
+			return new WP_Error( 'table_add_update_table_options_failed' );
 		}
 
 		$visibility_saved = $this->_add_table_visibility( $new_post_id, $table['visibility'] );
 		if ( ! $visibility_saved ) {
-			return false;
+			return new WP_Error( 'table_add_update_table_visibility_failed' );
 		}
 
 		// at this point, post was successfully added, now get an unused table ID

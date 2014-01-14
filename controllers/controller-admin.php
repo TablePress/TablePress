@@ -891,7 +891,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Add the new table (and get its first ID)
 		$table_id = TablePress::$model_table->add( $table );
-		if ( false === $table_id ) {
+		if ( is_wp_error( $table_id ) ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 		}
 
@@ -1408,7 +1408,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$table_id = TablePress::$model_table->add( $table ); // Add the imported table (and get its first ID)
 		}
 
-		if ( is_wp_error( $table_id ) || false === $table_id ) {
+		if ( is_wp_error( $table_id ) ) {
 			return false;
 		}
 
@@ -1640,7 +1640,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Add the new table (and get its first ID)
 		$tp_table_id = TablePress::$model_table->add( $table );
-		if ( false === $tp_table_id ) {
+		if ( is_wp_error( $tp_table_id ) ) {
 			return 0; // Import failed
 		}
 
