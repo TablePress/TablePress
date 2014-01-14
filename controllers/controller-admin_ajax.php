@@ -109,8 +109,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
-			if ( false === $table ) {
-				$error_details = 'table_prepare_failed';
+			if ( is_wp_error( $table ) ) {
+				$error_details = 'table_prepare_failed: ' . $table->get_error_code();
 				break;
 			}
 
@@ -217,7 +217,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $preview_table, true, true );
-			if ( false === $table ) {
+			if ( is_wp_error( $table ) ) {
 				break;
 			}
 

@@ -809,7 +809,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Check consistency of new table, and then merge with existing table
 		$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 		}
 
@@ -885,7 +885,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		);
 		// Merge this data into an empty table template
 		$table = TablePress::$model_table->prepare_table( TablePress::$model_table->get_table_template(), $new_table, false );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 		}
 
@@ -1392,7 +1392,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Check if new data is ok
 		$table = TablePress::$model_table->prepare_table( $existing_table, $imported_table, false );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			return false;
 		}
 
@@ -1634,7 +1634,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Merge this data into an empty table template
 		$table = TablePress::$model_table->prepare_table( TablePress::$model_table->get_table_template(), $new_table, false );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			return 0; // Import failed
 		}
 
