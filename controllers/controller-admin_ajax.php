@@ -26,7 +26,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		ob_start(); // buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
+		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
+		ob_start();
 
 		parent::__construct();
 
@@ -55,7 +56,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		}
 
 		$updated_options = array( "message_{$message_item}" => false );
-		if ( 'plugin_update' == $message_item ) {
+		if ( 'plugin_update' === $message_item ) {
 			$updated_options['message_plugin_update_content'] = '';
 		}
 		TablePress::$model_options->update( $updated_options );
@@ -86,10 +87,12 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		// default response data:
 		$success = false;
 		$message = 'error_save';
+		$error_details = '';
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
 			$existing_table = TablePress::$model_table->load( $edit_table['id'] );
 			if ( false === $existing_table ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+				$error_details = 'table_does_not_exist';
 				break;
 			}
 
@@ -97,6 +100,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			if ( empty( $edit_table['data'] )
 			|| empty( $edit_table['options'] )
 			|| empty( $edit_table['visibility'] ) ) {
+				$error_details = 'json_empty';
 				break;
 			}
 			$edit_table['data'] = json_decode( $edit_table['data'], true );
@@ -106,6 +110,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
 			if ( false === $table ) {
+				$error_details = 'table_prepare_failed';
 				break;
 			}
 
@@ -117,6 +122,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Save updated table
 			$saved = TablePress::$model_table->save( $table );
 			if ( false === $saved ) {
+				$error_details = 'table_could_not_be_saved';
 				break;
 			}
 
@@ -155,9 +161,16 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$response['last_modified'] = TablePress::format_datetime( $table['last_modified'] );
 			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] );
 		}
+		if ( ! empty( $error_details ) ) {
+			$response['error_details'] = $error_details;
+		}
+		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
+		$output_buffer = ob_get_clean();
+		if ( ! empty( $output_buffer ) ) {
+			$response['output_buffer'] = $output_buffer;
+		}
 
 		// Send the response
-		$response['output_buffer'] = ob_get_clean(); // buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
 		wp_send_json( $response );
 	}
 
@@ -253,9 +266,13 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			'head_html' => $head_html,
 			'body_html' => $body_html
 		);
+		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
+		$output_buffer = ob_get_clean();
+		if ( ! empty( $output_buffer ) ) {
+			$response['output_buffer'] = $output_buffer;
+		}
 
 		// Send the response
-		$response['output_buffer'] = ob_get_clean(); // buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
 		wp_send_json( $response );
 	}
 
