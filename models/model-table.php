@@ -214,21 +214,21 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
-	 * @return array|bool Table as an array on success, false on error
+	 * @return array|WP_Error Table as an array on success, WP_Error on error
 	 */
 	public function load( $table_id ) {
 		if ( empty( $table_id ) ) {
-			return false;
+			return new WP_Error( 'table_load_empty_table_id' );
 		}
 
 		$post_id = $this->_get_post_id( $table_id );
 		if ( false === $post_id ) {
-			return false;
+			return new WP_Error( 'table_load_no_post_id_for_table_id' );
 		}
 
 		$post = $this->model_post->get( $post_id );
 		if ( false === $post ) {
-			return false;
+			return new WP_Error( 'table_load_no_post_for_post_id' );
 		}
 
 		$table = $this->_post_to_table( $post, $table_id );
@@ -258,8 +258,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_id = (string) $table_id;
 			$table = $this->load( $table_id );
-			// Skip tables that could not be read properly
-			if ( false === $table ) {
+			// Skip tables that could not be loaded properly
+			if ( is_wp_error( $table ) ) {
 				continue;
 			}
 			unset( $table['data'] ); // remove table data, to save memory
@@ -364,7 +364,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			return false;
 		}
 

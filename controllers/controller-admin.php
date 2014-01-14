@@ -384,7 +384,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
 					$data['table'] = TablePress::$model_table->load( $_GET['table_id'] );
-					if ( false === $data['table'] ) {
+					if ( is_wp_error( $data['table'] ) ) {
 						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
 					}
 					if ( ! current_user_can( 'tablepress_edit_table', $_GET['table_id'] ) ) {
@@ -803,7 +803,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Load existing table from DB
 		$existing_table = TablePress::$model_table->load( $edit_table['id'] );
-		if ( false === $existing_table ) { // @TODO: Maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+		if ( is_wp_error( $existing_table ) ) { // @TODO: Maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 		}
 
@@ -1021,7 +1021,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 			}
 			$table = TablePress::$model_table->load( $tables[0] );
-			if ( false === $table ) {
+			if ( is_wp_error( $table ) ) {
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_load_table', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
 			}
 			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
@@ -1044,14 +1044,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 
 			foreach ( $tables as $table_id ) {
-				// don't export tables for which the user doesn't have the necessary export rights
-				if ( current_user_can( 'tablepress_export_table', $table_id ) ) {
-					$table = TablePress::$model_table->load( $table_id );
-				} else {
-					$table = false;
+				// Don't export tables for which the user doesn't have the necessary export rights
+				if ( ! current_user_can( 'tablepress_export_table', $table_id ) ) {
+					continue;
 				}
-				if ( false === $table ) {
-					continue; // no export if table could not be loaded
+				$table = TablePress::$model_table->load( $table_id );
+				if ( is_wp_error( $table ) ) {
+					continue; // Don't export if table could not be loaded
 				}
 				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
@@ -1345,7 +1344,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'replace':
 				// Load existing table from DB
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
-				if ( false === $existing_table ) {
+				if ( is_wp_error( $existing_table ) ) {
 					return false;
 				}
 				// don't change name and description when a table is replaced
@@ -1359,7 +1358,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			case 'append':
 				// Load existing table from DB
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
-				if ( false === $existing_table ) {
+				if ( is_wp_error( $existing_table ) ) {
 					return false;
 				}
 				// don't change name and description when a table is appended to
@@ -1830,7 +1829,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Load existing table from DB
 		$table = TablePress::$model_table->load( $table_id );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			wp_die( __( 'The table could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 		}
 

@@ -91,8 +91,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
 			$existing_table = TablePress::$model_table->load( $edit_table['id'] );
-			if ( false === $existing_table ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
-				$error_details = 'table_does_not_exist';
+			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+				$error_details = 'table_does_not_exist: ' . $existing_table->get_error_code();
 				break;
 			}
 
@@ -199,7 +199,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
 			$existing_table = TablePress::$model_table->load( $preview_table['id'] );
-			if ( false === $existing_table ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				break;
 			}
 

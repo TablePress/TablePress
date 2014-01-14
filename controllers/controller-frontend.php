@@ -336,9 +336,9 @@ JS;
 
 		// load the table
 		$table = TablePress::$model_table->load( $table_id );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
-			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
+			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id, $table );
 			return $message;
 		}
 
@@ -475,9 +475,9 @@ JS;
 
 		// load the table
 		$table = TablePress::$model_table->load( $table_id );
-		if ( false === $table ) {
+		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
-			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id );
+			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id, $table );
 			return $message;
 		}
 
