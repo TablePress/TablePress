@@ -571,21 +571,21 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param string $old_id Old table ID
 	 * @param string $new_id New table ID
-	 * @return bool True on success, false on error
+	 * @return bool|WP_Error True on success, WP_Error on error
 	 */
 	public function change_table_id( $old_id, $new_id ) {
 		$post_id = $this->_get_post_id( $old_id );
 		if ( false === $post_id ) {
-			return false;
+			return new WP_Error( 'table_change_id_no_post_id_for_table_id' );
 		}
 
 		// Check new ID for correct format (string from letters, numbers, -, and _ only, except the '0' string)
 		if ( empty( $new_id ) || 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) ) {
-			return false;
+			return new WP_Error( 'table_change_id_new_id_is_invalid' );
 		}
 
 		if ( $this->table_exists( $new_id ) ) {
-			return false;
+			return new WP_Error( 'table_change_table_does_not_exist' );
 		}
 
 		$this->_update_post_id( $new_id, $post_id );

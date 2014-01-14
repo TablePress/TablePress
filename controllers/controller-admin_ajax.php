@@ -138,14 +138,16 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Change table ID
 			if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) ) {
 				$id_changed = TablePress::$model_table->change_table_id( $table['id'], $table['new_id'] );
-			} else {
-				$id_changed = false;
-			}
-			if ( $id_changed ) {
-				$message = 'success_save_success_id_change';
-				$table['id'] = $table['new_id'];
+				if ( ! is_wp_error( $id_changed ) ) {
+					$message = 'success_save_success_id_change';
+					$table['id'] = $table['new_id'];
+				} else {
+					$message = 'success_save_error_id_change';
+					$error_details = 'table_id_could_not_be_changed: ' . $id_changed->get_error_code();
+				}
 			} else {
 				$message = 'success_save_error_id_change';
+				$error_details = 'table_id_could_not_be_changed: capability_check_failed';
 			}
 		} while ( false ); // do-while-loop through this exactly once, to be able to "break;" early
 

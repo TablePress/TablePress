@@ -832,11 +832,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Change table ID
 		if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) ) {
 			$id_changed = TablePress::$model_table->change_table_id( $table['id'], $table['new_id'] );
-		} else {
-			$id_changed = false;
-		}
-		if ( $id_changed ) {
-			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['new_id'], 'message' => 'success_save_success_id_change' ) );
+			if ( ! is_wp_error( $id_changed ) ) {
+				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['new_id'], 'message' => 'success_save_success_id_change' ) );
+			} else {
+				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save_error_id_change' ) );
+			}
 		} else {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save_error_id_change' ) );
 		}
@@ -1415,7 +1415,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Try to use ID from imported file (e.g. in full JSON format table)
 		if ( false !== $table_id_in_import && $table_id != $table_id_in_import && current_user_can( 'tablepress_edit_table_id', $table_id ) ) {
 			$id_changed = TablePress::$model_table->change_table_id( $table_id, $table_id_in_import );
-			if ( $id_changed ) {
+			if ( ! is_wp_error( $id_changed ) ) {
 				$table_id = $table_id_in_import;
 			}
 		}
@@ -1646,7 +1646,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Change table ID to the ID the table had in WP-Table Reloaded (except if that ID is already taken)
 		$id_changed = TablePress::$model_table->change_table_id( $tp_table_id, $wptr_table['id'] );
-		if ( ! $id_changed ) {
+		if ( is_wp_error( $id_changed ) ) {
 			return 2; // Imported without ID change
 		}
 
