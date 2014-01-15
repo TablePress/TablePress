@@ -1345,7 +1345,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Load existing table from DB
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
 				if ( is_wp_error( $existing_table ) ) {
-					return new WP_Error( 'table_import_replace_table_does_not_exist-' . $existing_table->get_error_code() );
+					// Add an error code to the existing WP_Error
+					$existing_table->add( 'table_import_replace_table_load', '' );
+					return $existing_table;
 				}
 				// don't change name and description when a table is replaced
 				$imported_table['name'] = $existing_table['name'];
@@ -1359,7 +1361,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Load existing table from DB
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
 				if ( is_wp_error( $existing_table ) ) {
-					return new WP_Error( 'table_import_append_table_does_not_exist-' . $existing_table->get_error_code() );
+					// Add an error code to the existing WP_Error
+					$existing_table->add( 'table_import_append_table_load', '' );
+					return $existing_table;
 				}
 				// don't change name and description when a table is appended to
 				$imported_table['name'] = $existing_table['name'];
@@ -1393,7 +1397,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Check if new data is ok
 		$table = TablePress::$model_table->prepare_table( $existing_table, $imported_table, false );
 		if ( is_wp_error( $table ) ) {
-			return new WP_Error( 'table_import_prepare_failed-' . $table->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$table->add( 'table_import_table_prepare', '' );
+			return $table;
 		}
 
 		// DataTables Custom Commands can only be edit by trusted users
@@ -1409,7 +1415,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( is_wp_error( $table_id ) ) {
-			return new WP_Error( 'table_import_save_or_add_failed-' . $table_id->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$table_id->add( 'table_import_table_save_or_add', '' );
+			return $table_id;
 		}
 
 		// Try to use ID from imported file (e.g. in full JSON format table)

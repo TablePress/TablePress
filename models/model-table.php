@@ -289,7 +289,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
 		if ( is_wp_error( $new_post_id ) ) {
-			return new WP_Error( 'table_save-' . $new_post_id->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$new_post_id->add( 'table_save_post_update', '' );
+			return $new_post_id;
 		}
 		if ( $post_id !== $new_post_id ) {
 			return new WP_Error( 'table_save_new_post_id_does_not_match' );
@@ -329,7 +331,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
 		if ( is_wp_error( $new_post_id ) ) {
-			return new WP_Error( 'table_add-' . $new_post_id->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$new_post_id->add( 'table_add_post_insert', '' );
+			return $new_post_id;
 		}
 
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
@@ -366,7 +370,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id );
 		if ( is_wp_error( $table ) ) {
-			return new WP_Error( 'table_copy-' . $table->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$table->add( 'table_copy_table_load', '' );
+			return $table;
 		}
 
 		// Adjust name of copied table
@@ -378,13 +384,17 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Merge this data into an empty table template
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
 		if ( is_wp_error( $table ) ) {
-			return new WP_Error( 'table_copy-' . $table->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$table->add( 'table_copy_table_prepare', '' );
+			return $table;
 		}
 
 		// Add the copied table
 		$table = $this->add( $table, $table_id );
 		if ( is_wp_error( $table ) ) {
-			return new WP_Error( 'table_copy-' . $table->get_error_code() );
+			// Add an error code to the existing WP_Error
+			$table->add( 'table_copy_table_add', '' );
+			return $table;
 		}
 
 		return $table;
