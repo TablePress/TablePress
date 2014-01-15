@@ -223,12 +223,12 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$post_id = $this->_get_post_id( $table_id );
 		if ( false === $post_id ) {
-			return new WP_Error( 'table_load_no_post_id_for_table_id' );
+			return new WP_Error( 'table_load_no_post_id_for_table_id', '', $table_id );
 		}
 
 		$post = $this->model_post->get( $post_id );
 		if ( false === $post ) {
-			return new WP_Error( 'table_load_no_post_for_post_id' );
+			return new WP_Error( 'table_load_no_post_for_post_id', '', $post_id );
 		}
 
 		$table = $this->_post_to_table( $post, $table_id );
@@ -283,28 +283,28 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$post_id = $this->_get_post_id( $table['id'] );
 		if ( false === $post_id ) {
-			return new WP_Error( 'table_save_no_post_id_for_table_id' );
+			return new WP_Error( 'table_save_no_post_id_for_table_id', '', $table['id'] );
 		}
 
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
 		if ( is_wp_error( $new_post_id ) ) {
 			// Add an error code to the existing WP_Error
-			$new_post_id->add( 'table_save_post_update', '' );
+			$new_post_id->add( 'table_save_post_update', '', $post_id );
 			return $new_post_id;
 		}
 		if ( $post_id !== $new_post_id ) {
-			return new WP_Error( 'table_save_new_post_id_does_not_match' );
+			return new WP_Error( 'table_save_new_post_id_does_not_match', '', $new_post_id );
 		}
 
 		$options_saved = $this->_update_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved ) {
-			return new WP_Error( 'table_save_update_table_options_failed' );
+			return new WP_Error( 'table_save_update_table_options_failed', '', $new_post_id );
 		}
 
 		$visibility_saved = $this->_update_table_visibility( $new_post_id, $table['visibility'] );
 		if ( ! $visibility_saved ) {
-			return new WP_Error( 'table_save_update_table_visibility_failed' );
+			return new WP_Error( 'table_save_update_table_visibility_failed', '', $new_post_id );
 		}
 
 		// at this point, post was successfully added
@@ -338,12 +338,12 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
 		if ( ! $options_saved ) {
-			return new WP_Error( 'table_add_update_table_options_failed' );
+			return new WP_Error( 'table_add_update_table_options_failed', '', $new_post_id );
 		}
 
 		$visibility_saved = $this->_add_table_visibility( $new_post_id, $table['visibility'] );
 		if ( ! $visibility_saved ) {
-			return new WP_Error( 'table_add_update_table_visibility_failed' );
+			return new WP_Error( 'table_add_update_table_visibility_failed', '', $new_post_id );
 		}
 
 		// at this point, post was successfully added, now get an unused table ID
@@ -371,7 +371,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table = $this->load( $table_id );
 		if ( is_wp_error( $table ) ) {
 			// Add an error code to the existing WP_Error
-			$table->add( 'table_copy_table_load', '' );
+			$table->add( 'table_copy_table_load', '', $table_id );
 			return $table;
 		}
 
@@ -385,7 +385,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
 		if ( is_wp_error( $table ) ) {
 			// Add an error code to the existing WP_Error
-			$table->add( 'table_copy_table_prepare', '' );
+			$table->add( 'table_copy_table_prepare', '', $table['id'] );
 			return $table;
 		}
 
@@ -393,7 +393,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table = $this->add( $table, $table_id );
 		if ( is_wp_error( $table ) ) {
 			// Add an error code to the existing WP_Error
-			$table->add( 'table_copy_table_add', '' );
+			$table->add( 'table_copy_table_add', '', $table_id );
 			return $table;
 		}
 
@@ -410,13 +410,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function delete( $table_id ) {
 		if ( ! $this->table_exists( $table_id ) ) {
-			return new WP_Error( 'table_delete_table_does_not_exist' );
+			return new WP_Error( 'table_delete_table_does_not_exist', '', $table_id );
 		}
 
 		$post_id = $this->_get_post_id( $table_id ); // no !false check necessary, as this is covered by table_exists() check above
 		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
 		if ( false === $deleted ) {
-			return new WP_Error( 'table_delete_post_could_not_be_deleted' );
+			return new WP_Error( 'table_delete_post_could_not_be_deleted', '', $post_id );
 		}
 
 		// if post was deleted successfully, remove the table ID from the list of tables
@@ -585,16 +585,16 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function change_table_id( $old_id, $new_id ) {
 		$post_id = $this->_get_post_id( $old_id );
 		if ( false === $post_id ) {
-			return new WP_Error( 'table_change_id_no_post_id_for_table_id' );
+			return new WP_Error( 'table_change_id_no_post_id_for_table_id', '', $old_id );
 		}
 
 		// Check new ID for correct format (string from letters, numbers, -, and _ only, except the '0' string)
 		if ( empty( $new_id ) || 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) ) {
-			return new WP_Error( 'table_change_id_new_id_is_invalid' );
+			return new WP_Error( 'table_change_id_new_id_is_invalid', '', $new_id );
 		}
 
 		if ( $this->table_exists( $new_id ) ) {
-			return new WP_Error( 'table_change_table_does_not_exist' );
+			return new WP_Error( 'table_change_table_new_id_exists', '', $new_id );
 		}
 
 		$this->_update_post_id( $new_id, $post_id );
@@ -687,7 +687,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Table ID must be the same (if there was an ID already)
 		if ( false !== $table['id'] ) {
 			if ( $table['id'] !== $new_table['id'] ) {
-				return new WP_Error( 'table_prepare_no_id_match' );
+				return new WP_Error( 'table_prepare_no_id_match', '', $new_table['id'] );
 			}
 		}
 

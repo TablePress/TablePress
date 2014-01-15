@@ -1346,7 +1346,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
 				if ( is_wp_error( $existing_table ) ) {
 					// Add an error code to the existing WP_Error
-					$existing_table->add( 'table_import_replace_table_load', '' );
+					$existing_table->add( 'table_import_replace_table_load', '', $existing_table_id );
 					return $existing_table;
 				}
 				// don't change name and description when a table is replaced
@@ -1362,7 +1362,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$existing_table = TablePress::$model_table->load( $existing_table_id );
 				if ( is_wp_error( $existing_table ) ) {
 					// Add an error code to the existing WP_Error
-					$existing_table->add( 'table_import_append_table_load', '' );
+					$existing_table->add( 'table_import_append_table_load', '', $existing_table_id );
 					return $existing_table;
 				}
 				// don't change name and description when a table is appended to
@@ -1381,7 +1381,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				break;
 			default:
-				return new WP_Error( 'table_import_import_type_invalid' );
+				return new WP_Error( 'table_import_import_type_invalid', '', $import_type );
 		}
 
 		// Merge new or existing table with information from the imported table

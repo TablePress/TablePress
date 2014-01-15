@@ -93,7 +93,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$existing_table = TablePress::$model_table->load( $edit_table['id'] );
 			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				// Add an error code to the existing WP_Error
-				$existing_table->add( 'ajax_save_table_load', '' );
+				$existing_table->add( 'ajax_save_table_load', '', $edit_table['id'] );
 				$error_details = $this->get_wp_error_string( $existing_table );
 				break;
 			}
@@ -103,7 +103,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			|| empty( $edit_table['options'] )
 			|| empty( $edit_table['visibility'] ) ) {
 				// Create a new WP_Error
-				$empty_data_error = new WP_Error( 'ajax_save_table_data_empty', '' );
+				$empty_data_error = new WP_Error( 'ajax_save_table_data_empty', '', $edit_table['id'] );
 				$error_details = $this->get_wp_error_string( $empty_data_error );
 				break;
 			}
@@ -115,7 +115,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
 			if ( is_wp_error( $table ) ) {
 				// Add an error code to the existing WP_Error
-				$table->add( 'ajax_save_table_prepare', '' );
+				$table->add( 'ajax_save_table_prepare', '', $edit_table['id'] );
 				$error_details = $this->get_wp_error_string( $table );
 				break;
 			}
@@ -129,7 +129,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$saved = TablePress::$model_table->save( $table );
 			if ( is_wp_error( $saved ) ) {
 				// Add an error code to the existing WP_Error
-				$saved->add( 'ajax_save_table_save', '' );
+				$saved->add( 'ajax_save_table_save', '', $table['id'] );
 				$error_details = $this->get_wp_error_string( $saved );
 				break;
 			}
@@ -152,7 +152,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				} else {
 					$message = 'success_save_error_id_change';
 					// Add an error code to the existing WP_Error
-					$id_changed->add( 'ajax_save_table_id_change', '' );
+					$id_changed->add( 'ajax_save_table_id_change', '', $table['new_id'] );
 					$error_details = $this->get_wp_error_string( $id_changed );
 				}
 			} else {
