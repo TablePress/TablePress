@@ -174,7 +174,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] );
 		}
 		if ( ! empty( $error_details ) ) {
-			$response['error_details'] = $error_details;
+			$response['error_details'] = esc_html( $error_details );
 			$response['print_error_details'] = ( WP_DEBUG ) ? true : false;
 		}
 		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
