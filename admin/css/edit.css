@@ -83,10 +83,17 @@ body,
 }
 
 /* Margins from dynamically created (inline) .error/.updated messages */
-#tablepress-page div.save-changes-success,
-#tablepress-page div.save-changes-error,
-#tablepress-page div.preview-error {
+#tablepress-page div.ajax-alert {
 	margin: -10px 0 15px;
+}
+#tablepress-page div.ajax-alert p {
+	font-weight: bold;
+}
+#tablepress-page div.ajax-alert pre {
+	margin: -6px 0 0.5em 2px;
+}
+#tablepress-page div.ajax-alert pre + p {
+	display: none;
 }
 
 #tablepress-page #tablepress_edit-table-data {

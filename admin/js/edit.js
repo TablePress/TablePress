@@ -239,7 +239,7 @@ jQuery( document ).ready( function( $ ) {
 			},
 			error: function( message ) {
 				$( '.animation-preview' ).closest( 'p' )
-					.after( '<div class="preview-error error"><p><strong>' + tablepress_strings.preview_error + ': ' + message + '</strong></p></div>' );
+					.after( '<div class="ajax-alert preview-error error"><p>' + tablepress_strings.preview_error + ': ' + message + '</p></div>' );
 				$( '.animation-preview' ).remove();
 				$( '.preview-error' ).delay( 6000 ).fadeOut( 2000, function() { $( this ).remove(); } );
 				$( 'body' ).removeClass( 'wait' );
@@ -1047,8 +1047,15 @@ jQuery( document ).ready( function( $ ) {
 		ajax_success: function( data, status /*, jqXHR */ ) {
 			if ( ( 'undefined' === typeof status ) || ( 'success' !== status ) ) {
 				tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the &#8220;Shift&#8221; key.' );
-			} else if ( ( 'undefined' === typeof data ) || ( null === data ) || ( '-1' === data ) || ( 'undefined' === typeof data.success ) || ( true !== data.success ) ) {
+			} else if ( ( 'undefined' === typeof data ) || ( null === data ) || ( '-1' === data ) || ( 'undefined' === typeof data.success ) ) {
 				tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the &#8220;Shift&#8221; key.' );
+			} else if ( true !== data.success ) {
+				var debug_html = '';
+				// Print debug information, if we are in debug mode
+				if ( ( 'undefined' !== typeof data.error_details ) && ( 'undefined' !== typeof data.print_error_details ) && ( true === data.print_error_details ) ) {
+					debug_html = '</p><p>These errors were encountered:</p><pre>' + data.error_details + '</pre><p>'; // Some HTML magic because this is wrapped in <p> when printed
+				}
+				tp.save_changes.error( 'AJAX call successful, internal saving process failed. Try again while holding down the &#8220;Shift&#8221; key.' + debug_html );
 			} else {
 				tp.save_changes.success( data );
 			}
@@ -1109,7 +1116,7 @@ jQuery( document ).ready( function( $ ) {
 				delay = 6000;
 			}
 			$( '.animation-saving' ).closest( 'p' )
-				.after( '<div class="' + div_class + '"><p><strong>' + tablepress_strings['save_changes_' + type] + message + '</strong></p></div>' );
+				.after( '<div class="ajax-alert ' + div_class + '"><p>' + tablepress_strings['save_changes_' + type] + message + '</p></div>' );
 			$( '.animation-saving' ).remove();
 			$( '.save-changes-' + type ).delay( delay ).fadeOut( 2000, function() { $( this ).remove(); } );
 			$( '.save-changes-button' ).prop( 'disabled', false );

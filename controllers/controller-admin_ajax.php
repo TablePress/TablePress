@@ -175,6 +175,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		}
 		if ( ! empty( $error_details ) ) {
 			$response['error_details'] = $error_details;
+			$response['print_error_details'] = ( WP_DEBUG ) ? true : false;
 		}
 		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
 		$output_buffer = ob_get_clean();
