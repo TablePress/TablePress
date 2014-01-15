@@ -288,8 +288,8 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
-		if ( 0 === $new_post_id ) {
-			return new WP_Error( 'table_save_new_post_id_is_0' );
+		if ( is_wp_error( $new_post_id ) ) {
+			return new WP_Error( 'table_save-' . $new_post_id->get_error_code() );
 		}
 		if ( $post_id !== $new_post_id ) {
 			return new WP_Error( 'table_save_new_post_id_does_not_match' );
@@ -328,9 +328,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
-
-		if ( 0 === $new_post_id ) {
-			return new WP_Error( 'table_add_new_post_id_is_0' );
+		if ( is_wp_error( $new_post_id ) ) {
+			return new WP_Error( 'table_add-' . $new_post_id->get_error_code() );
 		}
 
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );

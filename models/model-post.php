@@ -71,7 +71,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @uses wp_insert_post()
 	 *
 	 * @param array $post Post to insert
-	 * @return int Post ID of the inserted post on success, int 0 on error
+	 * @return int|WP_Error Post ID of the inserted post on success, WP_Error on error
 	 */
 	public function insert( array $post ) {
 		$default_post = array(
@@ -99,7 +99,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		// saving is done to table cells individually, when saving
 		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
-		$post_id = wp_insert_post( $post, false ); // false means: no WP_Error object on error, but int 0
+		$post_id = wp_insert_post( $post, true );
 
 		// re-add balanceTags() to sanitize_post()
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
@@ -119,7 +119,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @uses wp_update_post()
 	 *
 	 * @param array $post Post
-	 * @return int Post ID of the updated post on success, int 0 on error
+	 * @return int|WP_Error Post ID of the updated post on success, WP_Error on error
 	 */
 	public function update( array $post ) {
 		$default_post = array(
@@ -147,7 +147,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		// saving is done to table cells individually, when saving
 		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
-		$post_id = wp_update_post( $post );
+		$post_id = wp_update_post( $post, true );
 
 		// re-add balanceTags() to sanitize_post()
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
