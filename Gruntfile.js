@@ -132,7 +132,9 @@ module.exports = function( grunt ) {
 	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
 	// Register "build" task
-	grunt.registerTask( 'build', [ 'jshint:all', 'uglify:all', 'jsvalidate:all', 'csslint:all', 'cssmin:all' ] );
+	grunt.registerTask( 'build:js', [ 'jshint:all', 'uglify:all', 'jsvalidate:all' ] );
+	grunt.registerTask( 'build:css', [ 'csslint:all', 'cssmin:all' ] );
+	grunt.registerTask( 'build', [ 'build:js', 'build:css' ] );
 
 	// Make "watch" the default task
 	grunt.registerTask( 'default', [ 'watch' ] );
