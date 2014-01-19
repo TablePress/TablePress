@@ -74,21 +74,21 @@ jQuery( document ).ready( function( $ ) {
 				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' ).click(); // click() to focus and select
 				tp.table.set_table_changed();
 			} else {
-				$( this ).val( tp.table.new_id );
+				$(this).val( tp.table.new_id );
 			}
 		},
 		change_table_head: function( /* event */ ) {
-			tp.table.head = $( this ).prop( 'checked' );
+			tp.table.head = $(this).prop( 'checked' );
 			$id( 'option-use-datatables' ).prop( 'disabled', ! tp.table.head ).change();
 			$id( 'notice-datatables-head-row' ).toggle( ! tp.table.head );
 			tp.rows.stripe();
 		},
 		change_table_foot: function( /* event */ ) {
-			tp.table.foot = $( this ).prop( 'checked' );
+			tp.table.foot = $(this).prop( 'checked' );
 			tp.rows.stripe();
 		},
 		change_print_name_description: function( /* event */ ) {
-			$id( this.id + '-position' ).prop( 'disabled', ! $( this ).prop( 'checked' ) );
+			$id( this.id + '-position' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
 		},
 		change_datatables: function() {
 			var $datatables_checkbox = $id( 'option-use-datatables' ),
@@ -112,7 +112,7 @@ jQuery( document ).ready( function( $ ) {
 			$table_body.children().each( function( idx, row ) {
 				table_data[ idx ] = $( row ).find( 'textarea' )
 					.map( function() {
-						return $( this ).val();
+						return $(this).val();
 					} )
 					.get();
 			} );
@@ -146,7 +146,7 @@ jQuery( document ).ready( function( $ ) {
 
 			table_visibility.rows = $table_body.find( 'input[type="hidden"]' )
 				.map( function() {
-					if ( '1' === $( this ).val() ) {
+					if ( '1' === $(this).val() ) {
 						return 1;
 					}
 					table_number.hidden_rows += 1;
@@ -155,7 +155,7 @@ jQuery( document ).ready( function( $ ) {
 				.get();
 			table_visibility.columns = $id( 'edit-form-foot' ).find( 'input[type="hidden"]' )
 				.map( function() {
-					if ( '1' === $( this ).val() ) {
+					if ( '1' === $(this).val() ) {
 						return 1;
 					}
 					table_number.hidden_columns += 1;
@@ -183,7 +183,7 @@ jQuery( document ).ready( function( $ ) {
 		preview: {
 			trigger: function( /* event */ ) {
 				if ( ! tp.made_changes ) {
-					tp.table.preview.show( $( this ).attr( 'href' ) + '&TB_iframe=true' );
+					tp.table.preview.show( $(this).attr( 'href' ) + '&TB_iframe=true' );
 					return false;
 				}
 
@@ -199,7 +199,7 @@ jQuery( document ).ready( function( $ ) {
 					return;
 				}
 
-				$( this ).closest( 'p' ).append( '<span class="animation-preview spinner" title="' + tablepress_strings.preparing_preview + '"/>' );
+				$(this).closest( 'p' ).append( '<span class="animation-preview spinner" title="' + tablepress_strings.preparing_preview + '"/>' );
 				$( 'body' ).addClass( 'wait' );
 				$id( 'table-preview' ).empty(); // clear preview
 
@@ -229,7 +229,7 @@ jQuery( document ).ready( function( $ ) {
 			success: function( data ) {
 				$id( 'table-preview' ).empty();
 				$( '<iframe id="table-preview-iframe" />' ).load( function() {
-					var $iframe = $( this ).contents();
+					var $iframe = $(this).contents();
 					$iframe.find( 'head' ).append( data.head_html );
 					$iframe.find( 'body' ).append( data.body_html );
 				} ).appendTo( '#table-preview' );
@@ -241,7 +241,7 @@ jQuery( document ).ready( function( $ ) {
 				$( '.animation-preview' ).closest( 'p' )
 					.after( '<div class="ajax-alert preview-error error"><p>' + tablepress_strings.preview_error + ': ' + message + '</p></div>' );
 				$( '.animation-preview' ).remove();
-				$( '.preview-error' ).delay( 6000 ).fadeOut( 2000, function() { $( this ).remove(); } );
+				$( '.preview-error' ).delay( 6000 ).fadeOut( 2000, function() { $(this).remove(); } );
 				$( 'body' ).removeClass( 'wait' );
 			},
 			show: function( url ) {
@@ -270,7 +270,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 
 			column_idxs = $id( 'edit-form-foot' ).find( '.column-hidden' )
-				.map( function() { return $( this ).index(); } ).get();
+				.map( function() { return $(this).index(); } ).get();
 			return $( new_rows ).each( function( row_idx, row ) {
 				$( row ).children()
 					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
@@ -397,8 +397,8 @@ jQuery( document ).ready( function( $ ) {
 			}
 		},
 		sort: function() {
-			var column_idx = $( this ).parent().index(),
-				direction = ( $( this ).hasClass( 'sort-asc' ) ) ? 1 : -1,
+			var column_idx = $(this).parent().index(),
+				direction = ( $(this).hasClass( 'sort-asc' ) ) ? 1 : -1,
 				$table_body = $('#edit-form-body'),
 				$head_rows = $table_body.find( '.head-row' ).prevAll().addBack(),
 				$foot_rows = $table_body.find( '.foot-row' ).nextAll().addBack(),
@@ -526,7 +526,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
+			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 			$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
 				$( row ).children()
 					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
@@ -549,7 +549,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
+			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 			$id( 'edit-form' ).find( 'tr' ).each( function( row_idx, row ) {
 				$( row ).children().each( function( idx, cell ) {
 					if ( -1 !== $.inArray( idx, column_idxs ) ) {
@@ -573,7 +573,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
+			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 			$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 				$( row ).children()
 					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
@@ -593,7 +593,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
+			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 			$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 				$( row ).children()
 					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
@@ -627,7 +627,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			column_idxs = $selected_columns.map( function() { return $( this ).index(); } ).get();
+			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
 			$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
 				$( row ).children()
 					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
@@ -657,7 +657,7 @@ jQuery( document ).ready( function( $ ) {
 				tp.columns.move.$cells = tp.columns.move.$rows
 					.find( ':nth-child(' + ( tp.columns.move.source_idx + 1 ) + ')' )
 					.each( function() {
-						tp.columns.move.$cell = $( this );
+						tp.columns.move.$cell = $(this);
 						$( '<td class="move-placeholder"><div/></td>' ).insertBefore( tp.columns.move.$cell );
 						tp.columns.move.$cell.insertAfter( tp.columns.move.$cell.nextAll().last() )
 							.clone().addClass( 'move-hover' ).insertAfter( tp.columns.move.$cell )
@@ -669,7 +669,7 @@ jQuery( document ).ready( function( $ ) {
 				tp.columns.move.$helper = tp.columns.move.$rows.find( '.move-hover' );
 				/* // seems not to be working for rows, so disable it for columns
 					.each( function() {
-						tp.columns.move.$cell = $( this );
+						tp.columns.move.$cell = $(this);
 						tp.columns.move.$cell.css( 'top', ( tp.columns.move.$cell.position().top - 3 ) + 'px' );
 					} );
 				*/
@@ -691,7 +691,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				tp.columns.move.$placeholder.each( function() {
-					tp.columns.move.$cell = $( this );
+					tp.columns.move.$cell = $(this);
 					tp.columns.move.$cell.insertBefore( tp.columns.move.$cell.parent().children().eq( tp.columns.move.target_idx ) );
 				} );
 
@@ -708,7 +708,7 @@ jQuery( document ).ready( function( $ ) {
 				tp.columns.move.$helper.remove();
 				tp.columns.move.$cells
 					.each( function() {
-						tp.columns.move.$cell = $( this );
+						tp.columns.move.$cell = $(this);
 						tp.columns.move.$cell.insertBefore( tp.columns.move.$cell.parent().find( '.move-placeholder' ) );
 					} )
 					.show();
@@ -745,7 +745,7 @@ jQuery( document ).ready( function( $ ) {
 		$textarea: null,
 		autogrow: function( /* event */ ) {
 			tp.cells.$focus.removeClass( 'focus' );
-			tp.cells.$focus = $( this ).closest( 'tr' ).addClass( 'focus' );
+			tp.cells.$focus = $(this).closest( 'tr' ).addClass( 'focus' );
 		},
 		advanced_editor: {
 			prompt_shown: false,
@@ -755,7 +755,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				var $advanced_editor = $id( 'advanced-editor-content' );
-				tp.cells.$textarea = $( this ).blur();
+				tp.cells.$textarea = $(this).blur();
 				$advanced_editor.val( tp.cells.$textarea.val() );
 				$id( 'advanced-editor' ).wpdialog( 'open' );
 				$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
@@ -771,7 +771,7 @@ jQuery( document ).ready( function( $ ) {
 				tp.cells.advanced_editor.prompt_shown = true;
 				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 					var $advanced_editor = $id( 'advanced-editor-content' );
-					tp.cells.$textarea = $( this ).blur();
+					tp.cells.$textarea = $(this).blur();
 					$advanced_editor.val( tp.cells.$textarea.val() );
 					$id( 'advanced-editor' ).wpdialog( 'open' );
 					$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
@@ -810,7 +810,7 @@ jQuery( document ).ready( function( $ ) {
 						first_cb = $checkboxes.index( tp.cells.checkboxes.last_clicked[ event.data.parent ] ),
 						last_cb = $checkboxes.index( this );
 					if ( first_cb !== last_cb ) {
-						$checkboxes.slice( Math.min( first_cb, last_cb ), Math.max( first_cb, last_cb ) ).prop( 'checked', $( this ).prop( 'checked' ) );
+						$checkboxes.slice( Math.min( first_cb, last_cb ), Math.max( first_cb, last_cb ) ).prop( 'checked', $(this).prop( 'checked' ) );
 					}
 				}
 				tp.cells.checkboxes.last_clicked[ event.data.parent ] = this;
@@ -864,7 +864,7 @@ jQuery( document ).ready( function( $ ) {
 						H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
 					}
 					tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
-					$( this ).blur();
+					$(this).blur();
 				} );
 
 				return false; // because it's a link
@@ -898,7 +898,7 @@ jQuery( document ).ready( function( $ ) {
 
 				tp.content.span.prompt_shown[ span ] = true;
 				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-					var $textarea = $( this ),
+					var $textarea = $(this),
 						col_idx = $textarea.parent().index(),
 						row_idx = $textarea.closest( 'tr' ).index();
 					if ( '#rowspan#' === span ) {
@@ -930,7 +930,7 @@ jQuery( document ).ready( function( $ ) {
 			if ( ( 37 === event.which ) || ( 39 === event.which ) ) {
 				return;
 			}
-			var $input = $( this );
+			var $input = $(this);
 			$input.val( $input.val().replace( /[^0-9a-zA-Z-_]/g, '' ) );
 		},
 		changes_saved: function() {
@@ -1031,7 +1031,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			$( this ).closest( 'p' ).append( '<span class="animation-saving spinner" title="' + tablepress_strings.saving_changes + '"/>' );
+			$(this).closest( 'p' ).append( '<span class="animation-saving spinner" title="' + tablepress_strings.saving_changes + '"/>' );
 			$( '.save-changes-button' ).prop( 'disabled', true );
 			$( 'body' ).addClass( 'wait' );
 
@@ -1118,7 +1118,7 @@ jQuery( document ).ready( function( $ ) {
 			$( '.animation-saving' ).closest( 'p' )
 				.after( '<div class="ajax-alert ' + div_class + '"><p>' + tablepress_strings['save_changes_' + type] + message + '</p></div>' );
 			$( '.animation-saving' ).remove();
-			$( '.save-changes-' + type ).delay( delay ).fadeOut( 2000, function() { $( this ).remove(); } );
+			$( '.save-changes-' + type ).delay( delay ).fadeOut( 2000, function() { $(this).remove(); } );
 			$( '.save-changes-button' ).prop( 'disabled', false );
 			$( 'body' ).removeClass( 'wait' );
 		}
@@ -1146,8 +1146,8 @@ jQuery( document ).ready( function( $ ) {
 				'.show-preview-button': tp.table.preview.trigger,
 				'.save-changes-button': tp.save_changes.trigger,
 				'.show-help-box':		function() {
-					$( this ).next().wpdialog( {
-					title: $( this ).attr( 'title' ),
+					$(this).next().wpdialog( {
+					title: $(this).attr( 'title' ),
 					height: 420,
 					width: 320,
 					modal: true,
@@ -1216,7 +1216,7 @@ jQuery( document ).ready( function( $ ) {
 
 		// on form submit: Enable disabled fields, so that they are transmitted in the POST request
 		$id( 'tablepress-page' ).find( 'form' ).on( 'submit', function() {
-			$( this ).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
+			$(this).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
 		} );
 
 		$table.sortable( {
