@@ -1052,7 +1052,7 @@ jQuery( document ).ready( function( $ ) {
 			} else if ( true !== data.success ) {
 				var debug_html = '';
 				// Print debug information, if we are in debug mode
-				if ( ( 'undefined' !== typeof data.error_details ) && ( 'undefined' !== typeof data.print_error_details ) && ( true === data.print_error_details ) ) {
+				if ( ( 'undefined' !== typeof data.error_details ) && ( tablepress_options.print_debug_output ) ) {
 					debug_html = '</p><p>These errors were encountered:</p><pre>' + data.error_details + '</pre><p>'; // Some HTML magic because this is wrapped in <p> when printed
 				}
 				tp.save_changes.error( 'AJAX call successful, internal saving process failed. Try again while holding down the &#8220;Shift&#8221; key.' + debug_html );

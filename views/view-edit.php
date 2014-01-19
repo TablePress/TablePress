@@ -81,6 +81,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
 			'options' => array(
+				'print_debug_output' => apply_filters( 'tablepress_print_debug_output', isset( $_GET['debug'] ) ? ( 'true' == $_GET['debug'] ) : WP_DEBUG ),
 				'cells_advanced_editor' => apply_filters( 'tablepress_edit_cells_advanced_editor', true ),
 				'cells_auto_grow' => apply_filters( 'tablepress_edit_cells_auto_grow', true ),
 				'shortcode' => esc_js( TablePress::$shortcode )
