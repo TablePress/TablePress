@@ -40,6 +40,27 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		// Validation of minified JavaScript
+		jsvalidate: {
+			options: {
+				globals: {},
+				esprimaOptions: {},
+				verbose: false
+			},
+			all: {
+				files: {
+					src: [
+						'**/*.js',
+						'!node_modules/**/*.js',
+						'!i18n/**/*.js'
+					]
+				}
+			},
+			changed: {
+				src: []
+			}
+		},
+
 		// CSS syntax validation
 		csslint: {
 			options: {
@@ -98,7 +119,7 @@ module.exports = function( grunt ) {
 			},
 			js: {
 				files: '<%= jshint.all.src %>',
-				tasks: [ 'jshint:changed', 'uglify:changed' ]
+				tasks: [ 'jshint:changed', 'uglify:changed', 'jsvalidate:changed' ]
 			},
 			css: {
 				files: '<%= cssmin.all.src %>',
@@ -111,7 +132,7 @@ module.exports = function( grunt ) {
 	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
 	// Register "build" task
-	grunt.registerTask( 'build', [ 'jshint:all', 'uglify:all', 'csslint:all', 'cssmin:all' ] );
+	grunt.registerTask( 'build', [ 'jshint:all', 'uglify:all', 'jsvalidate:all', 'csslint:all', 'cssmin:all' ] );
 
 	// Make "watch" the default task
 	grunt.registerTask( 'default', [ 'watch' ] );
@@ -124,6 +145,7 @@ module.exports = function( grunt ) {
 	grunt.event.on( 'watch', function( action, filepath /*, target */ ) {
 		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
+		grunt.config( [ 'jsvalidate', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'cssmin', 'changed', 'src' ], filepath );
 	} );
