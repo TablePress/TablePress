@@ -252,7 +252,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		// load all table posts with one query, to prime the cache
-		$this->model_post->load_posts( array_values( $table_post ) );
+		$this->model_post->load_posts( array_values( $table_post ), true );
 
 		// this loop now uses the WP cache
 		foreach ( $table_post as $table_id => $post_id ) {
@@ -896,7 +896,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		// load all table posts with one query, to prime the cache
-		$this->model_post->load_posts( array_values( $table_post ) );
+		$this->model_post->load_posts( array_values( $table_post ), true );
 
 		// get default Table with default Table Options
 		$default_table = $this->get_table_template();

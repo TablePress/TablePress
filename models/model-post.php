@@ -225,8 +225,9 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $all_post_ids List of Post IDs
+	 * @param bool $update_meta_cache Whether to update the Post Meta Cache (for table options and visibility)
 	 */
-	public function load_posts( array $all_post_ids ) {
+	public function load_posts( array $all_post_ids, $update_meta_cache = true ) {
 		global $wpdb;
 
 		// Split post loading, to save memory
@@ -235,15 +236,15 @@ class TablePress_Post_Model extends TablePress_Model {
 		$number_of_posts = count( $all_post_ids );
 		while ( $offset < $number_of_posts ) {
 			$post_ids = array_slice( $all_post_ids, $offset, $length );
-			$post_ids_list = implode( ',', $post_ids );
-			$all_posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
-			// loop is similar to update_post_cache( $all_posts ), but with sanitization
-			foreach ( $all_posts as $single_post ) {
-				$single_post = sanitize_post( $single_post, 'raw' ); // just minimal sanitization of int fields
-				wp_cache_add( $single_post->ID, $single_post, 'posts' );
+			$post_ids = _get_non_cached_ids( $post_ids, 'posts' ); // Don't load posts that are in the cache already
+			if ( ! empty( $post_ids ) ) {
+				$post_ids_list = implode( ',', $post_ids );
+				$posts = $wpdb->get_results( "SELECT {$wpdb->posts}.* FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
+				update_post_cache( $posts );
+				if ( $update_meta_cache ) {
+					update_meta_cache( 'post', $post_ids ); // get all post meta data for all table posts, @see get_post_meta()
+				}
 			}
-			// get all post meta data for all table posts, @see get_post_meta()
-			update_meta_cache( 'post', $post_ids );
 			$offset += $length; // next array_slice() $offset
 		}
 	}
