@@ -335,7 +335,7 @@ JS;
 		}
 
 		// load the table
-		$table = TablePress::$model_table->load( $table_id );
+		$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
 		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id, $table );
@@ -474,7 +474,7 @@ JS;
 		}
 
 		// load the table
-		$table = TablePress::$model_table->load( $table_id );
+		$table = TablePress::$model_table->load( $table_id, false, true ); // Load table, without table data, but with options and visibility settings
 		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id, $table );
@@ -594,9 +594,9 @@ JS;
 		// load all tables, and remove hidden cells, as those will not be searched
 		// do this here once, so that we don't have to do it in each loop for each search term again
 		$search_tables = array();
-		$tables = TablePress::$model_table->load_all(); // does not contain table data
-		foreach ( $tables as $table_id => $table ) {
-			$table = TablePress::$model_table->load( $table_id ); // load table again, to also get table data
+		$table_ids = TablePress::$model_table->load_all( true ); // Prime post meta cache for access to visibility settings of table
+		foreach ( $table_ids as $table_id ) {
+			$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
 			// load information about hidden rows and columns
 			$hidden_rows = array_keys( $table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0)
 			$hidden_columns = array_keys( $table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0)

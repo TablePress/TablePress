@@ -90,7 +90,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$error_details = '';
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
-			$existing_table = TablePress::$model_table->load( $edit_table['id'] );
+			$existing_table = TablePress::$model_table->load( $edit_table['id'], false, true ); // Load table, without table data, but with options and visibility settings
 			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				// Add an error code to the existing WP_Error
 				$existing_table->add( 'ajax_save_table_load', '', $edit_table['id'] );
@@ -210,7 +210,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$success = false;
 		do { // to be able to "break;" (allows for better readable code)
 			// Load existing table from DB
-			$existing_table = TablePress::$model_table->load( $preview_table['id'] );
+			$existing_table = TablePress::$model_table->load( $preview_table['id'], false, true ); // Load table, without table data, but with options and visibility settings
 			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				break;
 			}

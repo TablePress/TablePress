@@ -53,7 +53,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 		$this->data = $data;
 
 		$this->wp_list_table = new TablePress_Editor_Button_Thickbox_List_Table();
-		$this->wp_list_table->set_items( $this->data['tables'] );
+		$this->wp_list_table->set_items( $this->data['table_ids'] );
 		$this->wp_list_table->prepare_items();
 	}
 
@@ -412,7 +412,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 			$term = wp_unslash( $_GET['s'] );
 		}
 
-		$item = TablePress::$model_table->load( $item['id'] ); // load table again, with data
+		$item = TablePress::$model_table->load( $item['id'], true, false ); // Load table again, with table data, but without options and visibility settings
 
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )
@@ -462,6 +462,12 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		if ( $s ) {
 			$this->items = array_filter( $this->items, array( $this, '_search_callback' ) );
 		}
+
+		// Load actual tables after search for less memory consumption
+		foreach ( $this->items as &$item ) {
+			$item = TablePress::$model_table->load( $item, false, false ); // Don't load data nor table options
+		}
+		unset( $item ); // Break reference in foreach iterator
 
 		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();

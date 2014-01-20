@@ -111,7 +111,8 @@ class TablePress_Export_View extends TablePress_View {
 			?>
 			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
 			<?php
-				foreach ( $data['tables'] as $table ) {
+				foreach ( $data['table_ids'] as $table_id ) {
+					$table = TablePress::$model_table->load( $table_id, false, false ); // Load table, without table data, options, and visibility settings
 					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) ) {
 						continue;
 					}

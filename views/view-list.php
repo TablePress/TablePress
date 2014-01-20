@@ -118,7 +118,7 @@ class TablePress_List_View extends TablePress_View {
 
 		add_screen_option( 'per_page', array( 'label' => __( 'Tables', 'tablepress' ), 'default' => 20 ) ); // Admin_Controller contains function to allow changes to this in the Screen Options to be saved
 		$this->wp_list_table = new TablePress_All_Tables_List_Table();
-		$this->wp_list_table->set_items( $this->data['tables'] );
+		$this->wp_list_table->set_items( $this->data['table_ids'] );
 		$this->wp_list_table->prepare_items();
 
 		// cleanup Request URI string, which WP_List_Table uses to generate the sort URLs
@@ -611,7 +611,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$term = wp_unslash( $_GET['s'] );
 		}
 
-		$item = TablePress::$model_table->load( $item['id'] ); // load table again, with data
+		$item = TablePress::$model_table->load( $item['id'], true, true ); // load table again, with data and options (for last_editor)
 
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )
@@ -684,6 +684,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( $s ) {
 			$this->items = array_filter( $this->items, array( $this, '_search_callback' ) );
 		}
+
+		// Load actual tables after search for less memory consumption
+		foreach ( $this->items as &$item ) {
+			$item = TablePress::$model_table->load( $item, false, true ); // Don't load data, but load table options for access to last_editor
+		}
+		unset( $item ); // Break reference in foreach iterator
 
 		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();

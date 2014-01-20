@@ -197,7 +197,8 @@ class TablePress_Import_View extends TablePress_View {
 			<select id="tables-import-existing-table" name="import[existing_table]"<?php disabled( $data['tables_count'] > 0, false, true ); ?>>
 				<option value=""><?php _e( 'Select:', 'tablepress' ); ?></option>
 			<?php
-				foreach ( $data['tables'] as $table ) {
+				foreach ( $data['table_ids'] as $table_id ) {
+					$table = TablePress::$model_table->load( $table_id, false, false ); // Load table, without table data, options, and visibility settings
 					if ( ! current_user_can( 'tablepress_edit_table', $table['id'] ) ) {
 						continue;
 					}

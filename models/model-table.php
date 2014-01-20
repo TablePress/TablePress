@@ -148,18 +148,24 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param WP_Post $post Post
 	 * @param string $table_id Table ID
+	 * @param bool $with_data Whether the table data shall be loaded
 	 * @return array Table
 	 */
-	protected function _post_to_table( $post, $table_id ) {
+	protected function _post_to_table( $post, $table_id, $load_data ) {
 		$table = array(
 			'id' => $table_id,
 			'name' => $post->post_title,
 			'description' => $post->post_excerpt,
 			'author' => $post->post_author,
 //			'created' => $post->post_date,
-			'last_modified' => $post->post_modified,
-			'data' => json_decode( $post->post_content, true )
+			'last_modified' => $post->post_modified
 		);
+
+		if ( ! $load_data ) {
+			return $table;
+		}
+
+		$table['data'] = json_decode( $post->post_content, true );
 
 		// Check if JSON could be decoded
 		if ( is_null( $table['data'] ) ) {
@@ -214,9 +220,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID
+	 * @param bool $load_data Whether the table data shall be loaded
+	 * @param bool $load_options_visibility Whether the table options and table visibility shall be loaded
 	 * @return array|WP_Error Table as an array on success, WP_Error on error
 	 */
-	public function load( $table_id ) {
+	public function load( $table_id, $load_data = true, $load_options_visibility = true ) {
 		if ( empty( $table_id ) ) {
 			return new WP_Error( 'table_load_empty_table_id' );
 		}
@@ -231,41 +239,43 @@ class TablePress_Table_Model extends TablePress_Model {
 			return new WP_Error( 'table_load_no_post_for_post_id', '', $post_id );
 		}
 
-		$table = $this->_post_to_table( $post, $table_id );
-		$table['options'] = $this->_get_table_options( $post_id );
-		$table['visibility'] = $this->_get_table_visibility( $post_id );
+		$table = $this->_post_to_table( $post, $table_id, $load_data );
+		if ( $load_options_visibility ) {
+			$table['options'] = $this->_get_table_options( $post_id );
+			$table['visibility'] = $this->_get_table_visibility( $post_id );
+		}
 		return $table;
 	}
 
 	/**
-	 * Load all tables
+	 * Load the IDs of all tables that can be loaded from the database
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Array of Tables, but each without table data!
+	 * @param bool $prime_meta_cache Whether the prime the post meta cache when loading the posts
+	 * @return array Array of table IDs
 	 */
-	public function load_all() {
-		$tables = array();
+	public function load_all( $prime_meta_cache = true ) {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( empty( $table_post ) ) {
 			return array();
 		}
 
 		// load all table posts with one query, to prime the cache
-		$this->model_post->load_posts( array_values( $table_post ), true );
+		$this->model_post->load_posts( array_values( $table_post ), $prime_meta_cache );
 
 		// this loop now uses the WP cache
+		$table_ids = array();
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_id = (string) $table_id;
-			$table = $this->load( $table_id );
+			$table = $this->load( $table_id, false, false ); // Load table without data and options to save memory
 			// Skip tables that could not be loaded properly
-			if ( is_wp_error( $table ) ) {
-				continue;
+			if ( ! is_wp_error( $table ) ) {
+				$table_ids[] = $table_id;
 			}
-			unset( $table['data'] ); // remove table data, to save memory
-			$tables[ $table_id ] = $table;
 		}
-		return $tables;
+
+		return $table_ids;
 	}
 
 	/**
@@ -368,7 +378,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success
 	 */
 	public function copy( $table_id ) {
-		$table = $this->load( $table_id );
+		$table = $this->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
 			// Add an error code to the existing WP_Error
 			$table->add( 'table_copy_table_load', '', $table_id );

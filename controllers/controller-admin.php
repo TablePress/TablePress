@@ -333,7 +333,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		switch ( $action ) {
 			case 'list':
 				$data['table_id'] = ( ! empty( $_GET['table_id'] ) ) ? $_GET['table_id'] : false;
-				$data['tables'] = TablePress::$model_table->load_all(); // does not contain table data
+				$data['table_ids'] = TablePress::$model_table->load_all( true ); // Prime the post meta cache for cached loading of last_editor
 				$data['messages']['first_visit'] = TablePress::$model_options->get( 'message_first_visit' );
 				if ( current_user_can( 'tablepress_import_tables_wptr' ) ) {
 					$data['messages']['wp_table_reloaded_warning'] = is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ); // check if WP-Table Reloaded is activated
@@ -343,7 +343,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['messages']['show_plugin_update'] = TablePress::$model_options->get( 'message_plugin_update' );
 				$data['messages']['plugin_update_message'] = TablePress::$model_options->get( 'message_plugin_update_content' );
 				$data['messages']['donation_message'] = $this->maybe_show_donation_message();
-				$data['table_count'] = count( $data['tables'] );
+				$data['table_count'] = count( $data['table_ids'] );
 				break;
 			case 'about':
 				$data['plugin_languages'] = $this->get_plugin_languages();
@@ -383,7 +383,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
-					$data['table'] = TablePress::$model_table->load( $_GET['table_id'] );
+					$data['table'] = TablePress::$model_table->load( $_GET['table_id'], true, true ); // Load table, with table data, options, and visibility settings
 					if ( is_wp_error( $data['table'] ) ) {
 						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
 					}
@@ -395,7 +395,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				break;
 			case 'export':
-				$data['tables'] = TablePress::$model_table->load_all(); // does not contain table data
+				$data['table_ids'] = TablePress::$model_table->load_all( false ); // Load all table IDs without priming the post meta cache, as table options/visibility are not needed
 				$data['tables_count'] = TablePress::$model_table->count_tables();
 				if ( ! empty( $_GET['table_id'] ) ) {
 					$data['export_ids'] = explode( ',', $_GET['table_id'] );
@@ -410,7 +410,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : _x( ',', 'Default CSV delimiter in the translated language (";", ",", or "tab")', 'tablepress' );
 				break;
 			case 'import':
-				$data['tables'] = TablePress::$model_table->load_all(); // does not contain table data
+				$data['table_ids'] = TablePress::$model_table->load_all( false ); // Load all table IDs without priming the post meta cache, as table options/visibility are not needed
 				$data['tables_count'] = TablePress::$model_table->count_tables();
 				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
 				$data['zip_support_available'] = $importer->zip_support_available;
@@ -802,7 +802,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Load existing table from DB
-		$existing_table = TablePress::$model_table->load( $edit_table['id'] );
+		$existing_table = TablePress::$model_table->load( $edit_table['id'], false, true ); // Load table, without table data, but with options and visibility settings
 		if ( is_wp_error( $existing_table ) ) { // @TODO: Maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
 		}
@@ -1020,7 +1020,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( ! current_user_can( 'tablepress_export_table', $tables[0] ) ) {
 				wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 			}
-			$table = TablePress::$model_table->load( $tables[0] );
+			$table = TablePress::$model_table->load( $tables[0], true, true ); // Load table, with table data, options, and visibility settings
 			if ( is_wp_error( $table ) ) {
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_load_table', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
 			}
@@ -1048,7 +1048,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( ! current_user_can( 'tablepress_export_table', $table_id ) ) {
 					continue;
 				}
-				$table = TablePress::$model_table->load( $table_id );
+				$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
 				if ( is_wp_error( $table ) ) {
 					continue; // Don't export if table could not be loaded
 				}
@@ -1343,7 +1343,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'replace':
 				// Load existing table from DB
-				$existing_table = TablePress::$model_table->load( $existing_table_id );
+				$existing_table = TablePress::$model_table->load( $existing_table_id, false, true ); // Load table, without table data, but with options and visibility settings
 				if ( is_wp_error( $existing_table ) ) {
 					// Add an error code to the existing WP_Error
 					$existing_table->add( 'table_import_replace_table_load', '', $existing_table_id );
@@ -1359,7 +1359,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'append':
 				// Load existing table from DB
-				$existing_table = TablePress::$model_table->load( $existing_table_id );
+				$existing_table = TablePress::$model_table->load( $existing_table_id, true, true ); // Load table, with table data, options, and visibility settings
 				if ( is_wp_error( $existing_table ) ) {
 					// Add an error code to the existing WP_Error
 					$existing_table->add( 'table_import_append_table_load', '', $existing_table_id );
@@ -1836,7 +1836,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Load existing table from DB
-		$table = TablePress::$model_table->load( $table_id );
+		$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
 		if ( is_wp_error( $table ) ) {
 			wp_die( __( 'The table could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 		}
@@ -1880,7 +1880,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->init_i18n_support();
 
 		$view_data = array(
-			'tables' => TablePress::$model_table->load_all() // does not contain table data
+			'table_ids' => TablePress::$model_table->load_all( false ) // Load all table IDs without priming the post meta cache, as table options/visibility are not needed
 		);
 
 		set_current_screen( 'tablepress_editor_button_thickbox' );
