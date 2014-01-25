@@ -403,16 +403,16 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Item that shall be searched
+	 * @param string $item Table ID that shall be searched
 	 * @return bool Whether the search term was found or not
 	 */
-	protected function _search_callback( array $item ) {
+	protected function _search_callback( $item ) {
 		static $term;
 		if ( is_null( $term ) ) {
 			$term = wp_unslash( $_GET['s'] );
 		}
 
-		$item = TablePress::$model_table->load( $item['id'], true, false ); // Load table again, with table data, but without options and visibility settings
+		$item = TablePress::$model_table->load( $item, true, false ); // Load table again, with table data, but without options and visibility settings
 
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )
