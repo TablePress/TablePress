@@ -109,6 +109,9 @@ body,
 	width: 65px;
 	padding: 3px 5px;
 }
+#tablepress-page #table-new-id {
+	width: 120px;
+}
 
 /* table cells */
 #edit-form-body td {
