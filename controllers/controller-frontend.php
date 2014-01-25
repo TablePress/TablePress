@@ -602,7 +602,7 @@ JS;
 			return $search_sql;
 		}
 
-		$table_ids = TablePress::$model_table->load_all( true ); // Load all table IDs and prime post meta cache for cached access to options and visibility settings of the tables
+		$table_ids = TablePress::$model_table->load_all( true, false ); // Load all table IDs and prime post meta cache for cached access to options and visibility settings of the tables, don't run filter hook
 		$query_result = array(); // Array of all search words that were found, and the table IDs where they were found
 
 		foreach ( $table_ids as $table_id ) {

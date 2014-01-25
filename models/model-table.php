@@ -248,14 +248,15 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Load the IDs of all tables that can be loaded from the database
+	 * Load the IDs of all tables that can be loaded from the database.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param bool $prime_meta_cache Whether the prime the post meta cache when loading the posts
+	 * @param bool $prime_meta_cache Optional. Whether the prime the post meta cache when loading the posts.
+	 * @param bool $run_filter Optional. Whether to run a filter on the list of table IDs.
 	 * @return array Array of table IDs
 	 */
-	public function load_all( $prime_meta_cache = true ) {
+	public function load_all( $prime_meta_cache = true, $run_filter = true ) {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( empty( $table_post ) ) {
 			return array();
@@ -273,6 +274,10 @@ class TablePress_Table_Model extends TablePress_Model {
 			if ( ! is_wp_error( $table ) ) {
 				$table_ids[] = $table_id;
 			}
+		}
+
+		if ( $run_filter ) {
+			$table_ids = apply_filters( 'tablepress_load_all_tables', $table_ids );
 		}
 
 		return $table_ids;
