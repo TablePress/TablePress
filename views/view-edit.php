@@ -40,6 +40,11 @@ class TablePress_Edit_View extends TablePress_View {
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
+		if ( isset( $data['table']['is_corrupted'] ) && $data['table']['is_corrupted'] ) {
+			$this->add_text_box( 'table-corrupted', array( $this, 'textbox_corrupted_table' ), 'normal' );
+			return;
+		};
+
 		$action_messages = array(
 			'success_save' => __( 'The table was saved successfully.', 'tablepress' ),
 			'success_add' => __( 'The table was added successfully.', 'tablepress' ),
@@ -575,6 +580,38 @@ class TablePress_Edit_View extends TablePress_View {
 </tbody>
 </table>
 <?php
+	}
+
+	/**
+	 * Print a notification about a corrupted table
+	 *
+	 * @since 1.4.0
+	 */
+	public function textbox_corrupted_table( $data, $box ) {
+		?>
+		<div class="error">
+			<p><strong><?php _e( 'Attention: Unfortunately, an error occured.', 'tablepress' ); ?></strong></p>
+			<p>
+				<?php
+					printf( __( 'The internal data of table &#8220;%1$s&#8221 (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );
+					echo ' ';
+					printf( __( 'The following error was registered: <code>%s</code>.', 'tablepress' ), esc_html( $data['table']['json_error'] ) );
+				?>
+			</p>
+			<p>
+				<?php
+					_e( 'Because of this error, the table can not be edited at this time, to prevent possible further data loss.', 'tablepress' );
+					echo ' ';
+					printf( __( 'Please see the <a href="%s">TablePress FAQ page</a> for further instructions.', 'tablepress' ), 'http://tablepress.org/faq/corrupted-tables/' );
+				?>
+			</p>
+			<p>
+				<?php
+					echo '<a href="' . TablePress::url( array( 'action' => 'list' ) ) . '" class="button">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>';
+				?>
+			</p>
+		</div>
+		<?php
 	}
 
 	/**

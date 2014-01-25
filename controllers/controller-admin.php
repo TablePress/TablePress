@@ -1024,6 +1024,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( is_wp_error( $table ) ) {
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_load_table', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
 			}
+			if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
+				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_table_corrupted', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
+			}
 			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
 			$download_filename = sanitize_file_name( $download_filename );
 			// export table
@@ -1050,7 +1053,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
 				if ( is_wp_error( $table ) ) {
-					continue; // Don't export if table could not be loaded
+					continue; // Don't export if the table could not be loaded
+				}
+				if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
+					continue; // Don't export if the table is corrupted
 				}
 				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
@@ -1364,6 +1370,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					// Add an error code to the existing WP_Error
 					$existing_table->add( 'table_import_append_table_load', '', $existing_table_id );
 					return $existing_table;
+				}
+				if ( isset( $existing_table['is_corrupted'] ) && $existing_table['is_corrupted'] ) {
+					return new WP_Error( 'table_import_append_table_load_corrupted', '', $existing_table_id );
 				}
 				// don't change name and description when a table is appended to
 				$imported_table['name'] = $existing_table['name'];

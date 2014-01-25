@@ -414,6 +414,10 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 		$item = TablePress::$model_table->load( $item, true, false ); // Load table again, with table data, but without options and visibility settings
 
+		if ( isset( $item['is_corrupted'] ) && $item['is_corrupted'] ) {
+			return false; // Don't search corrupted tables
+		}
+
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )
 		|| false !== stripos( $item['name'], $term )

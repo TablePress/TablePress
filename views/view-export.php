@@ -34,6 +34,7 @@ class TablePress_Export_View extends TablePress_View {
 		$this->process_action_messages( array(
 			'error_export' => __( 'Error: The export failed.', 'tablepress' ),
 			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' ),
+			'error_table_corrupted' => __( 'Error: The internal data of this table is corrupted!', 'tablepress' ),
 			'error_create_zip_file' => __( 'Error: The ZIP file could not be created.', 'tablepress' )
 		) );
 

@@ -611,7 +611,16 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$term = wp_unslash( $_GET['s'] );
 		}
 
+		static $debug;
+		if ( is_null( $debug ) ) {
+			$debug = isset( $_GET['debug'] ) ? ( 'true' == $_GET['debug'] ) : WP_DEBUG; // Set debug variable to allow searching in corrupted tables
+		}
+
 		$item = TablePress::$model_table->load( $item, true, true ); // load table again, with data and options (for last_editor)
+
+		if ( ! $debug && isset( $item['is_corrupted'] ) && $item['is_corrupted'] ) {
+			return false; // Don't search corrupted tables, except when debug mode is enabled via $_GET parameter or WP_DEBUG constant
+		}
 
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )

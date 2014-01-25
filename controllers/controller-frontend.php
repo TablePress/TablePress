@@ -344,6 +344,11 @@ JS;
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id, $table );
 			return $message;
 		}
+		if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
+			$message = "<div>Attention: The internal data of table &#8220;{$table_id}&#8221; is corrupted!</div>";
+			$message = apply_filters( 'tablepress_table_corrupted_message', $message, $table_id, $table['json_error'] );
+			return $message;
+		}
 
 		// Disable the "datatables_custom_commands" Shortcode parameter by default, for security reasons
 		if ( ! is_null( $shortcode_atts['datatables_custom_commands'] ) && apply_filters( 'tablepress_disable_custom_commands_shortcode_parameter', true ) ) {
@@ -602,6 +607,10 @@ JS;
 
 		foreach ( $table_ids as $table_id ) {
 			$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
+
+			if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
+				continue; // Do not search in corrupted tables
+			}
 
 			foreach ( $search_terms as $search_term ) {
 				if ( ( $table['options']['print_name'] && false !== stripos( $table['name'], $search_term ) )
