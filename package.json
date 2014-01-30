@@ -16,6 +16,7 @@
 		"grunt-contrib-jshint": "~0.8.0",
 		"grunt-contrib-watch": "~0.5.3",
 		"grunt-jsvalidate": "~0.2.2",
+		"grunt-jsonlint": "~1.0.4",
 		"matchdep": "~0.3.0"
 	},
 	"jshintConfig": {

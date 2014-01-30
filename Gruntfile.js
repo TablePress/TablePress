@@ -61,6 +61,20 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		// Validation of JSON files
+		jsonlint: {
+			all: {
+				src: [
+					'package.json',
+					'composer.json',
+					'i18n/datatables/*.js'
+				]
+			},
+			changed: {
+				src: []
+			}
+		},
+
 		// CSS syntax validation
 		csslint: {
 			options: {
@@ -121,6 +135,10 @@ module.exports = function( grunt ) {
 				files: '<%= jshint.all.src %>',
 				tasks: [ 'jshint:changed', 'uglify:changed', 'jsvalidate:changed' ]
 			},
+			json: {
+				files: '<%= jsonlint.all.src %>',
+				tasks: [ 'jsonlint:changed' ]
+			},
 			css: {
 				files: '<%= cssmin.all.src %>',
 				tasks: [ 'csslint:changed', 'cssmin:changed' ]
@@ -132,7 +150,7 @@ module.exports = function( grunt ) {
 	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
 	// Register "build" task
-	grunt.registerTask( 'build:js', [ 'jshint:all', 'uglify:all', 'jsvalidate:all' ] );
+	grunt.registerTask( 'build:js', [ 'jshint:all', 'jsonlint:all', 'uglify:all', 'jsvalidate:all' ] );
 	grunt.registerTask( 'build:css', [ 'csslint:all', 'cssmin:all' ] );
 	grunt.registerTask( 'build', [ 'build:js', 'build:css' ] );
 
@@ -146,6 +164,7 @@ module.exports = function( grunt ) {
 	// so that only the changed files are linted/minified.
 	grunt.event.on( 'watch', function( action, filepath /*, target */ ) {
 		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
+		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
 		grunt.config( [ 'jsvalidate', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
