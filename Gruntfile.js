@@ -15,11 +15,32 @@ module.exports = function( grunt ) {
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
 
-		// JavaScript syntax validation
+		// Syntax validation of JavaScript files
+		jsvalidate: {
+			options: {
+				globals: {},
+				esprimaOptions: {},
+				verbose: false
+			},
+			all: {
+				src: [
+						'**/*.js',
+						'!node_modules/**/*.js'
+				]
+			},
+			changed: {
+				src: []
+			}
+		},
+
+		// JavaScript coding style validation
 		jshint: {
 			options: '<%= pkg.jshintConfig %>',
 			all: {
-				src: [ 'Gruntfile.js', '<%= uglify.all.src %>' ]
+				src: [
+					'<%= jsvalidate.all.src %>',
+					'!**/*.min.js'
+				]
 			},
 			changed: {
 				src: []
@@ -31,7 +52,10 @@ module.exports = function( grunt ) {
 			all: {
 				expand: true,
 				ext: '.min.js',
-				src: [ 'admin/js/*.js', '!admin/js/*.min.js' ]
+				src: [
+					'<%= jshint.all.src %>',
+					'!Gruntfile.js'
+				]
 			},
 			changed: {
 				expand: true,
@@ -40,33 +64,12 @@ module.exports = function( grunt ) {
 			}
 		},
 
-		// Validation of minified JavaScript
-		jsvalidate: {
-			options: {
-				globals: {},
-				esprimaOptions: {},
-				verbose: false
-			},
-			all: {
-				files: {
-					src: [
-						'**/*.js',
-						'!node_modules/**/*.js'
-					]
-				}
-			},
-			changed: {
-				src: []
-			}
-		},
-
 		// Validation of JSON files
 		jsonlint: {
 			all: {
 				src: [
-					'package.json',
-					'composer.json',
-					'i18n/datatables/*.json'
+					'**/*.json',
+					'!node_modules/**/*.json'
 				]
 			},
 			changed: {
@@ -95,8 +98,9 @@ module.exports = function( grunt ) {
 			},
 			all: {
 				src: [
-					'css/*.css', '!css/*.min.css',
-					'admin/css/*.css', '!admin/css/*.min.css'
+					'**/*.css',
+					'!**/*.min.css',
+					'!node_modules/**/*.css'
 				]
 			},
 			changed: {
@@ -113,8 +117,7 @@ module.exports = function( grunt ) {
 				expand: true,
 				ext: '.min.css',
 				src: [
-					'css/*.css', '!css/*.min.css',
-					'admin/css/*.css', '!admin/css/*.min.css'
+					'<%= csslint.all.src %>'
 				]
 			},
 			changed: {
@@ -139,7 +142,7 @@ module.exports = function( grunt ) {
 				tasks: [ 'jsonlint:changed' ]
 			},
 			css: {
-				files: '<%= cssmin.all.src %>',
+				files: '<%= csslint.all.src %>',
 				tasks: [ 'csslint:changed', 'cssmin:changed' ]
 			}
 		}
@@ -162,10 +165,10 @@ module.exports = function( grunt ) {
 	// "jshint", "uglify", "csslint", and "cssmin" task configurations,
 	// so that only the changed files are linted/minified.
 	grunt.event.on( 'watch', function( action, filepath /*, target */ ) {
-		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
 		grunt.config( [ 'jsvalidate', 'changed', 'src' ], filepath );
+		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
+		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
+		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'cssmin', 'changed', 'src' ], filepath );
 	} );
