@@ -205,7 +205,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
 				// only do the expensive language file checks if they haven't been done yet
 				if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
-					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.js";
+					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.json";
 					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH ); // make sure to check file_exists( $new_file ) when using this filter!
 					// load translation if it's not "en_US" (included as the default in DataTables) and the language file exists, or if the filter was used to change the language file
 					if ( ( 'en_US' != $datatables_locale && file_exists( $language_file ) )

@@ -51,8 +51,7 @@ module.exports = function( grunt ) {
 				files: {
 					src: [
 						'**/*.js',
-						'!node_modules/**/*.js',
-						'!i18n/**/*.js'
+						'!node_modules/**/*.js'
 					]
 				}
 			},
@@ -67,7 +66,7 @@ module.exports = function( grunt ) {
 				src: [
 					'package.json',
 					'composer.json',
-					'i18n/datatables/*.js'
+					'i18n/datatables/*.json'
 				]
 			},
 			changed: {
