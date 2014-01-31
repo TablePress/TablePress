@@ -8,9 +8,9 @@
 	"sInfoPostFix":	 "",
 	"sSearch":		 "Hledat:",
 	"oPaginate": {
-	   "sFirst":	"První",
-	   "sPrevious": "Předchozí",
-	   "sNext":		"Další",
-	   "sLast":		"Poslední"
+		"sFirst":	 "První",
+		"sPrevious": "Předchozí",
+		"sNext":	 "Další",
+		"sLast":	 "Poslední"
 	}
 }
