@@ -388,8 +388,11 @@ class TablePress_Import {
 		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
 		$simplexlsx = new SimpleXLSX( $this->import_data, true );
 
-		if ( $simplexlsx->success() ) {
-			$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $simplexlsx->rows() ) );
+		if ( $simplexlsx->success() && 0 < $simplexlsx->sheetsCount() ) {
+			// Get Worksheet ID of the first Worksheet (not necessarily "1", which is the default in SimpleXLSX)
+			$sheet_ids = array_keys( $simplexlsx->sheetNames() );
+			$worksheet_id = $sheet_ids[0];
+			$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $simplexlsx->rows( $worksheet_id ) ) );
 		} else {
 			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . '</strong><br /><br />' . $simplexlsx->error() . '<br />';
 			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
