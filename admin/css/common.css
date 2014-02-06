@@ -18,8 +18,10 @@
 	margin: 6px;
 }
 #tablepress-nav .nav-tab {
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
+	border-bottom: 1px solid #cccccc;
+}
+#tablepress-nav .nav-tab-active {
+	border-bottom: 1px solid #f1f1f1;
 }
 
 /* Add New Table form */
