@@ -127,6 +127,7 @@ body {
 }
 .tablepress-editor-button-list tbody .column-table_action {
 	padding: 4px 7px 1px;
+	vertical-align: middle;
 }
 
 /* Shortcode input field */
