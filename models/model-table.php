@@ -366,8 +366,23 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->_update_post_id( $table_id, $new_post_id );
 
 		if ( false !== $copied_table_id ) {
+			/**
+			 * Fires after an existing table has been copied.
+			 *
+			 * @since 1.1.0
+			 *
+			 * @param string $table_id        ID of the copy of the table.
+			 * @param string $copied_table_id ID of the existing table that is copied.
+			 */
 			do_action( 'tablepress_event_copied_table', $table_id, $copied_table_id );
 		} else {
+			/**
+			 * Fires after a new table has been added.
+			 *
+			 * @since 1.1.0
+			 *
+			 * @param string $table_id ID of the added table.
+			 */
 			do_action( 'tablepress_event_added_table', $table_id );
 		}
 
@@ -442,6 +457,13 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Flush caching plugins' caches
 		$this->_flush_caching_plugins_caches();
 
+		/**
+		 * Fires after a table has been deleted.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string $table_id ID of the deleted table.
+		 */
 		do_action( 'tablepress_event_deleted_table', $table_id );
 
 		return true;
@@ -468,6 +490,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->tables->update( $tables );
 		$this->_flush_caching_plugins_caches(); // Flush caching plugins' caches
 
+		/**
+		 * Fires after all tables have been deleted.
+		 *
+		 * @since 1.1.0
+		 */
 		do_action( 'tablepress_event_deleted_all_tables' );
 	}
 
@@ -522,7 +549,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Flush the caches of the plugins W3 Total Cache, WP Supercache, and Cachify
+	 * Flush the caches of the plugins W3 Total Cache, WP Super Cache, and Cachify
 	 *
 	 * @since 1.0.0
 	 */
@@ -615,6 +642,14 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->_update_post_id( $new_id, $post_id );
 		$this->_remove_post_id( $old_id );
 
+		/**
+		 * Fires after the ID of a table has been changed.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string $new_id New ID of the table.
+		 * @param string $old_id Old ID of the table.
+		 */
 		do_action( 'tablepress_event_changed_table_id', $new_id, $old_id );
 
 		return true;

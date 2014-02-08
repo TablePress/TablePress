@@ -106,6 +106,11 @@ abstract class TablePress {
 	 * @uses load_controller()
 	 */
 	public static function run() {
+		/**
+		 * Fires when TablePress is loaded.
+		 *
+		 * @since 1.0.0
+		 */
 		do_action( 'tablepress_run' );
 
 		// exit early if TablePress doesn't have to be loaded
