@@ -548,6 +548,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'sle',
 				'translator_url' => 'http://fooddrink.sk/'
 			),
+			'sr_RS' => array(
+				'name' => __( 'Serbian', 'tablepress' ),
+				'translator_name' => 'Borisa Djuraskovic',
+				'translator_url' => 'http://www.webhostinghub.com/'
+			),
 			'tr_TR' => array(
 				'name' => __( 'Turkish', 'tablepress' ),
 				'translator_name' => 'Hakan Er',
