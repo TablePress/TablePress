@@ -70,7 +70,13 @@ abstract class TablePress_Controller {
 		// update check, in all controllers (frontend and admin), to make sure we always have up-to-date options
 		$this->plugin_update_check(); // should be done very early
 
-		// Admin Page Menu entry, needed for construction of plugin URLs
+		/**
+		 * Filter the admin menu parent page, which is needed for the construction of plugin URLs.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $parent_page Current admin menu parent page.
+		 */
 		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', TablePress::$model_options->get( 'admin_menu_parent_page' ) );
 		$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
 	}

@@ -136,11 +136,29 @@ class TablePress_CSS {
 		switch ( $location ) {
 			case 'url':
 				$url = $upload_location['baseurl'] . '/' . $file;
+				/**
+				 * Filter the URL from which the "Custom CSS" file is loaded.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $url  URL of the "Custom CSS" file.
+				 * @param string $file File name of the "Custom CSS" file.
+				 * @param string $type Type of the "Custom CSS" file ("normal", "minified", or "combined").
+				 */
 				$url = apply_filters( 'tablepress_custom_css_url', $url, $file, $type );
 				return $url;
 				break;
 			case 'path':
 				$path = $upload_location['basedir'] . '/' . $file;
+				/**
+				 * Filter the file path on the server from which the "Custom CSS" file is loaded.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $path File path of the "Custom CSS" file.
+				 * @param string $file File name of the "Custom CSS" file.
+				 * @param string $type Type of the "Custom CSS" file ("normal", "minified", or "combined").
+				 */
 				$path = apply_filters( 'tablepress_custom_css_file_name', $path, $file, $type );
 				return $path;
 				break;
@@ -204,7 +222,13 @@ class TablePress_CSS {
 	 * @return bool True on success, false on failure
 	 */
 	public function save_custom_css_to_file( $custom_css_normal, $custom_css_minified ) {
-		// Hook to prevent saving to file
+		/**
+		 * Filter whether the "Custom CSS" code shall be saved to a file on the server.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param bool $save Whether to save the "Custom CSS" to a file. Default true.
+		 */
 		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) ) {
 			return false;
 		}
@@ -236,7 +260,7 @@ class TablePress_CSS {
 	 * @return bool|string True on success, false on failure, or string of HTML for the credentials form for the WP_Filesystem API, if necessary
 	 */
 	public function save_custom_css_to_file_plugin_options( $custom_css_normal, $custom_css_minified ) {
-		// Hook to prevent saving to file
+		/** This filter is documented in classes/class-css.php */
 		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) ) {
 			return false;
 		}

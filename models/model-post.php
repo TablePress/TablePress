@@ -46,6 +46,13 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @uses register_post_type()
 	 */
 	protected function _register_post_type() {
+		/**
+		 * Filter the "Custom Post Type" that TablePress uses for storing tables in the database.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $post_type The "Custom Post Type" that TablePress uses.
+		 */
 		$this->post_type = apply_filters( 'tablepress_post_type', $this->post_type );
 		$post_type_args = array(
 			'labels' => array(
@@ -60,6 +67,13 @@ class TablePress_Post_Model extends TablePress_Model {
 			'supports' => array( 'title', 'editor', 'excerpt', 'revisions' ),
 			'can_export' => true
 		);
+		/**
+		 * Filter the arguments for the registration of the "Custom Post Type" that TablePress uses.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $post_type_args Arguments for the registration of the TablePress "Custom Post Type".
+		 */
 		$post_type_args = apply_filters( 'tablepress_post_type_args', $post_type_args );
 		register_post_type( $this->post_type, $post_type_args );
 	}

@@ -334,6 +334,18 @@ class TablePress_Options_Model extends TablePress_Model {
 				break;
 		}
 
+		/**
+		 * Filter a user's TablePress capabilities.
+		 *
+		 * See the WordPress function map_meta_cap() for details.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array  $caps    The user's current TablePress capabilities.
+		 * @param string $cap     Capability name.
+		 * @param int    $user_id The user ID.
+		 * @param array  $args    Adds the context to the cap. Typically the table ID.
+		 */
 		return apply_filters( 'tablepress_map_meta_caps', $caps, $cap, $user_id, $args );
 	}
 

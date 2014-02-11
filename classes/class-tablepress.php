@@ -130,8 +130,21 @@ abstract class TablePress {
 			return;
 		}
 
-		// some filtering of "global" class variables
+		/**
+		 * Filter the string that is used as the [table] Shortcode.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $shortcode The [table] Shortcode string.
+		 */
 		self::$shortcode = apply_filters( 'tablepress_table_shortcode', self::$shortcode );
+		/**
+		 * Filter the string that is used as the [table-info] Shortcode.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $shortcode_info The [table-info] Shortcode string.
+		 */
 		self::$shortcode_info = apply_filters( 'tablepress_table_info_shortcode', self::$shortcode_info );
 
 		// Load modals for table and options, to be accessible from everywhere via `TablePress::$model_options` and `TablePress::$model_table`
@@ -159,6 +172,15 @@ abstract class TablePress {
 	 */
 	public static function load_file( $file, $folder ) {
 		$full_path = TABLEPRESS_ABSPATH . $folder . '/' . $file;
+		/**
+		 * Filter the full path of a file that shall be loaded.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $full_path Full path of the file that shall be loaded.
+		 * @param string $file      File name of the file that shall be loaded.
+		 * @param string $folder    Folder name of the file that shall be loaded.
+		 */
 		$full_path = apply_filters( 'tablepress_load_file_full_path', $full_path, $file, $folder );
 		if ( $full_path ) {
 			require_once $full_path;
@@ -178,6 +200,13 @@ abstract class TablePress {
 	 * @return object Initialized instance of the class
 	 */
 	public static function load_class( $class, $file, $folder, $params = null ) {
+		/**
+		 * Filter name of the class that shall be loaded.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $class Name of the class that shall be loaded.
+		 */
 		$class = apply_filters( 'tablepress_load_class_name', $class );
 		if ( ! class_exists( $class ) ) {
 			self::load_file( $file, $folder );

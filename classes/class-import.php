@@ -71,7 +71,7 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		// filter from @see unzip_file() in WordPress
+		/** This filter is documented in the WordPress function unzip_file() in wp-admin/includes/file.php */
 		if ( class_exists( 'ZipArchive' ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
 			$this->zip_support_available = true;
 		}

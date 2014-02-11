@@ -86,8 +86,31 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
 			'options' => array(
+				/**
+				 * Filter whether debug output shall be printed to the page.
+				 *
+				 * The value before filtering is determined from the GET parameter "debug" or the WP_DEBUG constant.
+				 *
+				 * @since 1.4.0
+				 *
+				 * @param bool $print Whether debug output shall be printed.
+				 */
 				'print_debug_output' => apply_filters( 'tablepress_print_debug_output', isset( $_GET['debug'] ) ? ( 'true' == $_GET['debug'] ) : WP_DEBUG ),
+				/**
+				 * Filter whether the "Advanced Editor" button shall be enabled.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param bool $enable Whether the "Advanced Editor" shall be enabled. Default true.
+				 */
 				'cells_advanced_editor' => apply_filters( 'tablepress_edit_cells_advanced_editor', true ),
+				/**
+				 * Filter whether the size of the table input textareas shall increase when they are focused.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param bool $auto_grow Whether the size of the cell textareas shall increase. Default true.
+				 */
 				'cells_auto_grow' => apply_filters( 'tablepress_edit_cells_auto_grow', true ),
 				'shortcode' => esc_js( TablePress::$shortcode )
 			),

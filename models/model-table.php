@@ -277,6 +277,13 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		if ( $run_filter ) {
+			/**
+			 * Filter all table IDs that are loaded.
+			 *
+			 * @since 1.4.0
+			 *
+			 * @param array $table_ids The table IDs that are loaded.
+			 */
 			$table_ids = apply_filters( 'tablepress_load_all_tables', $table_ids );
 		}
 
@@ -554,6 +561,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 */
 	public function _flush_caching_plugins_caches() {
+		/**
+		 * Filter whether the caches of common caching plugins shall be flushed.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param bool $flush Whether caches of caching plugins shall be flushed. Default true.
+		 */
 		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) ) {
 			return;
 		}
@@ -718,6 +732,13 @@ class TablePress_Table_Model extends TablePress_Model {
 				'columns' => array( 1 ) // one visible column
 			)
 		);
+		/**
+		 * Filter the default template/structure of an empty table.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $table Default template/structure of an empty table.
+		 */
 		return apply_filters( 'tablepress_table_template', $table );
 	}
 

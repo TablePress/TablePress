@@ -89,6 +89,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_menu_entry() {
 		// for all menu entries:
 		$callback = array( $this, 'show_admin_page' );
+		/**
+		 * Filter the TablePress admin menu entry name.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $entry_name The admin menu entry name. Default "TablePress".
+		 */
 		$admin_menu_entry_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
 
 		if ( $this->is_top_level_page ) {
@@ -428,6 +435,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 		}
 
+		/**
+		 * Filter the data that is passed to the current TablePress View.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array  $data   Data for the view.
+		 * @param string $action The current action for the view.
+		 */
 		$data = apply_filters( 'tablepress_view_data', $data, $action );
 
 		// prepare and initialize the view
@@ -667,6 +682,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			)
 		);
 
+		/**
+		 * Filter the available TablePres Views/Actions and their parameters.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $view_actions The available Views/Actions and their parameters.
+		 */
 		$this->view_actions = apply_filters( 'tablepress_admin_view_actions', $this->view_actions );
 	}
 
@@ -928,6 +950,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! empty( $posted_options['admin_menu_parent_page'] ) && '-' != $posted_options['admin_menu_parent_page'] ) {
 			$new_options['admin_menu_parent_page'] = $posted_options['admin_menu_parent_page'];
 			// re-init parent information, as TablePress::redirect() URL might be wrong otherwise
+			/** This filter is documented in classes/class-controller.php */
 			$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $posted_options['admin_menu_parent_page'] );
 			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
 		}
@@ -1039,6 +1062,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$download_data = $export_data;
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully
+			/** This filter is documented in the WordPress file wp-admin/admin.php */
 			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
 			@set_time_limit( 300 );
 
@@ -1251,6 +1275,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully
+			/** This filter is documented in the WordPress file wp-admin/admin.php */
 			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
 			@set_time_limit( 300 );
 
@@ -1859,8 +1884,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
 		// Merge desired options with default render options (see TablePress_Controller_Frontend::shortcode_table())
 		$default_render_options = $_render->get_default_render_options();
+		/** This filter is documented in controllers/controller-frontend.php */
 		$default_render_options = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_render_options );
 		$render_options = shortcode_atts( $default_render_options, $table['options'] );
+		/** This filter is documented in controllers/controller-frontend.php */
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
