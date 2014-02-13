@@ -77,6 +77,21 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		// CSS vendor autoprefixing
+		autoprefixer: {
+			options: {
+				browsers: [ 'Android >= 2.1', 'Chrome >= 21', 'Explorer >= 7', 'Firefox >= 17', 'Opera >= 12.1', 'Safari >= 6.0' ]
+			},
+			all: {
+				src: [
+					'<%= csslint.all.src %>'
+				]
+			},
+			changed: {
+				src: []
+			}
+		},
+
 		// CSS syntax validation
 		csslint: {
 			options: {
@@ -143,7 +158,7 @@ module.exports = function( grunt ) {
 			},
 			css: {
 				files: '<%= csslint.all.src %>',
-				tasks: [ 'csslint:changed', 'cssmin:changed' ]
+				tasks: [ 'autoprefixer:changed', 'csslint:changed', 'cssmin:changed' ]
 			}
 		}
 	} );
@@ -153,7 +168,7 @@ module.exports = function( grunt ) {
 
 	// Register "build" task
 	grunt.registerTask( 'build:js', [ 'jshint:all', 'jsonlint:all', 'uglify:all', 'jsvalidate:all' ] );
-	grunt.registerTask( 'build:css', [ 'csslint:all', 'cssmin:all' ] );
+	grunt.registerTask( 'build:css', [ 'autoprefixer:all', 'csslint:all', 'cssmin:all' ] );
 	grunt.registerTask( 'build', [ 'build:js', 'build:css' ] );
 
 	// Make "watch" the default task
@@ -161,14 +176,14 @@ module.exports = function( grunt ) {
 
 	// Add a listener to the "watch" task
 	//
-	// On "watch", automatically updates the "changed" target for the
-	// "jshint", "uglify", "csslint", and "cssmin" task configurations,
-	// so that only the changed files are linted/minified.
+	// On "watch", automatically updates the "changed" target for the task configurations,
+	// so that only the changed files are touched by the task.
 	grunt.event.on( 'watch', function( action, filepath /*, target */ ) {
 		grunt.config( [ 'jsvalidate', 'changed', 'src' ], filepath );
 		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
 		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
+		grunt.config( [ 'autoprefixer', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'cssmin', 'changed', 'src' ], filepath );
 	} );
