@@ -120,6 +120,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	outline: none; /* Prevent dragging from highlighting the element */
 	position: relative;
 	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
 }
 .CodeMirror-sizer {
@@ -160,6 +161,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 	white-space: normal;
 	height: 100%;
 	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
 	padding-bottom: 30px;
 	margin-bottom: -32px;
@@ -176,7 +178,8 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 }
 .CodeMirror pre {
 	/* Reset some styles that the rest of the page might have set */
-	-moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
 	border-width: 0;
 	background: transparent;
 	font-family: inherit;
@@ -270,6 +273,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 #option-custom-css {
 	margin: 1px;
 	-moz-tab-size: 2;
+	-o-tab-size: 2;
 	tab-size: 2;
 }
 #tablepress-page .CodeMirror-scroll {
