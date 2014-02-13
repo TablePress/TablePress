@@ -408,9 +408,10 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return bool Whether the search term was found or not
 	 */
 	protected function _search_callback( $item ) {
-		static $term;
-		if ( is_null( $term ) ) {
+		static $term, $json_encoded_term;
+		if ( is_null( $term ) || is_null( $json_encoded_term ) ) {
 			$term = wp_unslash( $_GET['s'] );
+			$json_encoded_term = substr( json_encode( $term ), 1, -1 );
 		}
 
 		$item = TablePress::$model_table->load( $item, true, false ); // Load table again, with table data, but without options and visibility settings
@@ -425,7 +426,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		|| false !== stripos( $item['description'], $term )
 		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
-		|| false !== stripos( json_encode( $item['data'] ), $term ) ) {
+		|| false !== stripos( json_encode( $item['data'] ), $json_encoded_term ) ) {
 			return true;
 		}
 
