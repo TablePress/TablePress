@@ -7,13 +7,16 @@
 # to native line endings on checkout.
 *.php text
 *.md text
-*.txt text
 *.js text
+*.json text
 *.css text
+*.yml text
 
-# Explicitely set CRLF for tablepress.php and readme.txt to make them easily readable for Windows users
+# Explicitly set CRLF for tablepress.php, *.txt files, and DataTables *.json files
+# to make them easily readable and editable for Windows users
 tablepress.php text eol=crlf
-readme.txt text eol=crlf
+*.txt text eol=crlf
+i18n/datatables/*.json text eol=crlf
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary

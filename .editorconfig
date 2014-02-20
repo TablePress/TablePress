@@ -13,9 +13,17 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = tab
 
-[*.json,*.yml]
+[*.json]
+indent_style = space
+indent_size = 2
+[*.yml]
 indent_style = space
 indent_size = 2
 
-[*.txt,*.md]
+# User-editable files should have Windows line endings
+[tablepress.php]
+end_of_line = crlf
+[*.txt]
+end_of_line = crlf
+[i18n/datatables/*.json]
 end_of_line = crlf
