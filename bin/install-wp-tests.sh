@@ -24,9 +24,9 @@ svn co --ignore-externals --quiet http://unit-tests.svn.wordpress.org/trunk/ $WP
 
 # portable in-place argument for both GNU sed and Mac OSX sed
 if [[ $(uname -s) == 'Darwin' ]]; then
-  ioption='-i ""'
+	ioption='-i ""'
 else
-  ioption='-i'
+	ioption='-i'
 fi
 
 # generate testing config file
@@ -45,13 +45,13 @@ DB_SOCK_OR_PORT=${PARTS[1]};
 EXTRA=""
 
 if ! [ -z $DB_HOSTNAME ] ; then
-  if [[ "$DB_SOCK_OR_PORT" =~ ^[0-9]+$ ]] ; then
-    EXTRA=" --host=$DB_HOSTNAME --port=$DB_SOCK_OR_PORT --protocol=tcp"
-  elif ! [ -z $DB_SOCK_OR_PORT ] ; then
-    EXTRA=" --socket=$DB_SOCK_OR_PORT"
-  elif ! [ -z $DB_HOSTNAME ] ; then
-    EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
-  fi
+	if [[ "$DB_SOCK_OR_PORT" =~ ^[0-9]+$ ]] ; then
+		EXTRA=" --host=$DB_HOSTNAME --port=$DB_SOCK_OR_PORT --protocol=tcp"
+	elif ! [ -z $DB_SOCK_OR_PORT ] ; then
+		EXTRA=" --socket=$DB_SOCK_OR_PORT"
+	elif ! [ -z $DB_HOSTNAME ] ; then
+		EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
+	fi
 fi
 
 # create database
