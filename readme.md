@@ -137,7 +137,7 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * Many more internal code improvements
 * TablePress now requires WordPress 3.6!
 
-** Version 1.3 **
+**Version 1.3**
 * Compatibility with WordPress 3.8 and the new admin styling
 * Bugfix: Import of JSON files did not take row/column visibility into account
 * Bugfix: File names of exported files were sometimes broken
