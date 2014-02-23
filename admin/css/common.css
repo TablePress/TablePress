@@ -38,12 +38,12 @@
 	margin-right: 20px;
 }
 
-/* placeholder fields in gray text color, but only if JS is enabled */
+/* Placeholder fields in gray text color, but only if JS is enabled */
 .js #tablepress-page .placeholder-active {
 	color: #bbbbbb;
 }
 
-/* width of the columns on the "All Tables" list */
+/* Width of the columns on the "All Tables" list */
 .tablepress-all-tables thead .column-table_id {
 	width: 50px;
 }
@@ -56,7 +56,7 @@
 .tablepress-all-tables thead .column-table_last_modified {
 	width: 15%;
 }
-/* font weight for the table ID column */
+/* Font weight for the table ID column */
 .tablepress-all-tables tbody .column-table_id {
 	font-weight: bold;
 }
@@ -67,7 +67,7 @@
 	padding-left: 0;
 }
 
-/* inline Shortcodes, in texts */
+/* Inline Shortcodes, in texts */
 #tablepress-page .table-shortcode-inline {
 	background: transparent;
 	border: none;
@@ -85,25 +85,25 @@
 	cursor: text;
 }
 
-/* table dropdown on "Export" screen */
+/* Table ID/name dropdown on "Export" screen */
 #tablepress-page #tables-export {
 	width: 100%;
 	height: auto;
 }
 
-/* red border for form fields that have invalid values */
+/* Red border for form fields that have invalid values */
 #tablepress-page form :invalid,
 #tablepress-page form .invalid {
 	border-color: #cc0000 !important;
 }
 
-/* tables for in postboxes (on the "Edit" and "Plugin Options" screens) */
+/* Tables in postboxes (on the "Edit" and "Plugin Options" screens) */
 .tablepress-postbox-table {
 	border-spacing: 0;
 	max-width: 1000px;
 	width: 100%;
 }
-/* default column widths */
+/* Default column widths */
 .tablepress-postbox-table .column-1 {
 	width: 25%;
 }
@@ -132,7 +132,7 @@
 	vertical-align: top;
 	padding-top: 6px;
 }
-/* adjust positioning of labels in relation to checkboxes/radio buttons */
+/* Adjust positioning of labels in relation to checkboxes/radio buttons */
 #tablepress_edit-table-options .column-2 label,
 #tablepress_edit-datatables-features .column-2 label {
 	vertical-align: top;

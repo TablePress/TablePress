@@ -7,12 +7,12 @@
  * @since 1.0.0
  */
 
-/* hour glass cursor, while waiting for AJAX */
+/* Hour glass cursor, while waiting for AJAX */
 body.wait * {
 	cursor: wait !important;
 }
 
-/* container for preview and advanced editor */
+/* container for Table Preview and Advanced Editor Thickboxes */
 .hidden-container {
 	display: none;
 }
@@ -22,14 +22,14 @@ body.wait * {
 	margin: 6px;
 }
 
-/* allow wide tables to scroll sideways, only on "Edit" screen */
+/* Allow wide tables to scroll sideways, only on "Edit" screen */
 body,
 #wpwrap,
 #wpbody-content {
 	overflow: visible !important; /* !important is necessary to override an inline style that postboxes.js sets via JS */
 }
 
-/* move Thickbox more to the front, so that it's always above a jQuery UI dialog */
+/* Move Thickbox more to the front, so that it's always above a jQuery UI dialog */
 #TB_HideSelect {
 	z-index: 301099;
 }
@@ -49,7 +49,7 @@ body,
 	width: 100%;
 	height: 100%;
 }
-/* To account for additional padding of #TB_WindowContent in direct preview */
+/* Account for additional padding of #TB_WindowContent in direct preview */
 #table-preview {
 	height: 100%;
 	margin: -2px -15px -15px -15px;
@@ -73,7 +73,7 @@ body,
 	line-height: 30px;
 }
 
-/* spinner/loading animation while saving/preview preparation */
+/* Spinner/loading animation that is shown during saving/preview preparation */
 .spinner.animation-saving,
 .spinner.animation-preview {
 	display: inline-block;
@@ -82,7 +82,7 @@ body,
 	vertical-align: middle;
 }
 
-/* Margins from dynamically created (inline) .error/.updated messages */
+/* Margins for dynamically created (inline) .error/.updated messages */
 #tablepress-page div.ajax-alert {
 	margin: -10px 0 15px;
 }
@@ -97,10 +97,10 @@ body,
 }
 
 #tablepress-page #tablepress_edit-table-data {
-	display: inline-block; /* stretch to the width of the table */
-	min-width: 99.9%; /* but use the full width, but minus like 1px as the box is wider than the others otherwise */
+	display: inline-block; /* Stretch to the width of the table */
+	min-width: 99.9%; /* but use the full width, minus approx. 1px as the box is wider than the others otherwise */
 }
-/* Re-instate hide-if-js functionality, due to higher specificity of ID selectors (necessary when hiding postbox) */
+/* Reinstate hide-if-js functionality, due to higher specificity of ID selectors (necessary when hiding postboxes) */
 #tablepress-page #tablepress_edit-table-data.hide-if-js {
 	display: none;
 }
@@ -113,19 +113,19 @@ body,
 	width: 120px;
 }
 
-/* table cells */
+/* Table cells */
 #edit-form-body td {
 	padding: 2px 1px;
 	height: 32px;
 }
 
-/* cells of currently focussed row/autogrow, and automatically increase cells if JS is disabled */
+/* Cells of currently focused row ("auto grow") */
 .no-js #edit-form-body td,
 #edit-form-body .focus td {
 	height: 70px;
 }
 
-/* alternating row colors */
+/* Alternating row colors */
 #edit-form-body .odd {
 	background-color: #f1f1f1;
 }
@@ -136,7 +136,7 @@ body,
 	width: 100%;
 	width: auto\0/IE; /* IE hack, as cells will otherwise shrink and overlap instead of horizontal scrolling kicking in */
 	height: 100%;
-	-webkit-box-shadow: none; /* for faster drawing performance, and hopefully faster scrolling */
+	-webkit-box-shadow: none; /* For faster drawing performance, and hopefully faster scrolling */
 	box-shadow: none;
 }
 #edit-form-body textarea:focus {
@@ -151,7 +151,7 @@ body,
 	border-collapse: collapse;
 }
 
-/* row and column moving with jQueryUI sortable */
+/* Allow moving rows and columns with jQueryUI sortable */
 #edit-form .move-handle {
 	display: block;
 	margin: auto;
@@ -178,13 +178,13 @@ body,
 	height: 64px; /* height of "#edit-form-body .focus td" - 6px */
 }
 
-/* hightlighting of table head and foot in table cells */
+/* Highlighting of table head and foot in table cells */
 #edit-form-body .head-row,
 #edit-form-body .foot-row {
 	background-color: #d9edf7;
 }
 
-/* head cells (column letters) and sorting */
+/* Head cells (column letters) and sorting */
 #edit-form-head .sort-control {
 	float: right;
 	height: 18px;
