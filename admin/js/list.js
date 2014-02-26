@@ -32,8 +32,8 @@ jQuery( document ).ready( function( $ ) {
 		var width = $( window ).width() - 120,
 			height = $( window ).height() - 120,
 			$this = $(this);
-		if ( $( 'body.admin-bar' ).length ) {
-			height -= 28;
+		if ( $( '#wpadminbar' ).length ) {
+			height -= parseInt( $( '#wpadminbar' ).css( 'height' ), 10 );
 		}
 		tb_show( $this.text(), $this.attr( 'href' ) + 'TB_iframe=true&height=' + height + '&width=' + width, false );
 		return false;

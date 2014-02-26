@@ -23,7 +23,7 @@ jQuery( document ).ready( function( $ ) {
 		var width = $( window ).width(),
 			W = ( 720 < width ) ? 720 : width,
 			H = $( window ).height();
-		if ( $( 'body.admin-bar' ).length ) {
+		if ( $( '#wpadminbar' ).length ) {
 			H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
 		}
 

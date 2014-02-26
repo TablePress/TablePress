@@ -247,8 +247,8 @@ jQuery( document ).ready( function( $ ) {
 			show: function( url ) {
 				var width = $( window ).width() - 120,
 					height = $( window ).height() - 120;
-				if ( $( 'body.admin-bar' ).length ) {
-					height -= 28;
+				if ( $( '#wpadminbar' ).length ) {
+					height -= parseInt( $( '#wpadminbar' ).css( 'height' ), 10 );
 				}
 				tb_show( $( '.show-preview-button' ).first().text(), url + '&height=' + height + '&width=' + width, false );
 			}
@@ -860,7 +860,7 @@ jQuery( document ).ready( function( $ ) {
 						width = $( window ).width(),
 						W = ( 720 < width ) ? 720 : width,
 						H = $( window ).height();
-					if ( $( 'body.admin-bar' ).length ) {
+					if ( $( '#wpadminbar' ).length ) {
 						H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
 					}
 					tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
