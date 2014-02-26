@@ -907,19 +907,22 @@ class TablePress_Render {
 <style type="text/css">
 /* iframe */
 body {
+	margin: 10px;
 	font-family: sans-serif;{$rtl}
 }
-/* inline Shortcodes, in texts */
+/* Inline Shortcodes, in texts */
 .table-shortcode-inline {
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 100px;
+	width: 110px;
 	margin: 0;
 	padding: 0;
-	font-size: 80%;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+	text-align: center;
+	font-weight: bold;
+	font-size: 100%;
 }
 .table-shortcode {
 	cursor: text;

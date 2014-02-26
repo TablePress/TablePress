@@ -256,8 +256,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			/** This filter is documented in controllers/controller-frontend.php */
 			$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 			$_render->set_input( $table, $render_options );
-			$head_html = '<style type="text/css">body{margin:10px;}</style>';
-			$head_html .= $_render->get_preview_css();
+			$head_html = $_render->get_preview_css();
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
 			if ( ! empty( $custom_css ) ) {
 				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
@@ -265,8 +264,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			$body_html = '<div id="tablepress-page"><p>'
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
-				. __( 'Because of CSS styling, the table might look different on your page!', 'tablepress' ) . ' '
-				. __( 'The features of the DataTables JavaScript library are also not visible in this preview!', 'tablepress' ) . '<br />'
+				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
+				. __( 'The features of the DataTables JavaScript library are also not available or visible in this preview!', 'tablepress' ) . '<br />'
 				. sprintf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it into the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id={$table['id']} /]" ) . '" readonly="readonly" />' )
 				. '</p>' . $_render->get_output() . '</div>';
 		} else {

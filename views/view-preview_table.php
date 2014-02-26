@@ -55,7 +55,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 <title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'Preview', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">
 body {
-	margin: -6px 10px 10px;
+	margin-top: -6px !important;
 }
 </style>
 <?php echo $this->data['head_html']; ?>
