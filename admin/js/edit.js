@@ -858,7 +858,7 @@ jQuery( document ).ready( function( $ ) {
 					this.selectionStart = this.selectionEnd = this.value.length;
 					var $link = $id( 'image-add' ),
 						width = $( window ).width(),
-						W = ( 720 < width ) ? 720 : width,
+						W = ( 840 < width ) ? 840 : width,
 						H = $( window ).height();
 					if ( $( '#wpadminbar' ).length ) {
 						H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
