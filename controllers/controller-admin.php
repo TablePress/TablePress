@@ -481,7 +481,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return;
 		}
 		add_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 ); // allow changing the plugin language
-		$language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
+		$language_directory = dirname( TABLEPRESS_BASENAME ) . '/i18n';
 		load_plugin_textdomain( 'tablepress', false, $language_directory );
 		remove_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 );
 		$this->i18n_support_loaded = true;
