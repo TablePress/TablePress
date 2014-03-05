@@ -698,10 +698,7 @@ class TablePress_Render {
 			if ( "'=" == substr( $cell_content, 0, 2 ) ) {
 				$cell_content = substr( $cell_content, 1 );
 			}
-			$cell_content = $this->safe_output( $cell_content );
-			if ( false !== strpos( $cell_content, '[' ) ) {
-				$cell_content = do_shortcode( $cell_content );
-			}
+			$cell_content = do_shortcode( $this->safe_output( $cell_content ) );
 			/**
 			 * Filter the content of a single cell.
 			 *
