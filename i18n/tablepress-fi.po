@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TablePress 1.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: 2013-04-15 18:25:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

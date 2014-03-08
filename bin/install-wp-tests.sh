@@ -20,7 +20,7 @@ wget -nv -O /tmp/wordpress.tar.gz https://github.com/WordPress/WordPress/tarball
 tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
 
 # set up testing suite
-svn co --ignore-externals --quiet http://unit-tests.svn.wordpress.org/trunk/ $WP_TESTS_DIR
+svn co --ignore-externals --quiet https://unit-tests.svn.wordpress.org/trunk/ $WP_TESTS_DIR
 
 # portable in-place argument for both GNU sed and Mac OSX sed
 if [[ $(uname -s) == 'Darwin' ]]; then

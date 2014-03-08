@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v1.1\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: 2013-09-04 16:50:41+00:00\n"
 "PO-Revision-Date: 2013-09-07 23:23+0400\n"
 "Last-Translator: Tomasina <tomasina@gmail.com>\n"
