@@ -690,6 +690,8 @@ class TablePress_Render {
 	 */
 	protected function _render_row( $row_idx, $tag ) {
 		$row_cells = array();
+		$other_attr = '';
+		$tr_attr = '';
 		// loop through cells in reversed order, to search for colspan or rowspan trigger words
 		for ( $col_idx = $this->last_column_idx; $col_idx >= 0; $col_idx-- ) {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
@@ -782,7 +784,8 @@ class TablePress_Render {
 				$tag = 'th';
 			}
 
-			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}>{$cell_content}</{$tag}>";
+			$other_attr = apply_filters('tag_custom_attr', ''); // this allow us to add a custom attribute to the tag
+			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}{$other_attr}>{$cell_content}</{$tag}>";
 			$this->colspan[ $row_idx ] = 1; // reset
 			$this->rowspan[ $col_idx ] = 1; // reset
 		}
@@ -807,8 +810,9 @@ class TablePress_Render {
 			$row_class = " class=\"{$row_class}\"";
 		}
 
+		$tr_attr = apply_filters('tr_custom_attr', ''); // this allow us to add a custom attribute to the tr tag
 		$row_cells = array_reverse( $row_cells ); // because we looped through the cells in reverse order
-		return "<tr{$row_class}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
+		return "<tr{$row_class}{$tr_attr}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
 	}
 
 	/**
