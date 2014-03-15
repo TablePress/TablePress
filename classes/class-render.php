@@ -784,7 +784,7 @@ class TablePress_Render {
 				$tag = 'th';
 			}
 
-			$other_attr = apply_filters('tag_custom_attr', ''); // this allow us to add a custom attribute to the tag
+			$other_attr = apply_filters('tag_custom_attr', '', $this->table, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] ); // this allow us to add a custom attribute to the tag
 			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}{$other_attr}>{$cell_content}</{$tag}>";
 			$this->colspan[ $row_idx ] = 1; // reset
 			$this->rowspan[ $col_idx ] = 1; // reset
@@ -810,7 +810,7 @@ class TablePress_Render {
 			$row_class = " class=\"{$row_class}\"";
 		}
 
-		$tr_attr = apply_filters('tr_custom_attr', ''); // this allow us to add a custom attribute to the tr tag
+		$tr_attr = apply_filters( 'tr_custom_attr', '', $this->table, $this->table['id'], $row_idx + 1, $this->table['data'][ $row_idx ] ); // this allow us to add a custom attribute to the tr tag
 		$row_cells = array_reverse( $row_cells ); // because we looped through the cells in reverse order
 		return "<tr{$row_class}{$tr_attr}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
 	}
