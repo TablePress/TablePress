@@ -100,7 +100,7 @@ require dirname( __FILE__ ) . '/class.csstidy_optimise.php';
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.4.0
+ * @version 1.5.2
  */
 class csstidy {
 
@@ -153,7 +153,7 @@ class csstidy {
 	 * @var string
 	 * @access private
 	 */
-	public $version = '1.4';
+	public $version = '1.5.2';
 	/**
 	 * Stores the settings
 	 * @var array
@@ -243,7 +243,6 @@ class csstidy {
 	 * @access private
 	 */
 	public $from = array();
-	/**
 	/**
 	 * =true if in invalid at-rule
 	 * @var bool
@@ -997,7 +996,7 @@ class csstidy {
 	 */
 	public function quote_font_format($value) {
 		if (strncmp($value,'format',6)==0) {
-			$p = strrpos($value,")");
+			$p = strpos($value,')',7);
 			$end = substr($value,$p);
 			$format_strings = $this->parse_string_list(substr($value, 7, $p-7));
 			if (!$format_strings) {
