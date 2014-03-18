@@ -150,6 +150,7 @@ class TablePress_About_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function postbox_debug_version_information( $data, $box ) {
+		$mysqli = ( isset( $GLOBALS['wpdb'] ) && isset( $GLOBALS['wpdb']->use_mysqli ) && $GLOBALS['wpdb']->use_mysqli && isset( $GLOBALS['wpdb']->dbh ) );
 		?>
 		<p>
 			<strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong>
@@ -163,8 +164,9 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
 			<br />&middot; Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?>
 			<br />&middot; PHP: <?php echo phpversion(); ?>
-			<br />&middot; mySQL (Server): <?php echo mysql_get_server_info(); ?>
-			<br />&middot; mySQL (Client): <?php echo mysql_get_client_info(); ?>
+			<br />&middot; mysqli Extension: <?php echo $mysqli ? 'true' : 'false'; ?>
+			<br />&middot; mySQL (Server): <?php echo $mysqli ? mysqli_get_server_info( $GLOBALS['wpdb']->dbh ) : mysql_get_server_info(); ?>
+			<br />&middot; mySQL (Client): <?php echo $mysqli ? mysqli_get_client_info( $GLOBALS['wpdb']->dbh ) : mysql_get_client_info(); ?>
 			<br />&middot; ZIP support: <?php echo $data['zip_support_available'] ? 'yes' : 'no'; ?>
 			<br />&middot; UTF-8 conversion: <?php echo ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) ? 'yes' : 'no'; ?>
 			<br />&middot; WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?>
