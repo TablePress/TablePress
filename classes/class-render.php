@@ -621,9 +621,15 @@ class TablePress_Render {
 		$tbody = array_reverse( $tbody ); // because we looped through the rows in reverse order
 		$tbody = "<tbody{$tbody_class}>\n" . implode( '', $tbody ) . "</tbody>\n";
 
-		// <table> attributes
-		$id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}\"" : '';
-		// classes that will be added to <table class="...">, for CSS styling
+		// Attributes for the table (HTML table element)
+		$table_attributes = array();
+
+		// "id" attribute
+		if ( ! empty( $this->render_options['html_id'] ) ) {
+			$table_attributes['id'] = $this->render_options['html_id'];
+		}
+
+		// "class" attribute
 		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
 		/**
 		 * Filter the CSS classes that are given to the HTML table element.
@@ -638,7 +644,12 @@ class TablePress_Render {
 		$css_classes = array_map( 'sanitize_html_class', $css_classes );
 		$css_classes = array_unique( $css_classes );
 		$css_classes = trim( implode( ' ', $css_classes ) );
-		$class = ( ! empty( $css_classes ) ) ? " class=\"{$css_classes}\"" : '';
+		if ( ! empty( $css_classes ) ) {
+			$table_attributes['class'] = $css_classes;
+		}
+
+		// "summary" attribute
+		$summary = '';
 		/**
 		 * Filter the content for the summary attribute of the HTML table element.
 		 *
@@ -649,13 +660,31 @@ class TablePress_Render {
 		 * @param string $summary The content for the summary attribute of the table. Default empty.
 		 * @param array  $table   The current table.
 		 */
-		$summary = apply_filters( 'tablepress_print_summary_attr', '', $this->table );
-		$summary = ( ! empty( $summary ) ) ? ' summary="' . esc_attr( $summary ) . '"' : '';
-		$cellspacing = ( false !== $this->render_options['cellspacing'] ) ? ' cellspacing="' . intval( $this->render_options['cellspacing'] ) . '"' : '';
-		$cellpadding = ( false !== $this->render_options['cellpadding'] ) ? ' cellpadding="' . intval( $this->render_options['cellpadding'] ) . '"' : '';
-		$border = ( false !== $this->render_options['border'] ) ? ' border="' . intval( $this->render_options['border'] ) . '"' : '';
+		$summary = apply_filters( 'tablepress_print_summary_attr', $summary, $this->table );
+		if ( ! empty( $summary ) ) {
+			$table_attributes['summary'] = esc_attr( $summary );
+		}
 
-		$output .= "\n<table{$id}{$class}{$summary}{$cellspacing}{$cellpadding}{$border}>\n";
+		// Legacy support for attributes that are not encouraged in HTML5
+		foreach ( array( 'cellspacing', 'cellpadding', 'border' ) as $attribute ) {
+			if ( false !== $this->render_options[ $attribute ] ) {
+				$table_attributes[ $attribute ] = intval( $this->render_options[ $attribute ] );
+			}
+		}
+
+		/**
+		 * Filter the attributes for the table (HTML table element).
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array $table_attributes The attributes for the table element.
+		 * @param array $table            The current table.
+		 * @param array $render_options   The render options for the table.
+		 */
+		$table_attributes = apply_filters( 'tablepress_table_tag_attributes', $table_attributes, $this->table, $this->render_options );
+		$table_attributes = $this->_attributes_array_to_string( $table_attributes );
+
+		$output .= "\n<table{$table_attributes}>\n";
 		$output .= $caption . $colgroup . $thead . $tfoot . $tbody;
 		$output .= "</table>\n";
 
@@ -753,13 +782,18 @@ class TablePress_Render {
 				$cell_content = '<div>' . $cell_content . '</div>';
 			}
 
-			$span_attr = '';
+			// Attributes for the table cell (HTML td or th element)
+			$tag_attributes = array();
+
+			// "colspan" and "rowspan" attributes
 			if ( $this->colspan[ $row_idx ] > 1 ) { // we have colspaned cells
-				$span_attr .= " colspan=\"{$this->colspan[ $row_idx ]}\"";
+				$tag_attributes['colspan'] = $this->colspan[ $row_idx ];
 			}
 			if ( $this->rowspan[ $col_idx ] > 1 ) { // we have rowspaned cells
-				$span_attr .= " rowspan=\"{$this->rowspan[ $col_idx ]}\"";
+				$tag_attributes['rowspan'] = $this->rowspan[ $col_idx ];
 			}
+
+			// "class" attribute
 			$cell_class = 'column-' . ( $col_idx + 1 );
 			/**
 			 * Filter the CSS classes that are given to a single cell (HTML td element) of a table.
@@ -775,40 +809,95 @@ class TablePress_Render {
 			 * @param int    $rowspan_col  The number of combined rows for this cell.
 			 */
 			$cell_class = apply_filters( 'tablepress_cell_css_class', $cell_class, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
-			$class_attr = ( ! empty( $cell_class ) ) ? " class=\"{$cell_class}\"" : '';
-			$style_attr = ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][ $col_idx ] ) ) ? ' style="width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][ $col_idx ] ) . ';"' : '';
+			if ( ! empty( $cell_class ) ) {
+				$tag_attributes['class'] = $cell_class;
+			}
+
+			// "style" attribute
+			if ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][ $col_idx ] ) ) {
+				$tag_attributes['style'] = 'width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][ $col_idx ] ) . ';';
+			}
+
+			/**
+			 * Filter the attributes for the table cell (HTML td or th element).
+			 *
+			 * @since 1.4.0
+			 *
+			 * @param array  $tag_attributes The attributes for the td or th element.
+			 * @param string $table_id       The current table ID.
+			 * @param string $cell_content   The cell content.
+			 * @param int    $row_idx        The row number of the cell.
+			 * @param int    $col_idx        The column number of the cell.
+			 * @param int    $colspan_row    The number of combined columns for this cell.
+			 * @param int    $rowspan_col    The number of combined rows for this cell.
+			 */
+			$tag_attributes = apply_filters( 'tablepress_cell_tag_attributes', $tag_attributes, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
+			$tag_attributes = $this->_attributes_array_to_string( $tag_attributes );
 
 			if ( $this->render_options['first_column_th'] && 0 == $col_idx ) {
 				$tag = 'th';
 			}
 
-			$row_cells[] = "<{$tag}{$span_attr}{$class_attr}{$style_attr}>{$cell_content}</{$tag}>";
+			$row_cells[] = "<{$tag}{$tag_attributes}>{$cell_content}</{$tag}>";
 			$this->colspan[ $row_idx ] = 1; // reset
 			$this->rowspan[ $col_idx ] = 1; // reset
 		}
 
-		$row_class = 'row-' . ( $row_idx + 1 ) ;
+		// Attributes for the table row (HTML tr element)
+		$tr_attributes = array();
+
+		// "class" attribute
+		$row_classes = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] ) {
-			$row_class .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
+			$row_classes .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
 		}
 		/**
 		 * Filter the CSS classes that are given to a row (HTML tr element) of a table.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $row_class The CSS classes for the row.
-		 * @param string $table_id  The current table ID.
-		 * @param array  $row_html  The HTML code for the cells of the row.
-		 * @param int    $row_idx   The row number.
-		 * @param array  $row_cells The content of the cells of the row.
+		 * @param string $row_classes The CSS classes for the row.
+		 * @param string $table_id    The current table ID.
+		 * @param array  $row_cells   The HTML code for the cells of the row.
+		 * @param int    $row_idx     The row number.
+		 * @param array  $row_data    The content of the cells of the row.
 		 */
-		$row_class = apply_filters( 'tablepress_row_css_class', $row_class, $this->table['id'], $row_cells, $row_idx + 1, $this->table['data'][ $row_idx ] );
-		if ( ! empty( $row_class ) ) {
-			$row_class = " class=\"{$row_class}\"";
+		$row_classes = apply_filters( 'tablepress_row_css_class', $row_classes, $this->table['id'], $row_cells, $row_idx + 1, $this->table['data'][ $row_idx ] );
+		if ( ! empty( $row_classes ) ) {
+			$tr_attributes['class'] = $row_classes;
 		}
 
+		/**
+		 * Filter the attributes for the table row (HTML tr element).
+		 *
+		 * @since 1.4.0
+		 *
+		 * @param array  $tr_attributes The attributes for the tr element.
+		 * @param string $table_id      The current table ID.
+		 * @param int    $row_idx       The row number.
+		 * @param array  $row_data      The content of the cells of the row.
+		 */
+		$tr_attributes = apply_filters( 'tablepress_row_tag_attributes', $tr_attributes, $this->table['id'], $row_idx + 1, $this->table['data'][ $row_idx ] );
+		$tr_attributes = $this->_attributes_array_to_string( $tr_attributes );
+
 		$row_cells = array_reverse( $row_cells ); // because we looped through the cells in reverse order
-		return "<tr{$row_class}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
+		return "<tr{$tr_attributes}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
+	}
+
+	/**
+	 * Convert an array of HTML tag attributes to a string.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param array $attributes Attributes for the HTML tag in the array keys, and their values in the array values.
+	 * @return string The attributes as a string for usage in a HTML element.
+	 */
+	protected function _attributes_array_to_string( array $attributes ) {
+		$attributes_string = '';
+		foreach ( $attributes as $attribute => $value ) {
+			$attributes_string .= " {$attribute}=\"{$value}\"";
+		}
+		return $attributes_string;
 	}
 
 	/**
