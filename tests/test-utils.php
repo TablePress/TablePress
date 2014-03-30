@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Tests basic TablePress utility functions.
+ */
 class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 
 	function setUp() {
