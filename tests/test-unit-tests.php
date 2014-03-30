@@ -15,6 +15,9 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	/**
 	 * If these tests are being run on Travis CI, verify that the version of
 	 * WordPress installed is the version that we requested.
+	 * This test requires PHP 5.3, as PHP 5.2 in Travis CI does not support HTTPS.
+	 *
+	 * @requires PHP 5.3
 	 */
 	function test_wp_version() {
 		if ( ! getenv( 'TRAVIS' ) ) {
