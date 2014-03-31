@@ -8,8 +8,8 @@ $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array( 'tablepress/tablepress.php' ),
 );
 
-// If the develop repo location is defined (as WP_DEVELOP_DIR), use that location.
-// Otherwise, we'll just assume that this plugin is installed in a WordPress develop SVN checkout.
+// If the WP unit tests location is defined (as WP_TESTS_DIR), use that location.
+// Otherwise, we'll just assume that this plugin is installed in a WordPress Develop repo checkout.
 if( false !== getenv( 'WP_TESTS_DIR' ) ) {
 	require getenv( 'WP_TESTS_DIR' ) . 'includes/bootstrap.php';
 } else {
