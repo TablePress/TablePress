@@ -136,11 +136,19 @@ body,
 	width: 100%;
 	width: auto\0/IE; /* IE hack, as cells will otherwise shrink and overlap instead of horizontal scrolling kicking in */
 	height: 100%;
-	-webkit-box-shadow: none; /* For faster drawing performance, and hopefully faster scrolling */
-	box-shadow: none;
 }
 #edit-form-body textarea:focus {
 	border-color: #333333;
+}
+
+/* For faster drawing performance, and hopefully faster scrolling */
+#tablepress-page input,
+#tablepress-page textarea,
+#tablepress-page select {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-webkit-transition: all 0 ease 0;
+	transition: all 0 ease 0;
 }
 
 #edit-form-foot input[type="checkbox"] {
