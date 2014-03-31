@@ -20,11 +20,10 @@ before_script:
   - export WP_TESTS_DIR=$WP_DEVELOP_DIR/tests/phpunit/
   - export PLUGIN_SLUG=$(basename $(pwd))
   - export PLUGIN_SLUG_LC=${PLUGIN_SLUG,,}
-  - git clone git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
+  - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
   - cd ..
-  - mv $PLUGIN_SLUG "$WP_DEVELOP_DIR/src/wp-content/plugins/$PLUGIN_SLUG_LC"
+  - mv "$PLUGIN_SLUG" "$WP_DEVELOP_DIR/src/wp-content/plugins/$PLUGIN_SLUG_LC"
   - cd $WP_DEVELOP_DIR
-  - git checkout $WP_VERSION
   - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
   - cp wp-tests-config-sample.php wp-tests-config.php
   - sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
