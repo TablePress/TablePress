@@ -155,7 +155,7 @@ class TablePress_About_View extends TablePress_View {
 		<p>
 			<strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong>
 		</p>
-		<p>
+		<p class="ltr">
 			&middot; Website: <?php echo site_url(); ?>
 			<br />&middot; TablePress: <?php echo TablePress::version; ?>
 			<br />&middot; TablePress (DB): <?php echo TablePress::db_version; ?>

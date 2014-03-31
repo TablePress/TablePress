@@ -163,7 +163,6 @@ body.rtl {
 }
 .rtl #tablepress-page .table-shortcode-inline {
 	width: 125px;
-	direction: ltr;
 	font-size: 13px;
 	vertical-align: baseline;
 }
@@ -177,7 +176,7 @@ body.rtl {
 <p>
 <?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may insert a table into a post or page here.', 'tablepress' ); ?>
 </p><p>
-<?php printf( __( 'Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id=<ID> /]" ) . '" readonly="readonly" />' ); ?>
+<?php printf( __( 'Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline ltr" value="' . esc_attr( '[' . TablePress::$shortcode . " id=<ID> /]" ) . '" readonly="readonly" />' ); ?>
 </p>
 <?php
 	if ( ! empty( $_GET['s'] ) ) {
