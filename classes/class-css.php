@@ -345,6 +345,9 @@ class TablePress_CSS {
 			$result = $wp_filesystem->put_contents( $filename, $file_content[ $css_type ], FS_CHMOD_FILE );
 			$total_result = ( $total_result && $result );
 		}
+
+		$this->_flush_caching_plugins_css_minify_caches();
+
 		return $total_result;
 	}
 
@@ -407,7 +410,27 @@ class TablePress_CSS {
 				$total_result = ( $total_result && $result );
 			}
 		}
+
+		$this->_flush_caching_plugins_css_minify_caches();
+
 		return $total_result;
+	}
+
+	/**
+	 * Flush the CSS minification cache of W3 Total Cache
+	 *
+	 * @since 1.4.0
+	 */
+	protected function _flush_caching_plugins_css_minify_caches() {
+		/** This filter is documented in models/model-table.php */
+		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) ) {
+			return;
+		}
+
+		// W3 Total Cache
+		if ( function_exists( 'w3tc_minify_flush' ) ) {
+			w3tc_minify_flush();
+		}
 	}
 
 } // class TablePress_CSS
