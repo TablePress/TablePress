@@ -834,10 +834,12 @@ jQuery( document ).ready( function( $ ) {
 				// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 				// other approaches can lead to the wrong textarea being selected
 				$id( 'edit-form-body' ).one( 'mousedown', 'textarea', function() {
-					window.wpActiveEditor = this.id;
+					var editor_id = this.id;
 					$( document ).one( 'mouseup', function() {
-						wpLink.open();
-						tp.table.set_table_changed();
+						if ( typeof wpLink !== 'undefined' ) {
+							wpLink.open( editor_id );
+							tp.table.set_table_changed();
+						}
 					} );
 				} );
 			}
@@ -1147,12 +1149,12 @@ jQuery( document ).ready( function( $ ) {
 				'.save-changes-button': tp.save_changes.trigger,
 				'.show-help-box':		function() {
 					$(this).next().wpdialog( {
-					title: $(this).attr( 'title' ),
-					height: 420,
-					width: 320,
-					modal: true,
-					dialogClass: 'wp-dialog',
-					resizable: false
+						title: $(this).attr( 'title' ),
+						height: 420,
+						width: 320,
+						modal: true,
+						dialogClass: 'wp-dialog',
+						resizable: false
 					} );
 				}
 			},

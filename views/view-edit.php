@@ -63,6 +63,7 @@ class TablePress_Edit_View extends TablePress_View {
 		}
 
 		wp_enqueue_style( 'wp-jquery-ui-dialog' ); // do this here to get CSS into <head>
+		wp_enqueue_script( 'wpdialogs' ); // For the Advanced Editor
 		add_action( 'admin_footer', array( $this, 'dequeue_media_upload_js' ), 2 ); // remove default media-upload.js, in favor of own code
 		add_thickbox();
 		add_filter( 'media_view_strings', array( $this, 'change_media_view_strings' ) );
@@ -73,7 +74,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		// See wp-includes/script-loader.php for default parameters
 		$wplink_url = plugins_url( "admin/js/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
-		wp_enqueue_script( 'wplink', $wplink_url, array( 'jquery', 'wpdialogs' ), TablePress::version, true );
+		wp_enqueue_script( 'wplink', $wplink_url, array( 'jquery' ), TablePress::version, true );
 		wp_localize_script( 'wplink', 'wpLinkL10n', array(
 			'title' => _x( 'Insert/edit link', 'Insert Link dialog', 'tablepress' ),
 			'update' => _x( 'Update', 'Insert Link dialog', 'tablepress' ),
