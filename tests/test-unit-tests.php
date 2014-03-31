@@ -8,7 +8,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	/**
 	 * Run a simple test to ensure that the tests are running
 	 */
-	function test_true_is_true() {
+	public function test_true_is_true() {
 		$this->assertTrue( true );
 	}
 
@@ -19,7 +19,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	 *
 	 * @requires PHP 5.3
 	 */
-	function test_wp_version() {
+	public function test_wp_version() {
 		if ( ! getenv( 'TRAVIS' ) ) {
 			$this->markTestSkipped( 'Test skipped since Travis CI was not detected.' );
 		}
@@ -39,7 +39,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	/**
 	 * Ensure that the plugin has been installed and activated.
 	 */
-	function test_plugin_is_activated() {
+	public function test_plugin_is_activated() {
 		$this->assertTrue( is_plugin_active( 'tablepress/tablepress.php' ) );
 	}
 
