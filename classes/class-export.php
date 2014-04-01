@@ -57,12 +57,12 @@ class TablePress_Export {
 		$this->export_formats = array(
 			'csv' => __( 'CSV - Character-Separated Values', 'tablepress' ),
 			'html' => __( 'HTML - Hypertext Markup Language', 'tablepress' ),
-			'json' => __( 'JSON - JavaScript Object Notation', 'tablepress' )
+			'json' => __( 'JSON - JavaScript Object Notation', 'tablepress' ),
 		);
 		$this->csv_delimiters = array(
 			';' => __( '; (semicolon)', 'tablepress' ),
 			',' => __( ', (comma)', 'tablepress' ),
-			'tab' => __( '\t (tabulator)', 'tablepress' )
+			'tab' => __( '\t (tabulator)', 'tablepress' ),
 		);
 
 		/** This filter is documented in the WordPress function unzip_file() in wp-admin/includes/file.php */

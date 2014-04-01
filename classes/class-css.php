@@ -129,7 +129,7 @@ class TablePress_CSS {
 			// Singlesite installation: /wp-content/
 			$upload_location = array(
 				'basedir' => WP_CONTENT_DIR,
-				'baseurl' => content_url()
+				'baseurl' => content_url(),
 			);
 		}
 
@@ -328,7 +328,7 @@ class TablePress_CSS {
 		$file_content = array(
 			'normal' => $custom_css_normal,
 			'minified' => $custom_css_minified,
-			'combined' => $default_css . "\n" . $custom_css_minified
+			'combined' => $default_css . "\n" . $custom_css_minified,
 		);
 
 		$total_result = true; // whether all files were saved successfully

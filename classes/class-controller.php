@@ -102,7 +102,7 @@ abstract class TablePress_Controller {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation
 				TablePress::$model_options->update( array(
 					'first_activation' => current_time( 'timestamp' ),
-					'plugin_options_db_version' => TablePress::db_version
+					'plugin_options_db_version' => TablePress::db_version,
 				) );
 			} else {
 				// Update Plugin Options Options, if necessary
@@ -111,7 +111,7 @@ abstract class TablePress_Controller {
 					'plugin_options_db_version' => TablePress::db_version,
 					'prev_tablepress_version' => TablePress::$model_options->get( 'tablepress_version' ),
 					'tablepress_version' => TablePress::version,
-					'message_plugin_update' => true
+					'message_plugin_update' => true,
 				);
 
 				if ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== TablePress::$model_options->get( 'custom_css' ) ) { // only write files, if "Custom CSS" is to be used, and if there is "Custom CSS"
@@ -138,7 +138,7 @@ abstract class TablePress_Controller {
 			}
 
 			TablePress::$model_options->update( array(
-				'message_plugin_update_content' => TablePress::$model_options->plugin_update_message( TablePress::$model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() )
+				'message_plugin_update_content' => TablePress::$model_options->plugin_update_message( TablePress::$model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() ),
 			) );
 		}
 
@@ -157,7 +157,7 @@ abstract class TablePress_Controller {
 			}
 
 			TablePress::$model_options->update( array(
-				'table_scheme_db_version' => TablePress::table_scheme_version
+				'table_scheme_db_version' => TablePress::table_scheme_version,
 			) );
 		}
 
@@ -166,7 +166,7 @@ abstract class TablePress_Controller {
 		if ( is_user_logged_in() && ( TablePress::$model_options->get( 'user_options_db_version' ) < TablePress::db_version ) ) {
 			TablePress::$model_options->merge_user_options_defaults();
 			TablePress::$model_options->update( array(
-				'user_options_db_version' => TablePress::db_version
+				'user_options_db_version' => TablePress::db_version,
 			) );
 		}
 	}

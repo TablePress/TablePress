@@ -46,7 +46,7 @@ class TablePress_List_View extends TablePress_View {
 				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ),
 				'donation-message-already-donated' => __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' ),
 				'donation-message-maybe-later' => sprintf( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you&#8217;ll always find the &#8220;Donate&#8221; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'http://tablepress.org/' ),
-			)
+			),
 		) );
 
 		if ( $data['messages']['first_visit'] ) {
@@ -110,7 +110,7 @@ class TablePress_List_View extends TablePress_View {
 			'error_delete_not_all_tables' => __( 'Notice: Not all selected tables could be deleted!', 'tablepress' ),
 			'error_copy_not_all_tables' => __( 'Notice: Not all selected tables could be copied!', 'tablepress' ),
 			'success_import' => __( 'The tables were imported successfully.', 'tablepress' ),
-			'success_import_wp_table_reloaded' => __( 'The tables were imported successfully from WP-Table Reloaded.', 'tablepress' )
+			'success_import_wp_table_reloaded' => __( 'The tables were imported successfully from WP-Table Reloaded.', 'tablepress' ),
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
@@ -273,7 +273,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			'singular'	=> 'tablepress-table',		// singular name of the listed records
 			'plural'	=> 'tablepress-all-tables', // plural name of the listed records
 			'ajax'		=> false,					// does this list table support AJAX?
-			'screen'	=> $screen					// WP_Screen object
+			'screen'	=> $screen,					// WP_Screen object
 		) );
 	}
 
@@ -317,7 +317,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			'table_description' => __( 'Description', 'tablepress' ),
 			'table_author' => __( 'Author', 'tablepress' ),
 			'table_last_modified_by' => __( 'Last Modified By', 'tablepress' ),
-			'table_last_modified' => __( 'Last Modified', 'tablepress' )
+			'table_last_modified' => __( 'Last Modified', 'tablepress' ),
 		);
 		return $columns;
 	}
@@ -342,7 +342,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			'table_description' => array( 'description', false ),
 			'table_author' => array( 'author', false ),
 			'table_last_modified_by' => array( 'last_modified_by', false ),
-			'table_last_modified' => array( 'last_modified', false )
+			'table_last_modified' => array( 'last_modified', false ),
 		);
 		return $sortable_columns;
 	}
@@ -719,9 +719,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 		// Register pagination options and calculation results
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,					// total number of records/items
-			'per_page' => $per_page,						// number of items per page
-			'total_pages' => ceil( $total_items/$per_page ) // total number of pages
+			'total_items' => $total_items,                     // Total number of records/items
+			'per_page' => $per_page,                           // Number of items per page
+			'total_pages' => ceil( $total_items / $per_page ), // Total number of pages
 		) );
 	}
 

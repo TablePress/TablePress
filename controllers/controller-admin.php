@@ -185,8 +185,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'caption' => __( 'Table', 'tablepress' ),
 				'title' => __( 'Insert a Table from TablePress', 'tablepress' ),
 				'thickbox_title' => __( 'Insert a Table from TablePress', 'tablepress' ),
-				'thickbox_url' => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' )
-			)
+				'thickbox_url' => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' ),
+			),
 		) );
 
 		// TinyMCE integration
@@ -266,7 +266,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'parent' => 'new-content',
 			'id' => 'new-tablepress-table',
 			'title' => __( 'TablePress Table', 'tablepress' ),
-			'href' => TablePress::url( array( 'action' => 'add' ) )
+			'href' => TablePress::url( array( 'action' => 'add' ) ),
 		) );
 	}
 
@@ -346,7 +346,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// pre-define some table data
 		$data = array(
 			'view_actions' => $this->view_actions,
-			'message' => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false
+			'message' => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
 		);
 
 		// depending on action, load more necessary data for the corresponding view
@@ -387,7 +387,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 						// and also increase the "Custom CSS" version number (for cache busting)
 						TablePress::$model_options->update( array(
 							'use_custom_css_file' => true,
-							'custom_css_version' => TablePress::$model_options->get( 'custom_css_version' ) + 1
+							'custom_css_version' => TablePress::$model_options->get( 'custom_css_version' ) + 1,
 						) );
 						TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 					} else { // leaves only $result = false
@@ -499,103 +499,103 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'cs_CZ' => array(
 				'name' => __( 'Czech', 'tablepress' ),
 				'translator_name' => 'Jiří Janda',
-				'translator_url' => 'http://gadjukin.net/'
+				'translator_url' => 'http://gadjukin.net/',
 			),
 			'de_DE' => array(
 				'name' => __( 'German', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
-				'translator_url' => 'http://tobias.baethge.com/'
+				'translator_url' => 'http://tobias.baethge.com/',
 			),
 			'en_US' => array(
 				'name' => __( 'English', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
-				'translator_url' => 'http://tobias.baethge.com/'
+				'translator_url' => 'http://tobias.baethge.com/',
 			),
 			'es_ES' => array(
 				'name' => __( 'Spanish', 'tablepress' ),
 				'translator_name' => 'Darío Hereñú',
-				'translator_url' => ''
+				'translator_url' => '',
 			),
 			'fi' => array(
 				'name' => __( 'Finnish', 'tablepress' ),
 				'translator_name' => 'Joel Kosola',
-				'translator_url' => ''
+				'translator_url' => '',
 			),
 			'fr_FR' => array(
 				'name' => __( 'French', 'tablepress' ),
 				'translator_name' => 'Loïc Herry',
-				'translator_url' => 'http://www.lherry.fr/'
+				'translator_url' => 'http://www.lherry.fr/',
 			),
 			'he_IL' => array(
 				'name' => __( 'Hebrew', 'tablepress' ),
 				'translator_name' => 'Mulli Bahr',
-				'translator_url' => 'http://www.site2goal.co.il/'
+				'translator_url' => 'http://www.site2goal.co.il/',
 			),
 			'it_IT' => array(
 				'name' => __( 'Italian', 'tablepress' ),
 				'translator_name' => 'Stefano Cotterli',
-				'translator_url' => 'http://faina09.it/'
+				'translator_url' => 'http://faina09.it/',
 			),
 			'is_IS' => array(
 				'name' => __( 'Icelandic', 'tablepress' ),
 				'translator_name' => 'Davíð Sævarsson',
-				'translator_url' => ''
+				'translator_url' => '',
 			),
 			'ja' => array(
 				'name' => __( 'Japanese', 'tablepress' ),
 				'translator_name' => 'Naoko Azuma',
-				'translator_url' => 'http://www.goju-on.com/profile_en/'
+				'translator_url' => 'http://www.goju-on.com/profile_en/',
 			),
 			'lv_LV' => array(
 				'name' => __( 'Latvian', 'tablepress' ),
 				'translator_name' => 'Johannes Rau',
-				'translator_url' => 'http://www.yamago.de/'
+				'translator_url' => 'http://www.yamago.de/',
 			),
 			'nl_NL' => array(
 				'name' => __( 'Dutch', 'tablepress' ),
 				'translator_name' => 'Erik Vorstenbosch',
-				'translator_url' => ''
+				'translator_url' => '',
 			),
 			'pl_PL' => array(
 				'name' => __( 'Polish', 'tablepress' ),
 				'translator_name' => 'Kuba Mikita',
-				'translator_url' => 'http://www.wpart.pl/'
+				'translator_url' => 'http://www.wpart.pl/',
 			),
 			'pt_BR' => array(
 				'name' => __( 'Brazilian Portuguese', 'tablepress' ),
 				'translator_name' => 'Renato Rodrigues',
-				'translator_url' => 'http://www.rlsrodrigues.com.br/'
+				'translator_url' => 'http://www.rlsrodrigues.com.br/',
 			),
 			'ru_RU' => array(
 				'name' => __( 'Russian', 'tablepress' ),
 				'translator_name' => 'Tomasina, Сергей Лапин',
-				'translator_url' => ''
+				'translator_url' => '',
 			),
 			'sk_SK' => array(
 				'name' => __( 'Slovak', 'tablepress' ),
 				'translator_name' => 'sle',
-				'translator_url' => 'http://fooddrink.sk/'
+				'translator_url' => 'http://fooddrink.sk/',
 			),
 			'sr_RS' => array(
 				'name' => __( 'Serbian', 'tablepress' ),
 				'translator_name' => 'Borisa Djuraskovic',
-				'translator_url' => 'http://www.webhostinghub.com/'
+				'translator_url' => 'http://www.webhostinghub.com/',
 			),
 			'tr_TR' => array(
 				'name' => __( 'Turkish', 'tablepress' ),
 				'translator_name' => 'Hakan Er',
-				'translator_url' => 'http://hakanertr.wordpress.com/'
+				'translator_url' => 'http://hakanertr.wordpress.com/',
 			),
 			'zh_CN' => array(
 				'name' => __( 'Chinese (Simplified)', 'tablepress' ),
 				'translator_name' => 'Haoxian Zeng',
-				'translator_url' => 'http://cnzhx.net/'
+				'translator_url' => 'http://cnzhx.net/',
 			),
 			'zh_TW' => array(
 				'name' => __( 'Chinese (Taiwan)', 'tablepress' ),
 				'translator_name' => 'Lu Yu Xin',
-				'translator_url' => 'http://www.hdlulu.com/'
-			)
+				'translator_url' => 'http://www.hdlulu.com/',
+			),
 		);
 		uasort( $languages, array( $this, '_get_plugin_languages_sort_cb' ) ); // to sort after the translation is done
 		return $languages;
@@ -649,50 +649,50 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'page_title' => __( 'All Tables', 'tablepress' ),
 				'admin_menu_title' => __( 'All Tables', 'tablepress' ),
 				'nav_tab_title' => __( 'All Tables', 'tablepress' ),
-				'required_cap' => 'tablepress_list_tables'
+				'required_cap' => 'tablepress_list_tables',
 			),
 			'add' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Add New Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Add New Table', 'tablepress' ),
 				'nav_tab_title' => __( 'Add New', 'tablepress' ),
-				'required_cap' => 'tablepress_add_tables'
+				'required_cap' => 'tablepress_add_tables',
 			),
 			'edit' => array(
 				'show_entry' => false,
 				'page_title' => __( 'Edit Table', 'tablepress' ),
 				'admin_menu_title' => '',
 				'nav_tab_title' => '',
-				'required_cap' => 'tablepress_edit_tables'
+				'required_cap' => 'tablepress_edit_tables',
 			),
 			'import' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Import a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Import a Table', 'tablepress' ),
 				'nav_tab_title' => _x( 'Import', 'navigation bar', 'tablepress' ),
-				'required_cap' => 'tablepress_import_tables'
+				'required_cap' => 'tablepress_import_tables',
 			),
 			'export' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Export a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Export a Table', 'tablepress' ),
 				'nav_tab_title' => _x( 'Export', 'navigation bar', 'tablepress' ),
-				'required_cap' => 'tablepress_export_tables'
+				'required_cap' => 'tablepress_export_tables',
 			),
 			'options' => array(
 				'show_entry' => true,
 				'page_title' => __( 'Plugin Options', 'tablepress' ),
 				'admin_menu_title' => __( 'Plugin Options', 'tablepress' ),
 				'nav_tab_title' => __( 'Plugin Options', 'tablepress' ),
-				'required_cap' => 'tablepress_access_options_screen'
+				'required_cap' => 'tablepress_access_options_screen',
 			),
 			'about' => array(
 				'show_entry' => true,
 				'page_title' => __( 'About', 'tablepress' ),
 				'admin_menu_title' => __( 'About TablePress', 'tablepress' ),
 				'nav_tab_title' => __( 'About', 'tablepress' ),
-				'required_cap' => 'tablepress_access_about_screen'
-			)
+				'required_cap' => 'tablepress_access_about_screen',
+			),
 		);
 
 		/**
@@ -835,7 +835,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
 		$checkbox_options = array(
 			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover', 'print_name', 'print_description', // Table Options
-			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollx' // DataTables JS Features
+			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollx', // DataTables JS Features
 		);
 		foreach ( $checkbox_options as $option ) {
 			$edit_table['options'][ $option ] = ( isset( $edit_table['options'][ $option ] ) && 'true' === $edit_table['options'][ $option ] );
@@ -920,8 +920,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'data' => array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) ),
 			'visibility' => array(
 				'rows' => array_fill( 0, $num_rows, 1 ),
-				'columns' => array_fill( 0, $num_columns, 1 )
-			)
+				'columns' => array_fill( 0, $num_columns, 1 ),
+			),
 		);
 		// Merge this data into an empty table template
 		$table = TablePress::$model_table->prepare_table( TablePress::$model_table->get_table_template(), $new_table, false );
@@ -1443,7 +1443,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$num_columns = count( $imported_table['data'][0] );
 		$imported_table['visibility'] = array(
 			'rows' => array_pad( array_slice( $existing_table['visibility']['rows'], 0, $num_rows ), $num_rows, 1 ),
-			'columns' => array_pad( array_slice( $existing_table['visibility']['columns'], 0, $num_columns ), $num_columns, 1 )
+			'columns' => array_pad( array_slice( $existing_table['visibility']['columns'], 0, $num_columns ), $num_columns, 1 ),
 		);
 
 		// Check if new data is ok
@@ -1640,8 +1640,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'options' => array(),
 			'visibility' => array(
 				'rows' => array_fill( 0, count( $wptr_table['data'] ), 1 ),
-				'columns' => array_fill( 0, count( $wptr_table['data'][0] ), 1 )
-			)
+				'columns' => array_fill( 0, count( $wptr_table['data'][0] ), 1 ),
+			),
 		);
 		if ( isset( $wptr_table['last_modified'] ) ) {
 			$new_table['last_modified'] = $wptr_table['last_modified'];
@@ -1906,7 +1906,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$view_data = array(
 			'table_id' => $table_id,
 			'head_html' => $_render->get_preview_css(),
-			'body_html' => $_render->get_output()
+			'body_html' => $_render->get_output(),
 		);
 
 		$custom_css = TablePress::$model_options->get( 'custom_css' );
@@ -1934,7 +1934,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->init_i18n_support();
 
 		$view_data = array(
-			'table_ids' => TablePress::$model_table->load_all( false ) // Load all table IDs without priming the post meta cache, as table options/visibility are not needed
+			'table_ids' => TablePress::$model_table->load_all( false ), // Load all table IDs without priming the post meta cache, as table options/visibility are not needed
 		);
 
 		set_current_screen( 'tablepress_editor_button_thickbox' );

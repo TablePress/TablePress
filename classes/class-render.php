@@ -66,7 +66,7 @@ class TablePress_Render {
 	protected $span_trigger = array(
 		'colspan' => '#colspan#',
 		'rowspan' => '#rowspan#',
-		'span' => '#span#'
+		'span' => '#span#',
 	);
 
 	/**
@@ -970,7 +970,7 @@ class TablePress_Render {
 			'cellspacing' => false,
 			'cellpadding' => false,
 			'border' => false,
-			'shortcode_debug' => false
+			'shortcode_debug' => false,
 		);
 	}
 

@@ -54,7 +54,7 @@ class TablePress_Edit_View extends TablePress_View {
 			'error_save' => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'error_delete' => __( 'Error: The table could not be deleted.', 'tablepress' ),
 			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
-			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' )
+			'success_save_error_id_change' => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' ),
 		);
 		// Custom handling instead of $this->process_action_messages(). Also, $action_messages is used below.
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
@@ -81,7 +81,7 @@ class TablePress_Edit_View extends TablePress_View {
 			'save' => _x( 'Add Link', 'Insert Link dialog', 'tablepress' ),
 			'noTitle' => _x( '(no title)', 'Insert Link dialog', 'tablepress' ),
 			'noMatchesFound' => _x( 'No matches found.', 'Insert Link dialog', 'tablepress' ),
-			'link_text' => _x( 'Link Text', 'Insert Link dialog', 'tablepress' ) // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
+			'link_text' => _x( 'Link Text', 'Insert Link dialog', 'tablepress' ), // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
 		) );
 
 		$this->admin_page->enqueue_style( 'edit' );
@@ -113,7 +113,7 @@ class TablePress_Edit_View extends TablePress_View {
 				 * @param bool $auto_grow Whether the size of the cell textareas shall increase. Default true.
 				 */
 				'cells_auto_grow' => apply_filters( 'tablepress_edit_cells_auto_grow', true ),
-				'shortcode' => esc_js( TablePress::$shortcode )
+				'shortcode' => esc_js( TablePress::$shortcode ),
 			),
 			'strings' => array_merge( array(
 				'no_remove_all_rows' => __( 'You can not delete all table rows!', 'tablepress' ),
@@ -153,8 +153,8 @@ class TablePress_Edit_View extends TablePress_View {
 				'no_rowspan_first_row' => __( 'You can not add rowspan to the first row!', 'tablepress' ),
 				'no_colspan_first_col' => __( 'You can not add colspan to the first column!', 'tablepress' ),
 				'no_rowspan_table_head' => __( 'You can not connect cells into the table head row!', 'tablepress' ),
-				'no_rowspan_table_foot' => __( 'You can not connect cells out of the table foot row!', 'tablepress' )
-			), $action_messages ) // merge this to have messages available for AJAX after save dialog
+				'no_rowspan_table_foot' => __( 'You can not connect cells out of the table foot row!', 'tablepress' ),
+			), $action_messages ), // merge this to have messages available for AJAX after save dialog
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
@@ -482,8 +482,8 @@ class TablePress_Edit_View extends TablePress_View {
 			'textarea_rows' => 10,
 			'tinymce' => false,
 			'quicktags' => array(
-				'buttons' => 'strong,em,link,del,ins,img,code,spell,close'
-			)
+				'buttons' => 'strong,em,link,del,ins,img,code,spell,close',
+			),
 		);
 		wp_editor( '', 'advanced-editor-content', $wp_editor_options );
 	?>

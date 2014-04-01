@@ -36,15 +36,15 @@ class TablePress_Options_View extends TablePress_View {
 		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror' ), array(
 			'strings' => array(
 				'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
-				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' )
-			)
+				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' ),
+			),
 		) );
 
 		$this->process_action_messages( array(
 			'success_save' => __( 'Options saved successfully.', 'tablepress' ),
 			'success_save_error_custom_css' => __( 'Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file.', 'tablepress' ),
 			'error_save' => __( 'Error: Options could not be saved.', 'tablepress' ),
-			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &#8220;Custom CSS&#8221; was imported successfully.', 'tablepress' )
+			'success_import_wp_table_reloaded' => __( 'The WP-Table Reloaded &#8220;Custom CSS&#8221; was imported successfully.', 'tablepress' ),
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );

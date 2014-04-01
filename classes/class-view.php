@@ -114,7 +114,7 @@ abstract class TablePress_View {
 						. sprintf( __( 'For technical information, please see the <a href="%s">documentation</a>.', 'tablepress' ), 'http://tablepress.org/documentation/' ) . ' '
 						. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'http://tablepress.org/support/', 'https://wordpress.org/tags/tablepress' ) . ' '
 						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'http://tablepress.org/faq/' ) . '<br />'
-						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tablepress.org/donate/' ) . '</p>'
+						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'http://tablepress.org/donate/' ) . '</p>',
 		) );
 		// "sidebar" in the help tab
 		$screen->set_help_sidebar( '<p><strong>' . __( 'For more information:', 'tablepress' ) . '</strong></p><p><a href="http://tablepress.org/" target="_blank">TablePress Website</a></p><p><a href="http://tablepress.org/faq/" target="_blank">TablePress FAQ</a></p><p><a href="http://tablepress.org/documentation/" target="_blank">TablePress Documentation</a></p><p><a href="http://tablepress.org/support/" target="_blank">TablePress Support</a></p>' );
@@ -164,7 +164,7 @@ abstract class TablePress_View {
 		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ), array(
 			'common' => array(
 				'ays_delete_single_table' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
-				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' )
+				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' ),
 			)
 		) );
 
@@ -225,7 +225,7 @@ abstract class TablePress_View {
 			'id' => $long_id,
 			'callback' => $callback,
 			'context' => $context,
-			'wrap' => $wrap
+			'wrap' => $wrap,
 		);
 	}
 

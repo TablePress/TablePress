@@ -237,7 +237,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 			'singular'	=> 'tablepress-table',				// singular name of the listed records
 			'plural'	=> 'tablepress-editor-button-list', // plural name of the listed records
 			'ajax'		=> false,							// does this list table support AJAX?
-			'screen'	=> get_current_screen()				// WP_Screen object
+			'screen'	=> get_current_screen(),			// WP_Screen object
 		) );
 	}
 
@@ -278,7 +278,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 			'table_id' => __( 'ID', 'tablepress' ),
 			'table_name' => __( 'Table Name', 'tablepress' ), // just "name" is special in WP, which is why we prefix every entry here, to be safe!
 			'table_description' => __( 'Description', 'tablepress' ),
-			'table_action' => __( 'Action', 'tablepress' )
+			'table_action' => __( 'Action', 'tablepress' ),
 		);
 		return $columns;
 	}
@@ -300,7 +300,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		$sortable_columns = array(
 			'table_id' => array( 'id', true ), //true means its already sorted
 			'table_name' => array( 'name', false ),
-			'table_description' => array( 'description', false )
+			'table_description' => array( 'description', false ),
 		);
 		return $sortable_columns;
 	}
@@ -491,9 +491,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 		// Register pagination options and calculation results
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,					// total number of records/items
-			'per_page' => $per_page,						// number of items per page
-			'total_pages' => ceil( $total_items/$per_page ) // total number of pages
+			'total_items' => $total_items,                     // Total number of records/items
+			'per_page' => $per_page,                           // Number of items per page
+			'total_pages' => ceil( $total_items / $per_page ), // Total number of pages
 		) );
 	}
 

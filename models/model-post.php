@@ -56,7 +56,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		$this->post_type = apply_filters( 'tablepress_post_type', $this->post_type );
 		$post_type_args = array(
 			'labels' => array(
-				'name' => 'TablePress Tables'
+				'name' => 'TablePress Tables',
 			),
 			'public' => false,
 			'show_ui' => false,
@@ -65,7 +65,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'capability_type' => 'tablepress_table', // this ensures, that WP's regular CPT UI respects our capabilities
 			'map_meta_cap' => false, // integrated WP mapping does not fit our needs, therefore use our own in a filter
 			'supports' => array( 'title', 'editor', 'excerpt', 'revisions' ),
-			'can_export' => true
+			'can_export' => true,
 		);
 		/**
 		 * Filter the arguments for the registration of the "Custom Post Type" that TablePress uses.
@@ -101,7 +101,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'post_title' => '',
 			'post_type' => $this->post_type,
 			'tags_input' => '',
-			'to_ping' => ''
+			'to_ping' => '',
 		);
 		$post = array_merge( $default_post, $post );
 		$post = wp_slash( $post ); // WP expects everything to be slashed
@@ -149,7 +149,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'post_title' => '',
 			'post_type' => $this->post_type,
 			'tags_input' => '',
-			'to_ping' => ''
+			'to_ping' => '',
 		);
 		$post = array_merge( $default_post, $post );
 		$post = wp_slash( $post ); // WP expects everything to be slashed

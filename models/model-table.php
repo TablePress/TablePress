@@ -60,7 +60,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected $default_tables = array(
 		'last_id' => 0,
-		'table_post' => array()
+		'table_post' => array(),
 	);
 
 	/**
@@ -83,7 +83,7 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		$params = array(
 			'option_name' => 'tablepress_tables',
-			'default_value' => $this->default_tables
+			'default_value' => $this->default_tables,
 		);
 		$this->tables = TablePress::load_class( 'TablePress_WP_Option', 'class-wp_option.php', 'classes', $params );
 	}
@@ -135,7 +135,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'post_title' => $table['name'],
 //			'post_author' => $table['author'],
 			'post_excerpt' => $table['description'],
-			'post_content' => json_encode( $table['data'] )
+			'post_content' => json_encode( $table['data'] ),
 		);
 
 		return $post;
@@ -158,7 +158,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'description' => $post->post_excerpt,
 			'author' => $post->post_author,
 //			'created' => $post->post_date,
-			'last_modified' => $post->post_modified
+			'last_modified' => $post->post_modified,
 		);
 
 		if ( ! $load_data ) {
@@ -725,12 +725,12 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_paginate_entries' => 10,
 				'datatables_info' => true,
 				'datatables_scrollx' => false,
-				'datatables_custom_commands' => ''
+				'datatables_custom_commands' => '',
 			),
 			'visibility' => array(
 				'rows' => array( 1 ), // one visbile row
-				'columns' => array( 1 ) // one visible column
-			)
+				'columns' => array( 1 ), // one visible column
+			),
 		);
 		/**
 		 * Filter the default template/structure of an empty table.

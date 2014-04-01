@@ -207,7 +207,7 @@ class TablePress_Import {
 
 		$html_table = array(
 			'data' => array(),
-			'options' => array()
+			'options' => array(),
 		);
 		if ( isset( $table->thead ) ) {
 			$html_table['data'] = array_merge( $html_table['data'], $this->_import_html_rows( $table->thead[0]->tr ) );

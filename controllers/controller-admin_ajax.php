@@ -277,7 +277,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		$response = array(
 			'success' => $success,
 			'head_html' => $head_html,
-			'body_html' => $body_html
+			'body_html' => $body_html,
 		);
 		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid
 		$output_buffer = ob_get_clean();

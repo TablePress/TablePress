@@ -511,7 +511,7 @@ JS;
 		if ( ! isset( $this->shown_tables[ $table_id ] ) ) {
 			$this->shown_tables[ $table_id ] = array(
 				'count' => 0,
-				'instances' => array()
+				'instances' => array(),
 			);
 		}
 		$this->shown_tables[ $table_id ]['count']++;
@@ -649,7 +649,7 @@ JS;
 		$default_shortcode_atts = array(
 				'id' => '',
 				'field' => '',
-				'format' => ''
+				'format' => '',
 		);
 		/**
 		 * Filter the available/default attributes for the [table-info] Shortcode.

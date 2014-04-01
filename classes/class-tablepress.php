@@ -408,7 +408,7 @@ abstract class TablePress {
 		$default_params = array(
 			'page' => false,
 			'action' => false,
-			'item' => false
+			'item' => false,
 		);
 		$params = array_merge( $default_params, $params );
 
