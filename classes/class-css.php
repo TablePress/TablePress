@@ -135,7 +135,7 @@ class TablePress_CSS {
 
 		switch ( $location ) {
 			case 'url':
-				$url = $upload_location['baseurl'] . '/' . $file;
+				$url = set_url_scheme( $upload_location['baseurl'] . '/' . $file );
 				/**
 				 * Filter the URL from which the "Custom CSS" file is loaded.
 				 *
