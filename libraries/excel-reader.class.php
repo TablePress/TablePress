@@ -152,11 +152,12 @@ class OLERead {
 				$name .= $d[$i];
 			}
 			$name = str_replace("\x00", "", $name);
-			$this->props[] = array (
+			$this->props[] = array(
 				'name' => $name,
 				'type' => $type,
 				'startBlock' => $startBlock,
-				'size' => $size);
+				'size' => $size,
+			);
 			if ((strtolower($name) == "workbook") || ( strtolower($name) == "book"))
 				$this->wrkbook = count($this->props) - 1;
 			if ($name == "Root Entry")
@@ -605,7 +606,7 @@ class Spreadsheet_Excel_Reader {
 	/**
 	 * List of default date formats used by Excel
 	 */
-	var $dateFormats = array (
+	var $dateFormats = array(
 		0xe => "m/d/Y",
 		0xf => "M-d-Y",
 		0x10 => "d-M",
@@ -617,7 +618,7 @@ class Spreadsheet_Excel_Reader {
 		0x16 => "d/m/Y H:i",
 		0x2d => "i:s",
 		0x2e => "H:i:s",
-		0x2f => "i:s.S"
+		0x2f => "i:s.S",
 	);
 
 	/**
