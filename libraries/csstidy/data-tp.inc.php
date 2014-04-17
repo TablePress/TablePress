@@ -84,3 +84,4 @@ $data['csstidy']['all_properties']['text-overflow'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-o-text-overflow'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-ms-touch-action'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-overflow-scrolling'] = 'CSS3.0';
+$data['csstidy']['all_properties']['pointer-events'] = 'CSS3.0';
