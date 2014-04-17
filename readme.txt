@@ -4,7 +4,7 @@ Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,19 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 
 == Changelog ==
 
+= Version 1.4 =
+* Compatibility with WordPress 3.9
+* Bugfix: Determine the correct Worksheet ID during XLSX import
+* Bugfix: Displaying empty Shortcodes was broken
+* Enhancement: Improve JSON import to also allow import of JSON objects
+* Enhancement: Use more sophisticated error handling and debugging
+* Enhancement: Reduce memory usage when loading tables
+* Added inline documentation to all plugin filter and action hooks
+* Updated external libraries
+* Internal improvements to coding standards, inline documentation, and build tools
+* Added Serbian translation
+* Updated several translations (Chinese (Simplified), Croation, German, Spanish)
+
 = Version 1.3 =
 * Compatibility with WordPress 3.8 and the new admin styling
 * Bugfix: Import of JSON files did not take row/column visibility into account
@@ -131,7 +144,7 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * Updated external libraries
 * Updated several translations (Brazilian Portuguese, Czech, French, German, Latvian)
 * Many more internal code improvements
-* TablePress now requires WordPress 3.6!
+* TablePress 1.2 requires WordPress 3.6!
 
 = Version 1.1.1 =
 * Fixed a bug with CSS handling that broke some TablePress Extensions
@@ -158,6 +171,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.4 =
+This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
 = 1.3 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.

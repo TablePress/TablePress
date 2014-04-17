@@ -135,7 +135,7 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * Updated external libraries
 * Updated several translations (Brazilian Portuguese, Czech, French, German, Latvian)
 * Many more internal code improvements
-* TablePress now requires WordPress 3.6!
+* TablePress 1.2 requires WordPress 3.6!
 
 **Version 1.3**
 * Compatibility with WordPress 3.8 and the new admin styling
@@ -148,3 +148,16 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * Added Chinese (Taiwan) translation
 * Internal improvements to coding standards, inline documentation, and build tools
 * TablePress 1.3 requires WordPress 3.8!
+
+**Version 1.4**
+* Compatibility with WordPress 3.9
+* Bugfix: Determine the correct Worksheet ID during XLSX import
+* Bugfix: Displaying empty Shortcodes was broken
+* Enhancement: Improve JSON import to also allow import of JSON objects
+* Enhancement: Use more sophisticated error handling and debugging
+* Enhancement: Reduce memory usage when loading tables
+* Added inline documentation to all plugin filter and action hooks
+* Updated external libraries
+* Internal improvements to coding standards, inline documentation, and build tools
+* Added Serbian translation
+* Updated several translations (Chinese (Simplified), Croation, German, Spanish)
