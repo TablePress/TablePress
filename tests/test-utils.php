@@ -9,6 +9,10 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 		TablePress::run();
 	}
 
+	public function test_controller_was_set_up() {
+		$this->assertTrue( is_object( TablePress::$controller ) );
+	}
+
 	public function test_nonce() {
 		$this->assertEquals( 'tablepress_foo_bar', TablePress::nonce( 'foo', 'bar' ) );
 		$this->assertEquals( 'tablepress_foo', TablePress::nonce( 'foo' ) );
