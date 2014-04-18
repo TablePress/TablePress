@@ -160,4 +160,4 @@ I'm also happy about [donations](http://tablepress.org/donate/) or something fro
 * Updated external libraries
 * Internal improvements to coding standards, inline documentation, and build tools
 * Added Serbian translation
-* Updated several translations (Chinese (Simplified), Croation, German, Spanish)
+* Updated several translations (Chinese (Simplified), Croatian, German, Spanish)
