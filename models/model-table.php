@@ -556,7 +556,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Flush the caches of the plugins W3 Total Cache, WP Super Cache, and Cachify
+	 * Flush the caches of the plugins W3 Total Cache, WP Super Cache, Cachify, and Quick Cache
 	 *
 	 * @since 1.0.0
 	 */
@@ -582,6 +582,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 		// Cachify
 		do_action( 'cachify_flush_cache' );
+
+		// Quick Cache
+		if ( isset( $GLOBALS['quick_cache'] ) && method_exists( $GLOBALS['quick_cache'], 'clear_cache' ) ) {
+			$GLOBALS['quick_cache']->clear_cache();
+		}
 	}
 
 	/**
