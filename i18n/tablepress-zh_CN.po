@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v1.3\n"
+"Project-Id-Version: TablePress v1.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2013-12-11 20:55:36+00:00\n"
-"PO-Revision-Date: 2013-12-20 00:35+0800\n"
+"POT-Creation-Date: 2014-04-17 19:31:27+00:00\n"
+"PO-Revision-Date: 2014-04-19 11:24+0800\n"
 "Last-Translator: Haoxian Zeng <haoxian.zeng@gmail.com>\n"
 "Language-Team: http://cnzhx.net/ <haoxian.zeng@gmail.com>\n"
 "Language: zh_CN\n"
@@ -69,22 +69,22 @@ msgstr "XLSX - Microsoft Excel 2007-2013 (试验)"
 
 # @ tablepress
 #: classes/class-import.php:189 classes/class-import.php:295
-#: classes/class-import.php:391
+#: classes/class-import.php:397
 msgid "The imported file contains errors:"
 msgstr "导入的文件存在错误："
 
 # @ tablepress
-#: classes/class-render.php:413
+#: classes/class-render.php:439
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr "<!-- ID 为 %s 的表格是空的！ -->"
 
 # @ default
 # @ tablepress
-#: classes/class-render.php:494 views/view-list.php:415
+#: classes/class-render.php:577 views/view-list.php:415
 msgid "Edit"
 msgstr "编辑"
 
-#: classes/class-tablepress.php:334
+#: classes/class-tablepress.php:368
 msgid "<em>unknown</em>"
 msgstr "<em>未知</em>"
 
@@ -146,9 +146,9 @@ msgid "For more information:"
 msgstr "了解更多："
 
 # @ tablepress
-#: classes/class-view.php:155 controllers/controller-admin.php:120
-#: views/view-editor_button_thickbox.php:72
-#: views/view-editor_button_thickbox.php:175
+#: classes/class-view.php:155 controllers/controller-admin.php:127
+#: views/view-editor_button_thickbox.php:71
+#: views/view-editor_button_thickbox.php:174
 #: views/view-options_custom_css.php:36 views/view-preview_table.php:55
 msgid "%1$s &lsaquo; %2$s"
 msgstr "%1$s &lsaquo; %2$s"
@@ -161,259 +161,263 @@ msgstr[0] "您确定要删除该表格吗？"
 msgstr[1] "您确定要删除这些表格吗？"
 
 # @ tablepress
-#. #-#-#-#-#  tablepress.pot (TablePress 1.2)  #-#-#-#-#
+#. #-#-#-#-#  tablepress.pot (TablePress 1.4)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/class-view.php:390
 msgid "TablePress"
 msgstr "TablePress"
 
 # @ tablepress
-#: classes/class-view.php:422 views/view-edit.php:407 views/view-edit.php:408
+#: classes/class-view.php:422 views/view-edit.php:437 views/view-edit.php:438
 #: views/view-options.php:55
 msgid "Save Changes"
 msgstr "保存更改"
 
 # @ tablepress
-#: controllers/controller-admin.php:177 views/view-about.php:86
+#: controllers/controller-admin.php:185 views/view-about.php:86
 #: views/view-list.php:188
 msgid "Table"
 msgstr "表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:178 controllers/controller-admin.php:179
+#: controllers/controller-admin.php:186 controllers/controller-admin.php:187
 msgid "Insert a Table from TablePress"
 msgstr "从 TablePress 插入一个表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:248
+#: controllers/controller-admin.php:268
 msgid "TablePress Table"
 msgstr "TablePress 表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:275
+#: controllers/controller-admin.php:295
 msgid "Plugin page"
 msgstr "插件页面"
 
 # @ tablepress
-#: controllers/controller-admin.php:290
+#: controllers/controller-admin.php:310
 msgid "Frequently Asked Questions"
 msgstr "常见问题"
 
 # @ tablepress
-#: controllers/controller-admin.php:290
+#: controllers/controller-admin.php:310
 msgid "FAQ"
 msgstr "FAQ"
 
 # @ tablepress
-#: controllers/controller-admin.php:291
+#: controllers/controller-admin.php:311
 msgid "Documentation"
 msgstr "文档"
 
 # @ tablepress
-#: controllers/controller-admin.php:292
+#: controllers/controller-admin.php:312
 msgid "Support"
 msgstr "支持"
 
 # @ tablepress
-#: controllers/controller-admin.php:293
+#: controllers/controller-admin.php:313
 msgid "Support TablePress with your donation!"
 msgstr "请捐助 TablePress 的开发！"
 
 # @ tablepress
-#: controllers/controller-admin.php:293
+#: controllers/controller-admin.php:313
 msgid "Donate"
 msgstr "捐赠"
 
 # @ default
-#: controllers/controller-admin.php:320 controllers/controller-admin.php:391
-#: controllers/controller-admin.php:787 controllers/controller-admin.php:854
-#: controllers/controller-admin.php:910 controllers/controller-admin.php:984
-#: controllers/controller-admin.php:1021 controllers/controller-admin.php:1101
-#: controllers/controller-admin.php:1113 controllers/controller-admin.php:1719
-#: controllers/controller-admin.php:1749 controllers/controller-admin.php:1787
-#: controllers/controller-admin.php:1828 controllers/controller-admin.php:1870
-#: controllers/controller-admin.php:1898
+#: controllers/controller-admin.php:340 controllers/controller-admin.php:411
+#: controllers/controller-admin.php:827 controllers/controller-admin.php:894
+#: controllers/controller-admin.php:950 controllers/controller-admin.php:1025
+#: controllers/controller-admin.php:1062 controllers/controller-admin.php:1148
+#: controllers/controller-admin.php:1160 controllers/controller-admin.php:1778
+#: controllers/controller-admin.php:1808 controllers/controller-admin.php:1846
+#: controllers/controller-admin.php:1887 controllers/controller-admin.php:1931
+#: controllers/controller-admin.php:1959
 msgid "You do not have sufficient permissions to access this page."
 msgstr "您没有访问该页面的权限。"
 
-#: controllers/controller-admin.php:410
+#: controllers/controller-admin.php:430
 msgctxt ""
 "Default CSV delimiter in the translated language (\";\", \",\", or \"tab\")"
 msgid ","
 msgstr ","
 
-#: controllers/controller-admin.php:472
+#: controllers/controller-admin.php:500
 msgid "Czech"
 msgstr "捷克语"
 
-#: controllers/controller-admin.php:477
+#: controllers/controller-admin.php:505
 msgid "German"
 msgstr "德语"
 
 # @ tablepress
-#: controllers/controller-admin.php:482
+#: controllers/controller-admin.php:510
 msgid "English"
 msgstr "英语"
 
-#: controllers/controller-admin.php:487
+#: controllers/controller-admin.php:515
 msgid "Spanish"
 msgstr "西班牙语"
 
-#: controllers/controller-admin.php:492
+#: controllers/controller-admin.php:520
 msgid "Finnish"
 msgstr "芬兰语"
 
 # @ tablepress
-#: controllers/controller-admin.php:497
+#: controllers/controller-admin.php:525
 msgid "French"
 msgstr "法语"
 
-#: controllers/controller-admin.php:502
+#: controllers/controller-admin.php:530
 msgid "Hebrew"
 msgstr "希伯来语"
 
-#: controllers/controller-admin.php:507
+#: controllers/controller-admin.php:535
 msgid "Italian"
 msgstr "意大利语"
 
-#: controllers/controller-admin.php:512
+#: controllers/controller-admin.php:540
 msgid "Icelandic"
 msgstr "冰岛语"
 
-#: controllers/controller-admin.php:517
+#: controllers/controller-admin.php:545
 msgid "Japanese"
 msgstr "日语"
 
-#: controllers/controller-admin.php:522
+#: controllers/controller-admin.php:550
 msgid "Latvian"
 msgstr "拉托维亚语"
 
-#: controllers/controller-admin.php:527
+#: controllers/controller-admin.php:555
 msgid "Dutch"
 msgstr "荷兰语"
 
 # @ tablepress
-#: controllers/controller-admin.php:532
+#: controllers/controller-admin.php:560
 msgid "Polish"
 msgstr "波兰语"
 
-#: controllers/controller-admin.php:537
+#: controllers/controller-admin.php:565
 msgid "Brazilian Portuguese"
 msgstr "巴西葡萄牙语"
 
-#: controllers/controller-admin.php:542
+#: controllers/controller-admin.php:570
 msgid "Russian"
 msgstr "俄语"
 
-#: controllers/controller-admin.php:547
+#: controllers/controller-admin.php:575
 msgid "Slovak"
 msgstr "斯洛伐克语"
 
-#: controllers/controller-admin.php:552
+#: controllers/controller-admin.php:580
+msgid "Serbian"
+msgstr "塞尔维亚语"
+
+#: controllers/controller-admin.php:585
 msgid "Turkish"
 msgstr "土耳其语"
 
-#: controllers/controller-admin.php:557
+#: controllers/controller-admin.php:590
 msgid "Chinese (Simplified)"
 msgstr "中文（简体）"
 
-#: controllers/controller-admin.php:562
+#: controllers/controller-admin.php:595
 msgid "Chinese (Taiwan)"
 msgstr "中文（台湾）"
 
 # @ tablepress
-#: controllers/controller-admin.php:616 controllers/controller-admin.php:617
-#: controllers/controller-admin.php:618
+#: controllers/controller-admin.php:649 controllers/controller-admin.php:650
+#: controllers/controller-admin.php:651
 msgid "All Tables"
 msgstr "所有表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:623 controllers/controller-admin.php:624
+#: controllers/controller-admin.php:656 controllers/controller-admin.php:657
 #: views/view-add.php:41
 msgid "Add New Table"
 msgstr "新建表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:625
+#: controllers/controller-admin.php:658
 msgid "Add New"
 msgstr "新建"
 
 # @ tablepress
-#: controllers/controller-admin.php:630
+#: controllers/controller-admin.php:663
 msgid "Edit Table"
 msgstr "编辑表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:637 controllers/controller-admin.php:638
+#: controllers/controller-admin.php:670 controllers/controller-admin.php:671
 msgid "Import a Table"
 msgstr "导入表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:639
+#: controllers/controller-admin.php:672
 msgctxt "navigation bar"
 msgid "Import"
 msgstr "导入"
 
 # @ tablepress
-#: controllers/controller-admin.php:644 controllers/controller-admin.php:645
+#: controllers/controller-admin.php:677 controllers/controller-admin.php:678
 msgid "Export a Table"
 msgstr "导出表格"
 
 # @ tablepress
-#: controllers/controller-admin.php:646
+#: controllers/controller-admin.php:679
 msgctxt "navigation bar"
 msgid "Export"
 msgstr "导出"
 
 # @ tablepress
-#: controllers/controller-admin.php:651 controllers/controller-admin.php:652
-#: controllers/controller-admin.php:653
+#: controllers/controller-admin.php:684 controllers/controller-admin.php:685
+#: controllers/controller-admin.php:686
 msgid "Plugin Options"
 msgstr "插件选项"
 
 # @ tablepress
-#: controllers/controller-admin.php:658 controllers/controller-admin.php:660
+#: controllers/controller-admin.php:691 controllers/controller-admin.php:693
 msgid "About"
 msgstr "关于"
 
 # @ tablepress
-#: controllers/controller-admin.php:659
+#: controllers/controller-admin.php:692
 msgid "About TablePress"
 msgstr "关于 TablePress"
 
 # @ tablepress
-#: controllers/controller-admin.php:1192
+#: controllers/controller-admin.php:1239
 msgid "Imported from Manual Input"
 msgstr "从手工输入导入"
 
 # @ tablepress
-#: controllers/controller-admin.php:1824
-#: controllers/controller-admin_ajax.php:247
+#: controllers/controller-admin.php:1883
+#: controllers/controller-admin_ajax.php:273
 msgid "The preview could not be loaded."
 msgstr "无法加载预览。"
 
 # @ tablepress
-#: controllers/controller-admin.php:1824 controllers/controller-admin.php:1834
-#: views/view-edit.php:404 views/view-list.php:428
+#: controllers/controller-admin.php:1883 controllers/controller-admin.php:1893
+#: views/view-edit.php:434 views/view-list.php:428
 #: views/view-preview_table.php:55
 msgid "Preview"
 msgstr "预览"
 
 # @ tablepress
-#: controllers/controller-admin.php:1834
+#: controllers/controller-admin.php:1893
 msgid "The table could not be loaded."
 msgstr "无法加载表格。"
 
 # @ tablepress
-#: controllers/controller-admin.php:1916
+#: controllers/controller-admin.php:1977
 msgid "TablePress was uninstalled successfully."
 msgstr "成功卸载 TablePress 插件。"
 
-#: controllers/controller-admin.php:1917
+#: controllers/controller-admin.php:1978
 msgid "All tables, data, and options were deleted."
 msgstr "所有表格、数据和设置都已删除。"
 
-#: controllers/controller-admin.php:1919
+#: controllers/controller-admin.php:1980
 msgid ""
 "You may now ask the network admin to delete the plugin&#8217;s folder "
 "<code>tablepress</code> from the server, if no other site in the network "
@@ -422,7 +426,7 @@ msgstr ""
 "如果网络上没有别的站点使用 TablePress，您现在可以请网络管理员从服务器上删除该"
 "插件的文件夹 <code>tablepress</code> 了。"
 
-#: controllers/controller-admin.php:1921
+#: controllers/controller-admin.php:1982
 msgid ""
 "You may now manually delete the plugin&#8217;s folder <code>tablepress</"
 "code> from the <code>plugins</code> directory on your server or use the "
@@ -434,13 +438,13 @@ msgstr ""
 "TablePress 的 &#8220;删除&#8221; 链接来删除。"
 
 # @ tablepress
-#: controllers/controller-admin.php:1924
+#: controllers/controller-admin.php:1985
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
 msgstr "您的 TablePress &#8220;自定义 CSS&#8221; 文件已经自动删除。"
 
-#: controllers/controller-admin.php:1927
+#: controllers/controller-admin.php:1988
 msgid ""
 "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files "
 "from the server."
@@ -448,7 +452,7 @@ msgstr ""
 "请同时让他（她）从服务器上删除您的 TablePress &#8220;自定义 CSS&#8221; 样式表"
 "文件。"
 
-#: controllers/controller-admin.php:1929
+#: controllers/controller-admin.php:1990
 msgid ""
 "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in "
 "the <code>wp-content</code> folder."
@@ -457,39 +461,42 @@ msgstr ""
 "CSS&#8221; 样式表文件。"
 
 # @ tablepress
-#: controllers/controller-admin.php:1934
+#: controllers/controller-admin.php:1995
 msgid "Go to &#8220;Plugins&#8221; page"
 msgstr "转到&#8220;插件&#8221;页面"
 
-#: controllers/controller-admin.php:1936
+#: controllers/controller-admin.php:1997
 msgid "Go to Dashboard"
 msgstr "转到仪表盘"
 
 # @ tablepress
-#: controllers/controller-admin.php:1938 views/view-options.php:185
+#: controllers/controller-admin.php:1999 views/view-options.php:185
 #: views/view-options.php:192
 msgid "Uninstall TablePress"
 msgstr "卸载 TablePress"
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:240 views/view-preview_table.php:66
+#: controllers/controller-admin_ajax.php:266 views/view-preview_table.php:66
 msgid "This is a preview of your table."
 msgstr "这是表格的预览。"
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:241
-msgid "Because of CSS styling, the table might look different on your page!"
-msgstr "由于 CSS 样式渲染的不同，表格在您的页面上看起来可能有些不同！"
-
-# @ tablepress
-#: controllers/controller-admin_ajax.php:242
+#: controllers/controller-admin_ajax.php:267 views/view-preview_table.php:66
 msgid ""
-"The features of the DataTables JavaScript library are also not visible in "
-"this preview!"
-msgstr "DataTables JavaScript 库的特性在该预览中也是看不到的！"
+"Because of CSS styling in your theme, the table might look different on your "
+"page!"
+msgstr ""
+"因为您的主题中已有的 CSS 样式的影响，表格在您的页面上看起来可能会有所不同！"
 
 # @ tablepress
-#: controllers/controller-admin_ajax.php:243 views/view-preview_table.php:67
+#: controllers/controller-admin_ajax.php:268 views/view-preview_table.php:66
+msgid ""
+"The features of the DataTables JavaScript library are also not available or "
+"visible in this preview!"
+msgstr "在预览中，DataTables JavaScript 库的特性将不会提供或者可用！"
+
+# @ tablepress
+#: controllers/controller-admin_ajax.php:269 views/view-preview_table.php:67
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it into the editor."
@@ -498,18 +505,18 @@ msgstr ""
 "中。"
 
 # @ tablepress
-#: controllers/controller-frontend.php:503 views/view-list.php:486
+#: controllers/controller-frontend.php:722 views/view-list.php:486
 msgid "%s ago"
 msgstr "%s 之前"
 
 # @ tablepress
-#: models/model-table.php:373 views/view-editor_button_thickbox.php:331
-#: views/view-export.php:119 views/view-import.php:205 views/view-list.php:404
+#: models/model-table.php:417 views/view-editor_button_thickbox.php:330
+#: views/view-export.php:121 views/view-import.php:206 views/view-list.php:404
 msgid "(no name)"
 msgstr "(未命名)"
 
 # @ tablepress
-#: models/model-table.php:375
+#: models/model-table.php:419
 msgid "Copy of %s"
 msgstr "%s 的副本"
 
@@ -725,34 +732,34 @@ msgstr ""
 "体中文译者网站</a>和<a href=\"http://cnzhx.net/bbs/\">中文论坛</a>提问。"
 
 # @ tablepress
-#: views/view-about.php:155
+#: views/view-about.php:156
 msgid "Please provide this information in bug reports and support requests."
 msgstr "请在问题报告和支持请求中提供以下相关信息。"
 
 # @ tablepress
-#: views/view-about.php:187
+#: views/view-about.php:189
 msgid "Special Thanks go to:"
 msgstr "特别感谢："
 
 # @ tablepress
-#: views/view-about.php:188
+#: views/view-about.php:190
 msgid ""
 "Allan Jardine for <a href=\"http://www.datatables.net/\">DataTables</a>,"
 msgstr ""
 "Allan Jardine 开发的 <a href=\"http://www.datatables.net/\">DataTables</a>。"
 
 # @ tablepress
-#: views/view-about.php:191
+#: views/view-about.php:193
 msgid "Thanks to the translators:"
 msgstr "感谢以下译者："
 
 # @ tablepress
-#: views/view-about.php:196
+#: views/view-about.php:198
 msgid "%s (thanks to %s)"
 msgstr "%s （由 %s 提供）"
 
 # @ tablepress
-#: views/view-about.php:201
+#: views/view-about.php:203
 msgid ""
 "Thank you to all donors, contributors, supporters, reviewers and users of "
 "the plugin!"
@@ -784,8 +791,8 @@ msgid ""
 msgstr "您以后还可以随时修改表格名称、描述和大小。"
 
 # @ tablepress
-#: views/view-add.php:71 views/view-edit.php:200
-#: views/view-editor_button_thickbox.php:280 views/view-list.php:316
+#: views/view-add.php:71 views/view-edit.php:230
+#: views/view-editor_button_thickbox.php:279 views/view-list.php:316
 msgid "Table Name"
 msgstr "表格名称"
 
@@ -800,8 +807,8 @@ msgid "The name or title of your table."
 msgstr "表格的名称或者标题。"
 
 # @ tablepress
-#: views/view-add.php:76 views/view-edit.php:204
-#: views/view-editor_button_thickbox.php:281 views/view-list.php:317
+#: views/view-add.php:76 views/view-edit.php:234
+#: views/view-editor_button_thickbox.php:280 views/view-list.php:317
 msgid "Description"
 msgstr "描述"
 
@@ -826,8 +833,8 @@ msgid "Number of Rows"
 msgstr "行数"
 
 # @ tablepress
-#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:383
-#: views/view-edit.php:386
+#: views/view-add.php:82 views/view-add.php:87 views/view-edit.php:413
+#: views/view-edit.php:416
 msgid "This field must contain a positive number."
 msgstr "这里必须输入一个正整数。"
 
@@ -847,147 +854,147 @@ msgid "The number of columns in your table."
 msgstr "表格的列的数目。"
 
 # @ tablepress
-#: views/view-edit.php:44
+#: views/view-edit.php:49
 msgid "The table was saved successfully."
 msgstr "表格保存成功。"
 
 # @ tablepress
-#: views/view-edit.php:45
+#: views/view-edit.php:50
 msgid "The table was added successfully."
 msgstr "表格添加成功。"
 
 # @ tablepress
-#: views/view-edit.php:46 views/view-list.php:103 views/view-list.php:104
+#: views/view-edit.php:51 views/view-list.php:103 views/view-list.php:104
 msgid "The table was copied successfully."
 msgid_plural "The tables were copied successfully."
 msgstr[0] "表格已成功复制。"
 msgstr[1] "表格已成功复制。"
 
-#: views/view-edit.php:46
+#: views/view-edit.php:51
 msgid ""
 "You are now seeing the copied table, which has the table ID &#8220;%s&#8221;."
 msgstr "您现在看到的是复制后的表格，表格 ID 为 &#8220;%s&#8221;。"
 
 # @ tablepress
-#: views/view-edit.php:47
+#: views/view-edit.php:52
 msgid "The table was imported successfully."
 msgstr "表格导入成功。"
 
 # @ tablepress
-#: views/view-edit.php:48
+#: views/view-edit.php:53
 msgid "The table was imported successfully from WP-Table Reloaded."
 msgstr "成功从 WP-Table Reloaded 导入表格。"
 
 # @ tablepress
-#: views/view-edit.php:49 views/view-list.php:102
+#: views/view-edit.php:54 views/view-list.php:102
 msgid "Error: The table could not be saved."
 msgstr "错误：无法保存该表格。"
 
 # @ tablepress
-#: views/view-edit.php:50 views/view-list.php:101
+#: views/view-edit.php:55 views/view-list.php:101
 msgid "Error: The table could not be deleted."
 msgstr "错误：无法删除该表格。"
 
 # @ tablepress
-#: views/view-edit.php:51
+#: views/view-edit.php:56
 msgid "The table was saved successfully, and the table ID was changed."
 msgstr "该表格已成功保存，表格 ID 已经改变。"
 
 # @ tablepress
-#: views/view-edit.php:52
+#: views/view-edit.php:57
 msgid ""
 "The table was saved successfully, but the table ID could not be changed!"
 msgstr "该表格已成功保存，但表格 ID 无法改变！"
 
 # @ tablepress
-#: views/view-edit.php:73
+#: views/view-edit.php:79
 msgctxt "Insert Link dialog"
 msgid "Insert/edit link"
 msgstr "插入/编辑超链接"
 
 # @ tablepress
-#: views/view-edit.php:74
+#: views/view-edit.php:80
 msgctxt "Insert Link dialog"
 msgid "Update"
 msgstr "更新"
 
 # @ tablepress
-#: views/view-edit.php:75
+#: views/view-edit.php:81
 msgctxt "Insert Link dialog"
 msgid "Add Link"
 msgstr "增加超链接"
 
 # @ tablepress
-#: views/view-edit.php:76
+#: views/view-edit.php:82
 msgctxt "Insert Link dialog"
 msgid "(no title)"
 msgstr "（无标题）"
 
 # @ tablepress
-#: views/view-edit.php:77
+#: views/view-edit.php:83
 msgctxt "Insert Link dialog"
 msgid "No matches found."
 msgstr "没有找到匹配项。"
 
 # @ tablepress
-#: views/view-edit.php:78
+#: views/view-edit.php:84
 msgctxt "Insert Link dialog"
 msgid "Link Text"
 msgstr "链接文字"
 
 # @ tablepress
-#: views/view-edit.php:89
+#: views/view-edit.php:119
 msgid "You can not delete all table rows!"
 msgstr "您无法删除表格的所有行！"
 
 # @ tablepress
-#: views/view-edit.php:90
+#: views/view-edit.php:120
 msgid "You can not delete all table columns!"
 msgstr "您无法删除表格的所有列！"
 
 # @ tablepress
-#: views/view-edit.php:91
+#: views/view-edit.php:121
 msgid "You did not select any rows!"
 msgstr "您还没有选择任何行！"
 
 # @ tablepress
-#: views/view-edit.php:92
+#: views/view-edit.php:122
 msgid "You did not select any columns!"
 msgstr "您还没有选择任何列！"
 
 # @ tablepress
-#: views/view-edit.php:93
+#: views/view-edit.php:123
 msgid "The value for the number of rows is invalid!"
 msgstr "行数值无效！"
 
 # @ tablepress
-#: views/view-edit.php:94
+#: views/view-edit.php:124
 msgid "The value for the number of columns is invalid!"
 msgstr "列数值无效！"
 
 # @ tablepress
-#: views/view-edit.php:95 views/view-edit.php:96
+#: views/view-edit.php:125 views/view-edit.php:126
 msgid "Do you really want to delete the selected row?"
 msgid_plural "Do you really want to delete the selected rows?"
 msgstr[0] "您确定要删除选定的行吗？"
 msgstr[1] "您确定要删除所有选定的行吗？"
 
 # @ tablepress
-#: views/view-edit.php:97 views/view-edit.php:98
+#: views/view-edit.php:127 views/view-edit.php:128
 msgid "Do you really want to delete the selected column?"
 msgid_plural "Do you really want to delete the selected columns?"
 msgstr[0] "您确定要删除选定的列吗？"
 msgstr[1] "您确定要删除所有选定的列吗？"
 
 # @ tablepress
-#: views/view-edit.php:99
+#: views/view-edit.php:129
 msgid ""
 "Please click into the cell that you want to edit using the &#8220;Advanced "
 "Editor&#8221;."
 msgstr "请通过&#8220;高级编辑器&#8221;单击进入要编辑的单元格。"
 
 # @ tablepress
-#: views/view-edit.php:100
+#: views/view-edit.php:130
 msgid ""
 "To combine cells within a column, click into the cell below the cell that "
 "has the content the combined cells shall have."
@@ -996,7 +1003,7 @@ msgstr ""
 "点击进入紧邻其下的那个单元格。"
 
 # @ tablepress
-#: views/view-edit.php:101
+#: views/view-edit.php:131
 msgid ""
 "To combine cells within a row, click into the cell to the right of the cell "
 "that has the content the combined cells shall have."
@@ -1004,41 +1011,41 @@ msgstr ""
 "要合并一行里的多个单元格，请找到包含合并后的大单元格的内容的那个单元格，然后"
 "点击进入紧邻其右的那个单元格。"
 
-#: views/view-edit.php:102
+#: views/view-edit.php:132
 msgid ""
 "Attention: You have enabled the usage of the DataTables JavaScript library "
 "for features like sorting, search, or pagination."
 msgstr ""
 "注意：您已经启用了提供诸如排序、搜索或分页功能的 DataTables JavaScript 库。"
 
-#: views/view-edit.php:103
+#: views/view-edit.php:133
 msgid "Unfortunately, these can not be used in tables with combined cells."
 msgstr "对不起，这些功能无法应用于包含有合并单元格的表格中。"
 
-#: views/view-edit.php:104
+#: views/view-edit.php:134
 msgid ""
 "Do you want to proceed and automatically turn off the usage of DataTables "
 "for this table?"
 msgstr "您希望 TablePress 自动为此表格关闭 DataTables 功能然后继续下一步吗？"
 
 # @ tablepress
-#: views/view-edit.php:105
+#: views/view-edit.php:135
 msgid "Please click into the cell that you want to add a link to."
 msgstr "请单击进入您要插入超链接的单元格。"
 
 # @ tablepress
-#: views/view-edit.php:106
+#: views/view-edit.php:136
 msgid ""
 "You can then enter the Link URL and Text or choose an existing page or post."
 msgstr "然后您就可以输入链接地址和文字或者选择一个已有的静态页或文章。"
 
 # @ tablepress
-#: views/view-edit.php:107
+#: views/view-edit.php:137
 msgid "Please click into the cell that you want to add an image to."
 msgstr "请单击进入您要插入图片的单元格。"
 
 # @ tablepress
-#: views/view-edit.php:108
+#: views/view-edit.php:138
 msgid ""
 "The Media Library will open, where you can select or upload the desired "
 "image or enter the image URL."
@@ -1047,61 +1054,61 @@ msgstr ""
 "址。"
 
 # @ tablepress
-#: views/view-edit.php:109
+#: views/view-edit.php:139
 msgid "Click the &#8220;%s&#8221; button to insert the image."
 msgstr "单击 &#8220;%s&#8221; 按钮以插入图片。"
 
 # @ default
-#: views/view-edit.php:109
+#: views/view-edit.php:139
 msgid "Insert into Post"
 msgstr "插入到文章"
 
 # @ tablepress
-#: views/view-edit.php:110
+#: views/view-edit.php:140
 msgid ""
 "The changes to this table were not saved yet and will be lost if you "
 "navigate away from this page."
 msgstr "针对该表格的改动还没有保存，如果您离开该页面，本次所有更改都将丢失。"
 
 # @ tablepress
-#: views/view-edit.php:111
+#: views/view-edit.php:141
 msgid "The Table Preview is being loaded..."
 msgstr "正在加载表格预览……"
 
 # @ tablepress
-#: views/view-edit.php:112
+#: views/view-edit.php:142
 msgid "The Table Preview could not be loaded."
 msgstr "无法加载表格预览。"
 
 # @ tablepress
-#: views/view-edit.php:113
+#: views/view-edit.php:143
 msgid "Saving successful"
 msgstr "保存成功"
 
 # @ tablepress
-#: views/view-edit.php:114
+#: views/view-edit.php:144
 msgid "Saving failed"
 msgstr "保存失败"
 
 # @ tablepress
-#: views/view-edit.php:115
+#: views/view-edit.php:145
 msgid "Changes are being saved..."
 msgstr "正在保存更改……"
 
 # @ tablepress
-#: views/view-edit.php:116
+#: views/view-edit.php:146
 msgid "The Table ID field can not be empty. Please enter a Table ID!"
 msgstr "表格 ID 不能为空。请输入一个表格 ID！"
 
 # @ tablepress
-#: views/view-edit.php:117
+#: views/view-edit.php:147
 msgid ""
 "The Table ID &#8220;0&#8221; is not supported. Please enter a different "
 "Table ID!"
 msgstr "表格 ID 不能为 &#8220;0&#8221; 。请重新输入一个表格 ID！"
 
 # @ tablepress
-#: views/view-edit.php:118
+#: views/view-edit.php:148
 msgid ""
 "Do you really want to change the Table ID? All Shortcodes for this table in "
 "your pages and posts will have to be adjusted!"
@@ -1109,166 +1116,166 @@ msgstr ""
 "您确定要更改表格 ID 吗？所有静态页和文章中关于此表格的简码都需要做相应调整！"
 
 # @ tablepress
-#: views/view-edit.php:119
+#: views/view-edit.php:149
 msgid ""
 "The entered value in the field &#8220;Extra CSS classes&#8221; is invalid."
 msgstr "输入到 &#8220;附加 CSS 类&#8221; 中的内容无效。"
 
 # @ tablepress
-#: views/view-edit.php:120
+#: views/view-edit.php:150
 msgid ""
 "The entered value in the field &#8220;Pagination Entries&#8221; is not a "
 "number."
 msgstr "输入到 &#8220;分页入口&#8221; 中的值不是数字。"
 
 # @ tablepress
-#: views/view-edit.php:121 views/view-edit.php:260
+#: views/view-edit.php:151 views/view-edit.php:290
 msgid "Sort ascending"
 msgstr "升序"
 
 # @ tablepress
-#: views/view-edit.php:122 views/view-edit.php:260
+#: views/view-edit.php:152 views/view-edit.php:290
 msgid "Sort descending"
 msgstr "降序"
 
 # @ tablepress
-#: views/view-edit.php:123
+#: views/view-edit.php:153
 msgid "You can not add rowspan to the first row!"
 msgstr "不能在第一行创建跨行！"
 
 # @ tablepress
-#: views/view-edit.php:124
+#: views/view-edit.php:154
 msgid "You can not add colspan to the first column!"
 msgstr "不能在第一列创建跨列！"
 
 # @ tablepress
-#: views/view-edit.php:125
+#: views/view-edit.php:155
 msgid "You can not connect cells into the table head row!"
 msgstr "不能将单元格连接到表格标题行！"
 
 # @ tablepress
-#: views/view-edit.php:126
+#: views/view-edit.php:156
 msgid "You can not connect cells out of the table foot row!"
 msgstr "不能将单元格连接到表末行之外！"
 
 # @ tablepress
-#: views/view-edit.php:132
+#: views/view-edit.php:162
 msgid "Table Information"
 msgstr "表格信息"
 
 # @ tablepress
-#: views/view-edit.php:133
+#: views/view-edit.php:163
 msgid "Table Content"
 msgstr "表格内容"
 
 # @ tablepress
-#: views/view-edit.php:134
+#: views/view-edit.php:164
 msgid "Table Manipulation"
 msgstr "表格操作"
 
 # @ tablepress
-#: views/view-edit.php:135 views/view-edit.php:535
+#: views/view-edit.php:165 views/view-edit.php:565
 msgid "Table Options"
 msgstr "表格选项"
 
 # @ tablepress
-#: views/view-edit.php:136
+#: views/view-edit.php:166
 msgid "Features of the DataTables JavaScript library"
 msgstr "DataTables JavaScript 库特性"
 
 # @ default
-#: views/view-edit.php:162
+#: views/view-edit.php:192
 msgid "Insert into Table"
 msgstr "插入到表格"
 
 # @ tablepress
-#: views/view-edit.php:191
+#: views/view-edit.php:221
 msgid "Table ID"
 msgstr "表格 ID"
 
 # @ tablepress
-#: views/view-edit.php:194
+#: views/view-edit.php:224
 msgid ""
 "The Table ID can only consist of letters, numbers, hyphens (-), and "
 "underscores (_)."
 msgstr "表格 ID 只能包含字母、数字、连字符（-）和下划线（_）。"
 
 # @ tablepress
-#: views/view-edit.php:195
+#: views/view-edit.php:225
 msgid "Shortcode"
 msgstr "简码"
 
 # @ tablepress
-#: views/view-edit.php:208 views/view-list.php:320
+#: views/view-edit.php:238 views/view-list.php:320
 msgid "Last Modified"
 msgstr "最后更改"
 
 # @ tablepress
-#: views/view-edit.php:209
+#: views/view-edit.php:239
 msgid "%1$s by %2$s"
 msgstr "%1$s 由 %2$s"
 
 # @ tablepress
-#: views/view-edit.php:335
+#: views/view-edit.php:365
 msgid "Insert Link"
 msgstr "插入链接"
 
 # @ tablepress
-#: views/view-edit.php:336
+#: views/view-edit.php:366
 msgid "Insert Image"
 msgstr "插入图片"
 
 # @ tablepress
-#: views/view-edit.php:337
+#: views/view-edit.php:367
 msgid "Advanced Editor"
 msgstr "高级编辑器"
 
 # @ tablepress
-#: views/view-edit.php:340
+#: views/view-edit.php:370
 msgid "Combine cells"
 msgstr "合并单元格"
 
 # @ tablepress
-#: views/view-edit.php:341
+#: views/view-edit.php:371
 msgid "in a column (rowspan)"
 msgstr "在同一列（跨行）"
 
 # @ tablepress
-#: views/view-edit.php:342
+#: views/view-edit.php:372
 msgid "in a row (colspan)"
 msgstr "在同一行（跨列）"
 
 # @ tablepress
-#: views/view-edit.php:343
+#: views/view-edit.php:373
 msgid "?"
 msgstr "?"
 
 # @ tablepress
-#: views/view-edit.php:343
+#: views/view-edit.php:373
 msgid "Help on combining cells"
 msgstr "关于合并单元格的帮助"
 
 # @ tablepress
-#: views/view-edit.php:345
+#: views/view-edit.php:375
 msgid "Table cells can span across more than one column or row."
 msgstr "表格单元（单元格）可以跨多个列或者跨多个行。"
 
 # @ tablepress
-#: views/view-edit.php:346
+#: views/view-edit.php:376
 msgid ""
 "Combining consecutive cells within the same row is called &#8220;"
 "colspanning&#8221;."
 msgstr "合并同一行里的多个连续的单元格称为&#8220;跨列&#8221;合并。"
 
 # @ tablepress
-#: views/view-edit.php:347
+#: views/view-edit.php:377
 msgid ""
 "Combining consecutive cells within the same column is called &#8220;"
 "rowspanning&#8221;."
 msgstr "合并同一列里的多个连续的单元格称为&#8220;跨行&#8221;合并。"
 
 # @ tablepress
-#: views/view-edit.php:348
+#: views/view-edit.php:378
 msgid ""
 "To combine adjacent cells in a row, add the keyword <code>#colspan#</code> "
 "to the cell to the right of the one with the content for the combined cell "
@@ -1278,7 +1285,7 @@ msgstr ""
 "入到要保留其内容的那个单元格的右边的那个单元格里。"
 
 # @ tablepress
-#: views/view-edit.php:349
+#: views/view-edit.php:379
 msgid ""
 "To combine adjacent cells in a column, add the keyword <code>#rowspan#</"
 "code> to the cell below the one with the content for the combined cell by "
@@ -1288,12 +1295,12 @@ msgstr ""
 "入到要保留其内容的那个单元格的下面的那个单元格里。"
 
 # @ tablepress
-#: views/view-edit.php:350
+#: views/view-edit.php:380
 msgid "Repeat this to add the keyword to all cells that shall be connected."
 msgstr "重复此步骤直到所有需要合并的单元格都连接到了一起。"
 
 # @ tablepress
-#: views/view-edit.php:351
+#: views/view-edit.php:381
 msgid ""
 "Be aware that the functions of the DataTables JavaScript library will not "
 "work on tables which have combined cells."
@@ -1301,187 +1308,187 @@ msgstr ""
 "请注意，DataTables JavaScript 库的功能无法工作在那些有合并单元格的表格上。"
 
 # @ tablepress
-#: views/view-edit.php:357 views/view-edit.php:369
+#: views/view-edit.php:387 views/view-edit.php:399
 msgid "Selected rows"
 msgstr "选择的行"
 
 # @ tablepress
-#: views/view-edit.php:358 views/view-edit.php:363
+#: views/view-edit.php:388 views/view-edit.php:393
 msgid "Hide"
 msgstr "隐藏"
 
 # @ tablepress
-#: views/view-edit.php:359 views/view-edit.php:364
+#: views/view-edit.php:389 views/view-edit.php:394
 msgid "Show"
 msgstr "显示"
 
 # @ tablepress
-#: views/view-edit.php:362 views/view-edit.php:375
+#: views/view-edit.php:392 views/view-edit.php:405
 msgid "Selected columns"
 msgstr "选择的列"
 
-#: views/view-edit.php:370 views/view-edit.php:376
+#: views/view-edit.php:400 views/view-edit.php:406
 msgid "Duplicate"
 msgstr "副本"
 
 # @ tablepress
-#: views/view-edit.php:371 views/view-edit.php:377
+#: views/view-edit.php:401 views/view-edit.php:407
 msgid "Insert"
 msgstr "插入"
 
 # @ tablepress
-#: views/view-edit.php:372 views/view-edit.php:378 views/view-list.php:425
+#: views/view-edit.php:402 views/view-edit.php:408 views/view-list.php:425
 msgid "Delete"
 msgstr "删除"
 
 # @ tablepress
-#: views/view-edit.php:383
+#: views/view-edit.php:413
 msgid "Add %s row(s)"
 msgstr "增加 %s 行"
 
 # @ tablepress
-#: views/view-edit.php:383 views/view-edit.php:386
+#: views/view-edit.php:413 views/view-edit.php:416
 msgid "Add"
 msgstr "增加"
 
 # @ tablepress
-#: views/view-edit.php:386
+#: views/view-edit.php:416
 msgid "Add %s column(s)"
 msgstr "增加 %s 列"
 
 # @ tablepress
-#: views/view-edit.php:390
+#: views/view-edit.php:420
 msgid ""
 "To use the Table Manipulation features, JavaScript needs to be enabled in "
 "your browser."
 msgstr "要使用表格操作特性，浏览器必须启用 JavaScript 支持。"
 
 # @ tablepress
-#: views/view-edit.php:428
+#: views/view-edit.php:458
 msgid "Other Actions"
 msgstr "其它操作"
 
 # @ tablepress
-#: views/view-edit.php:430
+#: views/view-edit.php:460
 msgid "Copy Table"
 msgstr "复制表格"
 
 # @ tablepress
-#: views/view-edit.php:433
+#: views/view-edit.php:463
 msgid "Export Table"
 msgstr "导出表格"
 
 # @ tablepress
-#: views/view-edit.php:436
+#: views/view-edit.php:466
 msgid "Delete Table"
 msgstr "删除表格"
 
 # @ tablepress
-#: views/view-edit.php:461
+#: views/view-edit.php:491
 msgid "Cancel"
 msgstr "取消"
 
 # @ tablepress
-#: views/view-edit.php:462
+#: views/view-edit.php:492
 msgid "OK"
 msgstr "确定"
 
 # @ tablepress
-#: views/view-edit.php:483 views/view-edit.php:535
+#: views/view-edit.php:513 views/view-edit.php:565
 msgid "Table Head Row"
 msgstr "表格标题行"
 
 # @ tablepress
-#: views/view-edit.php:484
+#: views/view-edit.php:514
 msgid "The first row of the table is the table header."
 msgstr "表格的第一行是表头（标题行）。"
 
 # @ tablepress
-#: views/view-edit.php:487
+#: views/view-edit.php:517
 msgid "Table Foot Row"
 msgstr "表格脚注行"
 
 # @ tablepress
-#: views/view-edit.php:488
+#: views/view-edit.php:518
 msgid "The last row of the table is the table footer."
 msgstr "表格最后一行是表格脚注。"
 
 # @ tablepress
-#: views/view-edit.php:491
+#: views/view-edit.php:521
 msgid "Alternating Row Colors"
 msgstr "交替行背景色"
 
 # @ tablepress
-#: views/view-edit.php:492
+#: views/view-edit.php:522
 msgid "The background colors of consecutive rows shall alternate."
 msgstr "交替变换连续行的背景颜色。"
 
 # @ tablepress
-#: views/view-edit.php:495
+#: views/view-edit.php:525
 msgid "Row Hover Highlighting"
 msgstr "鼠标悬停时高亮行"
 
 # @ tablepress
-#: views/view-edit.php:496
+#: views/view-edit.php:526
 msgid ""
 "Highlight a row while the mouse cursor hovers above it by changing its "
 "background color."
 msgstr "当鼠标选定在某行上方时，通过改变背景颜色来高亮该行。"
 
 # @ tablepress
-#: views/view-edit.php:499
+#: views/view-edit.php:529
 msgid "Print Table Name"
 msgstr "显示表格名称"
 
 # @ tablepress
-#: views/view-edit.php:502 views/view-edit.php:512
+#: views/view-edit.php:532 views/view-edit.php:542
 msgid "above"
 msgstr "上方"
 
 # @ tablepress
-#: views/view-edit.php:503 views/view-edit.php:513
+#: views/view-edit.php:533 views/view-edit.php:543
 msgid "below"
 msgstr "下方"
 
 # @ tablepress
-#: views/view-edit.php:506
+#: views/view-edit.php:536
 msgid "Show the table name %s the table."
 msgstr "将表格名称显示在表格的%s。"
 
 # @ tablepress
-#: views/view-edit.php:509
+#: views/view-edit.php:539
 msgid "Print Table Description"
 msgstr "显示表格描述"
 
 # @ tablepress
-#: views/view-edit.php:516
+#: views/view-edit.php:546
 msgid "Show the table description %s the table."
 msgstr "将表格描述显示在表格的%s。"
 
 # @ tablepress
-#: views/view-edit.php:519
+#: views/view-edit.php:549
 msgid "Extra CSS Classes"
 msgstr "附加 CSS 类"
 
 # @ tablepress
-#: views/view-edit.php:520
+#: views/view-edit.php:550
 msgid ""
 "This field can only contain letters, numbers, spaces, hyphens (-), and "
 "underscores (_)."
 msgstr "只能包含字母、数字、连字符（-）和下划线（_）。"
 
 # @ tablepress
-#: views/view-edit.php:520
+#: views/view-edit.php:550
 msgid "Additional CSS classes for styling purposes can be entered here."
 msgstr "编写用于设定表格样式的附加 CSS 类。"
 
 # @ tablepress
-#: views/view-edit.php:520
+#: views/view-edit.php:550
 msgid "This is NOT the place to enter <a href=\"%s\">Custom CSS</a> code!"
 msgstr "注意这里<b>不是</b>编写<a href=\"%s\">自定义 CSS</a> 的地方！"
 
 # @ tablepress
-#: views/view-edit.php:535
+#: views/view-edit.php:565
 msgid ""
 "These features and options are only available, when the &#8220;%1$s&#8221; "
 "checkbox in the &#8220;%2$s&#8221; section is checked."
@@ -1490,97 +1497,97 @@ msgstr ""
 "分）时才可用。"
 
 # @ tablepress
-#: views/view-edit.php:539
+#: views/view-edit.php:569
 msgid "Use DataTables"
 msgstr "使用 DataTables"
 
 # @ tablepress
-#: views/view-edit.php:540
+#: views/view-edit.php:570
 msgid ""
 "Use the following features of the DataTables JavaScript library with this "
 "table:"
 msgstr "为此表格启用下面的 DataTables JavaScript 库特性："
 
 # @ tablepress
-#: views/view-edit.php:543
+#: views/view-edit.php:573
 msgid "Sorting"
 msgstr "排序"
 
 # @ tablepress
-#: views/view-edit.php:544
+#: views/view-edit.php:574
 msgid "Enable sorting of the table by the visitor."
 msgstr "为访客提供表格排序功能。"
 
 # @ tablepress
-#: views/view-edit.php:547
+#: views/view-edit.php:577
 msgid "Search/Filtering"
 msgstr "搜索/过滤"
 
 # @ tablepress
-#: views/view-edit.php:548
+#: views/view-edit.php:578
 msgid ""
 "Enable the visitor to filter or search the table. Only rows with the search "
 "word in them are shown."
 msgstr "为访客启用过滤或搜索表格的功能。只显示包含搜索词的行。"
 
 # @ tablepress
-#: views/view-edit.php:551
+#: views/view-edit.php:581
 msgid "Pagination"
 msgstr "分页"
 
 # @ tablepress
-#: views/view-edit.php:552
+#: views/view-edit.php:582
 msgid ""
 "Enable pagination of the table (viewing only a certain number of rows at a "
 "time) by the visitor."
 msgstr "为访客启用表格分页功能（一次只显示表格中的有限几行）。"
 
 # @ tablepress
-#: views/view-edit.php:553
+#: views/view-edit.php:583
 msgid "Show %s rows per page."
 msgstr "每页显示 %s 行。"
 
 # @ tablepress
-#: views/view-edit.php:556
+#: views/view-edit.php:586
 msgid "Pagination Length Change"
 msgstr "分页长度可变"
 
 # @ tablepress
-#: views/view-edit.php:557
+#: views/view-edit.php:587
 msgid ""
 "Allow the visitor to change the number of rows shown when using pagination."
 msgstr "当使用分页功能时，允许访客改变每页显示的行数。"
 
 # @ tablepress
-#: views/view-edit.php:560
+#: views/view-edit.php:590
 msgid "Info"
 msgstr "信息"
 
 # @ tablepress
-#: views/view-edit.php:561
+#: views/view-edit.php:591
 msgid ""
 "Enable the table information display, with information about the currently "
 "visible data, like the number of rows."
 msgstr "启用表格信息显示功能，显示当前可见数据的信息，如行号等。"
 
 # @ tablepress
-#: views/view-edit.php:564
+#: views/view-edit.php:594
 msgid "Horizontal Scrolling"
 msgstr "水平滚动条"
 
 # @ tablepress
-#: views/view-edit.php:565
+#: views/view-edit.php:595
 msgid ""
 "Enable horizontal scrolling, to make viewing tables with many columns easier."
 msgstr "显示水平滚动条，在查看列数比较多的表格时比较方便。"
 
 # @ tablepress
-#: views/view-edit.php:571
+#: views/view-edit.php:601
 msgid "Custom Commands"
 msgstr "自定义命令"
 
 # @ tablepress
-#: views/view-edit.php:572
+#: views/view-edit.php:602
 msgid ""
 "Additional parameters from the <a href=\"http://www.datatables.net/"
 "\">DataTables documentation</a> to be added to the JS call."
@@ -1589,19 +1596,49 @@ msgstr ""
 "\">DataTables 文档</a>。"
 
 # @ tablepress
-#: views/view-edit.php:572
+#: views/view-edit.php:602
 msgid "For advanced use only."
 msgstr "仅针对高级应用。"
 
+#: views/view-edit.php:617
+msgid "Attention: Unfortunately, an error occured."
+msgstr "警告：很不幸，出现了一个错误。"
+
+#: views/view-edit.php:620
+msgid "The internal data of table &#8220;%1$s&#8221 (ID %2$s) is corrupted."
+msgstr "表格 &#8220;%1$s&#8221 (ID %2$s) 的内部数据已损坏。"
+
+#: views/view-edit.php:622
+msgid "The following error was registered: <code>%s</code>."
+msgstr "下列错误已登记：<code>%s</code>。"
+
+#: views/view-edit.php:627
+msgid ""
+"Because of this error, the table can not be edited at this time, to prevent "
+"possible further data loss."
+msgstr "因为该错误，此表格暂时无法编辑，以避免可能出现更多的数据损失。"
+
 # @ tablepress
-#: views/view-edit.php:587
+#: views/view-edit.php:629
+msgid ""
+"Please see the <a href=\"%s\">TablePress FAQ page</a> for further "
+"instructions."
+msgstr "请阅读<a href=\"%s\">TablePress 快速问答页面</a>以获取更多帮助。"
+
+# @ tablepress
+#: views/view-edit.php:634
+msgid "Back to the List of Tables"
+msgstr "回到“表格列表”"
+
+# @ tablepress
+#: views/view-edit.php:649
 msgid ""
 "On this screen, you can edit the content and structure of the table with the "
 "ID %s."
 msgstr "您可以在本页面编辑表格 ID 为 %s 的表格的内容和结构。"
 
 # @ tablepress
-#: views/view-edit.php:588
+#: views/view-edit.php:650
 msgid ""
 "For example, you can insert things like text, images, or links into the "
 "table, or change the used table features. You can also insert, delete, move, "
@@ -1611,7 +1648,7 @@ msgstr ""
 "插入、删除、移动、隐藏和交换列和行。"
 
 # @ tablepress
-#: views/view-edit.php:591
+#: views/view-edit.php:653
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it at the desired place in the editor."
@@ -1620,11 +1657,11 @@ msgstr ""
 "要显示表格的位置。"
 
 # @ tablepress
-#: views/view-edit.php:602
+#: views/view-edit.php:664
 msgid "TablePress Feature: Moving rows and columns"
 msgstr "TablePress 特色功能：移动行和列"
 
-#: views/view-edit.php:603
+#: views/view-edit.php:665
 msgid ""
 "Did you know? You can drag and drop rows and columns via the row number and "
 "the column title. And the arrows next to the column title can be used for "
@@ -1634,23 +1671,23 @@ msgstr ""
 "头可以用来排序。"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:72
-#: views/view-editor_button_thickbox.php:175
+#: views/view-editor_button_thickbox.php:71
+#: views/view-editor_button_thickbox.php:174
 msgid "List of Tables"
 msgstr "表格列表"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:178
+#: views/view-editor_button_thickbox.php:177
 msgid "This is a list of all available tables."
 msgstr "这里是所有可用表格的列表。"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:178
+#: views/view-editor_button_thickbox.php:177
 msgid "You may insert a table into a post or page here."
 msgstr "您可以从这里将一个表格插入到一个文章或者静态页。"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:180
+#: views/view-editor_button_thickbox.php:179
 msgid ""
 "Click the &#8220;%1$s&#8221; button for the desired table to automatically "
 "insert the<br />corresponding Shortcode (%2$s) into the editor."
@@ -1659,44 +1696,44 @@ msgstr ""
 "入到编辑器。"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:180
-#: views/view-editor_button_thickbox.php:360
+#: views/view-editor_button_thickbox.php:179
+#: views/view-editor_button_thickbox.php:359
 msgid "Insert Shortcode"
 msgstr "插入简码"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:184 views/view-list.php:200
+#: views/view-editor_button_thickbox.php:183 views/view-list.php:200
 msgid "Search results for &#8220;%s&#8221;"
 msgstr "&#8220;%s&#8221; 的搜索结果"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:190 views/view-list.php:208
+#: views/view-editor_button_thickbox.php:189 views/view-list.php:208
 msgid "Search Tables"
 msgstr "搜索表格"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:279 views/view-list.php:315
+#: views/view-editor_button_thickbox.php:278 views/view-list.php:315
 msgid "ID"
 msgstr "ID"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:282
+#: views/view-editor_button_thickbox.php:281
 msgid "Action"
 msgstr "操作"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:346 views/view-list.php:444
+#: views/view-editor_button_thickbox.php:345 views/view-list.php:444
 msgid "(no description)"
 msgstr "（无描述）"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:369 views/view-export.php:81
+#: views/view-editor_button_thickbox.php:368 views/view-export.php:82
 #: views/view-list.php:556
 msgid "No tables found."
 msgstr "没有找到表格。"
 
 # @ tablepress
-#: views/view-editor_button_thickbox.php:371
+#: views/view-editor_button_thickbox.php:370
 msgid ""
 "You should add or import a table on the TablePress screens to get started!"
 msgstr "您应该先在 TablePress 页面增加或者导入一个表格！"
@@ -1713,46 +1750,51 @@ msgstr "错误：无法加载该表格！"
 
 # @ tablepress
 #: views/view-export.php:37
+msgid "Error: The internal data of this table is corrupted!"
+msgstr "错误：该表格的内部数据已损坏！"
+
+# @ tablepress
+#: views/view-export.php:38
 msgid "Error: The ZIP file could not be created."
 msgstr "错误：无法创建 ZIP 文件。"
 
 # @ tablepress
-#: views/view-export.php:42 views/view-export.php:45
+#: views/view-export.php:43 views/view-export.php:46
 msgid "Export Tables"
 msgstr "导出表格"
 
-#: views/view-export.php:46
+#: views/view-export.php:47
 msgctxt "button"
 msgid "Download Export File"
 msgstr "导出（下载导出的文件）"
 
 # @ tablepress
-#: views/view-export.php:59
+#: views/view-export.php:60
 msgid ""
 "Exporting a table allows you to use it in other programs, like spreadsheets "
 "applications."
 msgstr "导出一个表格之后你就可以在别的程序，如电子表格应用，中使用它。"
 
 # @ tablepress
-#: views/view-export.php:60
+#: views/view-export.php:61
 msgid ""
 "Regularly exporting tables is also recommended as a backup of your data."
 msgstr "推荐您经常导出表格来作为备份。"
 
 # @ tablepress
-#: views/view-export.php:63
+#: views/view-export.php:64
 msgid "To export, select the tables and the desired export format."
 msgstr "要导出表格，选择需要导出的表格和希望导出的格式。"
 
 # @ tablepress
-#: views/view-export.php:64
+#: views/view-export.php:65
 msgid ""
 "If you choose more than one table, the exported files will automatically be "
 "stored in a ZIP archive file."
 msgstr "如果您一次选择多个表格，导出文件将自动存储为 ZIP 压缩格式。"
 
 # @ tablepress
-#: views/view-export.php:66
+#: views/view-export.php:67
 msgid ""
 "Be aware that for the CSV and HTML formats only the table data, but no table "
 "options are exported!"
@@ -1760,12 +1802,12 @@ msgstr ""
 "请注意，如果选择导出为 CSV 和 HTML 格式，只会导出表格数据而不会导出表格选项！"
 
 # @ tablepress
-#: views/view-export.php:67
+#: views/view-export.php:68
 msgid "For the JSON format, the table data and the table options are exported."
 msgstr "对于 JSON 格式，表格数据和表格选项都会导出。"
 
 # @ tablepress
-#: views/view-export.php:82 views/view-list.php:565
+#: views/view-export.php:83 views/view-list.php:565
 msgid ""
 "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to "
 "get started!"
@@ -1773,22 +1815,22 @@ msgstr ""
 "你应该先 <a href=\"%s\">新建</a> 或者 <a href=\"%s\">导入</a> 一个表格！"
 
 # @ tablepress
-#: views/view-export.php:97
+#: views/view-export.php:98
 msgid "Tables to Export"
 msgstr "要导出的表格"
 
 # @ tablepress
-#: views/view-export.php:100
+#: views/view-export.php:101
 msgid "Select all"
 msgstr "选择全部"
 
 # @ tablepress
-#: views/view-export.php:121 views/view-import.php:207
+#: views/view-export.php:123 views/view-import.php:208
 msgid "ID %1$s: %2$s"
 msgstr "ID %1$s: %2$s"
 
 # @ tablepress
-#: views/view-export.php:129
+#: views/view-export.php:131
 msgid ""
 "You can select multiple tables by holding down the &#8220;Ctrl&#8221; key "
 "(Windows) or the &#8220;Command&#8221; key (Mac)."
@@ -1797,37 +1839,37 @@ msgstr ""
 "（Mac）来选择多个表格。"
 
 # @ tablepress
-#: views/view-export.php:135
+#: views/view-export.php:137
 msgid "Export Format"
 msgstr "导出格式"
 
 # @ tablepress
-#: views/view-export.php:148
+#: views/view-export.php:150
 msgid "CSV Delimiter"
 msgstr "CSV 分隔符"
 
 # @ tablepress
-#: views/view-export.php:157
+#: views/view-export.php:159
 msgid "(Only needed for CSV export.)"
 msgstr "（仅在导出为 CSV 格式时需要。）"
 
 # @ tablepress
-#: views/view-export.php:161
+#: views/view-export.php:163
 msgid "ZIP file"
 msgstr "ZIP 文件"
 
 # @ tablepress
-#: views/view-export.php:167
+#: views/view-export.php:169
 msgid "Create a ZIP archive."
 msgstr "创建一个 ZIP 压缩包。"
 
 # @ tablepress
-#: views/view-export.php:167
+#: views/view-export.php:169
 msgid "(Mandatory if more than one table is selected.)"
 msgstr "（如果选择超过一个表格，则强制为此格式。）"
 
 # @ tablepress
-#: views/view-export.php:170
+#: views/view-export.php:172
 msgid ""
 "Note: Support for ZIP file creation seems not to be available on this server."
 msgstr "注：此服务器似乎不支持创建 ZIP 文件。"
@@ -1933,7 +1975,7 @@ msgstr ""
 "并）到某个已有表格的后面。"
 
 # @ tablepress
-#: views/view-import.php:121 views/view-import.php:242
+#: views/view-import.php:121 views/view-import.php:243
 msgid "Import Source"
 msgstr "导入源"
 
@@ -1958,7 +2000,7 @@ msgid "Manual Input"
 msgstr "手工输入"
 
 # @ tablepress
-#: views/view-import.php:130 views/view-import.php:249
+#: views/view-import.php:130 views/view-import.php:250
 msgid "Select file"
 msgstr "选择文件"
 
@@ -2024,20 +2066,20 @@ msgid "Select:"
 msgstr "选择："
 
 # @ tablepress
-#: views/view-import.php:217
+#: views/view-import.php:218
 msgctxt "button"
 msgid "Import"
 msgstr "导入"
 
 # @ tablepress
-#: views/view-import.php:232
+#: views/view-import.php:233
 msgid ""
 "To import all tables from a WP-Table Reloaded installation, choose the "
 "relevant import source below."
 msgstr "要从 WP-Table Reloaded 安装中导入所有表格，请在下面选择相关的导入源。"
 
 # @ tablepress
-#: views/view-import.php:234
+#: views/view-import.php:235
 msgid ""
 "If WP-Table Reloaded is installed on this site, the &#8220;WordPress "
 "database&#8221; option is recommended."
@@ -2046,7 +2088,7 @@ msgstr ""
 "&#8221; 。"
 
 # @ tablepress
-#: views/view-import.php:235
+#: views/view-import.php:236
 msgid ""
 "If you want to import tables from another site, create a &#8220;WP-Table "
 "Reloaded Dump File&#8221; there and upload it below, after choosing &#8220;"
@@ -2057,7 +2099,7 @@ msgstr ""
 "对话框上传该文件。"
 
 # @ tablepress
-#: views/view-import.php:237
+#: views/view-import.php:238
 msgid ""
 "Before doing this, it is highly recommended to read the <a href=\"%s"
 "\">migration guide</a> on the TablePress website."
@@ -2068,37 +2110,37 @@ msgstr ""
 "\">中文</a>）。"
 
 # @ tablepress
-#: views/view-import.php:244
+#: views/view-import.php:245
 msgid "WordPress database"
 msgstr "WordPress 数据库"
 
 # @ tablepress
-#: views/view-import.php:245
+#: views/view-import.php:246
 msgid "WP-Table Reloaded Dump File"
 msgstr "WP-Table Reloaded 备份文件"
 
 # @ tablepress
-#: views/view-import.php:259
+#: views/view-import.php:260
 msgid "Import tables"
 msgstr "导入表格"
 
 # @ tablepress
-#: views/view-import.php:260
+#: views/view-import.php:261
 msgid "Import all tables and their settings from WP-Table Reloaded."
 msgstr "从 WP-Table Reloaded 中导入所有表格和相应设置。"
 
 # @ tablepress
-#: views/view-import.php:260
+#: views/view-import.php:261
 msgid "<span class=\"description\">(recommended)</span>"
 msgstr "<span class=\"description\">（推荐）</span>"
 
 # @ tablepress
-#: views/view-import.php:263
+#: views/view-import.php:264
 msgid "Import styling"
 msgstr "导入样式"
 
 # @ tablepress
-#: views/view-import.php:264
+#: views/view-import.php:265
 msgid ""
 "Try to automatically convert the &#8220;Custom CSS&#8221; code from the "
 "&#8220;Plugin Options&#8221; screen of WP-Table Reloaded."
@@ -2107,18 +2149,18 @@ msgstr ""
 "CSS&#8221; 代码。"
 
 # @ tablepress
-#: views/view-import.php:268
+#: views/view-import.php:269
 msgctxt "button"
 msgid "Import from WP-Table Reloaded"
 msgstr "从 WP-Table Reloaded 中导入"
 
 # @ tablepress
-#: views/view-import.php:285
+#: views/view-import.php:286
 msgid "TablePress Feature: Import from WP-Table Reloaded"
 msgstr "TablePress 特色功能：从 WP-Table Reloaded 导入"
 
 # @ tablepress
-#: views/view-import.php:286
+#: views/view-import.php:287
 msgid ""
 "You can import your existing tables and &#8220;Custom CSS&#8221; from WP-"
 "Table Reloaded into TablePress."
@@ -2684,21 +2726,6 @@ msgstr "您的&#8220;自定义 CSS&#8221;将会随表格采用 inline 方式加�
 #: views/view-options_custom_css.php:131
 msgid "Proceed without saving &#8220;Custom CSS&#8221; to a file"
 msgstr "直接执行而不将&#8220;自定义 CSS&#8221; 存为文件"
-
-# @ tablepress
-#: views/view-preview_table.php:66
-msgid ""
-"Because of CSS styling in your theme, the table might look different on your "
-"page!"
-msgstr ""
-"因为您的主题中已有的 CSS 样式的影响，表格在您的页面上看起来可能会有所不同！"
-
-# @ tablepress
-#: views/view-preview_table.php:66
-msgid ""
-"The features of the DataTables JavaScript library are also not available or "
-"visible in this preview!"
-msgstr "在预览中，DataTables JavaScript 库的特性将不会提供或者可用！"
 
 # @ tablepress
 #. Plugin URI of the plugin/theme
