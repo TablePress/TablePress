@@ -692,7 +692,7 @@ JS;
 		}
 
 		// load the table
-		$table = TablePress::$model_table->load( $table_id, false, true ); // Load table, without table data, but with options and visibility settings
+		$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
 		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			/** This filter is documented in controllers/controller-frontend.php */
