@@ -136,6 +136,7 @@ class TablePress_Table_Model extends TablePress_Model {
 //			'post_author' => $table['author'],
 			'post_excerpt' => $table['description'],
 			'post_content' => json_encode( $table['data'] ),
+			'post_mime_type' => 'application/json',
 		);
 
 		return $post;
@@ -1088,6 +1089,17 @@ class TablePress_Table_Model extends TablePress_Model {
 			}
 			delete_transient( $caches_list_transient_name );
 		}
+	}
+
+	/**
+	 * Add mime type field to existing posts with the TablePress Custom Post Type,
+	 * so that other plugins now that they are not dealing with plain text.
+	 *
+	 * @since 1.5.0
+	 */
+	public function add_mime_type_to_posts() {
+		global $wpdb;
+		$wpdb->update( $wpdb->posts, array( 'post_mime_type' => 'application/json' ), array( 'post_type' => $this->model_post->get_post_type() ) );
 	}
 
 	/**

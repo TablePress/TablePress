@@ -346,4 +346,15 @@ class TablePress_Post_Model extends TablePress_Model {
 		return delete_post_meta( $post_id, $field, true ); // true means single value
 	}
 
+	/**
+	 * Return the Custom Post Type that TablePress uses.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string The used Custom Post Type.
+	 */
+	public function get_post_type() {
+		return $this->post_type;
+	}
+
 } // class TablePress_Post_Model

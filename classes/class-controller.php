@@ -135,6 +135,11 @@ abstract class TablePress_Controller {
 				} else {
 					TablePress::$model_table->invalidate_table_output_caches(); // for 0.9-RC and onwards
 				}
+
+				// Add mime type field to existing posts with the TablePress Custom Post Type, so that other plugins now that they are not dealing with plain text
+				if ( $current_plugin_options_db_version < 25 ) {
+					TablePress::$model_table->add_mime_type_to_posts();
+				}
 			}
 
 			TablePress::$model_options->update( array(
