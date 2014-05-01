@@ -17,7 +17,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-jsvalidate": "~0.2.2",
     "grunt-jsonlint": "~1.0.4",
-    "grunt-autoprefixer": "~0.7.2",
+    "grunt-autoprefixer": "~0.7.3",
     "matchdep": "~0.3.0"
   },
   "jshintConfig": {
