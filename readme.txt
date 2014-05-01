@@ -2,7 +2,7 @@
 Contributors: TobiasBg
 Donate link: http://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
-Requires at least: 3.8
+Requires at least: 3.9
 Tested up to: 3.9
 Stable tag: 1.4
 License: GPLv2
@@ -59,7 +59,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 = Requirements? =
 
-In short: WordPress 3.8 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 3.9 or higher, while the latest version of WordPress is always recommended.
 
 = Languages and Localization? =
 
@@ -106,6 +106,9 @@ I kindly ask you for link somewhere on your website to http://tablepress.org/. T
 I'm also happy about [donations](http://tablepress.org/donate/) or something from my [amazon.de](http://tablepress.org/wishlist-de/) or [amazon.com wishlist](http://tablepress.org/wishlist-us/)! Thanks!
 
 == Changelog ==
+
+= Version 1.5 =
+* TablePress 1.5 requires WordPress 3.9!
 
 = Version 1.4 =
 * Compatibility with WordPress 3.9

@@ -71,10 +71,9 @@ class TablePress_Edit_View extends TablePress_View {
 
 		// Use modified version of wpLink, instead of default version (changes "Title" to "Link Text")
 		wp_deregister_script( 'wplink' );
-		$version = ( 0 === strpos( $GLOBALS['wp_version'], '3.8' ) ) ? '38' : ''; // temporary backward-compatibility with WordPress 3.8, where we keep loading the old version of the customized wplink script
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		// See wp-includes/script-loader.php for default parameters
-		$wplink_url = plugins_url( "admin/js/tp_wplink{$version}{$suffix}.js", TABLEPRESS__FILE__ );
+		$wplink_url = plugins_url( "admin/js/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
 		wp_enqueue_script( 'wplink', $wplink_url, array( 'jquery' ), TablePress::version, true );
 		wp_localize_script( 'wplink', 'wpLinkL10n', array(
 			'title' => _x( 'Insert/edit link', 'Insert Link dialog', 'tablepress' ),
