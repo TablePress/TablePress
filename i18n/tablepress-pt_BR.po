@@ -1613,8 +1613,8 @@ msgstr "Substituir tabela existente"
 
 #: views/view-import.php:184
 #@ tablepress
-msgid "Select:"
-msgstr "Selecionar:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Selecionar &mdash;"
 
 #: views/view-import.php:216
 #@ tablepress

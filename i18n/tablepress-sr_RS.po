@@ -2112,8 +2112,8 @@ msgstr "Tabela koja treba da se zameni ili da se na nju prikači"
 
 # @ tablepress
 #: views/view-import.php:198
-msgid "Select:"
-msgstr "Selektuj"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Selektuj &mdash;"
 
 # @ tablepress
 #: views/view-import.php:217

@@ -2149,8 +2149,8 @@ msgstr "Таблица для замены или добавления"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Выберите:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Выберите &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201

@@ -1799,8 +1799,8 @@ msgid "Table to replace or append to"
 msgstr "Değiştirilecek veya ekleme yapılacak Tablo"
 
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Seç:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Seç &mdash;"
 
 #: views/view-import.php:201
 msgctxt "button"

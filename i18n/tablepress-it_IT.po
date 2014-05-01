@@ -2074,8 +2074,8 @@ msgstr "Tabella da sostituire o a cui aggiungere righe"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Seleziona:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Seleziona &mdash;"
 
 # @ tablepress
 #: views/view-import.php:216

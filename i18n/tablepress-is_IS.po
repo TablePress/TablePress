@@ -1857,8 +1857,8 @@ msgstr "Skipta út, bæta við töflu"
 
 #: views/view-import.php:184
 #@ tablepress
-msgid "Select:"
-msgstr "Velja:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Velja &mdash;"
 
 #: views/view-import.php:201
 #@ tablepress

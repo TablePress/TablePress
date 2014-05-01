@@ -2084,8 +2084,8 @@ msgstr "Tabuľku nahradiť alebo pripojiť k"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Vybrať:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Vybrať &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201

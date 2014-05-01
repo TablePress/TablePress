@@ -2011,8 +2011,8 @@ msgstr "要取代掉的，或追加最下方橫列的表格"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "選擇："
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; 選擇 &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201

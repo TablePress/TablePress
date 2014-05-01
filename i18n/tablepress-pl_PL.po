@@ -1778,8 +1778,8 @@ msgid "Table to replace or append to"
 msgstr "Tabela do zmiany lub dodania wierszy"
 
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Wybierz:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Wybierz &mdash;"
 
 #: views/view-import.php:201
 msgctxt "button"

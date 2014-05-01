@@ -1697,8 +1697,8 @@ msgid "Table to replace or append to"
 msgstr "Taulukko, joka korvata tai johon lisätä"
 
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Valitse:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Valitse &mdash;"
 
 #: views/view-import.php:201
 msgctxt "button"

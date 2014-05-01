@@ -2128,8 +2128,8 @@ msgstr "置き換えまたは追加する先のテーブル"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "選択: "
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; 選択 &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201

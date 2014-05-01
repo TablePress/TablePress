@@ -1724,8 +1724,8 @@ msgstr "būtu jāaizstāj ar citām vai jāpagarina tabula"
 
 #: views/view-import.php:184
 #@ tablepress
-msgid "Select:"
-msgstr "izvēle:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; izvēle &mdash;"
 
 #: views/view-import.php:201
 #@ tablepress

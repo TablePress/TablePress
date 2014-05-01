@@ -2197,8 +2197,8 @@ msgstr "zu ersetzende bzw. zu erweiternde Tabelle"
 
 # @ tablepress
 #: views/view-import.php:198
-msgid "Select:"
-msgstr "Auswahl:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Auswahl &mdash;"
 
 # @ tablepress
 #: views/view-import.php:218

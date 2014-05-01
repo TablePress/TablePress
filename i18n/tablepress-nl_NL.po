@@ -2162,8 +2162,8 @@ msgstr "Tabel om te vervangen of aan te vullen"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "(selecteer een tabel)"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Selecteer een tabel &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201

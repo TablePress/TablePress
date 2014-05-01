@@ -1979,8 +1979,8 @@ msgstr "טבלה להחלפה או להוספה לתוכה"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "בחר:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; בחר &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201

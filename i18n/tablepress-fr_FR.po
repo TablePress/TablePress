@@ -1868,8 +1868,8 @@ msgstr "Remplacer le tableau existant"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Sélectionner :"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Sélectionner &mdash;"
 
 # @ tablepress
 #: views/view-import.php:216

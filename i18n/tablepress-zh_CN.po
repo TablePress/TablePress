@@ -2062,8 +2062,8 @@ msgstr "要替换掉的，或者追加到的表格"
 
 # @ tablepress
 #: views/view-import.php:198
-msgid "Select:"
-msgstr "选择："
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; 选择 &mdash;"
 
 # @ tablepress
 #: views/view-import.php:218
