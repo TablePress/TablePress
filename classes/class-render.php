@@ -759,8 +759,8 @@ class TablePress_Render {
 				|| ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) { // no colspan into first column head
 					$this->colspan[ $row_idx ]++; // increase counter for colspan in this row
 					$this->rowspan[ $col_idx ] = 1; // reset counter for rowspan in this column, combined col- and rowspan might be happening
-					continue;
 					$row_colspanned = true; // mark this row as containing colspans
+					continue;
 				}
 				// invalid colspan, so we set cell content from #colspan# to empty
 				$cell_content = '';
