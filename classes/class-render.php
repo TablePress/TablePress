@@ -760,6 +760,7 @@ class TablePress_Render {
 					$this->colspan[ $row_idx ]++; // increase counter for colspan in this row
 					$this->rowspan[ $col_idx ] = 1; // reset counter for rowspan in this column, combined col- and rowspan might be happening
 					continue;
+					$row_colspanned = true; // mark this row as containing colspans
 				}
 				// invalid colspan, so we set cell content from #colspan# to empty
 				$cell_content = '';
@@ -850,6 +851,11 @@ class TablePress_Render {
 		$row_classes = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] ) {
 			$row_classes .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
+		}
+		
+		// add class "colspanned" if the current row contains colspans
+		if( isset( $row_colspanned ) && true === $row_colspanned ) {
+			$row_classes .= ' colspaned';
 		}
 		/**
 		 * Filter the CSS classes that are given to a row (HTML tr element) of a table.
