@@ -194,9 +194,9 @@ class CSV_Parser {
 		foreach ( $line_counts as $line => $count ) {
 			if ( is_null( $first ) ) {
 				$first = $count;
-			} elseif ( $count === $first && false !=== $equal ) {
+			} elseif ( $count === $first && false !== $equal ) {
 				$equal = true;
-			} elseif ( $count === $first + 1 && false !=== $equal ) {
+			} elseif ( $count === $first + 1 && false !== $equal ) {
 				$equal = true;
 				$almost = true;
 			} else {
