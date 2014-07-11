@@ -24,3 +24,6 @@
 	font-size: 13px;
 	vertical-align: baseline;
 }
+#tablepress-page .CodeMirror {
+	direction: ltr;
+}
