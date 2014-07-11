@@ -106,6 +106,15 @@ class TablePress_Render {
 	protected $last_column_idx;
 
 	/**
+	 * Storage for cell ranges that have been replaced in formulas.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
+	protected $known_ranges = array();
+
+	/**
 	 * Initialize the Rendering class, include the EvalMath class
 	 *
 	 * @since 1.0.0

@@ -609,7 +609,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @param array $a First language to sort
 	 * @param array $b Second language to sort
-	 * @return array -1, 0, 1, depending on sort
+	 * @return int -1, 0, 1, depending on sort
 	 */
 	protected function _get_plugin_languages_sort_cb( array $a, array $b ) {
 		return strnatcasecmp( $a['name'], $b['name'] );

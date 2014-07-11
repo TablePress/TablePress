@@ -339,7 +339,7 @@ class csstidy {
 	 * Get the value of a setting.
 	 * @param string $setting
 	 * @access public
-	 * @return mixed
+	 * @return string|bool
 	 * @version 1.0
 	 */
 	public function get_cfg($setting) {
@@ -1271,6 +1271,7 @@ class csstidy {
 	 * format("abc, def, ghi") => format("abc, def, ghi")
 	 *
 	 * @param string
+	 * @param string $value
 	 * @return array
 	 */
 

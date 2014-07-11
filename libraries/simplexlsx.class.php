@@ -88,6 +88,9 @@ class SimpleXLSX {
 		70 => 't# ??/??',
 	);
 
+	/**
+	 * @param string $filename
+	 */
 	function __construct( $filename, $is_data = false, $debug = false ) {
 		$this->debug = $debug;
 		$this->_unzip( $filename, $is_data );
@@ -120,6 +123,10 @@ class SimpleXLSX {
 		}
 		return $result;
 	}
+
+	/**
+	 * @param int $worksheet_id
+	 */
 	function worksheet( $worksheet_id ) {
 		if ( isset( $this->sheets[ $worksheet_id ] ) ) {
 			$ws = $this->sheets[ $worksheet_id ];
@@ -504,6 +511,10 @@ class SimpleXLSX {
 	function getPackage() {
 		return $this->package;
 	}
+
+	/**
+	 * @param string $name
+	 */
 	function entryExists( $name ) { // 0.6.6
 		$dir = dirname( $name );
 		$name = basename( $name );
@@ -512,6 +523,10 @@ class SimpleXLSX {
 				return true;
 		return false;
 	}
+
+	/**
+	 * @return string
+	 */
 	function getEntryData( $name ) {
 		$dir = dirname( $name );
 		$name = basename( $name );

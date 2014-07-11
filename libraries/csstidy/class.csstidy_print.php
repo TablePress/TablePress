@@ -79,7 +79,7 @@ class csstidy_print {
 
 	/**
 	 * Constructor
-	 * @param array $css contains the class csstidy
+	 * @param csstidy $css contains the class csstidy
 	 * @access private
 	 * @version 1.0
 	 */

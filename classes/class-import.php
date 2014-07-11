@@ -233,8 +233,8 @@ class TablePress_Import {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $element XMLElement
-	 * @return array XMLElement exported to an array
+	 * @param SimpleXMLElement $element XMLElement
+	 * @return array SimpleXMLElement exported to an array
 	 */
 	protected function _import_html_rows( $element ) {
 		$rows = array();

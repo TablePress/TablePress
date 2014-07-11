@@ -61,7 +61,7 @@ class csstidy_optimise {
 
 	/**
 	 * Constructor
-	 * @param array $css contains the class csstidy
+	 * @param csstidy $css contains the class csstidy
 	 * @access private
 	 * @version 1.0
 	 */
@@ -482,7 +482,6 @@ class csstidy_optimise {
 			if (!isset($css[$key])) {
 				continue;
 			}
-			$newsel = '';
 
 			// Check if properties also exist in another selector
 			$keys = array();
@@ -518,7 +517,6 @@ class csstidy_optimise {
 	 * @version 1.4
 	 */
 	public function discard_invalid_selectors(&$array) {
-		$invalid = array('+' => true, '~' => true, ',' => true, '>' => true);
 		foreach ($array as $selector => $decls) {
 			$ok = true;
 			$selectors = array_map('trim', explode(',', $selector));
@@ -545,6 +543,8 @@ class csstidy_optimise {
 	 * @see merge_4value_shorthands()
 	 */
 	public function dissolve_4value_shorthands($property, $value) {
+		$return = array();
+
 		$shorthands = & $this->parser->data['csstidy']['shorthands'];
 		if (!is_array($shorthands[$property])) {
 			$return[$property] = $value;
@@ -558,8 +558,6 @@ class csstidy_optimise {
 		}
 		$values = explode(' ', $value);
 
-
-		$return = array();
 		if (count($values) == 4) {
 			for ($i = 0; $i < 4; $i++) {
 				$return[$shorthands[$property][$i]] = $values[$i] . $important;
@@ -685,6 +683,7 @@ class csstidy_optimise {
 			$str_value = $this->parser->gvw_important($str_value);
 		}
 
+		$have = array();
 		$str_value = $this->explode_ws(',', $str_value);
 		for ($i = 0; $i < count($str_value); $i++) {
 			$have['clip'] = false;
@@ -836,6 +835,7 @@ class csstidy_optimise {
 			$str_value = $this->parser->gvw_important($str_value);
 		}
 
+		$have = array();
 		$have['style'] = false;
 		$have['variant'] = false;
 		$have['weight'] = false;
@@ -1008,6 +1008,9 @@ class csstidy_custom_sanitize extends csstidy_optimise {
 		return parent::subvalue();
 	}
 
+	/**
+	 * @param string $url
+	 */
 	function clean_url( $url ) {
 		// Clean up the string
 		$url = trim( $url, "' \" \r \n" );

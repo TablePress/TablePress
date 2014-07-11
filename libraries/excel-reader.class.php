@@ -263,12 +263,21 @@ class Spreadsheet_Excel_Reader {
 	var $colindexes = array();
 	var $standardColWidth = 0;
 	var $defaultColWidth = 0;
+
+	/**
+	 * @param int $d
+	 */
 	function myHex($d) {
 		if ($d < 16)
 			return "0" . dechex($d);
 		return dechex($d);
 	}
 
+	/**
+	 * @param string $data
+	 * @param int $pos
+	 * @param int $length
+	 */
 	function dumpHexData($data, $pos, $length) {
 		$info = "";
 		for ($i = 0; $i <= $length; $i++) {
@@ -289,6 +298,9 @@ class Spreadsheet_Excel_Reader {
 	// PUBLIC API FUNCTIONS
 	// --------------------
 
+	/**
+	 * @return string
+	 */
 	function val($row,$col,$sheet=0) {
 		$col = $this->getCol($col);
 		if (array_key_exists($row,$this->sheets[$sheet]['cells']) && array_key_exists($col,$this->sheets[$sheet]['cells'][$row]))
@@ -314,18 +326,33 @@ class Spreadsheet_Excel_Reader {
 	function raw($row,$col,$sheet=0) {
 		return $this->info($row,$col,'raw',$sheet);
 	}
+
+	/**
+	 * @param int $row
+	 * @param int $col
+	 */
 	function rowspan($row,$col,$sheet=0) {
 		$val = $this->info($row,$col,'rowspan',$sheet);
 		if ($val=="")
 			return 1;
 		return $val;
 	}
+
+	/**
+	 * @param int $row
+	 * @param int $col
+	 */
 	function colspan($row,$col,$sheet=0) {
 		$val = $this->info($row,$col,'colspan',$sheet);
 		if ($val=="")
 			return 1;
 		return $val;
 	}
+
+	/**
+	 * @param int $row
+	 * @param int $col
+	 */
 	function hyperlink($row,$col,$sheet=0) {
 		$link = $this->sheets[$sheet]['cellsInfo'][$row][$col]['hyperlink'];
 		if ($link)
@@ -338,22 +365,43 @@ class Spreadsheet_Excel_Reader {
 	function colcount($sheet=0) {
 		return $this->sheets[$sheet]['numCols'];
 	}
+
+	/**
+	 * @param int $col
+	 */
 	function colwidth($col,$sheet=0) {
 		// Col width is actually the width of the number 0. So we have to estimate and come close
 		return $this->colInfo[$sheet][$col]['width']/9142*200;
 	}
+
+	/**
+	 * @param int $col
+	 */
 	function colhidden($col,$sheet=0) {
 		return !!$this->colInfo[$sheet][$col]['hidden'];
 	}
+
+	/**
+	 * @param int $row
+	 */
 	function rowheight($row,$sheet=0) {
 		return $this->rowInfo[$sheet][$row]['height'];
 	}
+
+	/**
+	 * @param int $row
+	 */
 	function rowhidden($row,$sheet=0) {
 		return !!$this->rowInfo[$sheet][$row]['hidden'];
 	}
 
 	// GET THE CSS FOR FORMATTING
 	// ==========================
+
+	/**
+	 * @param int $row
+	 * @param int $col
+	 */
 	function style($row,$col,$sheet=0,$properties='') {
 		$css = "";
 		$font=$this->font($row,$col,$sheet);
@@ -437,6 +485,11 @@ class Spreadsheet_Excel_Reader {
 			return $this->xfRecords[$xfIndex];
 		return null;
 	}
+
+	/**
+	 * @param int $sheet
+	 * @param string $prop
+	 */
 	function xfProperty($row,$col,$sheet,$prop) {
 		$xfRecord = $this->xfRecord($row,$col,$sheet);
 		if ($xfRecord!=null)
@@ -485,6 +538,10 @@ class Spreadsheet_Excel_Reader {
 		}
 		return null;
 	}
+
+	/**
+	 * @param string $prop
+	 */
 	function fontProperty($row,$col,$sheet=0,$prop) {
 		$font = $this->fontRecord($row,$col,$sheet);
 		if ($font!=null)
@@ -758,6 +815,10 @@ class Spreadsheet_Excel_Reader {
 		"Slanted medium dash-dotte" => "2px dashed"
 	);
 
+	/**
+	 * @param string $data
+	 * @param int $start
+	 */
 	function read16bitstring($data, $start) {
 		$len = 0;
 		while (ord($data[$start + $len]) + ord($data[$start + $len + 1]) > 0) {
@@ -860,6 +921,7 @@ class Spreadsheet_Excel_Reader {
 
 	/**
 	 * Set the encoding method
+	 * @param string $encoding
 	 */
 	function setOutputEncoding($encoding) {
 		$this->_defaultEncoding = $encoding;
@@ -899,6 +961,7 @@ class Spreadsheet_Excel_Reader {
 
 	/**
 	 * Read the spreadsheet file using OLE, then parse
+	 * @param string $data
 	 */
 	function read($data) {
 		$res = $this->_ole->read($data);
@@ -1494,18 +1557,30 @@ class Spreadsheet_Excel_Reader {
 			 $this->sheets[$this->sn]['numCols'] = $this->sheets[$this->sn]['maxcol'];
 	}
 
+	/**
+	 * @param int $spos
+	 */
 	function isDate($spos) {
 		$xfindex = ord($this->data[$spos+4]) | ord($this->data[$spos+5]) << 8;
 		return ($this->xfRecords[$xfindex]['type'] == 'date');
 	}
 
 	// http://uk.php.net/manual/en/function.getdate.php
+
+	/**
+	 * @param double $ts
+	 */
 	function gmgetdate( $ts = null ) {
 	$k = array('seconds','minutes','hours','mday','wday','mon','year','yday','weekday','month',0);
 	return(array_combine($k,explode(":",gmdate('s:i:G:j:w:n:Y:z:l:F:U',is_null($ts)?time():$ts))));
 	}
 
 	// Get the details for a particular cell
+
+	/**
+	 * @param int $spos
+	 * @param int $column
+	 */
 	function _getCellDetails($spos,$numValue,$column) {
 		$xfindex = ord($this->data[$spos+4]) | ord($this->data[$spos+5]) << 8;
 		$xfrecord = $this->xfRecords[$xfindex];
@@ -1567,6 +1642,9 @@ class Spreadsheet_Excel_Reader {
 		);
 	}
 
+	/**
+	 * @param int $spos
+	 */
 	function createNumber($spos) {
 		$rknumhigh = $this->_GetInt4d($this->data, $spos + 10);
 		$rknumlow = $this->_GetInt4d($this->data, $spos + 6);
@@ -1584,6 +1662,10 @@ class Spreadsheet_Excel_Reader {
 		return $value;
 	}
 
+	/**
+	 * @param int $row
+	 * @param int $col
+	 */
 	function addcell($row, $col, $string, $info=null) {
 		$this->sheets[$this->sn]['maxrow'] = max($this->sheets[$this->sn]['maxrow'], $row + $this->_rowoffset);
 		$this->sheets[$this->sn]['maxcol'] = max($this->sheets[$this->sn]['maxcol'], $col + $this->_coloffset);
@@ -1595,6 +1677,9 @@ class Spreadsheet_Excel_Reader {
 		}
 	}
 
+	/**
+	 * @param int $rknum
+	 */
 	function _GetIEEE754($rknum) {
 		if (($rknum & 0x02) != 0) {
 				$value = $rknum >> 2;
@@ -1618,6 +1703,9 @@ class Spreadsheet_Excel_Reader {
 		return $value;
 	}
 
+	/**
+	 * @param string $string
+	 */
 	function _encodeUTF16($string) {
 		if ($this->_defaultEncoding){
 			switch ($this->_encoderFunction){
@@ -1632,6 +1720,10 @@ class Spreadsheet_Excel_Reader {
 		return $string;
 	}
 
+	/**
+	 * @param string $data
+	 * @param int $pos
+	 */
 	function _GetInt4d($data, $pos) {
 		$value = ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | (ord($data[$pos+3]) << 24);
 		if ($value>=4294967294)
@@ -1639,6 +1731,10 @@ class Spreadsheet_Excel_Reader {
 		return $value;
 	}
 
+	/**
+	 * @param string $data
+	 * @param int $pos
+	 */
 	function v($data,$pos) {
 		return ord($data[$pos]) | ord($data[$pos+1])<<8;
 	}

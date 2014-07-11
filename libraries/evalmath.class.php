@@ -115,6 +115,10 @@ LICENSE
 */
 
 class MoodleTranslations {
+
+	/**
+	 * @param string $identifier
+	 */
 	static function get_string( $identifier, $component = '', $a = NULL ) {
 		// from https://github.com/moodle/moodle/blob/13264f35057d2f37374ec3e0e8ad4070f4676bd7/lang/en/mathslib.php
 		$string = array();
@@ -272,7 +276,7 @@ class EvalMath {
 
 	/**
 	 * @param string $name
-	 * @return boolean Is this a valid var or function name?
+	 * @return int Is this a valid var or function name?
 	 */
 	public static function is_valid_var_or_func_name($name){
 		return preg_match('/'.self::$namepat.'$/iA', $name);
@@ -281,6 +285,10 @@ class EvalMath {
 	//===================== HERE BE INTERNAL METHODS ====================\\
 
 	// Convert infix to postfix notation
+
+	/**
+	 * @param string $expr
+	 */
 	function nfx($expr) {
 
 		$index = 0;
@@ -537,6 +545,10 @@ class EvalMath {
 	}
 
 	// trigger an error, but nicely, if need be
+
+	/**
+	 * @param string $msg
+	 */
 	function trigger($msg) {
 		$this->last_error = $msg;
 		if (!$this->suppress_errors) trigger_error($msg, E_USER_WARNING);
@@ -673,6 +685,9 @@ class EvalMathFuncs {
 		self::$randomseed = $randomseed;
 	}
 
+	/**
+	 * @return string
+	 */
 	static function get_random_seed() {
 		if (is_null(self::$randomseed)){
 			return microtime();
