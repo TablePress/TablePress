@@ -278,7 +278,7 @@ $data['csstidy']['replace_colors']['whitesmoke'] = '#f5f5f5';
 $data['csstidy']['replace_colors']['yellowgreen'] = '#9acd32';
 
 /**
- * A list of all shorthand properties that are devided into four properties and/or have four subvalues
+ * A list of all shorthand properties that are divided into four properties and/or have four subvalues
  *
  * @global array $data['csstidy']['shorthands']
  * @todo Are there new ones in CSS3?
