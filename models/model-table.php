@@ -1093,7 +1093,7 @@ class TablePress_Table_Model extends TablePress_Model {
 
 	/**
 	 * Add mime type field to existing posts with the TablePress Custom Post Type,
-	 * so that other plugins now that they are not dealing with plain text.
+	 * so that other plugins know that they are not dealing with plain text.
 	 *
 	 * @since 1.5.0
 	 */
