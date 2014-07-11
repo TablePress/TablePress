@@ -64,7 +64,7 @@ class TablePress_Edit_View extends TablePress_View {
 
 		wp_enqueue_style( 'wp-jquery-ui-dialog' ); // do this here to get CSS into <head>
 		wp_enqueue_script( 'wpdialogs' ); // For the Advanced Editor
-		add_action( 'admin_footer', array( $this, 'dequeue_media_upload_js' ), 2 ); // remove default media-upload.js, in favor of own code
+		add_action( 'admin_print_footer_scripts', array( $this, 'dequeue_media_upload_js' ), 2 ); // remove default media-upload.js, in favor of own code
 		add_thickbox();
 		add_filter( 'media_view_strings', array( $this, 'change_media_view_strings' ) );
 		wp_enqueue_media();
