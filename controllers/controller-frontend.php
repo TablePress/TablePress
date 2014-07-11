@@ -892,7 +892,7 @@ JS;
 		$exact = get_query_var( 'exact' );
 		$n = ( empty( $exact ) ) ? '%' : '';
 		foreach ( $query_result as $search_term => $table_ids ) {
-			$search_term = like_escape( esc_sql( $search_term ) );
+			$search_term = esc_sql( $wpdb->esc_like( $search_term ) );
 			$old_or = "OR ({$wpdb->posts}.post_content LIKE '{$n}{$search_term}{$n}')";
 			$table_ids = implode( '|', $table_ids );
 			$regexp = '\\\\[' . TablePress::$shortcode . ' id=(["\\\']?)(' . $table_ids . ')([\]"\\\' /])'; // ' needs to be single escaped, [ double escaped (with \\) in mySQL
