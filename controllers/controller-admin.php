@@ -586,6 +586,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Hakan Er',
 				'translator_url' => 'http://hakanertr.wordpress.com/',
 			),
+			'uk_UA' => array(
+				'name' => __( 'Ukrainian', 'tablepress' ),
+				'translator_name' => 'Ostap Kutsyy',
+				'translator_url' => '',
+			),
 			'zh_CN' => array(
 				'name' => __( 'Chinese (Simplified)', 'tablepress' ),
 				'translator_name' => 'Haoxian Zeng',
