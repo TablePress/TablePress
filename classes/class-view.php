@@ -211,7 +211,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @param string $id Unique HTML ID for the text box container (only visible with $wrap = true)
-	 * @param string $callback Callback that prints the contents of the text box
+	 * @param callback $callback Callback that prints the contents of the text box
 	 * @param string $context (optional) Context/position of the text box (normal, side, additional, header, submit)
 	 * @param bool $wrap Whether the content of the text box shall be wrapped in a <div> container
 	 */
@@ -237,7 +237,7 @@ abstract class TablePress_View {
 	 *
 	 * @param string $id Unique ID for the meta box
 	 * @param string $title Title for the meta box
-	 * @param string $callback Callback that prints the contents of the post meta box
+	 * @param callback $callback Callback that prints the contents of the post meta box
 	 * @param string $context (optional) Context/position of the post meta box (normal, side, additional)
 	 * @param string $priority (optional) Order of the post meta box for the $context position (high, default, low)
 	 * @param bool $callback_args (optional) Additional data for the callback function (e.g. useful when in different class)
