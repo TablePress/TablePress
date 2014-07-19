@@ -108,11 +108,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				case 'top':
 					$position = 3; // position of Dashboard + 1
 					break;
-				case 'middle':
-					$position = ( ++$GLOBALS['_wp_last_object_menu'] );
-					break;
 				case 'bottom':
 					$position = ( ++$GLOBALS['_wp_last_utility_menu'] );
+					break;
+				case 'middle':
+				default:
+					$position = ( ++$GLOBALS['_wp_last_object_menu'] );
 					break;
 			}
 			add_menu_page( 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback, $icon_url, $position );
