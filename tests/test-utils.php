@@ -21,6 +21,9 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 
 	/**
 	 * @dataProvider data_letter_to_number
+	 *
+	 * @param string $letter Letter to convert.
+	 * @param int    $number Conversion result number.
 	 */
 	public function test_letter_to_number( $letter, $number ) {
 		$this->assertEquals( $number, TablePress::letter_to_number( $letter ) );
@@ -45,6 +48,9 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 
 	/**
 	 * @dataProvider data_number_to_letter
+	 *
+	 * @param int    $number Number to convert.
+	 * @param string $letter Conversion result letter.
 	 */
 	public function test_number_to_letter( $number, $letter ) {
 		$this->assertEquals( $letter, TablePress::number_to_letter( $number ) );

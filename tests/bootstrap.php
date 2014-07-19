@@ -8,9 +8,11 @@ $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array( 'tablepress/tablepress.php' ),
 );
 
-// If the WP unit tests location is defined (as WP_TESTS_DIR), use that location.
-// Otherwise, we'll just assume that this plugin is installed in a WordPress Develop repo checkout.
-if( false !== getenv( 'WP_TESTS_DIR' ) ) {
+/*
+ * If the WP unit tests location is defined (as WP_TESTS_DIR), use that location.
+ * Otherwise, we assume that this plugin is installed in a WordPress Develop repository checkout.
+ */
+if ( false !== getenv( 'WP_TESTS_DIR' ) ) {
 	require getenv( 'WP_TESTS_DIR' ) . 'includes/bootstrap.php';
 } else {
 	require '../../../../../tests/phpunit/includes/bootstrap.php';
@@ -23,6 +25,9 @@ class TablePress_TestCase extends WP_UnitTestCase {
 
 	/**
 	 * Set variables for a faked HTTP POST request.
+	 *
+	 * @param string $key   Name of the POST variable.
+	 * @param string $value Value of the POST variable.
 	 */
 	function set_post( $key, $value ) {
 		// Add slashing as expected by the PHP setting.
@@ -34,6 +39,8 @@ class TablePress_TestCase extends WP_UnitTestCase {
 
 	/**
 	 * Unset variables from a faked HTTP POST request.
+	 *
+ 	 * @param string $key Name of the POST variable.
 	 */
 	function unset_post( $key ) {
 		unset( $_POST[ $key ], $_REQUEST[ $key ] );

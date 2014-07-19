@@ -6,7 +6,7 @@
 class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 
 	/**
-	 * Run a simple test to ensure that the tests are running
+	 * Run a simple test to ensure that the tests are running.
 	 */
 	public function test_true_is_true() {
 		$this->assertTrue( true );
