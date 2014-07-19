@@ -115,8 +115,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table Table
-	 * @param int $post_id Post ID
+	 * @param array $table Table.
+	 * @param int $post_id Post ID of an existing table, or -1 for a new table.
 	 * @return array Post
 	 */
 	protected function _table_to_post( array $table, $post_id ) {
@@ -128,6 +128,11 @@ class TablePress_Table_Model extends TablePress_Model {
 					$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // equals wp_filter_post_kses(), but without the unncessary slashes handling
 				}
 			}
+		}
+
+		// New posts have a post ID of false in WordPress.
+		if ( -1 === $post_id ) {
+			$post_id = false;
 		}
 
 		$post = array(
@@ -350,7 +355,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success
 	 */
 	public function add( array $table, $copied_table_id = false ) {
-		$post_id = false; // to insert table
+		$post_id = -1; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
 		if ( is_wp_error( $new_post_id ) ) {
