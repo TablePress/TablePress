@@ -24,7 +24,6 @@ class TablePress_Import_View extends TablePress_View {
 	 * List of WP feature pointers for this view
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $wp_pointers = array( 'tp100_wp_table_reloaded_import' );

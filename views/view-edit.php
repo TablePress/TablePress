@@ -24,7 +24,6 @@ class TablePress_Edit_View extends TablePress_View {
 	 * List of WP feature pointers for this view
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $wp_pointers = array( 'tp09_edit_drag_drop_sort' );

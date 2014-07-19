@@ -24,7 +24,6 @@ class CSV_Parser {
 	 * The used character for the enclosure of a cell. Defaults to quotation mark ".
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $enclosure = '"';
@@ -33,7 +32,6 @@ class CSV_Parser {
 	 * Number of rows to analyze when attempting to auto-detect the CSV delimiter.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var integer
 	 */
 	protected $delimiter_search_max_lines = 15;
@@ -42,7 +40,6 @@ class CSV_Parser {
 	 * Characters to ignore when attempting to auto-detect delimiter.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $non_delimiter_chars = "a-zA-Z0-9\n\r";
@@ -51,7 +48,6 @@ class CSV_Parser {
 	 * The preferred delimiter characters, only used when all filtering method return multiple possible delimiters (happens very rarely).
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $preferred_delimiter_chars = ";,\t";
@@ -60,7 +56,6 @@ class CSV_Parser {
 	 * The CSV data string that shall be parsed to an array.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $import_data;
@@ -74,7 +69,6 @@ class CSV_Parser {
 	 *     or does not follow the common CSV standard. Please validate the parsed data manually.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var integer
 	 */
 	public $error = 0;
@@ -83,7 +77,6 @@ class CSV_Parser {
 	 * Detailed error information.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	public $error_info = array();

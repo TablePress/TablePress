@@ -24,7 +24,6 @@ class TablePress_List_View extends TablePress_View {
 	 * Object for the All Tables List Table
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_All_Tables_List_Table
 	 */
 	protected $wp_list_table;
@@ -251,7 +250,6 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * Number of items of the initial data set (before sort, search, and pagination)
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var int
 	 */
 	protected $items_count = 0;

@@ -24,7 +24,6 @@ class TablePress_Export {
 	 * File/Data Formats that are available for the export
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	public $export_formats = array();
@@ -33,7 +32,6 @@ class TablePress_Export {
 	 * Delimiters for the CSV export
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	public $csv_delimiters = array();
@@ -42,7 +40,6 @@ class TablePress_Export {
 	 * Whether ZIP archive support is available in the PHP installation on the server
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var bool
 	 */
 	public $zip_support_available = false;

@@ -24,7 +24,6 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Name of the "Custom Post Type" for the tables
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $post_type = 'tablepress_table';

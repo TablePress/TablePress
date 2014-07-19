@@ -26,7 +26,6 @@ class TablePress_WP_Option {
 	 * Name/Key of the Option (in its location in the database)
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $option_name;
@@ -35,7 +34,6 @@ class TablePress_WP_Option {
 	 * Current value of the option
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $option_value;

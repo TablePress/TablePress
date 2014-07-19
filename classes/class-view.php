@@ -24,7 +24,6 @@ abstract class TablePress_View {
 	 * Data for the view
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $data = array();
@@ -33,7 +32,6 @@ abstract class TablePress_View {
 	 * Number of screen columns for post boxes
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var int
 	 */
 	protected $screen_columns = 0;
@@ -42,7 +40,6 @@ abstract class TablePress_View {
 	 * User action for this screen
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $action = '';
@@ -51,7 +48,6 @@ abstract class TablePress_View {
 	 * Instance of the Admin Page Helper Class, with necessary functions
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_Admin_Page
 	 */
 	protected $admin_page;
@@ -60,7 +56,6 @@ abstract class TablePress_View {
 	 * List of text boxes (similar to post boxes, but just with text and without extra functionality)
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $textboxes = array();
@@ -69,7 +64,6 @@ abstract class TablePress_View {
 	 * List of messages that are to be displayed as boxes below the page title
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $header_messages = array();
@@ -79,7 +73,6 @@ abstract class TablePress_View {
 	 * is automatically set to true, when a meta box is added
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var bool
 	 */
 	protected $has_meta_boxes = false;
@@ -88,7 +81,6 @@ abstract class TablePress_View {
 	 * List of WP feature pointers for this view
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $wp_pointers = array();

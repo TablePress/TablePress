@@ -56,7 +56,6 @@ abstract class TablePress {
 	 * Instance of the Options Model
 	 *
 	 * @since 1.3.0
-	 *
 	 * @var object
 	 */
 	public static $model_options;
@@ -65,7 +64,6 @@ abstract class TablePress {
 	 * Instance of the Table Model
 	 *
 	 * @since 1.3.0
-	 *
 	 * @var object
 	 */
 	public static $model_table;
@@ -74,7 +72,6 @@ abstract class TablePress {
 	 * Instance of the controller
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var object
 	 */
 	public static $controller;
@@ -84,7 +81,6 @@ abstract class TablePress {
 	 * Should only be modified through the filter hook 'tablepress_table_shortcode'
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	public static $shortcode = 'table';
@@ -94,7 +90,6 @@ abstract class TablePress {
 	 * Should only be modified through the filter hook 'tablepress_table_info_shortcode'
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	public static $shortcode_info = 'table-info';

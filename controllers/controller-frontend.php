@@ -24,7 +24,6 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * List of tables that are shown for the current request
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $shown_tables = array();

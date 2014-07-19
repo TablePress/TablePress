@@ -24,7 +24,6 @@ class TablePress_About_View extends TablePress_View {
 	 * Number of screen columns for post boxes on this screen
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var int
 	 */
 	protected $screen_columns = 2;

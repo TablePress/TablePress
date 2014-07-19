@@ -170,7 +170,6 @@ class csstidy {
 	 * - instr = in string (started at " or ' or ( )
 	 * - ic = in comment (ignore everything)
 	 * - at = in @-block
-	 *
 	 * @var string
 	 * @access private
 	 */

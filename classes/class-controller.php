@@ -24,7 +24,6 @@ abstract class TablePress_Controller {
 	 * Instance of the Options Model
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_Options_Model
 	 */
 	public $model_options;
@@ -33,7 +32,6 @@ abstract class TablePress_Controller {
 	 * Instance of the Table Model
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_Table_Model
 	 */
 	public $model_table;
@@ -42,7 +40,6 @@ abstract class TablePress_Controller {
 	 * File name of the admin screens's parent page in the admin menu
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	public $parent_page = 'middle';
@@ -51,7 +48,6 @@ abstract class TablePress_Controller {
 	 * Whether TablePress admin screens are a top-level menu item in the admin menu
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var bool
 	 */
 	public $is_top_level_page = false;

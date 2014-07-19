@@ -25,7 +25,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * populated in add_admin_menu_entry()
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $page_hooks = array();
@@ -34,7 +33,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Actions that have a view and admin menu or nav tab menu entry
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $view_actions = array();
@@ -43,7 +41,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Boolean to record whether language support has been loaded (to prevent to do it twice)
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var bool
 	 */
 	protected $i18n_support_loaded = false;
@@ -52,7 +49,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Instance of the TablePress Admin View that is rendered.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_View
 	 */
 	protected $view;
@@ -61,7 +57,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * Instance of the TablePress Importer.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_Import
 	 */
 	protected $importer;

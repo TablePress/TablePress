@@ -35,7 +35,6 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 * Object for the Editor Button Thickbox List Table
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_Editor_Button_Thickbox_List_Table
 	 */
 	protected $wp_list_table;
@@ -222,7 +221,6 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * Number of items of the initial data set (before sort, search, and pagination)
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var int
 	 */
 	protected $items_count = 0;

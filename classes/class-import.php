@@ -24,7 +24,6 @@ class TablePress_Import {
 	 * File/Data Formats that are available for import
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	public $import_formats = array();
@@ -33,7 +32,6 @@ class TablePress_Import {
 	 * Whether ZIP archive support is available in the PHP installation on the server
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var bool
 	 */
 	public $zip_support_available = false;
@@ -42,7 +40,6 @@ class TablePress_Import {
 	 * Whether HTML import support is available in the PHP installation on the server
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var bool
 	 */
 	public $html_import_support_available = false;
@@ -51,7 +48,6 @@ class TablePress_Import {
 	 * Data to be imported
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $import_data;
@@ -60,7 +56,6 @@ class TablePress_Import {
 	 * Imported table
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $imported_table = false;

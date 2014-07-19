@@ -24,7 +24,6 @@ class TablePress_Render {
 	 * Table data that is rendered
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $table;
@@ -33,7 +32,6 @@ class TablePress_Render {
 	 * Table options that influence the output result
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $render_options = array();
@@ -42,7 +40,6 @@ class TablePress_Render {
 	 * Rendered HTML of the table
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $output;
@@ -51,7 +48,6 @@ class TablePress_Render {
 	 * Instance of EvalMath class
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var EvalMath
 	 */
 	protected $evalmath;
@@ -60,7 +56,6 @@ class TablePress_Render {
 	 * Trigger words for colspan, rowspan, or the combination of both
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $span_trigger = array(
@@ -73,7 +68,6 @@ class TablePress_Render {
 	 * Buffer to store the counts of rowspan per column, initialized in _render_table()
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $rowspan = array();
@@ -82,7 +76,6 @@ class TablePress_Render {
 	 * Buffer to store the counts of colspan per row, initialized in _render_table()
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $colspan = array();
@@ -91,7 +84,6 @@ class TablePress_Render {
 	 * Index of the last row of the visible data in the table, set in _render_table()
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var int
 	 */
 	protected $last_row_idx;
@@ -100,7 +92,6 @@ class TablePress_Render {
 	 * Index of the last column of the visible data in the table, set in _render_table()
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var int
 	 */
 	protected $last_column_idx;
@@ -109,7 +100,6 @@ class TablePress_Render {
 	 * Storage for cell ranges that have been replaced in formulas.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $known_ranges = array();

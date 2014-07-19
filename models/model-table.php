@@ -24,7 +24,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Instance of the Post Type Model
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_Post_Model
 	 */
 	protected $model_post;
@@ -33,7 +32,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Name of the Post Meta Field for table options
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $table_options_field_name = '_tablepress_table_options';
@@ -42,7 +40,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Name of the Post Meta Field for table visibility
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var string
 	 */
 	protected $table_visibility_field_name = '_tablepress_table_visibility';
@@ -55,7 +52,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * - table_post: array of connections between table ID and post ID (key: table ID, value: post ID)
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $default_tables = array(
@@ -67,7 +63,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Instance of WP_Option class for the list of tables
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_WP_Option
 	 */
 	protected $tables;

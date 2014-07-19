@@ -24,7 +24,6 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Default Plugin Options
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $default_plugin_options = array(
@@ -47,7 +46,6 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Default User Options
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var array
 	 */
 	protected $default_user_options = array(
@@ -61,7 +59,6 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Instance of WP_Option class for Plugin Options
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_WP_Option
 	 */
 	protected $plugin_options;
@@ -70,7 +67,6 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Instance of WP_User_Option class for User Options
 	 *
 	 * @since 1.0.0
-	 *
 	 * @var TablePress_WP_User_Option
 	 */
 	protected $user_options;
