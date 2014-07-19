@@ -107,9 +107,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$error_details = $this->get_wp_error_string( $empty_data_error );
 				break;
 			}
-			$edit_table['data'] = json_decode( $edit_table['data'], true );
-			$edit_table['options'] = json_decode( $edit_table['options'], true );
-			$edit_table['visibility'] = json_decode( $edit_table['visibility'], true );
+			$edit_table['data'] = (array) json_decode( $edit_table['data'], true );
+			$edit_table['options'] = (array) json_decode( $edit_table['options'], true );
+			$edit_table['visibility'] = (array) json_decode( $edit_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
@@ -221,9 +221,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			|| empty( $preview_table['visibility'] ) ) {
 				break;
 			}
-			$preview_table['data'] = json_decode( $preview_table['data'], true );
-			$preview_table['options'] = json_decode( $preview_table['options'], true );
-			$preview_table['visibility'] = json_decode( $preview_table['visibility'], true );
+			$preview_table['data'] = (array) json_decode( $preview_table['data'], true );
+			$preview_table['options'] = (array) json_decode( $preview_table['options'], true );
+			$preview_table['visibility'] = (array) json_decode( $preview_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table
 			$table = TablePress::$model_table->prepare_table( $existing_table, $preview_table, true, true );

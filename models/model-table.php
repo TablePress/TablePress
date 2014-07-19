@@ -212,6 +212,9 @@ class TablePress_Table_Model extends TablePress_Model {
 			}
 
 			$table['description'] = "[ERROR] TABLE IS CORRUPTED{$json_error}!  DO NOT EDIT THIS TABLE NOW!\nInstead, please see https://tablepress.org/faq/corrupted-tables/ for instructions.\n-\n{$table['description']}";
+		} else {
+			// Specifically cast to an array again.
+			$table['data'] = (array) $table['data'];
 		}
 
 		return $table;
@@ -553,7 +556,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
 		$caches_list = get_transient( $caches_list_transient_name );
 		if ( false !== $caches_list ) {
-			$caches_list = json_decode( $caches_list, true );
+			$caches_list = (array) json_decode( $caches_list, true );
 			foreach ( $caches_list as $cache_transient_name ) {
 				delete_transient( $cache_transient_name );
 			}
@@ -918,7 +921,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $options ) ) {
 			return array();
 		}
-		return json_decode( $options, true );
+		return (array) json_decode( $options, true );
 	}
 
 	/**

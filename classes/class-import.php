@@ -293,6 +293,9 @@ class TablePress_Import {
 				$this->imported_table = false;
 				return;
 			}
+		} else {
+			// Specifically cast to an array again.
+			$json_table = (array) $json_table;
 		}
 
 		if ( isset( $json_table['data'] ) ) {

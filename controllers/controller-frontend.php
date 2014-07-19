@@ -604,7 +604,7 @@ JS;
 				if ( false === $caches_list ) {
 					$caches_list = array();
 				} else {
-					$caches_list = json_decode( $caches_list, true );
+					$caches_list = (array) json_decode( $caches_list, true );
 				}
 				if ( ! in_array( $transient_name, $caches_list, true ) ) {
 					$caches_list[] = $transient_name;

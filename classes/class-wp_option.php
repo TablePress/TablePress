@@ -51,7 +51,7 @@ class TablePress_WP_Option {
 
 		$option_value = $this->_get_option( $this->option_name, null );
 		if ( ! is_null( $option_value ) ) {
-			$this->option_value = json_decode( $option_value, true ); // decode JSON as associative array
+			$this->option_value = (array) json_decode( $option_value, true ); // decode JSON as associative array
 		} else {
 			$this->option_value = $params['default_value'];
 		}
