@@ -68,7 +68,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			add_filter( 'posts_search', array( $this, 'posts_search_filter' ) );
 		}
 
-		// load Template Tag functions
+		/**
+		 * Load TablePress Template Tag functions.
+		 */
 		require_once TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php';
 	}
 
