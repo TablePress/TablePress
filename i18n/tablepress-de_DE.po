@@ -22,9 +22,9 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"Danke, dass du <a href=\"http://tablepress.org/\">TablePress</a> benutzt."
+"Danke, dass du <a href=\"https://tablepress.org/\">TablePress</a> benutzt."
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:80
@@ -2903,8 +2903,8 @@ msgid "Proceed without saving &#8220;Custom CSS&#8221; to a file"
 msgstr "Fortfahren, ohne &#8220;Zusatz-CSS&#8221; in einer Datei zu speichern"
 
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. Description of the plugin/theme
 msgid ""

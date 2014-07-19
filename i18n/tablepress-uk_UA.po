@@ -17,9 +17,9 @@ msgstr ""
 "Language: uk_UA\n"
 
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"Дякуємо Вам за користування <a href=\"http://tablepress.org/\">TablePress</"
+"Дякуємо Вам за користування <a href=\"https://tablepress.org/\">TablePress</"
 "a>."
 
 #: classes/class-admin-page-helper.php:80
@@ -2424,7 +2424,7 @@ msgid "Proceed without saving &#8220;Custom CSS&#8221; to a file"
 msgstr "Продовжити не зберігаючи у файл &#8220;Користувацький CSS&#8221;"
 
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
+msgid "https://tablepress.org/"
 msgstr ""
 
 #. Description of the plugin/theme

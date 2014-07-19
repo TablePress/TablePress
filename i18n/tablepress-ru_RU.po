@@ -22,9 +22,9 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"Благодарим вас за использование <a href=\"http://tablepress.org/"
+"Благодарим вас за использование <a href=\"https://tablepress.org/"
 "\">TablePress</a>."
 
 # @ tablepress
@@ -2884,7 +2884,7 @@ msgstr ""
 
 # @ tablepress
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
+msgid "https://tablepress.org/"
 msgstr ""
 
 # @ tablepress

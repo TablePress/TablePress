@@ -9,7 +9,7 @@
 
 /*
 Plugin Name: TablePress
-Plugin URI: http://tablepress.org/
+Plugin URI: https://tablepress.org/
 Description: TablePress enables you to create and manage tables in your posts and pages, without having to write HTML code, and it adds valuable functions for your visitors.
 Version: 1.4
 Author: Tobias Bäthge
@@ -18,7 +18,7 @@ Author email: wordpress@tobias.baethge.com
 Text Domain: tablepress
 Domain Path: /i18n
 License: GPL 2
-Donate URI: http://tablepress.org/donate/
+Donate URI: https://tablepress.org/donate/
 */
 
 /*	Copyright 2012-2014 Tobias Bäthge

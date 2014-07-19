@@ -21,8 +21,8 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "欢迎使用 <a href=\"http://tablepress.org/\">TablePress</a> 表格插件。"
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "欢迎使用 <a href=\"https://tablepress.org/\">TablePress</a> 表格插件。"
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:80
@@ -2729,8 +2729,8 @@ msgstr "直接执行而不将&#8220;自定义 CSS&#8221; 存为文件"
 
 # @ tablepress
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 # @ tablepress
 #. Description of the plugin/theme

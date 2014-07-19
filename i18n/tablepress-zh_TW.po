@@ -21,8 +21,8 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "歡迎使用 <a href=\"http://tablepress.org/\">TablePress</a>。"
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "歡迎使用 <a href=\"https://tablepress.org/\">TablePress</a>。"
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:80
@@ -2691,8 +2691,8 @@ msgstr "在預覽中，DataTables JavaScript 函式庫的特性並不會顯示�
 
 # @ tablepress
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 # @ tablepress
 #. Description of the plugin/theme

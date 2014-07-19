@@ -15,8 +15,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: classes/class-admin-page-helper.php:78
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "Kiitos kun käytät <a href=\"http://tablepress.org/\">TablePressiä</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "Kiitos kun käytät <a href=\"https://tablepress.org/\">TablePressiä</a>."
 
 #: classes/class-admin-page-helper.php:79
 msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
@@ -2315,8 +2315,8 @@ msgstr ""
 "esikatselussa!"
 
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. Description of the plugin/theme
 msgid ""

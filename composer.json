@@ -3,7 +3,7 @@
   "version": "1.4.0",
   "description": "TablePress plugin for WordPress",
   "keywords": ["wordpress", "plugin", "table"],
-  "homepage": "http://tablepress.org/",
+  "homepage": "https://tablepress.org/",
   "license": "GPL2",
   "authors": [
     {

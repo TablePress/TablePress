@@ -235,7 +235,7 @@ class TablePress_Import_View extends TablePress_View {
 	<?php _e( 'If WP-Table Reloaded is installed on this site, the &#8220;WordPress database&#8221; option is recommended.', 'tablepress' ); ?>
 	<?php _e( 'If you want to import tables from another site, create a &#8220;WP-Table Reloaded Dump File&#8221; there and upload it below, after choosing &#8220;WP-Table Reloaded Dump File&#8221;.', 'tablepress' ); ?>
 <br />
-	<?php printf( __( 'Before doing this, it is highly recommended to read the <a href="%s">migration guide</a> on the TablePress website.', 'tablepress' ), 'http://tablepress.org/migration-from-wp-table-reloaded/' ); ?>
+	<?php printf( __( 'Before doing this, it is highly recommended to read the <a href="%s">migration guide</a> on the TablePress website.', 'tablepress' ), 'https://tablepress.org/migration-from-wp-table-reloaded/' ); ?>
 </p>
 <table class="tablepress-postbox-table fixed">
 <tbody>

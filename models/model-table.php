@@ -214,7 +214,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				$json_error = " ({$table['json_error']})";
 			}
 
-			$table['description'] = "[ERROR] TABLE IS CORRUPTED{$json_error}!  DO NOT EDIT THIS TABLE NOW!\nInstead, please see http://tablepress.org/faq/corrupted-tables/ for instructions.\n-\n{$table['description']}";
+			$table['description'] = "[ERROR] TABLE IS CORRUPTED{$json_error}!  DO NOT EDIT THIS TABLE NOW!\nInstead, please see https://tablepress.org/faq/corrupted-tables/ for instructions.\n-\n{$table['description']}";
 		}
 
 		return $table;

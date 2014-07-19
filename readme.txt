@@ -1,6 +1,6 @@
 === TablePress ===
 Contributors: TobiasBg
-Donate link: http://tablepress.org/donate/
+Donate link: https://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
 Requires at least: 3.9
 Tested up to: 3.9
@@ -15,14 +15,14 @@ TablePress enables you to create and manage tables, without having to write HTML
 TablePress enables you to create and manage tables on your WordPress site. No HTML knowledge is needed, as a comfortable interface allows to easily edit table data. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library can be used to add features like sorting, pagination, filtering, and more for site visitors. You can include the tables into your posts, on your pages, or in text widgets with ease. Tables can be imported and exported from/to CSV files (e.g. from Excel), HTML files, and JSON.
 
 = More information =
-Please visit the plugin website at http://tablepress.org/ for more information.
+Please visit the plugin website at https://tablepress.org/ for more information.
 
 = Supporting future development =
-If you like the TablePress plugin, please rate and review it here in the WordPress Plugin Directory, support it with your [donation](http://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
+If you like the TablePress plugin, please rate and review it here in the WordPress Plugin Directory, support it with your [donation](https://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
 = Migration from WP-Table Reloaded =
 TablePress is the official successor of the WP-Table Reloaded plugin. It has been rewritten from the ground up and uses an entirely new internal structure. This fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
-If you are currently using WP-Table Reloaded, it is recommended that you switch to TablePress. WP-Table Reloaded will no longer be maintained or developed. For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](http://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
+If you are currently using WP-Table Reloaded, it is recommended that you switch to TablePress. WP-Table Reloaded will no longer be maintained or developed. For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](https://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
 
 == Screenshots ==
 
@@ -33,7 +33,7 @@ If you are currently using WP-Table Reloaded, it is recommended that you switch 
 5. "Export" screen
 6. "Plugin Options" screen
 7. "About" screen
-8. An example table (as it can be seen on the [TablePress website](http://tablepress.org/demo/))
+8. An example table (as it can be seen on the [TablePress website](https://tablepress.org/demo/))
 
 == Installation ==
 
@@ -51,7 +51,7 @@ Manual installation works just as for other WordPress plugins:
 
 = Where can I find answers to Frequently Asked Questions? =
 
-Many questions, regarding different features or styling, have been answered on the [FAQ page](http://tablepress.org/faq/) on the plugin website.
+Many questions, regarding different features or styling, have been answered on the [FAQ page](https://tablepress.org/faq/) on the plugin website.
 
 = Support? =
 
@@ -75,11 +75,11 @@ You can follow the development of TablePress more closely in its official GitHub
 
 = Switch from WP-Table Reloaded to TablePress =
 
-For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](http://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
+For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](https://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
 
 = Where can I get more information? =
 
-Please visit the [official plugin website](http://tablepress.org/) for the latest information on this plugin.
+Please visit the [official plugin website](https://tablepress.org/) for the latest information on this plugin.
 
 == Usage ==
 
@@ -102,8 +102,8 @@ Thanks to every donor, supporter and bug reporter!
 
 This plugin is Free Software, released and licensed under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
-I kindly ask you for link somewhere on your website to http://tablepress.org/. This is not required!
-I'm also happy about [donations](http://tablepress.org/donate/) or something from my [amazon.de](http://tablepress.org/wishlist-de/) or [amazon.com wishlist](http://tablepress.org/wishlist-us/)! Thanks!
+I kindly ask you for link somewhere on your website to https://tablepress.org/. This is not required!
+I'm also happy about [donations](https://tablepress.org/donate/) or something from my [amazon.de](https://tablepress.org/wishlist-de/) or [amazon.com wishlist](https://tablepress.org/wishlist-us/)! Thanks!
 
 == Changelog ==
 

@@ -17,9 +17,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"<a href=\"http://tablepress.org/\">TablePress</a> kullandığınız için "
+"<a href=\"https://tablepress.org/\">TablePress</a> kullandığınız için "
 "teşekkürler."
 
 #: classes/class-admin-page-helper.php:80
@@ -2414,8 +2414,8 @@ msgstr ""
 "görünür değildir!"
 
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. Description of the plugin/theme
 msgid ""

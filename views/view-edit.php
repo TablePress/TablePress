@@ -626,7 +626,7 @@ class TablePress_Edit_View extends TablePress_View {
 				<?php
 					_e( 'Because of this error, the table can not be edited at this time, to prevent possible further data loss.', 'tablepress' );
 					echo ' ';
-					printf( __( 'Please see the <a href="%s">TablePress FAQ page</a> for further instructions.', 'tablepress' ), 'http://tablepress.org/faq/corrupted-tables/' );
+					printf( __( 'Please see the <a href="%s">TablePress FAQ page</a> for further instructions.', 'tablepress' ), 'https://tablepress.org/faq/corrupted-tables/' );
 				?>
 			</p>
 			<p>

@@ -22,8 +22,8 @@ msgstr ""
 
 #: classes/class-admin-page-helper.php:78
 #@ tablepress
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "Paldies, ka izmantojāt <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "Paldies, ka izmantojāt <a href=\"https://tablepress.org/\">TablePress</a>."
 
 #: classes/class-admin-page-helper.php:79
 #, php-format

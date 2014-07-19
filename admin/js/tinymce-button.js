@@ -40,7 +40,7 @@
 				longname: 'TablePress',
 				author: 'Tobias Bäthge',
 				authorurl: 'http://tobias.baethge.com/',
-				infourl: 'http://tablepress.org/',
+				infourl: 'https://tablepress.org/',
 				version: '1.0.0'
 			};
 		}

@@ -18,9 +18,9 @@ msgstr ""
 "X-Poedit-KeywordsList: _n:1,2;_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
 
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"Dziękuję za używanie <a href=\"http://tablepress.org/\">TablePress</a>."
+"Dziękuję za używanie <a href=\"https://tablepress.org/\">TablePress</a>."
 
 #: classes/class-admin-page-helper.php:80
 msgid "Support the plugin with your <a href=\"%s\">donation</a>!"
@@ -2394,8 +2394,8 @@ msgstr ""
 "podglądzie."
 
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. Description of the plugin/theme
 msgid ""
