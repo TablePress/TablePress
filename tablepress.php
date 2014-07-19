@@ -40,7 +40,7 @@ Donate URI: https://tablepress.org/donate/
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
-// Define certain plugin variables as constants
+// Define certain plugin variables as constants.
 define( 'TABLEPRESS_ABSPATH', plugin_dir_path( __FILE__ ) );
 define( 'TABLEPRESS__FILE__', __FILE__ );
 define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
@@ -50,5 +50,5 @@ define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
  */
 require_once TABLEPRESS_ABSPATH . 'classes/class-tablepress.php';
 
-// Start up TablePress on WordPress's "init" hook
+// Start up TablePress on WordPress's "init" action hook.
 add_action( 'init', array( 'TablePress', 'run' ) );
