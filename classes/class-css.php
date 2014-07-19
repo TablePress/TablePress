@@ -147,7 +147,7 @@ class TablePress_CSS {
 				 */
 				$url = apply_filters( 'tablepress_custom_css_url', $url, $file, $type );
 				return $url;
-				break;
+				// break; // unreachable
 			case 'path':
 				$path = $upload_location['basedir'] . '/' . $file;
 				/**
@@ -161,7 +161,7 @@ class TablePress_CSS {
 				 */
 				$path = apply_filters( 'tablepress_custom_css_file_name', $path, $file, $type );
 				return $path;
-				break;
+				// break; // unreachable
 		}
 	}
 
