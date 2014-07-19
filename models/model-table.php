@@ -176,7 +176,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['is_corrupted'] = true;
 
 			// if possible, try to find out what error prevented the JSON from being decoded
-			$table['json_error'] = '';
+			$table['json_error'] = $json_error = '';
 			if ( function_exists( 'json_last_error' ) ) {
 				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3
 				if ( ! defined( 'JSON_ERROR_UTF8' ) ) {
