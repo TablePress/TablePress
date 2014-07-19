@@ -185,7 +185,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 *
 	 * @param string $text Text for the header message
-	 * @param string $class (optional) Additional CSS class for the header message
+	 * @param string $class Optional. Additional CSS class for the header message
 	 */
 	protected function add_header_message( $text, $class = 'updated' ) {
 		$this->header_messages[] = "<div class=\"{$class}\"><p>{$text}</p></div>\n";
@@ -212,7 +212,7 @@ abstract class TablePress_View {
 	 *
 	 * @param string $id Unique HTML ID for the text box container (only visible with $wrap = true)
 	 * @param callback $callback Callback that prints the contents of the text box
-	 * @param string $context (optional) Context/position of the text box (normal, side, additional, header, submit)
+	 * @param string $context Optional. Context/position of the text box (normal, side, additional, header, submit)
 	 * @param bool $wrap Whether the content of the text box shall be wrapped in a <div> container
 	 */
 	protected function add_text_box( $id, $callback, $context = 'normal', $wrap = false ) {
@@ -238,9 +238,9 @@ abstract class TablePress_View {
 	 * @param string $id Unique ID for the meta box
 	 * @param string $title Title for the meta box
 	 * @param callback $callback Callback that prints the contents of the post meta box
-	 * @param string $context (optional) Context/position of the post meta box (normal, side, additional)
-	 * @param string $priority (optional) Order of the post meta box for the $context position (high, default, low)
-	 * @param bool $callback_args (optional) Additional data for the callback function (e.g. useful when in different class)
+	 * @param string $context Optional. Context/position of the post meta box (normal, side, additional)
+	 * @param string $priority Optional. Order of the post meta box for the $context position (high, default, low)
+	 * @param bool $callback_args Optional. Additional data for the callback function (e.g. useful when in different class)
 	 */
 	protected function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
 		$this->has_meta_boxes = true;

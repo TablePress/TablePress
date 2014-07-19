@@ -529,7 +529,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param bool $single_value (optional) Whether to return just the number of tables from the list, or also count in the database
+	 * @param bool $single_value Optional. Whether to return just the number of tables from the list, or also count in the database
 	 * @return bool int|array Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value)
 	 */
 	public function count_tables( $single_value = true ) {
@@ -761,8 +761,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param array $table Table to merge into
 	 * @param array $new_table Table to merge
-	 * @param bool $table_size_check (optional) Whether to check the number of rows and columns (e.g. not necessary for added or copied tables)
-	 * @param bool $extended_visibility_check (optional) Whether to check the counts of hidden rows and columns (only possible for Admin_AJAX controller as of now)
+	 * @param bool $table_size_check Optional. Whether to check the number of rows and columns (e.g. not necessary for added or copied tables)
+	 * @param bool $extended_visibility_check Optional. Whether to check the counts of hidden rows and columns (only possible for Admin_AJAX controller as of now)
 	 * @return array|WP_Error Merged table on success, WP_Error on error
 	 */
 	public function prepare_table( array $table, array $new_table, $table_size_check = true, $extended_visibility_check = false ) {

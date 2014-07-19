@@ -196,7 +196,7 @@ abstract class TablePress {
 	 * @param string $class Name of the class
 	 * @param string $file Name of the PHP file with the class
 	 * @param string $folder Name of the folder with $class's $file
-	 * @param mixed $params (optional) Parameters that are passed to the constructor of $class
+	 * @param mixed $params Optional. Parameters that are passed to the constructor of $class
 	 * @return object Initialized instance of the class
 	 */
 	public static function load_class( $class, $file, $folder, $params = null ) {
@@ -238,7 +238,7 @@ abstract class TablePress {
 	 * @uses load_class()
 	 *
 	 * @param string $view Name of the view to load
-	 * @param array $data (optional) Parameters/PHP variables that shall be available to the view
+	 * @param array $data Optional. Parameters/PHP variables that shall be available to the view
 	 * @return object Instance of the initialized view, already set up, just needs to be render()ed
 	 */
 	public static function load_view( $view, array $data = array() ) {
@@ -271,7 +271,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 *
 	 * @param string $action Action for which the nonce is needed
-	 * @param string|bool $item (optional) Item for which the action will be performed, like "table"
+	 * @param string|bool $item Optional. Item for which the action will be performed, like "table"
 	 * @return string The resulting nonce string
 	 */
 	public static function nonce( $action, $item = false ) {
@@ -289,8 +289,8 @@ abstract class TablePress {
 	 * @uses nonce()
 	 *
 	 * @param string $action Action for which the nonce should be checked
-	 * @param string|bool $item (optional) Item for which the action should be performed, like "table"
-	 * @param string $query_arg (optional) Name of the nonce query string argument in $_POST
+	 * @param string|bool $item Optional. Item for which the action should be performed, like "table"
+	 * @param string $query_arg Optional. Name of the nonce query string argument in $_POST
 	 * @param bool $ajax Whether the nonce comes from an AJAX request
 	 */
 	public static function check_nonce( $action, $item = false, $query_arg = '_wpnonce', $ajax = false ) {
@@ -345,8 +345,8 @@ abstract class TablePress {
 	 * Get a nice looking date and time string from the mySQL format of datetime strings for output
 	 *
 	 * @param string $datetime DateTime string in mySQL format or a Unix timestamp
-	 * @param string $type (optional) Type of $datetime, 'mysql' or 'timestamp'
-	 * @param string $separator (optional) Separator between date and time
+	 * @param string $type Optional. Type of $datetime, 'mysql' or 'timestamp'
+	 * @param string $separator Optional. Separator between date and time
 	 * @return string Nice looking string with the date and time
 	 */
 	public static function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
@@ -373,9 +373,9 @@ abstract class TablePress {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $params (optional) Parameters to form the query string of the URL
-	 * @param bool $add_nonce (optional) Whether the URL shall be nonced by WordPress
-	 * @param string $target (optional) Target File, e.g. "admin-post.php" for POST requests
+	 * @param array $params Optional. Parameters to form the query string of the URL
+	 * @param bool $add_nonce Optional. Whether the URL shall be nonced by WordPress
+	 * @param string $target Optional. Target File, e.g. "admin-post.php" for POST requests
 	 * @return string The URL for the given parameters (already run through esc_url() with $add_nonce == true!)
 	 */
 	public static function url( array $params = array(), $add_nonce = false, $target = '' ) {
@@ -425,8 +425,8 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @uses url()
 	 *
-	 * @param array $params (optional) Parameters from which the target URL is constructed
-	 * @param bool $add_nonce (optional) Whether the URL shall be nonced by WordPress
+	 * @param array $params Optional. Parameters from which the target URL is constructed
+	 * @param bool $add_nonce Optional. Whether the URL shall be nonced by WordPress
 	 */
 	public static function redirect( array $params = array(), $add_nonce = false ) {
 		$redirect = self::url( $params );

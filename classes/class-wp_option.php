@@ -76,8 +76,8 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string|bool $name (optional) Name of a single option to get, or false for all options
-	 * @param mixed $default_value (optional) Default value to return, if a single option $name does not exist
+	 * @param string|bool $name Optional. Name of a single option to get, or false for all options
+	 * @param mixed $default_value Optional. Default value to return, if a single option $name does not exist
 	 * @return mixed|array Value of the retrieved option $name or $default_value if it does not exist, or all options
 	 */
 	public function get( $name = false, $default_value = null ) {

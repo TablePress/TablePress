@@ -105,7 +105,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array|string $new_options Array of new options ( name => value ) or name of a single option
-	 * @param mixed $single_value (optional) New value for a single option (only if $new_options is not an array)
+	 * @param mixed $single_value Optional. New value for a single option (only if $new_options is not an array)
 	 */
 	public function update( $new_options, $single_value = null ) {
 		// allow saving of single options that are not in an array
@@ -134,8 +134,8 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string|false $name (optional) Name of a single option to get, or false for all options
-	 * @param mixed $default_value (optional) Default value, if the option $name does not exist
+	 * @param string|false $name Optional. Name of a single option to get, or false for all options
+	 * @param mixed $default_value Optional. Default value, if the option $name does not exist
 	 * @return mixed Value of the retrieved option $name, or $default_value if it does not exist, or array of all options
 	 */
 	public function get( $name = false, $default_value = null ) {
