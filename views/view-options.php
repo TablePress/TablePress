@@ -21,12 +21,12 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Options_View extends TablePress_View {
 
 	/**
-	 * Set up the view with data and do things that are specific for this view
+	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
@@ -60,11 +60,14 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the screen head text
+	 * Print the screen head text.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_head( $data, $box ) {
+	public function textbox_head( array $data, array $box ) {
 		?>
 		<p>
 			<?php _e( 'TablePress has several options which affect the plugin&#8217;s behavior in different areas.', 'tablepress' ); ?>
@@ -82,11 +85,14 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Frontend Options" post meta box
+	 * Print the content of the "Frontend Options" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_frontend_options( $data, $box ) {
+	public function postbox_frontend_options( array $data, array $box ) {
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
@@ -116,16 +122,19 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "User Options" post meta box
+	 * Print the content of the "User Options" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_user_options( $data, $box ) {
+	public function postbox_user_options( array $data, array $box ) {
 		?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 		<?php
-		// get list of current admin menu entries
+		// Get list of current admin menu entries.
 		$entries = array();
 		foreach ( $GLOBALS['menu'] as $entry ) {
 			if ( false !== strpos( $entry[2], '.php' ) ) {
@@ -133,7 +142,7 @@ class TablePress_Options_View extends TablePress_View {
 			}
 		}
 
-		// remove <span> elements with notification bubbles (e.g. update or comment count)
+		// Remove <span> elements with notification bubbles (e.g. update or comment count).
 		if ( isset( $entries['plugins.php'] ) ) {
 			$entries['plugins.php'] = preg_replace( '/ <span.*span>/', '', $entries['plugins.php'] );
 		}
@@ -141,7 +150,7 @@ class TablePress_Options_View extends TablePress_View {
 			$entries['edit-comments.php'] = preg_replace( '/ <span.*span>/', '', $entries['edit-comments.php'] );
 		}
 
-		// add separator and generic positions
+		// Add separator and generic positions.
 		$entries['-'] = '---';
 		$entries['top'] = __( 'Top-Level (top)', 'tablepress' );
 		$entries['middle'] = __( 'Top-Level (middle)', 'tablepress' );
@@ -176,11 +185,14 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Admin Options" post meta box
+	 * Print the content of the "Admin Options" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_uninstall_tablepress( $data, $box ) {
+	public function textbox_uninstall_tablepress( array $data, array $box ) {
 		?>
 		<h2 style="margin-top:40px;"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></h2>
 		<p><?php

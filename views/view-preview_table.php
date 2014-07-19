@@ -21,23 +21,21 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Preview_Table_View extends TablePress_View {
 
 	/**
-	 * Initialize the View class
-	 *
-	 * Intentionally left empty, to void code from parent::__construct()
+	 * Initialize the View class.
 	 *
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		// intentionally left empty, to void code from parent::__construct()
+		// Intentionally left empty, to void code from parent::__construct().
 	}
 
 	/**
-	 * Set up the view with data and do things that are specific for this view
+	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		$this->action = $action;
@@ -45,7 +43,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 	}
 
 	/**
-	 * Render the current view
+	 * Render the current view.
 	 *
 	 * @since 1.0.0
 	 */

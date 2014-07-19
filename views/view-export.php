@@ -21,12 +21,12 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Export_View extends TablePress_View {
 
 	/**
-	 * Set up the view with data and do things that are specific for this view
+	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
@@ -50,11 +50,14 @@ class TablePress_Export_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the screen head text
+	 * Print the screen head text.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_head( $data, $box ) {
+	public function textbox_head( array $data, array $box ) {
 		?>
 		<p>
 			<?php _e( 'Exporting a table allows you to use it in other programs, like spreadsheets applications.', 'tablepress' ); ?>
@@ -71,11 +74,14 @@ class TablePress_Export_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "No tables found" post meta box
+	 * Print the content of the "No tables found" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_no_tables( $data, $box ) {
+	public function postbox_no_tables( array $data, array $box ) {
 		$add_url = TablePress::url( array( 'action' => 'add' ) );
 		$import_url = TablePress::url( array( 'action' => 'import' ) );
 		?>
@@ -85,11 +91,14 @@ class TablePress_Export_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Export Tables" post meta box
+	 * Print the content of the "Export Tables" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_export_form( $data, $box ) {
+	public function postbox_export_form( array $data, array $box ) {
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
@@ -113,7 +122,8 @@ class TablePress_Export_View extends TablePress_View {
 			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
 			<?php
 				foreach ( $data['table_ids'] as $table_id ) {
-					$table = TablePress::$model_table->load( $table_id, false, false ); // Load table, without table data, options, and visibility settings
+					// Load table, without table data, options, and visibility settings.
+					$table = TablePress::$model_table->load( $table_id, false, false );
 					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) ) {
 						continue;
 					}

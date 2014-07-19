@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_About_View extends TablePress_View {
 
 	/**
-	 * Number of screen columns for post boxes on this screen
+	 * Number of screen columns for post boxes on this screen.
 	 *
 	 * @since 1.0.0
 	 * @var int
@@ -29,12 +29,12 @@ class TablePress_About_View extends TablePress_View {
 	protected $screen_columns = 2;
 
 	/**
-	 * Set up the view with data and do things that are specific for this view
+	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
@@ -49,11 +49,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Plugin Purpose" post meta box
+	 * Print the content of the "Plugin Purpose" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_plugin_purpose( $data, $box ) {
+	public function postbox_plugin_purpose( array $data, array $box ) {
 		?>
 	<p>
 		<?php _e( 'TablePress allows you to create and manage tables in the admin area of WordPress.', 'tablepress' ); ?>
@@ -65,11 +68,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Usage" post meta box
+	 * Print the content of the "Usage" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_usage( $data, $box ) {
+	public function postbox_usage( array $data, array $box ) {
 		?>
 	<p>
 		<?php _e( 'At first, you should add or import a table.', 'tablepress' ); ?>
@@ -94,11 +100,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "More Information and Documentation" post meta box
+	 * Print the content of the "More Information and Documentation" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_more_information( $data, $box ) {
+	public function postbox_more_information( array $data, array $box ) {
 		?>
 	<p>
 		<?php printf( __( 'More information about TablePress can be found on the <a href="%s">plugin&#8217;s website</a> or on its page in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://tablepress.org/', 'https://wordpress.org/plugins/tablepress/' ); ?>
@@ -108,11 +117,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Author and License" post meta box
+	 * Print the content of the "Author and License" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_author_license( $data, $box ) {
+	public function postbox_author_license( array $data, array $box ) {
 		?>
 	<p>
 		<?php printf( __( 'This plugin was written and developed by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'http://tobias.baethge.com/' ); ?>
@@ -127,11 +139,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Help and Support" post meta box
+	 * Print the content of the "Help and Support" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_help_support( $data, $box ) {
+	public function postbox_help_support( array $data, array $box ) {
 		?>
 	<p>
 		<?php printf( __( '<a href="%s">Support</a> is provided through the <a href="%s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/support/plugin/tablepress' ); ?>
@@ -144,11 +159,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Debug and Version Information" post meta box
+	 * Print the content of the "Debug and Version Information" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_debug_version_information( $data, $box ) {
+	public function postbox_debug_version_information( array $data, array $box ) {
 		$mysqli = ( isset( $GLOBALS['wpdb'] ) && isset( $GLOBALS['wpdb']->use_mysqli ) && $GLOBALS['wpdb']->use_mysqli && isset( $GLOBALS['wpdb']->dbh ) );
 		?>
 		<p>
@@ -178,11 +196,14 @@ class TablePress_About_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Credits and Thanks" post meta box
+	 * Print the content of the "Credits and Thanks" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_credits_thanks( $data, $box ) {
+	public function postbox_credits_thanks( array $data, array $box ) {
 		?>
 		<p>
 			<?php _e( 'Special Thanks go to:', 'tablepress' ); ?>

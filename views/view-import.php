@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Import_View extends TablePress_View {
 
 	/**
-	 * List of WP feature pointers for this view
+	 * List of WP feature pointers for this view.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -29,12 +29,12 @@ class TablePress_Import_View extends TablePress_View {
 	protected $wp_pointers = array( 'tp100_wp_table_reloaded_import' );
 
 	/**
-	 * Set up the view with data and do things that are specific for this view
+	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
@@ -69,7 +69,7 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Hide the "Import from WP-Table Reloaded postbox" by default, if WP-Table Reloaded is not installed. It can still be opened manually from the "Screen Options"
+	 * Hide the "Import from WP-Table Reloaded postbox" by default, if WP-Table Reloaded is not installed. It can still be opened manually from the "Screen Options".
 	 *
 	 * @since 1.0.0
 	 */
@@ -84,11 +84,14 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the screen head text
+	 * Print the screen head text.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_head( $data, $box ) {
+	public function textbox_head( array $data, array $box ) {
 		?>
 		<p>
 			<?php _e( 'TablePress can import tables from existing data, like from a CSV, XLS, or XLSX file from a spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or its own JSON format.', 'tablepress' ); ?>
@@ -108,11 +111,14 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Import Tables" post meta box
+	 * Print the content of the "Import Tables" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_import_form( $data, $box ) {
+	public function postbox_import_form( array $data, array $box ) {
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
@@ -222,11 +228,14 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Import from WP-Table Reloaded" post meta box
+	 * Print the content of the "Import from WP-Table Reloaded" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_wp_table_reloaded_import( $data, $box ) {
+	public function postbox_wp_table_reloaded_import( array $data, array $box ) {
 		?>
 <p>
 	<?php _e( 'To import all tables from a WP-Table Reloaded installation, choose the relevant import source below.', 'tablepress' ); ?>
@@ -273,7 +282,7 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Set the content for the WP feature pointer about the WP-Table Reloaded import feature
+	 * Set the content for the WP feature pointer about the WP-Table Reloaded import feature.
 	 *
 	 * @since 1.0.0
 	 */

@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Edit_View extends TablePress_View {
 
 	/**
-	 * List of WP feature pointers for this view
+	 * List of WP feature pointers for this view.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -29,12 +29,12 @@ class TablePress_Edit_View extends TablePress_View {
 	protected $wp_pointers = array( 'tp09_edit_drag_drop_sort' );
 
 	/**
-	 * Set up the view with data and do things that are specific for this view
+	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
@@ -61,17 +61,19 @@ class TablePress_Edit_View extends TablePress_View {
 			$this->add_header_message( "<strong>{$action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
-		wp_enqueue_style( 'wp-jquery-ui-dialog' ); // do this here to get CSS into <head>
-		wp_enqueue_script( 'wpdialogs' ); // For the Advanced Editor
-		add_action( 'admin_print_footer_scripts', array( $this, 'dequeue_media_upload_js' ), 2 ); // remove default media-upload.js, in favor of own code
+		// Load jQuery UI dialog here to get the CSS into the HTML <head> part.
+		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		wp_enqueue_script( 'wpdialogs' ); // for the Advanced Editor
+		// Remove default media-upload.js, in favor of own code.
+		add_action( 'admin_print_footer_scripts', array( $this, 'dequeue_media_upload_js' ), 2 );
 		add_thickbox();
 		add_filter( 'media_view_strings', array( $this, 'change_media_view_strings' ) );
 		wp_enqueue_media();
 
-		// Use modified version of wpLink, instead of default version (changes "Title" to "Link Text")
+		// Use modified version of wpLink, instead of default version (changes "Title" to "Link Text").
 		wp_deregister_script( 'wplink' );
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		// See wp-includes/script-loader.php for default parameters
+		// See wp-includes/script-loader.php for default parameters.
 		$wplink_url = plugins_url( "admin/js/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
 		wp_enqueue_script( 'wplink', $wplink_url, array( 'jquery' ), TablePress::version, true );
 		wp_localize_script( 'wplink', 'wpLinkL10n', array(
@@ -80,7 +82,8 @@ class TablePress_Edit_View extends TablePress_View {
 			'save' => _x( 'Add Link', 'Insert Link dialog', 'tablepress' ),
 			'noTitle' => _x( '(no title)', 'Insert Link dialog', 'tablepress' ),
 			'noMatchesFound' => _x( 'No matches found.', 'Insert Link dialog', 'tablepress' ),
-			'link_text' => _x( 'Link Text', 'Insert Link dialog', 'tablepress' ), // Previous strings are default strings, this is the string that the modified tp_wplink.js inserts
+			// The previous strings are default strings, this is a string that the modified tp_wplink.js inserts.
+			'link_text' => _x( 'Link Text', 'Insert Link dialog', 'tablepress' ),
 		) );
 
 		$this->admin_page->enqueue_style( 'edit' );
@@ -153,7 +156,9 @@ class TablePress_Edit_View extends TablePress_View {
 				'no_colspan_first_col' => __( 'You can not add colspan to the first column!', 'tablepress' ),
 				'no_rowspan_table_head' => __( 'You can not connect cells into the table head row!', 'tablepress' ),
 				'no_rowspan_table_foot' => __( 'You can not connect cells out of the table foot row!', 'tablepress' ),
-			), $action_messages ), // merge this to have messages available for AJAX after save dialog
+			),
+			// Merge this to have messages available for AJAX after save dialog.
+			$action_messages ),
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
@@ -171,7 +176,7 @@ class TablePress_Edit_View extends TablePress_View {
 	/**
 	 * Dequeue 'media-upload' JavaScript, which gets added by the Media Library,
 	 * but is undesired here, as we have a custom function for this (send_to_editor()) and
-	 * don't want the tb_position() function for resizing
+	 * don't want the tb_position() function for resizing.
 	 *
 	 * @since 1.0.0
 	 */
@@ -180,12 +185,12 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Change Media View string "Insert into post" to "Insert into Table"
+	 * Change Media View string "Insert into post" to "Insert into Table".
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $strings Current set of Media View strings
-	 * @return array Changed Media View strings
+	 * @param array $strings Current set of Media View strings.
+	 * @return array Changed Media View strings.
 	 */
 	public function change_media_view_strings( array $strings ) {
 		$strings['insertIntoPost'] = __( 'Insert into Table', 'tablepress' );
@@ -193,13 +198,13 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests
+	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests.
 	 *
 	 * @since 1.0.0
 	 * @uses wp_nonce_field()
 	 *
 	 * @param array $data Data for this screen
-	 * @param array $box Information about the text box
+	 * @param array $box  Information about the text box.
 	 */
 	protected function action_nonce_field( array $data, array $box ) {
 		// use custom nonce field here, that includes the table ID
@@ -208,11 +213,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Table Information" post meta box
+	 * Print the content of the "Table Information" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_table_information( $data, $box ) {
+	public function postbox_table_information( array $data, array $box ) {
 ?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
@@ -243,11 +251,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Table Content" post meta box
+	 * Print the content of the "Table Content" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_table_data( $data, $box ) {
+	public function postbox_table_data( array $data, array $box ) {
 		$table = $data['table']['data'];
 		$options = $data['table']['options'];
 		$visibility = $data['table']['visibility'];
@@ -255,7 +266,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$columns = count( $table[0] );
 
 		$head_row_idx = $foot_row_idx = -1;
-		// determine row index of the table head row, by excluding all hidden rows from the beginning
+		// Determine row index of the table head row, by excluding all hidden rows from the beginning.
 		if ( $options['table_head'] ) {
 			for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
 				if ( 1 === $visibility['rows'][ $row_idx ] ) {
@@ -264,7 +275,7 @@ class TablePress_Edit_View extends TablePress_View {
 				}
 			}
 		}
-		// determine row index of the table foot row, by excluding all hidden rows from the end
+		// Fetermine row index of the table foot row, by excluding all hidden rows from the end.
 		if ( $options['table_foot'] ) {
 			for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
 				if ( 1 === $visibility['rows'][ $row_idx ] ) {
@@ -335,7 +346,8 @@ class TablePress_Edit_View extends TablePress_View {
 			if ( 0 === $visibility['columns'][ $col_idx ] ) {
 				$column_class = ' class="column-hidden"';
 			}
-			$cell = esc_textarea( $cell ); // sanitize, so that HTML is possible in table cells
+			// Sanitize, so that HTML is possible in table cells.
+			$cell = esc_textarea( $cell );
 			echo "<td{$column_class}><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
 		}
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
@@ -350,11 +362,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Table Manipulation" post meta box
+	 * Print the content of the "Table Manipulation" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_table_manipulation( $data, $box ) {
+	public function postbox_table_manipulation( array $data, array $box ) {
 		$media_library_url = esc_url( add_query_arg( array( 'post_id' => '0', 'type' => 'image', 'tab' => 'library' ), admin_url( 'media-upload.php' ) ) );
 ?>
 <table class="tablepress-postbox-table fixed hide-if-no-js">
@@ -421,11 +436,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the "Preview" and "Save Changes" button
+	 * Print the "Preview" and "Save Changes" button.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_buttons( $data, $box ) {
+	public function textbox_buttons( array $data, array $box ) {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 
 		echo '<p class="submit">';
@@ -440,11 +458,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the "Delete Table" and "Export Table" buttons
+	 * Print the "Delete Table" and "Export Table" buttons.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_other_actions( $data, $box ) {
+	public function textbox_other_actions( array $data, array $box ) {
 		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $data['table']['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
@@ -468,11 +489,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the hidden containers for the Advanced Editor and the Preview
+	 * Print the hidden containers for the Advanced Editor and the Preview.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_hidden_containers( $data, $box ) {
+	public function textbox_hidden_containers( array $data, array $box ) {
 ?>
 <div class="hidden-container">
 	<div id="advanced-editor">
@@ -499,11 +523,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Table Options" post meta box
+	 * Print the content of the "Table Options" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_table_options( $data, $box ) {
+	public function postbox_table_options( array $data, array $box ) {
 		$options = $data['table']['options'];
 ?>
 <table class="tablepress-postbox-table fixed">
@@ -554,11 +581,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Features of the DataTables JavaScript library" post meta box
+	 * Print the content of the "Features of the DataTables JavaScript library" post meta box.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the meta box.
 	 */
-	public function postbox_datatables_features( $data, $box ) {
+	public function postbox_datatables_features( array $data, array $box ) {
 		$options = $data['table']['options'];
 ?>
 <p id="notice-datatables-head-row" class="hide-if-js"><?php printf( __( 'These features and options are only available, when the &#8220;%1$s&#8221; checkbox in the &#8220;%2$s&#8221; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></p>
@@ -594,7 +624,7 @@ class TablePress_Edit_View extends TablePress_View {
 		<td class="column-2"><label for="option-datatables-scrollx"><input type="checkbox" id="option-datatables-scrollx" name="table[options][datatables_scrollx]" value="true"<?php checked( $options['datatables_scrollx'] ); ?> /> <?php _e( 'Enable horizontal scrolling, to make viewing tables with many columns easier.', 'tablepress' ); ?></label></td>
 	</tr>
 	<?php
-		// "Custom Commands" must only be available to trusted users
+		// "Custom Commands" must only be available to trusted users. The text field must be in the page however, so that it's part of the HTTP POST request.
 	?>
 	<tr class="<?php echo current_user_can( 'unfiltered_html' ) ? 'top-border' : 'hidden'; ?>">
 		<th class="column-1" scope="row"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</th>
@@ -606,11 +636,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print a notification about a corrupted table
+	 * Print a notification about a corrupted table.
 	 *
 	 * @since 1.4.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_corrupted_table( $data, $box ) {
+	public function textbox_corrupted_table( array $data, array $box ) {
 		?>
 		<div class="error">
 			<p><strong><?php _e( 'Attention: Unfortunately, an error occured.', 'tablepress' ); ?></strong></p>
@@ -638,11 +671,14 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the screen head text
+	 * Print the screen head text.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
-	public function textbox_head( $data, $box ) {
+	public function textbox_head( array $data, array $box ) {
 		?>
 	<p>
 		<?php printf( __( 'On this screen, you can edit the content and structure of the table with the ID %s.', 'tablepress' ), esc_html( $data['table']['id'] ) ); ?>
@@ -655,7 +691,7 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Set the content for the WP feature pointer about the drag and drop and sort on the "Edit" screen
+	 * Set the content for the WP feature pointer about the drag and drop and sort on the "Edit" screen.
 	 *
 	 * @since 1.0.0
 	 */
