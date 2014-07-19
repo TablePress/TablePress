@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Options_Model extends TablePress_Model {
 
 	/**
-	 * Default Plugin Options
+	 * Default Plugin Options.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -43,7 +43,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	);
 
 	/**
-	 * Default User Options
+	 * Default User Options.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -56,7 +56,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	);
 
 	/**
-	 * Instance of WP_Option class for Plugin Options
+	 * Instance of WP_Option class for Plugin Options.
 	 *
 	 * @since 1.0.0
 	 * @var TablePress_WP_Option
@@ -64,7 +64,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	protected $plugin_options;
 
 	/**
-	 * Instance of WP_User_Option class for User Options
+	 * Instance of WP_User_Option class for User Options.
 	 *
 	 * @since 1.0.0
 	 * @var TablePress_WP_User_Option
@@ -72,7 +72,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	protected $user_options;
 
 	/**
-	 * Init Options Model by creating the object instances for the Plugin and User Options
+	 * Init Options Model by creating the object instances for the Plugin and User Options.
 	 *
 	 * @since 1.0.0
 	 */
@@ -91,20 +91,20 @@ class TablePress_Options_Model extends TablePress_Model {
 		);
 		$this->user_options = TablePress::load_class( 'TablePress_WP_User_Option', 'class-wp_user_option.php', 'classes', $params );
 
-		// Filter to map Meta capabilities to Primitive Capabilities
+		// Filter to map Meta capabilities to Primitive Capabilities.
 		add_filter( 'map_meta_cap', array( $this, 'map_tablepress_meta_caps' ), 10, 4 );
 	}
 
 	/**
-	 * Update a single option or an array of options with new values
+	 * Update a single option or an array of options with new values.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array|string $new_options Array of new options ( name => value ) or name of a single option
-	 * @param mixed $single_value Optional. New value for a single option (only if $new_options is not an array)
+	 * @param array|string $new_options  Array of new options (name => value) or name of a single option.
+	 * @param mixed        $single_value Optional. New value for a single option (only if $new_options is not an array).
 	 */
 	public function update( $new_options, $single_value = null ) {
-		// allow saving of single options that are not in an array
+		// Allow saving of single options that are not in an array.
 		if ( ! is_array( $new_options ) ) {
 			$new_options = array( $new_options => $single_value );
 		}
@@ -117,7 +117,7 @@ class TablePress_Options_Model extends TablePress_Model {
 			} elseif ( isset( $this->default_user_options[ $name ] ) ) {
 				$user_options[ $name ] = $value;
 			} else {
-				// no valid Plugin or User Option -> discard the name/value pair
+				// No valid Plugin or User Option -> discard the name/value pair.
 			}
 		}
 
@@ -126,47 +126,47 @@ class TablePress_Options_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Get the value of a single option, or an array with all options
+	 * Get the value of a single option, or an array with all options.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string|false $name Optional. Name of a single option to get, or false for all options
-	 * @param mixed $default_value Optional. Default value, if the option $name does not exist
-	 * @return mixed Value of the retrieved option $name, or $default_value if it does not exist, or array of all options
+	 * @param string|bool $name          Optional. Name of a single option to get, or false for all options.
+	 * @param mixed       $default_value Optional. Default value, if the option $name does not exist.
+	 * @return mixed Value of the retrieved option $name, or $default_value if it does not exist, or array of all options.
 	 */
 	public function get( $name = false, $default_value = null ) {
 		if ( false === $name ) {
 			return array_merge( $this->plugin_options->get(), $this->user_options->get() );
 		}
 
-		// Single Option wanted
+		// Single Option wanted.
 		if ( $this->plugin_options->is_set( $name ) ) {
 			return $this->plugin_options->get( $name );
 		} elseif ( $this->user_options->is_set( $name ) ) {
 			return $this->user_options->get( $name );
 		} else {
-			// no valid Plugin or User Option
+			// No valid Plugin or User Option.
 			return $default_value;
 		}
 	}
 
 	/**
-	 * Get all Plugin Options (only used in Debug)
+	 * Get all Plugin Options (only used in Debug).
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Array of all Plugin Options
+	 * @return array Array of all Plugin Options.
 	 */
 	public function _debug_get_plugin_options() {
 		return $this->plugin_options->get();
 	}
 
 	/**
-	 * Get all User Options (only used in Debug)
+	 * Get all User Options (only used in Debug).
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Array of all User Options
+	 * @return array Array of all User Options.
 	 */
 	public function _debug_get_user_options() {
 		return $this->user_options->get();
@@ -174,15 +174,15 @@ class TablePress_Options_Model extends TablePress_Model {
 
 	/**
 	 * Merge existing Plugin Options with default Plugin Options,
-	 * remove (no longer) existing options, e.g. after a plugin update
+	 * remove (no longer) existing options, e.g. after a plugin update.
 	 *
 	 * @since 1.0.0
 	 */
 	public function merge_plugin_options_defaults() {
 		$plugin_options = $this->plugin_options->get();
-		// remove old (i.e. no longer existing) Plugin Options:
+		// Remove old (i.e. no longer existing) Plugin Options.
 		$plugin_options = array_intersect_key( $plugin_options, $this->default_plugin_options );
-		// merge into new Plugin Options:
+		// Merge current into new Plugin Options.
 		$plugin_options = array_merge( $this->default_plugin_options, $plugin_options );
 
 		$this->plugin_options->update( $plugin_options );
@@ -190,27 +190,27 @@ class TablePress_Options_Model extends TablePress_Model {
 
 	/**
 	 * Merge existing User Options with default User Options,
-	 * remove (no longer) existing options, e.g. after a plugin update
+	 * remove (no longer) existing options, e.g. after a plugin update.
 	 *
 	 * @since 1.0.0
 	 */
 	public function merge_user_options_defaults() {
 		$user_options = $this->user_options->get();
-		// remove old (i.e. no longer existing) User Options:
+		// Remove old (i.e. no longer existing) User Options.
 		$user_options = array_intersect_key( $user_options, $this->default_user_options );
-		// merge into new User Options:
+		// Merge current into new User Options.
 		$user_options = array_merge( $this->default_user_options, $user_options );
 
 		$this->user_options->update( $user_options );
 	}
 
 	/**
-	 * Add default capabilities to "Administrator", "Editor", and "Author" roles
+	 * Add default capabilities to "Administrator", "Editor", and "Author" user roles.
 	 *
 	 * @since 1.0.0
 	 */
 	public function add_access_capabilities() {
-		// Capabilities for all roles
+		// Capabilities for all roles.
 		$roles = array( 'administrator', 'editor', 'author' );
 		foreach ( $roles as $role ) {
 			$role = get_role( $role );
@@ -218,13 +218,13 @@ class TablePress_Options_Model extends TablePress_Model {
 				continue;
 			}
 
-			// from get_post_type_capabilities()
+			// From get_post_type_capabilities().
 			$role->add_cap( 'tablepress_edit_tables' );
 			// $role->add_cap( 'tablepress_edit_others_tables' );
 			$role->add_cap( 'tablepress_delete_tables' );
 			// $role->add_cap( 'tablepress_delete_others_tables' );
 
-			// custom capabilities()
+			// Custom capabilities.
 			$role->add_cap( 'tablepress_list_tables' );
 			$role->add_cap( 'tablepress_add_tables' );
 			$role->add_cap( 'tablepress_copy_tables' );
@@ -234,27 +234,27 @@ class TablePress_Options_Model extends TablePress_Model {
 			$role->add_cap( 'tablepress_access_about_screen' );
 		}
 
-		// Capabilities for single roles
+		// Capabilities for single roles.
 		$role = get_role( 'administrator' );
 		if ( ! empty( $role ) ) {
 			$role->add_cap( 'tablepress_import_tables_wptr' );
 			$role->add_cap( 'tablepress_edit_options' );
 		}
 
-		// Refresh current set of capabilities of the user, to be able to directly use the new caps
+		// Refresh current set of capabilities of the user, to be able to directly use the new caps.
 		$user = wp_get_current_user();
 		$user->get_role_caps();
 	}
 
 	/**
-	 * Remove all TablePress capabilities from all roles
-	 *
-	 * @see add_access_capabilities()
+	 * Remove all TablePress capabilities from all roles.
 	 *
 	 * @since 1.1.0
+	 *
+	 * @see add_access_capabilities()
 	 */
 	public function remove_access_capabilities() {
-		// Capabilities for all roles
+		// Capabilities for all roles.
 		global $wp_roles;
 		if ( ! isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles();
@@ -279,21 +279,21 @@ class TablePress_Options_Model extends TablePress_Model {
 			$role->remove_cap( 'tablepress_edit_options' );
 		}
 
-		// Refresh current set of capabilities of the user, to be able to directly use the new caps
+		// Refresh current set of capabilities of the user, to be able to directly use the new caps.
 		$user = wp_get_current_user();
 		$user->get_role_caps();
 	}
 
 	/**
-	 * Map TablePress meta capabilities to primitive capabilities
+	 * Map TablePress meta capabilities to primitive capabilities.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $caps Current set of primitive caps
-	 * @param string $cap Meta cap that is to be checked/mapped
-	 * @param int $user_id User ID for which meta cap is to be checked
-	 * @param array $args Arguments for the check, here e.g. the table ID
-	 * @return array $caps Modified set of primitive caps
+	 * @param array  $caps    Current set of primitive caps.
+	 * @param string $cap     Meta cap that is to be checked/mapped.
+	 * @param int    $user_id User ID for which meta cap is to be checked.
+	 * @param array  $args    Arguments for the check, here e.g. the table ID.
+	 * @return array $caps Modified set of primitive caps.
 	 */
 	public function map_tablepress_meta_caps( array $caps, $cap, $user_id, $args ) {
 		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) ) {
@@ -302,7 +302,7 @@ class TablePress_Options_Model extends TablePress_Model {
 
 		// $table_id = ( ! empty( $args ) ) ? $args[0] : false;
 
-		// reset current set of primitive caps
+		// Reset current set of primitive caps.
 		$caps = array();
 
 		switch ( $cap ) {
@@ -325,7 +325,7 @@ class TablePress_Options_Model extends TablePress_Model {
 				$caps[] = 'tablepress_edit_tables';
 				break;
 			default:
-				// something went wrong; deny access to be on the safe side
+				// Something went wrong, deny access to be on the safe side.
 				$caps[] = 'do_not_allow';
 				break;
 		}
@@ -333,27 +333,27 @@ class TablePress_Options_Model extends TablePress_Model {
 		/**
 		 * Filter a user's TablePress capabilities.
 		 *
-		 * See the WordPress function map_meta_cap() for details.
-		 *
 		 * @since 1.0.0
+		 *
+		 * @see map_meta_cap()
 		 *
 		 * @param array  $caps    The user's current TablePress capabilities.
 		 * @param string $cap     Capability name.
 		 * @param int    $user_id The user ID.
-		 * @param array  $args    Adds the context to the cap. Typically the table ID.
+		 * @param array  $args    Adds the context to the cap, typically the table ID.
 		 */
 		return apply_filters( 'tablepress_map_meta_caps', $caps, $cap, $user_id, $args );
 	}
 
 	/**
-	 * Retrieve the update message from the development server to notify users of the included changes in this update, in his language
+	 * Retrieve the update message from the development server to notify users of the included changes in this update, in his language.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $current_version Version before the update
-	 * @param string $new_version Version after the update
-	 * @param string $locale Desired locale of the message
-	 * @return string Plugin update message
+	 * @param string $current_version Version before the update.
+	 * @param string $new_version     Version after the update.
+	 * @param string $locale          Desired locale of the message.
+	 * @return string Plugin update message.
 	 */
 	public function plugin_update_message( $current_version, $new_version, $locale ) {
 		$update_message = wp_remote_fopen( "http://dev.tablepress.org/plugin/update/{$current_version}/{$new_version}/{$locale}/" );
@@ -364,7 +364,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Delete the WP_Option and the user option of the model
+	 * Delete the WP_Option and the user option of the model.
 	 *
 	 * @since 1.0.0
 	 */
