@@ -49,6 +49,24 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	protected $i18n_support_loaded = false;
 
 	/**
+	 * Instance of the TablePress Admin View that is rendered.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var TablePress_View
+	 */
+	protected $view;
+
+	/**
+	 * Instance of the TablePress Importer.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var TablePress_Import
+	 */
+	protected $importer;
+
+	/**
 	 * Initialize the Admin Controller, determine location the admin menu, set up actions
 	 *
 	 * @since 1.0.0
