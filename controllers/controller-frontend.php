@@ -713,7 +713,7 @@ JS;
 				switch ( $format ) {
 					case 'raw':
 						$output = $table['last_modified'];
-						break 2;
+						break;
 					case 'human':
 						$modified_timestamp = strtotime( $table['last_modified'] );
 						$current_timestamp = current_time( 'timestamp' );
@@ -723,11 +723,11 @@ JS;
 						} else {
 							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
 						}
-						break 2;
+						break;
 					case 'mysql':
 					default:
 						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
-						break 2;
+						break;
 				}
 				break;
 			case 'last_editor':
