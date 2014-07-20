@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Render {
 
 	/**
-	 * Table data that is rendered
+	 * Table data that is rendered.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -29,7 +29,7 @@ class TablePress_Render {
 	protected $table;
 
 	/**
-	 * Table options that influence the output result
+	 * Table options that influence the output result.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -37,7 +37,7 @@ class TablePress_Render {
 	protected $render_options = array();
 
 	/**
-	 * Rendered HTML of the table
+	 * Rendered HTML of the table.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -45,7 +45,7 @@ class TablePress_Render {
 	protected $output;
 
 	/**
-	 * Instance of EvalMath class
+	 * Instance of EvalMath class.
 	 *
 	 * @since 1.0.0
 	 * @var EvalMath
@@ -53,7 +53,7 @@ class TablePress_Render {
 	protected $evalmath;
 
 	/**
-	 * Trigger words for colspan, rowspan, or the combination of both
+	 * Trigger words for colspan, rowspan, or the combination of both.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -65,7 +65,7 @@ class TablePress_Render {
 	);
 
 	/**
-	 * Buffer to store the counts of rowspan per column, initialized in _render_table()
+	 * Buffer to store the counts of rowspan per column, initialized in _render_table().
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -73,7 +73,7 @@ class TablePress_Render {
 	protected $rowspan = array();
 
 	/**
-	 * Buffer to store the counts of colspan per row, initialized in _render_table()
+	 * Buffer to store the counts of colspan per row, initialized in _render_table().
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -81,7 +81,7 @@ class TablePress_Render {
 	protected $colspan = array();
 
 	/**
-	 * Index of the last row of the visible data in the table, set in _render_table()
+	 * Index of the last row of the visible data in the table, set in _render_table().
 	 *
 	 * @since 1.0.0
 	 * @var int
@@ -89,7 +89,7 @@ class TablePress_Render {
 	protected $last_row_idx;
 
 	/**
-	 * Index of the last column of the visible data in the table, set in _render_table()
+	 * Index of the last column of the visible data in the table, set in _render_table().
 	 *
 	 * @since 1.0.0
 	 * @var int
@@ -105,22 +105,23 @@ class TablePress_Render {
 	protected $known_ranges = array();
 
 	/**
-	 * Initialize the Rendering class, include the EvalMath class
+	 * Initialize the Rendering class, include the EvalMath class.
 	 *
 	 * @since 1.0.0
 	 */
 	public function __construct() {
 		$this->evalmath = TablePress::load_class( 'EvalMath', 'evalmath.class.php', 'libraries', true ); // true for some default constants
-		$this->evalmath->suppress_errors = true; // don't raise PHP warnings
+		// Don't raise PHP warnings.
+		$this->evalmath->suppress_errors = true;
 	}
 
 	/**
-	 * Set the table (data, options, visibility, ...) that is to be rendered
+	 * Set the table (data, options, visibility, ...) that is to be rendered.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table Table to be rendered
-	 * @param array $render_options Options for rendering, from both "Edit" screen and Shortcode
+	 * @param array $table          Table to be rendered.
+	 * @param array $render_options Options for rendering, from both "Edit" screen and Shortcode.
 	 */
 	public function set_input( array $table, array $render_options ) {
 		$this->table = $table;
@@ -137,24 +138,24 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Process the table rendering and return the HTML output
+	 * Process the table rendering and return the HTML output.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string HTML of the rendered table (or an error message)
+	 * @return string HTML of the rendered table (or an error message).
 	 */
 	public function get_output() {
-		// evaluate math expressions/formulas
+		// Evaluate math expressions/formulas.
 		$this->_evaluate_table_data();
-		// remove hidden rows and columns
+		// Remove hidden rows and columns.
 		$this->_prepare_render_data();
-		// generate HTML output
+		// Generate HTML output.
 		$this->_render_table();
 		return $this->output;
 	}
 
 	/**
-	 * Remove all cells from the data set that shall not be rendered, because they are hidden
+	 * Remove all cells from the data set that shall not be rendered, because they are hidden.
 	 *
 	 * @since 1.0.0
 	 */
@@ -164,7 +165,7 @@ class TablePress_Render {
 		$num_rows = count( $this->table['data'] );
 		$num_columns = ( $num_rows > 0 ) ? count( $this->table['data'][0] ) : 0;
 
-		// evaluate show/hide_rows/columns parameters
+		// Evaluate show/hide_rows/columns parameters.
 		$actions = array( 'show', 'hide' );
 		$elements = array( 'rows', 'columns' );
 		foreach ( $actions as $action ) {
@@ -174,15 +175,15 @@ class TablePress_Render {
 					continue;
 				}
 
-				// add all rows/columns to array if "all" value set for one of the four parameters
+				// Add all rows/columns to array if "all" value set for one of the four parameters.
 				if ( 'all' == $this->render_options["{$action}_{$element}"] ) {
 					$this->render_options["{$action}_{$element}"] = range( 0, ${'num_' . $element} - 1 );
 					continue;
 				}
 
-				// we have a list of rows/columns (possibly with ranges in it)
+				// We have a list of rows/columns (possibly with ranges in it).
 				$this->render_options["{$action}_{$element}"] = explode( ',', $this->render_options["{$action}_{$element}"] );
-				// support for ranges like 3-6 or A-BA
+				// Support for ranges like 3-6 or A-BA.
 				$range_cells = array();
 				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
 					$range_dash = strpos( $value, '-' );
@@ -201,9 +202,10 @@ class TablePress_Render {
 					}
 				}
 				$this->render_options["{$action}_{$element}"] = array_merge( $this->render_options["{$action}_{$element}"], $range_cells );
-				// parse single letters and
-				// change from regular numbering to zero-based numbering,
-				// as rows/columns are indexed from 0 internally, but from 1 externally
+				/*
+				 * Parse single letters and change from regular numbering to zero-based numbering,
+				 * as rows/columns are indexed from 0 internally, but from 1 externally
+				 */
 				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
 					if ( ! is_numeric( $value ) ) {
 						$value = TablePress::letter_to_number( $value );
@@ -211,26 +213,28 @@ class TablePress_Render {
 					$this->render_options["{$action}_{$element}"][ $key ] = (int) $value - 1;
 				}
 
-				// remove duplicate entries and sort the array
+				// Remove duplicate entries and sort the array.
 				$this->render_options["{$action}_{$element}"] = array_unique( $this->render_options["{$action}_{$element}"] );
 				sort( $this->render_options["{$action}_{$element}"], SORT_NUMERIC );
 			}
 		}
 
-		// load information about hidden rows and columns
-		$hidden_rows = array_keys( $this->table['visibility']['rows'], 0 ); // get indexes of hidden rows (array value of 0)
+		// Load information about hidden rows and columns.
+		// Get indexes of hidden rows (array value of 0).
+		$hidden_rows = array_keys( $this->table['visibility']['rows'], 0 );
 		$hidden_rows = array_merge( $hidden_rows, $this->render_options['hide_rows'] );
 		$hidden_rows = array_diff( $hidden_rows, $this->render_options['show_rows'] );
-		$hidden_columns = array_keys( $this->table['visibility']['columns'], 0 ); // get indexes of hidden columns (array value of 0)
+		// Get indexes of hidden columns (array value of 0).
+		$hidden_columns = array_keys( $this->table['visibility']['columns'], 0 );
 		$hidden_columns = array_merge( $hidden_columns, $this->render_options['hide_columns'] );
 		$hidden_columns = array_merge( array_diff( $hidden_columns, $this->render_options['show_columns'] ) );
 
-		// remove hidden rows and re-index
+		// Remove hidden rows and re-index.
 		foreach ( $hidden_rows as $row_idx ) {
 			unset( $this->table['data'][ $row_idx ] );
 		}
 		$this->table['data'] = array_merge( $this->table['data'] );
-		// remove hidden columns and re-index
+		// Remove hidden columns and re-index.
 		foreach ( $this->table['data'] as $row_idx => $row ) {
 			foreach ( $hidden_columns as $col_idx ) {
 				unset( $row[ $col_idx ] );
@@ -251,7 +255,7 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Loop through the table to evaluate math expressions/formulas
+	 * Loop through the table to evaluate math expressions/formulas.
 	 *
 	 * @since 1.0.0
 	 */
@@ -279,13 +283,13 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Parse and evaluate the content of a cell
+	 * Parse and evaluate the content of a cell.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $content Content of a cell
-	 * @param array $parents List of cells that depend on this cell (to prevent circle references)
-	 * @return string Result of the parsing/evaluation
+	 * @param string $content Content of a cell.
+	 * @param array  $parents Optional. List of cells that depend on this cell (to prevent circle references).
+	 * @return string Result of the parsing/evaluation.
 	 */
 	protected function _evaluate_cell( $content, array $parents = array() ) {
 		if ( '' == $content || '=' == $content || '=' != $content[0] ) {
@@ -294,13 +298,14 @@ class TablePress_Render {
 
 		$content = substr( $content, 1 );
 
-		// Support putting formulas in strings, like =Total: {A3+A4}
+		// Support putting formulas in strings, like =Total: {A3+A4}.
 		$expressions = array();
 		if ( preg_match_all( '#{(.+?)}#', $content, $expressions, PREG_SET_ORDER ) ) {
 			$formula_in_string = true;
 		} else {
 			$formula_in_string = false;
-			$expressions[] = array( $content, $content ); // fill array so that it has the same structure as if it came from preg_match_all()
+			// Fill array so that it has the same structure as if it came from preg_match_all().
+			$expressions[] = array( $content, $content );
 		}
 
 		foreach ( $expressions as $expression ) {
@@ -309,10 +314,10 @@ class TablePress_Render {
 
 			$replaced_references = $replaced_ranges = array();
 
-			// remove all whitespace characters
+			// Remove all whitespace characters.
 			$expression = preg_replace( '#[\r\n\t ]#', '', $expression );
 
-			// expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6)
+			// Expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6).
 			if ( preg_match_all( '#([A-Z]+)([0-9]+):([A-Z]+)([0-9]+)#', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
 				foreach ( $referenced_cell_ranges as $cell_range ) {
 					if ( in_array( $cell_range[0], $replaced_ranges, true ) ) {
@@ -326,7 +331,7 @@ class TablePress_Render {
 						continue;
 					}
 
-					// no -1 necessary for this transformation, as we don't actually access the table
+					// No -1 necessary for this transformation, as we don't actually access the table.
 					$first_col = TablePress::letter_to_number( $cell_range[1] );
 					$first_row = $cell_range[2];
 					$last_col = TablePress::letter_to_number( $cell_range[3] );
@@ -351,7 +356,7 @@ class TablePress_Render {
 				}
 			}
 
-			// parse and evaluate single cell references (like A3 or XY312), while prohibiting circle references
+			// Parse and evaluate single cell references (like A3 or XY312), while prohibiting circle references.
 			if ( preg_match_all( '#([A-Z]+)([0-9]+)#', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
 				foreach ( $referenced_cells as $cell_reference ) {
 					if ( in_array( $cell_reference[0], $parents, true ) ) {
@@ -375,17 +380,17 @@ class TablePress_Render {
 					$ref_parents[] = $cell_reference[0];
 
 					$result = $this->table['data'][ $ref_row ][ $ref_col ] = $this->_evaluate_cell( $this->table['data'][ $ref_row ][ $ref_col ], $ref_parents );
-					// Bail if there was an error already
+					// Bail if there was an error already.
 					if ( false !== strpos( $result, '!ERROR!' ) ) {
 						return $result;
 					}
-					// remove all whitespace characters
+					// Remove all whitespace characters.
 					$result = preg_replace( '#[\r\n\t ]#', '', $result );
-					// Treat empty cells as 0
+					// Treat empty cells as 0.
 					if ( '' == $result ) {
 						$result = 0;
 					}
-					// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated)
+					// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated).
 					if ( ! is_numeric( $result ) ) {
 						return "!ERROR! {$cell_reference[0]} does not contain a number or expression";
 					}
@@ -395,7 +400,7 @@ class TablePress_Render {
 			}
 
 			$result = $this->_evaluate_math_expression( $expression );
-			// Support putting formulas in strings, like =Total: {A3+A4}
+			// Support putting formulas in strings, like =Total: {A3+A4}.
 			if ( $formula_in_string ) {
 				$content = str_replace( $orig_expression, $result, $content );
 			} else {
@@ -407,15 +412,15 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Evaluate a math expression
+	 * Evaluate a math expression.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $expression without leading = sign
-	 * @return string Result of the evaluation
+	 * @param string $expression without leading = sign.
+	 * @return string Result of the evaluation.
 	 */
 	protected function _evaluate_math_expression( $expression ) {
-		// straight up evaluation, without parsing of variable or function assignments (which is why we only need one instance of the object)
+		// Straight up evaluation, without parsing of variable or function assignments (which is why we only need one instance of the object).
 		$result = $this->evalmath->pfx( $this->evalmath->nfx( $expression ) );
 		if ( false === $result ) {
 			return '!ERROR! ' . $this->evalmath->last_error;
@@ -425,7 +430,7 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Generate the HTML output of the table
+	 * Generate the HTML output of the table.
 	 *
 	 * @since 1.0.0
 	 */
@@ -433,13 +438,13 @@ class TablePress_Render {
 		$num_rows = count( $this->table['data'] );
 		$num_columns = ( $num_rows > 0 ) ? count( $this->table['data'][0] ) : 0;
 
-		// check if there are rows and columns in the table (might not be the case after removing hidden rows/columns!)
+		// Check if there are rows and columns in the table (might not be the case after removing hidden rows/columns!).
 		if ( 0 === $num_rows || 0 === $num_columns ) {
 			$this->output = sprintf( __( '<!-- The table with the ID %s is empty! -->', 'tablepress' ), $this->table['id'] );
 			return;
 		}
 
-		// counters for spans of rows and columns, init to 1 for each row and column (as that means no span)
+		// Counters for spans of rows and columns, init to 1 for each row and column (as that means no span).
 		$this->rowspan = array_fill( 0, $num_columns, 1 );
 		$this->colspan = array_fill( 0, $num_rows, 1 );
 
@@ -453,9 +458,9 @@ class TablePress_Render {
 		 */
 		$this->span_trigger = apply_filters( 'tablepress_span_trigger_keywords', $this->span_trigger, $this->table['id'] );
 
-		// explode from string to array
+		// Explode from string to array.
 		$this->render_options['column_widths'] = ( ! empty( $this->render_options['column_widths'] ) ) ? explode( '|', $this->render_options['column_widths'] ) : array();
-		// make array $this->render_options['column_widths'] have $columns entries
+		// Make array $this->render_options['column_widths'] have $columns entries.
 		$this->render_options['column_widths'] = array_pad( $this->render_options['column_widths'], $num_columns, '' );
 
 		$output = '';
@@ -510,9 +515,9 @@ class TablePress_Render {
 			$output .= $print_description_html;
 		}
 
-		// Deactivate nl2br() for this render process, if "convert_line_breaks" Shortcode parameter is set to false
+		// Deactivate nl2br() for this render process, if "convert_line_breaks" Shortcode parameter is set to false.
 		if ( ! $this->render_options['convert_line_breaks'] ) {
-			add_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // priority 9, so that this filter can easily be overwritten at the default priority
+			add_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // Priority 9, so that this filter can easily be overwritten at the default priority.
 		}
 
 		$thead = '';
@@ -521,28 +526,28 @@ class TablePress_Render {
 
 		$this->last_row_idx = $num_rows - 1;
 		$this->last_column_idx = $num_columns - 1;
-		// loop through rows in reversed order, to search for rowspan trigger keyword
+		// Loop through rows in reversed order, to search for rowspan trigger keyword.
 		for ( $row_idx = $this->last_row_idx; $row_idx >= 0; $row_idx-- ) {
-			// last row, need to check for footer (but only if at least two rows)
+			// Last row, need to check for footer (but only if at least two rows).
 			if ( $this->last_row_idx == $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
 				$tfoot = $this->_render_row( $row_idx, 'th' );
 				continue;
 			}
-			// first row, need to check for head (but only if at least two rows)
+			// First row, need to check for head (but only if at least two rows).
 			if ( 0 == $row_idx && $this->render_options['table_head'] && $num_rows > 1 ) {
 				$thead = $this->_render_row( $row_idx, 'th' );
 				continue;
 			}
-			// neither first nor last row (with respective head/foot enabled), so render as body row
+			// Neither first nor last row (with respective head/foot enabled), so render as body row.
 			$tbody[] = $this->_render_row( $row_idx, 'td' );
 		}
 
-		// Re-instate nl2br() behavior after this render process, if "convert_line_breaks" Shortcode parameter is set to false
+		// Re-instate nl2br() behavior after this render process, if "convert_line_breaks" Shortcode parameter is set to false.
 		if ( ! $this->render_options['convert_line_breaks'] ) {
-			remove_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // priority 9, so that this filter can easily be overwritten at the default priority
+			remove_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // Priority 9, so that this filter can easily be overwritten at the default priority.
 		}
 
-		// <caption> tag
+		// <caption> tag.
 		/**
 		 * Filter the content for the HTML caption element of the table.
 		 *
@@ -579,7 +584,7 @@ class TablePress_Render {
 			$caption = "<caption{$caption_class}{$caption_style}>{$caption}</caption>\n";
 		}
 
-		// <colgroup> tag
+		// <colgroup> tag.
 		$colgroup = '';
 		/**
 		 * Filter whether the HTML colgroup tag shall be added to the table output.
@@ -609,7 +614,7 @@ class TablePress_Render {
 			$colgroup = "<colgroup>\n{$colgroup}</colgroup>\n";
 		}
 
-		// <thead>, <tfoot>, and <tbody> tags
+		// <thead>, <tfoot>, and <tbody> tags.
 		if ( ! empty( $thead ) ) {
 			$thead = "<thead>\n{$thead}</thead>\n";
 		}
@@ -617,18 +622,19 @@ class TablePress_Render {
 			$tfoot = "<tfoot>\n{$tfoot}</tfoot>\n";
 		}
 		$tbody_class = ( $this->render_options['row_hover'] ) ? ' class="row-hover"' : '';
-		$tbody = array_reverse( $tbody ); // because we looped through the rows in reverse order
+		// Reverse rows because we looped through the rows in reverse order.
+		$tbody = array_reverse( $tbody );
 		$tbody = "<tbody{$tbody_class}>\n" . implode( '', $tbody ) . "</tbody>\n";
 
-		// Attributes for the table (HTML table element)
+		// Attributes for the table (HTML table element).
 		$table_attributes = array();
 
-		// "id" attribute
+		// "id" attribute.
 		if ( ! empty( $this->render_options['html_id'] ) ) {
 			$table_attributes['id'] = $this->render_options['html_id'];
 		}
 
-		// "class" attribute
+		// "class" attribute.
 		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
 		/**
 		 * Filter the CSS classes that are given to the HTML table element.
@@ -639,7 +645,8 @@ class TablePress_Render {
 		 * @param string $table_id    The current table ID.
 		 */
 		$css_classes = apply_filters( 'tablepress_table_css_classes', $css_classes, $this->table['id'] );
-		$css_classes = explode( ' ', implode( ' ', $css_classes ) ); // $css_classes might contain several classes in one array entry
+		// $css_classes might contain several classes in one array entry.
+		$css_classes = explode( ' ', implode( ' ', $css_classes ) );
 		$css_classes = array_map( 'sanitize_html_class', $css_classes );
 		$css_classes = array_unique( $css_classes );
 		$css_classes = trim( implode( ' ', $css_classes ) );
@@ -647,7 +654,7 @@ class TablePress_Render {
 			$table_attributes['class'] = $css_classes;
 		}
 
-		// "summary" attribute
+		// "summary" attribute.
 		$summary = '';
 		/**
 		 * Filter the content for the summary attribute of the HTML table element.
@@ -664,7 +671,7 @@ class TablePress_Render {
 			$table_attributes['summary'] = esc_attr( $summary );
 		}
 
-		// Legacy support for attributes that are not encouraged in HTML5
+		// Legacy support for attributes that are not encouraged in HTML5.
 		foreach ( array( 'cellspacing', 'cellpadding', 'border' ) as $attribute ) {
 			if ( false !== $this->render_options[ $attribute ] ) {
 				$table_attributes[ $attribute ] = intval( $this->render_options[ $attribute ] );
@@ -687,7 +694,7 @@ class TablePress_Render {
 		$output .= $caption . $colgroup . $thead . $tfoot . $tbody;
 		$output .= "</table>\n";
 
-		// name/description below table (HTML already generated above)
+		// name/description below table (HTML already generated above).
 		if ( $this->render_options['print_name'] && 'below' == $this->render_options['print_name_position'] ) {
 			$output .= $print_name_html;
 		}
@@ -708,21 +715,21 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Generate the HTML of a row
+	 * Generate the HTML of a row.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $row_idx Index of the row to be rendered
-	 * @param string $tag HTML tag to use for the cells (td or th)
-	 * @return string HTML for the row
+	 * @param int    $row_idx Index of the row to be rendered.
+	 * @param string $tag     HTML tag to use for the cells (td or th).
+	 * @return string HTML for the row.
 	 */
 	protected function _render_row( $row_idx, $tag ) {
 		$row_cells = array();
-		// loop through cells in reversed order, to search for colspan or rowspan trigger words
+		// Loop through cells in reversed order, to search for colspan or rowspan trigger words.
 		for ( $col_idx = $this->last_column_idx; $col_idx >= 0; $col_idx-- ) {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
-			// print formulas that are escaped with '= (like in Excel) as text:
+			// Print formulas that are escaped with '= (like in Excel) as text.
 			if ( "'=" == substr( $cell_content, 0, 2 ) ) {
 				$cell_content = substr( $cell_content, 1 );
 			}
@@ -741,58 +748,63 @@ class TablePress_Render {
 			 */
 			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 
-			if ( $this->span_trigger['rowspan'] == $cell_content ) { // there will be a rowspan
-				// check for #rowspan# in first row, which doesn't make sense
+			if ( $this->span_trigger['rowspan'] == $cell_content ) { // There will be a rowspan.
+				// Check for #rowspan# in first row, which doesn't make sense.
 				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx )
-				|| ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
-				|| ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) ) { // no rowspan out of table_foot
-					$this->rowspan[ $col_idx ]++; // increase counter for rowspan in this column
-					$this->colspan[ $row_idx ] = 1; // reset counter for colspan in this row, combined col- and rowspan might be happening
+				|| ( 1 == $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
+				|| ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) ) { // No rowspan out of table foot.
+					// Increase counter for rowspan in this column.
+					$this->rowspan[ $col_idx ]++;
+					// Reset counter for colspan in this row, combined col- and rowspan might be happening.
+					$this->colspan[ $row_idx ] = 1;
 					continue;
 				}
-				// invalid rowspan, so we set cell content from #rowspan# to empty
+				// Invalid rowspan, so we set cell content from #rowspan# to empty.
 				$cell_content = '';
-			} elseif ( $this->span_trigger['colspan'] == $cell_content ) { // there will be a colspan
-				// check for #colspan# in first column, which doesn't make sense
+			} elseif ( $this->span_trigger['colspan'] == $cell_content ) { // There will be a colspan.
+				// Check for #colspan# in first column, which doesn't make sense.
 				if ( $col_idx > 1
-				|| ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) { // no colspan into first column head
-					$this->colspan[ $row_idx ]++; // increase counter for colspan in this row
-					$this->rowspan[ $col_idx ] = 1; // reset counter for rowspan in this column, combined col- and rowspan might be happening
+				|| ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) { // No colspan into first column head.
+					// Increase counter for colspan in this row.
+					$this->colspan[ $row_idx ]++;
+					// Reset counter for rowspan in this column, combined col- and rowspan might be happening.
+					$this->rowspan[ $col_idx ] = 1;
 					continue;
 				}
-				// invalid colspan, so we set cell content from #colspan# to empty
+				// Invalid colspan, so we set cell content from #colspan# to empty.
 				$cell_content = '';
-			} elseif ( $this->span_trigger['span'] == $cell_content ) { // there will be a combined col- and rowspan
-				// check for #span# in first column or first or last row, which is not always possible
+			} elseif ( $this->span_trigger['span'] == $cell_content ) { // There will be a combined col- and rowspan.
+				// Check for #span# in first column or first or last row, which is not always possible.
 				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx && $col_idx > 1 )
-				// we are in first, second, or last row or in the first or second column, so more checks are necessary
-				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // no rowspan into table_head
-					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // and no colspan into first column head
-				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // no rowspan out of table_foot
-					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // and no colspan into first column head
+				// We are in first, second, or last row or in the first or second column, so more checks are necessary.
+				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
+					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // And no colspan into first column head.
+				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // No rowspan out of table foot.
+					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // And no colspan into first column head.
 					continue;
-				// invalid span, so we set cell content from #span# to empty
+				// Invalid span, so we set cell content from #span# to empty.
 				$cell_content = '';
 			} elseif ( '' == $cell_content && 0 == $row_idx && $this->render_options['table_head'] ) {
-				$cell_content = '&nbsp;'; // make empty cells have a space in the table head, to give sorting arrows the correct position in IE9
+				// Make empty cells have a space in the table head, to give sorting arrows the correct position in IE9.
+				$cell_content = '&nbsp;';
 			}
 
 			if ( 0 == $row_idx && $this->render_options['table_head'] ) {
 				$cell_content = '<div>' . $cell_content . '</div>';
 			}
 
-			// Attributes for the table cell (HTML td or th element)
+			// Attributes for the table cell (HTML td or th element).
 			$tag_attributes = array();
 
-			// "colspan" and "rowspan" attributes
-			if ( $this->colspan[ $row_idx ] > 1 ) { // we have colspaned cells
+			// "colspan" and "rowspan" attributes.
+			if ( $this->colspan[ $row_idx ] > 1 ) { // We have colspaned cells.
 				$tag_attributes['colspan'] = $this->colspan[ $row_idx ];
 			}
-			if ( $this->rowspan[ $col_idx ] > 1 ) { // we have rowspaned cells
+			if ( $this->rowspan[ $col_idx ] > 1 ) { // We have rowspaned cells.
 				$tag_attributes['rowspan'] = $this->rowspan[ $col_idx ];
 			}
 
-			// "class" attribute
+			// "class" attribute.
 			$cell_class = 'column-' . ( $col_idx + 1 );
 			/**
 			 * Filter the CSS classes that are given to a single cell (HTML td element) of a table.
@@ -812,7 +824,7 @@ class TablePress_Render {
 				$tag_attributes['class'] = $cell_class;
 			}
 
-			// "style" attribute
+			// "style" attribute.
 			if ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][ $col_idx ] ) ) {
 				$tag_attributes['style'] = 'width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][ $col_idx ] ) . ';';
 			}
@@ -838,14 +850,14 @@ class TablePress_Render {
 			}
 
 			$row_cells[] = "<{$tag}{$tag_attributes}>{$cell_content}</{$tag}>";
-			$this->colspan[ $row_idx ] = 1; // reset
-			$this->rowspan[ $col_idx ] = 1; // reset
+			$this->colspan[ $row_idx ] = 1; // Reset.
+			$this->rowspan[ $col_idx ] = 1; // Reset.
 		}
 
-		// Attributes for the table row (HTML tr element)
+		// Attributes for the table row (HTML tr element).
 		$tr_attributes = array();
 
-		// "class" attribute
+		// "class" attribute.
 		$row_classes = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] ) {
 			$row_classes .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
@@ -879,7 +891,8 @@ class TablePress_Render {
 		$tr_attributes = apply_filters( 'tablepress_row_tag_attributes', $tr_attributes, $this->table['id'], $row_idx + 1, $this->table['data'][ $row_idx ] );
 		$tr_attributes = $this->_attributes_array_to_string( $tr_attributes );
 
-		$row_cells = array_reverse( $row_cells ); // because we looped through the cells in reverse order
+		// Reverse rows because we looped through the cells in reverse order.
+		$row_cells = array_reverse( $row_cells );
 		return "<tr{$tr_attributes}>\n\t" . implode( '', $row_cells ) . "\n</tr>\n";
 	}
 
@@ -900,18 +913,20 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Possibly replace certain HTML entities and replace line breaks with HTML
+	 * Possibly replace certain HTML entities and replace line breaks with HTML.
 	 *
-	 * @TODO: Find a better solution than this function, e.g. something like wpautop()
+	 * @TODO: Find a better solution than this function, e.g. something like wpautop().
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to process
-	 * @return string Processed string for output
+	 * @param string $string The string to process.
+	 * @return string Processed string for output.
 	 */
 	protected function safe_output( $string ) {
-		// replace any & with &amp; that is not already an encoded entity (from function htmlentities2 in WP 2.8)
-		// complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want
+		/*
+		 * Replace any & with &amp; that is not already an encoded entity (from function htmlentities2 in WP 2.8).
+		 * A complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want.
+		 */
 		$string = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $string );
 		/**
 		 * Filter whether line breaks in the cell content shall be replaced with HTML br tags.
@@ -928,14 +943,14 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Get the default render options, null means: Use option from "Edit" screen
+	 * Get the default render options, null means: Use option from "Edit" screen.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Default render options
+	 * @return array Default render options.
 	 */
 	public function get_default_render_options() {
-		// Attention: Array keys have to be lowercase, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP
+		// Attention: Array keys have to be lowercase, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP.
 		return array(
 			'id' => '',
 			'column_widths' => '',
@@ -974,11 +989,11 @@ class TablePress_Render {
 	}
 
 	/**
-	 * Get the CSS code for the Preview iframe
+	 * Get the CSS code for the Preview iframe.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string CSS for the Preview iframe
+	 * @return string CSS for the Preview iframe.
 	 */
 	public function get_preview_css() {
 		if ( is_rtl() ) {

@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Import {
 
 	/**
-	 * File/Data Formats that are available for import
+	 * File/Data Formats that are available for import.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -29,7 +29,7 @@ class TablePress_Import {
 	public $import_formats = array();
 
 	/**
-	 * Whether ZIP archive support is available in the PHP installation on the server
+	 * Whether ZIP archive support is available in the PHP installation on the server.
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -37,7 +37,7 @@ class TablePress_Import {
 	public $zip_support_available = false;
 
 	/**
-	 * Whether HTML import support is available in the PHP installation on the server
+	 * Whether HTML import support is available in the PHP installation on the server.
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -45,7 +45,7 @@ class TablePress_Import {
 	public $html_import_support_available = false;
 
 	/**
-	 * Data to be imported
+	 * Data to be imported.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -53,7 +53,7 @@ class TablePress_Import {
 	protected $import_data;
 
 	/**
-	 * Imported table
+	 * Imported table.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -61,7 +61,7 @@ class TablePress_Import {
 	protected $imported_table = false;
 
 	/**
-	 * Initialize the Import class
+	 * Initialize the Import class.
 	 *
 	 * @since 1.0.0
 	 */
@@ -75,7 +75,7 @@ class TablePress_Import {
 			$this->html_import_support_available = true;
 		}
 
-		// initiate here, because function call not possible outside a class method
+		// Initiate here, because function call not possible outside a class method.
 		$this->import_formats = array();
 		$this->import_formats['csv'] = __( 'CSV - Character-Separated Values', 'tablepress' );
 		if ( $this->html_import_support_available ) {
@@ -87,13 +87,13 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Import a table
+	 * Import a table.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $format Import format
-	 * @param string $data Data to import
-	 * @return bool|array False on error, table array on success
+	 * @param string $format Import format.
+	 * @param string $data   Data to import.
+	 * @return bool|array False on error, table array on success.
 	 */
 	public function import_table( $format, $data ) {
 		$this->import_data = $data;
@@ -126,7 +126,7 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Import CSV data
+	 * Import CSV data.
 	 *
 	 * @since 1.0.0
 	 */
@@ -139,7 +139,7 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Import HTML data
+	 * Import HTML data.
 	 *
 	 * @since 1.0.0
 	 */
@@ -148,11 +148,12 @@ class TablePress_Import {
 			return false;
 		}
 
-		// extract table from HTML, pattern: <table> (with eventually class, id, ...
-		// . means any charactery (except newline),
-		// * means in any count
-		// ? means non-gready (shortest possible)
-		// is at the end: i: case-insensitive, s: include newline (in .)
+		/* Extract table from HTML, pattern: <table> (with eventually class, id, ...
+		 * . means any charactery (except newline),
+		 * * means in any count,
+		 * ? means non-gready (shortest possible),
+		 * is at the end: i: case-insensitive, s: include newline (in .)
+		 */
 		if ( 1 == preg_match( '#<table.*?>.*?</table>#is', $this->import_data, $matches ) ) {
 			$temp_data = $matches[0]; // if found, take match as table to import
 		} else {
@@ -160,13 +161,17 @@ class TablePress_Import {
 			return;
 		}
 
-		$temp_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $temp_data; // Prepend XML declaration, for better encoding support
+		// Prepend XML declaration, for better encoding support.
+		$temp_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $temp_data;
 		if ( function_exists( 'libxml_disable_entity_loader' ) ) {
-			libxml_disable_entity_loader( true ); // don't expand external entities (see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html)
+			// Don't expand external entities (see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html).
+			libxml_disable_entity_loader( true );
 		}
-		libxml_use_internal_errors( true ); // no warnings/errors raised, but stored internally
+		// No warnings/errors raised, but stored internally.
+		libxml_use_internal_errors( true );
 		$dom = new DOMDocument( '1.0', 'UTF-8' );
-		$dom->strictErrorChecking = false; // no strict checking for invalid HTML
+		// No strict checking for invalid HTML.
+		$dom->strictErrorChecking = false;
 		$dom->loadHTML( $temp_data );
 		if ( false === $dom ) {
 			$this->imported_table = false;
@@ -224,20 +229,25 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Helper for HTML import
+	 * Helper for HTML import.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param SimpleXMLElement $element XMLElement
-	 * @return array SimpleXMLElement exported to an array
+	 * @param SimpleXMLElement $element XMLElement.
+	 * @return array SimpleXMLElement exported to an array.
 	 */
 	protected function _import_html_rows( $element ) {
 		$rows = array();
 		foreach ( $element as $row ) {
 			$new_row = array();
 			foreach ( $row as $cell ) {
-				if ( 1 === preg_match( '#<t(?:d|h).*?>(.*)</t(?:d|h)>#is', $cell->asXML(), $matches ) ) { // get text between <td>...</td>, or <th>...</th>, possibly with attributes
-					$matches[1] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' ); // decode HTML entities again, as there might be some left especially in attributes of HTML tags in the cells (see http://php.net/manual/en/simplexmlelement.asxml.php#107137 )
+				// Get text between <td>...</td>, or <th>...</th>, possibly with attributes.
+				if ( 1 === preg_match( '#<t(?:d|h).*?>(.*)</t(?:d|h)>#is', $cell->asXML(), $matches ) ) {
+					/*
+					 * Decode HTML entities again, as there might be some left especially in attributes of HTML tags in the cells,
+					 * see http://php.net/manual/en/simplexmlelement.asxml.php#107137 .
+					 */
+					$matches[1] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' );
 					$new_row[] = $matches[1];
 				} else {
 					$new_row[] = '';
@@ -249,24 +259,25 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Import JSON data
+	 * Import JSON data.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function import_json() {
 		$json_table = json_decode( $this->import_data, true );
 
-		// Check if JSON could be decoded
+		// Check if JSON could be decoded.
 		if ( is_null( $json_table ) ) {
 			if ( function_exists( 'json_last_error' ) ) {
-				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3
+				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3.
 				if ( ! defined( 'JSON_ERROR_UTF8' ) ) {
 					define( 'JSON_ERROR_UTF8', 5 );
 				}
 
 				switch ( json_last_error() ) {
 					case JSON_ERROR_NONE:
-						$json_error = 'JSON_ERROR_NONE'; // should never happen here, as this is only called in case of an error
+						// Should never happen here, as this is only called in case of an error.
+						$json_error = 'JSON_ERROR_NONE';
 						break;
 					case JSON_ERROR_DEPTH:
 						$json_error = 'JSON_ERROR_DEPTH';
@@ -289,7 +300,8 @@ class TablePress_Import {
 				}
 				$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . "</strong><br /><br />{$json_error}<br />";
 				wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
-			} else { // No JSON error detection available
+			} else {
+				// No JSON error detection available.
 				$this->imported_table = false;
 				return;
 			}
@@ -299,10 +311,10 @@ class TablePress_Import {
 		}
 
 		if ( isset( $json_table['data'] ) ) {
-			// JSON data contained a full export
+			// JSON data contained a full export.
 			$table = $json_table;
 		} else {
-			// JSON data contained only the data of a table, but no options
+			// JSON data contained only the data of a table, but no options.
 			$table = array( 'data' => array() );
 			foreach ( $json_table as $row ) {
 				$table['data'][] = array_values( (array) $row );
@@ -314,15 +326,15 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Import Microsoft Excel 97-2003 data
+	 * Import Microsoft Excel 97-2003 data.
 	 *
 	 * @since 1.1.0
 	 */
 	protected function import_xls() {
 		$excel_reader = TablePress::load_class( 'Spreadsheet_Excel_Reader', 'excel-reader.class.php', 'libraries', $this->import_data );
 
-		// loop through Excel file and retrieve value and colspan/rowspan properties for each cell
-		$sheet = 0; // import first sheet of the Workbook
+		// Loop through Excel file and retrieve value and colspan/rowspan properties for each cell.
+		$sheet = 0; // 0 means first sheet of the Workbook
 		$table = array();
 		for ( $row = 1; $row <= $excel_reader->rowcount( $sheet ); $row++ ) {
 			$table_row = array();
@@ -336,7 +348,7 @@ class TablePress_Import {
 			$table[] = $table_row;
 		}
 
-		// transform colspan/rowspan properties to TablePress equivalent (cell content)
+		// Transform colspan/rowspan properties to TablePress equivalent (cell content).
 		foreach ( $table as $row_idx => $row ) {
 			foreach ( $row as $col_idx => $cell ) {
 				if ( 1 == $cell['rowspan'] && 1 == $cell['colspan'] ) {
@@ -364,7 +376,7 @@ class TablePress_Import {
 			}
 		}
 
-		// flatten value property to two-dimensional array
+		// Flatten value property to two-dimensional array.
 		$result_table = array();
 		foreach ( $table as $row_idx => $row ) {
 			$table_row = array();
@@ -378,7 +390,7 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Import Microsoft Excel 2007-2013 data
+	 * Import Microsoft Excel 2007-2013 data.
 	 *
 	 * @since 1.1.0
 	 */
@@ -387,7 +399,7 @@ class TablePress_Import {
 		$simplexlsx = new SimpleXLSX( $this->import_data, true );
 
 		if ( $simplexlsx->success() && 0 < $simplexlsx->sheetsCount() ) {
-			// Get Worksheet ID of the first Worksheet (not necessarily "1", which is the default in SimpleXLSX)
+			// Get Worksheet ID of the first Worksheet (not necessarily "1", which is the default in SimpleXLSX).
 			$sheet_ids = array_keys( $simplexlsx->sheetNames() );
 			$worksheet_id = $sheet_ids[0];
 			$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $simplexlsx->rows( $worksheet_id ) ) );
@@ -398,31 +410,31 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Make sure array is rectangular with $max_cols columns in every row
+	 * Make sure array is rectangular with $max_cols columns in every row.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $array Two-dimensional array to be padded
-	 * @return array Padded array
+	 * @param array $array Two-dimensional array to be padded.
+	 * @return array Padded array.
 	 */
 	public function pad_array_to_max_cols( array $array ) {
 		$rows = count( $array );
 		$rows = ( $rows > 0 ) ? $rows : 1;
 		$max_columns = $this->count_max_columns( $array );
 		$max_columns = ( $max_columns > 0 ) ? $max_columns : 1;
-		// array_map wants arrays as additional parameters (so we create one with the max_columns to pad to and one with the value to use (empty string)
+		// array_map wants arrays as additional parameters, so we create one with the max_columns to pad to and one with the value to use (empty string).
 		$max_columns_array = array_fill( 1, $rows, $max_columns );
 		$pad_values_array = array_fill( 1, $rows, '' );
 		return array_map( 'array_pad', $array, $max_columns_array, $pad_values_array );
 	}
 
 	/**
-	 * Get the highest number of columns in the rows
+	 * Get the highest number of columns in the rows.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $array Two-dimensional array
-	 * @return int Highest number of columns in the rows of the array
+	 * @param array $array Two-dimensional array.
+	 * @return int Highest number of columns in the rows of the array.
 	 */
 	protected function count_max_columns( array $array ) {
 		$max_columns = 0;
@@ -434,21 +446,22 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Fixes the encoding to UTF-8 for the entire string that is to be imported
-	 *
-	 * @see http://stevephillips.me/blog/dealing-php-and-character-encoding
+	 * Fixes the encoding to UTF-8 for the entire string that is to be imported.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @link http://stevephillips.me/blog/dealing-php-and-character-encoding
 	 */
 	protected function fix_table_encoding() {
-		// Check and remove possible UTF-8 Byte-Order Mark (BOM)
+		// Check and remove possible UTF-8 Byte-Order Mark (BOM).
 		$bom = pack( 'CCC', 0xef, 0xbb, 0xbf );
 		if ( 0 === strncmp( $this->import_data, $bom, 3 ) ) {
 			$this->import_data = substr( $this->import_data, 3 );
-			return; // If data has a BOM, it's UTF-8, so further checks unnecessary
+			// If data has a BOM, it's UTF-8, so further checks unnecessary.
+			return;
 		}
 
-		// Detect the character encoding and convert to UTF-8, if it's different
+		// Detect the character encoding and convert to UTF-8, if it's different.
 		if ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) {
 			$current_encoding = mb_detect_encoding( $this->import_data, 'ASCII, UTF-8, ISO-8859-1' );
 			if ( 'UTF-8' != $current_encoding ) {

@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 abstract class TablePress {
 
 	/**
-	 * TablePress version
+	 * TablePress version.
 	 *
-	 * Increases whenever a new plugin version is released
+	 * Increases whenever a new plugin version is released.
 	 *
 	 * @since 1.0.0
 	 *
@@ -30,9 +30,9 @@ abstract class TablePress {
 	const version = '1.4';
 
 	/**
-	 * TablePress internal plugin version ("options scheme" version)
+	 * TablePress internal plugin version ("options scheme" version).
 	 *
-	 * Increases whenever the scheme for the plugin options changes, or on a plugin update
+	 * Increases whenever the scheme for the plugin options changes, or on a plugin update.
 	 *
 	 * @since 1.0.0
 	 *
@@ -41,10 +41,10 @@ abstract class TablePress {
 	const db_version = 25;
 
 	/**
-	 * TablePress "table scheme" (data format structure) version
+	 * TablePress "table scheme" (data format structure) version.
 	 *
 	 * Increases whenever the scheme for a $table changes,
-	 * used to be able to update plugin options and table scheme independently
+	 * used to be able to update plugin options and table scheme independently.
 	 *
 	 * @since 1.0.0
 	 *
@@ -53,7 +53,7 @@ abstract class TablePress {
 	const table_scheme_version = 3;
 
 	/**
-	 * Instance of the Options Model
+	 * Instance of the Options Model.
 	 *
 	 * @since 1.3.0
 	 * @var object
@@ -61,7 +61,7 @@ abstract class TablePress {
 	public static $model_options;
 
 	/**
-	 * Instance of the Table Model
+	 * Instance of the Table Model.
 	 *
 	 * @since 1.3.0
 	 * @var object
@@ -69,7 +69,7 @@ abstract class TablePress {
 	public static $model_table;
 
 	/**
-	 * Instance of the controller
+	 * Instance of the controller.
 	 *
 	 * @since 1.0.0
 	 * @var object
@@ -77,8 +77,9 @@ abstract class TablePress {
 	public static $controller;
 
 	/**
-	 * Name of the Shortcode to show a TablePress table
-	 * Should only be modified through the filter hook 'tablepress_table_shortcode'
+	 * Name of the Shortcode to show a TablePress table.
+	 *
+	 * Should only be modified through the filter hook 'tablepress_table_shortcode'.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -86,8 +87,9 @@ abstract class TablePress {
 	public static $shortcode = 'table';
 
 	/**
-	 * Name of the Shortcode to show extra information of a TablePress table
-	 * Should only be modified through the filter hook 'tablepress_table_info_shortcode'
+	 * Name of the Shortcode to show extra information of a TablePress table.
+	 *
+	 * Should only be modified through the filter hook 'tablepress_table_info_shortcode'.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -95,10 +97,9 @@ abstract class TablePress {
 	public static $shortcode_info = 'table-info';
 
 	/**
-	 * Start-up TablePress (run on WordPress "init") and load the controller for the current state
+	 * Start-up TablePress (run on WordPress "init") and load the controller for the current state.
 	 *
 	 * @since 1.0.0
-	 * @uses load_controller()
 	 */
 	public static function run() {
 		/**
@@ -108,20 +109,20 @@ abstract class TablePress {
 		 */
 		do_action( 'tablepress_run' );
 
-		// exit early if TablePress doesn't have to be loaded
+		// Exit early if TablePress doesn't have to be loaded.
 		if ( ( 'wp-login.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) // Login screen
-				|| ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
-				|| ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
+			|| ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
+			|| ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
 			return;
 		}
 
-		// Check if minimum requirements are fulfilled, currently WordPress 3.9
+		// Check if minimum requirements are fulfilled, currently WordPress 3.9.
 		if ( version_compare( str_replace( '-src', '', $GLOBALS['wp_version'] ), '3.9', '<' ) ) {
-			// show error notice to admins, if WP is not installed in the minimum required version, in which case TablePress will not work
+			// Show error notice to admins, if WP is not installed in the minimum required version, in which case TablePress will not work.
 			if ( current_user_can( 'update_plugins' ) ) {
 				add_action( 'admin_notices', array( 'TablePress', 'show_minimum_requirements_error_notice' ) );
 			}
-			// and exit TablePress
+			// And exit TablePress.
 			return;
 		}
 
@@ -142,7 +143,7 @@ abstract class TablePress {
 		 */
 		self::$shortcode_info = apply_filters( 'tablepress_table_info_shortcode', self::$shortcode_info );
 
-		// Load modals for table and options, to be accessible from everywhere via `TablePress::$model_options` and `TablePress::$model_table`
+		// Load modals for table and options, to be accessible from everywhere via `TablePress::$model_options` and `TablePress::$model_table`.
 		self::$model_options = self::load_model( 'options' );
 		self::$model_table = self::load_model( 'table' );
 
@@ -158,12 +159,12 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Load a file with require_once(), after running it through a filter
+	 * Load a file with require_once(), after running it through a filter.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $file Name of the PHP file with the class
-	 * @param string $folder Name of the folder with $class's $file
+	 * @param string $file   Name of the PHP file with the class.
+	 * @param string $folder Name of the folder with $class's $file.
 	 */
 	public static function load_file( $file, $folder ) {
 		$full_path = TABLEPRESS_ABSPATH . $folder . '/' . $file;
@@ -184,15 +185,15 @@ abstract class TablePress {
 
 	/**
 	 * Create a new instance of the $class, which is stored in $file in the $folder subfolder
-	 * of the plugin's directory
+	 * of the plugin's directory.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $class Name of the class
-	 * @param string $file Name of the PHP file with the class
-	 * @param string $folder Name of the folder with $class's $file
-	 * @param mixed $params Optional. Parameters that are passed to the constructor of $class
-	 * @return object Initialized instance of the class
+	 * @param string $class  Name of the class.
+	 * @param string $file   Name of the PHP file with the class.
+	 * @param string $folder Name of the folder with $class's $file.
+	 * @param mixed  $params Optional. Parameters that are passed to the constructor of $class.
+	 * @return object Initialized instance of the class.
 	 */
 	public static function load_class( $class, $file, $folder, $params = null ) {
 		/**
@@ -211,63 +212,66 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Create a new instance of the $model, which is stored in the "models" subfolder
+	 * Create a new instance of the $model, which is stored in the "models" subfolder.
 	 *
 	 * @since 1.0.0
-	 * @uses load_class()
 	 *
-	 * @param string $model Name of the model
-	 * @return object Instance of the initialized model
+	 * @param string $model Name of the model.
+	 * @return object Instance of the initialized model.
 	 */
 	public static function load_model( $model ) {
-		self::load_file( 'class-model.php', 'classes' ); // Model Base Class
-		$ucmodel = ucfirst( $model ); // make first letter uppercase for a better looking naming pattern
+		// Model Base Class.
+		self::load_file( 'class-model.php', 'classes' );
+		// Make first letter uppercase for a better looking naming pattern.
+		$ucmodel = ucfirst( $model );
 		$the_model = self::load_class( "TablePress_{$ucmodel}_Model", "model-{$model}.php", 'models' );
 		return $the_model;
 	}
 
 	/**
-	 * Create a new instance of the $view, which is stored in the "views" subfolder, and set it up with $data
+	 * Create a new instance of the $view, which is stored in the "views" subfolder, and set it up with $data.
 	 *
 	 * @since 1.0.0
-	 * @uses load_class()
 	 *
-	 * @param string $view Name of the view to load
-	 * @param array $data Optional. Parameters/PHP variables that shall be available to the view
-	 * @return object Instance of the initialized view, already set up, just needs to be render()ed
+	 * @param string $view Name of the view to load.
+	 * @param array  $data Optional. Parameters/PHP variables that shall be available to the view.
+	 * @return object Instance of the initialized view, already set up, just needs to be rendered.
 	 */
 	public static function load_view( $view, array $data = array() ) {
-		self::load_file( 'class-view.php', 'classes' ); // View Base Class
-		$ucview = ucfirst( $view ); // make first letter uppercase for a better looking naming pattern
+		// View Base Class.
+		self::load_file( 'class-view.php', 'classes' );
+		// Make first letter uppercase for a better looking naming pattern.
+		$ucview = ucfirst( $view );
 		$the_view = self::load_class( "TablePress_{$ucview}_View", "view-{$view}.php", 'views' );
 		$the_view->setup( $view, $data );
 		return $the_view;
 	}
 
 	/**
-	 * Create a new instance of the $controller, which is stored in the "controllers" subfolder
+	 * Create a new instance of the $controller, which is stored in the "controllers" subfolder.
 	 *
 	 * @since 1.0.0
-	 * @uses load_class()
 	 *
-	 * @param string $controller Name of the controller
-	 * @return object Instance of the initialized controller
+	 * @param string $controller Name of the controller.
+	 * @return object Instance of the initialized controller.
 	 */
 	public static function load_controller( $controller ) {
-		self::load_file( 'class-controller.php', 'classes' ); // Controller Base Class
-		$uccontroller = ucfirst( $controller ); // make first letter uppercase for a better looking naming pattern
+		// Controller Base Class.
+		self::load_file( 'class-controller.php', 'classes' );
+		// Make first letter uppercase for a better looking naming pattern.
+		$uccontroller = ucfirst( $controller );
 		$the_controller = self::load_class( "TablePress_{$uccontroller}_Controller", "controller-{$controller}.php", 'controllers' );
 		return $the_controller;
 	}
 
 	/**
-	 * Generate the complete nonce string, from the nonce base, the action and an item, e.g. tablepress_delete_table_3
+	 * Generate the complete nonce string, from the nonce base, the action and an item, e.g. tablepress_delete_table_3.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for which the nonce is needed
-	 * @param string|bool $item Optional. Item for which the action will be performed, like "table"
-	 * @return string The resulting nonce string
+	 * @param string      $action Action for which the nonce is needed.
+	 * @param string|bool $item   Optional. Item for which the action will be performed, like "table".
+	 * @return string The resulting nonce string.
 	 */
 	public static function nonce( $action, $item = false ) {
 		$nonce = "tablepress_{$action}";
@@ -278,15 +282,14 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Check whether a nonce string is valid
+	 * Check whether a nonce string is valid.
 	 *
 	 * @since 1.0.0
-	 * @uses nonce()
 	 *
-	 * @param string $action Action for which the nonce should be checked
-	 * @param string|bool $item Optional. Item for which the action should be performed, like "table"
-	 * @param string $query_arg Optional. Name of the nonce query string argument in $_POST
-	 * @param bool $ajax Whether the nonce comes from an AJAX request
+	 * @param string      $action    Action for which the nonce should be checked.
+	 * @param string|bool $item      Optional. Item for which the action should be performed, like "table".
+	 * @param string      $query_arg Optional. Name of the nonce query string argument in $_POST.
+	 * @param bool $ajax Whether the nonce comes from an AJAX request.
 	 */
 	public static function check_nonce( $action, $item = false, $query_arg = '_wpnonce', $ajax = false ) {
 		$nonce_action = self::nonce( $action, $item );
@@ -298,51 +301,51 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Calculate the column index (number) of a column header string (example: A is 1, AA is 27, ...)
+	 * Calculate the column index (number) of a column header string (example: A is 1, AA is 27, ...).
 	 *
-	 * For the opposite, @see number_to_letter()
+	 * For the opposite, @see number_to_letter().
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $column Column string
-	 * @return int $number Column number, 1-based
+	 * @param string $column Column string.
+	 * @return int $number Column number, 1-based.
 	 */
 	public static function letter_to_number( $column ) {
 		$column = strtoupper( $column );
 		$count = strlen( $column );
 		$number = 0;
 		for ( $i = 0; $i < $count; $i++ ) {
-			$number += ( ord( $column[ $count-1-$i ] ) - 64 ) * pow( 26, $i );
+			$number += ( ord( $column[ $count - 1 - $i ] ) - 64 ) * pow( 26, $i );
 		}
 		return $number;
 	}
 
 	/**
-	 * "Calculate" the column header string of a column index (example: 2 is B, AB is 28, ...)
+	 * "Calculate" the column header string of a column index (example: 2 is B, AB is 28, ...).
 	 *
-	 * For the opposite, @see letter_to_number()
+	 * For the opposite, @see letter_to_number().
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $number Column number, 1-based
-	 * @return string $column Column string
+	 * @param int $number Column number, 1-based.
+	 * @return string $column Column string.
 	 */
 	public static function number_to_letter( $number ) {
 		$column = '';
 		while ( $number > 0 ) {
-			$column = chr( 65 + ( ( $number-1 ) % 26 ) ) . $column;
-			$number = floor( ( $number-1 ) / 26 );
+			$column = chr( 65 + ( ( $number - 1 ) % 26 ) ) . $column;
+			$number = floor( ( $number - 1 ) / 26 );
 		}
 		return $column;
 	}
 
 	/**
-	 * Get a nice looking date and time string from the mySQL format of datetime strings for output
+	 * Get a nice looking date and time string from the mySQL format of datetime strings for output.
 	 *
-	 * @param string $datetime DateTime string in mySQL format or a Unix timestamp
-	 * @param string $type Optional. Type of $datetime, 'mysql' or 'timestamp'
-	 * @param string $separator Optional. Separator between date and time
-	 * @return string Nice looking string with the date and time
+	 * @param string $datetime  DateTime string in mySQL format or a Unix timestamp.
+	 * @param string $type      Optional. Type of $datetime, 'mysql' or 'timestamp'.
+	 * @param string $separator Optional. Separator between date and time.
+	 * @return string Nice looking string with the date and time.
 	 */
 	public static function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
 		if ( 'mysql' == $type ) {
@@ -353,10 +356,10 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Get the name from a WP user ID (used to store information on last editor of a table)
+	 * Get the name from a WP user ID (used to store information on last editor of a table).
 	 *
-	 * @param int $user_id WP user ID
-	 * @return string Nickname of the WP user with the $user_id
+	 * @param int $user_id WP user ID.
+	 * @return string Nickname of the WP user with the $user_id.
 	 */
 	public static function get_user_display_name( $user_id ) {
 		$user = get_userdata( $user_id );
@@ -364,18 +367,18 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Generate the action URL, to be used as a link within the plugin (e.g. in the submenu navigation or List of Tables)
+	 * Generate the action URL, to be used as a link within the plugin (e.g. in the submenu navigation or List of Tables).
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $params Optional. Parameters to form the query string of the URL
-	 * @param bool $add_nonce Optional. Whether the URL shall be nonced by WordPress
-	 * @param string $target Optional. Target File, e.g. "admin-post.php" for POST requests
-	 * @return string The URL for the given parameters (already run through esc_url() with $add_nonce == true!)
+	 * @param array  $params    Optional. Parameters to form the query string of the URL.
+	 * @param bool   $add_nonce Optional. Whether the URL shall be nonced by WordPress.
+	 * @param string $target    Optional. Target File, e.g. "admin-post.php" for POST requests.
+	 * @return string The URL for the given parameters (already run through esc_url() with $add_nonce == true!).
 	 */
 	public static function url( array $params = array(), $add_nonce = false, $target = '' ) {
 
-		// default action is "list", if no action given
+		// Default action is "list", if no action given.
 		if ( ! isset( $params['action'] ) ) {
 			$params['action'] = 'list';
 		}
@@ -385,7 +388,7 @@ abstract class TablePress {
 			$params['action'] = "tablepress_{$params['action']}";
 		} else {
 			$params['page'] = 'tablepress';
-			// top-level parent page needs special treatment for better action strings
+			// Top-level parent page needs special treatment for better action strings.
 			if ( self::$controller->is_top_level_page ) {
 				$target = 'admin.php';
 				if ( ! in_array( $params['action'], array( 'list', 'edit' ), true ) ) {
@@ -399,7 +402,7 @@ abstract class TablePress {
 			}
 		}
 
-		// $default_params also determines the order of the values in the query string
+		// $default_params also determines the order of the values in the query string.
 		$default_params = array(
 			'page' => false,
 			'action' => false,
@@ -415,13 +418,12 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Create a redirect URL from the $target_parameters and redirect the user
+	 * Create a redirect URL from the $target_parameters and redirect the user.
 	 *
 	 * @since 1.0.0
-	 * @uses url()
 	 *
-	 * @param array $params Optional. Parameters from which the target URL is constructed
-	 * @param bool $add_nonce Optional. Whether the URL shall be nonced by WordPress
+	 * @param array $params    Optional. Parameters from which the target URL is constructed.
+	 * @param bool  $add_nonce Optional. Whether the URL shall be nonced by WordPress.
 	 */
 	public static function redirect( array $params = array(), $add_nonce = false ) {
 		$redirect = self::url( $params );
@@ -429,7 +431,7 @@ abstract class TablePress {
 			if ( ! isset( $params['item'] ) ) {
 				$params['item'] = false;
 			}
-			// don't use wp_nonce_url(), as that uses esc_html()
+			// Don't use wp_nonce_url(), as that uses esc_html().
 			$redirect = add_query_arg( '_wpnonce', wp_create_nonce( self::nonce( $params['action'], $params['item'] ) ), $redirect );
 		}
 		wp_redirect( $redirect );
@@ -437,12 +439,12 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Show an error notice to admins, if TablePress's minimum requirements are not reached
+	 * Show an error notice to admins, if TablePress's minimum requirements are not reached.
 	 *
 	 * @since 1.0.0
 	 */
 	public static function show_minimum_requirements_error_notice() {
-		// Message is not translated as it is shown on every admin screen, for which we don't want to load translations
+		// Message is not translated as it is shown on every admin screen, for which we don't want to load translations.
 		echo '<div class="error"><p>' .
 			'<strong>Attention:</strong> ' .
 			'The installed version of WordPress is too old for the TablePress plugin! TablePress requires an up-to-date version! <strong>Please <a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">update your WordPress installation</a></strong>!' .

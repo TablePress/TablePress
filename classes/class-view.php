@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 abstract class TablePress_View {
 
 	/**
-	 * Data for the view
+	 * Data for the view.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -29,7 +29,7 @@ abstract class TablePress_View {
 	protected $data = array();
 
 	/**
-	 * Number of screen columns for post boxes
+	 * Number of screen columns for post boxes.
 	 *
 	 * @since 1.0.0
 	 * @var int
@@ -37,7 +37,7 @@ abstract class TablePress_View {
 	protected $screen_columns = 0;
 
 	/**
-	 * User action for this screen
+	 * User action for this screen.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -45,7 +45,7 @@ abstract class TablePress_View {
 	protected $action = '';
 
 	/**
-	 * Instance of the Admin Page Helper Class, with necessary functions
+	 * Instance of the Admin Page Helper Class, with necessary functions.
 	 *
 	 * @since 1.0.0
 	 * @var TablePress_Admin_Page
@@ -53,7 +53,7 @@ abstract class TablePress_View {
 	protected $admin_page;
 
 	/**
-	 * List of text boxes (similar to post boxes, but just with text and without extra functionality)
+	 * List of text boxes (similar to post boxes, but just with text and without extra functionality).
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -61,7 +61,7 @@ abstract class TablePress_View {
 	protected $textboxes = array();
 
 	/**
-	 * List of messages that are to be displayed as boxes below the page title
+	 * List of messages that are to be displayed as boxes below the page title.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -70,7 +70,7 @@ abstract class TablePress_View {
 
 	/**
 	 * Whether there are post boxes registered for this screen,
-	 * is automatically set to true, when a meta box is added
+	 * is automatically set to true, when a meta box is added.
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -78,7 +78,7 @@ abstract class TablePress_View {
 	protected $has_meta_boxes = false;
 
 	/**
-	 * List of WP feature pointers for this view
+	 * List of WP feature pointers for this view.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -86,7 +86,7 @@ abstract class TablePress_View {
 	protected $wp_pointers = array();
 
 	/**
-	 * Initialize the View class, by setting the correct screen columns and adding help texts
+	 * Initialize the View class, by setting the correct screen columns and adding help texts.
 	 *
 	 * @since 1.0.0
 	 */
@@ -95,9 +95,9 @@ abstract class TablePress_View {
 		if ( 0 != $this->screen_columns ) {
 			$screen->add_option( 'layout_columns', array( 'max' => $this->screen_columns ) );
 		}
-		add_filter( "get_user_option_screen_layout_{$screen->id}", array( $this, 'set_current_screen_layout_columns' ) ); // enable two column layout
+		// Enable two column layout.
+		add_filter( "get_user_option_screen_layout_{$screen->id}", array( $this, 'set_current_screen_layout_columns' ) );
 
-		// add help tab
 		$screen->add_help_tab( array(
 			'id' => 'tablepress-help', // This should be unique for the screen.
 			'title' => __( 'TablePress Help', 'tablepress' ),
@@ -108,48 +108,48 @@ abstract class TablePress_View {
 						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'https://tablepress.org/faq/' ) . '<br />'
 						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>',
 		) );
-		// "sidebar" in the help tab
+		// "sidebar" in the help tab.
 		$screen->set_help_sidebar( '<p><strong>' . __( 'For more information:', 'tablepress' ) . '</strong></p><p><a href="https://tablepress.org/" target="_blank">TablePress Website</a></p><p><a href="https://tablepress.org/faq/" target="_blank">TablePress FAQ</a></p><p><a href="https://tablepress.org/documentation/" target="_blank">TablePress Documentation</a></p><p><a href="https://tablepress.org/support/" target="_blank">TablePress Support</a></p>' );
 	}
 
 	/**
-	 * Change the value of the user option "screen_layout_{$screen->id}" through a filter
+	 * Change the value of the user option "screen_layout_{$screen->id}" through a filter.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int|bool Current value of the user option
-	 * @return int New value for the user option
+	 * @param int|bool Current value of the user option.
+	 * @return int New value for the user option.
 	 */
 	public function set_current_screen_layout_columns( $result ) {
 		if ( false === $result ) {
-			// the user option does not yet exist
+			// The user option does not yet exist.
 			$result = $this->screen_columns;
 		} elseif ( $result > $this->screen_columns ) {
-			// the value of the user option is bigger than what is possible on this screen (e.g. because the number of columns was reduced in an update)
+			// The value of the user option is bigger than what is possible on this screen (e.g. because the number of columns was reduced in an update).
 			$result = $this->screen_columns;
 		}
 		return $result;
 	}
 
 	/**
-	 * Set up the view with data and do things that are necessary for all views
+	 * Set up the view with data and do things that are necessary for all views.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view
-	 * @param array $data Data for this view
+	 * @param string $action Action for this view.
+	 * @param array  $data   Data for this view.
 	 */
 	public function setup( $action, array $data ) {
 		$this->action = $action;
 		$this->data = $data;
 
-		// Set page <title>
+		// Set page title.
 		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' );
 
-		// admin page helpers, like script/style loading, could be moved to view
+		// Admin page helpers, like script/style loading, could be moved to view.
 		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$this->admin_page->enqueue_style( 'common' );
-		// RTL styles for the admin interface
+		// RTL styles for the admin interface.
 		if ( is_rtl() ) {
 			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
 		}
@@ -162,33 +162,33 @@ abstract class TablePress_View {
 
 		$this->admin_page->add_admin_footer_text();
 
-		// Initialize WP feature pointers for TablePress
+		// Initialize WP feature pointers for TablePress.
 		$this->_init_wp_pointers();
 
-		// necessary fields for all views
+		// Necessary fields for all views.
 		$this->add_text_box( 'default_nonce_fields', array( $this, 'default_nonce_fields' ), 'header', false );
 		$this->add_text_box( 'action_nonce_field', array( $this, 'action_nonce_field' ), 'header', false );
 		$this->add_text_box( 'action_field', array( $this, 'action_field' ), 'header', false );
 	}
 
 	/**
-	 * Register a header message for the view
+	 * Register a header message for the view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $text Text for the header message
-	 * @param string $class Optional. Additional CSS class for the header message
+	 * @param string $text  Text for the header message.
+	 * @param string $class Optional. Additional CSS class for the header message.
 	 */
 	protected function add_header_message( $text, $class = 'updated' ) {
 		$this->header_messages[] = "<div class=\"{$class}\"><p>{$text}</p></div>\n";
 	}
 
 	/**
-	 * Process header action messages, i.e. check if a message should be added to the page
+	 * Process header action messages, i.e. check if a message should be added to the page.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $action_messages Action messages for the screen
+	 * @param array $action_messages Action messages for the screen.
 	 */
 	protected function process_action_messages( array $action_messages ) {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
@@ -198,14 +198,14 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Register a text box for the view
+	 * Register a text box for the view.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $id Unique HTML ID for the text box container (only visible with $wrap = true)
-	 * @param callback $callback Callback that prints the contents of the text box
-	 * @param string $context Optional. Context/position of the text box (normal, side, additional, header, submit)
-	 * @param bool $wrap Whether the content of the text box shall be wrapped in a <div> container
+	 * @param string   $id       Unique HTML ID for the text box container (only visible with $wrap = true).
+	 * @param callback $callback Callback that prints the contents of the text box.
+	 * @param string   $context  Optional. Context/position of the text box (normal, side, additional, header, submit).
+	 * @param bool $   wrap      Whether the content of the text box shall be wrapped in a <div> container.
 	 */
 	protected function add_text_box( $id, $callback, $context = 'normal', $wrap = false ) {
 		if ( ! isset( $this->textboxes[ $context ] ) ) {
@@ -222,17 +222,18 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Register a post meta box for the view, that is drag/droppable with WordPress functionality
+	 * Register a post meta box for the view, that is drag/droppable with WordPress functionality.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses add_meta_box()
 	 *
-	 * @param string $id Unique ID for the meta box
-	 * @param string $title Title for the meta box
-	 * @param callback $callback Callback that prints the contents of the post meta box
-	 * @param string $context Optional. Context/position of the post meta box (normal, side, additional)
-	 * @param string $priority Optional. Order of the post meta box for the $context position (high, default, low)
-	 * @param bool $callback_args Optional. Additional data for the callback function (e.g. useful when in different class)
+	 * @param string   $id            Unique ID for the meta box.
+	 * @param string   $title         Title for the meta box.
+	 * @param callback $callback      Callback that prints the contents of the post meta box.
+	 * @param string   $context       Optional. Context/position of the post meta box (normal, side, additional).
+	 * @param string   $priority      Optional. Order of the post meta box for the $context position (high, default, low).
+	 * @param bool     $callback_args Optional. Additional data for the callback function (e.g. useful when in different class).
 	 */
 	protected function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
 		$this->has_meta_boxes = true;
@@ -240,11 +241,11 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render all text boxes for the given context
+	 * Render all text boxes for the given context.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $context Context (normal, side, additional, header, submit) for which registered text boxes shall be rendered
+	 * @param string $context Context (normal, side, additional, header, submit) for which registered text boxes shall be rendered.
 	 */
 	protected function do_text_boxes( $context ) {
 		if ( empty( $this->textboxes[ $context ] ) ) {
@@ -263,12 +264,13 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render all post meta boxes for the given context, if there are post meta boxes
+	 * Render all post meta boxes for the given context, if there are post meta boxes.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses do_meta_boxes()
 	 *
-	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered
+	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered.
 	 */
 	protected function do_meta_boxes( $context ) {
 		if ( ! $this->has_meta_boxes ) {
@@ -278,14 +280,16 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Print hidden fields with nonces for post meta box AJAX handling, if there are post meta boxes on the screen
-	 * (check is possible as this function is executed after post meta boxes have to be registered)
+	 * Print hidden fields with nonces for post meta box AJAX handling, if there are post meta boxes on the screen.
+	 *
+	 * The check is possible as this function is executed after post meta boxes have to be registered.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_nonce_field()
 	 *
-	 * @param array $data Data for this screen
-	 * @param array $box Information about the text box
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
 	protected function default_nonce_fields( array $data, array $box ) {
 		if ( ! $this->has_meta_boxes ) {
@@ -296,32 +300,33 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests
+	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_nonce_field()
 	 *
-	 * @param array $data Data for this screen
-	 * @param array $box Information about the text box
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
 	protected function action_nonce_field( array $data, array $box ) {
 		wp_nonce_field( TablePress::nonce( $this->action ) ); echo "\n";
 	}
 
 	/**
-	 * Print hidden field with the screen action
+	 * Print hidden field with the screen action.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen
-	 * @param array $box Information about the text box
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
 	protected function action_field( array $data, array $box ) {
 		echo "<input type=\"hidden\" name=\"action\" value=\"tablepress_{$this->action}\" />\n";
 	}
 
 	/**
-	 * Render the current view
+	 * Render the current view.
 	 *
 	 * @since 1.0.0
 	 */
@@ -330,11 +335,11 @@ abstract class TablePress_View {
 		<div id="tablepress-page" class="wrap">
 		<?php
 			$this->print_nav_tab_menu();
-			// print all header messages
+			// Print all header messages.
 			foreach ( $this->header_messages as $message ) {
 				echo $message;
 			}
-			// "Import" screen has file upload
+			// "Import" screen has file upload.
 			$enctype = ( 'import' == $this->action ) ? ' enctype="multipart/form-data"' : '';
 		?>
 		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?>>
@@ -351,13 +356,13 @@ abstract class TablePress_View {
 						$this->do_text_boxes( 'additional' );
 						$this->do_meta_boxes( 'additional' );
 
-						// print all submit buttons
+						// Print all submit buttons.
 						$this->do_text_boxes( 'submit' );
 						?>
 					</div>
 					<div id="postbox-container-1" class="postbox-container">
 					<?php
-						// print all boxes in the sidebar
+						// Print all boxes in the sidebar.
 						$this->do_text_boxes( 'side' );
 						$this->do_meta_boxes( 'side' );
 					?>
@@ -371,7 +376,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render the navigation menu with links to the possible actions, highlighting the current one,
+	 * Render the navigation menu with links to the possible actions, highlighting the current one.
 	 *
 	 * @since 1.0.0
 	 */
@@ -381,7 +386,7 @@ abstract class TablePress_View {
 			<?php
 			echo __( 'TablePress', 'tablepress' ) . '<span class="separator"></span>';
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
-				// special case: Add a separator before the group that starts with "Plugin Options", for some spacing
+				// Special case: Add a separator before the group that starts with "Plugin Options", for some spacing.
 				if ( 'options' == $action ) {
 					echo '<span class="separator"></span><span class="separator"></span>';
 				}
@@ -403,12 +408,12 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Print a submit button (only done when function is used as a callback for a text box)
+	 * Print a submit button (only done when function is used as a callback for a text box).
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen
-	 * @param array $box Information about the text box
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
 	 */
 	protected function textbox_submit_button( array $data, array $box ) {
 		$caption = isset( $data['submit_button_caption'] ) ? $data['submit_button_caption'] : __( 'Save Changes', 'tablepress' );
@@ -418,7 +423,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Return the content for the help tab for this screen
+	 * Return the content for the help tab for this screen.
 	 *
 	 * Has to be implemented for every view that is visible in the WP Dashboard!
 	 *
@@ -430,22 +435,22 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Initialize the WP feature pointers for TablePress
+	 * Initialize the WP feature pointers for TablePress.
 	 *
 	 * @since 1.0.0
 	 */
 	protected function _init_wp_pointers() {
-		// Check if there are WP pointers for this view
+		// Check if there are WP pointers for this view.
 		if ( empty( $this->wp_pointers ) ) {
 			return;
 		}
 
-		// Get dismissed pointers
+		// Get dismissed pointers.
 		$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 
 		$got_pointers = false;
 		foreach ( array_diff( $this->wp_pointers, $dismissed ) as $pointer ) {
-			// Bind pointer print function
+			// Bind pointer print function.
 			add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( $this, 'wp_pointer_' . $pointer ) );
 			$got_pointers = true;
 		}
@@ -454,7 +459,7 @@ abstract class TablePress_View {
 			return;
 		}
 
-		// Add pointers script and style to queue
+		// Add pointers script and style to queue.
 		wp_enqueue_style( 'wp-pointer' );
 		wp_enqueue_script( 'wp-pointer' );
 	}
