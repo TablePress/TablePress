@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Frontend_Controller extends TablePress_Controller {
 
 	/**
-	 * List of tables that are shown for the current request
+	 * List of tables that are shown for the current request.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -29,7 +29,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	protected $shown_tables = array();
 
 	/**
-	 * Initiate Frontend functionality
+	 * Initiate Frontend functionality.
 	 *
 	 * @since 1.0.0
 	 */
@@ -47,13 +47,13 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
 		}
 
-		// add DataTables invocation calls
+		// Add DataTables invocation calls.
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 11 ); // after inclusion of files
 
-		// Remove WP-Table Reloaded Shortcodes and CSS, and add TablePress Shortcodes
+		// Remove WP-Table Reloaded Shortcodes and CSS, and add TablePress Shortcodes.
 		add_action( 'init', array( $this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
 
-		// make TablePress Shortcodes work in text widgets
+		// Make TablePress Shortcodes work in text widgets.
 		add_filter( 'widget_text', array( $this, 'widget_text_filter' ) );
 
 		/**
@@ -64,7 +64,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 * @param bool $search Whether the TablePress tables shall be searched. Default true.
 		 */
 		if ( apply_filters( 'tablepress_wp_search_integration', true ) ) {
-			// Extend WordPress Search to also find posts/pages that have a table with the one of the search terms in title (if shown), description (if shown), or content
+			// Extend WordPress Search to also find posts/pages that have a table with the one of the search terms in title (if shown), description (if shown), or content.
 			add_filter( 'posts_search', array( $this, 'posts_search_filter' ) );
 		}
 
@@ -75,15 +75,15 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Register TablePress Shortcodes, after removing WP-Table Reloaded Shortcodes
+	 * Register TablePress Shortcodes, after removing WP-Table Reloaded Shortcodes.
 	 *
 	 * @since 1.0.0
 	 */
 	public function init_shortcodes() {
-		// Remove previously registered [table /] Shortcodes (e.g. from WP-Table Reloaded), as these would otherwise be used instead of TablePress's Shortcodes
+		// Remove previously registered [table /] Shortcodes (e.g. from WP-Table Reloaded), as these would otherwise be used instead of TablePress's Shortcodes.
 		remove_shortcode( TablePress::$shortcode );
 		remove_shortcode( TablePress::$shortcode_info );
-		// Dequeue WP-Table Relaoded Default CSS, as it can influence TablePress table styling
+		// Dequeue WP-Table Relaoded Default CSS, as it can influence TablePress table styling.
 		if ( isset( $GLOBALS['WP_Table_Reloaded_Frontend'] ) ) {
 			remove_action( 'wp_head', array( $GLOBALS['WP_Table_Reloaded_Frontend'], 'add_frontend_css' ) );
 		}
@@ -93,7 +93,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Enqueue CSS files for default CSS and "Custom CSS" (if desired)
+	 * Enqueue CSS files for default CSS and "Custom CSS" (if desired).
 	 *
 	 * @since 1.0.0
 	 */
@@ -115,7 +115,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 
-		// Determine default CSS URL
+		// Determine Default CSS URL.
 		$rtl = ( is_rtl() ) ? '-rtl' : '';
 		$suffix = ( $use_minified_css ) ? '.min' : '';
 		$unfiltered_default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
@@ -132,13 +132,14 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		if ( $use_custom_css_combined_file ) {
 			$custom_css_combined_url = $tablepress_css->get_custom_css_location( 'combined', 'url' );
-			// need to use 'tablepress-default' instead of 'tablepress-combined' to not break existing TablePress Extensions
+			// Need to use 'tablepress-default' instead of 'tablepress-combined' to not break existing TablePress Extensions.
 			wp_enqueue_style( 'tablepress-default', $custom_css_combined_url, array(), $custom_css_version );
 		} else {
 			$custom_css_dependencies = array();
 			if ( $use_default_css ) {
 				wp_enqueue_style( 'tablepress-default', $default_css_url, array(), TablePress::version );
-				$custom_css_dependencies[] = 'tablepress-default'; // to make sure that Custom CSS is printed after Default CSS
+				// Add dependency to make sure that Custom CSS is printed after Default CSS.
+				$custom_css_dependencies[] = 'tablepress-default';
 			}
 
 			$use_custom_css_minified_file = ( $use_custom_css_file && $use_minified_css && $tablepress_css->load_custom_css_from_file( 'minified' ) );
@@ -156,7 +157,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 
 			if ( $use_custom_css ) {
-				// get "Custom CSS" from options, try minified Custom CSS first
+				// Get "Custom CSS" from options, try minified Custom CSS first,
 				$custom_css_minified = TablePress::$model_options->get( 'custom_css_minified' );
 				if ( ! empty( $custom_css_minified ) ) {
 					$custom_css = $custom_css_minified;
@@ -170,9 +171,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 */
 				$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 				if ( ! empty( $custom_css ) ) {
-					// wp_add_inline_style() requires a loaded CSS file, so we have to work around that if "Default CSS" is disabled
+					// wp_add_inline_style() requires a loaded CSS file, so we have to work around that if "Default CSS" is disabled,
 					if ( $use_default_css ) {
-						wp_add_inline_style( 'tablepress-default', $custom_css ); // handle of the file to which the <style> shall be appended
+						// Handle of the file to which the <style> shall be appended.
+						wp_add_inline_style( 'tablepress-default', $custom_css );
 					} else {
 						add_action( 'wp_head', array( $this, '_print_custom_css' ), 8 ); // priority 8 to hook in right after WP_Styles has been processed
 					}
@@ -182,12 +184,12 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Print "Custom CSS" to "wp_head" inline; Necessary if "Default CSS" is off, and saving "Custom CSS" to a file is not possible
+	 * Print "Custom CSS" to "wp_head" inline; Necessary if "Default CSS" is off, and saving "Custom CSS" to a file is not possible.
 	 *
 	 * @since 1.0.0
 	 */
 	public function _print_custom_css() {
-		// get "Custom CSS" from options, try minified Custom CSS first
+		// Get "Custom CSS" from options, try minified Custom CSS first.
 		$custom_css = TablePress::$model_options->get( 'custom_css_minified' );
 		if ( empty( $custom_css ) ) {
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
@@ -198,7 +200,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Enqueue the DataTables JavaScript library (and jQuery)
+	 * Enqueue the DataTables JavaScript library and its dependencies.
 	 *
 	 * @since 1.0.0
 	 */
@@ -219,18 +221,19 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Add JS code for invocation of DataTables JS library
+	 * Add JS code for invocation of DataTables JS library.
 	 *
 	 * @since 1.0.0
 	 */
 	public function add_datatables_calls() {
 		if ( empty( $this->shown_tables ) ) {
-			return; // there are no tables with activated DataTables
+			// There are no tables with activated DataTables on the page that is currently rendered.
+			return;
 		}
 
-		// storage for the DataTables languages
+		// Storage for the DataTables languages.
 		$datatables_languages = array();
-		// generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters
+		// Generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters.
 		$commands = array();
 
 		foreach ( $this->shown_tables as $table_id => $table_store ) {
@@ -240,13 +243,15 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			foreach ( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
 
-				// Settle dependencies/conflicts between certain features
+				// Settle dependencies/conflicts between certain features.
 				if ( false !== $js_options['datatables_scrolly'] ) { // not necessarily a boolean!
-					$js_options['datatables_paginate'] = false; // vertical scrolling and pagination don't work together
+					// Vertical scrolling and pagination don't work together.
+					$js_options['datatables_paginate'] = false;
 				}
-				$js_options['datatables_paginate_entries'] = intval( $js_options['datatables_paginate_entries'] ); // Sanitize, as it may come from Shortcode attribute
+				// Sanitize, as it may come from a Shortcode attribute.
+				$js_options['datatables_paginate_entries'] = intval( $js_options['datatables_paginate_entries'] );
 
-				// DataTables language/translation handling
+				// DataTables language/translation handling.
 				/**
 				 * Filter the locale/language for the DataTables JavaScript library.
 				 *
@@ -256,7 +261,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 * @param string $table_id The current table ID.
 				 */
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
-				// only do the expensive language file checks if they haven't been done yet
+				// Only do the expensive language file checks if they haven't been done yet.
 				if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
 					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.json";
 					/**
@@ -268,22 +273,25 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					 * @param string $datatables_locale  Current locale/language for the DataTables JS library.
 					 * @param string $path               Path of the language file.
 					 */
-					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH ); // make sure to check file_exists( $new_file ) when using this filter!
-					// load translation if it's not "en_US" (included as the default in DataTables) and the language file exists, or if the filter was used to change the language file
+					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH ); // Make sure to check file_exists( $new_file ) when using this filter!
+					// Load translation if it's not "en_US" (included as the default in DataTables) and the language file exists, or if the filter was used to change the language file.
 					if ( ( 'en_US' != $datatables_locale && file_exists( $language_file ) )
 						|| ( $orig_language_file != $language_file ) ) {
 						$datatables_languages[ $datatables_locale ] = $language_file;
 					}
 				}
-				// if translation is registered to have its strings added to the JS, add corresponding parameter to DataTables call
+				// If translation is registered to have its strings added to the JS, add corresponding parameter to DataTables call.
 				if ( isset( $datatables_languages[ $datatables_locale ] ) ) {
 					$parameters['oLanguage'] = '"oLanguage":DataTables_oLanguage["' . $datatables_locale . '"]';
 				}
-				// these parameters need to be added for performance gain or to overwrite unwanted default behavior
-				$parameters['aaSorting'] = '"aaSorting":[]'; // no initial sort
-				$parameters['bSortClasses'] = '"bSortClasses":false'; // don't add additional classes, to speed up sorting
-				$parameters['asStripeClasses'] = '"asStripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? "['even','odd']" : '[]' ); // alternating row colors is default, so remove them if not wanted with []
-				// the following options are activated by default, so we only need to "false" them if we don't want them, but don't need to "true" them if we do
+				// These parameters need to be added for performance gain or to overwrite unwanted default behavior.
+				// No initial sort.
+				$parameters['aaSorting'] = '"aaSorting":[]';
+				// Don't add additional classes, to speed up sorting.
+				$parameters['bSortClasses'] = '"bSortClasses":false';
+				// Alternating row colors is default, so remove them if not wanted with [].
+				$parameters['asStripeClasses'] = '"asStripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? "['even','odd']" : '[]' );
+				// The following options are activated by default, so we only need to "false" them if we don't want them, but don't need to "true" them if we do.
 				if ( ! $js_options['datatables_sort'] ) {
 					$parameters['bSort'] = '"bSort":false';
 				}
@@ -333,7 +341,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 */
 				$parameters = apply_filters( 'tablepress_datatables_parameters', $parameters, $table_id, $html_id, $js_options );
 
-				// if an existing parameter is set in "Custom Commands", remove their default value
+				// If an existing parameter is set in "Custom Commands", remove its default value.
 				if ( isset( $parameters['custom_commands'] ) ) {
 					foreach ( array_keys( $parameters ) as $maybe_overwritten_parameter ) {
 						if ( false !== strpos( $parameters['custom_commands'], $maybe_overwritten_parameter ) ) {
@@ -377,11 +385,11 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			return;
 		}
 
-		// DataTables language/translation handling
+		// DataTables language/translation handling.
 		$datatables_strings = '';
 		foreach ( $datatables_languages as $locale => $language_file ) {
 			$strings = file_get_contents( $language_file );
-			// remove unnecessary white space
+			// Remove unnecessary white space.
 			$strings = str_replace( array( "\n", "\r", "\t" ), '', $strings );
 			$datatables_strings .= "DataTables_oLanguage[\"{$locale}\"]={$strings};\n";
 		}
@@ -389,7 +397,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			$datatables_strings = "var DataTables_oLanguage={};\n" . $datatables_strings;
 		}
 
-		// echo DataTables strings and JS calls
+		// Echo DataTables strings and JS calls.
 		echo <<<JS
 <script type="text/javascript">
 jQuery(document).ready(function($){
@@ -408,7 +416,7 @@ JS;
 	 * @return string Resulting HTML code for the table with the ID <ID>
 	 */
 	public function shortcode_table( $shortcode_atts ) {
-		// For empty Shortcodes like [table] or [table /], an empty string is passed, see Core #26927
+		// For empty Shortcodes like [table] or [table /], an empty string is passed, see Core #26927.
 		$shortcode_atts = (array) $shortcode_atts;
 
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
@@ -422,7 +430,7 @@ JS;
 		 * @param array $default_shortcode_atts The [table] Shortcode default attributes.
 		 */
 		$default_shortcode_atts = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_shortcode_atts );
-		// parse Shortcode attributes, only allow those that are specified
+		// Parse Shortcode attributes, only allow those that are specified.
 		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts ); // Optional third argument left out on purpose. Use filter in the next line instead.
 		/**
 		 * Filter the attributes that were passed to the [table] Shortcode.
@@ -433,7 +441,7 @@ JS;
 		 */
 		$shortcode_atts = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $shortcode_atts );
 
-		// check, if a table with the given ID exists
+		// Check, if a table with the given ID exists.
 		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
 		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
@@ -449,8 +457,8 @@ JS;
 			return $message;
 		}
 
-		// load the table
-		$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
+		// Load table, with table data, options, and visibility settings.
+		$table = TablePress::$model_table->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			/**
@@ -493,10 +501,10 @@ JS;
 			$shortcode_atts['datatables_custom_commands'] = null;
 		}
 
-		// determine options to use (if set in Shortcode, use those, otherwise use stored options, i.e. "Edit Table" screen)
+		// Determine options to use (if set in Shortcode, use those, otherwise use stored options, from the "Edit" screen).
 		$render_options = array();
 		foreach ( $shortcode_atts as $key => $value ) {
-			// have to check this, because strings 'true' or 'false' are not recognized as boolean!
+			// We have to check this, because strings 'true' or 'false' are not recognized as boolean!
 			if ( 'true' == strtolower( $value ) ) {
 				$render_options[ $key ] = true;
 			} elseif ( 'false' == strtolower( $value ) ) {
@@ -508,7 +516,7 @@ JS;
 			}
 		}
 
-		// generate unique HTML ID, depending on how often this table has already been shown on this page
+		// Generate unique HTML ID, depending on how often this table has already been shown on this page.
 		if ( ! isset( $this->shown_tables[ $table_id ] ) ) {
 			$this->shown_tables[ $table_id ] = array(
 				'count' => 0,
@@ -532,7 +540,7 @@ JS;
 		 */
 		$render_options['html_id'] = apply_filters( 'tablepress_html_id', $render_options['html_id'], $table_id, $count );
 
-		// generate "Edit Table" link
+		// Generate the "Edit Table" link.
 		$render_options['edit_table_url'] = '';
 		/**
 		 * Filter whether the "Edit" link below the table shall be shown.
@@ -560,9 +568,9 @@ JS;
 		 */
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
 
-		// eventually add this table to list of tables which have a JS library enabled and thus are to be included in the script's call in the footer
+		// Eventually add this table to list of tables which have a JS library enabled and thus are to be included in the script's call in the footer.
 		if ( $render_options['use_datatables'] && $render_options['table_head'] && count( $table['data'] ) > 1 ) {
-			// get options for the DataTables JavaScript library from the table's render options
+			// Get options for the DataTables JavaScript library from the table's render options.
 			$js_options = array();
 			foreach ( array( 'alternating_row_colors', 'datatables_sort', 'datatables_paginate',
 								'datatables_paginate', 'datatables_paginate_entries', 'datatables_lengthchange',
@@ -587,18 +595,19 @@ JS;
 			$this->_enqueue_datatables();
 		}
 
-		// check if table output shall and can be loaded from the transient cache, otherwise generate the output
+		// Check if table output shall and can be loaded from the transient cache, otherwise generate the output.
 		if ( $render_options['cache_table_output'] && ! is_user_logged_in() ) {
-			$table_hash = md5( json_encode( $render_options ) ); // hash the Render Options array to get a unique cache identifier
+			// Hash the Render Options array to get a unique cache identifier.
+			$table_hash = md5( json_encode( $render_options ) );
 			$transient_name = 'tablepress_' . $table_hash; // Attention: This string must not be longer than 45 characters!
 			$output = get_transient( $transient_name );
 			if ( false === $output || '' == $output ) {
-				// render/generate the table HTML, as it was not found in the cache
+				// Render/generate the table HTML, as it was not found in the cache.
 				$_render->set_input( $table, $render_options );
 				$output = $_render->get_output();
-				// save output to a transient
-				set_transient( $transient_name, $output, DAY_IN_SECONDS ); // store $output in a transient, set cache timeout to 24 hours
-				// update output caches list transient (necessary for cache invalidation upon table saving)
+				// Save render output in a transient, set cache timeout to 24 hours.
+				set_transient( $transient_name, $output, DAY_IN_SECONDS );
+				// Update output caches list transient (necessary for cache invalidation upon table saving).
 				$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
 				$caches_list = get_transient( $caches_list_transient_name );
 				if ( false === $caches_list ) {
@@ -609,7 +618,7 @@ JS;
 				if ( ! in_array( $transient_name, $caches_list, true ) ) {
 					$caches_list[] = $transient_name;
 				}
-				set_transient( $caches_list_transient_name, json_encode( $caches_list ), 2*DAY_IN_SECONDS );
+				set_transient( $caches_list_transient_name, json_encode( $caches_list ), 2 * DAY_IN_SECONDS );
 			} else {
 				/**
 				 * Filter the cache hit comment message.
@@ -621,12 +630,12 @@ JS;
 				$output .= apply_filters( 'tablepress_cache_hit_comment', "<!-- #{$render_options['html_id']} from cache -->" );
 			}
 		} else {
-			// render/generate the table HTML, as no cache is to be used
+			// Render/generate the table HTML, as no cache is to be used.
 			$_render->set_input( $table, $render_options );
 			$output = $_render->get_output();
 		}
 
-		// Maybe print a list of used render options
+		// Maybe print a list of used render options.
 		if ( $render_options['shortcode_debug'] && is_user_logged_in() ) {
 			$output .= '<pre>' . var_export( $render_options, true ) . '</pre>';
 		}
@@ -643,10 +652,10 @@ JS;
 	 * @return string Text that replaces the Shortcode (error message or asked-for information)
 	 */
 	public function shortcode_table_info( $shortcode_atts ) {
-		// For empty Shortcodes like [table-info] or [table-info /], an empty string is passed, see Core #26927
+		// For empty Shortcodes like [table-info] or [table-info /], an empty string is passed, see Core #26927.
 		$shortcode_atts = (array) $shortcode_atts;
 
-		// parse Shortcode attributes, only allow those that are specified
+		// Parse Shortcode attributes, only allow those that are specified.
 		$default_shortcode_atts = array(
 				'id' => '',
 				'field' => '',
@@ -683,7 +692,7 @@ JS;
 			return $overwrite;
 		}
 
-		// check, if a table with the given ID exists
+		// Check, if a table with the given ID exists.
 		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
 		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
@@ -692,8 +701,8 @@ JS;
 			return $message;
 		}
 
-		// load the table
-		$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
+		// Load table, with table data, options, and visibility settings.
+		$table = TablePress::$model_table->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			/** This filter is documented in controllers/controller-frontend.php */
@@ -704,7 +713,7 @@ JS;
 		$field = preg_replace( '/[^a-z_]/', '', strtolower( $shortcode_atts['field'] ) );
 		$format = preg_replace( '/[^a-z]/', '', strtolower( $shortcode_atts['format'] ) );
 
-		// generate output, depending on what information (field) was asked for
+		// Generate output, depending on what information (field) was asked for.
 		switch ( $field ) {
 			case 'name':
 			case 'description':
@@ -719,7 +728,8 @@ JS;
 						$modified_timestamp = strtotime( $table['last_modified'] );
 						$current_timestamp = current_time( 'timestamp' );
 						$time_diff = $current_timestamp - $modified_timestamp;
-						if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) { // time difference is only shown up to one day
+						// Time difference is only shown up to one day.
+						if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) {
 							$output = sprintf( __( '%s ago', 'tablepress' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 						} else {
 							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
@@ -781,41 +791,41 @@ JS;
 
 	/**
 	 * Handle Shortcodes in text widgets, by temporarily removing all Shortcodes, registering only the plugin's two,
-	 * running WP's Shortcode routines, and then restoring old behavior/Shortcodes
+	 * running WP's Shortcode routines, and then restoring old behavior/Shortcodes.
 	 *
 	 * @since 1.0.0
-	 * @uses $shortcode_tags global variable
 	 *
-	 * @param string $content Text content of the text widget, will be searched for one of TablePress's Shortcodes
-	 * @return string Text of the text widget, with eventually found Shortcodes having been replaced by corresponding output
+	 * @param string $content Text content of the text widget, will be searched for one of TablePress's Shortcodes.
+	 * @return string Text of the text widget, with eventually found Shortcodes having been replaced by corresponding output.
 	 */
 	public function widget_text_filter( $content ) {
 		global $shortcode_tags;
-		// backup the currently registered Shortcodes and clear the global array
+		// Backup the currently registered Shortcodes and clear the global array.
 		$orig_shortcode_tags = $shortcode_tags;
 		$shortcode_tags = array();
-		// register TablePress's Shortcodes (which are then the only ones registered)
+		// Register TablePress's Shortcodes (which are then the only ones registered).
 		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
 		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
-		// do the WP Shortcode routines on the widget text (i.e. search for TablePress's Shortcodes)
+		// Run the WP Shortcode routines on the widget text (i.e. search for TablePress's Shortcodes).
 		$content = do_shortcode( $content );
-		// restore the original Shortcodes (which includes TablePress's Shortcodes, for use in posts and pages)
+		// Restore the original Shortcodes (which includes TablePress's Shortcodes, for use in posts and pages).
 		$shortcode_tags = $orig_shortcode_tags;
 		return $content;
 	}
 
 	/**
-	 * Expand WP Search to also find posts and pages that have a search term in a table that is shown in them
+	 * Expand WP Search to also find posts and pages that have a search term in a table that is shown in them.
 	 *
 	 * This is done by looping through all search terms and TablePress tables and searching there for the search term,
 	 * saving all tables's IDs that have a search term and then expanding the WP query to search for posts or pages that have the
 	 * Shortcode for one of these tables in their content.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses $wpdb
 	 *
-	 * @param string $search_sql Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching
-	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them
+	 * @param string $search_sql Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching.
+	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them.
 	 */
 	public function posts_search_filter( $search_sql ) {
 		if ( ! is_search() || ! is_main_query() ) {
@@ -824,52 +834,62 @@ JS;
 
 		global $wpdb;
 
-		// Get variable that contains all search terms, parsed from $_GET['s'] by WP
+		// Get variable that contains all search terms, parsed from $_GET['s'] by WP.
 		$search_terms = get_query_var( 'search_terms' );
 		if ( empty( $search_terms ) || ! is_array( $search_terms ) ) {
 			return $search_sql;
 		}
 
-		$table_ids = TablePress::$model_table->load_all( true, false ); // Load all table IDs and prime post meta cache for cached access to options and visibility settings of the tables, don't run filter hook
-		$query_result = array(); // Array of all search words that were found, and the table IDs where they were found
+		// Load all table IDs and prime post meta cache for cached access to options and visibility settings of the tables, don't run filter hook.
+		$table_ids = TablePress::$model_table->load_all( true, false );
+		// Array of all search words that were found, and the table IDs where they were found.
+		$query_result = array();
 
 		foreach ( $table_ids as $table_id ) {
-			$table = TablePress::$model_table->load( $table_id, true, true ); // Load table, with table data, options, and visibility settings
+			// Load table, with table data, options, and visibility settings.
+			$table = TablePress::$model_table->load( $table_id, true, true );
 
 			if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
-				continue; // Do not search in corrupted tables
+				// Do not search in corrupted tables.
+				continue;
 			}
 
 			foreach ( $search_terms as $search_term ) {
 				if ( ( $table['options']['print_name'] && false !== stripos( $table['name'], $search_term ) )
 					|| ( $table['options']['print_description'] && false !== stripos( $table['description'], $search_term ) ) ) {
-					// Found the search term in the name or description (and they are shown)
-					$query_result[ $search_term ][] = $table_id; // Add table ID to result list
-					continue; // No need to continue searching this search term in this table
+					// Found the search term in the name or description (and they are shown).
+					$query_result[ $search_term ][] = $table_id; // Add table ID to result list.
+					// No need to continue searching this search term in this table.
+					continue;
 				}
 
-				// Search search term in visible table cells (without taking Shortcode parameters into account!)
+				// Search search term in visible table cells (without taking Shortcode parameters into account!).
 				foreach ( $table['data'] as $row_idx => $table_row ) {
 					if ( 0 === $table['visibility']['rows'][ $row_idx ] ) {
-						continue; // Row is hidden, so don't search in it
+						// Row is hidden, so don't search in it.
+						continue;
 					}
 					foreach ( $table_row as $col_idx => $table_cell ) {
 						if ( 0 === $table['visibility']['columns'][ $col_idx ] ) {
-							continue; // Column is hidden, so don't search in it
+							// Column is hidden, so don't search in it.
+							continue;
 						}
-						// @TODO: Cells are not evaluated here, so math formulas are searched
+						// @TODO: Cells are not evaluated here, so math formulas are searched.
 						if ( false !== stripos( $table_cell, $search_term ) ) {
-							// Found the  search term in the cell content
+							// Found the  search term in the cell content.
 							$query_result[ $search_term ][] = $table_id; // Add table ID to result list
-							continue 3; // No need to continue searching this search term in this table
+							// No need to continue searching this search term in this table.
+							continue 3;
 						}
 					}
 				}
 			}
 		}
 
-		// For all found table IDs for each search term, add additional OR statement to the SQL "WHERE" clause
-		$exact = get_query_var( 'exact' ); // If $_GET['exact'] is set, WordPress doesn't use % in SQL LIKE clauses
+		// For all found table IDs for each search term, add additional OR statement to the SQL "WHERE" clause.
+
+		// If $_GET['exact'] is set, WordPress doesn't use % in SQL LIKE clauses.
+		$exact = get_query_var( 'exact' );
 		$n = ( empty( $exact ) ) ? '%' : '';
 		foreach ( $query_result as $search_term => $table_ids ) {
 			$search_term = like_escape( esc_sql( $search_term ) );
