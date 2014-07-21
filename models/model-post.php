@@ -42,6 +42,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Register the Custom Post Type which the tables use.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses register_post_type()
 	 */
 	protected function _register_post_type() {
@@ -81,6 +82,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Insert a post with the correct Custom Post Type and default values in the the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_insert_post()
 	 *
 	 * @param array $post Post to insert.
@@ -132,6 +134,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Update an existing post with the correct Custom Post Type and default values in the the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_update_post()
 	 *
 	 * @param array $post Post.
@@ -183,6 +186,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Get a post from the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses get_post()
 	 *
 	 * @param int $post_id Post ID.
@@ -200,6 +204,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Delete a post (and all revisions) from the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_delete_post()
 	 *
 	 * @param int $post_id Post ID.
@@ -214,6 +219,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * (yet unused)
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_trash_post()
 	 *
 	 * @param int $post_id Post ID.
@@ -228,6 +234,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * (yet unused)
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_untrash_post()
 	 *
 	 * @param int $post_id Post ID.
@@ -240,8 +247,9 @@ class TablePress_Post_Model extends TablePress_Model {
 	/**
 	 * Load all posts with one query, to prime the cache.
 	 *
-	 * @see get_post()
 	 * @since 1.0.0
+	 *
+	 * @see get_post()
 	 *
 	 * @param array $all_post_ids      List of Post IDs.
 	 * @param bool  $update_meta_cache Optional. Whether to update the Post Meta Cache (for table options and visibility).
@@ -275,6 +283,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * (currently for debug only)
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_count_posts()
 	 *
 	 * @return int Number of posts.
@@ -287,6 +296,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Add a post meta field to a post.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses add_post_meta()
 	 *
 	 * @param int    $post_id ID of the post for which the field shall be added.
@@ -309,6 +319,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * If the field does not yet exist, it is added.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses update_post_meta()
 	 *
 	 * @param int    $post_id ID of the post for which the field shall be updated.
@@ -332,6 +343,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Get the value of a post meta field of a post.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses get_post_meta()
 	 *
 	 * @param int    $post_id ID of the post for which the field shall be retrieved.
@@ -347,6 +359,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * (yet unused)
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses delete_post_meta()
 	 *
 	 * @param int    $post_id ID of the post of which the field shall be deleted.

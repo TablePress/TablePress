@@ -246,7 +246,7 @@ class TablePress_List_View extends TablePress_View {
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
- * @see https://codex.wordpress.org/Class_Reference/WP_List_Table
+ * @link https://codex.wordpress.org/Class_Reference/WP_List_Table
  * @since 1.0.0
  * @uses WP_List_Table
  */

@@ -201,6 +201,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests.
 	 *
 	 * @since 1.0.0
+	 *
 	 * @uses wp_nonce_field()
 	 *
 	 * @param array $data Data for this screen
