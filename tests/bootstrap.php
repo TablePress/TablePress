@@ -40,7 +40,7 @@ class TablePress_TestCase extends WP_UnitTestCase {
 	/**
 	 * Unset variables from a faked HTTP POST request.
 	 *
- 	 * @param string $key Name of the POST variable.
+	 * @param string $key Name of the POST variable.
 	 */
 	function unset_post( $key ) {
 		unset( $_POST[ $key ], $_REQUEST[ $key ] );
