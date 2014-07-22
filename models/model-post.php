@@ -112,9 +112,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		/*
-		* Remove possible KSES filtering here, as it can destroy the JSON when messing with HTML.
-		* KSES filtering is done to table cells individually, when saving.
-		*/
+		 * Remove possible KSES filtering here, as it can destroy the JSON when messing with HTML.
+		 * KSES filtering is done to table cells individually, when saving.
+		 */
 		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
 		$post_id = wp_insert_post( $post, true );
@@ -164,9 +164,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		/*
-		* Remove possible KSES filtering here, as it can destroy the JSON when messing with HTML
-		* Saving is done to table cells individually, when saving
-		* */
+		 * Remove possible KSES filtering here, as it can destroy the JSON when messing with HTML
+		 * Saving is done to table cells individually, when saving
+		 */
 		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
 
 		$post_id = wp_update_post( $post, true );
