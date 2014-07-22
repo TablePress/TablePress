@@ -173,7 +173,7 @@ body.rtl {
 <p>
 <?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may insert a table into a post or page here.', 'tablepress' ); ?>
 </p><p>
-<?php printf( __( 'Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline ltr" value="' . esc_attr( '[' . TablePress::$shortcode . " id=<ID> /]" ) . '" readonly="readonly" />' ); ?>
+<?php printf( __( 'Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline ltr" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
 </p>
 <?php
 	if ( ! empty( $_GET['s'] ) ) {
@@ -490,7 +490,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		$total_items = count( $this->items );
 
 		// Slice items array to hold only items for the current page.
-		$this->items = array_slice( $this->items, ( ( $current_page-1 ) * $per_page ), $per_page );
+		$this->items = array_slice( $this->items, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
 		// Register pagination options and calculation results.
 		$this->set_pagination_args( array(

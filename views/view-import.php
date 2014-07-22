@@ -55,7 +55,7 @@ class TablePress_Import_View extends TablePress_View {
 			'error_import_data' => __( 'Error: The data for the import is invalid.', 'tablepress' ),
 			'error_wp_table_reloaded_nothing_selected' => __( 'Error: You did not select what to import from WP-Table Reloaded!', 'tablepress' ),
 			'error_wp_table_reloaded_not_installed' => __( 'Error: Existing WP-Table Reloaded tables were not found in the database.', 'tablepress' ),
-			'error_import_wp_table_reloaded'=> __( 'Error: The tables from WP-Table Reloaded could not be imported.', 'tablepress' ),
+			'error_import_wp_table_reloaded' => __( 'Error: The tables from WP-Table Reloaded could not be imported.', 'tablepress' ),
 			'error_wp_table_reloaded_dump_file' => __( 'Error: The WP-Table Reloaded Dump File could not be imported!', 'tablepress' ),
 		) );
 
