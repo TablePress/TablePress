@@ -3,7 +3,7 @@
  * CSSTidy CSS Data
  *
  * @package TablePress
- * @subpackage Libraries
+ * @subpackage CSS
  * @author Florian Schmitz, Brett Zamir, Nikolay Matsievsky, Cedric Morin, Christopher Finke, Mark Scherer, Tobias Bäthge
  * @since 1.0.0
  */
@@ -42,7 +42,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * @global array $data['csstidy']['whitespace']
  * @version 1.0
  */
-$data['csstidy']['whitespace'] = array(' ',"\n","\t","\r","\x0B");
+$data['csstidy']['whitespace'] = array( ' ', "\n", "\t", "\r", "\x0B" );
 
 /**
  * All CSS tokens used by csstidy
@@ -59,7 +59,7 @@ $data['csstidy']['tokens'] = '/@}{;:=\'"(,\\!$%&)*+.<>?[]^`|~';
  * @global array $data['csstidy']['units']
  * @version 1.0
  */
-$data['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','turn','ms','s','khz','hz','ch','vmin','vmax','dpi','dpcm','dppx');
+$data['csstidy']['units'] = array( 'in', 'cm', 'mm', 'pt', 'pc', 'px', 'rem', 'em', '%', 'ex', 'gd', 'vw', 'vh', 'vm', 'deg', 'grad', 'rad', 'turn', 'ms', 's', 'khz', 'hz', 'ch', 'vmin', 'vmax', 'dpi', 'dpcm', 'dppx' );
 
 /**
  * Available at-rules
@@ -68,12 +68,12 @@ $data['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','
  * @version 1.1
  */
 $data['csstidy']['at_rules'] = array(
-	'page' => 'is','font-face' => 'atis','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at','keyframes' => 'at',
-	'-moz-keyframes' => 'at','-o-keyframes' => 'at','-webkit-keyframes' => 'at','-ms-keyframes' => 'at',
-	'viewport' => 'at','-webkit-viewport' => 'at','-moz-viewport' => 'at','-ms-viewport' => 'at'
+	'page' => 'is', 'font-face' => 'atis', 'charset' => 'iv', 'import' => 'iv', 'namespace' => 'iv', 'media' => 'at', 'keyframes' => 'at',
+	'-moz-keyframes' => 'at', '-o-keyframes' => 'at', '-webkit-keyframes' => 'at', '-ms-keyframes' => 'at',
+	'viewport' => 'at', '-webkit-viewport' => 'at', '-moz-viewport' => 'at', '-ms-viewport' => 'at'
 );
 
- /**
+/**
  * Properties that need a value with unit
  *
  * @todo CSS3 properties
@@ -287,11 +287,11 @@ $data['csstidy']['replace_colors']['yellowgreen'] = '#9acd32';
  * @version 1.0
  */
 $data['csstidy']['shorthands'] = array();
-$data['csstidy']['shorthands']['border-color'] = array('border-top-color','border-right-color','border-bottom-color','border-left-color');
-$data['csstidy']['shorthands']['border-style'] = array('border-top-style','border-right-style','border-bottom-style','border-left-style');
-$data['csstidy']['shorthands']['border-width'] = array('border-top-width','border-right-width','border-bottom-width','border-left-width');
-$data['csstidy']['shorthands']['margin'] = array('margin-top','margin-right','margin-bottom','margin-left');
-$data['csstidy']['shorthands']['padding'] = array('padding-top','padding-right','padding-bottom','padding-left');
+$data['csstidy']['shorthands']['border-color'] = array( 'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color' );
+$data['csstidy']['shorthands']['border-style'] = array( 'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style' );
+$data['csstidy']['shorthands']['border-width'] = array( 'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width' );
+$data['csstidy']['shorthands']['margin'] = array( 'margin-top', 'margin-right', 'margin-bottom', 'margin-left' );
+$data['csstidy']['shorthands']['padding'] = array( 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' );
 $data['csstidy']['shorthands']['-moz-border-radius'] = 0;
 
 /**
@@ -587,7 +587,7 @@ $data['csstidy']['all_properties']['z-index'] = 'CSS2.0,CSS2.1,CSS3.0';
  *
  * @global array $data['csstidy']['quoted_string_properties']
  */
-$data['csstidy']['quoted_string_properties'] = array('content', 'font', 'font-family', 'quotes');
+$data['csstidy']['quoted_string_properties'] = array( 'content', 'font', 'font-family', 'quotes' );
 
 /**
  * An array containing all properties that can be defined multiple times without being overwritten.

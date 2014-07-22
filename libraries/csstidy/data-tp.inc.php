@@ -3,7 +3,7 @@
  * CSSTidy CSS Data, special data for TablePress
  *
  * @package TablePress
- * @subpackage Libraries
+ * @subpackage CSS
  * @author Florian Schmitz, Brett Zamir, Nikolay Matsievsky, Cedric Morin, Christopher Finke, Mark Scherer, Tobias Bäthge
  * @since 1.0.0
  */
@@ -47,7 +47,7 @@ foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
 }
 
 foreach ( $data['csstidy']['multiple_properties'] as $property ) {
-	if ( '-' != $property[0] ) {
+	if ( '-' !== $property[0] ) {
 		$data['csstidy']['multiple_properties'][] = '-o-' . $property;
 		$data['csstidy']['multiple_properties'][] = '-ms-' . $property;
 		$data['csstidy']['multiple_properties'][] = '-webkit-' . $property;
