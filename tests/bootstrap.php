@@ -29,7 +29,7 @@ class TablePress_TestCase extends WP_UnitTestCase {
 	 * @param string $key   Name of the POST variable.
 	 * @param string $value Value of the POST variable.
 	 */
-	function set_post( $key, $value ) {
+	public function set_post( $key, $value ) {
 		// Add slashing as expected by the PHP setting.
 		if ( get_magic_quotes_gpc() ) {
 			$value = addslashes( $value );
@@ -42,7 +42,8 @@ class TablePress_TestCase extends WP_UnitTestCase {
 	 *
 	 * @param string $key Name of the POST variable.
 	 */
-	function unset_post( $key ) {
+	public function unset_post( $key ) {
 		unset( $_POST[ $key ], $_REQUEST[ $key ] );
 	}
+
 }

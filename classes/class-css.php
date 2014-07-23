@@ -30,7 +30,7 @@ class TablePress_CSS {
 	 * @param string $css CSS code.
 	 * @return string Sanitized and tidied CSS code.
 	 */
-	function sanitize_css( $css ) {
+	public function sanitize_css( $css ) {
 		$csstidy = TablePress::load_class( 'csstidy', 'class.csstidy.php', 'libraries/csstidy' );
 
 		// Sanitization and not just tidying for users without enough privileges.
@@ -78,7 +78,7 @@ class TablePress_CSS {
 	 * @param string $css CSS code.
 	 * @return string Minified CSS code.
 	 */
-	function minify_css( $css ) {
+	public function minify_css( $css ) {
 		$csstidy = TablePress::load_class( 'csstidy', 'class.csstidy.php', 'libraries/csstidy' );
 		$csstidy->optimise = new csstidy_custom_sanitize( $csstidy );
 		$csstidy->set_cfg( 'remove_bslash', false );
