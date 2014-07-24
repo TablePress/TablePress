@@ -39,7 +39,7 @@ class TablePress_Export_View extends TablePress_View {
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
-		if ( 0 == $data['tables_count'] ) {
+		if ( 0 === $data['tables_count'] ) {
 			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_no_tables' ), 'normal' );
 		} else {
 			$this->admin_page->enqueue_script( 'export', array( 'jquery' ) );
@@ -127,7 +127,7 @@ class TablePress_Export_View extends TablePress_View {
 					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) ) {
 						continue;
 					}
-					if ( '' == trim( $table['name'] ) ) {
+					if ( '' === trim( $table['name'] ) ) {
 						$table['name'] = __( '(no name)', 'tablepress' );
 					}
 					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );

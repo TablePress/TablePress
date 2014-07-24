@@ -96,7 +96,7 @@ abstract class TablePress_Controller {
 				TablePress::$model_options->add_access_capabilities();
 			}
 
-			if ( 0 == TablePress::$model_options->get( 'first_activation' ) ) {
+			if ( 0 === TablePress::$model_options->get( 'first_activation' ) ) {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation.
 				TablePress::$model_options->update( array(
 					'first_activation' => current_time( 'timestamp' ),

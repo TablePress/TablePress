@@ -92,7 +92,7 @@ abstract class TablePress_View {
 	 */
 	public function __construct() {
 		$screen = get_current_screen();
-		if ( 0 != $this->screen_columns ) {
+		if ( 0 !== $this->screen_columns ) {
 			$screen->add_option( 'layout_columns', array( 'max' => $this->screen_columns ) );
 		}
 		// Enable two column layout.
@@ -192,7 +192,7 @@ abstract class TablePress_View {
 	 */
 	protected function process_action_messages( array $action_messages ) {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
-			$class = ( 'error' == substr( $this->data['message'], 0, 5 ) ) ? 'error' : 'updated';
+			$class = ( 'error' === substr( $this->data['message'], 0, 5 ) ) ? 'error' : 'updated';
 			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>", $class );
 		}
 	}
@@ -340,14 +340,14 @@ abstract class TablePress_View {
 				echo $message;
 			}
 			// "Import" screen has file upload.
-			$enctype = ( 'import' == $this->action ) ? ' enctype="multipart/form-data"' : '';
+			$enctype = ( 'import' === $this->action ) ? ' enctype="multipart/form-data"' : '';
 		?>
 		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?>>
 			<?php
 			$this->do_text_boxes( 'header' );
 			?>
 			<div id="poststuff">
-				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
+				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
 					<div id="postbox-container-2" class="postbox-container">
 						<?php
 						$this->do_text_boxes( 'normal' );
@@ -387,11 +387,11 @@ abstract class TablePress_View {
 			echo __( 'TablePress', 'tablepress' ) . '<span class="separator"></span>';
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
 				// Special case: Add a separator before the group that starts with "Plugin Options", for some spacing.
-				if ( 'options' == $action ) {
+				if ( 'options' === $action ) {
 					echo '<span class="separator"></span><span class="separator"></span>';
 				}
 
-				if ( '' == $entry['nav_tab_title'] ) {
+				if ( '' === $entry['nav_tab_title'] ) {
 					continue;
 				}
 				if ( ! current_user_can( $entry['required_cap'] ) ) {
@@ -399,7 +399,7 @@ abstract class TablePress_View {
 				}
 
 				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
-				$active = ( $action == $this->action ) ? ' nav-tab-active' : '';
+				$active = ( $action === $this->action ) ? ' nav-tab-active' : '';
 				echo "<a class=\"nav-tab{$active}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
 			}
 			?>

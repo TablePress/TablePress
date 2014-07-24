@@ -325,7 +325,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell.
 	 */
 	protected function column_table_name( array $item ) {
-		if ( '' == trim( $item['name'] ) ) {
+		if ( '' === trim( $item['name'] ) ) {
 			$item['name'] = __( '(no name)', 'tablepress' );
 		}
 		return esc_html( $item['name'] );
@@ -340,7 +340,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell.
 	 */
 	protected function column_table_description( array $item ) {
-		if ( '' == trim( $item['description'] ) ) {
+		if ( '' === trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
 		}
 		return esc_html( $item['description'] );
@@ -444,14 +444,14 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	protected function _order_callback( array $item_a, array $item_b ) {
 		global $orderby, $order;
 
-		if ( $item_a[ $orderby ] == $item_b[ $orderby ] ) {
+		if ( $item_a[ $orderby ] === $item_b[ $orderby ] ) {
 			return 0;
 		}
 
 		// Fields in this list table are all strings.
 		$result = strnatcasecmp( $item_a[ $orderby ], $item_b[ $orderby ] );
 
-		return ( 'asc' == $order ) ? $result : - $result;
+		return ( 'asc' === $order ) ? $result : - $result;
 	}
 
 	/**

@@ -82,7 +82,7 @@ class TablePress_Export {
 		switch ( $export_format ) {
 			case 'csv':
 				$output = '';
-				if ( 'tab' == $csv_delimiter ) {
+				if ( 'tab' === $csv_delimiter ) {
 					$csv_delimiter = "\t";
 				}
 				foreach ( $table['data'] as $row_idx => $row ) {
@@ -98,18 +98,18 @@ class TablePress_Export {
 				$output = "<table>\n";
 				$last_row_idx = count( $table['data'] ) - 1;
 				// Tables with just one row don't get thead or tfoot.
-				if ( 0 == $last_row_idx ) {
+				if ( 0 === $last_row_idx ) {
 					$table['options']['table_head'] = false;
 					$table['options']['table_foot'] = false;
 				}
 				foreach ( $table['data'] as $row_idx => $row ) {
-					if ( 0 == $row_idx ) {
+					if ( 0 === $row_idx ) {
 						if ( $table['options']['table_head'] ) {
 							$output .= "\t<thead>\n";
 						} else {
 							$output .= "\t<tbody>\n";
 						}
-					} elseif ( $last_row_idx == $row_idx ) {
+					} elseif ( $last_row_idx === $row_idx ) {
 						if ( $table['options']['table_foot'] ) {
 							$output .= "\t</tbody>\n\t<tfoot>\n";
 						}
@@ -118,13 +118,13 @@ class TablePress_Export {
 					$row = array_map( array( $this, 'html_wrap_and_escape' ), $row );
 					$output .= implode( '', $row );
 					$output .= "\t\t</tr>\n";
-					if ( $last_row_idx == $row_idx ) {
+					if ( $last_row_idx === $row_idx ) {
 						if ( $table['options']['table_foot'] ) {
 							$output .= "\t</tfoot>\n";
 						} else {
 							$output .= "\t</tbody>\n";
 						}
-					} elseif ( 0 == $row_idx ) {
+					} elseif ( 0 === $row_idx ) {
 						if ( $table['options']['table_head'] ) {
 							$output .= "\t</thead>\n\t<tbody>\n";
 						}
@@ -154,7 +154,7 @@ class TablePress_Export {
 	protected function csv_wrap_and_escape( $string, $delimiter ) {
 		// Escape CSV delimiter for RegExp (e.g. '|').
 		$delimiter = preg_quote( $delimiter, '#' );
-		if ( preg_match( '#' . $delimiter . '|"|\n|\r#i', $string ) || ' ' == substr( $string, 0, 1 ) || ' ' == substr( $string, -1 ) ) {
+		if ( preg_match( '#' . $delimiter . '|"|\n|\r#i', $string ) || ' ' === substr( $string, 0, 1 ) || ' ' === substr( $string, -1 ) ) {
 			// Escape single " as double "".
 			$string = str_replace( '"', '""', $string );
 			// Wrap string in "".

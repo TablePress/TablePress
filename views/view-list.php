@@ -143,7 +143,7 @@ class TablePress_List_View extends TablePress_View {
 			// $this->do_text_boxes( 'header' );
 		?>
 			<div id="poststuff">
-				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
+				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
 					<div id="postbox-container-2" class="postbox-container">
 						<?php
 						$this->do_text_boxes( 'normal' );
@@ -407,7 +407,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$delete_url = TablePress::url( array( 'action' => 'delete_table', 'item' => $item['id'], 'return' => 'list', 'return_item' => $item['id'] ), true, 'admin-post.php' );
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $item['id'], 'return' => 'list', 'return_item' => $item['id'] ), true, 'admin-post.php' );
 
-		if ( '' == trim( $item['name'] ) ) {
+		if ( '' === trim( $item['name'] ) ) {
 			$item['name'] = __( '(no name)', 'tablepress' );
 		}
 
@@ -447,7 +447,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell.
 	 */
 	protected function column_table_description( array $item ) {
-		if ( '' == trim( $item['description'] ) ) {
+		if ( '' === trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
 		}
 		return esc_html( $item['description'] );
@@ -625,7 +625,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		static $debug;
 		if ( is_null( $debug ) ) {
 			// Set debug variable to allow searching in corrupted tables.
-			$debug = isset( $_GET['debug'] ) ? ( 'true' == $_GET['debug'] ) : WP_DEBUG;
+			$debug = isset( $_GET['debug'] ) ? ( 'true' === $_GET['debug'] ) : WP_DEBUG;
 		}
 
 		// load table again, with data and options (for last_editor).
@@ -662,12 +662,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	protected function _order_callback( array $item_a, array $item_b ) {
 		global $orderby, $order;
 
-		if ( 'last_modified_by' != $orderby ) {
-			if ( $item_a[ $orderby ] == $item_b[ $orderby ] ) {
+		if ( 'last_modified_by' !== $orderby ) {
+			if ( $item_a[ $orderby ] === $item_b[ $orderby ] ) {
 				return 0;
 			}
 		} else {
-			if ( $item_a['options']['last_editor'] == $item_b['options']['last_editor'] ) {
+			if ( $item_a['options']['last_editor'] === $item_b['options']['last_editor'] ) {
 				return 0;
 			}
 		}
@@ -691,7 +691,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 				$result = strnatcasecmp( $item_a[ $orderby ], $item_b[ $orderby ] );
 		}
 
-		return ( 'asc' == $order ) ? $result : - $result;
+		return ( 'asc' === $order ) ? $result : - $result;
 	}
 
 	/**

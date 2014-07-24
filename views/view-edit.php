@@ -57,7 +57,7 @@ class TablePress_Edit_View extends TablePress_View {
 		);
 		// Custom handling instead of $this->process_action_messages(). Also, $action_messages is used below.
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {
-			$class = ( 'error' == substr( $data['message'], 0, 5 ) || in_array( $data['message'], array( 'success_save_error_id_change' ), true ) ) ? 'error' : 'updated' ;
+			$class = ( 'error' === substr( $data['message'], 0, 5 ) || in_array( $data['message'], array( 'success_save_error_id_change' ), true ) ) ? 'error' : 'updated' ;
 			$this->add_header_message( "<strong>{$action_messages[ $data['message'] ]}</strong>", $class );
 		}
 
@@ -98,7 +98,7 @@ class TablePress_Edit_View extends TablePress_View {
 				 *
 				 * @param bool $print Whether debug output shall be printed.
 				 */
-				'print_debug_output' => apply_filters( 'tablepress_print_debug_output', isset( $_GET['debug'] ) ? ( 'true' == $_GET['debug'] ) : WP_DEBUG ),
+				'print_debug_output' => apply_filters( 'tablepress_print_debug_output', isset( $_GET['debug'] ) ? ( 'true' === $_GET['debug'] ) : WP_DEBUG ),
 				/**
 				 * Filter whether the "Advanced Editor" button shall be enabled.
 				 *
@@ -326,12 +326,12 @@ class TablePress_Edit_View extends TablePress_View {
 	foreach ( $table as $row_idx => $row_data ) {
 		$row = $row_idx + 1;
 		$classes = array();
-		if ( $row_idx % 2 == 0 ) {
+		if ( 0 === ( $row_idx % 2 ) ) {
 			$classes[] = 'odd';
 		}
-		if ( $head_row_idx == $row_idx ) {
+		if ( $head_row_idx === $row_idx ) {
 			$classes[] = 'head-row';
-		} elseif ( $foot_row_idx == $row_idx ) {
+		} elseif ( $foot_row_idx === $row_idx ) {
 			$classes[] = 'foot-row';
 		}
 		if ( 0 === $visibility['rows'][ $row_idx ] ) {

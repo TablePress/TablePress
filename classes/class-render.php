@@ -176,7 +176,7 @@ class TablePress_Render {
 				}
 
 				// Add all rows/columns to array if "all" value set for one of the four parameters.
-				if ( 'all' == $this->render_options["{$action}_{$element}"] ) {
+				if ( 'all' === $this->render_options["{$action}_{$element}"] ) {
 					$this->render_options["{$action}_{$element}"] = range( 0, ${'num_' . $element} - 1 );
 					continue;
 				}
@@ -292,7 +292,7 @@ class TablePress_Render {
 	 * @return string Result of the parsing/evaluation.
 	 */
 	protected function _evaluate_cell( $content, array $parents = array() ) {
-		if ( '' == $content || '=' == $content || '=' != $content[0] ) {
+		if ( '' === $content || '=' === $content || '=' !== $content[0] ) {
 			return $content;
 		}
 
@@ -387,7 +387,7 @@ class TablePress_Render {
 					// Remove all whitespace characters.
 					$result = preg_replace( '#[\r\n\t ]#', '', $result );
 					// Treat empty cells as 0.
-					if ( '' == $result ) {
+					if ( '' === $result ) {
 						$result = 0;
 					}
 					// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated).
@@ -508,10 +508,10 @@ class TablePress_Render {
 			$print_description_html = "<{$print_description_html_tag} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
 		}
 
-		if ( $this->render_options['print_name'] && 'above' == $this->render_options['print_name_position'] ) {
+		if ( $this->render_options['print_name'] && 'above' === $this->render_options['print_name_position'] ) {
 			$output .= $print_name_html;
 		}
-		if ( $this->render_options['print_description'] && 'above' == $this->render_options['print_description_position'] ) {
+		if ( $this->render_options['print_description'] && 'above' === $this->render_options['print_description_position'] ) {
 			$output .= $print_description_html;
 		}
 
@@ -529,12 +529,12 @@ class TablePress_Render {
 		// Loop through rows in reversed order, to search for rowspan trigger keyword.
 		for ( $row_idx = $this->last_row_idx; $row_idx >= 0; $row_idx-- ) {
 			// Last row, need to check for footer (but only if at least two rows).
-			if ( $this->last_row_idx == $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
+			if ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
 				$tfoot = $this->_render_row( $row_idx, 'th' );
 				continue;
 			}
 			// First row, need to check for head (but only if at least two rows).
-			if ( 0 == $row_idx && $this->render_options['table_head'] && $num_rows > 1 ) {
+			if ( 0 === $row_idx && $this->render_options['table_head'] && $num_rows > 1 ) {
 				$thead = $this->_render_row( $row_idx, 'th' );
 				continue;
 			}
@@ -695,10 +695,10 @@ class TablePress_Render {
 		$output .= "</table>\n";
 
 		// name/description below table (HTML already generated above).
-		if ( $this->render_options['print_name'] && 'below' == $this->render_options['print_name_position'] ) {
+		if ( $this->render_options['print_name'] && 'below' === $this->render_options['print_name_position'] ) {
 			$output .= $print_name_html;
 		}
-		if ( $this->render_options['print_description'] && 'below' == $this->render_options['print_description_position'] ) {
+		if ( $this->render_options['print_description'] && 'below' === $this->render_options['print_description_position'] ) {
 			$output .= $print_description_html;
 		}
 
@@ -730,7 +730,7 @@ class TablePress_Render {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
 			// Print formulas that are escaped with '= (like in Excel) as text.
-			if ( "'=" == substr( $cell_content, 0, 2 ) ) {
+			if ( "'=" === substr( $cell_content, 0, 2 ) ) {
 				$cell_content = substr( $cell_content, 1 );
 			}
 			$cell_content = do_shortcode( $this->safe_output( $cell_content ) );
@@ -748,11 +748,11 @@ class TablePress_Render {
 			 */
 			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 
-			if ( $this->span_trigger['rowspan'] == $cell_content ) { // There will be a rowspan.
+			if ( $this->span_trigger['rowspan'] === $cell_content ) { // There will be a rowspan.
 				// Check for #rowspan# in first row, which doesn't make sense.
 				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx )
-				|| ( 1 == $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
-				|| ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) ) { // No rowspan out of table foot.
+				|| ( 1 === $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
+				|| ( $this->last_row_idx === $row_idx && ! $this->render_options['table_foot'] ) ) { // No rowspan out of table foot.
 					// Increase counter for rowspan in this column.
 					$this->rowspan[ $col_idx ]++;
 					// Reset counter for colspan in this row, combined col- and rowspan might be happening.
@@ -761,10 +761,10 @@ class TablePress_Render {
 				}
 				// Invalid rowspan, so we set cell content from #rowspan# to empty.
 				$cell_content = '';
-			} elseif ( $this->span_trigger['colspan'] == $cell_content ) { // There will be a colspan.
+			} elseif ( $this->span_trigger['colspan'] === $cell_content ) { // There will be a colspan.
 				// Check for #colspan# in first column, which doesn't make sense.
 				if ( $col_idx > 1
-				|| ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) { // No colspan into first column head.
+				|| ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) { // No colspan into first column head.
 					// Increase counter for colspan in this row.
 					$this->colspan[ $row_idx ]++;
 					// Reset counter for rowspan in this column, combined col- and rowspan might be happening.
@@ -773,23 +773,23 @@ class TablePress_Render {
 				}
 				// Invalid colspan, so we set cell content from #colspan# to empty.
 				$cell_content = '';
-			} elseif ( $this->span_trigger['span'] == $cell_content ) { // There will be a combined col- and rowspan.
+			} elseif ( $this->span_trigger['span'] === $cell_content ) { // There will be a combined col- and rowspan.
 				// Check for #span# in first column or first or last row, which is not always possible.
 				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx && $col_idx > 1 )
 				// We are in first, second, or last row or in the first or second column, so more checks are necessary.
-				|| ( ( 1 == $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
-					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) // And no colspan into first column head.
-				|| ( ( $this->last_row_idx == $row_idx && ! $this->render_options['table_foot'] ) // No rowspan out of table foot.
-					&& ( $col_idx > 1 || ( 1 == $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // And no colspan into first column head.
+				|| ( ( 1 === $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
+					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) // And no colspan into first column head.
+				|| ( ( $this->last_row_idx === $row_idx && ! $this->render_options['table_foot'] ) // No rowspan out of table foot.
+					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // And no colspan into first column head.
 					continue;
 				// Invalid span, so we set cell content from #span# to empty.
 				$cell_content = '';
-			} elseif ( '' == $cell_content && 0 == $row_idx && $this->render_options['table_head'] ) {
+			} elseif ( '' === $cell_content && 0 === $row_idx && $this->render_options['table_head'] ) {
 				// Make empty cells have a space in the table head, to give sorting arrows the correct position in IE9.
 				$cell_content = '&nbsp;';
 			}
 
-			if ( 0 == $row_idx && $this->render_options['table_head'] ) {
+			if ( 0 === $row_idx && $this->render_options['table_head'] ) {
 				$cell_content = '<div>' . $cell_content . '</div>';
 			}
 
@@ -825,7 +825,7 @@ class TablePress_Render {
 			}
 
 			// "style" attribute.
-			if ( ( 0 == $row_idx ) && ! empty( $this->render_options['column_widths'][ $col_idx ] ) ) {
+			if ( ( 0 === $row_idx ) && ! empty( $this->render_options['column_widths'][ $col_idx ] ) ) {
 				$tag_attributes['style'] = 'width:' . preg_replace( '#[^0-9a-z.%]#', '', $this->render_options['column_widths'][ $col_idx ] ) . ';';
 			}
 
@@ -845,7 +845,7 @@ class TablePress_Render {
 			$tag_attributes = apply_filters( 'tablepress_cell_tag_attributes', $tag_attributes, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
 			$tag_attributes = $this->_attributes_array_to_string( $tag_attributes );
 
-			if ( $this->render_options['first_column_th'] && 0 == $col_idx ) {
+			if ( $this->render_options['first_column_th'] && 0 === $col_idx ) {
 				$tag = 'th';
 			}
 
@@ -860,7 +860,7 @@ class TablePress_Render {
 		// "class" attribute.
 		$row_classes = 'row-' . ( $row_idx + 1 ) ;
 		if ( $this->render_options['alternating_row_colors'] ) {
-			$row_classes .= ( 1 == ( $row_idx % 2 ) ) ? ' even' : ' odd';
+			$row_classes .= ( 1 === ( $row_idx % 2 ) ) ? ' even' : ' odd';
 		}
 		/**
 		 * Filter the CSS classes that are given to a row (HTML tr element) of a table.

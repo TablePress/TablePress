@@ -420,7 +420,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		// Adjust name of copied table.
-		if ( '' == trim( $table['name'] ) ) {
+		if ( '' === trim( $table['name'] ) ) {
 			$table['name'] = __( '(no name)', 'tablepress' );
 		}
 		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );

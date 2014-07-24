@@ -101,7 +101,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		/** This filter is documented in controllers/controller-frontend.php */
 		$use_default_css = apply_filters( 'tablepress_use_default_css', true );
 		$custom_css = TablePress::$model_options->get( 'custom_css' );
-		$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' != $custom_css );
+		$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );
 		$use_custom_css_file = ( $use_custom_css && TablePress::$model_options->get( 'use_custom_css_file' ) );
 		/**
 		 * Filter the "Custom CSS" version number that is appended to the enqueued CSS files
@@ -128,7 +128,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 */
 		$default_css_url = apply_filters( 'tablepress_default_css_url', $unfiltered_default_css_url );
 
-		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $unfiltered_default_css_url == $default_css_url && $tablepress_css->load_custom_css_from_file( 'combined' ) );
+		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $unfiltered_default_css_url === $default_css_url && $tablepress_css->load_custom_css_from_file( 'combined' ) );
 
 		if ( $use_custom_css_combined_file ) {
 			$custom_css_combined_url = $tablepress_css->get_custom_css_location( 'combined', 'url' );
@@ -275,8 +275,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					 */
 					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH ); // Make sure to check file_exists( $new_file ) when using this filter!
 					// Load translation if it's not "en_US" (included as the default in DataTables) and the language file exists, or if the filter was used to change the language file.
-					if ( ( 'en_US' != $datatables_locale && file_exists( $language_file ) )
-						|| ( $orig_language_file != $language_file ) ) {
+					if ( ( 'en_US' !== $datatables_locale && file_exists( $language_file ) )
+						|| ( $orig_language_file !== $language_file ) ) {
 						$datatables_languages[ $datatables_locale ] = $language_file;
 					}
 				}
@@ -306,7 +306,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					} else {
 						$parameters['bLengthChange'] = '"bLengthChange":false';
 					}
-					if ( 10 != $js_options['datatables_paginate_entries'] ) {
+					if ( 10 !== $js_options['datatables_paginate_entries'] ) {
 						$parameters['iDisplayLength'] = '"iDisplayLength":'. $js_options['datatables_paginate_entries'];
 					}
 				} else {
@@ -505,9 +505,9 @@ JS;
 		$render_options = array();
 		foreach ( $shortcode_atts as $key => $value ) {
 			// We have to check this, because strings 'true' or 'false' are not recognized as boolean!
-			if ( 'true' == strtolower( $value ) ) {
+			if ( 'true' === strtolower( $value ) ) {
 				$render_options[ $key ] = true;
-			} elseif ( 'false' == strtolower( $value ) ) {
+			} elseif ( 'false' === strtolower( $value ) ) {
 				$render_options[ $key ] = false;
 			} elseif ( is_null( $value ) && isset( $table['options'][ $key ] ) ) {
 				$render_options[ $key ] = $table['options'][ $key ];
@@ -601,7 +601,7 @@ JS;
 			$table_hash = md5( json_encode( $render_options ) );
 			$transient_name = 'tablepress_' . $table_hash; // Attention: This string must not be longer than 45 characters!
 			$output = get_transient( $transient_name );
-			if ( false === $output || '' == $output ) {
+			if ( false === $output || '' === $output ) {
 				// Render/generate the table HTML, as it was not found in the cache.
 				$_render->set_input( $table, $render_options );
 				$output = $_render->get_output();
@@ -749,7 +749,7 @@ JS;
 				break;
 			case 'number_rows':
 				$output = count( $table['data'] );
-				if ( 'raw' != $format ) {
+				if ( 'raw' !== $format ) {
 					if ( $table['options']['table_head'] ) {
 						$output = $output - 1;
 					}

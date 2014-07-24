@@ -154,7 +154,7 @@ class TablePress_Import {
 		 * ? means non-gready (shortest possible),
 		 * is at the end: i: case-insensitive, s: include newline (in .)
 		 */
-		if ( 1 == preg_match( '#<table.*?>.*?</table>#is', $this->import_data, $matches ) ) {
+		if ( 1 === preg_match( '#<table.*?>.*?</table>#is', $this->import_data, $matches ) ) {
 			$temp_data = $matches[0]; // if found, take match as table to import
 		} else {
 			$this->imported_table = false;
@@ -351,7 +351,7 @@ class TablePress_Import {
 		// Transform colspan/rowspan properties to TablePress equivalent (cell content).
 		foreach ( $table as $row_idx => $row ) {
 			foreach ( $row as $col_idx => $cell ) {
-				if ( 1 == $cell['rowspan'] && 1 == $cell['colspan'] ) {
+				if ( 1 === $cell['rowspan'] && 1 === $cell['colspan'] ) {
 					continue;
 				}
 
@@ -464,7 +464,7 @@ class TablePress_Import {
 		// Detect the character encoding and convert to UTF-8, if it's different.
 		if ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) {
 			$current_encoding = mb_detect_encoding( $this->import_data, 'ASCII, UTF-8, ISO-8859-1' );
-			if ( 'UTF-8' != $current_encoding ) {
+			if ( 'UTF-8' !== $current_encoding ) {
 				$this->import_data = @iconv( $current_encoding, 'UTF-8', $this->import_data );
 			}
 		}

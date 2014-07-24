@@ -328,9 +328,9 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	public function update_meta_field( $post_id, $field, $value ) {
-		$prev_value = get_post_meta( $post_id, $field, true );
+		$prev_value = (string) get_post_meta( $post_id, $field, true );
 		// No need to update, if values are equal (also, update_post_meta() would return false for this).
-		if ( $prev_value == $value ) {
+		if ( $prev_value === $value ) {
 			return true;
 		}
 

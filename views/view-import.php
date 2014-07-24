@@ -74,7 +74,7 @@ class TablePress_Import_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function hide_import_wptr_postbox( $hidden, $screen ) {
-		if ( 'tablepress_import' != $screen->id ) {
+		if ( 'tablepress_import' !== $screen->id ) {
 			return $hidden;
 		}
 		if ( ! $this->data['wp_table_reloaded_installed'] ) {
@@ -207,7 +207,7 @@ class TablePress_Import_View extends TablePress_View {
 					if ( ! current_user_can( 'tablepress_edit_table', $table['id'] ) ) {
 						continue;
 					}
-					if ( '' == trim( $table['name'] ) ) {
+					if ( '' === trim( $table['name'] ) ) {
 						$table['name'] = __( '(no name)', 'tablepress' );
 					}
 					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );

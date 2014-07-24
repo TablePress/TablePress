@@ -67,7 +67,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 			$this->do_text_boxes( 'header' );
 		?>
 			<div id="poststuff">
-				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 == $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
+				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
 					<div id="postbox-container-2" class="postbox-container">
 						<?php
 						$this->do_text_boxes( 'normal' );

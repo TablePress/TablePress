@@ -348,7 +348,7 @@ abstract class TablePress {
 	 * @return string Nice looking string with the date and time.
 	 */
 	public static function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
-		if ( 'mysql' == $type ) {
+		if ( 'mysql' === $type ) {
 			return mysql2date( get_option( 'date_format' ), $datetime ) . $separator . mysql2date( get_option( 'time_format' ), $datetime );
 		} else {
 			return date_i18n( get_option( 'date_format' ), $datetime ) . $separator . date_i18n( get_option( 'time_format' ), $datetime );
@@ -374,7 +374,7 @@ abstract class TablePress {
 	 * @param array  $params    Optional. Parameters to form the query string of the URL.
 	 * @param bool   $add_nonce Optional. Whether the URL shall be nonced by WordPress.
 	 * @param string $target    Optional. Target File, e.g. "admin-post.php" for POST requests.
-	 * @return string The URL for the given parameters (already run through esc_url() with $add_nonce == true!).
+	 * @return string The URL for the given parameters (already run through esc_url() with $add_nonce === true!).
 	 */
 	public static function url( array $params = array(), $add_nonce = false, $target = '' ) {
 

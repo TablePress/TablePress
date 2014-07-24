@@ -349,7 +349,7 @@ class TablePress_CSS {
 				$total_result = false;
 				continue;
 			}
-			if ( '' != $path_difference ) {
+			if ( '' !== $path_difference ) {
 				$filename = str_replace( $path_difference, '', $filename );
 			}
 			$result = $wp_filesystem->put_contents( $filename, $file_content[ $css_type ], FS_CHMOD_FILE );
@@ -416,7 +416,7 @@ class TablePress_CSS {
 				$total_result = false;
 				continue;
 			}
-			if ( '' != $path_difference ) {
+			if ( '' !== $path_difference ) {
 				$filename = str_replace( $path_difference, '', $filename );
 			}
 			// We have valid access to the filesystem now -> try to delete the file.
