@@ -89,9 +89,9 @@ class SimpleXLSX {
 	 * [$error description]
 	 *
 	 * @since 1.1.0
-	 * @var bool
+	 * @var string
 	 */
-	protected $error = false;
+	protected $error = '';
 
 	/**
 	 * [$workbook_cell_formats description]
@@ -197,7 +197,7 @@ class SimpleXLSX {
 	 */
 	public function sheetName( $worksheet_id ) {
 		foreach ( $this->workbook->sheets->sheet as $s ) {
-			if ( $s->attributes( 'r', true )->id === 'rId' . $worksheet_id ) {
+			if ( 'rId' . $worksheet_id === $s->attributes( 'r', true )->id ) {
 				return (string) $s['name'];
 			}
 		}
@@ -290,23 +290,22 @@ class SimpleXLSX {
 		}
 
 		$rows = array();
-		$curR = 0;
+		$current_row = 0;
 
 		list( $cols, ) = $this->dimension( $worksheet_id );
 
 		foreach ( $ws->sheetData->row as $row ) {
-			//   echo 'row<br />';
 			foreach ( $row->c as $c ) {
-				list( $curC, ) = $this->_columnIndex( (string) $c['r'] );
-				$rows[ $curR ][ $curC ] = $this->value( $c );
+				list( $current_cell, ) = $this->_columnIndex( (string) $c['r'] );
+				$rows[ $current_row ][ $current_cell ] = $this->value( $c );
 			}
 			for ( $i = 0; $i < $cols; $i++ ) {
-				if ( ! isset( $rows[ $curR ][ $i ] ) ) {
-					$rows[ $curR ][ $i ] = '';
+				if ( ! isset( $rows[ $current_row ][ $i ] ) ) {
+					$rows[ $current_row ][ $i ] = '';
 				}
 			}
-			ksort( $rows[ $curR ] );
-			$curR++;
+			ksort( $rows[ $current_row ] );
+			$current_row++;
 		}
 		return $rows;
 	}
@@ -325,12 +324,12 @@ class SimpleXLSX {
 		}
 
 		$rows = array();
-		$curR = 0;
+		$current_row = 0;
 		list( $cols, ) = $this->dimension( $worksheet_id );
 
 		foreach ( $ws->sheetData->row as $row ) {
 			foreach ( $row->c as $c ) {
-				list( $curC, ) = $this->_columnIndex( (string) $c['r'] );
+				list( $current_cell, ) = $this->_columnIndex( (string) $c['r'] );
 				$t = (string) $c['t'];
 				$s = (int) $c['s'];
 				if ( $s > 0 && isset( $this->workbook_cell_formats[ $s ] ) ) {
@@ -342,7 +341,7 @@ class SimpleXLSX {
 					$format = '';
 				}
 
-				$rows[ $curR ][ $curC ] = array(
+				$rows[ $current_row ][ $current_cell ] = array(
 					'type' => $t,
 					'name' => (string) $c['r'],
 					'value' => $this->value( $c ),
@@ -352,15 +351,15 @@ class SimpleXLSX {
 				);
 			}
 			for ( $i = 0; $i < $cols; $i++ ) {
-				if ( ! isset( $rows[ $curR ][ $i ] ) ) {
+				if ( ! isset( $rows[ $current_row ][ $i ] ) ) {
 					for ( $c = '', $j = $i; $j >= 0; $j = intval( $j / 26 ) - 1 ) {
 						$c = chr( $j % 26 + 65 ) . $c;
 					}
 
-					$rows[ $curR ][ $i ] = array(
+					$rows[ $current_row ][ $i ] = array(
 						'type' => '',
-						// 'name' => chr( $i + 65 ) . ( $curR + 1 ),
-						'name' => $c . ( $curR + 1 ),
+						// 'name' => chr( $i + 65 ) . ( $current_row + 1 ),
+						'name' => $c . ( $current_row + 1 ),
 						'value' => '',
 						'href' => '',
 						'f' => '',
@@ -368,7 +367,7 @@ class SimpleXLSX {
 					);
 				}
 			}
-			ksort( $rows[ $curR ] );
+			ksort( $rows[ $current_row ] );
 			$curR++;
 		}
 		return $rows;
@@ -392,7 +391,7 @@ class SimpleXLSX {
 			$index = 0;
 
 			for ( $i = $colLen - 1; $i >= 0; $i-- ) {
-				$index += ( ord( $col{$i} ) - 64 ) * pow( 26, $colLen - $i - 1 );
+				$index += ( ord( $col[ $i ] ) - 64 ) * pow( 26, $colLen - $i - 1 );
 			}
 
 			return array( $index - 1, $row - 1 );
@@ -410,7 +409,7 @@ class SimpleXLSX {
 	 * @return mixed [description]
 	 */
 	protected function value( $cell ) {
-		// Determine data type
+		// Determine data type.
 		$dataType = (string) $cell['t'];
 
 		switch ( $dataType ) {
@@ -485,7 +484,7 @@ class SimpleXLSX {
 	 * @since 1.1.0
 	 *
 	 * @param [type] $filename [description]
-	 * @param bool $is_data Optional. [description]
+	 * @param bool   $is_data  Optional. [description]
 	 * @return [type] [description]
 	 */
 	protected function _unzip( $filename, $is_data = false ) {
@@ -500,24 +499,26 @@ class SimpleXLSX {
 				return false;
 			}
 
-			// Package information
+			// Package information.
 			$this->package['filename'] = $filename;
 			$this->package['mtime'] = filemtime( $filename );
 			$this->package['size'] = filesize( $filename );
 
-			// Read file
+			// Read file.
 			$oF = fopen( $filename, 'rb' );
 			$vZ = fread( $oF, $this->package['size'] );
 			fclose( $oF );
 		}
-		// Cut end of central directory
+
 		/*
+		// Cut end of central directory
 		$aE = explode( "\x50\x4b\x05\x06", $vZ );
 		if ( 1 === count( $aE ) ) {
 			$this->error( 'Unknown format' );
 			return false;
 		}
 		*/
+
 		if ( false === ( $pcd = strrpos( $vZ, "\x50\x4b\x05\x06" ) ) ) {
 			$this->error( 'Unknown format' );
 			return false;
@@ -569,11 +570,11 @@ class SimpleXLSX {
 				}
 			}
 
-			// Getting stored filename.
+			// Get stored filename.
 			$aI['N'] = substr( $vZ, 26, $nF );
 
+			// If it's a directory entry, it will be skipped.
 			if ( '/' === substr( $aI['N'], -1 ) ) {
-				// If it's a directory entry, it will be skipped.
 				continue;
 			}
 
@@ -740,7 +741,7 @@ class SimpleXLSX {
 	protected function unixstamp( $excelDateTime ) {
 		$d = floor( $excelDateTime ); // seconds since 1900
 		$t = $excelDateTime - $d;
-		return ( $d > 0 ) ? ( $d - 25569 ) * DAY_IN_SECONDS + $t * DAY_IN_SECONDS : $t * DAY_IN_SECONDS;
+		return ( $d > 0 ) ? ( $d - 25569 ) * DAY_IN_SECONDS + $t * DAY_IN_SECONDS : $t * DAY_IN_SECONDS; // 25569 days = 70 years?
 	}
 
 	/**
@@ -748,15 +749,13 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $set [description]
+	 * @param string $set Optional. [description]
 	 * @return [type] [description]
 	 */
 	public function error( $set = '' ) {
 		if ( '' !== $set ) {
 			$this->error = $set;
-			if ( $this->debug ) {
-				trigger_error( __CLASS__ . ': ' . $set, E_USER_WARNING );
-			}
+			// trigger_error( __CLASS__ . ': ' . $set, E_USER_WARNING );
 		} else {
 			return $this->error;
 		}
