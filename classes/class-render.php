@@ -315,7 +315,7 @@ class TablePress_Render {
 			$replaced_references = $replaced_ranges = array();
 
 			// Remove all whitespace characters.
-			$expression = preg_replace( '#[\r\n\t ]#', '', $expression );
+			$expression = str_replace( array( "\n", "\r", "\t", ' ' ), '', $expression );
 
 			// Expand cell ranges (like A3:A6) to a list of single cells (like A3,A4,A5,A6).
 			if ( preg_match_all( '#([A-Z]+)([0-9]+):([A-Z]+)([0-9]+)#', $expression, $referenced_cell_ranges, PREG_SET_ORDER ) ) {
@@ -385,7 +385,7 @@ class TablePress_Render {
 						return $result;
 					}
 					// Remove all whitespace characters.
-					$result = preg_replace( '#[\r\n\t ]#', '', $result );
+					$result = str_replace( array( "\n", "\r", "\t", ' ' ), '', $result );
 					// Treat empty cells as 0.
 					if ( '' === $result ) {
 						$result = 0;
