@@ -337,7 +337,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return array List of sortable columns in this List Table.
 	 */
-	public function get_sortable_columns() {
+	protected function get_sortable_columns() {
 		// No sorting on the Empty List placeholder.
 		if ( ! $this->has_items() ) {
 			return array();
@@ -507,7 +507,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return array Bulk actions for this table.
 	 */
-	public function get_bulk_actions() {
+	protected function get_bulk_actions() {
 		$bulk_actions = array();
 
 		if ( current_user_can( 'tablepress_copy_tables' ) ) {
@@ -529,31 +529,35 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * In comparison with parent class, this has modified HTML (especially no field named "action" as that's being used already)!
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $which The location of the bulk actions: 'top' or 'bottom'.
+	 *                      This is designated as optional for backwards-compatibility.
 	 */
-	public function bulk_actions() {
+	protected function bulk_actions( $which = '' ) {
 		if ( is_null( $this->_actions ) ) {
 			$no_new_actions = $this->_actions = $this->get_bulk_actions();
 			/** This filter is documented in the WordPress function WP_List_Table::bulk_actions() in wp-admin/includes/class-wp-list-table.php */
 			$this->_actions = apply_filters( 'bulk_actions-' . $this->screen->id, $this->_actions );
 			$this->_actions = array_intersect_assoc( $this->_actions, $no_new_actions );
 			$two = '';
-			$name_id = 'bulk-action-top';
 		} else {
 			$two = '2';
-			$name_id = 'bulk-action-bottom';
 		}
 
 		if ( empty( $this->_actions ) ) {
 			return;
 		}
 
-		echo "<select name='$name_id' id='$name_id'>\n";
+		$name_id = "bulk-action-{$which}";
+		echo "<label for='{$name_id}' class='screen-reader-text'>" . __( 'Select Bulk Action', 'tablepress' ) . "</label>\n";
+		echo "<select name='{$name_id}' id='{$name_id}'>\n";
 		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'tablepress' ) . "</option>\n";
 		foreach ( $this->_actions as $name => $title ) {
-			echo "\t<option value='$name'$>$title</option>\n";
+			echo "\t<option value='{$name}'>{$title}</option>\n";
 		}
 		echo "</select>\n";
-		echo '<input type="submit" name="" id="doaction' . $two . '" class="button action" value="' . esc_attr__( 'Apply', 'tablepress' ) . '" />' . "\n";
+		submit_button( __( 'Apply', 'tablepress' ), 'action', '', false, array( 'id' => "doaction{$two}" ) );
+		echo "\n";
 	}
 
 	/**
@@ -589,14 +593,14 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @param string $which Location ("top" or "bottom").
 	 */
-	public function display_tablenav( $which ) {
+	protected function display_tablenav( $which ) {
 		if ( ! $this->has_items() ) {
 			return;
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 			<div class="alignleft actions">
-				<?php $this->bulk_actions(); ?>
+				<?php $this->bulk_actions( $which ); ?>
 			</div>
 		<?php
 			$this->extra_tablenav( $which );

@@ -289,7 +289,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @return array List of sortable columns in this List Table.
 	 */
-	public function get_sortable_columns() {
+	protected function get_sortable_columns() {
 		// No sorting on the Empty List placeholder.
 		if ( ! $this->has_items() ) {
 			return array();
@@ -378,14 +378,14 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @param string $which Location ("top" or "bottom").
 	 */
-	public function display_tablenav( $which ) {
+	protected function display_tablenav( $which ) {
 		if ( ! $this->has_items() ) {
 			return;
 		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 			<div class="alignleft actions">
-				<?php $this->bulk_actions(); ?>
+				<?php $this->bulk_actions( $which ); ?>
 			</div>
 		<?php
 			$this->extra_tablenav( $which );
