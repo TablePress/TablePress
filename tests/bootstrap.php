@@ -1,6 +1,10 @@
 <?php
 /**
  * Bootstrap the plugin unit testing environment.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
  */
 
 // Activates TablePress in WordPress so it can be tested.
@@ -19,13 +23,18 @@ if ( false !== getenv( 'WP_TESTS_DIR' ) ) {
 }
 
 /**
- * Provide some helper classes and functions for unit testing.
+ * TablePress Unit Testing Testcase class.
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
  */
 class TablePress_TestCase extends WP_UnitTestCase {
 
 	/**
 	 * Set variables for a faked HTTP POST request.
 	 *
+	 * @since 1.1.0
+ 	 *
 	 * @param string $key   Name of the POST variable.
 	 * @param string $value Value of the POST variable.
 	 */
@@ -40,10 +49,12 @@ class TablePress_TestCase extends WP_UnitTestCase {
 	/**
 	 * Unset variables from a faked HTTP POST request.
 	 *
+	 * @since 1.1.0
+ 	 *
 	 * @param string $key Name of the POST variable.
 	 */
 	public function unset_post( $key ) {
 		unset( $_POST[ $key ], $_REQUEST[ $key ] );
 	}
 
-}
+} // class TablePress_TestCase

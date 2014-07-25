@@ -2,11 +2,16 @@
 
 /**
  * Tests to test that the testing framework is working properly.
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
  */
 class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 
 	/**
 	 * Run a simple test to ensure that the tests are running.
+	 *
+	 * @since 1.1.0
 	 */
 	public function test_true_is_true() {
 		$this->assertTrue( true );
@@ -18,6 +23,8 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	 * This test requires PHP 5.3, as PHP 5.2 in Travis CI does not support HTTPS.
 	 *
 	 * @requires PHP 5.3
+	 *
+	 * @since 1.4.0
 	 */
 	public function test_wp_version() {
 		if ( ! getenv( 'TRAVIS' ) ) {
@@ -40,9 +47,11 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 
 	/**
 	 * Ensure that the plugin has been installed and activated.
+	 *
+	 * @since 1.4.0
 	 */
 	public function test_plugin_is_activated() {
 		$this->assertTrue( is_plugin_active( 'tablepress/tablepress.php' ) );
 	}
 
-}
+} // class TablePress_Test_Unit_Tests
