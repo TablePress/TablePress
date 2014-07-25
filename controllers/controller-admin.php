@@ -2012,7 +2012,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$this->view->render();
 	}
 
-
 	/**
 	 * Uninstall TablePress, and delete all tables and options.
 	 *

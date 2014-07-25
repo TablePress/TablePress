@@ -203,7 +203,6 @@ jQuery( document ).ready( function( $ ) {
 
 } // class TablePress_Editor_Button_View
 
-
 /**
  * TablePress Editor Button Thickbox List Table Class
  * @package TablePress

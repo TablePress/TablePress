@@ -102,7 +102,6 @@ class TablePress_CSS {
 		return $csstidy->print->plain();
 	}
 
-
 	/**
 	 * Get the location (file path or URL) of the "Custom CSS" file, depending on whether it's a Multisite install or not.
 	 *
