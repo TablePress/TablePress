@@ -42,7 +42,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 			$requested_version = $matches[1];
 		}
 
-		$this->assertEquals( get_bloginfo( 'version' ), $requested_version );
+		$this->assertSame( get_bloginfo( 'version' ), $requested_version );
 	}
 
 	/**

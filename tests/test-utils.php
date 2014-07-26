@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tests basic TablePress utility functions.
+ * Tests for basic TablePress utility functions.
  * @package TablePress
  * @subpackage Unit Tests
  * @since 1.1.0
@@ -14,6 +14,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @since 1.1.0
 	 */
 	public function setUp() {
+		parent::setUp();
 		TablePress::run();
 	}
 
@@ -32,9 +33,9 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @since 1.1.0
 	 */
 	public function test_nonce() {
-		$this->assertEquals( 'tablepress_foo_bar', TablePress::nonce( 'foo', 'bar' ) );
-		$this->assertEquals( 'tablepress_foo', TablePress::nonce( 'foo' ) );
-		$this->assertEquals( 'tablepress_foo', TablePress::nonce( 'foo', false ) );
+		$this->assertSame( 'tablepress_foo_bar', TablePress::nonce( 'foo', 'bar' ) );
+		$this->assertSame( 'tablepress_foo', TablePress::nonce( 'foo' ) );
+		$this->assertSame( 'tablepress_foo', TablePress::nonce( 'foo', false ) );
 	}
 
 	/**
@@ -48,7 +49,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @param int    $number Conversion result number.
 	 */
 	public function test_letter_to_number( $letter, $number ) {
-		$this->assertEquals( $number, TablePress::letter_to_number( $letter ) );
+		$this->assertSame( $number, TablePress::letter_to_number( $letter ) );
 	}
 
 	/**
@@ -87,7 +88,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @param string $letter Conversion result letter.
 	 */
 	public function test_number_to_letter( $number, $letter ) {
-		$this->assertEquals( $letter, TablePress::number_to_letter( $number ) );
+		$this->assertSame( $letter, TablePress::number_to_letter( $number ) );
 	}
 
 	/**
@@ -120,8 +121,8 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 		TablePress::$controller->is_top_level_page = false;
 		TablePress::$controller->parent_page = 'index.php';
 
-		$this->assertEquals( 'http://example.org/wp-admin/index.php?page=tablepress&action=list', TablePress::url() );
-		$this->assertEquals( 'http://example.org/wp-admin/index.php?page=tablepress&action=list', TablePress::url( array(), false ) );
+		$this->assertSame( 'http://example.org/wp-admin/index.php?page=tablepress&action=list', TablePress::url() );
+		$this->assertSame( 'http://example.org/wp-admin/index.php?page=tablepress&action=list', TablePress::url( array(), false ) );
 	}
 
 	/**
@@ -133,8 +134,8 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 		TablePress::$controller->is_top_level_page = true;
 		TablePress::$controller->parent_page = 'middle';
 
-		$this->assertEquals( 'http://example.org/wp-admin/admin.php?page=tablepress', TablePress::url() );
-		$this->assertEquals( 'http://example.org/wp-admin/admin.php?page=tablepress', TablePress::url( array(), false ) );
+		$this->assertSame( 'http://example.org/wp-admin/admin.php?page=tablepress', TablePress::url() );
+		$this->assertSame( 'http://example.org/wp-admin/admin.php?page=tablepress', TablePress::url( array(), false ) );
 	}
 
 } // class TablePress_Test_TablePress_Utils
