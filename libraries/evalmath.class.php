@@ -1,191 +1,18 @@
 <?php
 /**
- * EvalMath PHP Class
+ * EvalMath - Safely evaluate math expressions
+ *
+ * Based on EvalMath by Miles Kaufmann, with modifications by Petr Skoda.
+ * @link https://github.com/moodle/moodle/blob/4efc3d4096bc1d29e9d77f9af7194b2babfa2821/lib/evalmath/evalmath.class.php
  *
  * @package TablePress
  * @subpackage Formulas
- * @author Miles Kaufmann, Petr Skoda (Moodle), Tobias Bäthge
+ * @author Miles Kaufmann, Petr Skoda, Tobias Bäthge
  * @since 1.0.0
  */
 
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
-
-/*
-================================================================================
-
-EvalMath - PHP Class to safely evaluate math expressions
-Copyright (C) 2005 Miles Kaufmann <http://www.twmagic.com/>
-
-with modifications by Petr Skoda (skodak) from Moodle - http://moodle.org/
-(this version: https://github.com/moodle/moodle/blob/4efc3d4096bc1d29e9d77f9af7194b2babfa2821/lib/evalmath/evalmath.class.php )
-
-additional modifications by Tobias Bäthge:
-- changed get_string() to EvalMathTranslations::get_string(), which is a custom localization from Moodle
-- allow comparisons (x>4, x=5, etc.)
-- use array_sum() instead of loop in EvalMathFuncs::sum()
-- add "product()" function
-- add "mean()" alias for "average()"
-- add "atan2()" and "arctan2()" alias
-- add "median()", "mode()", and "range()" statistic functions
-- add "if ()" function
-- add "number_format()" and "number_format_eu()" functions
-- add "log10" function
-- make "log" support the natural logarithm (with just one argument), and other bases (with second argument)
-- Fix displaying of expected number of arguments
-
-================================================================================
-
-NAME
-	EvalMath - safely evaluate math expressions
-
-SYNOPSIS
-	<?
-	  include( 'evalmath.class.php' );
-	  $m = new EvalMath;
-	  // basic evaluation:
-	  $result = $m->evaluate( '2+2' );
-	  // supports: order of operation; parentheses; negation; built-in functions
-	  $result = $m->evaluate( '-8(5/2)^2*(1-sqrt(4))-8' );
-	  // create your own variables
-	  $m->evaluate( 'a = e^(ln(pi))' );
-	  // or functions
-	  $m->evaluate( 'f(x,y) = x^2 + y^2 - 2x*y + 1' );
-	  // and then use them
-	  $result = $m->evaluate( '3*f(42,a)' );
-	?>
-
-DESCRIPTION
-	Use the EvalMath class when you want to evaluate mathematical expressions
-	from untrusted sources.	 You can define your own variables and functions,
-	which are stored in the object.	 Try it, it's fun!
-
-METHODS
-	$m->evalute( $expression )
-		Evaluates the expression and returns the result.  If an error occurs,
-		prints a warning and returns false.	 If $expression is a function assignment,
-		returns true on success.
-
-	$m->vars()
-		Returns an associative array of all user-defined variables and values.
-
-	$m->funcs()
-		Returns an array of all user-defined functions.
-
-PARAMETERS
-	$m->suppress_errors
-		Set to true to turn off warnings when evaluating expressions
-
-	$m->last_error
-		If the last evaluation failed, contains a string describing the error.
-		(Useful when suppress_errors is on).
-
-AUTHOR INFORMATION
-	Copyright 2005, Miles Kaufmann.
-
-LICENSE
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are
-	met:
-
-	1	Redistributions of source code must retain the above copyright
-		notice, this list of conditions and the following disclaimer.
-	2.	Redistributions in binary form must reproduce the above copyright
-		notice, this list of conditions and the following disclaimer in the
-		documentation and/or other materials provided with the distribution.
-	3.	The name of the author may not be used to endorse or promote
-		products derived from this software without specific prior written
-		permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-	IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-	DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
-	INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-	(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-	HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-	STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-
-*/
-
-/**
- * Translations of error messages of the EvalMath class.
- * @package TablePress
- * @subpackage Formulas
- * @since 1.0.0
- */
-class EvalMathTranslations {
-
-	/**
-	 * Get a translated string.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @link https://github.com/moodle/moodle/blob/13264f35057d2f37374ec3e0e8ad4070f4676bd7/lang/en/mathslib.php
-	 * @link https://github.com/moodle/moodle/blob/8e54ce9717c19f768b95f4332f70e3180ffafc46/lib/moodlelib.php#L6323
-	 *
-	 * @param string       $identifier Identifier of the string.
-	 * @param array|string $error_data Optional. Additional error data.
-	 * @return string Translated string.
-	 */
-	public static function get_string( $identifier, $error_data = null ) {
-		$strings = array();
-		$strings['an_unexpected_error_occured'] = 'an unexpected error occured';
-		$strings['cannot_assign_to_constant'] = 'cannot assign to constant \'{$error_data}\'';
-		$strings['cannot_redefine_builtin_function'] = 'cannot redefine built-in function \'{$error_data}()\'';
-		$strings['division_by_zero'] = 'division by zero';
-		$strings['expecting_a_closing_bracket'] = 'expecting a closing bracket';
-		$strings['illegal_character_general'] = 'illegal character \'{$error_data}\'';
-		$strings['illegal_character_underscore'] = 'illegal character \'_\'';
-		$strings['implicit_multiplication_not_allowed'] = 'expecting operator, implicit multiplication not allowed.';
-		$strings['internal_error'] = 'internal error';
-		$strings['operator_lacks_operand'] = 'operator \'{$error_data}\' lacks operand';
-		$strings['undefined_variable'] = 'undefined variable \'{$error_data}\'';
-		$strings['undefined_variable_in_function_definition'] = 'undefined variable \'{$error_data}\' in function definition';
-		$strings['unexpected_closing_bracket'] = 'unexpected closing bracket';
-		$strings['unexpected_comma'] = 'unexpected comma';
-		$strings['unexpected_operator'] = 'unexpected operator \'{$error_data}\'';
-		$strings['wrong_number_of_arguments'] = 'wrong number of arguments ({$error_data->given} given, {$error_data->expected} expected)';
-
-		$string = $strings[ $identifier ];
-
-		if ( null !== $error_data ) {
-			if ( is_array( $error_data ) ) {
-				$search = array();
-				$replace = array();
-				foreach ( $error_data as $key => $value ) {
-					if ( is_int( $key ) ) {
-						// We do not support numeric keys!
-						continue;
-					}
-					if ( is_object( $value ) || is_array( $value ) ) {
-						$value = (array) $value;
-						if ( count( $value ) > 1 ) {
-							$value = implode( ' or ', $value );
-						} else {
-							$value = (string) $value[0];
-							if ( '-1' === $value ) {
-								$value = 'at least 1';
-							}
-						}
-					}
-					$search[] = '{$error_data->' . $key . '}';
-					$replace[] = (string) $value;
-				}
-				if ( $search ) {
-					$string = str_replace( $search, $replace, $string );
-				}
-			} else {
-				$string = str_replace( '{$error_data}', (string) $error_data, $string );
-			}
-		}
-
-		return $string;
-	}
-} // class EvalMathTranslations
 
 /**
  * Class to safely evaluate math expressions.
@@ -259,7 +86,7 @@ class EvalMath {
 	);
 
 	/**
-	 * Calc functions emulation.
+	 * Emulated functions.
 	 *
 	 * @since 1.0.0
 	 * @var array
@@ -289,34 +116,18 @@ class EvalMath {
 	);
 
 	/**
-	 * Whether implicit multiplication is allowed.
-	 *
-	 * @since 1.0.0
-	 * @var bool
-	 */
-	protected $allow_implicit_multiplication = false;
-
-	/**
 	 * Class constructor.
 	 *
-	 * Sets some default settings and constants.
-	 *
 	 * @since 1.0.0
-	 *
-	 * @param bool $allow_constants               Whether constants are allowed.
-	 * @param bool $allow_implicit_multiplication Whether implicit multiplication is allowed.
 	 */
-	public function __construct( $allow_constants = false, $allow_implicit_multiplication = false ) {
-		if ( $allow_constants ) {
-			$this->variables['pi'] = pi();
-			$this->variables['e'] = exp( 1 );
-		}
-
-		$this->allow_implicit_multiplication = $allow_implicit_multiplication;
+	public function __construct() {
+		// Sets default  constants.
+		$this->variables['pi'] = pi();
+		$this->variables['e'] = exp( 1 );
 	}
 
 	/**
-	 * Evaluate a math expression or formula.
+	 * Evaluate a math expression without checking it for variable or function assignments.
 	 *
 	 * @since 1.0.0
 	 *
@@ -324,6 +135,18 @@ class EvalMath {
 	 * @return string Evaluated expression.
 	 */
 	public function evaluate( $expression ) {
+		return $this->pfx( $this->nfx( $expression ) );
+	}
+
+	/**
+	 * Evaluate a math expression or formula, and check it for variable an function assignments.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $expression The expression that shall be evaluated.
+	 * @return string Evaluated expression.
+	 */
+	public function assign_and_evaluate( $expression ) {
 		$this->last_error = '';
 		$expression = trim( $expression );
 		$expression = rtrim( $expression, ';' );
@@ -377,7 +200,7 @@ class EvalMath {
 
 		// No variable or function assignment, so straight-up evaluation.
 		} else {
-			return $this->pfx( $this->nfx( $expression ) );
+			return $this->evaluate( $expression );
 		}
 	}
 
@@ -388,7 +211,7 @@ class EvalMath {
 	 *
 	 * @return array User-defined variables and values.
 	 */
-	public function vars() {
+	public function variables() {
 		return $this->variables;
 	}
 
@@ -399,7 +222,7 @@ class EvalMath {
 	 *
 	 * @return array User-defined functions.
 	 */
-	public function funcs() {
+	public function functions() {
 		$output = array();
 		foreach ( $this->functions as $name => $data ) {
 			$output[] = $name . '( ' . implode( ', ', $data['args'] ) . ' )';
@@ -414,16 +237,14 @@ class EvalMath {
 	/**
 	 * Convert infix to postfix notation.
 	 *
-	 * @TODO: Should be protected!
-	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $expression Math expression that shall be converted.
 	 * @return array Converted expression.
 	 */
-	public function nfx( $expression ) {
+	protected function nfx( $expression ) {
 		$index = 0;
-		$stack = new EvalMathStack;
+		$stack = new EvalMath_Stack;
 		$output = array(); // postfix form of expression, to be passed to pfx()
 		$expression = trim( strtolower( $expression ) );
 
@@ -461,13 +282,9 @@ class EvalMath {
 			} elseif ( ( in_array( $op, $ops, true ) || $ex ) && $expecting_operator ) {
 				// Are we expecting an operator but have a number/variable/function/opening parethesis?
 				if ( $ex ) {
-					if ( ! $this->allow_implicit_multiplication ) {
-						return $this->raise_error( 'implicit_multiplication_not_allowed' );
-					} else {
-						// It's an implicit multiplication.
-						$op = '*';
-						$index--;
-					}
+					// It's an implicit multiplication.
+					$op = '*';
+					$index--;
 				}
 				// Heart of the algorithm:
 				while ( $stack->count > 0 && ( $o2 = $stack->last() ) && in_array( $o2, $ops, true ) && ( $ops_r[ $op ] ? $ops_p[ $op ] < $ops_p[ $o2 ] : $ops_p[ $op ] <= $ops_p[ $o2 ] ) ) {
@@ -579,7 +396,7 @@ class EvalMath {
 
 			} elseif ( ')' === $op ) {
 				// It could be only custom function with no arguments or a general error.
-				if ( '(' !== $stack->last() || $stack->last( 2 ) !== 1 ) {
+				if ( '(' !== $stack->last() || 1 !== $stack->last( 2 ) ) {
 					return $this->raise_error( 'unexpected_closing_bracket' );
 				}
 				// Did we just close a function?
@@ -614,7 +431,7 @@ class EvalMath {
 
 			// I don't even want to know what you did to get here.
 			} else {
-				return $this->raise_error( 'an_unexpected_error_occured' );
+				return $this->raise_error( 'an_unexpected_error_occurred' );
 			}
 
 			if ( strlen( $expression ) === $index ) {
@@ -647,20 +464,18 @@ class EvalMath {
 	/**
 	 * Evaluate postfix notation.
 	 *
-	 * @TODO: Should be protected!
-	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $tokens [description]
+	 * @param array $tokens    [description]
 	 * @param array $variables Optional. [description]
 	 * @return mixed [description]
 	 */
-	public function pfx( $tokens, array $variables = array() ) {
+	protected function pfx( $tokens, array $variables = array() ) {
 		if ( false === $tokens ) {
 			return false;
 		}
 
-		$stack = new EvalMathStack;
+		$stack = new EvalMath_Stack;
 
 		foreach ( $tokens as $token ) {
 			// If the token is a function, pop arguments off the stack, hand them to the function, and push the result back on.
@@ -703,7 +518,7 @@ class EvalMath {
 					} elseif ( 'arctan2' === $function_name ) {
 						$function_name = 'atan2';
 					}
-					$result = call_user_func_array( array( 'EvalMathFuncs', $function_name ), array_reverse( $args ) );
+					$result = call_user_func_array( array( 'EvalMath_Functions', $function_name ), array_reverse( $args ) );
 					if ( false === $result ) {
 						return $this->raise_error( 'internal_error' );
 					}
@@ -799,8 +614,75 @@ class EvalMath {
 	 * @return bool False, to stop evaluation.
 	 */
 	protected function raise_error( $message, $error_data = null ) {
-		$this->last_error = EvalMathTranslations::get_string( $message, $error_data );
+		$this->last_error = $this::get_error_string( $message, $error_data );
 		return false;
+	}
+
+
+	/**
+	 * Get a translated string for an error message.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @link https://github.com/moodle/moodle/blob/13264f35057d2f37374ec3e0e8ad4070f4676bd7/lang/en/mathslib.php
+	 * @link https://github.com/moodle/moodle/blob/8e54ce9717c19f768b95f4332f70e3180ffafc46/lib/moodlelib.php#L6323
+	 *
+	 * @param string       $identifier Identifier of the string.
+	 * @param array|string $error_data Optional. Additional error data.
+	 * @return string Translated string.
+	 */
+	protected static function get_error_string( $identifier, $error_data = null ) {
+		$strings = array();
+		$strings['an_unexpected_error_occurred'] = 'an unexpected error occurred';
+		$strings['cannot_assign_to_constant'] = 'cannot assign to constant \'{$error_data}\'';
+		$strings['cannot_redefine_builtin_function'] = 'cannot redefine built-in function \'{$error_data}()\'';
+		$strings['division_by_zero'] = 'division by zero';
+		$strings['expecting_a_closing_bracket'] = 'expecting a closing bracket';
+		$strings['illegal_character_general'] = 'illegal character \'{$error_data}\'';
+		$strings['illegal_character_underscore'] = 'illegal character \'_\'';
+		$strings['internal_error'] = 'internal error';
+		$strings['operator_lacks_operand'] = 'operator \'{$error_data}\' lacks operand';
+		$strings['undefined_variable'] = 'undefined variable \'{$error_data}\'';
+		$strings['undefined_variable_in_function_definition'] = 'undefined variable \'{$error_data}\' in function definition';
+		$strings['unexpected_closing_bracket'] = 'unexpected closing bracket';
+		$strings['unexpected_comma'] = 'unexpected comma';
+		$strings['unexpected_operator'] = 'unexpected operator \'{$error_data}\'';
+		$strings['wrong_number_of_arguments'] = 'wrong number of arguments ({$error_data->given} given, {$error_data->expected} expected)';
+
+		$string = $strings[ $identifier ];
+
+		if ( null !== $error_data ) {
+			if ( is_array( $error_data ) ) {
+				$search = array();
+				$replace = array();
+				foreach ( $error_data as $key => $value ) {
+					if ( is_int( $key ) ) {
+						// We do not support numeric keys!
+						continue;
+					}
+					if ( is_object( $value ) || is_array( $value ) ) {
+						$value = (array) $value;
+						if ( count( $value ) > 1 ) {
+							$value = implode( ' or ', $value );
+						} else {
+							$value = (string) $value[0];
+							if ( '-1' === $value ) {
+								$value = 'at least 1';
+							}
+						}
+					}
+					$search[] = '{$error_data->' . $key . '}';
+					$replace[] = (string) $value;
+				}
+				if ( $search ) {
+					$string = str_replace( $search, $replace, $string );
+				}
+			} else {
+				$string = str_replace( '{$error_data}', (string) $error_data, $string );
+			}
+		}
+
+		return $string;
 	}
 
 } // class EvalMath
@@ -811,7 +693,7 @@ class EvalMath {
  * @subpackage Formulas
  * @since 1.0.0
  */
-class EvalMathStack {
+class EvalMath_Stack {
 
 	/**
 	 * The stack.
@@ -871,7 +753,7 @@ class EvalMathStack {
 		return null;
 	}
 
-} // class EvalMathStack
+} // class EvalMath_Stack
 
 /**
  * Common math functions, prepared for usage in EvalMath.
@@ -879,7 +761,7 @@ class EvalMathStack {
  * @subpackage EvalMath
  * @since 1.0.0
  */
-class EvalMathFuncs {
+class EvalMath_Functions {
 
 	/**
 	 * Seed for the generation of random numbers.
@@ -1193,4 +1075,4 @@ class EvalMathFuncs {
 		return array_shift( $random_values ) / 65536;
 	}
 
-} // class EvalMathFuncs
+} // class EvalMath_Functions

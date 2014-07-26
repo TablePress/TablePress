@@ -45,7 +45,7 @@ class TablePress_Render {
 	protected $output;
 
 	/**
-	 * Instance of EvalMath class.
+	 * Instance of the EvalMath class.
 	 *
 	 * @since 1.0.0
 	 * @var EvalMath
@@ -110,7 +110,7 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->evalmath = TablePress::load_class( 'EvalMath', 'evalmath.class.php', 'libraries', true ); // true for some default constants
+		$this->evalmath = TablePress::load_class( 'EvalMath', 'evalmath.class.php', 'libraries' );
 		// Don't raise PHP warnings.
 		$this->evalmath->suppress_errors = true;
 	}
@@ -421,7 +421,7 @@ class TablePress_Render {
 	 */
 	protected function _evaluate_math_expression( $expression ) {
 		// Straight up evaluation, without parsing of variable or function assignments (which is why we only need one instance of the object).
-		$result = $this->evalmath->pfx( $this->evalmath->nfx( $expression ) );
+		$result = $this->evalmath->evaluate( $expression );
 		if ( false === $result ) {
 			return '!ERROR! ' . $this->evalmath->last_error;
 		} else {
