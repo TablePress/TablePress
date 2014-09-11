@@ -530,7 +530,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
-	public function bulk_actions() {
+	public function bulk_actions($which='') {
 		if ( is_null( $this->_actions ) ) {
 			$no_new_actions = $this->_actions = $this->get_bulk_actions();
 			/** This filter is documented in the WordPress function WP_List_Table::bulk_actions() in wp-admin/includes/class-wp-list-table.php */
