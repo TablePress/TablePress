@@ -647,7 +647,7 @@ class TablePress_Edit_View extends TablePress_View {
 	public function textbox_corrupted_table( array $data, array $box ) {
 		?>
 		<div class="error">
-			<p><strong><?php _e( 'Attention: Unfortunately, an error occured.', 'tablepress' ); ?></strong></p>
+			<p><strong><?php _e( 'Attention: Unfortunately, an error occurred.', 'tablepress' ); ?></strong></p>
 			<p>
 				<?php
 					printf( __( 'The internal data of table &#8220;%1$s&#8221 (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );

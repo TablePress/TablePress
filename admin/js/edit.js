@@ -1066,7 +1066,7 @@ jQuery( document ).ready( function( $ ) {
 			tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the &#8220;Shift&#8221; key.' );
 		},
 		success: function( data ) {
-			// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances
+			// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurrences
 			if ( tp.table.id !== data.table_id ) {
 				// update URL (for HTML5 browsers only), but only if ID really changed, to not get dummy entries in the browser history
 				if ( ( 'pushState' in window.history ) && null !== window.history.pushState ) {
