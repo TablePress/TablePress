@@ -45,7 +45,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 **Requirements?**
 
-In short: WordPress 3.9 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 4.0 or higher, while the latest version of WordPress is always recommended.
 
 **Languages and Localization?**
 
@@ -163,4 +163,5 @@ I'm also happy about [donations](https://tablepress.org/donate/) or something fr
 * Updated several translations (Chinese (Simplified), Croatian, German, Spanish)
 
 **Version 1.5**
-* TablePress 1.5 requires WordPress 3.9!
+* Compatibility with WordPress 4.0
+* TablePress 1.5 requires WordPress 4.0!

@@ -116,8 +116,8 @@ abstract class TablePress {
 			return;
 		}
 
-		// Check if minimum requirements are fulfilled, currently WordPress 3.9.
-		if ( version_compare( str_replace( '-src', '', $GLOBALS['wp_version'] ), '3.9', '<' ) ) {
+		// Check if minimum requirements are fulfilled, currently WordPress 4.0.
+		if ( version_compare( str_replace( '-src', '', $GLOBALS['wp_version'] ), '4.0', '<' ) ) {
 			// Show error notice to admins, if WP is not installed in the minimum required version, in which case TablePress will not work.
 			if ( current_user_can( 'update_plugins' ) ) {
 				add_action( 'admin_notices', array( 'TablePress', 'show_minimum_requirements_error_notice' ) );

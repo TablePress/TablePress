@@ -2,7 +2,7 @@
 Contributors: TobiasBg
 Donate link: https://tablepress.org/donate/
 Tags: html,table,data,editor,csv,excel,import,export
-Requires at least: 3.9
+Requires at least: 4.0
 Tested up to: 4.0
 Stable tag: 1.4
 License: GPLv2
@@ -59,7 +59,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 = Requirements? =
 
-In short: WordPress 3.9 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 4.0 or higher, while the latest version of WordPress is always recommended.
 
 = Languages and Localization? =
 
@@ -108,7 +108,8 @@ I'm also happy about [donations](https://tablepress.org/donate/) or something fr
 == Changelog ==
 
 = Version 1.5 =
-* TablePress 1.5 requires WordPress 3.9!
+* Compatibility with WordPress 4.0
+* TablePress 1.5 requires WordPress 4.0!
 
 = Version 1.4 =
 * Compatibility with WordPress 3.9
