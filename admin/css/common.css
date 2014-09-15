@@ -89,6 +89,7 @@
 #tablepress-page #tables-export {
 	width: 100%;
 	height: auto;
+	line-height: normal;
 }
 
 /* Red border for form fields that have invalid values */
