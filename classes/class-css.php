@@ -31,11 +31,11 @@ class TablePress_CSS {
 	 * @return string Sanitized and tidied CSS code.
 	 */
 	public function sanitize_css( $css ) {
-		$csstidy = TablePress::load_class( 'csstidy', 'class.csstidy.php', 'libraries/csstidy' );
+		$csstidy = TablePress::load_class( 'CSSTidy', 'class.csstidy.php', 'libraries/csstidy' );
 
 		// Sanitization and not just tidying for users without enough privileges.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			$csstidy->optimise = new csstidy_custom_sanitize( $csstidy );
+			$csstidy->optimise = new CSSTidy_custom_sanitize( $csstidy );
 
 			// Let "arrows" survive, otherwise this might be recognized as the beginning of an HTML tag and removed with other stuff behind it.
 			$css = str_replace( '<=', '&lt;=', $css );
@@ -79,8 +79,8 @@ class TablePress_CSS {
 	 * @return string Minified CSS code.
 	 */
 	public function minify_css( $css ) {
-		$csstidy = TablePress::load_class( 'csstidy', 'class.csstidy.php', 'libraries/csstidy' );
-		$csstidy->optimise = new csstidy_custom_sanitize( $csstidy );
+		$csstidy = TablePress::load_class( 'CSSTidy', 'class.csstidy.php', 'libraries/csstidy' );
+		$csstidy->optimise = new CSSTidy_custom_sanitize( $csstidy );
 		$csstidy->set_cfg( 'remove_bslash', false );
 		$csstidy->set_cfg( 'compress_colors', true );
 		$csstidy->set_cfg( 'compress_font-weight', true );

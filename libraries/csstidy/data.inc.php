@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package csstidy
+ * @package CSSTidy
  * @author Florian Schmitz (floele at gmail dot com) 2005
  * @author Nikolay Matsievsky (speed at webo dot name) 2010
  */
@@ -45,7 +45,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 $data['csstidy']['whitespace'] = array( ' ', "\n", "\t", "\r", "\x0B" );
 
 /**
- * All CSS tokens used by csstidy
+ * All CSS tokens used by CSSTidy
  *
  * @global string $data['csstidy']['tokens']
  * @version 1.0
@@ -308,11 +308,11 @@ $data['csstidy']['shorthands']['padding'] = array( 'padding-top', 'padding-right
 $data['csstidy']['shorthands']['-moz-border-radius'] = 0;
 
 /**
- * All CSS Properties. Needed for csstidy::property_is_next()
+ * All CSS Properties. Needed for CSSTidy::property_is_next()
  *
  * @global array $data['csstidy']['all_properties']
  * @version 1.1
- * @see csstidy::property_is_next()
+ * @see CSSTidy::property_is_next()
  */
 $data['csstidy']['all_properties']['alignment-adjust'] = 'CSS3.0';
 $data['csstidy']['all_properties']['alignment-baseline'] = 'CSS3.0';
@@ -615,7 +615,7 @@ $data['csstidy']['multiple_properties'] = array_merge( $data['csstidy']['color_v
  *
  * @global array $data['csstidy']['predefined_templates']
  * @version 1.0
- * @see csstidy::load_template()
+ * @see CSSTidy::load_template()
  */
 $data['csstidy']['predefined_templates']['default'][] = '<span class="at">'; //string before @rule
 $data['csstidy']['predefined_templates']['default'][] = '</span> <span class="format">{</span>'."\n"; //bracket after @-rule
