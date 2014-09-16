@@ -32,7 +32,7 @@ class CSV_Parser {
 	 * Number of rows to analyze when attempting to auto-detect the CSV delimiter.
 	 *
 	 * @since 1.0.0
-	 * @var integer
+	 * @var int
 	 */
 	protected $delimiter_search_max_lines = 15;
 
@@ -69,7 +69,7 @@ class CSV_Parser {
 	 *     or does not follow the common CSV standard. Please validate the parsed data manually.
 	 *
 	 * @since 1.0.0
-	 * @var integer
+	 * @var int
 	 */
 	public $error = 0;
 
