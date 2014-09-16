@@ -780,8 +780,9 @@ class TablePress_Render {
 				|| ( ( 1 === $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
 					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) // And no colspan into first column head.
 				|| ( ( $this->last_row_idx === $row_idx && ! $this->render_options['table_foot'] ) // No rowspan out of table foot.
-					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) // And no colspan into first column head.
+					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) { // And no colspan into first column head.
 					continue;
+				}
 				// Invalid span, so we set cell content from #span# to empty.
 				$cell_content = '';
 			} elseif ( '' === $cell_content && 0 === $row_idx && $this->render_options['table_head'] ) {
