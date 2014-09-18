@@ -32,8 +32,8 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 		}
 
 		$requested_version = getenv( 'WP_VERSION' ) . '-src';
-		// Strip .0 from version string, as that's only used in the SVN/git tag, but not in the code.
-		$requested_version = str_replace( '.0', '', $requested_version );
+		// Strip .0 from the end of the version string, as that's only used in the git branch, but not in the code.
+		$requested_version = preg_replace( '#(\d\.\d)\.0#', '$1', $requested_version );
 
 		// The "master" version requires special handling.
 		if ( 'master-src' === $requested_version ) {
