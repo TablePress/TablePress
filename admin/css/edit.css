@@ -44,6 +44,11 @@ body,
 	z-index: 301103;
 }
 
+/* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog */
+body #wp-link-backdrop {
+	z-index: 100103;
+}
+
 /* Table Preview (CSS for actual preview is directly in the preview HTML) */
 #table-preview-iframe {
 	width: 100%;
