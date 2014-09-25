@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, QTags, wpLink, tb_show, tb_remove */
+/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, wpLink, tb_show, wp */
 
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};
@@ -849,27 +849,30 @@ jQuery( document ).ready( function( $ ) {
 			add: function( /* event */ ) {
 				if ( ! tp.content.image.prompt_shown ) {
 					if ( ! confirm( tablepress_strings.image_add ) ) {
-						return false; // because it's a link
+						return;
 					}
 				}
 
 				tp.content.image.prompt_shown = true;
 				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-					window.wpActiveEditor = this.id;
-					// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
-					this.selectionStart = this.selectionEnd = this.value.length;
-					var $link = $id( 'image-add' ),
-						width = $( window ).width(),
-						W = ( 840 < width ) ? 840 : width,
-						H = $( window ).height();
-					if ( $( '#wpadminbar' ).length ) {
-						H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
-					}
-					tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
-					$(this).blur();
-				} );
+					var editor = this.id,
+						options = {
+							frame: 'post',
+							state: 'insert',
+							title: wp.media.view.l10n.addMedia,
+							multiple: true
+						};
 
-				return false; // because it's a link
+					// Move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (though possible in the Advanced Editor and Insert Link dialog).
+					this.selectionStart = this.selectionEnd = this.value.length;
+
+					// Remove focus from the textarea to prevent Opera from showing the outline of the textarea above the modal.
+					// See: WP Core #22445
+					$(this).blur();
+
+					wp.media.editor.open( editor, options );
+					tp.table.set_table_changed();
+				} );
 			}
 		},
 		span: {
@@ -1255,31 +1258,7 @@ jQuery( document ).ready( function( $ ) {
 		} ).disableSelection();
 	};
 
-	// run TablePress initialization
+	// Run TablePress initialization.
 	tp.init();
-
-	/**
-	 * On click on "Insert into Post" in the Media Library, this function is called by WordPress
-	 * We need to override the original behavior to be able to set the table to changed
-	 *
-	 * @see media-upload.js
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string new_html HTML code that gets appended to the cell content of the cell that has been marked as active editor
-	 */
-	window.send_to_editor = function( new_html ) {
-		// Quicktags is usually used and does the same internally + caret position handling
-		if ( 'undefined' !== typeof( QTags ) ) {
-			QTags.insertContent( new_html );
-		} else {
-			document.getElementById( window.wpActiveEditor ).value += new_html;
-		}
-
-		try {
-			tb_remove();
-		} catch( e ) {}
-		tp.table.set_table_changed();
-	};
 
 } );

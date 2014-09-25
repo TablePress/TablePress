@@ -138,7 +138,7 @@ class TablePress_Edit_View extends TablePress_View {
 								__( 'You can then enter the Link URL and Text or choose an existing page or post.', 'tablepress' ),
 				'image_add' => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
 								__( 'The Media Library will open, where you can select or upload the desired image or enter the image URL.', 'tablepress' ) . "\n" .
-								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Post', 'default' ) ),
+								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Table', 'tablepress' ) ),
 				'unsaved_changes_unload' => __( 'The changes to this table were not saved yet and will be lost if you navigate away from this page.', 'tablepress' ),
 				'preparing_preview' => __( 'The Table Preview is being loaded...', 'tablepress' ),
 				'preview_error' => __( 'The Table Preview could not be loaded.', 'tablepress' ),
@@ -175,8 +175,7 @@ class TablePress_Edit_View extends TablePress_View {
 
 	/**
 	 * Dequeue 'media-upload' JavaScript, which gets added by the Media Library,
-	 * but is undesired here, as we have a custom function for this (send_to_editor()) and
-	 * don't want the tb_position() function for resizing.
+	 * but is undesired here, as we don't want the tb_position() function for resizing.
 	 *
 	 * @since 1.0.0
 	 */
@@ -378,7 +377,7 @@ class TablePress_Edit_View extends TablePress_View {
 	<tr class="bottom-border">
 		<td class="column-1">
 			<input type="button" class="button" id="link-add" value="<?php esc_attr_e( 'Insert Link', 'tablepress' ); ?>" />
-			<a href="<?php echo $media_library_url; ?>" class="button" id="image-add"><?php _e( 'Insert Image', 'tablepress' ); ?></a>
+            <input type="button" class="button" id="image-add" value="<?php esc_attr_e( 'Insert Image', 'tablepress' ); ?>" />
 			<input type="button" class="button" id="advanced-editor-open" value="<?php esc_attr_e( 'Advanced Editor', 'tablepress' ); ?>" />
 		</td>
 		<td class="column-2">
