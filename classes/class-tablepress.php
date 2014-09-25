@@ -24,7 +24,6 @@ abstract class TablePress {
 	 * Increases whenever a new plugin version is released.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @const string
 	 */
 	const version = '1.4';
@@ -35,7 +34,6 @@ abstract class TablePress {
 	 * Increases whenever the scheme for the plugin options changes, or on a plugin update.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @const int
 	 */
 	const db_version = 25;
@@ -47,7 +45,6 @@ abstract class TablePress {
 	 * used to be able to update plugin options and table scheme independently.
 	 *
 	 * @since 1.0.0
-	 *
 	 * @const int
 	 */
 	const table_scheme_version = 3;
