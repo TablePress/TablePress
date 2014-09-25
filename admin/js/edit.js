@@ -1203,6 +1203,10 @@ jQuery( document ).ready( function( $ ) {
 				dialogClass: 'wp-dialog',
 				resizable: false
 			} );
+			// Fix issue with input fields not being usable (they are immediately losing focus without this) in the wpLink dialog when called through the "Advanced Editor"
+			$id( 'wp-link' ).on( 'focus', 'input', function( event ) {
+				event.stopPropagation();
+			} );
 		} else {
 			$id( 'advanced-editor-open' ).hide();
 		}
