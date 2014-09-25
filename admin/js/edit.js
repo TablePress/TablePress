@@ -1211,6 +1211,11 @@ jQuery( document ).ready( function( $ ) {
 			$id( 'advanced-editor-open' ).hide();
 		}
 
+		// Fix issue with input fields not being usable (they are immediately losing focus without this) in the sidebar of the new Media Manager
+		$( 'body' ).on( 'focus', '.media-modal .media-frame-content input, .media-modal .media-frame-content textarea', function( event ) {
+			event.stopPropagation();
+		} );
+
 		if ( tablepress_options.cells_auto_grow ) {
 			$table.on( 'focus', 'textarea', tp.cells.autogrow );
 		}
