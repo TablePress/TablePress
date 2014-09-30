@@ -50,7 +50,7 @@ define( 'SIZE_POS',         0x78 );
 define( 'IDENTIFIER_OLE', pack( 'CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1 ) );
 
 /**
- *
+ * OLERead class
  */
 class OLERead {
 
@@ -63,7 +63,63 @@ class OLERead {
 	protected $data = '';
 
 	/**
-	 * [__construct description]
+	 * [$error description]
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
+	protected $error;
+
+	/**
+	 * [$bigBlockChain description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	protected $bigBlockChain = array();
+
+	/**
+	 * [$smallBlockChain description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	protected $smallBlockChain = array();
+
+	/**
+	 * [$entry description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $entry;
+
+	/**
+	 * [$props description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $props;
+
+	/**
+	 * [$wrkbook description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $wrkbook;
+
+	/**
+	 * [$rootentry description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $rootentry;
+
+	/**
+	 * Class constructor.
 	 *
 	 * @since 1.0.0
 	 */
@@ -89,16 +145,16 @@ class OLERead {
 			$this->error = 2;
 			return false;
 		}
-		$this->numBigBlockDepotBlocks = $this->_GetInt4d( $this->data, NUM_BIG_BLOCK_DEPOT_BLOCKS_POS );
-		$this->sbdStartBlock = $this->_GetInt4d( $this->data, SMALL_BLOCK_DEPOT_BLOCK_POS );
-		$this->rootStartBlock = $this->_GetInt4d( $this->data, ROOT_START_BLOCK_POS );
-		$this->extensionBlock = $this->_GetInt4d( $this->data, EXTENSION_BLOCK_POS );
-		$this->numExtensionBlocks = $this->_GetInt4d( $this->data, NUM_EXTENSION_BLOCK_POS );
+		$numBigBlockDepotBlocks = $this->_GetInt4d( $this->data, NUM_BIG_BLOCK_DEPOT_BLOCKS_POS );
+		$sbdStartBlock = $this->_GetInt4d( $this->data, SMALL_BLOCK_DEPOT_BLOCK_POS );
+		$rootStartBlock = $this->_GetInt4d( $this->data, ROOT_START_BLOCK_POS );
+		$extensionBlock = $this->_GetInt4d( $this->data, EXTENSION_BLOCK_POS );
+		$numExtensionBlocks = $this->_GetInt4d( $this->data, NUM_EXTENSION_BLOCK_POS );
 
 		$bigBlockDepotBlocks = array();
 		$pos = BIG_BLOCK_DEPOT_BLOCKS_POS;
-		$bbdBlocks = $this->numBigBlockDepotBlocks;
-		if ( 0 !== $this->numExtensionBlocks ) {
+		$bbdBlocks = $numBigBlockDepotBlocks;
+		if ( 0 !== $numExtensionBlocks ) {
 			$bbdBlocks = ( BIG_BLOCK_SIZE - BIG_BLOCK_DEPOT_BLOCKS_POS ) / 4;
 		}
 
@@ -107,9 +163,9 @@ class OLERead {
 			$pos += 4;
 		}
 
-		for ( $j = 0; $j < $this->numExtensionBlocks; $j++ ) {
-			$pos = ( $this->extensionBlock + 1 ) * BIG_BLOCK_SIZE;
-			$blocksToRead = min( $this->numBigBlockDepotBlocks - $bbdBlocks, BIG_BLOCK_SIZE / 4 - 1 );
+		for ( $j = 0; $j < $numExtensionBlocks; $j++ ) {
+			$pos = ( $extensionBlock + 1 ) * BIG_BLOCK_SIZE;
+			$blocksToRead = min( $numBigBlockDepotBlocks - $bbdBlocks, BIG_BLOCK_SIZE / 4 - 1 );
 
 			for ( $i = $bbdBlocks; $i < $bbdBlocks + $blocksToRead; $i++ ) {
 				$bigBlockDepotBlocks[ $i ] = $this->_GetInt4d( $this->data, $pos );
@@ -117,8 +173,8 @@ class OLERead {
 			}
 
 			$bbdBlocks += $blocksToRead;
-			if ( $bbdBlocks < $this->numBigBlockDepotBlocks ) {
-				$this->extensionBlock = $this->_GetInt4d( $this->data, $pos );
+			if ( $bbdBlocks < $numBigBlockDepotBlocks ) {
+				$extensionBlock = $this->_GetInt4d( $this->data, $pos );
 			}
 		}
 
@@ -126,7 +182,7 @@ class OLERead {
 		$index = 0;
 		$this->bigBlockChain = array();
 
-		for ( $i = 0; $i < $this->numBigBlockDepotBlocks; $i++ ) {
+		for ( $i = 0; $i < $numBigBlockDepotBlocks; $i++ ) {
 			$pos = ( $bigBlockDepotBlocks[ $i ] + 1 ) * BIG_BLOCK_SIZE;
 			for ( $j = 0; $j < BIG_BLOCK_SIZE / 4; $j++ ) {
 				$this->bigBlockChain[ $index ] = $this->_GetInt4d( $this->data, $pos );
@@ -137,7 +193,7 @@ class OLERead {
 
 		// readSmallBlockDepot();
 		$index = 0;
-		$sbdBlock = $this->sbdStartBlock;
+		$sbdBlock = $sbdStartBlock;
 		$this->smallBlockChain = array();
 
 		while ( -2 !== $sbdBlock ) {
@@ -151,7 +207,7 @@ class OLERead {
 		}
 
 		// readData(rootStartBlock)
-		$block = $this->rootStartBlock;
+		$block = $rootStartBlock;
 		$this->entry = $this->__readData( $block );
 		$this->__readPropertySets();
 	}
@@ -319,11 +375,73 @@ define( 'SPREADSHEET_EXCEL_READER_DEF_NUM_FORMAT',     '%s'   );
 */
 class Spreadsheet_Excel_Reader {
 
-	// MK: Added to make data retrieval easier
+	/*
+	 * The following four public constants were added to make data retrieval easier.
+	 */
+
+	/**
+	 * [$colnames description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
 	public $colnames = array();
+
+	/**
+	 * [$colindexes description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
 	public $colindexes = array();
+
+	/**
+	 * [$standardColWidth description]
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
 	public $standardColWidth = 0;
+
+	/**
+	 * [$defaultColWidth description]
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
 	public $defaultColWidth = 0;
+
+	/**
+	 * [$store_extended_info description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $store_extended_info;
+
+	/**
+	 * [$_encoderFunction description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $_encoderFunction;
+
+	/**
+	 * [$nineteenFour description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $nineteenFour;
+
+	/**
+	 * [$sn description]
+	 *
+	 * @since 1.0.0
+	 * @var [type]
+	 */
+	protected $sn;
 
 	/**
 	 * [myHex description]
@@ -1586,7 +1704,6 @@ class Spreadsheet_Excel_Reader {
 		$length = $this->v( $data, $pos + 2 );
 		$version = $this->v( $data, $pos + 4 );
 		$substreamType = $this->v( $data, $pos + 6 );
-		$this->version = $version;
 		if ( SPREADSHEET_EXCEL_READER_BIFF8 !== $version && SPREADSHEET_EXCEL_READER_BIFF7 !== $version ) {
 			return false;
 		}
@@ -2051,9 +2168,9 @@ class Spreadsheet_Excel_Reader {
 					if ( SPREADSHEET_EXCEL_READER_BIFF8 === $version ) {
 						// Unicode 16 string, like an SST record
 						$xpos = $spos;
-						$numChars =ord( $data[ $xpos ] ) | ( ord( $data[ $xpos + 1 ] ) << 8 );
+						$numChars = ord( $data[ $xpos ] ) | ( ord( $data[ $xpos + 1 ] ) << 8 );
 						$xpos += 2;
-						$optionFlags =ord( $data[ $xpos ] );
+						$optionFlags = ord( $data[ $xpos ] );
 						$xpos++;
 						$asciiEncoding = ( 0 === ( $optionFlags &0x01 ) ) ;
 						$extendedString = ( 0 !== ( $optionFlags & 0x04 ) );
@@ -2070,16 +2187,16 @@ class Spreadsheet_Excel_Reader {
 							$xpos += 4;
 						}
 						$len = ( $asciiEncoding )?$numChars : $numChars * 2;
-						$retstr =substr( $data, $xpos, $len );
+						$retstr = substr( $data, $xpos, $len );
 						$xpos += $len;
 						$retstr = ( $asciiEncoding )? $retstr : $this->_encodeUTF16( $retstr );
 					}
 					elseif ( SPREADSHEET_EXCEL_READER_BIFF7 === $version ) {
 						// Simple byte string
 						$xpos = $spos;
-						$numChars =ord( $data[ $xpos ] ) | ( ord( $data[ $xpos + 1 ] ) << 8 );
+						$numChars = ord( $data[ $xpos ] ) | ( ord( $data[ $xpos + 1 ] ) << 8 );
 						$xpos += 2;
-						$retstr =substr( $data, $xpos, $numChars );
+						$retstr = substr( $data, $xpos, $numChars );
 					}
 					$this->addcell( $previousRow, $previousCol, $retstr );
 					break;
