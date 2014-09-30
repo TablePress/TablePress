@@ -53,55 +53,56 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class CSSTidy_print {
 
 	/**
-	 * CSSTidy object
+	 * CSSTidy instance.
 	 *
-	 * @var object
+	 * @since 1.0.0
+	 * @var CSSTidy
 	 */
 	public $parser;
 
 	/**
-	 * Saves the input CSS string
+	 * Saves the input CSS string.
 	 *
+	 * @since 1.0.0
 	 * @var string
-	 * @access private
 	 */
 	public $input_css = '';
 
 	/**
-	 * Saves the formatted CSS string
+	 * Saves the formatted CSS string.
 	 *
+	 * @since 1.0.0
 	 * @var string
-	 * @access public
 	 */
 	public $output_css = '';
 
 	/**
-	 * Saves the formatted CSS string (plain text)
+	 * Saves the formatted CSS string (plain text).
 	 *
+	 * @since 1.0.0
 	 * @var string
-	 * @access public
 	 */
 	public $output_css_plain = '';
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @since 1.0
 	 *
-	 * @param CSSTidy $css contains the class CSSTidy
+	 * @param CSSTidy $css Instance of the CSSTidy class.
 	 */
 	public function __construct( $css ) {
 		$this->parser = $css;
-		$this->css = & $css->css;
-		$this->template = & $css->template;
-		$this->tokens = & $css->tokens;
-		$this->charset = & $css->charset;
-		$this->import = & $css->import;
-		$this->namespace = & $css->namespace;
+		$this->css = &$css->css;
+		$this->template = &$css->template;
+		$this->tokens = &$css->tokens;
+		$this->charset = &$css->charset;
+		$this->import = &$css->import;
+		$this->namespace = &$css->namespace;
 	}
 
 	/**
-	 * Resets output_css and output_css_plain (new css code)
+	 * Resets output_css and output_css_plain (new css code).
 	 *
 	 * @since 1.0
 	 */
@@ -111,12 +112,12 @@ class CSSTidy_print {
 	}
 
 	/**
-	 * Returns the CSS code as plain text
+	 * Returns the CSS code as plain text.
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $default_media Optional. Default @media to add to selectors without any @media
-	 * @return string
+	 * @param string $default_media Optional. Default @media to add to selectors without any @media.
+	 * @return string Plain CSS.
 	 */
 	public function plain( $default_media = '' ) {
 		$this->_print( true, $default_media );
@@ -124,12 +125,12 @@ class CSSTidy_print {
 	}
 
 	/**
-	 * Returns the formatted CSS code
+	 * Returns the formatted CSS code.
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $default_media Optional. Default @media to add to selectors without any @media
-	 * @return string
+	 * @param string $default_media Optional. Default @media to add to selectors without any @media.
+	 * @return string Formatted CSS.
 	 */
 	public function formatted( $default_media = '' ) {
 		$this->_print( false, $default_media );
@@ -137,15 +138,15 @@ class CSSTidy_print {
 	}
 
 	/**
-	 * Returns the formatted CSS code to make a complete webpage
+	 * Returns the formatted CSS code to make a complete webpage.
 	 *
 	 * @since 1.4
 	 *
-	 * @param string  $doctype     shorthand for the document type
-	 * @param bool    $externalcss indicates whether styles to be attached internally or as an external stylesheet
-	 * @param string  $title       title to be added in the head of the document
-	 * @param string  $lang        two-letter language code to be added to the output
-	 * @return string
+	 * @param string  $doctype     Optional. Shorthand for the document type.
+	 * @param bool    $externalcss Optional. Indicates whether styles to be attached internally or as an external stylesheet.
+	 * @param string  $title       Optional. Title to be added in the head of the document.
+	 * @param string  $lang        Optional. Two-letter language code to be added to the output.
+	 * @return string Formatted CSS for a full page.
 	 */
 	public function formatted_page( $doctype = 'html5', $externalcss = true, $title = '', $lang = 'en' ) {
 		switch ( $doctype ) {
@@ -162,7 +163,7 @@ class CSSTidy_print {
 		}
 
 		$output = '';
-		$this->output_css_plain = & $output;
+		$this->output_css_plain = &$output;
 
 		$output .= $doctype_output . "\n" . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $lang . '"';
 		$output .= ( 'xhtml1.1' === $doctype ) ? '>' : ' lang="' . $lang . '">';
@@ -182,12 +183,12 @@ class CSSTidy_print {
 	}
 
 	/**
-	 * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain
+	 * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain.
 	 *
 	 * @since 2.0
 	 *
-	 * @param bool   $plain         Optional. Plain text or not
-	 * @param string $default_media Optional. Default @media to add to selectors without any @media
+	 * @param bool   $plain         Optional. Plain text or not.
+	 * @param string $default_media Optional. Default @media to add to selectors without any @media.
 	 */
 	protected function _print( $plain = false, $default_media = '' ) {
 		if ( $this->output_css && $this->output_css_plain ) {
@@ -199,7 +200,7 @@ class CSSTidy_print {
 			$this->_convert_raw_css( $default_media );
 		}
 
-		$template = & $this->template;
+		$template = &$this->template;
 
 		if ( $plain ) {
 			$template = array_map( 'strip_tags', $template );
@@ -216,7 +217,7 @@ class CSSTidy_print {
 		if ( ! empty( $this->import ) ) {
 			for ( $i = 0, $size = count( $this->import ); $i < $size; $i++ ) {
 				$import_components = explode( ' ', $this->import[ $i ] );
-				if ( substr( $import_components[0], 0, 4 ) === 'url(' && substr( $import_components[0], -1, 1 ) === ')' ) {
+				if ( 'url(' === substr( $import_components[0], 0, 4 ) && ')' === substr( $import_components[0], -1, 1 ) ) {
 					$import_components[0] = '\'' . trim( substr( $import_components[0], 4, -1 ), "'\"" ) . '\'';
 					$this->import[ $i ] = implode( ' ', $import_components );
 					$this->parser->log( 'Optimised @import : Removed "url("', 'Information' );
@@ -226,7 +227,7 @@ class CSSTidy_print {
 		}
 
 		if ( ! empty( $this->namespace ) ) {
-			if ( ( $p = strpos( $this->namespace, 'url(' ) ) !== false && substr( $this->namespace, -1, 1 ) === ')' ) {
+			if ( false !== ( $p = strpos( $this->namespace, 'url(' ) ) && ')' === substr( $this->namespace, -1, 1 ) ) {
 				$this->namespace = substr_replace( $this->namespace, '"', $p, 4 );
 				$this->namespace = substr( $this->namespace, 0, -1 ) . '"';
 				$this->parser->log( 'Optimised @namespace : Removed "url("', 'Information' );
@@ -235,7 +236,7 @@ class CSSTidy_print {
 		}
 
 		$in_at_out = '';
-		$out = & $output;
+		$out = &$output;
 
 		foreach ( $this->tokens as $key => $token ) {
 			switch ( $token[0] ) {
@@ -244,7 +245,7 @@ class CSSTidy_print {
 						$token[1] = str_replace( ',', ",\n", $token[1] );
 					}
 					$out .= $template[0] . $this->_htmlsp( $token[1], $plain ) . $template[1];
-					$out = & $in_at_out;
+					$out = &$in_at_out;
 					break;
 				case SEL_START:
 					if ( $this->parser->get_cfg( 'lowercase_s' ) ) {
@@ -257,9 +258,9 @@ class CSSTidy_print {
 					$out .= $template[3];
 					break;
 				case PROPERTY:
-					if ( $this->parser->get_cfg( 'case_properties' ) === 2 ) {
+					if ( 2 === $this->parser->get_cfg( 'case_properties' ) ) {
 						$token[1] = strtoupper( $token[1] );
-					} elseif ( $this->parser->get_cfg( 'case_properties' ) === 1 ) {
+					} elseif ( 1 === $this->parser->get_cfg( 'case_properties' ) ) {
 						$token[1] = strtolower( $token[1] );
 					}
 					$out .= $template[4] . $this->_htmlsp( $token[1], $plain ) . ':' . $template[5];
@@ -282,7 +283,7 @@ class CSSTidy_print {
 					}
 					break;
 				case AT_END:
-					$out = & $output;
+					$out = &$output;
 					$out .= $template[10] . str_replace( "\n", "\n" . $template[10], $in_at_out );
 					$in_at_out = '';
 					$out .= $template[9];
@@ -303,19 +304,19 @@ class CSSTidy_print {
 			$this->output_css = $output;
 			$this->_print( true );
 		} else {
-			// If using spaces in the template, don't want these to appear in the plain output
+			// If using spaces in the template, don't want these to appear in the plain output.
 			$this->output_css_plain = str_replace( '&#160;', '', $output );
 		}
 	}
 
 	/**
-	 * Gets the next token type which is $move away from $key, excluding comments
+	 * Gets the next token type which is $move away from $key, excluding comments.
 	 *
 	 * @since 1.0
 	 *
-	 * @param int $key  current position
-	 * @param int $move move this far
-	 * @return mixed a token type
+	 * @param int $key  Current position.
+	 * @param int $move Move this far.
+	 * @return mixed A token type.
 	 */
 	protected function _seeknocomment( $key, $move ) {
 		$go = ( $move > 0 ) ? 1 : -1;
@@ -400,15 +401,15 @@ class CSSTidy_print {
 	}
 
 	/**
-	 * Same as htmlspecialchars, only that chars are not replaced if $plain !== true. This makes print_code() cleaner.
+	 * Same as htmlspecialchars, only that chars are not replaced if $plain is true. This makes print_code() cleaner.
 	 *
 	 * @since 1.0
 	 *
 	 * @see CSSTidy_print::_print()
 	 *
-	 * @param string $string
-	 * @param bool   $plain
-	 * @return string
+	 * @param string $string String.
+	 * @param bool   $plain  Print plain?
+	 * @return string [return value]
 	 */
 	protected function _htmlsp( $string, $plain ) {
 		if ( ! $plain ) {
@@ -422,7 +423,7 @@ class CSSTidy_print {
 	 *
 	 * @since 1.2
 	 *
-	 * @return double
+	 * @return double Compression ratio.
 	 */
 	public function get_ratio() {
 		if ( ! $this->output_css_plain ) {

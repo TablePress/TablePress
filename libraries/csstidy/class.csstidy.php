@@ -44,7 +44,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  */
 
 /**
- * Defines ctype functions if required
+ * Defines ctype functions if required.
  *
  * @TODO: Make these methods of CSSTidy.
  * @since 1.0.0
@@ -63,17 +63,18 @@ if ( ! function_exists( 'ctype_alpha' ) ) {
 }
 
 /**
- * Defines constants
+ * Defines constants.
  *
  * @TODO: Make these class constants of CSSTidy.
+ * @since 1.0.0
  */
-define( 'AT_START', 1 );
-define( 'AT_END', 2 );
-define( 'SEL_START', 3 );
-define( 'SEL_END', 4 );
-define( 'PROPERTY', 5 );
-define( 'VALUE', 6 );
-define( 'COMMENT', 7 );
+define( 'AT_START',    1 );
+define( 'AT_END',      2 );
+define( 'SEL_START',   3 );
+define( 'SEL_END',     4 );
+define( 'PROPERTY',    5 );
+define( 'VALUE',       6 );
+define( 'COMMENT',     7 );
 define( 'DEFAULT_AT', 41 );
 
 /**
@@ -96,10 +97,9 @@ require dirname( __FILE__ ) . '/class.csstidy_optimise.php';
  * This class represents a CSS parser which reads CSS code and saves it in an array.
  * In opposite to most other CSS parsers, it does not use regular expressions and
  * thus has full CSS2 support and a higher reliability.
- * Additional to that it applies some optimisations and fixes to the CSS code.
+ * Additionally to that, it applies some optimizations and fixes to the CSS code.
  *
  * @package CSSTidy
- * @author Florian Schmitz (floele at gmail dot com) 2005-2006
  * @since 1.0.0
  */
 class CSSTidy {
@@ -109,72 +109,72 @@ class CSSTidy {
 	 *
 	 * This array is empty if preserve_css is on.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	public $css = array();
 
 	/**
 	 * The raw parsed CSS.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	public $tokens = array();
 
 	/**
 	 * Instance of the CSS Printer class.
 	 *
-	 * @var CSSTidy_print
 	 * @since 1.0.0
+	 * @var CSSTidy_print
 	 */
 	public $print;
 
 	/**
 	 * Instance of the CSS Optimiser class.
 	 *
-	 * @var CSSTidy_optimise
 	 * @since 1.0.0
+	 * @var CSSTidy_optimise
 	 */
 	public $optimise;
 
 	/**
 	 * The CSS charset.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $charset = '';
 
 	/**
 	 * All @import URLs.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	public $import = array();
 
 	/**
 	 * The namespace.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $namespace = '';
 
 	/**
 	 * The CSSTidy version.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	protected $version = '1.5.2';
 
 	/**
 	 * The settings.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	protected $settings = array();
 
@@ -189,56 +189,56 @@ class CSSTidy {
 	 * - ic = in comment (ignore everything)
 	 * - at = in @-block
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	protected $status = 'is';
 
 	/**
 	 * The current at rule (@media).
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $at = '';
 
 	/**
 	 * The at rule for next selector (during @font-face or other @).
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	protected $next_selector_at = '';
 
 	/**
 	 * The current selector.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $selector = '';
 
 	/**
 	 * The current property.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $property = '';
 
 	/**
 	 * The position of , in selectors.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	protected $sel_separate = array();
 
 	/**
 	 * The current value.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $value = '';
 
@@ -250,89 +250,96 @@ class CSSTidy {
 	 * "url(foo.png)", "red", and  "no-repeat" are sub-values,
 	 * separated by whitespace.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	public $sub_value = '';
 
 	/**
 	 * All sub-values for a property.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	protected $sub_value_arr = array();
 
 	/**
 	 * The stack of characters that opened the current strings.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	public $str_char = array();
+
+	/**
+	 * [$cur_string description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
 	public $cur_string = array();
 
 	/**
 	 * Status from which the parser switched to ic or instr
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	protected $from = array();
 
 	/**
 	 * True if in invalid at-rule.
 	 *
-	 * @var bool
 	 * @since 1.0.0
+	 * @var bool
 	 */
 	protected $invalid_at = false;
 
 	/**
 	 * True if something has been added to the current selector.
 	 *
-	 * @var bool
 	 * @since 1.0.0
+	 * @var bool
 	 */
 	protected $added = false;
 
 	/**
 	 * The message log.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	public $log = array();
 
 	/**
 	 * The line number.
 	 *
-	 * @var int
 	 * @since 1.0.0
+	 * @var int
 	 */
 	protected $line = 1;
 
 	/**
 	 * Marks if we need to leave quotes for a string.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	protected $quoted_string = array();
 
 	/**
 	 * List of tokens.
 	 *
-	 * @var string
 	 * @since 1.0.0
+	 * @var string
 	 */
 	protected $tokens_list = '';
 
 	/**
 	 * Various CSS Data for CSSTidy.
 	 *
-	 * @var array
 	 * @since 1.0.0
+	 * @var array
 	 */
 	public $data = array();
 
@@ -378,12 +385,12 @@ class CSSTidy {
 		$this->settings['preserve_css'] = false;
 		$this->settings['timestamp'] = false;
 		$this->settings['template'] = ''; // say that property exists.
-		$this->set_cfg( 'template', 'default' ); // call load_template
+		$this->set_cfg( 'template', 'default' ); // Call load_template.
 
 		$this->print = new CSSTidy_print( $this );
 		$this->optimise = new CSSTidy_optimise( $this );
 
-		$this->tokens_list = & $this->data['csstidy']['tokens'];
+		$this->tokens_list = &$this->data['csstidy']['tokens'];
 	}
 
 	/**
@@ -431,7 +438,7 @@ class CSSTidy {
 	 *
 	 * @param string $setting Setting.
 	 * @param mixed  $value   Optional. Value of the setting.
-	 * @return bool
+	 * @return bool [return value]
 	 */
 	public function set_cfg( $setting, $value = null ) {
 		if ( is_array( $setting ) && is_null( $value ) ) {
@@ -457,8 +464,8 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed  $type
-	 * @param string $data
+	 * @param mixed  $type Type.
+	 * @param string $data Data.
 	 * @param bool   $do   Optional. Add a token even if preserve_css is off.
 	 */
 	public function _add_token( $type, $data, $do = false ) {
@@ -472,9 +479,9 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $message
-	 * @param string $type
-	 * @param int    $line    Optional.
+	 * @param string $message Message.
+	 * @param string $type    Type.
+	 * @param int    $line    Optional. Line number. -1 will use the current line.
 	 */
 	public function log( $message, $type, $line = -1 ) {
 		if ( -1 === $line ) {
@@ -492,9 +499,9 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string
-	 * @param int    $i
-	 * @return string
+	 * @param string $string String.
+	 * @param int    $i      i.
+	 * @return string [return value]
 	 */
 	public function _unicode( &$string, &$i ) {
 		++$i;
@@ -537,7 +544,7 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $filename
+	 * @param string $filename File name.
 	 */
 	public function write_page( $filename ) {
 		$this->write( $filename, true );
@@ -548,7 +555,7 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $filename
+	 * @param string $filename    File name.
 	 * @param bool   $formatted   Optional. Whether to print formatted or not.
 	 * @param string $doctype     Optional. When printing formatted, is a shorthand for the document type.
 	 * @param bool   $externalcss Optional. When printing formatted, indicates whether styles to be attached internally or as an external stylesheet.
@@ -584,11 +591,11 @@ class CSSTidy {
 	 *
 	 * @link http://csstidy.sourceforge.net/templates.php
 	 *
-	 * @param string $content   Either filename (if $from_file === true), content of a template file, "high_compression", "highest_compression", "low_compression", or "default".
+	 * @param string $content   Either file name (if $from_file is true), content of a template file, "high_compression", "highest_compression", "low_compression", or "default".
 	 * @param bool   $from_file Optional. Uses $content as filename if true.
 	 */
 	protected function load_template( $content, $from_file = true ) {
-		$predefined_templates = & $this->data['csstidy']['predefined_templates'];
+		$predefined_templates = &$this->data['csstidy']['predefined_templates'];
 		if ( in_array( $content, array( 'default', 'low_compression', 'high_compression', 'highest_compression' ), true ) ) {
 			$this->template = $predefined_templates[ $content ];
 			return;
@@ -611,7 +618,7 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $url
+	 * @param string $url URL.
 	 * @return bool
 	 */
 	protected function parse_from_url( $url ) {
@@ -623,8 +630,9 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string
-	 * @param int    $i
+	 * @param string $string String.
+	 * @param int    $i      i.
+	 * @return bool [return value]
 	 */
 	protected function is_token( &$string, $i ) {
 		return ( false !== strpos( $this->tokens_list, $string[ $i ] ) && ! $this->escaped( $string, $i ) );
@@ -636,16 +644,16 @@ class CSSTidy {
 	 * @since 1.0.0
 	 *
 	 * @param string $string The CSS code.
-	 * @return bool
+	 * @return bool [return value]
 	 */
 	public function parse( $string ) {
 		// Temporarily set locale to en_US in order to handle floats properly.
 		$old = @setlocale( LC_ALL, 0 );
 		@setlocale( LC_ALL, 'C' );
 
-		$all_properties = & $this->data['csstidy']['all_properties'];
-		$at_rules = & $this->data['csstidy']['at_rules'];
-		$quoted_string_properties = & $this->data['csstidy']['quoted_string_properties'];
+		$all_properties = &$this->data['csstidy']['all_properties'];
+		$at_rules = &$this->data['csstidy']['at_rules'];
+		$quoted_string_properties = &$this->data['csstidy']['quoted_string_properties'];
 
 		$this->css = array();
 		$this->print->input_css = $string;
@@ -698,7 +706,7 @@ class CSSTidy {
 							$this->invalid_at = true;
 							foreach ( $at_rules as $name => $type ) {
 								if ( ! strcasecmp( substr( $string, $i + 1, strlen( $name ) ), $name ) ) {
-									if ( $type === 'at' ) {
+									if ( 'at' === $type ) {
 										$this->at = '@' . $name;
 									} else {
 										$this->selector = '@' . $name;
@@ -730,7 +738,7 @@ class CSSTidy {
 							$this->status = 'instr';
 							$this->str_char[] = $string[ $i ];
 							$this->from[] = 'is';
-							/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
+							/* Fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
 							$this->quoted_string[] = ( '=' === $string[ $i - 1 ] );
 						} elseif ( $this->invalid_at && ';' === $string[ $i ] ) {
 							$this->invalid_at = false;
@@ -800,7 +808,7 @@ class CSSTidy {
 							$this->property .= $this->_unicode( $string, $i );
 						}
 						// else this is dumb IE a hack, keep it
-						// including //
+						// including /
 						elseif ( ( '' === $this->property && ! ctype_space( $string[ $i ] ) ) || ( '/' === $this->property || '/' === $string[ $i ] ) ) {
 							$this->property .= $string[ $i ];
 						}
@@ -808,8 +816,7 @@ class CSSTidy {
 						$this->property .= $string[ $i ];
 					}
 					break;
-
-					/* Case in-value */
+				/* Case in-value */
 				case 'iv':
 					$pn = ( ( "\n" === $string[ $i ] || "\r" === $string[ $i ] ) && $this->property_is_next( $string, $i + 1 ) || $i === strlen( $string ) - 1 );
 					if ( ( $this->is_token( $string, $i ) || $pn ) && ( ! ( ',' === $string[ $i ] && ! ctype_space( $string[ $i + 1 ] ) ) ) ) {
@@ -833,12 +840,12 @@ class CSSTidy {
 
 								switch ( $this->selector ) {
 									case '@charset':
-										/* Add quotes to charset */
+										// Add quotes to charset.
 										$this->sub_value_arr[] = '"' . trim( $this->sub_value ) . '"';
 										$this->charset = $this->sub_value_arr[0];
 										break;
 									case '@namespace':
-										/* Add quotes to namespace */
+										// Add quotes to namespace.
 										$this->sub_value_arr[] = '"' . trim( $this->sub_value ) . '"';
 										$this->namespace = implode( ' ', $this->sub_value_arr );
 										break;
@@ -874,7 +881,7 @@ class CSSTidy {
 								$this->at = $this->css_new_media_section( DEFAULT_AT );
 							}
 
-							// case settings
+							// Case settings.
 							if ( $this->get_cfg( 'lowercase_s' ) ) {
 								$this->selector = strtolower( $this->selector );
 							}
@@ -944,16 +951,15 @@ class CSSTidy {
 						}
 					}
 					break;
-
-					/* Case in string */
+				/* Case in string */
 				case 'instr':
 					$_str_char = $this->str_char[count( $this->str_char ) - 1];
 					$_cur_string = $this->cur_string[count( $this->cur_string ) - 1];
 					$_quoted_string = $this->quoted_string[count( $this->quoted_string ) - 1];
 					$temp_add = $string[ $i ];
 
-					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but
-					// parentheticals can be nested more than once.
+					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses,
+					// but parentheticals can be nested more than once.
 					if ( ')' !== $_str_char && ( '(' === $string[ $i ] || '"' === $string[ $i ] || '\\' === $string[ $i ] ) && ! $this->escaped( $string, $i ) ) {
 						$this->cur_string[] = $string[ $i ];
 						$this->str_char[] = ( '(' === $string[ $i ] ) ? ')' : $string[ $i ];
@@ -1001,10 +1007,10 @@ class CSSTidy {
 						if ( 'iv' === $this->status ) {
 							if ( ! $_quoted_string ) {
 								if ( false !== strpos( $_cur_string, ',' ) ) {
-									// we can on only remove space next to ','
+									// We can on only remove space next to ','
 									$_cur_string = implode( ',', array_map( 'trim', explode( ',', $_cur_string ) ) );
 								}
-								// and multiple spaces (too expensive)
+								// and multiple spaces (too expensive).
 								if ( false !== strpos( $_cur_string, '  ' ) ) {
 									$_cur_string = preg_replace( ',\s+,', ' ', $_cur_string );
 								}
@@ -1034,7 +1040,6 @@ class CSSTidy {
 		}
 
 		$this->optimise->postparse();
-
 		$this->print->_reset();
 
 		// Set locale back to original setting.
@@ -1048,8 +1053,8 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed $value
-	 * @return string
+	 * @param mixed $value Value.
+	 * @return string String.
 	 */
 	protected function quote_font_format( $value ) {
 		if ( 0 === strncmp( $value, 'format', 6 ) ) {
@@ -1075,7 +1080,7 @@ class CSSTidy {
 	 * @since 1.0.0
 	 */
 	protected function explode_selectors() {
-		// Explode multiple selectors
+		// Explode multiple selectors.
 		if ( 1 === $this->get_cfg( 'merge_selectors' ) ) {
 			$new_sels = array();
 			$lastpos = 0;
@@ -1106,9 +1111,9 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string
-	 * @param int    $pos
-	 * @return bool
+	 * @param string $string String.
+	 * @param int    $pos    Position.
+	 * @return bool [return value]
 	 */
 	public function escaped( &$string, $pos ) {
 		return $pos ? ! ( @( '\\' !== $string[ $pos - 1 ] ) || $this->escaped( $string, $pos - 1 ) ) : false;
@@ -1119,10 +1124,10 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $media
-	 * @param string $selector
-	 * @param string $property
-	 * @param string $new_val
+	 * @param string $media    Media.
+	 * @param string $selector Selector.
+	 * @param string $property Property.
+	 * @param string $new_val  New value.
 	 */
 	protected function css_add_property( $media, $selector, $property, $new_val ) {
 		if ( $this->get_cfg( 'preserve_css' ) || '' === trim( $new_val ) ) {
@@ -1146,8 +1151,8 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $media
-	 * @return string
+	 * @param string $media Media.
+	 * @return string [return value]
 	 */
 	protected function css_new_media_section( $media ) {
 		if ( $this->get_cfg( 'preserve_css' ) ) {
@@ -1181,9 +1186,9 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $media
-	 * @param string $selector
-	 * @return string
+	 * @param string $media    Media.
+	 * @param string $selector Selector.
+	 * @return string [return value]
 	 */
 	protected function css_new_selector( $media, $selector ) {
 		if ( $this->get_cfg( 'preserve_css' ) ) {
@@ -1220,10 +1225,10 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $media
-	 * @param string $selector
-	 * @param string $property
-	 * @return string
+	 * @param string $media    Media.
+	 * @param string $selector Selector.
+	 * @param string $property Property.
+	 * @return string [return value]
 	 */
 	protected function css_new_property( $media, $selector, $property ) {
 		if ( $this->get_cfg( 'preserve_css' ) ) {
@@ -1245,9 +1250,9 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $media
-	 * @param string $selector
-	 * @param array  $css_add
+	 * @param string $media    Media.
+	 * @param string $selector Selector.
+	 * @param array  $css_add  Additional CSS.
 	 */
 	public function merge_css_blocks( $media, $selector, $css_add ) {
 		foreach ( $css_add as $property => $value ) {
@@ -1260,12 +1265,12 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $value
-	 * @return bool
+	 * @param string $value Value.
+	 * @return bool Whether the value has the !important keyword.
 	 */
 	public function is_important( &$value ) {
 		return (
-			false !== strpos( $value, '!' ) // quick test
+			false !== strpos( $value, '!' ) // Quick test.
 			&& ! strcasecmp( substr( str_replace( $this->data['csstidy']['whitespace'], '', $value ), -10, 10 ), '!important' ) );
 	}
 
@@ -1274,8 +1279,8 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $value
-	 * @return string
+	 * @param string $value Value.
+	 * @return string Value without the !important;
 	 */
 	public function gvw_important( $value ) {
 		if ( $this->is_important( $value ) ) {
@@ -1294,12 +1299,12 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $istring
-	 * @param int    $pos
-	 * @return bool
+	 * @param string $istring String.
+	 * @param int    $pos     Position.
+	 * @return bool [return value]
 	 */
 	protected function property_is_next( $istring, $pos ) {
-		$all_properties = & $this->data['csstidy']['all_properties'];
+		$all_properties = &$this->data['csstidy']['all_properties'];
 		$istring = substr( $istring, $pos, strlen( $istring ) - $pos );
 		$pos = strpos( $istring, ':' );
 		if ( false === $pos ) {
@@ -1318,15 +1323,15 @@ class CSSTidy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $property
-	 * @return bool
+	 * @param string $property Property.
+	 * @return bool Whether the property is valid.
 	 */
 	public function property_is_valid( $property ) {
 		$property = strtolower( $property );
 		if ( in_array( trim( $property ), $this->data['csstidy']['multiple_properties'], true ) ) {
 			$property = trim( $property );
 		}
-		$all_properties = & $this->data['csstidy']['all_properties'];
+		$all_properties = &$this->data['csstidy']['all_properties'];
 		return isset( $all_properties[ $property ] ) && false !== strpos( $all_properties[ $property ], strtoupper( $this->get_cfg( 'css_level' ) ) );
 	}
 

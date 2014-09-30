@@ -54,41 +54,41 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class CSSTidy_optimise {
 
 	/**
-	 * CSSTidy object
+	 * CSSTidy instance.
 	 *
-	 * @var object
+	 * @since 1.0.0
+	 * @var CSSTidy
 	 */
 	public $parser;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
-	 * @param CSSTidy $css contains the class CSSTidy
-	 * @access private
-	 * @version 1.0
+	 * @since 1.0.0
+	 *
+	 * @param CSSTidy $css Instance of the CSSTidy class.
 	 */
 	public function __construct( $css ) {
 		$this->parser = $css;
-		$this->css = & $css->css;
-		$this->sub_value = & $css->sub_value;
-		$this->at = & $css->at;
-		$this->selector = & $css->selector;
-		$this->property = & $css->property;
-		$this->value = & $css->value;
+		$this->css = &$css->css;
+		$this->sub_value = &$css->sub_value;
+		$this->at = &$css->at;
+		$this->selector = &$css->selector;
+		$this->property = &$css->property;
+		$this->value = &$css->value;
 	}
 
 	/**
-	 * Optimises $css after parsing
+	 * Optimises $css after parsing.
 	 *
-	 * @access public
-	 * @version 1.0
+	 * @since 1.0.0
 	 */
 	public function postparse() {
 		if ( $this->parser->get_cfg( 'preserve_css' ) ) {
 			return;
 		}
 
-		if ( $this->parser->get_cfg( 'merge_selectors' ) === 2 ) {
+		if ( 2 === $this->parser->get_cfg( 'merge_selectors' ) ) {
 			foreach ( $this->css as $medium => $value ) {
 				$this->merge_selectors( $this->css[ $medium ] );
 			}
@@ -127,13 +127,12 @@ class CSSTidy_optimise {
 	/**
 	 * Optimises values
 	 *
-	 * @access public
-	 * @version 1.0
+	 * @since 1.0.0
 	 */
 	public function value() {
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
-		// optimise shorthand properties
+		// Optimise shorthand properties.
 		if ( isset( $shorthands[ $this->property ] ) && $this->parser->get_cfg( 'optimise_shorthands' ) > 0 ) {
 			$temp = $this->shorthand( $this->value ); // FIXME - move
 			if ( $temp !== $this->value ) {
@@ -149,23 +148,22 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Optimises shorthands
+	 * Optimises shorthands.
 	 *
-	 * @access public
-	 * @version 1.0
+	 * @since 1.0.0
 	 */
 	public function shorthands() {
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
 		if ( ! $this->parser->get_cfg( 'optimise_shorthands' ) || $this->parser->get_cfg( 'preserve_css' ) ) {
 			return;
 		}
 
-		if ( $this->property === 'font' && $this->parser->get_cfg( 'optimise_shorthands' ) > 1 ) {
+		if ( 'font' === $this->property && $this->parser->get_cfg( 'optimise_shorthands' ) > 1 ) {
 			$this->css[ $this->at ][ $this->selector ]['font']='';
 			$this->parser->merge_css_blocks( $this->at, $this->selector, $this->dissolve_short_font( $this->value ) );
 		}
-		if ( $this->property === 'background' && $this->parser->get_cfg( 'optimise_shorthands' ) > 2 ) {
+		if ( 'background' === $this->property && $this->parser->get_cfg( 'optimise_shorthands' ) > 2 ) {
 			$this->css[ $this->at ][ $this->selector ]['background']='';
 			$this->parser->merge_css_blocks( $this->at, $this->selector, $this->dissolve_short_bg( $this->value ) );
 		}
@@ -178,16 +176,15 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Optimises a sub-value
+	 * Optimises a sub-value.
 	 *
-	 * @access public
-	 * @version 1.0
+	 * @since 1.0.0
 	 */
 	public function subvalue() {
-		$replace_colors = & $this->parser->data['csstidy']['replace_colors'];
+		$replace_colors = &$this->parser->data['csstidy']['replace_colors'];
 
 		$this->sub_value = trim( $this->sub_value );
-		if ( $this->sub_value == '' ) { // caution : '0'
+		if ( '' === $this->sub_value ) { // caution : '0'
 			return;
 		}
 
@@ -197,19 +194,19 @@ class CSSTidy_optimise {
 		}
 		$this->sub_value = $this->parser->gvw_important( $this->sub_value );
 
-		// Compress font-weight
-		if ( $this->property === 'font-weight' && $this->parser->get_cfg( 'compress_font-weight' ) ) {
-			if ( $this->sub_value === 'bold' ) {
+		// Compress font-weight.
+		if ( 'font-weight' === $this->property && $this->parser->get_cfg( 'compress_font-weight' ) ) {
+			if ( 'bold' === $this->sub_value ) {
 				$this->sub_value = '700';
 				$this->parser->log( 'Optimised font-weight: Changed "bold" to "700"', 'Information' );
-			} elseif ( $this->sub_value === 'normal' ) {
+			} elseif ( 'normal' === $this->sub_value ) {
 				$this->sub_value = '400';
 				$this->parser->log( 'Optimised font-weight: Changed "normal" to "400"', 'Information' );
 			}
 		}
 
 		$temp = $this->compress_numbers( $this->sub_value );
-		if ( strcasecmp( $temp, $this->sub_value ) !== 0 ) {
+		if ( 0 !== strcasecmp( $temp, $this->sub_value ) ) {
 			if ( strlen( $temp ) > strlen( $this->sub_value ) ) {
 				$this->parser->log( 'Fixed invalid number: Changed "' . $this->sub_value . '" to "' . $temp . '"', 'Warning' );
 			} else {
@@ -232,12 +229,14 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Compresses shorthand values. Example: margin:1px 1px 1px 1px -> margin:1px
+	 * Compresses shorthand values.
 	 *
-	 * @param string  $value
-	 * @access public
-	 * @return string
-	 * @version 1.0
+	 * Example: `margin: 1px 1px 1px 1px` will become `margin: 1px`.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $value Shorthand value.
+	 * @return string Compressed value.
 	 */
 	public function shorthand( $value ) {
 		$important = '';
@@ -251,23 +250,23 @@ class CSSTidy_optimise {
 		$values = explode( ' ', $values );
 		switch ( count( $values ) ) {
 			case 4:
-				if ( $values[0] == $values[1] && $values[0] == $values[2] && $values[0] == $values[3] ) {
+				if ( $values[0] === $values[1] && $values[0] === $values[2] && $values[0] === $values[3] ) {
 					return $values[0] . $important;
-				} elseif ( $values[1] == $values[3] && $values[0] == $values[2] ) {
+				} elseif ( $values[1] === $values[3] && $values[0] === $values[2] ) {
 					return $values[0] . ' ' . $values[1] . $important;
-				} elseif ( $values[1] == $values[3] ) {
+				} elseif ( $values[1] === $values[3] ) {
 					return $values[0] . ' ' . $values[1] . ' ' . $values[2] . $important;
 				}
 				break;
 			case 3:
-				if ( $values[0] == $values[1] && $values[0] == $values[2] ) {
+				if ( $values[0] === $values[1] && $values[0] === $values[2] ) {
 					return $values[0] . $important;
-				} elseif ( $values[0] == $values[2] ) {
+				} elseif ( $values[0] === $values[2] ) {
 					return $values[0] . ' ' . $values[1] . $important;
 				}
 				break;
 			case 2:
-				if ( $values[0] == $values[1] ) {
+				if ( $values[0] === $values[1] ) {
 					return $values[0] . $important;
 				}
 				break;
@@ -277,12 +276,12 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Removes unnecessary whitespace in ! important
+	 * Removes unnecessary whitespace in ! important.
 	 *
-	 * @param string  $string
-	 * @return string
-	 * @access public
-	 * @version 1.1
+	 * @since 1.0.0
+	 *
+	 * @param string $string String.
+	 * @return string Cleaned string.
 	 */
 	public function compress_important( &$string ) {
 		if ( $this->parser->is_important( $string ) ) {
@@ -294,21 +293,22 @@ class CSSTidy_optimise {
 	/**
 	 * Color compression function. Converts all rgb() values to #-values and uses the short-form if possible. Also replaces 4 color names by #-values.
 	 *
-	 * @param string  $color
-	 * @return string
-	 * @version 1.1
+	 * @since 1.0.0
+	 *
+	 * @param string $color Color value.
+	 * @return string Compressed color.
 	 */
 	public function cut_color( $color ) {
-		$replace_colors = & $this->parser->data['csstidy']['replace_colors'];
+		$replace_colors = &$this->parser->data['csstidy']['replace_colors'];
 
 		// If it's a string, don't touch!
 		if ( 0 === strncmp( $color, "'", 1 ) || 0 === strncmp( $color, '"', 1 ) ) {
 			return $color;
 		}
 
-		/* expressions complexes de type gradient */
+		// Complex gradient expressions
 		if ( false !== strpos( $color, '(' ) && 0 !== strncmp( $color, 'rgb(', 4 ) ) {
-			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
+			// Don't touch properties within MSIE filters, those are to sensitive.
 			if ( false !== stripos( $color, 'progid:' ) ) {
 				return $color;
 			}
@@ -350,13 +350,13 @@ class CSSTidy_optimise {
 			}
 		}
 
-		// Fix bad color names
+		// Fix bad color names.
 		if ( isset( $replace_colors[strtolower( $color )] ) ) {
 			$color = $replace_colors[strtolower( $color )];
 		}
 
 		// #aabbcc -> #abc
-		if ( strlen( $color ) == 7 ) {
+		if ( 7 === strlen( $color ) ) {
 			$color_temp = strtolower( $color );
 			if ( '#' === $color_temp[0] && $color_temp[1] === $color_temp[2] && $color_temp[3] === $color_temp[4] && $color_temp[5] === $color_temp[6] ) {
 				$color = '#' . $color[1] . $color[3] . $color[5];
@@ -401,43 +401,44 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Compresses numbers (ie. 1.0 becomes 1 or 1.100 becomes 1.1 )
+	 * Compresses numbers (ie. 1.0 becomes 1 or 1.100 becomes 1.1).
 	 *
-	 * @param string  $subvalue
-	 * @return string
-	 * @version 1.2
+	 * @since 1.0.0
+	 *
+	 * @param string $subvalue Value.
+	 * @return string Compressed value.
 	 */
 	public function compress_numbers( $subvalue ) {
-		$unit_values = & $this->parser->data['csstidy']['unit_values'];
-		$color_values = & $this->parser->data['csstidy']['color_values'];
+		$unit_values = &$this->parser->data['csstidy']['unit_values'];
+		$color_values = &$this->parser->data['csstidy']['color_values'];
 
 		// for font:1em/1em sans-serif...;
-		if ( $this->property === 'font' ) {
+		if ( 'font' === $this->property ) {
 			$temp = explode( '/', $subvalue );
 		} else {
 			$temp = array( $subvalue );
 		}
 
 		for ( $l = 0; $l < count( $temp ); $l++ ) {
-			// if we are not dealing with a number at this point, do not optimise anything
+			// If we are not dealing with a number at this point, do not optimize anything.
 			$number = $this->AnalyseCssNumber( $temp[ $l ] );
-			if ( $number === false ) {
+			if ( false === $number ) {
 				return $subvalue;
 			}
 
-			// Fix bad colors
+			// Fix bad colors.
 			if ( in_array( $this->property, $color_values ) ) {
-				if ( strlen( $temp[ $l ] ) == 3 || strlen( $temp[ $l ] ) == 6 ) {
+				if ( 3 === strlen( $temp[ $l ] ) || 6 === strlen( $temp[ $l ] ) ) {
 					$temp[ $l ] = '#' . $temp[ $l ];
 				}
 				else {
-					$temp[ $l ] = "0";
+					$temp[ $l ] = '0';
 				}
 				continue;
 			}
 
 			if ( abs( $number[0] ) > 0 ) {
-				if ( $number[1] == '' && in_array( $this->property, $unit_values, true ) ) {
+				if ( '' === $number[1] && in_array( $this->property, $unit_values, true ) ) {
 					$number[1] = 'px';
 				}
 			} else {
@@ -451,19 +452,20 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Checks if a given string is a CSS valid number. If it is,
-	 * an array containing the value and unit is returned
+	 * Checks if a given string is a CSS valid number. If it is, an array containing the value and unit is returned.
 	 *
-	 * @param string  $string
-	 * @return array ('unit' if unit is found or '' if no unit exists, number value) or false if no number
+	 * @since 1.0.0
+	 *
+	 * @param string $string String.
+	 * @return array ('unit' if unit is found or '' if no unit exists, number value) or false if no number.
 	 */
-	public function AnalyseCssNumber( $string ) {
+	public function analyseCssNumber( $string ) {
 		// most simple checks first
-		if ( strlen( $string ) == 0 || ctype_alpha( $string[0] ) ) {
+		if ( 0 === strlen( $string ) || ctype_alpha( $string[0] ) ) {
 			return false;
 		}
 
-		$units = & $this->parser->data['csstidy']['units'];
+		$units = &$this->parser->data['csstidy']['units'];
 		$return = array( 0, '' );
 
 		$return[0] = floatval( $string );
@@ -498,10 +500,10 @@ class CSSTidy_optimise {
 	 * Merges selectors with same properties. Example: a{color:red} b{color:red} -> a,b{color:red}
 	 * Very basic and has at least one bug. Hopefully there is a replacement soon.
 	 *
-	 * @param array   $array
+	 * @since 1.0.0
+	 *
+	 * @param array $array
 	 * @return array
-	 * @access public
-	 * @version 1.2
 	 */
 	public function merge_selectors( &$array ) {
 		$css = $array;
@@ -510,11 +512,11 @@ class CSSTidy_optimise {
 				continue;
 			}
 
-			// Check if properties also exist in another selector
+			// Check if properties also exist in another selector.
 			$keys = array();
 			// PHP bug (?) without $css = $array; here
 			foreach ( $css as $selector => $vali ) {
-				if ( $selector == $key ) {
+				if ( $selector === $key ) {
 					continue;
 				}
 
@@ -540,9 +542,11 @@ class CSSTidy_optimise {
 	 * Removes invalid selectors and their corresponding rule-sets as
 	 * defined by 4.1.7 in REC-CSS2. This is a very rudimentary check
 	 * and should be replaced by a full-blown parsing algorithm or
-	 * regular expression
+	 * regular expression.
 	 *
-	 * @version 1.4
+	 * @since 1.0.0
+	 *
+	 * @param [type] $array [description]
 	 */
 	public function discard_invalid_selectors( &$array ) {
 		foreach ( $array as $selector => $decls ) {
@@ -567,16 +571,17 @@ class CSSTidy_optimise {
 	/**
 	 * Dissolves properties like padding:10px 10px 10px to padding-top:10px;padding-bottom:10px;...
 	 *
-	 * @param string  $property
-	 * @param string  $value
-	 * @return array
-	 * @version 1.0
-	 * @see merge_4value_shorthands()
+	 * @since 1.0.0
+	 *
+	 * @param string $property [description]
+	 * @param string$value    [description]
+	 *
+	 * @return [type] [description]
 	 */
 	public function dissolve_4value_shorthands( $property, $value ) {
 		$return = array();
 
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 		if ( ! is_array( $shorthands[ $property ] ) ) {
 			$return[ $property ] = $value;
 			return $return;
@@ -589,16 +594,16 @@ class CSSTidy_optimise {
 		}
 		$values = explode( ' ', $value );
 
-		if ( count( $values ) == 4 ) {
+		if ( 4 === count( $values ) ) {
 			for ( $i = 0; $i < 4; $i++ ) {
 				$return[ $shorthands[ $property ][ $i ] ] = $values[ $i ] . $important;
 			}
-		} elseif ( count( $values ) == 3 ) {
+		} elseif ( 3 === count( $values ) ) {
 			$return[ $shorthands[ $property ][0] ] = $values[0] . $important;
 			$return[ $shorthands[ $property ][1] ] = $values[1] . $important;
 			$return[ $shorthands[ $property ][3] ] = $values[1] . $important;
 			$return[ $shorthands[ $property ][2] ] = $values[2] . $important;
-		} elseif ( count( $values ) == 2 ) {
+		} elseif ( 2 === count( $values ) ) {
 			for ( $i = 0; $i < 4; $i++ ) {
 				$return[ $shorthands[ $property ][ $i ] ] = ( 0 !== $i % 2 ) ? $values[1] . $important : $values[0] . $important;
 			}
@@ -614,10 +619,11 @@ class CSSTidy_optimise {
 	/**
 	 * Explodes a string as explode() does, however, not if $sep is escaped or within a string.
 	 *
-	 * @param string  $sep    separator
-	 * @param string  $string
+	 * @since 1.0.0
+	 *
+	 * @param string  $sep    Separator.
+	 * @param string  $string String.
 	 * @return array
-	 * @version 1.0
 	 */
 	public function explode_ws( $sep, $string ) {
 		$status = 'st';
@@ -627,24 +633,24 @@ class CSSTidy_optimise {
 		$num = 0;
 		for ( $i = 0, $len = strlen( $string ); $i < $len; $i++ ) {
 			switch ( $status ) {
-			case 'st':
-				if ( $string[ $i ] == $sep && ! $this->parser->escaped( $string, $i ) ) {
-					++$num;
-				} elseif ( $string[ $i ] === '"' || $string[ $i ] === '\'' || $string[ $i ] === '(' && ! $this->parser->escaped( $string, $i ) ) {
-					$status = 'str';
-					$to = ( $string[ $i ] === '(' ) ? ')' : $string[ $i ];
-					( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
-				} else {
-					( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
-				}
-				break;
+				case 'st':
+					if ( $string[ $i ] === $sep && ! $this->parser->escaped( $string, $i ) ) {
+						++$num;
+					} elseif ( '"' === $string[ $i ] || "'" === $string[ $i ] || '(' === $string[ $i ] && ! $this->parser->escaped( $string, $i ) ) {
+						$status = 'str';
+						$to = ( '(' === $string[ $i ] ) ? ')' : $string[ $i ];
+						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
+					} else {
+						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
+					}
+					break;
 
-			case 'str':
-				if ( $string[ $i ] == $to && ! $this->parser->escaped( $string, $i ) ) {
-					$status = 'st';
-				}
-				( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
-				break;
+				case 'str':
+					if ( $string[ $i ] === $to && ! $this->parser->escaped( $string, $i ) ) {
+						$status = 'st';
+					}
+					( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
+					break;
 			}
 		}
 
@@ -656,16 +662,16 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Merges Shorthand properties again, the opposite of dissolve_4value_shorthands()
+	 * Merges Shorthand properties again, the opposite of dissolve_4value_shorthands().
 	 *
-	 * @param array   $array
-	 * @return array
-	 * @version 1.2
-	 * @see dissolve_4value_shorthands()
+	 * @since 1.0.0
+	 *
+	 * @param [type] $array [description]
+	 * @return [type] [description]
 	 */
 	public function merge_4value_shorthands( $array ) {
 		$return = $array;
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
 		foreach ( $shorthands as $key => $value ) {
 			if ( isset( $array[ $value[0] ] ) && isset( $array[ $value[1] ] )
@@ -690,13 +696,14 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Dissolve background property
+	 * Dissolve background property.
 	 *
-	 * @param string  $str_value
-	 * @return array
-	 * @version 1.0
-	 * @see merge_bg()
-	 * @todo full CSS 3 compliance
+	 * @TODO Full CSS3 compliance.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $str_value String value.
+	 * @return array Array.
 	 */
 	public function dissolve_short_bg( $str_value ) {
 		// Don't try to explose background gradient!
@@ -704,7 +711,7 @@ class CSSTidy_optimise {
 			return array( 'background' => $str_value );
 		}
 
-		$background_prop_default = & $this->parser->data['csstidy']['background_prop_default'];
+		$background_prop_default = &$this->parser->data['csstidy']['background_prop_default'];
 		$repeat = array( 'repeat', 'repeat-x', 'repeat-y', 'no-repeat', 'space' );
 		$attachment = array( 'scroll', 'fixed', 'local' );
 		$clip = array( 'border', 'padding' );
@@ -732,7 +739,7 @@ class CSSTidy_optimise {
 			$str_value[ $i ] = $this->explode_ws( ' ', trim( $str_value[ $i ] ) );
 
 			for ( $j = 0; $j < count( $str_value[ $i ] ); $j++ ) {
-				if ( $have['bg'] === false && ( substr( $str_value[ $i ][ $j ], 0, 4 ) === 'url(' || $str_value[ $i ][ $j ] === 'none' ) ) {
+				if ( false === $have['bg'] && ( 'url(' === substr( $str_value[ $i ][ $j ], 0, 4 ) || 'none' === $str_value[ $i ][ $j ] ) ) {
 					$return['background-image'] .= $str_value[ $i ][ $j ] . ',';
 					$have['bg'] = true;
 				} elseif ( in_array( $str_value[ $i ][ $j ], $repeat, true ) ) {
@@ -746,7 +753,7 @@ class CSSTidy_optimise {
 					$return['background-origin'] .= $str_value[ $i ][ $j ] . ',';
 				} elseif ( '(' === $str_value[ $i ][ $j ][0] ) {
 					$return['background-size'] .= substr( $str_value[ $i ][ $j ], 1, -1 ) . ',';
-				} elseif ( in_array( $str_value[ $i ][ $j ], $pos, true ) || is_numeric( $str_value[ $i ][ $j ][0] ) || $str_value[ $i ][ $j ][0] === null || $str_value[ $i ][ $j ][0] === '-' || $str_value[ $i ][ $j ][0] === '.' ) {
+				} elseif ( in_array( $str_value[ $i ][ $j ], $pos, true ) || is_numeric( $str_value[ $i ][ $j ][0] ) || null === $str_value[ $i ][ $j ][0] || '-' === $str_value[ $i ][ $j ][0] || '.' === $str_value[ $i ][ $j ][0] ) {
 					$return['background-position'] .= $str_value[ $i ][ $j ];
 					if ( ! $have['pos'] ) {
 						$return['background-position'] .= ' ';
@@ -762,7 +769,7 @@ class CSSTidy_optimise {
 		}
 
 		foreach ( $background_prop_default as $bg_prop => $default_value ) {
-			if ( $return[ $bg_prop ] !== null ) {
+			if ( null !== $return[ $bg_prop ] ) {
 				$return[ $bg_prop ] = substr( $return[ $bg_prop ], 0, -1 ) . $important;
 			} else {
 				$return[ $bg_prop ] = $default_value . $important;
@@ -772,55 +779,55 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Merges all background properties
+	 * Merges all background properties.
 	 *
-	 * @param array   $input_css
-	 * @return array
-	 * @version 1.0
-	 * @see dissolve_short_bg()
-	 * @todo full CSS 3 compliance
+	 * @TODO Full CSS3 compliance.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $input_css CSS.
+	 * @return array Array.
 	 */
 	public function merge_bg( $input_css ) {
-		$background_prop_default = & $this->parser->data['csstidy']['background_prop_default'];
-		// Max number of background images. CSS3 not yet fully implemented
+		$background_prop_default = &$this->parser->data['csstidy']['background_prop_default'];
+		// Max number of background images. CSS3 not yet fully implemented.
 		$number_of_values = @max( count( $this->explode_ws( ',', $input_css['background-image'] ) ), count( $this->explode_ws( ',', $input_css['background-color'] ) ), 1 );
-		// Array with background images to check if BG image exists
+		// Array with background images to check if BG image exists.
 		$bg_img_array = @$this->explode_ws( ',', $this->parser->gvw_important( $input_css['background-image'] ) );
 		$new_bg_value = '';
 		$important = '';
 
-		// if background properties is here and not empty, don't try anything
+		// If background properties is here and not empty, don't try anything.
 		if ( isset( $input_css['background'] ) && $input_css['background'] ) {
 			return $input_css;
 		}
 
 		for ( $i = 0; $i < $number_of_values; $i++ ) {
 			foreach ( $background_prop_default as $bg_property => $default_value ) {
-				// Skip if property does not exist
+				// Skip if property does not exist.
 				if ( ! isset( $input_css[ $bg_property ] ) ) {
 					continue;
 				}
 
 				$cur_value = $input_css[ $bg_property ];
-				// skip all optimisation if gradient() somewhere
+				// Skip all optimisation if gradient() somewhere.
 				if ( false !== stripos( $cur_value, 'gradient(' ) ) {
 					return $input_css;
 				}
 
-				// Skip some properties if there is no background image
-				if ( ( ! isset( $bg_img_array[ $i ] ) || $bg_img_array[ $i ] === 'none' )
-					&& ( $bg_property === 'background-size' || $bg_property === 'background-position'
-					|| $bg_property === 'background-attachment' || $bg_property === 'background-repeat' ) ) {
+				// Skip some properties if there is no background image.
+				if ( ( ! isset( $bg_img_array[ $i ] ) || 'none' === $bg_img_array[ $i ] )
+					&& ( 'background-size' === $bg_property || 'background-position' === $bg_property || 'background-attachment' === $bg_property || 'background-repeat' === $bg_property ) ) {
 					continue;
 				}
 
-				// Remove !important
+				// Remove !important.
 				if ( $this->parser->is_important( $cur_value ) ) {
 					$important = ' !important';
 					$cur_value = $this->parser->gvw_important( $cur_value );
 				}
 
-				// Do not add default values
+				// Do not add default values.
 				if ( $cur_value === $default_value ) {
 					continue;
 				}
@@ -828,7 +835,7 @@ class CSSTidy_optimise {
 				$temp = $this->explode_ws( ',', $cur_value );
 
 				if ( isset( $temp[ $i ] ) ) {
-					if ( $bg_property === 'background-size' ) {
+					if ( 'background-size' === $bg_property ) {
 						$new_bg_value .= '(' . $temp[ $i ] . ') ';
 					} else {
 						$new_bg_value .= $temp[ $i ] . ' ';
@@ -842,13 +849,13 @@ class CSSTidy_optimise {
 			}
 		}
 
-		// Delete all background-properties
+		// Delete all background properties.
 		foreach ( $background_prop_default as $bg_property => $default_value ) {
 			unset( $input_css[ $bg_property ] );
 		}
 
-		// Add new background property
-		if ( $new_bg_value !== '' ) {
+		// Add new background property.
+		if ( '' !== $new_bg_value ) {
 			$input_css['background'] = $new_bg_value . $important;
 		} elseif ( isset ( $input_css['background'] ) ) {
 			$input_css['background'] = 'none';
@@ -858,15 +865,15 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Dissolve font property
+	 * Dissolve font property.
 	 *
-	 * @param string  $str_value
-	 * @return array
-	 * @version 1.3
-	 * @see merge_font()
+	 * @since 1.0.0
+	 *
+	 * @param [type] $str_value [description]
+	 * @return [type] [description]
 	 */
 	public function dissolve_short_font( $str_value ) {
-		$font_prop_default = & $this->parser->data['csstidy']['font_prop_default'];
+		$font_prop_default = &$this->parser->data['csstidy']['font_prop_default'];
 		$font_weight = array( 'normal', 'bold', 'bolder', 'lighter', 100, 200, 300, 400, 500, 600, 700, 800, 900 );
 		$font_variant = array( 'normal', 'small-caps' );
 		$font_style = array( 'normal', 'italic', 'oblique' );
@@ -883,25 +890,25 @@ class CSSTidy_optimise {
 		$have['variant'] = false;
 		$have['weight'] = false;
 		$have['size'] = false;
-		// Detects if font-family consists of several words w/o quotes
+		// Detects if font-family consists of several words w/o quotes.
 		$multiwords = false;
 
-		// Workaround with multiple font-family
+		// Workaround with multiple font-families.
 		$str_value = $this->explode_ws( ',', trim( $str_value ) );
 
 		$str_value[0] = $this->explode_ws( ' ', trim( $str_value[0] ) );
 
 		for ( $j = 0; $j < count( $str_value[0] ); $j++ ) {
-			if ( $have['weight'] === false && in_array( $str_value[0][ $j ], $font_weight ) ) {
+			if ( false === $have['weight'] && in_array( $str_value[0][ $j ], $font_weight ) ) {
 				$return['font-weight'] = $str_value[0][ $j ];
 				$have['weight'] = true;
-			} elseif ( $have['variant'] === false && in_array( $str_value[0][ $j ], $font_variant ) ) {
+			} elseif ( false === $have['variant'] && in_array( $str_value[0][ $j ], $font_variant ) ) {
 				$return['font-variant'] = $str_value[0][ $j ];
 				$have['variant'] = true;
-			} elseif ( $have['style'] === false && in_array( $str_value[0][ $j ], $font_style ) ) {
+			} elseif ( false === $have['style'] && in_array( $str_value[0][ $j ], $font_style ) ) {
 				$return['font-style'] = $str_value[0][ $j ];
 				$have['style'] = true;
-			} elseif ( $have['size'] === false && ( is_numeric( $str_value[0][ $j ][0] ) || $str_value[0][ $j ][0] === null || $str_value[0][ $j ][0] === '.' ) ) {
+			} elseif ( false === $have['size'] && ( is_numeric( $str_value[0][ $j ][0] ) || null === $str_value[0][ $j ][0] || '.' === $str_value[0][ $j ][0] ) ) {
 				$size = $this->explode_ws( '/', trim( $str_value[0][ $j ] ) );
 				$return['font-size'] = $size[0];
 				if ( isset( $size[1] ) ) {
@@ -919,8 +926,8 @@ class CSSTidy_optimise {
 				}
 			}
 		}
-		// add quotes if we have several words in font-family
-		if ( $multiwords !== false ) {
+		// Add quotes if we have several words in font-family.
+		if ( false !== $multiwords ) {
 			$return['font-family'] = '"' . $return['font-family'] . '"';
 		}
 		$i = 1;
@@ -929,14 +936,14 @@ class CSSTidy_optimise {
 			$i++;
 		}
 
-		// Fix for 100 and more font-size
-		if ( $have['size'] === false && isset( $return['font-weight'] ) && is_numeric( $return['font-weight'][0] ) ) {
+		// Fix for font-size 100 and higher.
+		if ( false === $have['size'] && isset( $return['font-weight'] ) && is_numeric( $return['font-weight'][0] ) ) {
 			$return['font-size'] = $return['font-weight'];
 			unset( $return['font-weight'] );
 		}
 
 		foreach ( $font_prop_default as $font_prop => $default_value ) {
-			if ( $return[ $font_prop ] !== null ) {
+			if ( null !== $return[ $font_prop ] ) {
 				$return[ $font_prop ] = $return[ $font_prop ] . $important;
 			} else {
 				$return[ $font_prop ] = $default_value . $important;
@@ -946,20 +953,20 @@ class CSSTidy_optimise {
 	}
 
 	/**
-	 * Merges all fonts properties
+	 * Merges all fonts properties.
 	 *
-	 * @param array   $input_css
-	 * @return array
-	 * @version 1.3
-	 * @see dissolve_short_font()
+	 * @since 1.0.0
+	 *
+	 * @param [type] $input_css [description]
+	 * @return [type] [description]
 	 */
 	public function merge_font( $input_css ) {
-		$font_prop_default = & $this->parser->data['csstidy']['font_prop_default'];
+		$font_prop_default = &$this->parser->data['csstidy']['font_prop_default'];
 		$new_font_value = '';
 		$important = '';
-		// Skip if not font-family and font-size set
+		// Skip if no font-family and font-size set.
 		if ( isset( $input_css['font-family'] ) && isset( $input_css['font-size'] ) ) {
-			// fix several words in font-family - add quotes
+			// Fix several words in font-family - add quotes.
 			if ( isset( $input_css['font-family'] ) ) {
 				$families = explode( ",", $input_css['font-family'] );
 				$result_families = array();
@@ -967,8 +974,8 @@ class CSSTidy_optimise {
 					$family = trim( $family );
 					$len = strlen( $family );
 					if ( strpos( $family, " " ) &&
-						! ( ( $family[0] == '"' && $family[ $len - 1 ] == '"' ) ||
-						( $family[0] == "'" && $family[ $len - 1 ] == "'" ) ) ) {
+						! ( ( '"' === $family[0] && '"' === $family[ $len - 1 ] ) ||
+						( "'" === $family[0] && "'" === $family[ $len - 1 ] ) ) ) {
 						$family = '"' . $family . '"';
 					}
 					$result_families[] = $family;
@@ -976,40 +983,39 @@ class CSSTidy_optimise {
 				$input_css['font-family'] = implode( ",", $result_families );
 			}
 			foreach ( $font_prop_default as $font_property => $default_value ) {
-				// Skip if property does not exist
+				// Skip if property does not exist.
 				if ( ! isset( $input_css[ $font_property ] ) ) {
 					continue;
 				}
 
 				$cur_value = $input_css[ $font_property ];
 
-				// Skip if default value is used
+				// Skip if default value is used.
 				if ( $cur_value === $default_value ) {
 					continue;
 				}
 
-				// Remove !important
+				// Remove !important.
 				if ( $this->parser->is_important( $cur_value ) ) {
 					$important = ' !important';
 					$cur_value = $this->parser->gvw_important( $cur_value );
 				}
 
 				$new_font_value .= $cur_value;
-				// Add delimiter
-				$new_font_value .= ( $font_property === 'font-size' &&
-					isset( $input_css['line-height'] ) ) ? '/' : ' ';
+				// Add delimiter.
+				$new_font_value .= ( 'font-size' === $font_property && isset( $input_css['line-height'] ) ) ? '/' : ' ';
 			}
 
 			$new_font_value = trim( $new_font_value );
 
-			// Delete all font-properties
+			// Delete all font properties.
 			foreach ( $font_prop_default as $font_property => $default_value ) {
 				if ( 'font' !== $font_property || ! $new_font_value ) {
 					unset( $input_css[ $font_property ] );
 				}
 			}
 
-			// Add new font property
+			// Add new font property.
 			if ( '' !== $new_font_value ) {
 				$input_css['font'] = $new_font_value . $important;
 			}
@@ -1020,8 +1026,25 @@ class CSSTidy_optimise {
 
 } // class CSSTidy_optimise
 
+/**
+ * Sanitization class
+ */
 class CSSTidy_custom_sanitize extends CSSTidy_optimise {
+
+	/**
+	 * [$props_w_urls description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
 	protected $props_w_urls = array( 'background', 'background-image', 'list-style', 'list-style-image' );
+
+	/**
+	 * [$allowed_protocols description]
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
 	protected $allowed_protocols = array( 'http', 'https' );
 
 	/**
@@ -1085,10 +1108,10 @@ class CSSTidy_custom_sanitize extends CSSTidy_optimise {
 	 * @return [type] [description]
 	 */
 	protected function clean_url( $url ) {
-		// Clean up the string
-		$url = trim( $url, "' \" \r \n" );
+		// Clean up the string.
+		$url = trim( $url, "'\"\r\n " );
 
-		// Check against whitelist for properties allowed to have URL values
+		// Check against whitelist for properties allowed to have URL values.
 		if ( ! in_array( $this->property, $this->props_w_urls ) ) {
 			return '';
 		}

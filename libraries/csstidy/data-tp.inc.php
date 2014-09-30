@@ -11,17 +11,17 @@
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
-// remove potentially insecure "binding" property
+// Remove potentially insecure "binding" property.
 unset( $data['csstidy']['all_properties']['binding'] );
 
 $data['csstidy']['all_properties']['text-size-adjust'] = 'CSS3.0';
 $data['csstidy']['all_properties']['zoom'] = 'CSS3.0';
 
-// Support browser prefixes for properties only in the latest CSS draft
+// Support browser prefixes for properties only in the latest CSS draft.
 foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
 	$data['csstidy']['all_properties']['*' . $property] = $levels; // IE7 hacks
 
-	if ( strpos( $levels, "," ) === false ) {
+	if ( false === strpos( $levels, ',' ) ) {
 		$data['csstidy']['all_properties']['-moz-' . $property] = $levels;
 		$data['csstidy']['all_properties']['-webkit-' . $property] = $levels;
 		$data['csstidy']['all_properties']['-ms-' . $property] = $levels;
@@ -57,7 +57,7 @@ foreach ( $data['csstidy']['multiple_properties'] as $property ) {
 }
 
 /**
- * Non-standard CSS properties.	 They're not part of any spec, but we say
+ * Non-standard CSS properties. They're not part of any spec, but we say
  * they're in all of them so that we can support them.
  */
 $data['csstidy']['all_properties']['-webkit-user-select'] = 'CSS2.0,CSS2.1,CSS3.0';
