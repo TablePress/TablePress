@@ -174,7 +174,7 @@ class CSSTidy {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	protected $version = '1.5.2';
+	public $version = '1.5.2';
 
 	/**
 	 * The settings.
@@ -348,6 +348,14 @@ class CSSTidy {
 	 * @var array
 	 */
 	public $data = array();
+
+	/**
+	 * The output templates.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $template = array();
 
 	/**
 	 * Loads standard template and sets default settings.
@@ -567,9 +575,8 @@ class CSSTidy {
 	 * @param bool   $externalcss Optional. When printing formatted, indicates whether styles to be attached internally or as an external stylesheet.
 	 * @param string $title       Optional. When printing formatted, is the title to be added in the head of the document.
 	 * @param string $lang        Optional. When printing formatted, gives a two-letter language code to be added to the output.
-	 * @param bool   $pre_code    Optional. Whether to add pre and code tags around the code (for light HTML formatted templates).
 	 */
-	public function write( $filename, $formatted = false, $doctype = 'xhtml1.1', $externalcss = true, $title = '', $lang = 'en', $pre_code = true ) {
+	public function write( $filename, $formatted = false, $doctype = 'xhtml1.1', $externalcss = true, $title = '', $lang = 'en' ) {
 		$filename .= ( $formatted ) ? '.xhtml' : '.css';
 
 		if ( ! is_dir( 'temp' ) ) {
@@ -584,7 +591,7 @@ class CSSTidy {
 			if ( ! $formatted ) {
 				fwrite( $handle, $this->print->plain() );
 			} else {
-				fwrite( $handle, $this->print->formatted_page( $doctype, $externalcss, $title, $lang, $pre_code ) );
+				fwrite( $handle, $this->print->formatted_page( $doctype, $externalcss, $title, $lang ) );
 			}
 		}
 		fclose( $handle );

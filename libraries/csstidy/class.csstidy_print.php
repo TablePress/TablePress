@@ -61,6 +61,54 @@ class CSSTidy_print {
 	public $parser;
 
 	/**
+	 * The parsed CSS.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $css = array();
+
+	/**
+	 * The output templates.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $template = array();
+
+	/**
+	 * The raw parsed CSS.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $tokens = array();
+
+	/**
+	 * The CSS charset.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $charset = '';
+
+	/**
+	 * All @import URLs.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $import = array();
+
+	/**
+	 * The namespace.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $namespace = '';
+
+	/**
 	 * Saves the input CSS string.
 	 *
 	 * @since 1.0.0

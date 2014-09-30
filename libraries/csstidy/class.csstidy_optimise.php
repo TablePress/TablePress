@@ -62,6 +62,54 @@ class CSSTidy_optimise {
 	public $parser;
 
 	/**
+	 * The parsed CSS.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public $css = array();
+
+	/**
+	 * The current sub-value.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $sub_value = '';
+
+	/**
+	 * The current at rule (@media).
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $at = '';
+
+	/**
+	 * The current selector.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $selector = '';
+
+	/**
+	 * The current property.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $property = '';
+
+	/**
+	 * The current value.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $value = '';
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.0.0
