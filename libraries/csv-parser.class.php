@@ -99,7 +99,7 @@ class CSV_Parser {
 	 */
 	public function load_data( $data ) {
 		// Check for mandatory trailing line break.
-		if ( substr( $data, -1 ) !== "\n" ) {
+		if ( "\n" !== substr( $data, -1 ) ) {
 			$data .= "\n";
 		}
 		$this->import_data = $data;
