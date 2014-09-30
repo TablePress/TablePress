@@ -167,7 +167,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		// Common data for all responses.
 		$response = array(
 			'success' => $success,
-			'message' => $message
+			'message' => $message,
 		);
 		if ( $success ) {
 			$response['table_id'] = $table['id'];
