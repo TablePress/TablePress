@@ -113,6 +113,9 @@ class EvalMath {
 		'arctan2' => array( 2 ),
 		'atan2' => array( 2 ),
 		'if' => array( 3 ),
+		'not' => array( 1 ),
+		'and' => array( -1 ),
+		'or' => array( -1 ),
 	);
 
 	/**
@@ -513,6 +516,12 @@ class EvalMath {
 					// Rewrite some functions to their synonyms.
 					if ( 'if' === $function_name ) {
 						$function_name = 'func_if';
+					} elseif ( 'not' === $function_name ) {
+						$function_name = 'func_not';
+					} elseif ( 'and' === $function_name ) {
+						$function_name = 'func_and';
+					} elseif ( 'or' === $function_name ) {
+						$function_name = 'func_or';
 					} elseif ( 'mean' === $function_name ) {
 						$function_name = 'average';
 					} elseif ( 'arctan2' === $function_name ) {
@@ -785,6 +794,60 @@ class EvalMath_Functions {
 	 */
 	public static function func_if( $condition, $then, $else ) {
 		return ( (bool) $condition ? $then : $else );
+	}
+
+	/**
+	 * Return the negation (boolean "not") of a value.
+	 *
+	 * Similar to "func_if", the function name is prefixed with "func_", although it wouldn't be necessary.
+	 *
+	 * @since  1.0.0
+	 *
+	 * @param double|int $value Value to be negated.
+	 * @return int Negated value (0 for false, 1 for true).
+	 */
+	public static function func_not( $value ) {
+		return (int) ! (bool) $value;
+	}
+
+	/**
+	 * Calculate the conjunction (boolean "and") of some values.
+	 *
+	 * "and" is not a valid function name, which is why it's prefixed with "func_".
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param double|int $args Values for which the conjunction shall be calculated.
+	 * @return int Conjunction of the passed arguments.
+	 */
+	public static function func_and( $args ) {
+		$args = func_get_args();
+		foreach ( $args as $value ) {
+			if ( ! $value ) {
+				return 0;
+			}
+		}
+		return 1;
+	}
+
+	/**
+	 * Calculate the disjunction (boolean "or") of some values.
+	 *
+	 * "or" is not a valid function name, which is why it's prefixed with "func_".
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param double|int $args Values for which the disjunction shall be calculated.
+	 * @return int Disjunction of the passed arguments.
+	 */
+	public static function func_or( $args ) {
+		$args = func_get_args();
+		foreach ( $args as $value ) {
+			if ( $value ) {
+				return 1;
+			}
+		}
+		return 0;
 	}
 
 	/**
