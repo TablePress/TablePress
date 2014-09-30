@@ -370,7 +370,6 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_table_manipulation( array $data, array $box ) {
-		$media_library_url = esc_url( add_query_arg( array( 'post_id' => '0', 'type' => 'image', 'tab' => 'library' ), admin_url( 'media-upload.php' ) ) );
 ?>
 <table class="tablepress-postbox-table fixed hide-if-no-js">
 <tbody>
