@@ -368,7 +368,7 @@ class SimpleXLSX {
 				}
 			}
 			ksort( $rows[ $current_row ] );
-			$curR++;
+			$current_row++;
 		}
 		return $rows;
 
