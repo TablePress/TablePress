@@ -576,7 +576,7 @@ class EvalMath {
 						$stack->push( (int) ( $op1 < $op2 ) );
 						break;
 					case '=':
-						$stack->push( (int) ( $op1 === $op2 ) );
+						$stack->push( (int) ( $op1 == $op2 ) ); // Don't use === as the variable type can differ (int/double/bool).
 						break;
 				}
 
