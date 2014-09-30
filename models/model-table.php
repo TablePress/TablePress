@@ -787,7 +787,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Visibility needs to exist.
 		if ( ! isset( $new_table['visibility'] )
 		|| ! isset( $new_table['visibility']['rows'] )
-		|| ! isset( $new_table['visibility']['columns'] ) ){
+		|| ! isset( $new_table['visibility']['columns'] ) ) {
 			return new WP_Error( 'table_prepare_visibility_not_set' );
 		}
 		$new_table['visibility']['rows'] = array_map( 'intval', $new_table['visibility']['rows'] );
