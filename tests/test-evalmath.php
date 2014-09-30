@@ -67,7 +67,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * [test_other_functions description]
+	 * Test some basic math functions.
 	 *
 	 * @since 1.5.0
 	 */
@@ -78,9 +78,9 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * Tests the min and max functions.
+	 * Tests the min and max functions for integer and double inputs.
 	 *
-	 * @TODO: Use assertSame!
+	 * @TODO: Use assertSame()!
 	 *
 	 * @since 1.5.0
 	 */
@@ -88,8 +88,14 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 		$result = $this->evalmath->evaluate( 'min(20,10,30)' );
 		$this->assertEquals( 10, $result );
 
+		$result = $this->evalmath->evaluate( 'min(20.0,10.0,30.0)' );
+		$this->assertEquals( 10.0, $result );
+
 		$result = $this->evalmath->evaluate( 'max(10,30,20)' );
 		$this->assertEquals( 30, $result );
+
+		$result = $this->evalmath->evaluate( 'max(10.0,30.0,20.0)' );
+		$this->assertEquals( 30.0, $result );
 	}
 
 	/**
@@ -116,15 +122,15 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	public function test_error_handling() {
 		$result = $this->evalmath->evaluate( 'pi( + 10' );
 		$this->assertFalse( $result );
-		// $this->assertSame( get_string( 'unexpectedoperator', 'mathslib', '+' ), $this->evalmath->last_error );
+		$this->assertSame( "unexpected operator '+'", $this->evalmath->last_error );
 
 		$result = $this->evalmath->evaluate( 'pi(' );
 		$this->assertFalse( $result );
-		// $this->assertSame( get_string('expectingaclosingbracket', 'mathslib' ), $this->evalmath->last_error );
+		$this->assertSame( 'expecting a closing bracket', $this->evalmath->last_error );
 
 		$result = $this->evalmath->evaluate( 'pi^' );
 		$this->assertFalse( $result );
-		// $this->assertSame( get_string( 'operatorlacksoperand', 'mathslib', '^' ), $this->evalmath->last_error );
+		$this->assertSame( "operator '^' lacks operand", $this->evalmath->last_error );
 	}
 
 	/**
@@ -178,30 +184,29 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * [test_scientific_notation description]
+	 * Test the conversion numbers in scientific notation.
 	 *
 	 * @since 1.5.0
-	 *
-	 * @return [type] [description]
 	 */
 	public function test_scientific_notation() {
-		$this->assertEquals( 1e11, $this->evalmath->evaluate( '10e10' ), '', 1e11*1e-15 );
-		$this->assertEquals( 1e-9, $this->evalmath->evaluate( '10e-10' ), '', 1e11*1e-15 );
-		$this->assertEquals( 1e11, $this->evalmath->evaluate( '10e+10' ), '', 1e11*1e-15 );
+		$this->assertEquals( 1e11, $this->evalmath->evaluate(   '10e10' ), '', 1e11*1e-15 );
+		$this->assertEquals( 1e-9, $this->evalmath->evaluate(  '10e-10' ), '', 1e11*1e-15 );
+		$this->assertEquals( 1e11, $this->evalmath->evaluate(  '10e+10' ), '', 1e11*1e-15 );
 		$this->assertEquals( 5e11, $this->evalmath->evaluate( '10e10*5' ), '', 1e11*1e-15 );
 		$this->assertEquals( 1e22, $this->evalmath->evaluate( '10e10^2' ), '', 1e22*1e-15 );
 	}
 
 	/**
-	 * [test_rand_float description]
+	 * Test the return types for the random number generators.
 	 *
 	 * @since 1.5.0
-	 *
-	 * @return [type] [description]
 	 */
-	public function test_rand_float() {
+	public function test_rand_functions_type() {
 		$result = $this->evalmath->evaluate( 'rand_float()' );
-		$this->assertTrue( is_float( $result) );
+		$this->assertInternalType( 'float', $result );
+
+		$result = $this->evalmath->evaluate( 'rand_int(0,1000)' );
+		$this->assertInternalType( 'int', $result );
 	}
 
 } // class TablePress_Test_EvalMath
