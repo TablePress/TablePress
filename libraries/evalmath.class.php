@@ -144,7 +144,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 *
 	 * @param string $expression The expression that shall be evaluated.
-	 * @return string Evaluated expression.
+	 * @return string|bool Evaluated expression, true on successful function assignment, or false on error.
 	 */
 	public function assign_and_evaluate( $expression ) {
 		$this->last_error = '';
@@ -240,7 +240,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 *
 	 * @param string $expression Math expression that shall be converted.
-	 * @return array Converted expression.
+	 * @return array|false Converted expression or false on error.
 	 */
 	protected function nfx( $expression ) {
 		$index = 0;
