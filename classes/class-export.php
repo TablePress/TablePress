@@ -95,42 +95,37 @@ class TablePress_Export {
 				}
 				break;
 			case 'html':
-				$output = "<table>\n";
-				$last_row_idx = count( $table['data'] ) - 1;
-				// Tables with just one row don't get thead or tfoot.
-				if ( 0 === $last_row_idx ) {
-					$table['options']['table_head'] = false;
-					$table['options']['table_foot'] = false;
-				}
+				$num_rows = count( $table['data'] );
+				$last_row_idx = $num_rows - 1;
+				$thead = '';
+				$tfoot = '';
+				$tbody = array();
+
 				foreach ( $table['data'] as $row_idx => $row ) {
-					if ( 0 === $row_idx ) {
-						if ( $table['options']['table_head'] ) {
-							$output .= "\t<thead>\n";
-						} else {
-							$output .= "\t<tbody>\n";
-						}
-					} elseif ( $last_row_idx === $row_idx ) {
-						if ( $table['options']['table_foot'] ) {
-							$output .= "\t</tbody>\n\t<tfoot>\n";
-						}
+					// First row, need to check for head (but only if at least two rows).
+					if ( 0 === $row_idx && $table['options']['table_head'] && $num_rows > 1 ) {
+						$thead = $this->html_render_row( $row, 'th' );
+						continue;
 					}
-					$output .= "\t\t<tr>\n";
-					$row = array_map( array( $this, 'html_wrap_and_escape' ), $row );
-					$output .= implode( '', $row );
-					$output .= "\t\t</tr>\n";
-					if ( $last_row_idx === $row_idx ) {
-						if ( $table['options']['table_foot'] ) {
-							$output .= "\t</tfoot>\n";
-						} else {
-							$output .= "\t</tbody>\n";
-						}
-					} elseif ( 0 === $row_idx ) {
-						if ( $table['options']['table_head'] ) {
-							$output .= "\t</thead>\n\t<tbody>\n";
-						}
+					// Last row, need to check for footer (but only if at least two rows).
+					if ( $last_row_idx === $row_idx && $table['options']['table_foot'] && $num_rows > 1 ) {
+						$tfoot = $this->html_render_row( $row, 'th' );
+						continue;
 					}
+					// Neither first nor last row (with respective head/foot enabled), so render as body row.
+					$tbody[] = $this->html_render_row( $row, 'td' );
 				}
-				$output .= '</table>';
+
+				// <thead>, <tfoot>, and <tbody> tags.
+				if ( ! empty( $thead ) ) {
+					$thead = "\t<thead>\n{$thead}\t</thead>\n";
+				}
+				if ( ! empty( $tfoot ) ) {
+					$tfoot = "\t<tfoot>\n{$tfoot}\t</tfoot>\n";
+				}
+				$tbody = "\t<tbody>\n" . implode( '', $tbody ) . "\t</tbody>\n";
+
+				$output = "<table>\n" . $thead . $tfoot . $tbody . "</table>\n";
 				break;
 			case 'json':
 				$output = json_encode( $table );
@@ -164,20 +159,38 @@ class TablePress_Export {
 	}
 
 	/**
+	 * Generate the HTML of a row.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array  $row Cells of the row to be rendered.
+	 * @param string $tag HTML tag to use for the cells (td or th).
+	 * @return string HTML code for the row.
+	 */
+	protected function html_render_row( $row, $tag ) {
+		$output = "\t\t<tr>\n";
+		array_walk( $row, array( $this, 'html_wrap_and_escape' ), $tag );
+		$output .= implode( '', $row );
+		$output .= "\t\t</tr>\n";
+		return $output;
+	}
+
+	/**
 	 * Wrap and escape a cell for HTML export.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string Content of a cell.
-	 * @return string Wrapped string for HTML export.
+	 * @param string   $cell_content Content of a cell.
+	 * @param int|null $column_idx   Column index, or null if omitted. Unused, but defined to be able to use function as callback in array_walk().
+	 * @param string   $html_tag     HTML tag that shall be used for the cell.
 	 */
-	protected function html_wrap_and_escape( $string ) {
+	protected function html_wrap_and_escape( &$cell_content, $column_idx, $html_tag ) {
 		/*
 		 * Replace any & with &amp; that is not already an encoded entity (from function htmlentities2 in WP 2.8).
 		 * A complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want.
 		 */
-		$string = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $string );
-		return "\t\t\t<td>{$string}</td>\n";
+		$cell_content = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $cell_content );
+		$cell_content = "\t\t\t<{$html_tag}>{$cell_content}</{$html_tag}>\n";
 	}
 
 } // class TablePress_Export
