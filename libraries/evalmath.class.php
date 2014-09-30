@@ -778,9 +778,9 @@ class EvalMath_Functions {
 	 *
 	 * @since  1.0.0
 	 *
-	 * @param double|int Condition.
-	 * @param double|int Return value if the condition is true.
-	 * @param double|int Return value if the condition is false.
+	 * @param double|int $condition Condition.
+	 * @param double|int $then      Return value if the condition is true.
+	 * @param double|int $else      Return value if the condition is false.
 	 * @return double|int Result of the if check.
 	 */
 	public static function func_if( $condition, $then, $else ) {
