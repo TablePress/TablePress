@@ -469,8 +469,8 @@ class EvalMath {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $tokens    [description]
-	 * @param array $variables Optional. [description]
+	 * @param array|false $tokens    [description]
+	 * @param array       $variables Optional. [description]
 	 * @return mixed [description]
 	 */
 	protected function pfx( $tokens, array $variables = array() ) {
