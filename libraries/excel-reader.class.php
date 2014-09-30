@@ -68,7 +68,7 @@ class OLERead {
 	 * @since 1.0.0
 	 * @var int
 	 */
-	protected $error;
+	public $error;
 
 	/**
 	 * [$bigBlockChain description]
