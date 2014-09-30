@@ -614,7 +614,7 @@ class EvalMath {
 	 * @return bool False, to stop evaluation.
 	 */
 	protected function raise_error( $message, $error_data = null ) {
-		$this->last_error = $this::get_error_string( $message, $error_data );
+		$this->last_error = $this->get_error_string( $message, $error_data );
 		return false;
 	}
 
@@ -631,7 +631,7 @@ class EvalMath {
 	 * @param array|string $error_data Optional. Additional error data.
 	 * @return string Translated string.
 	 */
-	protected static function get_error_string( $identifier, $error_data = null ) {
+	protected function get_error_string( $identifier, $error_data = null ) {
 		$strings = array();
 		$strings['an_unexpected_error_occurred'] = 'an unexpected error occurred';
 		$strings['cannot_assign_to_constant'] = 'cannot assign to constant \'{$error_data}\'';
