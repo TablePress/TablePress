@@ -52,13 +52,19 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 if ( ! function_exists( 'ctype_space' ) ) {
 	/* ctype_space	Check for whitespace character(s) */
 	function ctype_space( $text ) {
-		return ! preg_match( "/[^\s\r\n\t\f]/", $text );
+		return ( 1 === preg_match( "/^[ \r\n\t\f]+$/", $text ) );
 	}
 }
 if ( ! function_exists( 'ctype_alpha' ) ) {
 	/* ctype_alpha	Check for alphabetic character(s) */
 	function ctype_alpha( $text ) {
-		return preg_match( '/[a-zA-Z]/', $text );
+    	return ( 1 === preg_match( '/^[a-zA-Z]+$/', $text ) );
+	}
+}
+if ( ! function_exists( 'ctype_xdigit' ) ) {
+	/* ctype_xdigit	Check for HEX character(s) */
+	function ctype_xdigit( $text ) {
+    	return ( 1 === preg_match( '/^[a-fA-F0-9]+$/', $text ) );
 	}
 }
 
