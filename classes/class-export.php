@@ -154,7 +154,7 @@ class TablePress_Export {
 	protected function csv_wrap_and_escape( $string, $delimiter ) {
 		// Escape CSV delimiter for RegExp (e.g. '|').
 		$delimiter = preg_quote( $delimiter, '#' );
-		if ( preg_match( '#' . $delimiter . '|"|\n|\r#i', $string ) || ' ' === substr( $string, 0, 1 ) || ' ' === substr( $string, -1 ) ) {
+		if ( 1 === preg_match( '#' . $delimiter . '|"|\n|\r#i', $string ) || ' ' === substr( $string, 0, 1 ) || ' ' === substr( $string, -1 ) ) {
 			// Escape single " as double "".
 			$string = str_replace( '"', '""', $string );
 			// Wrap string in "".
