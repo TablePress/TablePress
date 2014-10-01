@@ -57,7 +57,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * Tests the basic formula evaluation.
+	 * Test basic formula evaluation.
 	 *
 	 * @since 1.5.0
 	 */
@@ -78,7 +78,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * Tests the min and max functions for integer and double inputs.
+	 * Test the min and max functions for integer and double inputs.
 	 *
 	 * @TODO: Use assertSame()!
 	 *
@@ -99,7 +99,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * Tests some slightly more complex expressions.
+	 * Test some slightly more complex expressions.
 	 *
 	 * @since 1.5.0
 	 */
@@ -115,7 +115,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	}
 
 	/**
-	 * Tests error handling.
+	 * Test error handling.
 	 *
 	 * @since 1.5.0
 	 */
