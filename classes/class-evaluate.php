@@ -225,7 +225,7 @@ class TablePress_Evaluate {
 		if ( false === $result ) {
 			return '!ERROR! ' . $this->evalmath->last_error;
 		} else {
-			return $result;
+			return (string) $result;
 		}
 	}
 
