@@ -360,11 +360,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array       $table           Table ($table['id'] is not necessary).
-	 * @param string|bool $copied_table_id ID of the copied table, if table is a copy, false otherwise.
+	 * @param array  $table       Table ($table['id'] is not necessary).
+	 * @param string $copy_or_add Optional. 'copy' if the table is copied, 'add' if it is a new table. Default 'add'.
 	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success.
 	 */
-	public function add( array $table, $copied_table_id = false ) {
+	public function add( array $table, $copy_or_add = 'add' ) {
 		$post_id = -1; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
@@ -388,17 +388,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table_id = $this->_get_new_table_id();
 		$this->_update_post_id( $table_id, $new_post_id );
 
-		if ( false !== $copied_table_id ) {
-			/**
-			 * Fires after an existing table has been copied.
-			 *
-			 * @since 1.1.0
-			 *
-			 * @param string $table_id        ID of the copy of the table.
-			 * @param string $copied_table_id ID of the existing table that is copied.
-			 */
-			do_action( 'tablepress_event_copied_table', $table_id, $copied_table_id );
-		} else {
+		if ( 'add' === $copy_or_add ) {
 			/**
 			 * Fires after a new table has been added.
 			 *
@@ -443,14 +433,24 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		// Add the copied table.
-		$table = $this->add( $table, $table_id );
-		if ( is_wp_error( $table ) ) {
+		$new_table_id = $this->add( $table, 'copy' );
+		if ( is_wp_error( $new_table_id ) ) {
 			// Add an error code to the existing WP_Error.
-			$table->add( 'table_copy_table_add', '', $table_id );
-			return $table;
+			$new_table_id->add( 'table_copy_table_add', '', $table_id );
+			return $new_table_id;
 		}
 
-		return $table;
+		/**
+		 * Fires after an existing table has been copied.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string $new_table_id ID of the copy of the table.
+		 * @param string $table_id     ID of the existing table that is copied.
+		 */
+		do_action( 'tablepress_event_copied_table', $new_table_id, $table_id );
+
+		return $new_table_id;
 	}
 
 	/**
