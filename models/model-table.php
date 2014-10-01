@@ -438,7 +438,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
 		if ( is_wp_error( $table ) ) {
 			// Add an error code to the existing WP_Error.
-			$table->add( 'table_copy_table_prepare', '', $table['id'] );
+			$table->add( 'table_copy_table_prepare', '', $table_id );
 			return $table;
 		}
 
