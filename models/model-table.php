@@ -343,6 +343,15 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Flush caching plugins' caches.
 		$this->_flush_caching_plugins_caches();
 
+		/**
+		 * Fires after a table has been saved.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @param string $table_id ID of the added table.
+		 */
+		do_action( 'tablepress_event_saved_table', $table['id'] );
+
 		return $table['id'];
 	}
 
