@@ -285,10 +285,12 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['language'] = '"language":DataTables_language["' . $datatables_locale . '"]';
 				}
 				// These parameters need to be added for performance gain or to overwrite unwanted default behavior.
-				// No initial sort.
-				$parameters['order'] = '"order":[]';
-				// Don't add additional classes, to speed up sorting.
-				$parameters['orderClasses'] = '"orderClasses":false';
+				if ( $js_options['datatables_sort'] ) {
+					// No initial sort.
+					$parameters['order'] = '"order":[]';
+					// Don't add additional classes, to speed up sorting.
+					$parameters['orderClasses'] = '"orderClasses":false';
+				}
 				// Alternating row colors is default, so remove them if not wanted with [].
 				$parameters['stripeClasses'] = '"stripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? "['even','odd']" : '[]' );
 				// The following options are activated by default, so we only need to "false" them if we don't want them, but don't need to "true" them if we do.
