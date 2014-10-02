@@ -1,16 +1,20 @@
 {
-	"sProcessing":	 "Пачакайце...",
-	"sLengthMenu":	 "Паказаць _MENU_ запісаў",
-	"sZeroRecords":	 "Запісы адсутнічаюць.",
-	"sInfo":		 "Запісы з _START_ да _END_ з _TOTAL_ запісаў",
-	"sInfoEmpty":	 "Запісы з 0 да 0 з 0 запісаў",
-	"sInfoFiltered": "(адфільтравана з _MAX_ запісаў)",
-	"sInfoPostFix":	 "",
-	"sSearch":		 "Пошук:",
-	"oPaginate": {
-		"sFirst": "Першая",
-		"sPrevious": "Папярэдняя",
-		"sNext": "Наступная",
-		"sLast": "Апошняя"
+	"info":			"Запісы з _START_ па _END_ з _TOTAL_ запісаў",
+	"infoEmpty":	"Запісы з 0 па 0 з 0 запісаў",
+	"infoFiltered":	"(адфільтравана з _MAX_ запісаў)",
+	"infoPostFix":	"",
+	"lengthMenu":	"Паказваць _MENU_ запісаў",
+	"processing":	"Пачакайце...",
+	"search":		"Пошук:",
+	"zeroRecords":	"Запісы адсутнічаюць.",
+	"paginate": {
+		"first":	"Першая",
+		"previous":	"Папярэдняя",
+		"next":		"Наступная",
+		"last":		"Апошняя"
+	},
+	"aria": {
+		"sortAscending":	": актываваць для сартавання слупка па ўзрастанні",
+		"sortDescending":	": актываваць для сартавання слупка па змяншэнні"
 	}
 }
