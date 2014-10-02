@@ -296,6 +296,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['bSort'] = '"bSort":false';
 				}
 				if ( $js_options['datatables_paginate'] ) {
+					$parameters['pagingType'] = '"pagingType":"simple"';
 					if ( $js_options['datatables_lengthchange'] ) {
 						$length_menu = array( 10, 25, 50, 100 );
 						if ( ! in_array( $js_options['datatables_paginate_entries'], $length_menu, true ) ) {
