@@ -282,18 +282,18 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				}
 				// If translation is registered to have its strings added to the JS, add corresponding parameter to DataTables call.
 				if ( isset( $datatables_languages[ $datatables_locale ] ) ) {
-					$parameters['oLanguage'] = '"oLanguage":DataTables_oLanguage["' . $datatables_locale . '"]';
+					$parameters['language'] = '"language":DataTables_language["' . $datatables_locale . '"]';
 				}
 				// These parameters need to be added for performance gain or to overwrite unwanted default behavior.
 				// No initial sort.
-				$parameters['aaSorting'] = '"aaSorting":[]';
+				$parameters['order'] = '"order":[]';
 				// Don't add additional classes, to speed up sorting.
-				$parameters['bSortClasses'] = '"bSortClasses":false';
+				$parameters['orderClasses'] = '"orderClasses":false';
 				// Alternating row colors is default, so remove them if not wanted with [].
-				$parameters['asStripeClasses'] = '"asStripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? "['even','odd']" : '[]' );
+				$parameters['stripeClasses'] = '"stripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? "['even','odd']" : '[]' );
 				// The following options are activated by default, so we only need to "false" them if we don't want them, but don't need to "true" them if we do.
 				if ( ! $js_options['datatables_sort'] ) {
-					$parameters['bSort'] = '"bSort":false';
+					$parameters['ordering'] = '"ordering":false';
 				}
 				if ( $js_options['datatables_paginate'] ) {
 					$parameters['pagingType'] = '"pagingType":"simple"';
@@ -302,29 +302,29 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 						if ( ! in_array( $js_options['datatables_paginate_entries'], $length_menu, true ) ) {
 							$length_menu[] = $js_options['datatables_paginate_entries'];
 							sort( $length_menu, SORT_NUMERIC );
-							$parameters['aLengthMenu'] = '"aLengthMenu":[' . implode( ',', $length_menu ) . ']';
+							$parameters['lengthMenu'] = '"lengthMenu":[' . implode( ',', $length_menu ) . ']';
 						}
 					} else {
-						$parameters['bLengthChange'] = '"bLengthChange":false';
+						$parameters['lengthChange'] = '"lengthChange":false';
 					}
 					if ( 10 !== $js_options['datatables_paginate_entries'] ) {
-						$parameters['iDisplayLength'] = '"iDisplayLength":'. $js_options['datatables_paginate_entries'];
+						$parameters['pageLength'] = '"pageLength":'. $js_options['datatables_paginate_entries'];
 					}
 				} else {
-					$parameters['bPaginate'] = '"bPaginate":false';
+					$parameters['paging'] = '"paging":false';
 				}
 				if ( ! $js_options['datatables_filter'] ) {
-					$parameters['bFilter'] = '"bFilter":false';
+					$parameters['searching'] = '"searching":false';
 				}
 				if ( ! $js_options['datatables_info'] ) {
-					$parameters['bInfo'] = '"bInfo":false';
+					$parameters['info'] = '"info":false';
 				}
 				if ( $js_options['datatables_scrollx'] ) {
-					$parameters['sScrollX'] = '"sScrollX":"100%"';
+					$parameters['scrollX'] = '"scrollX":"100%"';
 				}
 				if ( false !== $js_options['datatables_scrolly'] ) {
-					$parameters['sScrollY'] = '"sScrollY":"' . preg_replace( '#[^0-9a-z.%]#', '', $js_options['datatables_scrolly'] ) . '"';
-					$parameters['bScrollCollapse'] = '"bScrollCollapse":true';
+					$parameters['scrollY'] = '"scrollY":"' . preg_replace( '#[^0-9a-z.%]#', '', $js_options['datatables_scrolly'] ) . '"';
+					$parameters['scrollCollapse'] = '"scrollCollapse":true';
 				}
 				if ( ! empty( $js_options['datatables_custom_commands'] ) ) {
 					$parameters['custom_commands'] = $js_options['datatables_custom_commands'];
@@ -392,10 +392,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			$strings = file_get_contents( $language_file );
 			// Remove unnecessary white space.
 			$strings = str_replace( array( "\n", "\r", "\t" ), '', $strings );
-			$datatables_strings .= "DataTables_oLanguage[\"{$locale}\"]={$strings};\n";
+			$datatables_strings .= "DataTables_language[\"{$locale}\"]={$strings};\n";
 		}
 		if ( ! empty( $datatables_strings ) ) {
-			$datatables_strings = "var DataTables_oLanguage={};\n" . $datatables_strings;
+			$datatables_strings = "var DataTables_language={};\n" . $datatables_strings;
 		}
 
 		// Echo DataTables strings and JS calls.
