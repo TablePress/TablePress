@@ -320,7 +320,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$parameters['info'] = '"info":false';
 				}
 				if ( $js_options['datatables_scrollx'] ) {
-					$parameters['scrollX'] = '"scrollX":"100%"';
+					$parameters['scrollX'] = '"scrollX":true';
 				}
 				if ( false !== $js_options['datatables_scrolly'] ) {
 					$parameters['scrollY'] = '"scrollY":"' . preg_replace( '#[^0-9a-z.%]#', '', $js_options['datatables_scrolly'] ) . '"';
