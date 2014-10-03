@@ -148,6 +148,11 @@ abstract class TablePress_Controller {
 				if ( $current_plugin_options_db_version < 25 ) {
 					TablePress::$model_table->add_mime_type_to_posts();
 				}
+
+				// Convert old parameter names to new ones in DataTables "Custom Commands".
+				if ( $current_plugin_options_db_version < 26 ) {
+					TablePress::$model_table->convert_datatables_parameter_names_tp15();
+				}
 			}
 
 			TablePress::$model_options->update( array(

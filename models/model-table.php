@@ -1177,6 +1177,37 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
+	 * Convert old parameter names to new ones in DataTables "Custom Commands".
+	 * DataTables 1.9 used Hungarian notation, while DataTables 1.10+ (used since TablePress 1.5) uses camelCase notation.
+	 *
+	 * @since 1.5.0
+	 */
+	public function convert_datatables_parameter_names_tp15() {
+		$table_post = $this->tables->get( 'table_post' );
+		if ( empty( $table_post ) ) {
+			return;
+		}
+
+		foreach ( $table_post as $table_id => $post_id ) {
+			$table_options = $this->_get_table_options( $post_id );
+
+			// Nothing to do if there are no "Custom Commands".
+			if ( empty( $table_options['datatables_custom_commands'] ) ) {
+				continue;
+			}
+			// Run search/replace.
+			$old_custom_commands = $table_options['datatables_custom_commands'];
+			$table_options['datatables_custom_commands'] = strtr( $table_options['datatables_custom_commands'], $this->datatables_parameter_mappings );
+			// No need to save (which runs a DB query) if nothing was replaced in the "Custom Commands".
+			if ( $old_custom_commands === $table_options['datatables_custom_commands'] ) {
+				continue;
+			}
+
+			$this->_update_table_options( $post_id, $table_options );
+		}
+	}
+
+	/**
 	 * Invalidate all table output caches, e.g. after a plugin update.
 	 *
 	 * For TablePress 0.9-RC and onwards.
