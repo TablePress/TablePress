@@ -67,6 +67,113 @@ class TablePress_Table_Model extends TablePress_Model {
 	protected $tables;
 
 	/**
+	 * Mappings for old to new parameter names for DataTables.
+	 * DataTables 1.9 used Hungarian notation, while DataTables 1.10+ uses camelCase notation.
+	 *
+	 * As this array is used in strtr(), it's pre-sorted for descending string length of the array keys.
+	 *
+	 * @since 1.5.0
+	 * @var array
+	 * @link https://www.datatables.net/upgrade/1.10-convert
+	 */
+	protected $datatables_parameter_mappings = array (
+		'fnStateSaveParams' => 'stateSaveParams',
+		'fnStateLoadParams' => 'stateLoadParams',
+		'fnPreDrawCallback' => 'preDrawCallback',
+		'fnHeaderCallback' => 'headerCallback',
+		'fnFooterCallback' => 'footerCallback',
+		'sSortDescending' => 'sortDescending',
+		'sPaginationType' => 'pagingType',
+		'sLoadingRecords' => 'loadingRecords',
+		'sDefaultContent' => 'defaultContent',
+		'sContentPadding' => 'contentPadding',
+		'iCookieDuration' => 'stateDuration',
+		'bScrollCollapse' => 'scrollCollapse',
+		'asStripeClasses' => 'stripeClasses',
+		'sSortAscending' => 'sortAscending',
+		'sInfoThousands' => 'thousands',
+		'iDisplayLength' => 'pageLength',
+		'fnServerParams' => 'ajax',
+		'fnInitComplete' => 'initComplete',
+		'fnInfoCallback' => 'infoCallback',
+		'fnFormatNumber' => 'formatNumber',
+		'fnDrawCallback' => 'drawCallback',
+		'aaSortingFixed' => 'orderFixed',
+		'sSortDataType' => 'orderDataType',
+		'sServerMethod' => 'ajax',
+		'sScrollXInner' => 'scrollXInner',
+		'sInfoFiltered' => 'infoFiltered',
+		'sAjaxDataProp' => 'dataSrc',
+		'iDisplayStart' => 'displayStart',
+		'iDeferLoading' => 'deferLoading',
+		'fnStateLoaded' => 'stateLoaded',
+		'fnRowCallback' => 'rowCallback',
+		'fnCreatedCell' => 'createdCell',
+		'bSortCellsTop' => 'orderCellsTop',
+		'bLengthChange' => 'lengthChange',
+		'sZeroRecords' => 'zeroRecords',
+		'sInfoPostFix' => 'infoPostFix',
+		'fnServerData' => 'ajax',
+		'fnCreatedRow' => 'createdRow',
+		'bSortClasses' => 'orderClasses',
+		'bDeferRender' => 'deferRender',
+		'aoSearchCols' => 'searchCols',
+		'aoColumnDefs' => 'columnDefs',
+		'sProcessing' => 'processing',
+		'sLengthMenu' => 'lengthMenu',
+		'sEmptyTable' => 'emptyTable',
+		'sAjaxSource' => 'ajax',
+		'fnStateSave' => 'stateSaveCallback',
+		'fnStateLoad' => 'stateLoadCallback',
+		'bServerSide' => 'serverSide',
+		'bSearchable' => 'searchable',
+		'bProcessing' => 'processing',
+		'aLengthMenu' => 'lengthMenu',
+		'sInfoEmpty' => 'infoEmpty',
+		'bStateSave' => 'stateSave',
+		'bAutoWidth' => 'autoWidth',
+		'sPrevious' => 'previous',
+		'sCellType' => 'cellType',
+		'oPaginate' => 'paginate',
+		'oLanguage' => 'language',
+		'iTabIndex' => 'tabIndex',
+		'iDataSort' => 'orderData',
+		'bSortable' => 'orderable',
+		'bRetrieve' => 'retrieve',
+		'bPaginate' => 'paging',
+		'bJQueryUI' => 'jQueryUI',
+		'asSorting' => 'orderSequence',
+		'aoColumns' => 'columns',
+		'aaSorting' => 'order',
+		'aDataSort' => 'orderData',
+		'sScrollY' => 'scrollY',
+		'sScrollX' => 'scrollX',
+		'bVisible' => 'visible',
+		'bDestroy' => 'destroy',
+		'aTargets' => 'targets',
+		'sSearch' => 'search',
+		'oSearch' => 'search',
+		'mRender' => 'render',
+		'bFilter' => 'searching',
+		'sWidth' => 'width',
+		'sTitle' => 'title',
+		'sFirst' => 'first',
+		'sClass' => 'className',
+		'aaData' => 'data',
+		'sType' => 'type',
+		'sNext' => 'next',
+		'sName' => 'name',
+		'sLast' => 'last',
+		'sInfo' => 'info',
+		'oAria' => 'aria',
+		'mData' => 'data',
+		'bSort' => 'ordering',
+		'bInfo' => 'info',
+		'sUrl' => 'url',
+		'sDom' => 'dom',
+	);
+
+	/**
 	 * Init the Table model by instantiating a Post model and loading the list of tables option.
 	 *
 	 * @since 1.0.0
@@ -885,6 +992,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Table Visibility.
 		$table['visibility']['rows'] = $new_table['visibility']['rows'];
 		$table['visibility']['columns'] = $new_table['visibility']['columns'];
+		// Convert DataTables 1.9 parameters (Hungarian notation) to DataTables 1.10 parameters (camelCase notation).
+		if ( '' !== $table['options']['datatables_custom_commands'] ) {
+			$table['options']['datatables_custom_commands'] = strtr( $table['options']['datatables_custom_commands'], $this->datatables_parameter_mappings );
+		}
 
 		return $table;
 	}
