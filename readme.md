@@ -10,7 +10,7 @@ Please visit the plugin website at https://tablepress.org/ for more information.
 
 If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress), support it with your [donation](https://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
-[![Flattr TablePress](http://api.flattr.com/button/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-but04.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Support TablePress on Gittip](https://www.gittip.com/assets/-/logo.png)](https://www.gittip.com/TobiasBg/)
+[![Flattr TablePress](http://api.flattr.com/button/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-but04.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Support TablePress on Gratipay](https://assets.gratipay.com/-/gratipay.png)](https://gratipay.com/TobiasBg/)
 
 ## Migration from WP-Table Reloaded ##
 
