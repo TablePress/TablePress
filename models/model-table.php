@@ -1101,8 +1101,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			return;
 		}
 
-		// Load all table posts with one query, to prime the cache.
-		$this->model_post->load_posts( array_values( $table_post ), true );
+		// Prime the meta cache with the table options of all tables.
+		update_meta_cache( 'post', array_values( $table_post ) );
 
 		// Get default Table with default Table Options.
 		$default_table = $this->get_table_template();
@@ -1129,6 +1129,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $table_post ) ) {
 			return;
 		}
+
+		// Prime the meta cache with the table options of all tables.
+		update_meta_cache( 'post', array_values( $table_post ) );
 
 		// Go through all tables.
 		foreach ( $table_post as $table_id => $post_id ) {
@@ -1164,6 +1167,9 @@ class TablePress_Table_Model extends TablePress_Model {
 			return;
 		}
 
+		// Prime the meta cache with the table options of all tables.
+		update_meta_cache( 'post', array_values( $table_post ) );
+
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
 
@@ -1187,6 +1193,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $table_post ) ) {
 			return;
 		}
+
+		// Prime the meta cache with the table options of all tables.
+		update_meta_cache( 'post', array_values( $table_post ) );
 
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
