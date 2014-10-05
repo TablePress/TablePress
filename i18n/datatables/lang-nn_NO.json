@@ -12,5 +12,7 @@
 		"previous":	"Forrige",
 		"next":		"Neste",
 		"last":		"Siste"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

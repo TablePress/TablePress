@@ -19,5 +19,6 @@
 		"sortAscending":	": aktivera för att sortera kolumnen i stigande ordning",
 		"sortDescending":	": aktivera för att sortera kolumnen i fallande ordning"
 	},
-	"thousands":		" "
+	"decimal":			",",
+	"thousands":		"."
 }

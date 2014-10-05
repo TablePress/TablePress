@@ -12,5 +12,7 @@
 		"previous":	"Forrige",
 		"next":		"Næste",
 		"last":		"Sidste"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

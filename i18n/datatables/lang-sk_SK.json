@@ -19,5 +19,6 @@
 		"sortAscending":	": aktivujte na zoradenie stĺpca vzostupne",
 		"sortDescending":	": aktivujte na zoradenie stĺpca zostupne"
 	},
-	"thousands":		","
+	"decimal":			",",
+	"thousands":		" "
 }

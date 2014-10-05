@@ -12,5 +12,7 @@
 		"previous":	"Anterior",
 		"next":		"Seguinte",
 		"last":		"Último"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

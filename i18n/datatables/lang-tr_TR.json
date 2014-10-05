@@ -12,5 +12,7 @@
 		"previous":	"Önceki",
 		"next":		"Sonraki",
 		"last":		"Son"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

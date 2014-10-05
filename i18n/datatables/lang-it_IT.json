@@ -19,5 +19,6 @@
 		"sortAscending":	": attiva per ordinare la colonna in ordine crescente",
 		"sortDescending":	": attiva per ordinare la colonna in ordine decrescente"
 	},
-	"thousands":		","
+	"decimal":			",",
+	"thousands":		"."
 }

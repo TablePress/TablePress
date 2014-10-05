@@ -12,5 +12,7 @@
 		"previous":	"前",
 		"next":		"次",
 		"last":		"最終"
-	}
+	},
+	"decimal":		"",
+	"thousands":	","
 }

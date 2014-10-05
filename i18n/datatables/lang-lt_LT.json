@@ -12,5 +12,7 @@
 		"previous":	"Ankstesnis",
 		"next":		"Tolimesnis",
 		"last":		"Paskutinis"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

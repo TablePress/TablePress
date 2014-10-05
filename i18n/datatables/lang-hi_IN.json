@@ -12,5 +12,7 @@
 		"previous":	"पिछला",
 		"next":		"अगला",
 		"last":		"अंतिम"
-	}
+	},
+	"decimal":		"",
+	"thousands":	","
 }

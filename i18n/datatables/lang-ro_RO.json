@@ -12,5 +12,7 @@
 		"previous":	"Precedenta",
 		"next":		"Urmatoarea",
 		"last":		"Ultima"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

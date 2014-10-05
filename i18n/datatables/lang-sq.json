@@ -19,5 +19,6 @@
 		"sortAscending":	": aktivizo për të sortuar kolumnin me vlera në ngritje",
 		"sortDescending":	": aktivizo për të sortuar kolumnin me vlera në zbritje"
 	},
-	"thousands":		","
+	"decimal":			",",
+	"thousands":		"."
 }

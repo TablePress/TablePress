@@ -12,5 +12,7 @@
 		"previous":	"Prethodna",
 		"next":		"Sledeća",
 		"last":		"Poslednja"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

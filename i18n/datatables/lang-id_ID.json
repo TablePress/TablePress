@@ -12,5 +12,7 @@
 		"previous":	"Sebelumnya",
 		"next":		"Selanjutnya",
 		"last":		"Terakhir"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

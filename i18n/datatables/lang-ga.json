@@ -12,5 +12,7 @@
 		"previous":	"Roimhe Seo",
 		"next":		"Ar Aghaidh",
 		"last":		"Last"
-	}
+	},
+	"decimal":		"",
+	"thousands":	","
 }

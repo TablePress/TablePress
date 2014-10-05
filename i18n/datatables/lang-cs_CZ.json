@@ -12,5 +12,7 @@
 		"previous":	"Předchozí",
 		"next":		"Další",
 		"last":		"Poslední"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

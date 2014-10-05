@@ -19,5 +19,6 @@
 		"sortAscending":	": vključite za naraščujoči sort",
 		"sortDescending":	": vključite za padajoči sort"
 	},
-	"thousands":		","
+	"decimal":			",",
+	"thousands":		"."
 }

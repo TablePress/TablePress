@@ -12,5 +12,7 @@
 		"previous":	"Iepriekšējā",
 		"next":		"Nākošā",
 		"last":		"Pēdējā"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

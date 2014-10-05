@@ -12,5 +12,7 @@
 		"previous":	"Edellinen",
 		"next":		"Seuraava",
 		"last":		"Viimeinen"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

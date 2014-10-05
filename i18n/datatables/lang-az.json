@@ -19,5 +19,6 @@
 		"sortAscending":	": sütunu artma sırası üzərə aktiv etmək",
 		"sortDescending":	": sütunu azalma sırası üzərə aktiv etmək"
 	},
-	"thousands":		","
+	"decimal":			",",
+	"thousands":		"."
 }

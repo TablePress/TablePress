@@ -12,5 +12,7 @@
 		"previous":	"Trước",
 		"next":		"Tiếp",
 		"last":		"Cuối"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

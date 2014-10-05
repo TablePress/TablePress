@@ -12,5 +12,7 @@
 		"previous":	"קודם",
 		"next":		"הבא",
 		"last":		"אחרון"
-	}
+	},
+	"decimal":		"",
+	"thousands":	","
 }

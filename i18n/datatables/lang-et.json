@@ -12,5 +12,7 @@
 		"previous":	"Eelmine",
 		"next":		"Järgmine",
 		"last":		"Viimane"
-	}
+	},
+	"decimal":		",",
+	"thousands":	"."
 }
