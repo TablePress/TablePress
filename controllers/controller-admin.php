@@ -570,7 +570,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Naoko Azuma',
 				'translator_url' => 'http://www.goju-on.com/profile_en/',
 			),
-			'lv_LV' => array(
+			'lv' => array(
 				'name' => __( 'Latvian', 'tablepress' ),
 				'translator_name' => 'Johannes Rau',
 				'translator_url' => 'http://www.yamago.de/',
@@ -610,7 +610,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Hakan Er',
 				'translator_url' => 'http://hakanertr.wordpress.com/',
 			),
-			'uk_UA' => array(
+			'uk' => array(
 				'name' => __( 'Ukrainian', 'tablepress' ),
 				'translator_name' => 'Ostap Kutsyy',
 				'translator_url' => '',

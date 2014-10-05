@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: Poedit 1.6.6\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Language: uk_UA\n"
+"Language: uk\n"
 
 #: classes/class-admin-page-helper.php:79
 msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
