@@ -619,10 +619,6 @@ class TablePress_Render {
 				$cell_content = '&nbsp;';
 			}
 
-			if ( 0 === $row_idx && $this->render_options['table_head'] ) {
-				$cell_content = '<div>' . $cell_content . '</div>';
-			}
-
 			// Attributes for the table cell (HTML td or th element).
 			$tag_attributes = array();
 

@@ -205,21 +205,14 @@
 .dataTables_wrapper .sorting,
 .dataTables_wrapper .sorting_asc,
 .dataTables_wrapper .sorting_desc {
+	position: relative;
 	padding-right: 20px; /* more right padding for sort arrows */
 	cursor: pointer;
 	outline: none;
 }
-.dataTables_wrapper .sorting div,
-.dataTables_wrapper .sorting_asc div,
-.dataTables_wrapper .sorting_desc div {
-	position: relative;
-	margin: 0 !important;
-	padding: 0 !important;
-	float: none !important;
-}
-.dataTables_wrapper .sorting div:after,
-.dataTables_wrapper .sorting_asc div:after,
-.dataTables_wrapper .sorting_desc div:after {
+.dataTables_wrapper .sorting:after,
+.dataTables_wrapper .sorting_asc:after,
+.dataTables_wrapper .sorting_desc:after {
 	font-family: TablePress;
 	font-weight: normal;
 	font-size: 14px;
@@ -228,20 +221,19 @@
 	top: 0;
 	bottom: 0;
 	left: auto;
-	right: -14px;
+	right: 6px;
 	margin: auto;
 	height: 14px;
 	line-height: 1;
-	padding: 1px 0 0;
 }
-.dataTables_wrapper .sorting div:after {
+.dataTables_wrapper .sorting:after {
 	content: "\f0dc";
 }
-.dataTables_wrapper .sorting_asc div:after {
+.dataTables_wrapper .sorting_asc:after {
 	content: "\f0d8";
-	padding: 0 0 1px;
+	padding: 0 0 2px;
 }
-.dataTables_wrapper .sorting_desc div:after {
+.dataTables_wrapper .sorting_desc:after {
 	content: "\f0d7";
 }
 .dataTables_wrapper .sorting:hover,
@@ -249,8 +241,12 @@
 .dataTables_wrapper .sorting_desc {
 	background-color: #049cdb;
 }
+/* Hide the sorting arrows in the extra table that is added for scrolling */
+.dataTables_wrapper .dataTables_scrollBody thead th:after {
+	content: "";
+}
 
-/* Self clearing - */
+/* Self clearing */
 .dataTables_wrapper:after {
 	content: "";
 	display: block;
