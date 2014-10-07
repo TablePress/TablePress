@@ -41,14 +41,10 @@
 	border: none;
 	background: none;
 	text-align: left;
+	float: none !important;
 }
 .tablepress tbody td {
 	vertical-align: top;
-}
-
-/* Fix right column float in many themes */
-.tablepress [class*="column"]+[class*="column"]:last-child {
-	float: none;
 }
 
 /* Horizontal borders */
