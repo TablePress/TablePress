@@ -147,7 +147,7 @@ body #wp-link-backdrop {
 }
 
 /* For faster drawing performance, and hopefully faster scrolling */
-#tablepress-page input,
+#tablepress-page input[type="text"],
 #tablepress-page textarea,
 #tablepress-page select {
 	-webkit-box-shadow: none;
