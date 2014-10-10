@@ -295,7 +295,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @param array  $args    Arguments for the check, here e.g. the table ID.
 	 * @return array $caps Modified set of primitive caps.
 	 */
-	public function map_tablepress_meta_caps( array $caps, $cap, $user_id, $args ) {
+	public function map_tablepress_meta_caps( array $caps, $cap, $user_id, array $args ) {
 		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) ) {
 			return $caps;
 		}

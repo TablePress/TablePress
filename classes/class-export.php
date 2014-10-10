@@ -167,7 +167,7 @@ class TablePress_Export {
 	 * @param string $tag HTML tag to use for the cells (td or th).
 	 * @return string HTML code for the row.
 	 */
-	protected function html_render_row( $row, $tag ) {
+	protected function html_render_row( array $row, $tag ) {
 		$output = "\t\t<tr>\n";
 		array_walk( $row, array( $this, 'html_wrap_and_escape' ), $tag );
 		$output .= implode( '', $row );

@@ -553,7 +553,7 @@ class CSSTidy_optimise {
 	 * @param array $array
 	 * @return array
 	 */
-	public function merge_selectors( &$array ) {
+	public function merge_selectors( array &$array ) {
 		$css = $array;
 		foreach ( $css as $key => $value ) {
 			if ( ! isset( $css[ $key ] ) ) {
@@ -836,7 +836,7 @@ class CSSTidy_optimise {
 	 * @param array $input_css CSS.
 	 * @return array Array.
 	 */
-	public function merge_bg( $input_css ) {
+	public function merge_bg( array $input_css ) {
 		$background_prop_default = &$this->parser->data['csstidy']['background_prop_default'];
 		// Max number of background images. CSS3 not yet fully implemented.
 		$number_of_values = @max( count( $this->explode_ws( ',', $input_css['background-image'] ) ), count( $this->explode_ws( ',', $input_css['background-color'] ) ), 1 );

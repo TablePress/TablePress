@@ -1267,7 +1267,7 @@ class CSSTidy {
 	 * @param string $selector Selector.
 	 * @param array  $css_add  Additional CSS.
 	 */
-	public function merge_css_blocks( $media, $selector, $css_add ) {
+	public function merge_css_blocks( $media, $selector, array $css_add ) {
 		foreach ( $css_add as $property => $value ) {
 			$this->css_add_property( $media, $selector, $property, $value );
 		}
