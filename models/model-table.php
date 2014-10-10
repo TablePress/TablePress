@@ -1270,6 +1270,120 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
+	 * Add a table ID for a post (table) that was imported through the WP WXR importer to the table ID to post ID map.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param int   $post_id          Post ID of the imported post.
+	 * @param int   $original_post_ID Original post ID that the post had on the site where it was exported from.
+	 * @param array $postdata         Post data that was imported into the database.
+	 * @param array $post             Original post data as it was exported.
+	 */
+	public function add_table_id_on_wp_import( $post_id, $original_post_ID, array $postdata, array $post ) {
+		// Bail if the post could not be imported or if the post is not a TablePress table.
+		if ( is_wp_error( $post_id ) || $this->model_post->get_post_type() !== $postdata['post_type'] ) {
+			return;
+		}
+
+		// Extract the table IDs from the `_tablepress_export_table_id` post meta field.
+		$table_ids = array();
+		if ( isset( $post['postmeta'] ) && is_array( $post['postmeta'] ) ) {
+			foreach( $post['postmeta'] as $postmeta ) {
+				if ( '_tablepress_export_table_id' === $postmeta['key'] ) {
+					$table_ids = $postmeta['value'];
+					$table_ids = explode( ',', $table_ids );
+					break;
+				}
+			}
+		}
+
+		// Save the post ID for each of the table IDs.
+		$post_id_saved = false;
+		foreach ( $table_ids as $table_id ) {
+			$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $table_id );
+			if ( '' === $table_id || $this->table_exists( $table_id ) ) {
+				continue;
+			}
+			$this->_update_post_id( $table_id, $post_id );
+			$post_id_saved = true;
+		}
+
+		// Save the post ID for a new table ID if it could not be saved for any of the imported table IDs.
+		if ( ! $post_id_saved ) {
+			$table_id = $this->_get_new_table_id();
+			$this->_update_post_id( $table_id, $post_id );
+		}
+	}
+
+	/**
+	 * Remove the `_tablepress_export_table_id` post meta field from the fields that are imported during a WP WXR import.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $postmeta Post meta fields for the post.
+	 * @param int   $post_id  Post ID.
+	 * @param array $post     Post.
+	 * @return array Modified post meta fields.
+	 */
+	public function prevent_table_id_post_meta_import_on_wp_import( array $postmeta, $post_id, array $post ) {
+		// Bail if the post is not a TablePress table.
+		if ( $this->model_post->get_post_type() !== $post['post_type'] ) {
+			return $postmeta;
+		}
+
+		// Remove the `_tablepress_export_table_id` post meta field from the post meta fields.
+		foreach( $postmeta as $index => $meta ) {
+			if ( '_tablepress_export_table_id' === $meta['key'] ) {
+				unset( $postmeta[ $index ] );
+			}
+		}
+
+		return $postmeta;
+	}
+
+	/**
+	 * Add the table IDs for an exported post (table) to the WP WXR export file.
+	 *
+	 * The table IDs for a table are exported in a faked post meta field.
+	 * As there's no action for adding extra data to the WXR export file, we hijack the `wxr_export_skip_postmeta` filter hook.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param bool   $skip     Whether to skip the current post meta. Default false.
+	 * @param string $meta_key Current meta key.
+	 * @param object $meta     Current meta object.
+	 */
+	public function add_table_id_to_wp_export( $skip, $meta_key, $meta ) {
+		// Bail if the exporter doesn't process a TablePress table right now.
+		if ( $this->table_options_field_name !== $meta_key ) {
+			return $skip;
+		}
+
+		// Find all table IDs that map to the post ID of the table that is currently being exported.
+		$table_post = $this->tables->get( 'table_post' );
+		$table_ids = array_keys( $table_post, (int) $meta->post_id, true );
+
+		// Bail if no table IDs are mapped to this post ID.
+		if ( empty( $table_ids ) ) {
+			return $skip;
+		}
+
+		// Pretend that there is a `_tablepress_export_table_id` post meta field with the list of table IDs.
+		$key = '_tablepress_export_table_id';
+		$value = wxr_cdata( implode( ',', $table_ids ) );
+
+		// Hijack the filter and print extra XML code for our faked post meta field.
+		echo <<<WXR
+		<wp:postmeta>
+			<wp:meta_key>{$key}</wp:meta_key>
+			<wp:meta_value>{$value}</wp:meta_value>
+		</wp:postmeta>\n
+WXR;
+
+		return $skip;
+	}
+
+	/**
 	 * Delete the WP_Option of the model.
 	 *
 	 * @since 1.0.0

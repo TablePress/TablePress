@@ -180,6 +180,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		add_action( 'load-plugins.php', array( $this, 'plugins_page' ) );
 		add_action( 'admin_print_styles-media-upload-popup', array( $this, 'add_media_upload_thickbox_css' ) );
+
+		// Add filters and actions for the integration into the WP WXR exporter and importer.
+		add_action( 'wp_import_insert_post', array( TablePress::$model_table, 'add_table_id_on_wp_import' ), 10, 4 );
+		add_filter( 'wp_import_post_meta', array( TablePress::$model_table, 'prevent_table_id_post_meta_import_on_wp_import' ), 10, 3 );
+		add_filter( 'wxr_export_skip_postmeta', array( TablePress::$model_table, 'add_table_id_to_wp_export' ), 10, 3 );
 	}
 
 	/**
