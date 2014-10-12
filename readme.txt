@@ -100,7 +100,17 @@ You may use it free of charge for any purpose.
 == Changelog ==
 
 = Version 1.5 =
-* Compatibility with WordPress 4.0
+* Full compatibility with WordPress 4.0
+* Feature: Support for the new Media Manager when inserting images
+* Feature: Support for the integrated WP importer/exporter
+* Bugfix: The "Insert Link" dialog in the "Advanced Editor" works now.
+* Enhancement: The HTML export now creates valid HTML files.
+* Enhancement: Tables are now stored with extra information about the format, so that other plugins are less likely to break it.
+* Extended unit tests for the plugin and some external libraries.
+* Updated external libraries (CodeMirror, DataTables, Build tools).
+* Added Ukrainian translation.
+* Updated several translations (English, German).
+* Added and updated more language files for the DataTables library.
 * TablePress 1.5 requires WordPress 4.0!
 
 = Version 1.4 =
@@ -167,6 +177,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.5 =
+This update includes several new features, enhancements, and bugfixes. Updating is recommended.
 
 = 1.4 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
