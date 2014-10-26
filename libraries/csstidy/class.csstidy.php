@@ -194,7 +194,7 @@ class CSSTidy {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public $version = '1.5.2';
+	public $version = '1.5.3';
 
 	/**
 	 * The settings.
@@ -798,8 +798,8 @@ class CSSTidy {
 							$this->sel_separate[] = strlen( $this->selector );
 						} elseif ( '\\' === $string[ $i ] ) {
 							$this->selector .= $this->_unicode( $string, $i );
-						} elseif ( '*' === $string[ $i ] && @in_array( $string[ $i + 1 ], array( '.', '#', '[', ':' ), true ) ) {
-							// Remove unnecessary universal selector, FS#147.
+						} elseif ( '*' === $string[ $i ] && @in_array( $string[ $i + 1 ], array( '.', '#', '[', ':' ), true ) && ( 0 === $i || '/' !== $string[ $i - 1 ] ) ) {
+							// Remove unnecessary universal selector, FS#147, but not comment in selector.
 						} else {
 							$this->selector .= $string[ $i ];
 						}
