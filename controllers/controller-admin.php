@@ -362,6 +362,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling.
 		set_current_screen( "tablepress_{$action}" );
+		// Set the $typenow global to the current CPT ourselves, as WP_Screen::get() does not determine the CPT correctly.
+		// This is necessary as the WP Admin Menu can otherwise highlight wrong entries, see https://github.com/TobiasBg/TablePress/issues/24.
+		if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
+			$GLOBALS['typenow'] = $_GET['post_type'];
+		}
 
 		// Pre-define some view data.
 		$data = array(
