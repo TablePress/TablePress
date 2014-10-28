@@ -1,3 +1,5 @@
+# Copyright (C) 2014 TablePress
+# This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
 "Project-Id-Version: TablePress v1.5\n"
