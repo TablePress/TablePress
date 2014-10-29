@@ -184,7 +184,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Print "Custom CSS" to "wp_head" inline; Necessary if "Default CSS" is off, and saving "Custom CSS" to a file is not possible.
+	 * Print "Custom CSS" to "wp_head" inline.
+	 *
+	 *  This is necessary if "Default CSS" is off, and saving "Custom CSS" to a file is not possible.
 	 *
 	 * @since 1.0.0
 	 */
@@ -411,15 +413,15 @@ JS;
 	}
 
 	/**
-	 * Handle Shortcode [table id=<ID> /] in the_content()
+	 * Handle Shortcode [table id=<ID> /] in `the_content()`.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $shortcode_atts List of attributes that where included in the Shortcode
-	 * @return string Resulting HTML code for the table with the ID <ID>
+	 * @param array $shortcode_atts List of attributes that where included in the Shortcode.
+	 * @return string Resulting HTML code for the table with the ID <ID>.
 	 */
 	public function shortcode_table( $shortcode_atts ) {
-		// For empty Shortcodes like [table] or [table /], an empty string is passed, see Core #26927.
+		// For empty Shortcodes like [table] or [table /], an empty string is passed, see WP Core #26927.
 		$shortcode_atts = (array) $shortcode_atts;
 
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
@@ -647,12 +649,12 @@ JS;
 	}
 
 	/**
-	 * Handle Shortcode [table-info id=<ID> field=<name> /] in the_content()
+	 * Handle Shortcode [table-info id=<ID> field=<name> /] in the_content().
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $shortcode_atts List of attributes that where included in the Shortcode
-	 * @return string Text that replaces the Shortcode (error message or asked-for information)
+	 * @param array $shortcode_atts List of attributes that where included in the Shortcode.
+	 * @return string Text that replaces the Shortcode (error message or asked-for information).
 	 */
 	public function shortcode_table_info( $shortcode_atts ) {
 		// For empty Shortcodes like [table-info] or [table-info /], an empty string is passed, see Core #26927.
@@ -824,8 +826,6 @@ JS;
 	 * Shortcode for one of these tables in their content.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @uses $wpdb
 	 *
 	 * @param string $search_sql Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching.
 	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them.
