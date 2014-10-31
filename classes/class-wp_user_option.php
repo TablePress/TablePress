@@ -30,9 +30,6 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses is_user_logged_in()
-	 * @uses get_user_option()
-	 *
 	 * @param string $option_name   Name of the WP User Option.
 	 * @param mixed  $default_value Default value of the WP User Option.
 	 * @return mixed Current value of the WP User Option, or $default_value if it does not exist.
@@ -56,9 +53,6 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses is_user_logged_in()
-	 * @uses get_user_option()
-	 *
 	 * @param string $option_name Name of the WP User Option.
 	 * @param string $new_value   New value of the WP User Option (not slashed).
 	 * @return bool True on success, false on failure.
@@ -79,9 +73,6 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses is_user_logged_in()
-	 * @uses get_user_option()
-	 *
 	 * @param string $option_name Name of the WP User Option.
 	 * @return bool True on success, false on failure.
 	 */
@@ -98,8 +89,6 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 * Delete a WP User Option with the WP User Options API, for all users of the site.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @uses delete_user_option()
 	 */
 	public function delete_for_all_users() {
 		$users = get_users();

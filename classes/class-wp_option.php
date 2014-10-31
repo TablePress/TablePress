@@ -126,8 +126,6 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses get_option()
-	 *
 	 * @param string $option_name   Name of the WP Option.
 	 * @param mixed  $default_value Default value of the WP Option.
 	 * @return mixed Current value of the WP Option, or $default_value if it does not exist.
@@ -141,8 +139,6 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses update_option()
-	 *
 	 * @param string $option_name Name of the WP Option.
 	 * @param string $new_value   New value of the WP Option.
 	 * @return bool True on success, false on failure.
@@ -155,8 +151,6 @@ class TablePress_WP_Option {
 	 * Delete a WP Option with the WP Options API.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @uses delete_option()
 	 *
 	 * @param string $option_name Name of the WP Option.
 	 * @return bool True on success, false on failure.

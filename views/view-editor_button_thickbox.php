@@ -210,7 +210,6 @@ jQuery( document ).ready( function( $ ) {
  * @author Tobias Bäthge
  * @link https://codex.wordpress.org/Class_Reference/WP_List_Table
  * @since 1.0.0
- * @uses WP_List_Table
  */
 class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 

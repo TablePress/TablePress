@@ -201,8 +201,6 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses wp_nonce_field()
-	 *
 	 * @param array $data Data for this screen
 	 * @param array $box  Information about the text box.
 	 */

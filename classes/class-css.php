@@ -25,8 +25,6 @@ class TablePress_CSS {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @uses CSSTidy
-	 *
 	 * @param string $css CSS code.
 	 * @return string Sanitized and tidied CSS code.
 	 */
@@ -72,8 +70,6 @@ class TablePress_CSS {
 	 * Minify a string of CSS code, that should have been sanitized/tidied before.
 	 *
 	 * @since 1.1.0
-	 *
-	 * @uses CSSTidy
 	 *
 	 * @param string $css CSS code.
 	 * @return string Minified CSS code.
@@ -218,8 +214,6 @@ class TablePress_CSS {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @uses WP_Filesystem
-	 *
 	 * @param string $custom_css_normal   Custom CSS code to be saved.
 	 * @param string $custom_css_minified Minified CSS code to be saved.
 	 * @return bool True on success, false on failure.
@@ -258,8 +252,6 @@ class TablePress_CSS {
 	 * Only used from "Plugin Options" screen, save_custom_css_to_file() is used in cases where no form output/redirection is possible (plugin updates, WP-Table Reloaded Import).
 	 *
 	 * @since 1.0.0
-	 *
-	 * @uses WP_Filesystem
 	 *
 	 * @param string $custom_css_normal   Custom CSS code to be saved. If empty, files will be deleted.
 	 * @param string $custom_css_minified Minified CSS code to be saved.
@@ -307,7 +299,6 @@ class TablePress_CSS {
 	 *
 	 * @see save_custom_css_to_file()
 	 * @see save_custom_css_to_file_plugin_options()
-	 * @uses WP_Filesystem
 	 *
 	 * @param string $custom_css_normal   Custom CSS code to be saved.
 	 * @param string $custom_css_minified Minified CSS code to be saved.
@@ -393,7 +384,6 @@ class TablePress_CSS {
 	 *
 	 * @see delete_custom_css_files()
 	 * @see save_custom_css_to_file_plugin_options()
-	 * @uses WP_Filesystem
 	 *
 	 * @return bool True on success, false on failure.
 	 */

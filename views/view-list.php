@@ -248,7 +248,6 @@ class TablePress_List_View extends TablePress_View {
  * @author Tobias Bäthge
  * @link https://codex.wordpress.org/Class_Reference/WP_List_Table
  * @since 1.0.0
- * @uses WP_List_Table
  */
 class TablePress_All_Tables_List_Table extends WP_List_Table {
 

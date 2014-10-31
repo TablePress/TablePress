@@ -226,8 +226,6 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses add_meta_box()
-	 *
 	 * @param string   $id            Unique ID for the meta box.
 	 * @param string   $title         Title for the meta box.
 	 * @param callback $callback      Callback that prints the contents of the post meta box.
@@ -268,8 +266,6 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses do_meta_boxes()
-	 *
 	 * @param string $context Context (normal, side, additional) for which registered post meta boxes shall be rendered.
 	 */
 	protected function do_meta_boxes( $context ) {
@@ -286,8 +282,6 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @uses wp_nonce_field()
-	 *
 	 * @param array $data Data for this screen.
 	 * @param array $box  Information about the text box.
 	 */
@@ -303,8 +297,6 @@ abstract class TablePress_View {
 	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @uses wp_nonce_field()
 	 *
 	 * @param array $data Data for this screen.
 	 * @param array $box  Information about the text box.
