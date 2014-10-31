@@ -800,6 +800,8 @@ JS;
 	 *
 	 * @since 1.0.0
 	 *
+	 * @global array $shortcode_tags WordPress container for storing Shortcode definitions.
+	 *
 	 * @param string $content Text content of the text widget, will be searched for one of TablePress's Shortcodes.
 	 * @return string Text of the text widget, with eventually found Shortcodes having been replaced by corresponding output.
 	 */
@@ -827,15 +829,17 @@ JS;
 	 *
 	 * @since 1.0.0
 	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $search_sql Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching.
 	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them.
 	 */
 	public function posts_search_filter( $search_sql ) {
+		global $wpdb;
+
 		if ( ! is_search() || ! is_main_query() ) {
 			return $search_sql;
 		}
-
-		global $wpdb;
 
 		// Get variable that contains all search terms, parsed from $_GET['s'] by WP.
 		$search_terms = get_query_var( 'search_terms' );

@@ -1263,6 +1263,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * so that other plugins know that they are not dealing with plain text.
 	 *
 	 * @since 1.5.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 */
 	public function add_mime_type_to_posts() {
 		global $wpdb;

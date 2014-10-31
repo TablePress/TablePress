@@ -235,6 +235,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 * @see get_post()
 	 *
 	 * @param array $all_post_ids      List of Post IDs.

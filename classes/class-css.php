@@ -297,6 +297,7 @@ class TablePress_CSS {
 	 *
 	 * @since 1.1.0
 	 *
+	 * @global WP_Filesystem_* $wp_filesystem WordPress file system abstraction object.
 	 * @see save_custom_css_to_file()
 	 * @see save_custom_css_to_file_plugin_options()
 	 *
@@ -382,6 +383,7 @@ class TablePress_CSS {
 	 *
 	 * @since 1.1.0
 	 *
+	 * @global WP_Filesystem_* $wp_filesystem WordPress file system abstraction object.
 	 * @see delete_custom_css_files()
 	 * @see save_custom_css_to_file_plugin_options()
 	 *

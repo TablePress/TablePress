@@ -251,11 +251,12 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.1.0
 	 *
+	 * @global WP_Roles $wp_roles WordPress User Roles abstraction object.
 	 * @see add_access_capabilities()
 	 */
 	public function remove_access_capabilities() {
-		// Capabilities for all roles.
 		global $wp_roles;
+
 		if ( ! isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles();
 		}
