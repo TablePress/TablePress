@@ -12,7 +12,7 @@ Screenshots of the TablePress interface are available at https://wordpress.org/p
 
 ## Installation
 
-The easiest way to install TablePress is via your WordPress Dashboard. Go to the "Plugins" screen and search for "TablePress" in the WordPress Plugin Directory. Then, click "Install Now" and the following steps will be done for you automatically. After the installation, you'll just have to activate the TablePress plugin.
+The easiest way to install TablePress is via your WordPress Dashboard. Go to the "Plugins" screen, click "Add New", and search for "TablePress" in the WordPress Plugin Directory. Then, click "Install Now" and the following steps will be done for you automatically. After the installation, you'll just have to activate the TablePress plugin.
 
 Manual installation works just as for other WordPress plugins:
 
