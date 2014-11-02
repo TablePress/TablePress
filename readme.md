@@ -66,7 +66,7 @@ Everything should be self-explaining there.
 To show one of your tables in a post, on a page, or in a text widget, just embed the Shortcode `[table id=<the-ID> /]` into the post/page/text widget, where `<the-ID>` is the ID of your table (can be found on the left side of the "All Tables" screen.)
 Alternatively, you can also insert tables by clicking the "Table" button in the editor toolbar, and then selecting the desired table.
 
-After that, you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen.
+After that, you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen. Some examples for common styling changes can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table's "Edit" screen.
 
