@@ -202,17 +202,17 @@
 }
 
 /* Sorting */
-.dataTables_wrapper .sorting,
-.dataTables_wrapper .sorting_asc,
-.dataTables_wrapper .sorting_desc {
+.tablepress .sorting,
+.tablepress .sorting_asc,
+.tablepress .sorting_desc {
 	position: relative;
 	padding-right: 20px; /* more right padding for sort arrows */
 	cursor: pointer;
 	outline: none;
 }
-.dataTables_wrapper .sorting:after,
-.dataTables_wrapper .sorting_asc:after,
-.dataTables_wrapper .sorting_desc:after {
+.tablepress .sorting:after,
+.tablepress .sorting_asc:after,
+.tablepress .sorting_desc:after {
 	font-family: TablePress;
 	font-weight: normal;
 	font-size: 14px;
@@ -226,23 +226,23 @@
 	height: 14px;
 	line-height: 1;
 }
-.dataTables_wrapper .sorting:after {
+.tablepress .sorting:after {
 	content: "\f0dc";
 }
-.dataTables_wrapper .sorting_asc:after {
+.tablepress .sorting_asc:after {
 	content: "\f0d8";
 	padding: 0 0 2px;
 }
-.dataTables_wrapper .sorting_desc:after {
+.tablepress .sorting_desc:after {
 	content: "\f0d7";
 }
-.dataTables_wrapper .sorting:hover,
-.dataTables_wrapper .sorting_asc,
-.dataTables_wrapper .sorting_desc {
+.tablepress .sorting:hover,
+.tablepress .sorting_asc,
+.tablepress .sorting_desc {
 	background-color: #049cdb;
 }
 /* Hide the sorting arrows in the extra table that is added for scrolling */
-.dataTables_wrapper .dataTables_scrollBody thead th:after {
+.dataTables_scrollBody .tablepress thead th:after {
 	content: "";
 }
 
