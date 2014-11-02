@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TablePress 1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
-"POT-Creation-Date: 2014-10-12 12:29:20+00:00\n"
+"POT-Creation-Date: 2014-11-02 18:23:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "<!-- The table with the ID %s is empty! -->"
 msgstr ""
 
-#: classes/class-render.php:410 views/view-list.php:422
+#: classes/class-render.php:410 views/view-list.php:421
 msgid "Edit"
 msgstr ""
 
@@ -123,11 +123,11 @@ msgstr[1] ""
 
 #. #-#-#-#-#  tablepress.pot (TablePress 1.4)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: classes/class-view.php:387
+#: classes/class-view.php:379
 msgid "TablePress"
 msgstr ""
 
-#: classes/class-view.php:419 views/view-edit.php:453 views/view-edit.php:454
+#: classes/class-view.php:411 views/view-edit.php:451 views/view-edit.php:452
 #: views/view-options.php:55
 msgid "Save Changes"
 msgstr ""
@@ -173,191 +173,191 @@ msgstr ""
 msgid "Donate"
 msgstr ""
 
-#: controllers/controller-admin.php:360 controllers/controller-admin.php:436
-#: controllers/controller-admin.php:867 controllers/controller-admin.php:936
-#: controllers/controller-admin.php:992 controllers/controller-admin.php:1070
-#: controllers/controller-admin.php:1110 controllers/controller-admin.php:1200
-#: controllers/controller-admin.php:1212 controllers/controller-admin.php:1843
-#: controllers/controller-admin.php:1874 controllers/controller-admin.php:1915
-#: controllers/controller-admin.php:1959 controllers/controller-admin.php:2003
-#: controllers/controller-admin.php:2031
+#: controllers/controller-admin.php:360 controllers/controller-admin.php:441
+#: controllers/controller-admin.php:872 controllers/controller-admin.php:941
+#: controllers/controller-admin.php:997 controllers/controller-admin.php:1075
+#: controllers/controller-admin.php:1115 controllers/controller-admin.php:1205
+#: controllers/controller-admin.php:1217 controllers/controller-admin.php:1848
+#: controllers/controller-admin.php:1879 controllers/controller-admin.php:1920
+#: controllers/controller-admin.php:1964 controllers/controller-admin.php:2008
+#: controllers/controller-admin.php:2036
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: controllers/controller-admin.php:457
+#: controllers/controller-admin.php:462
 msgctxt ""
 "Default CSV delimiter in the translated language (\";\", \",\", or \"tab\")"
 msgid ","
 msgstr ""
 
-#: controllers/controller-admin.php:529
+#: controllers/controller-admin.php:534
 msgid "Czech"
 msgstr ""
 
-#: controllers/controller-admin.php:534
+#: controllers/controller-admin.php:539
 msgid "German"
 msgstr ""
 
-#: controllers/controller-admin.php:539
+#: controllers/controller-admin.php:544
 msgid "English"
 msgstr ""
 
-#: controllers/controller-admin.php:544
+#: controllers/controller-admin.php:549
 msgid "Spanish"
 msgstr ""
 
-#: controllers/controller-admin.php:549
+#: controllers/controller-admin.php:554
 msgid "Finnish"
 msgstr ""
 
-#: controllers/controller-admin.php:554
+#: controllers/controller-admin.php:559
 msgid "French"
 msgstr ""
 
-#: controllers/controller-admin.php:559
+#: controllers/controller-admin.php:564
 msgid "Hebrew"
 msgstr ""
 
-#: controllers/controller-admin.php:564
+#: controllers/controller-admin.php:569
 msgid "Italian"
 msgstr ""
 
-#: controllers/controller-admin.php:569
+#: controllers/controller-admin.php:574
 msgid "Icelandic"
 msgstr ""
 
-#: controllers/controller-admin.php:574
+#: controllers/controller-admin.php:579
 msgid "Japanese"
 msgstr ""
 
-#: controllers/controller-admin.php:579
+#: controllers/controller-admin.php:584
 msgid "Latvian"
 msgstr ""
 
-#: controllers/controller-admin.php:584
+#: controllers/controller-admin.php:589
 msgid "Dutch"
 msgstr ""
 
-#: controllers/controller-admin.php:589
+#: controllers/controller-admin.php:594
 msgid "Polish"
 msgstr ""
 
-#: controllers/controller-admin.php:594
+#: controllers/controller-admin.php:599
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: controllers/controller-admin.php:599
+#: controllers/controller-admin.php:604
 msgid "Russian"
 msgstr ""
 
-#: controllers/controller-admin.php:604
+#: controllers/controller-admin.php:609
 msgid "Slovak"
 msgstr ""
 
-#: controllers/controller-admin.php:609
+#: controllers/controller-admin.php:614
 msgid "Serbian"
 msgstr ""
 
-#: controllers/controller-admin.php:614
+#: controllers/controller-admin.php:619
 msgid "Turkish"
 msgstr ""
 
-#: controllers/controller-admin.php:619
+#: controllers/controller-admin.php:624
 msgid "Ukrainian"
 msgstr ""
 
-#: controllers/controller-admin.php:624
+#: controllers/controller-admin.php:629
 msgid "Chinese (Simplified)"
 msgstr ""
 
-#: controllers/controller-admin.php:629
+#: controllers/controller-admin.php:634
 msgid "Chinese (Taiwan)"
 msgstr ""
 
-#: controllers/controller-admin.php:685 controllers/controller-admin.php:686
-#: controllers/controller-admin.php:687
+#: controllers/controller-admin.php:690 controllers/controller-admin.php:691
+#: controllers/controller-admin.php:692
 msgid "All Tables"
 msgstr ""
 
-#: controllers/controller-admin.php:692 controllers/controller-admin.php:693
+#: controllers/controller-admin.php:697 controllers/controller-admin.php:698
 #: views/view-add.php:41
 msgid "Add New Table"
 msgstr ""
 
-#: controllers/controller-admin.php:694
+#: controllers/controller-admin.php:699
 msgid "Add New"
 msgstr ""
 
-#: controllers/controller-admin.php:699
+#: controllers/controller-admin.php:704
 msgid "Edit Table"
 msgstr ""
 
-#: controllers/controller-admin.php:706 controllers/controller-admin.php:707
+#: controllers/controller-admin.php:711 controllers/controller-admin.php:712
 msgid "Import a Table"
 msgstr ""
 
-#: controllers/controller-admin.php:708
+#: controllers/controller-admin.php:713
 msgctxt "navigation bar"
 msgid "Import"
 msgstr ""
 
-#: controllers/controller-admin.php:713 controllers/controller-admin.php:714
+#: controllers/controller-admin.php:718 controllers/controller-admin.php:719
 msgid "Export a Table"
 msgstr ""
 
-#: controllers/controller-admin.php:715
+#: controllers/controller-admin.php:720
 msgctxt "navigation bar"
 msgid "Export"
 msgstr ""
 
-#: controllers/controller-admin.php:720 controllers/controller-admin.php:721
-#: controllers/controller-admin.php:722
+#: controllers/controller-admin.php:725 controllers/controller-admin.php:726
+#: controllers/controller-admin.php:727
 msgid "Plugin Options"
 msgstr ""
 
-#: controllers/controller-admin.php:727 controllers/controller-admin.php:729
+#: controllers/controller-admin.php:732 controllers/controller-admin.php:734
 msgid "About"
 msgstr ""
 
-#: controllers/controller-admin.php:728
+#: controllers/controller-admin.php:733
 msgid "About TablePress"
 msgstr ""
 
-#: controllers/controller-admin.php:1292
+#: controllers/controller-admin.php:1297
 msgid "Imported from Manual Input"
 msgstr ""
 
-#: controllers/controller-admin.php:1955
+#: controllers/controller-admin.php:1960
 #: controllers/controller-admin_ajax.php:276
 msgid "The preview could not be loaded."
 msgstr ""
 
-#: controllers/controller-admin.php:1955 controllers/controller-admin.php:1965
-#: views/view-edit.php:450 views/view-list.php:435
+#: controllers/controller-admin.php:1960 controllers/controller-admin.php:1970
+#: views/view-edit.php:448 views/view-list.php:434
 #: views/view-preview_table.php:53
 msgid "Preview"
 msgstr ""
 
-#: controllers/controller-admin.php:1965
+#: controllers/controller-admin.php:1970
 msgid "The table could not be loaded."
 msgstr ""
 
-#: controllers/controller-admin.php:2049
+#: controllers/controller-admin.php:2054
 msgid "TablePress was uninstalled successfully."
 msgstr ""
 
-#: controllers/controller-admin.php:2050
+#: controllers/controller-admin.php:2055
 msgid "All tables, data, and options were deleted."
 msgstr ""
 
-#: controllers/controller-admin.php:2052
+#: controllers/controller-admin.php:2057
 msgid ""
 "You may now ask the network admin to delete the plugin&#8217;s folder "
 "<code>tablepress</code> from the server, if no other site in the network "
 "uses it."
 msgstr ""
 
-#: controllers/controller-admin.php:2054
+#: controllers/controller-admin.php:2059
 msgid ""
 "You may now manually delete the plugin&#8217;s folder <code>tablepress</"
 "code> from the <code>plugins</code> directory on your server or use the "
@@ -365,33 +365,33 @@ msgid ""
 "Plugins&#8221; page."
 msgstr ""
 
-#: controllers/controller-admin.php:2057
+#: controllers/controller-admin.php:2062
 msgid ""
 "Your TablePress &#8220;Custom CSS&#8221; files have been deleted "
 "automatically."
 msgstr ""
 
-#: controllers/controller-admin.php:2060
+#: controllers/controller-admin.php:2065
 msgid ""
 "Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files "
 "from the server."
 msgstr ""
 
-#: controllers/controller-admin.php:2062
+#: controllers/controller-admin.php:2067
 msgid ""
 "You may now also delete your TablePress &#8220;Custom CSS&#8221; files in "
 "the <code>wp-content</code> folder."
 msgstr ""
 
-#: controllers/controller-admin.php:2067
+#: controllers/controller-admin.php:2072
 msgid "Go to &#8220;Plugins&#8221; page"
 msgstr ""
 
-#: controllers/controller-admin.php:2069
+#: controllers/controller-admin.php:2074
 msgid "Go to Dashboard"
 msgstr ""
 
-#: controllers/controller-admin.php:2071 views/view-options.php:197
+#: controllers/controller-admin.php:2076 views/view-options.php:197
 #: views/view-options.php:204
 msgid "Uninstall TablePress"
 msgstr ""
@@ -418,12 +418,12 @@ msgid ""
 "and paste it into the editor."
 msgstr ""
 
-#: controllers/controller-frontend.php:736 views/view-list.php:494
+#: controllers/controller-frontend.php:738 views/view-list.php:493
 msgid "%s ago"
 msgstr ""
 
-#: models/model-table.php:530 views/view-editor_button_thickbox.php:328
-#: views/view-export.php:131 views/view-import.php:211 views/view-list.php:411
+#: models/model-table.php:530 views/view-editor_button_thickbox.php:327
+#: views/view-export.php:131 views/view-import.php:211 views/view-list.php:410
 msgid "(no name)"
 msgstr ""
 
@@ -639,8 +639,8 @@ msgid ""
 "You can always change the name, description, and size of your table later."
 msgstr ""
 
-#: views/view-add.php:77 views/view-edit.php:237
-#: views/view-editor_button_thickbox.php:276 views/view-list.php:322
+#: views/view-add.php:77 views/view-edit.php:235
+#: views/view-editor_button_thickbox.php:275 views/view-list.php:321
 msgid "Table Name"
 msgstr ""
 
@@ -652,8 +652,8 @@ msgstr ""
 msgid "The name or title of your table."
 msgstr ""
 
-#: views/view-add.php:82 views/view-edit.php:241
-#: views/view-editor_button_thickbox.php:277 views/view-list.php:323
+#: views/view-add.php:82 views/view-edit.php:239
+#: views/view-editor_button_thickbox.php:276 views/view-list.php:322
 msgid "Description"
 msgstr ""
 
@@ -673,8 +673,8 @@ msgstr ""
 msgid "Number of Rows"
 msgstr ""
 
-#: views/view-add.php:88 views/view-add.php:93 views/view-edit.php:426
-#: views/view-edit.php:429
+#: views/view-add.php:88 views/view-add.php:93 views/view-edit.php:424
+#: views/view-edit.php:427
 msgid "This field must contain a positive number."
 msgstr ""
 
@@ -914,11 +914,11 @@ msgid ""
 "number."
 msgstr ""
 
-#: views/view-edit.php:153 views/view-edit.php:300
+#: views/view-edit.php:153 views/view-edit.php:298
 msgid "Sort ascending"
 msgstr ""
 
-#: views/view-edit.php:154 views/view-edit.php:300
+#: views/view-edit.php:154 views/view-edit.php:298
 msgid "Sort descending"
 msgstr ""
 
@@ -950,7 +950,7 @@ msgstr ""
 msgid "Table Manipulation"
 msgstr ""
 
-#: views/view-edit.php:169 views/view-edit.php:593
+#: views/view-edit.php:169 views/view-edit.php:591
 msgid "Table Options"
 msgstr ""
 
@@ -958,388 +958,388 @@ msgstr ""
 msgid "Features of the DataTables JavaScript library"
 msgstr ""
 
-#: views/view-edit.php:228
+#: views/view-edit.php:226
 msgid "Table ID"
 msgstr ""
 
-#: views/view-edit.php:231
+#: views/view-edit.php:229
 msgid ""
 "The Table ID can only consist of letters, numbers, hyphens (-), and "
 "underscores (_)."
 msgstr ""
 
-#: views/view-edit.php:232
+#: views/view-edit.php:230
 msgid "Shortcode"
 msgstr ""
 
-#: views/view-edit.php:245 views/view-list.php:326
+#: views/view-edit.php:243 views/view-list.php:325
 msgid "Last Modified"
 msgstr ""
 
-#: views/view-edit.php:246
+#: views/view-edit.php:244
 msgid "%1$s by %2$s"
 msgstr ""
 
-#: views/view-edit.php:378
+#: views/view-edit.php:376
 msgid "Insert Link"
 msgstr ""
 
-#: views/view-edit.php:379
+#: views/view-edit.php:377
 msgid "Insert Image"
 msgstr ""
 
-#: views/view-edit.php:380
+#: views/view-edit.php:378
 msgid "Advanced Editor"
 msgstr ""
 
-#: views/view-edit.php:383
+#: views/view-edit.php:381
 msgid "Combine cells"
 msgstr ""
 
-#: views/view-edit.php:384
+#: views/view-edit.php:382
 msgid "in a column (rowspan)"
 msgstr ""
 
-#: views/view-edit.php:385
+#: views/view-edit.php:383
 msgid "in a row (colspan)"
 msgstr ""
 
-#: views/view-edit.php:386
+#: views/view-edit.php:384
 msgid "?"
 msgstr ""
 
-#: views/view-edit.php:386
+#: views/view-edit.php:384
 msgid "Help on combining cells"
 msgstr ""
 
-#: views/view-edit.php:388
+#: views/view-edit.php:386
 msgid "Table cells can span across more than one column or row."
 msgstr ""
 
-#: views/view-edit.php:389
+#: views/view-edit.php:387
 msgid ""
 "Combining consecutive cells within the same row is called &#8220;"
 "colspanning&#8221;."
 msgstr ""
 
-#: views/view-edit.php:390
+#: views/view-edit.php:388
 msgid ""
 "Combining consecutive cells within the same column is called &#8220;"
 "rowspanning&#8221;."
 msgstr ""
 
-#: views/view-edit.php:391
+#: views/view-edit.php:389
 msgid ""
 "To combine adjacent cells in a row, add the keyword <code>#colspan#</code> "
 "to the cell to the right of the one with the content for the combined cell "
 "by using the corresponding button."
 msgstr ""
 
-#: views/view-edit.php:392
+#: views/view-edit.php:390
 msgid ""
 "To combine adjacent cells in a column, add the keyword <code>#rowspan#</"
 "code> to the cell below the one with the content for the combined cell by "
 "using the corresponding button."
 msgstr ""
 
-#: views/view-edit.php:393
+#: views/view-edit.php:391
 msgid "Repeat this to add the keyword to all cells that shall be connected."
 msgstr ""
 
-#: views/view-edit.php:394
+#: views/view-edit.php:392
 msgid ""
 "Be aware that the functions of the DataTables JavaScript library will not "
 "work on tables which have combined cells."
 msgstr ""
 
-#: views/view-edit.php:400 views/view-edit.php:412
+#: views/view-edit.php:398 views/view-edit.php:410
 msgid "Selected rows"
 msgstr ""
 
-#: views/view-edit.php:401 views/view-edit.php:406
+#: views/view-edit.php:399 views/view-edit.php:404
 msgid "Hide"
 msgstr ""
 
-#: views/view-edit.php:402 views/view-edit.php:407
+#: views/view-edit.php:400 views/view-edit.php:405
 msgid "Show"
 msgstr ""
 
-#: views/view-edit.php:405 views/view-edit.php:418
+#: views/view-edit.php:403 views/view-edit.php:416
 msgid "Selected columns"
 msgstr ""
 
-#: views/view-edit.php:413 views/view-edit.php:419
+#: views/view-edit.php:411 views/view-edit.php:417
 msgid "Duplicate"
 msgstr ""
 
-#: views/view-edit.php:414 views/view-edit.php:420
+#: views/view-edit.php:412 views/view-edit.php:418
 msgid "Insert"
 msgstr ""
 
-#: views/view-edit.php:415 views/view-edit.php:421 views/view-list.php:432
+#: views/view-edit.php:413 views/view-edit.php:419 views/view-list.php:431
 msgid "Delete"
 msgstr ""
 
-#: views/view-edit.php:426
+#: views/view-edit.php:424
 msgid "Add %s row(s)"
 msgstr ""
 
-#: views/view-edit.php:426 views/view-edit.php:429
+#: views/view-edit.php:424 views/view-edit.php:427
 msgid "Add"
 msgstr ""
 
-#: views/view-edit.php:429
+#: views/view-edit.php:427
 msgid "Add %s column(s)"
 msgstr ""
 
-#: views/view-edit.php:433
+#: views/view-edit.php:431
 msgid ""
 "To use the Table Manipulation features, JavaScript needs to be enabled in "
 "your browser."
 msgstr ""
 
-#: views/view-edit.php:477
+#: views/view-edit.php:475
 msgid "Other Actions"
 msgstr ""
 
-#: views/view-edit.php:479
+#: views/view-edit.php:477
 msgid "Copy Table"
 msgstr ""
 
-#: views/view-edit.php:482
+#: views/view-edit.php:480
 msgid "Export Table"
 msgstr ""
 
-#: views/view-edit.php:485
+#: views/view-edit.php:483
 msgid "Delete Table"
 msgstr ""
 
-#: views/view-edit.php:513
+#: views/view-edit.php:511
 msgid "Cancel"
 msgstr ""
 
-#: views/view-edit.php:514
+#: views/view-edit.php:512
 msgid "OK"
 msgstr ""
 
-#: views/view-edit.php:538 views/view-edit.php:593
+#: views/view-edit.php:536 views/view-edit.php:591
 msgid "Table Head Row"
 msgstr ""
 
-#: views/view-edit.php:539
+#: views/view-edit.php:537
 msgid "The first row of the table is the table header."
 msgstr ""
 
-#: views/view-edit.php:542
+#: views/view-edit.php:540
 msgid "Table Foot Row"
 msgstr ""
 
-#: views/view-edit.php:543
+#: views/view-edit.php:541
 msgid "The last row of the table is the table footer."
 msgstr ""
 
-#: views/view-edit.php:546
+#: views/view-edit.php:544
 msgid "Alternating Row Colors"
 msgstr ""
 
-#: views/view-edit.php:547
+#: views/view-edit.php:545
 msgid "The background colors of consecutive rows shall alternate."
 msgstr ""
 
-#: views/view-edit.php:550
+#: views/view-edit.php:548
 msgid "Row Hover Highlighting"
 msgstr ""
 
-#: views/view-edit.php:551
+#: views/view-edit.php:549
 msgid ""
 "Highlight a row while the mouse cursor hovers above it by changing its "
 "background color."
 msgstr ""
 
-#: views/view-edit.php:554
+#: views/view-edit.php:552
 msgid "Print Table Name"
 msgstr ""
 
-#: views/view-edit.php:557 views/view-edit.php:567
+#: views/view-edit.php:555 views/view-edit.php:565
 msgid "above"
 msgstr ""
 
-#: views/view-edit.php:558 views/view-edit.php:568
+#: views/view-edit.php:556 views/view-edit.php:566
 msgid "below"
 msgstr ""
 
-#: views/view-edit.php:561
+#: views/view-edit.php:559
 msgid "Show the table name %s the table."
 msgstr ""
 
-#: views/view-edit.php:564
+#: views/view-edit.php:562
 msgid "Print Table Description"
 msgstr ""
 
-#: views/view-edit.php:571
+#: views/view-edit.php:569
 msgid "Show the table description %s the table."
 msgstr ""
 
-#: views/view-edit.php:574
+#: views/view-edit.php:572
 msgid "Extra CSS Classes"
 msgstr ""
 
-#: views/view-edit.php:575
+#: views/view-edit.php:573
 msgid ""
 "This field can only contain letters, numbers, spaces, hyphens (-), and "
 "underscores (_)."
 msgstr ""
 
-#: views/view-edit.php:575
+#: views/view-edit.php:573
 msgid "Additional CSS classes for styling purposes can be entered here."
 msgstr ""
 
-#: views/view-edit.php:575
+#: views/view-edit.php:573
 msgid "This is NOT the place to enter <a href=\"%s\">Custom CSS</a> code!"
 msgstr ""
 
-#: views/view-edit.php:593
+#: views/view-edit.php:591
 msgid ""
 "These features and options are only available, when the &#8220;%1$s&#8221; "
 "checkbox in the &#8220;%2$s&#8221; section is checked."
 msgstr ""
 
-#: views/view-edit.php:597
+#: views/view-edit.php:595
 msgid "Use DataTables"
 msgstr ""
 
-#: views/view-edit.php:598
+#: views/view-edit.php:596
 msgid ""
 "Use the following features of the DataTables JavaScript library with this "
 "table:"
 msgstr ""
 
-#: views/view-edit.php:601
+#: views/view-edit.php:599
 msgid "Sorting"
 msgstr ""
 
-#: views/view-edit.php:602
+#: views/view-edit.php:600
 msgid "Enable sorting of the table by the visitor."
 msgstr ""
 
-#: views/view-edit.php:605
+#: views/view-edit.php:603
 msgid "Search/Filtering"
 msgstr ""
 
-#: views/view-edit.php:606
+#: views/view-edit.php:604
 msgid ""
 "Enable the visitor to filter or search the table. Only rows with the search "
 "word in them are shown."
 msgstr ""
 
-#: views/view-edit.php:609
+#: views/view-edit.php:607
 msgid "Pagination"
 msgstr ""
 
-#: views/view-edit.php:610
+#: views/view-edit.php:608
 msgid ""
 "Enable pagination of the table (viewing only a certain number of rows at a "
 "time) by the visitor."
 msgstr ""
 
-#: views/view-edit.php:611
+#: views/view-edit.php:609
 msgid "Show %s rows per page."
 msgstr ""
 
-#: views/view-edit.php:614
+#: views/view-edit.php:612
 msgid "Pagination Length Change"
 msgstr ""
 
-#: views/view-edit.php:615
+#: views/view-edit.php:613
 msgid ""
 "Allow the visitor to change the number of rows shown when using pagination."
 msgstr ""
 
-#: views/view-edit.php:618
+#: views/view-edit.php:616
 msgid "Info"
 msgstr ""
 
-#: views/view-edit.php:619
+#: views/view-edit.php:617
 msgid ""
 "Enable the table information display, with information about the currently "
 "visible data, like the number of rows."
 msgstr ""
 
-#: views/view-edit.php:622
+#: views/view-edit.php:620
 msgid "Horizontal Scrolling"
 msgstr ""
 
-#: views/view-edit.php:623
+#: views/view-edit.php:621
 msgid ""
 "Enable horizontal scrolling, to make viewing tables with many columns easier."
 msgstr ""
 
-#: views/view-edit.php:629
+#: views/view-edit.php:627
 msgid "Custom Commands"
 msgstr ""
 
-#: views/view-edit.php:630
+#: views/view-edit.php:628
 msgid ""
 "Additional parameters from the <a href=\"http://www.datatables.net/"
 "\">DataTables documentation</a> to be added to the JS call."
 msgstr ""
 
-#: views/view-edit.php:630
+#: views/view-edit.php:628
 msgid "For advanced use only."
 msgstr ""
 
-#: views/view-edit.php:648
+#: views/view-edit.php:646
 msgid "Attention: Unfortunately, an error occurred."
 msgstr ""
 
-#: views/view-edit.php:651
+#: views/view-edit.php:649
 msgid "The internal data of table &#8220;%1$s&#8221 (ID %2$s) is corrupted."
 msgstr ""
 
-#: views/view-edit.php:653
+#: views/view-edit.php:651
 msgid "The following error was registered: <code>%s</code>."
 msgstr ""
 
-#: views/view-edit.php:658
+#: views/view-edit.php:656
 msgid ""
 "Because of this error, the table can not be edited at this time, to prevent "
 "possible further data loss."
 msgstr ""
 
-#: views/view-edit.php:660
+#: views/view-edit.php:658
 msgid ""
 "Please see the <a href=\"%s\">TablePress FAQ page</a> for further "
 "instructions."
 msgstr ""
 
-#: views/view-edit.php:665
+#: views/view-edit.php:663
 msgid "Back to the List of Tables"
 msgstr ""
 
-#: views/view-edit.php:683
+#: views/view-edit.php:681
 msgid ""
 "On this screen, you can edit the content and structure of the table with the "
 "ID %s."
 msgstr ""
 
-#: views/view-edit.php:684
+#: views/view-edit.php:682
 msgid ""
 "For example, you can insert things like text, images, or links into the "
 "table, or change the used table features. You can also insert, delete, move, "
 "hide, and swap columns and rows."
 msgstr ""
 
-#: views/view-edit.php:687
+#: views/view-edit.php:685
 msgid ""
 "To insert the table into a page, post, or text widget, copy the Shortcode %s "
 "and paste it at the desired place in the editor."
 msgstr ""
 
-#: views/view-edit.php:698
+#: views/view-edit.php:696
 msgid "TablePress Feature: Moving rows and columns"
 msgstr ""
 
-#: views/view-edit.php:699
+#: views/view-edit.php:697
 msgid ""
 "Did you know? You can drag and drop rows and columns via the row number and "
 "the column title. And the arrows next to the column title can be used for "
@@ -1366,7 +1366,7 @@ msgid ""
 msgstr ""
 
 #: views/view-editor_button_thickbox.php:176
-#: views/view-editor_button_thickbox.php:357
+#: views/view-editor_button_thickbox.php:356
 msgid "Insert Shortcode"
 msgstr ""
 
@@ -1378,24 +1378,24 @@ msgstr ""
 msgid "Search Tables"
 msgstr ""
 
-#: views/view-editor_button_thickbox.php:275 views/view-list.php:321
+#: views/view-editor_button_thickbox.php:274 views/view-list.php:320
 msgid "ID"
 msgstr ""
 
-#: views/view-editor_button_thickbox.php:278
+#: views/view-editor_button_thickbox.php:277
 msgid "Action"
 msgstr ""
 
-#: views/view-editor_button_thickbox.php:343 views/view-list.php:451
+#: views/view-editor_button_thickbox.php:342 views/view-list.php:450
 msgid "(no description)"
 msgstr ""
 
-#: views/view-editor_button_thickbox.php:366 views/view-export.php:88
-#: views/view-list.php:569
+#: views/view-editor_button_thickbox.php:365 views/view-export.php:88
+#: views/view-list.php:568
 msgid "No tables found."
 msgstr ""
 
-#: views/view-editor_button_thickbox.php:368
+#: views/view-editor_button_thickbox.php:367
 msgid ""
 "You should add or import a table on the TablePress screens to get started!"
 msgstr ""
@@ -1456,7 +1456,7 @@ msgstr ""
 msgid "For the JSON format, the table data and the table options are exported."
 msgstr ""
 
-#: views/view-export.php:89 views/view-list.php:578
+#: views/view-export.php:89 views/view-list.php:577
 msgid ""
 "You should <a href=\"%s\">add</a> or <a href=\"%s\">import</a> a table to "
 "get started!"
@@ -1921,79 +1921,79 @@ msgstr ""
 msgid "Each table has a unique ID that needs to be adjusted in that Shortcode."
 msgstr ""
 
-#: views/view-list.php:324
+#: views/view-list.php:323
 msgid "Author"
 msgstr ""
 
-#: views/view-list.php:325
+#: views/view-list.php:324
 msgid "Last Modified By"
 msgstr ""
 
-#: views/view-list.php:415 views/view-list.php:422
+#: views/view-list.php:414 views/view-list.php:421
 msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
-#: views/view-list.php:424
+#: views/view-list.php:423
 msgid "Show Shortcode"
 msgstr ""
 
-#: views/view-list.php:426
+#: views/view-list.php:425
 msgid "Copy &#8220;%s&#8221;"
 msgstr ""
 
-#: views/view-list.php:426
+#: views/view-list.php:425
 msgid "Copy"
 msgstr ""
 
-#: views/view-list.php:429
+#: views/view-list.php:428
 msgid "Export &#8220;%s&#8221;"
 msgstr ""
 
-#: views/view-list.php:429
+#: views/view-list.php:428
 msgctxt "row action"
 msgid "Export"
 msgstr ""
 
-#: views/view-list.php:432
+#: views/view-list.php:431
 msgid "Delete &#8220;%s&#8221;"
 msgstr ""
 
-#: views/view-list.php:435
+#: views/view-list.php:434
 msgid "Show a preview of &#8220;%s&#8221;"
 msgstr ""
 
-#: views/view-list.php:514
+#: views/view-list.php:513
 msgctxt "bulk action"
 msgid "Copy"
 msgstr ""
 
-#: views/view-list.php:517
+#: views/view-list.php:516
 msgctxt "bulk action"
 msgid "Export"
 msgstr ""
 
-#: views/view-list.php:520
+#: views/view-list.php:519
 msgctxt "bulk action"
 msgid "Delete"
 msgstr ""
 
-#: views/view-list.php:552
+#: views/view-list.php:551
 msgid "Select Bulk Action"
 msgstr ""
 
-#: views/view-list.php:554
+#: views/view-list.php:553
 msgid "Bulk Actions"
 msgstr ""
 
-#: views/view-list.php:559
+#: views/view-list.php:558
 msgid "Apply"
 msgstr ""
 
-#: views/view-list.php:580
+#: views/view-list.php:579
 msgid "You should <a href=\"%s\">add</a> a table to get started!"
 msgstr ""
 
-#: views/view-list.php:582
+#: views/view-list.php:581
 msgid "You should <a href=\"%s\">import</a> a table to get started!"
 msgstr ""
 
