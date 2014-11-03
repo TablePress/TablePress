@@ -53,7 +53,7 @@ abstract class TablePress {
 	 * Instance of the Options Model.
 	 *
 	 * @since 1.3.0
-	 * @var object
+	 * @var TablePress_Options_Model
 	 */
 	public static $model_options;
 
@@ -61,7 +61,7 @@ abstract class TablePress {
 	 * Instance of the Table Model.
 	 *
 	 * @since 1.3.0
-	 * @var object
+	 * @var TablePress_Table_Model
 	 */
 	public static $model_table;
 
@@ -69,7 +69,7 @@ abstract class TablePress {
 	 * Instance of the controller.
 	 *
 	 * @since 1.0.0
-	 * @var object
+	 * @var TablePress_*_Controller
 	 */
 	public static $controller;
 

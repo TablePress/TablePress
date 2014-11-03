@@ -1351,9 +1351,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @param bool   $skip     Whether to skip the current post meta. Default false.
-	 * @param string $meta_key Current meta key.
-	 * @param object $meta     Current meta object.
+	 * @param bool     $skip     Whether to skip the current post meta. Default false.
+	 * @param string   $meta_key Current meta key.
+	 * @param stdClass $meta     Current meta object.
 	 */
 	public function add_table_id_to_wp_export( $skip, $meta_key, $meta ) {
 		// Bail if the exporter doesn't process a TablePress table right now.
