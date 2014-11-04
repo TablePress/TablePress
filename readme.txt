@@ -105,7 +105,7 @@ You may use it free of charge for any purpose.
 * Feature: Support for the integrated WP importer/exporter
 * Bugfix: The "Insert Link" dialog in the "Advanced Editor" works now.
 * Bugfix: Moving the admin menu entry somewhere else was broken in rare cases.
-* Enhancement: The HTML export now creates valid HTML files.
+* Bugfix: The HTML export creates valid HTML files now.
 * Enhancement: Tables are now stored with extra information about the format, so that other plugins are less likely to break it.
 * Extended unit tests for the plugin and some external libraries.
 * Updated external libraries (CodeMirror, DataTables, Build tools).
