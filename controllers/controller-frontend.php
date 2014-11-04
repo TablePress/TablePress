@@ -510,9 +510,9 @@ JS;
 		$render_options = array();
 		foreach ( $shortcode_atts as $key => $value ) {
 			// We have to check this, because strings 'true' or 'false' are not recognized as boolean!
-			if ( 'true' === strtolower( $value ) ) {
+			if ( is_string( $value ) && 'true' === strtolower( $value ) ) {
 				$render_options[ $key ] = true;
-			} elseif ( 'false' === strtolower( $value ) ) {
+			} elseif ( is_string( $value ) && 'false' === strtolower( $value ) ) {
 				$render_options[ $key ] = false;
 			} elseif ( is_null( $value ) && isset( $table['options'][ $key ] ) ) {
 				$render_options[ $key ] = $table['options'][ $key ];
