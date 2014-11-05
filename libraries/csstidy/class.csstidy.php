@@ -993,7 +993,7 @@ class CSSTidy {
 
 					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses,
 					// but parentheticals can be nested more than once.
-					if ( ')' !== $_str_char && ( '(' === $string[ $i ] || '"' === $string[ $i ] || '\\' === $string[ $i ] ) && ! $this->escaped( $string, $i ) ) {
+					if ( ')' === $_str_char && ( '(' === $string[ $i ] || '"' === $string[ $i ] || '\\' === $string[ $i ] ) && ! $this->escaped( $string, $i ) ) {
 						$this->cur_string[] = $string[ $i ];
 						$this->str_char[] = ( '(' === $string[ $i ] ) ? ')' : $string[ $i ];
 						$this->from[] = 'instr';
@@ -1033,7 +1033,7 @@ class CSSTidy {
 						array_pop( $this->quoted_string );
 						array_pop( $this->str_char );
 
-						if ( ')' !== $_str_char ) {
+						if ( ')' === $_str_char ) {
 							$_cur_string = "(" . trim( substr( $_cur_string, 1, -1 ) ) . ")";
 						}
 
