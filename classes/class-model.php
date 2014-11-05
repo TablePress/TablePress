@@ -8,7 +8,7 @@
  * @since 1.0.0
  */
 
-// Prohibit direct script loading
+// Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
@@ -21,12 +21,12 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 abstract class TablePress_Model {
 
 	/**
-	 * Initialize all models
+	 * Initialize all models.
 	 *
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		// intentionally left blank
+		// Intentionally left blank.
 	}
 
 } // class TablePress_Model

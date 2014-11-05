@@ -1,16 +1,18 @@
 {
-	"sProcessing":	 "Επεξεργασία...",
-	"sLengthMenu":	 "Δείξε _MENU_ εγγραφές",
-	"sZeroRecords":	 "Δεν βρέθηκαν εγγραφές που να ταιριάζουν",
-	"sInfo":		 "Δείχνοντας _START_ εως _END_ από _TOTAL_ εγγραφές",
-	"sInfoEmpty":	 "Δείχνοντας 0 εως 0 από 0 εγγραφές",
-	"sInfoFiltered": "(φιλτραρισμένες από _MAX_ συνολικά εγγραφές)",
-	"sInfoPostFix":	 "",
-	"sSearch":		 "Αναζήτηση:",
-	"oPaginate": {
-		"sFirst":	 "Πρώτη",
-		"sPrevious": "Προηγούμενη",
-		"sNext":	 "Επόμενη",
-		"sLast":	 "Τελευταία"
-	}
+	"info":			"Δείχνοντας _START_ εως _END_ από _TOTAL_ εγγραφές",
+	"infoEmpty":	"Δείχνοντας 0 εως 0 από 0 εγγραφές",
+	"infoFiltered":	"(φιλτραρισμένες από _MAX_ συνολικά εγγραφές)",
+	"infoPostFix":	"",
+	"lengthMenu":	"Δείξε _MENU_ εγγραφές",
+	"processing":	"Επεξεργασία...",
+	"search":		"Αναζήτηση:",
+	"zeroRecords":	"Δεν βρέθηκαν εγγραφές που να ταιριάζουν",
+	"paginate": {
+		"first":	"Πρώτη",
+		"previous":	"Προηγούμενη",
+		"next":		"Επόμενη",
+		"last":		"Τελευταία"
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

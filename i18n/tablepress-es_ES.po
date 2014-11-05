@@ -1,7 +1,14 @@
+# Copyright (C) 2014 TablePress
+# This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
+<<<<<<< HEAD
 "Project-Id-Version: TablePress v1.3\n"
 "Report-Msgid-Bugs-To: \n"
+=======
+"Project-Id-Version: TablePress v1.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
+>>>>>>> 20d475e62854c9989a43197d1036eb00e3159728
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2014-02-22 19:12:29+0000\n"
 "Last-Translator: Darío Hereñú <magallania@gmail.com>\n"
@@ -22,8 +29,8 @@ msgstr ""
 
 #: classes/class-admin-page-helper.php:79
 #@ tablepress
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "Gracias por utilizar <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "Gracias por utilizar <a href=\"https://tablepress.org/\">TablePress</a>."
 
 #: classes/class-admin-page-helper.php:80
 #, php-format
@@ -357,8 +364,8 @@ msgstr "Copia de %s"
 #. translators: plugin header field 'PluginURI'
 #: tablepress.php:0
 #@ tablepress
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. translators: plugin header field 'Description'
 #: tablepress.php:0
@@ -1615,8 +1622,8 @@ msgstr "Reemplazar tabla existente"
 
 #: views/view-import.php:198
 #@ tablepress
-msgid "Select:"
-msgstr "Seleccionar:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Seleccionar &mdash;"
 
 #: views/view-import.php:232
 #@ tablepress

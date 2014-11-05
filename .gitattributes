@@ -11,6 +11,7 @@
 *.json text
 *.css text
 *.yml text
+*.xml.dist text
 
 # Explicitly set CRLF for tablepress.php, *.txt files, and DataTables *.json files
 # to make them easily readable and editable for Windows users

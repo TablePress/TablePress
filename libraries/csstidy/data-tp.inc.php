@@ -3,25 +3,25 @@
  * CSSTidy CSS Data, special data for TablePress
  *
  * @package TablePress
- * @subpackage Libraries
+ * @subpackage CSS
  * @author Florian Schmitz, Brett Zamir, Nikolay Matsievsky, Cedric Morin, Christopher Finke, Mark Scherer, Tobias Bäthge
  * @since 1.0.0
  */
 
-// Prohibit direct script loading
+// Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
-// remove potentially insecure "binding" property
+// Remove potentially insecure "binding" property.
 unset( $data['csstidy']['all_properties']['binding'] );
 
 $data['csstidy']['all_properties']['text-size-adjust'] = 'CSS3.0';
 $data['csstidy']['all_properties']['zoom'] = 'CSS3.0';
 
-// Support browser prefixes for properties only in the latest CSS draft
+// Support browser prefixes for properties only in the latest CSS draft.
 foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
 	$data['csstidy']['all_properties']['*' . $property] = $levels; // IE7 hacks
 
-	if ( strpos( $levels, "," ) === false ) {
+	if ( false === strpos( $levels, ',' ) ) {
 		$data['csstidy']['all_properties']['-moz-' . $property] = $levels;
 		$data['csstidy']['all_properties']['-webkit-' . $property] = $levels;
 		$data['csstidy']['all_properties']['-ms-' . $property] = $levels;
@@ -47,7 +47,7 @@ foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
 }
 
 foreach ( $data['csstidy']['multiple_properties'] as $property ) {
-	if ( '-' != $property[0] ) {
+	if ( '-' !== $property[0] ) {
 		$data['csstidy']['multiple_properties'][] = '-o-' . $property;
 		$data['csstidy']['multiple_properties'][] = '-ms-' . $property;
 		$data['csstidy']['multiple_properties'][] = '-webkit-' . $property;
@@ -57,7 +57,7 @@ foreach ( $data['csstidy']['multiple_properties'] as $property ) {
 }
 
 /**
- * Non-standard CSS properties.	 They're not part of any spec, but we say
+ * Non-standard CSS properties. They're not part of any spec, but we say
  * they're in all of them so that we can support them.
  */
 $data['csstidy']['all_properties']['-webkit-user-select'] = 'CSS2.0,CSS2.1,CSS3.0';
@@ -75,6 +75,7 @@ $data['csstidy']['all_properties']['-webkit-transform-origin-x'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-transform-origin-y'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-transform-origin-z'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-font-smoothing'] = 'CSS3.0';
+$data['csstidy']['all_properties']['-moz-osx-font-smoothing'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-font-smooth'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-o-object-fit'] = 'CSS3.0';
 $data['csstidy']['all_properties']['object-fit'] = 'CSS3.0';
@@ -84,3 +85,4 @@ $data['csstidy']['all_properties']['text-overflow'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-o-text-overflow'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-ms-touch-action'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-overflow-scrolling'] = 'CSS3.0';
+$data['csstidy']['all_properties']['pointer-events'] = 'CSS3.0';

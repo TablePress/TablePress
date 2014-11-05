@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, QTags, wpLink, tb_show, tb_remove */
+/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, wpLink, tb_show, wp */
 
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};
@@ -247,8 +247,8 @@ jQuery( document ).ready( function( $ ) {
 			show: function( url ) {
 				var width = $( window ).width() - 120,
 					height = $( window ).height() - 120;
-				if ( $( 'body.admin-bar' ).length ) {
-					height -= 28;
+				if ( $( '#wpadminbar' ).length ) {
+					height -= parseInt( $( '#wpadminbar' ).css( 'height' ), 10 );
 				}
 				tb_show( $( '.show-preview-button' ).first().text(), url + '&height=' + height + '&width=' + width, false );
 			}
@@ -834,10 +834,12 @@ jQuery( document ).ready( function( $ ) {
 				// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
 				// other approaches can lead to the wrong textarea being selected
 				$id( 'edit-form-body' ).one( 'mousedown', 'textarea', function() {
-					window.wpActiveEditor = this.id;
+					var editor_id = this.id;
 					$( document ).one( 'mouseup', function() {
-						wpLink.open();
-						tp.table.set_table_changed();
+						if ( typeof wpLink !== 'undefined' ) {
+							wpLink.open( editor_id );
+							tp.table.set_table_changed();
+						}
 					} );
 				} );
 			}
@@ -847,27 +849,30 @@ jQuery( document ).ready( function( $ ) {
 			add: function( /* event */ ) {
 				if ( ! tp.content.image.prompt_shown ) {
 					if ( ! confirm( tablepress_strings.image_add ) ) {
-						return false; // because it's a link
+						return;
 					}
 				}
 
 				tp.content.image.prompt_shown = true;
 				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-					window.wpActiveEditor = this.id;
-					// move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (possible though in Advanced Editor)
-					this.selectionStart = this.selectionEnd = this.value.length;
-					var $link = $id( 'image-add' ),
-						width = $( window ).width(),
-						W = ( 720 < width ) ? 720 : width,
-						H = $( window ).height();
-					if ( $( 'body.admin-bar' ).length ) {
-						H -= parseInt( jQuery( '#wpadminbar' ).css( 'height' ), 10 );
-					}
-					tb_show( $link.text(), $link.attr( 'href' ) + '&TB_iframe=true&height=' + ( H - 85 ) + '&width=' + ( W - 80 ), false );
-					$(this).blur();
-				} );
+					var editor = this.id,
+						options = {
+							frame: 'post',
+							state: 'insert',
+							title: wp.media.view.l10n.addMedia,
+							multiple: true
+						};
 
-				return false; // because it's a link
+					// Move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (though possible in the Advanced Editor and Insert Link dialog).
+					this.selectionStart = this.selectionEnd = this.value.length;
+
+					// Remove focus from the textarea to prevent Opera from showing the outline of the textarea above the modal.
+					// See: WP Core #22445
+					$(this).blur();
+
+					wp.media.editor.open( editor, options );
+					tp.table.set_table_changed();
+				} );
 			}
 		},
 		span: {
@@ -1064,7 +1069,7 @@ jQuery( document ).ready( function( $ ) {
 			tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the &#8220;Shift&#8221; key.' );
 		},
 		success: function( data ) {
-			// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurances
+			// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurrences
 			if ( tp.table.id !== data.table_id ) {
 				// update URL (for HTML5 browsers only), but only if ID really changed, to not get dummy entries in the browser history
 				if ( ( 'pushState' in window.history ) && null !== window.history.pushState ) {
@@ -1147,12 +1152,12 @@ jQuery( document ).ready( function( $ ) {
 				'.save-changes-button': tp.save_changes.trigger,
 				'.show-help-box':		function() {
 					$(this).next().wpdialog( {
-					title: $(this).attr( 'title' ),
-					height: 420,
-					width: 320,
-					modal: true,
-					dialogClass: 'wp-dialog',
-					resizable: false
+						title: $(this).attr( 'title' ),
+						height: 420,
+						width: 320,
+						modal: true,
+						dialogClass: 'wp-dialog',
+						resizable: false
 					} );
 				}
 			},
@@ -1201,9 +1206,18 @@ jQuery( document ).ready( function( $ ) {
 				dialogClass: 'wp-dialog',
 				resizable: false
 			} );
+			// Fix issue with input fields not being usable (they are immediately losing focus without this) in the wpLink dialog when called through the "Advanced Editor"
+			$id( 'wp-link' ).on( 'focus', 'input', function( event ) {
+				event.stopPropagation();
+			} );
 		} else {
 			$id( 'advanced-editor-open' ).hide();
 		}
+
+		// Fix issue with input fields not being usable (they are immediately losing focus without this) in the sidebar of the new Media Manager
+		$( 'body' ).on( 'focus', '.media-modal .media-frame-content input, .media-modal .media-frame-content textarea', function( event ) {
+			event.stopPropagation();
+		} );
 
 		if ( tablepress_options.cells_auto_grow ) {
 			$table.on( 'focus', 'textarea', tp.cells.autogrow );
@@ -1244,31 +1258,7 @@ jQuery( document ).ready( function( $ ) {
 		} ).disableSelection();
 	};
 
-	// run TablePress initialization
+	// Run TablePress initialization.
 	tp.init();
-
-	/**
-	 * On click on "Insert into Post" in the Media Library, this function is called by WordPress
-	 * We need to override the original behavior to be able to set the table to changed
-	 *
-	 * @see media-upload.js
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string new_html HTML code that gets appended to the cell content of the cell that has been marked as active editor
-	 */
-	window.send_to_editor = function( new_html ) {
-		// Quicktags is usually used and does the same internally + caret position handling
-		if ( 'undefined' !== typeof( QTags ) ) {
-			QTags.insertContent( new_html );
-		} else {
-			document.getElementById( window.wpActiveEditor ).value += new_html;
-		}
-
-		try {
-			tb_remove();
-		} catch( e ) {}
-		tp.table.set_table_changed();
-	};
 
 } );

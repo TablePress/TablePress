@@ -1,22 +1,60 @@
 <?php
+/**
+ * Bootstrap the plugin unit testing environment.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
+ */
 
-require_once getenv( 'WP_TESTS_DIR' ) . '/includes/functions.php';
+// Activates TablePress in WordPress so it can be tested.
+$GLOBALS['wp_tests_options'] = array(
+	'active_plugins' => array( 'tablepress/tablepress.php' ),
+);
 
-function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/tablepress.php';
+/*
+ * If the WP unit tests location is defined (as WP_TESTS_DIR), use that location.
+ * Otherwise, we assume that this plugin is installed in a WordPress Develop repository checkout.
+ */
+if ( false !== getenv( 'WP_TESTS_DIR' ) ) {
+	require getenv( 'WP_TESTS_DIR' ) . 'includes/bootstrap.php';
+} else {
+	require '../../../../../tests/phpunit/includes/bootstrap.php';
 }
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-require getenv( 'WP_TESTS_DIR' ) . '/includes/bootstrap.php';
-
+/**
+ * TablePress Unit Testing Testcase class.
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
+ */
 class TablePress_TestCase extends WP_UnitTestCase {
-	// Put convenience methods here
-	// Here are two I use for faking things for save_post hooks, et al
-	function set_post( $key, $value ) {
-		$_POST[ $key ] = $_REQUEST[ $key ] = addslashes( $value );
+
+	/**
+	 * Set variables for a faked HTTP POST request.
+	 *
+	 * @since 1.1.0
+ 	 *
+	 * @param string $key   Name of the POST variable.
+	 * @param string $value Value of the POST variable.
+	 */
+	public function set_post( $key, $value ) {
+		// Add slashing as expected by the PHP setting.
+		if ( get_magic_quotes_gpc() ) {
+			$value = addslashes( $value );
+		}
+		$_POST[ $key ] = $_REQUEST[ $key ] = $value;
 	}
 
-	function unset_post( $key ) {
+	/**
+	 * Unset variables from a faked HTTP POST request.
+	 *
+	 * @since 1.1.0
+ 	 *
+	 * @param string $key Name of the POST variable.
+	 */
+	public function unset_post( $key ) {
 		unset( $_POST[ $key ], $_REQUEST[ $key ] );
 	}
-}
+
+} // class TablePress_TestCase

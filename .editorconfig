@@ -2,7 +2,7 @@
 # editorconfig.org
 
 # TablePress follows the WordPress Coding Standards
-# http://make.wordpress.org/core/handbook/coding-standards/
+# https://make.wordpress.org/core/handbook/coding-standards/
 
 root = true
 
@@ -13,17 +13,10 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = tab
 
-[*.json]
-indent_style = space
-indent_size = 2
-[*.yml]
+[{*.json,*.yml}]
 indent_style = space
 indent_size = 2
 
 # User-editable files should have Windows line endings
-[tablepress.php]
-end_of_line = crlf
-[*.txt]
-end_of_line = crlf
-[i18n/datatables/*.json]
+[{tablepress.php,*.txt,i18n/datatables/*.json}]
 end_of_line = crlf

@@ -1,16 +1,18 @@
 {
-	"sProcessing":	 "Palun oodake, koostan kuvamiseks nimekirja!",
-	"sLengthMenu":	 "Näita kirjeid _MENU_ kaupa",
-	"sZeroRecords":	 "Otsitavat vastet ei leitud.",
-	"sInfo":		 "Kuvatud: _TOTAL_ kirjet (_START_-_END_)",
-	"sInfoEmpty":	 "Otsinguvasteid ei leitud",
-	"sInfoFiltered": " - filteeritud _MAX_ kirje seast.",
-	"sInfoPostFix":	 "Kõik kuvatud kirjed põhinevad reaalsetel tulemustel.",
-	"sSearch":		 "Otsi kõikide tulemuste seast:",
-	"oPaginate": {
-		"sFirst":	 "Algus",
-		"sPrevious": "Eelmine",
-		"sNext":	 "Järgmine",
-		"sLast":	 "Viimane"
-	}
+	"info":			"Kuvatud: _TOTAL_ kirjet (_START_-_END_)",
+	"infoEmpty":	"Otsinguvasteid ei leitud",
+	"infoFiltered":	" - filteeritud _MAX_ kirje seast.",
+	"infoPostFix":	"Kõik kuvatud kirjed põhinevad reaalsetel tulemustel.",
+	"lengthMenu":	"Näita kirjeid _MENU_ kaupa",
+	"processing":	"Palun oodake, koostan kuvamiseks nimekirja!",
+	"search":		"Otsi kõikide tulemuste seast:",
+	"zeroRecords":	"Otsitavat vastet ei leitud.",
+	"paginate": {
+		"first":	"Algus",
+		"previous":	"Eelmine",
+		"next":		"Järgmine",
+		"last":		"Viimane"
+	},
+	"decimal":		",",
+	"thousands":	"."
 }

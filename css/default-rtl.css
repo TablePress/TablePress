@@ -12,11 +12,11 @@
 
 @font-face {
 	font-family: 'TablePress';
-	src: url('tablepress.eot');
-	src: url('tablepress.eot?#ie') format('embedded-opentype'),
+	src: url(tablepress.eot);
+	src: url(tablepress.eot?#ie) format('embedded-opentype'),
 		url(data:application/x-font-woff;base64,d09GRgABAAAAAAXYAAwAAAAACXwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABHAAAABwAAAAcZInHOk9TLzIAAAE4AAAAPgAAAGB7NXPDY21hcAAAAXgAAABMAAABUvD45QVnYXNwAAABxAAAAAgAAAAIAAAAEGdseWYAAAHMAAABKQAAAgjYVHFyaGVhZAAAAvgAAAAvAAAANv2jaBNoaGVhAAADKAAAAB0AAAAkCk0F6GhtdHgAAANIAAAAIAAAACgoAADqbG9jYQAAA2gAAAAWAAAAFgJWAbxtYXhwAAADgAAAAB0AAAAgAE4AH25hbWUAAAOgAAAB3AAAA43ZugaUcG9zdAAABXwAAABZAAAAgeNVfAkAAAABAAAAAMwXcmMAAAAAy1XFoAAAAADNHI82eJxjYGbexjiBgZWBhaWHxZiBgaENQjMVM0SB+ThBQWVRMYPDh+APd9gY/gP5bAyMykCKEUmJAgMjAC56Ct8AAHicY2BgYGaAYBkGRgYQ8AHyGMF8FgYDIM0BhEwMDB9CPtz6cOf/fyAr+MN1EIt/A78evy5UFxgwsjHAuYxAPSB9KICRYdgDAL67D8kAAQAB//8AD3icXU/NTsJAEJ5ZFggxxmCbkiwHAzLTowlu4ejeyxPwCOBR7r3rE/geeubuG3i3TyGts12MtT18ndnd7w8QsvpdX/Q/IAboI9s1rpY3mMTDkcAVDuaqPD0RqRfaU05UGSxJhj2p5wDNUplqyjsZQT6EQ/2mc9GcyBIPReQOObPrkccHMZhgonMS3R1tiLCsDNFm8bgQF3W06ekgqqnN5Aa//D9nlrOgDeg09Aq4lK3RTiX16n621BBVLrIe2PQK09s2c4THyPIvF4TrAndwO5uHvhPUwOa7MNw8FsCtZfZDJBKB66BQhW58cRwHW09OVMEtI+3aOhEHX+E63crM2dh6X+WazMFLvf6F57OvAqiPGvo+87Tb+LrT4X9/7lT6bKXs9vsByDlkyAAAAHicY2BkYGAA4mO9Sxji+W2+MnCzM4DAWZl+bwT9fyuLN+tpIJeDgQkkCgAbqgoOAHicY2BkYGBj+HeXgYGdAQRYvBkYGVABFwA+hgJEAAAAeJxjZ4AAdiBmaWAwBeJSFhAbiJkaGByAGMwGADa+AxEAAAAAAAAAAAAqAFgAdgCUALIA0AEEAAB4nGNgZGBg4GKQYWBiAAEQycgAEnMA8xkABjEAbgAAAHicjZJBaxNBFMf/u0mbJoig5KC3QcRblt2tFCm9lEp701iKIHiZJLPJ0mSnzE5S8h38BB79Nn4ab94E/zN9JVB7MCEzv/3Pm/f+720ADPEbCe4/qXCCAV4Kp+jhrXAHGb4Ld/Ecv4T38Cx5I7yPQfJBuIdPyR/hAzxJa+E+Buk3Zku6fal8xwn9dIRTPMVr4Q6+4kS4S/Wn8B5eJanwPobJO+EefiRfhA/wIv0o3Mcw3YRyV9CYYAmDMRzXll9c6cnSjJ1pyZcU51gzRDMAl2a+XmrCOSwa+Lg7RhgolJxKzv2Yv8cSqwfZ7iILHGHEdcT7OfdDJreNP7dublSZ5epY7QwpMUCxOBoVozIvDh/v4mEx/JsE+MwQx+A6dhO8hA7y2EvwUjLEuLa2jSqyPFcsV/7H0MbxUFMOYwkhVSykODAb10U8OePTDbY8qel0QV3FO1PSvaUqDnh3p5LBB8WxxozqKnZ4TU1T9THfhJ3vsjTcw9M02s1ocWl0a5QzlXHKW+UXRp3Zm62r5wuvWjP1oenKunhS8YUo7/TMrLS7Vtp7V0/WMaSxvp6aNoP8FYKzU9zGOpbOTHidzqvTW9PaFZ/e0+QmtnJBatjAlqLeGHWhm9kWfwGPR6C4eJxjYGIAg/9VDFEM2AAXEDMyMDEyMTIzsjCyMrIxsjNy8CRnpJYV5efF56SmlfDCOEWZ6RklXMmJRakl8Sn55XkcEGZpAVQMpJgbwgQrZSnOLyoBACnGHqgAAAA=) format('woff'),
-		url('tablepress.ttf') format('truetype'),
-		url('tablepress.svg#TablePress') format('svg');
+		url(tablepress.ttf) format('truetype'),
+		url(tablepress.svg#TablePress) format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -41,17 +41,13 @@
 	border: none;
 	background: none;
 	text-align: right;
+	float: none !important;
 }
 .tablepress tbody td {
 	vertical-align: top;
 }
 
-/* Fix right column float in many themes */
-.tablepress [class*="column"]+[class*="column"]:last-child {
-	float: none;
-}
-
-/* Vertical lines / borders */
+/* Horizontal borders */
 .tablepress tbody td,
 .tablepress tfoot th {
 	border-top: 1px solid #dddddd;
@@ -121,88 +117,77 @@
 .dataTables_paginate {
 	float: right;
 	margin: 4px 0 0;
-	padding: 0 15px;
 	direction: rtl;
 }
-/* Two button pagination - previous/next */
 .dataTables_paginate a {
 	color: #111111 !important;
 	display: inline-block;
 	outline: none;
 	position: relative;
 	text-decoration: underline;
-	text-decoration: none\0/IE; /* Hack for IE8, 9, and IE10pp4, as those have trouble with text-decoration in :after pseudo-elements */
+	text-decoration: none\0/IE; /* Hack for IE8, IE9, and IE10pp4, as those have trouble with text-decoration in :after pseudo-elements */
+	margin: 0 5px;
 }
-.dataTables_paginate .paginate_disabled_previous,
-.dataTables_paginate .paginate_disabled_next {
-	color: #999999 !important;
-	text-decoration: none;
+.dataTables_paginate a:first-child {
+	margin-right: 0;
 }
-.paginate_disabled_next,
-.paginate_enabled_next {
-	margin-right: 10px;
+.dataTables_paginate a:last-child {
+	margin-left: 0;
 }
-.paginate_enabled_previous:hover,
-.paginate_enabled_next:hover {
+.paginate_button:hover {
 	cursor: pointer;
 	text-decoration: none;
 }
-.paginate_disabled_previous:after,
-.paginate_enabled_previous:after,
-.paginate_disabled_next:before,
-.paginate_enabled_next:before {
+.paginate_button.disabled {
+	color: #999999 !important;
+	text-decoration: none;
+	cursor: default;
+}
+.paginate_button.current {
+	font-weight: bold;
+	text-decoration: none;
+	cursor: default;
+}
+/* Two button pagination - previous/next */
+.dataTables_paginate.paging_simple {
+	padding: 0 15px;
+}
+.paging_simple .paginate_button.previous:before,
+.paging_simple .paginate_button.next:after {
 	text-align: right;
 	font-family: TablePress;
 	font-size: 14px;
 	font-weight: bold;
 	-webkit-font-smoothing: antialiased;
 	content: "\f054";
-	color: #d9edf7;
 	text-shadow: 0.1em 0.1em #666666;
 	position: absolute;
 	top: 0;
-	bottom: 0;
 	right: -14px;
+	bottom: 0;
+	left: auto;
 	margin: auto;
 	height: 14px;
 	width: 14px;
 	line-height: 1;
 }
-.paginate_disabled_next:before,
-.paginate_enabled_next:before {
+.paging_simple .paginate_button.next:after {
 	text-align: left;
 	content: "\f053";
 	right: auto;
 	left: -14px;
 }
-.paginate_disabled_previous:after,
-.paginate_disabled_next:before {
-	color: #f9f9f9;
+.paginate_button:before,
+.paginate_button:after {
+	color: #d9edf7;
 }
-.paginate_enabled_previous:hover:after,
-.paginate_enabled_next:hover:before {
+.paginate_button:hover:before,
+.paginate_button:hover:after {
 	color: #049cdb;
 }
-
-/* Full number pagination */
-.paging_full_numbers {
-	height: 22px;
-	line-height: 22px;
-}
-.paging_full_numbers a {
-	border: 1px solid #aaaaaa;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	padding: 2px 5px;
-	margin: 0 3px;
-	color: #333333 !important;
-	background-color: #dddddd;
-}
-.paging_full_numbers .paginate_button:hover {
-	background-color: #cccccc;
-}
-.paging_full_numbers .paginate_active {
-	background-color: #99b3ff;
+.paginate_button.disabled:before,
+.paginate_button.disabled:after {
+	color: #f9f9f9;
 }
 
 /* Processing indicator */
@@ -219,24 +204,17 @@
 }
 
 /* Sorting */
-.dataTables_wrapper .sorting,
-.dataTables_wrapper .sorting_asc,
-.dataTables_wrapper .sorting_desc {
+.tablepress .sorting,
+.tablepress .sorting_asc,
+.tablepress .sorting_desc {
+	position: relative;
 	padding-left: 20px; /* more left padding for sort arrows */
 	cursor: pointer;
 	outline: none;
 }
-.dataTables_wrapper .sorting div,
-.dataTables_wrapper .sorting_asc div,
-.dataTables_wrapper .sorting_desc div {
-	position: relative;
-	margin: 0 !important;
-	padding: 0 !important;
-	float: none !important;
-}
-.dataTables_wrapper .sorting div:before,
-.dataTables_wrapper .sorting_asc div:before,
-.dataTables_wrapper .sorting_desc div:before {
+.tablepress .sorting:before,
+.tablepress .sorting_asc:before,
+.tablepress .sorting_desc:before {
 	font-family: TablePress;
 	font-weight: normal;
 	font-size: 14px;
@@ -244,32 +222,35 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: -14px;
+	left: 6px;
 	right: auto;
 	margin: auto;
 	height: 14px;
 	line-height: 1;
-	padding: 1px 0 0;
 }
-.dataTables_wrapper .sorting div:before {
+.tablepress .sorting:before {
 	content: "\f0dc";
 }
-.dataTables_wrapper .sorting_asc div:before {
+.tablepress .sorting_asc:before {
 	content: "\f0d8";
-	padding: 0 0 1px;
+	padding: 0 0 2px;
 }
-.dataTables_wrapper .sorting_desc div:before {
+.tablepress .sorting_desc:before {
 	content: "\f0d7";
 }
-.dataTables_wrapper .sorting:hover,
-.dataTables_wrapper .sorting_asc,
-.dataTables_wrapper .sorting_desc {
+.tablepress .sorting:hover,
+.tablepress .sorting_asc,
+.tablepress .sorting_desc {
 	background-color: #049cdb;
 }
+/* Hide the sorting arrows in the extra table that is added for scrolling */
+.dataTables_scrollBody .tablepress thead th:before {
+	content: "";
+}
 
-/* Self clearing - */
+/* Self clearing */
 .dataTables_wrapper:after {
-	content: ".";
+	content: "";
 	display: block;
 	clear: both;
 	visibility: hidden;

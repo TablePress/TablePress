@@ -1,7 +1,9 @@
+# Copyright (C) 2014 TablePress
+# This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v1.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: TablePress v1.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2013-05-15 22:31:46+0000\n"
 "Last-Translator: nethar <nethar@nethar.is>\n"
@@ -22,8 +24,8 @@ msgstr ""
 
 #: classes/class-admin-page-helper.php:78
 #@ tablepress
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "Takk fyrir að nota <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "Takk fyrir að nota <a href=\"https://tablepress.org/\">TablePress</a>."
 
 #: classes/class-admin-page-helper.php:79
 #, php-format
@@ -464,8 +466,8 @@ msgstr "Afrit af %s"
 #. translators: plugin header field 'PluginURI'
 #: tablepress.php:0
 #@ tablepress
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. translators: plugin header field 'Description'
 #: tablepress.php:0
@@ -1857,8 +1859,8 @@ msgstr "Skipta út, bæta við töflu"
 
 #: views/view-import.php:184
 #@ tablepress
-msgid "Select:"
-msgstr "Velja:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Velja &mdash;"
 
 #: views/view-import.php:201
 #@ tablepress

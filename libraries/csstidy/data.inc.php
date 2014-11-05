@@ -3,12 +3,12 @@
  * CSSTidy CSS Data
  *
  * @package TablePress
- * @subpackage Libraries
+ * @subpackage CSS
  * @author Florian Schmitz, Brett Zamir, Nikolay Matsievsky, Cedric Morin, Christopher Finke, Mark Scherer, Tobias Bäthge
  * @since 1.0.0
  */
 
-// Prohibit direct script loading
+// Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
@@ -31,89 +31,78 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package csstidy
+ * @package CSSTidy
  * @author Florian Schmitz (floele at gmail dot com) 2005
  * @author Nikolay Matsievsky (speed at webo dot name) 2010
  */
 
 /**
- * All whitespace allowed in CSS
- *
- * @global array $data['csstidy']['whitespace']
- * @version 1.0
+ * All whitespace allowed in CSS.
  */
-$data['csstidy']['whitespace'] = array(' ',"\n","\t","\r","\x0B");
+$data['csstidy']['whitespace'] = array( ' ', "\n", "\t", "\r", "\x0B" );
 
 /**
- * All CSS tokens used by csstidy
- *
- * @global string $data['csstidy']['tokens']
- * @version 1.0
+ * All CSS tokens used by CSSTidy.
  */
 $data['csstidy']['tokens'] = '/@}{;:=\'"(,\\!$%&)*+.<>?[]^`|~';
 
 /**
- * All CSS units (CSS 3 units included)
+ * All CSS units (CSS3 units included).
  *
  * @see compress_numbers()
- * @global array $data['csstidy']['units']
- * @version 1.0
  */
-$data['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','turn','ms','s','khz','hz','ch','vmin','vmax','dpi','dpcm','dppx');
+$data['csstidy']['units'] = array( 'in', 'cm', 'mm', 'pt', 'pc', 'px', 'rem', 'em', '%', 'ex', 'gd', 'vw', 'vh', 'vm', 'deg', 'grad', 'rad', 'turn', 'ms', 's', 'khz', 'hz', 'ch', 'vmin', 'vmax', 'dpi', 'dpcm', 'dppx' );
 
 /**
- * Available at-rules
- *
- * @global array $data['csstidy']['at_rules']
- * @version 1.1
+ * Available at-rules.
  */
 $data['csstidy']['at_rules'] = array(
-	'page' => 'is','font-face' => 'atis','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at','keyframes' => 'at',
-	'-moz-keyframes' => 'at','-o-keyframes' => 'at','-webkit-keyframes' => 'at','-ms-keyframes' => 'at',
-	'viewport' => 'at','-webkit-viewport' => 'at','-moz-viewport' => 'at','-ms-viewport' => 'at'
+	'page' => 'is',
+	'font-face' => 'atis',
+	'charset' => 'iv',
+	'import' => 'iv',
+	'namespace' => 'iv',
+	'media' => 'at',
+	'keyframes' => 'at',
+	'-moz-keyframes' => 'at',
+	'-o-keyframes' => 'at',
+	'-webkit-keyframes' => 'at',
+	'-ms-keyframes' => 'at',
+	'viewport' => 'at',
+	'-webkit-viewport' => 'at',
+	'-moz-viewport' => 'at',
+	'-ms-viewport' => 'at',
+	'supports' => 'at',
 );
 
- /**
- * Properties that need a value with unit
+/**
+ * Properties that need a value with unit.
  *
- * @todo CSS3 properties
+ * @TODO CSS3 properties.
  * @see compress_numbers();
- * @global array $data['csstidy']['unit_values']
- * @version 1.2
  */
-$data['csstidy']['unit_values'] = array ('background', 'background-position', 'background-size', 'border', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-width',
-											'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing', 'column-gap', 'column-width',
-											'font-size', 'height', 'left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'max-height',
-											'max-width', 'min-height', 'min-width', 'outline', 'outline-width', 'padding', 'padding-top', 'padding-right',
-											'padding-bottom', 'padding-left', 'perspective', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width');
+$data['csstidy']['unit_values'] = array(
+	'background', 'background-position', 'background-size', 'border', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-width',
+	'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing', 'column-gap', 'column-width',
+	'font-size', 'height', 'left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'max-height',
+	'max-width', 'min-height', 'min-width', 'outline', 'outline-width', 'padding', 'padding-top', 'padding-right',
+	'padding-bottom', 'padding-left', 'perspective', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width',
+);
 
 /**
- * Properties that allow <color> as value
+ * Properties that allow <color> as value.
  *
- * @todo CSS3 properties
+ * @TODO CSS3 properties
  * @see compress_numbers();
- * @global array $data['csstidy']['color_values']
- * @version 1.0
  */
-$data['csstidy']['color_values'] = array();
-$data['csstidy']['color_values'][] = 'background-color';
-$data['csstidy']['color_values'][] = 'border-color';
-$data['csstidy']['color_values'][] = 'border-top-color';
-$data['csstidy']['color_values'][] = 'border-right-color';
-$data['csstidy']['color_values'][] = 'border-bottom-color';
-$data['csstidy']['color_values'][] = 'border-left-color';
-$data['csstidy']['color_values'][] = 'color';
-$data['csstidy']['color_values'][] = 'outline-color';
-$data['csstidy']['color_values'][] = 'column-rule-color';
+$data['csstidy']['color_values'] = array( 'background-color', 'border-color', 'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color', 'color', 'outline-color', 'column-rule-color' );
 
 /**
- * Default values for the background properties
+ * Default values for the background properties.
  *
- * @todo Possibly property names will change during CSS3 development
- * @global array $data['csstidy']['background_prop_default']
+ * @TODO Possibly property names will change during CSS3 development.
  * @see dissolve_short_bg()
  * @see merge_bg()
- * @version 1.0
  */
 $data['csstidy']['background_prop_default'] = array();
 $data['csstidy']['background_prop_default']['background-image'] = 'none';
@@ -126,11 +115,9 @@ $data['csstidy']['background_prop_default']['background-origin'] = 'padding';
 $data['csstidy']['background_prop_default']['background-color'] = 'transparent';
 
 /**
- * Default values for the font properties
+ * Default values for the font properties.
  *
- * @global array $data['csstidy']['font_prop_default']
  * @see merge_fonts()
- * @version 1.3
  */
 $data['csstidy']['font_prop_default'] = array();
 $data['csstidy']['font_prop_default']['font-style'] = 'normal';
@@ -141,11 +128,9 @@ $data['csstidy']['font_prop_default']['line-height'] = '';
 $data['csstidy']['font_prop_default']['font-family'] = '';
 
 /**
- * A list of non-W3C color names which get replaced by their hex-codes
+ * A list of non-W3C color names which get replaced by their hex-codes.
  *
- * @global array $data['csstidy']['replace_colors']
  * @see cut_color()
- * @version 1.0
  */
 $data['csstidy']['replace_colors'] = array();
 $data['csstidy']['replace_colors']['aliceblue'] = '#f0f8ff';
@@ -276,28 +261,24 @@ $data['csstidy']['replace_colors']['whitesmoke'] = '#f5f5f5';
 $data['csstidy']['replace_colors']['yellowgreen'] = '#9acd32';
 
 /**
- * A list of all shorthand properties that are devided into four properties and/or have four subvalues
+ * A list of all shorthand properties that are divided into four properties and/or have four subvalues.
  *
- * @global array $data['csstidy']['shorthands']
- * @todo Are there new ones in CSS3?
+ * @TODO Are there new ones in CSS3?
  * @see dissolve_4value_shorthands()
  * @see merge_4value_shorthands()
- * @version 1.0
  */
 $data['csstidy']['shorthands'] = array();
-$data['csstidy']['shorthands']['border-color'] = array('border-top-color','border-right-color','border-bottom-color','border-left-color');
-$data['csstidy']['shorthands']['border-style'] = array('border-top-style','border-right-style','border-bottom-style','border-left-style');
-$data['csstidy']['shorthands']['border-width'] = array('border-top-width','border-right-width','border-bottom-width','border-left-width');
-$data['csstidy']['shorthands']['margin'] = array('margin-top','margin-right','margin-bottom','margin-left');
-$data['csstidy']['shorthands']['padding'] = array('padding-top','padding-right','padding-bottom','padding-left');
+$data['csstidy']['shorthands']['border-color'] = array( 'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color' );
+$data['csstidy']['shorthands']['border-style'] = array( 'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style' );
+$data['csstidy']['shorthands']['border-width'] = array( 'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width' );
+$data['csstidy']['shorthands']['margin'] = array( 'margin-top', 'margin-right', 'margin-bottom', 'margin-left' );
+$data['csstidy']['shorthands']['padding'] = array( 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' );
 $data['csstidy']['shorthands']['-moz-border-radius'] = 0;
 
 /**
- * All CSS Properties. Needed for csstidy::property_is_next()
+ * All CSS Properties.
  *
- * @global array $data['csstidy']['all_properties']
- * @version 1.1
- * @see csstidy::property_is_next()
+ * @see CSSTidy::property_is_next()
  */
 $data['csstidy']['all_properties']['alignment-adjust'] = 'CSS3.0';
 $data['csstidy']['all_properties']['alignment-baseline'] = 'CSS3.0';
@@ -582,25 +563,19 @@ $data['csstidy']['all_properties']['z-index'] = 'CSS2.0,CSS2.1,CSS3.0';
 
 /**
  * An array containing all properties that can accept a quoted string as a value.
- *
- * @global array $data['csstidy']['quoted_string_properties']
  */
-$data['csstidy']['quoted_string_properties'] = array('content', 'font', 'font-family', 'quotes');
+$data['csstidy']['quoted_string_properties'] = array( 'content', 'font', 'font-family', 'quotes' );
 
 /**
  * An array containing all properties that can be defined multiple times without being overwritten.
  * All unit values are included so that units like rem can be supported with fallbacks to px or em.
- *
- * @global array $data['csstidy']['quoted_string_properties']
  */
 $data['csstidy']['multiple_properties'] = array_merge( $data['csstidy']['color_values'], $data['csstidy']['unit_values'], array( 'transition', 'background-image', 'border-image', 'list-style-image' ) );
 
 /**
  * An array containing all predefined templates.
  *
- * @global array $data['csstidy']['predefined_templates']
- * @version 1.0
- * @see csstidy::load_template()
+ * @see CSSTidy::load_template()
  */
 $data['csstidy']['predefined_templates']['default'][] = '<span class="at">'; //string before @rule
 $data['csstidy']['predefined_templates']['default'][] = '</span> <span class="format">{</span>'."\n"; //bracket after @-rule
@@ -662,5 +637,5 @@ $data['csstidy']['predefined_templates']['low_compression'][] = '<span class="co
 $data['csstidy']['predefined_templates']['low_compression'][] = '</span>'."\n"; // after comment
 $data['csstidy']['predefined_templates']['low_compression'][] = "\n";
 
-// Add TablePress specific modifications, based on Jetpack modifications
+// Add TablePress specific modifications.
 require dirname( __FILE__ ) . '/data-tp.inc.php';

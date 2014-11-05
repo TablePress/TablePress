@@ -1,7 +1,9 @@
+# Copyright (C) 2014 TablePress
+# This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v1.1.1\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: TablePress v1.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2013-10-09 01:19:13+0000\n"
 "Last-Translator: Renato Rodrigues <renato@rlsrodrigues.com.br>\n"
@@ -22,8 +24,8 @@ msgstr ""
 
 #: classes/class-admin-page-helper.php:79
 #@ tablepress
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
-msgstr "Obrigado por utilizar <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
+msgstr "Obrigado por utilizar <a href=\"https://tablepress.org/\">TablePress</a>."
 
 #: classes/class-admin-page-helper.php:80
 #, php-format
@@ -355,8 +357,8 @@ msgstr "Cópia de %s"
 #. translators: plugin header field 'PluginURI'
 #: tablepress.php:0
 #@ tablepress
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. translators: plugin header field 'Description'
 #: tablepress.php:0
@@ -1613,8 +1615,8 @@ msgstr "Substituir tabela existente"
 
 #: views/view-import.php:184
 #@ tablepress
-msgid "Select:"
-msgstr "Selecionar:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Selecionar &mdash;"
 
 #: views/view-import.php:216
 #@ tablepress

@@ -1,7 +1,9 @@
+# Copyright (C) 2014 TablePress
+# This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v1.1\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/tablepress\n"
+"Project-Id-Version: TablePress v1.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: 2013-08-25 16:35:36+00:00\n"
 "PO-Revision-Date: 2013-08-27 21:58+0100\n"
 "Last-Translator: Tobias Bäthge <wordpress@tobias.baethge.com>\n"
@@ -20,9 +22,9 @@ msgstr ""
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:79
-msgid "Thank you for using <a href=\"http://tablepress.org/\">TablePress</a>."
+msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"Ďakujeme za používanie <a href=\"http://tablepress.org/\">TablePress</a>."
+"Ďakujeme za používanie <a href=\"https://tablepress.org/\">TablePress</a>."
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:80
@@ -2084,8 +2086,8 @@ msgstr "Tabuľku nahradiť alebo pripojiť k"
 
 # @ tablepress
 #: views/view-import.php:184
-msgid "Select:"
-msgstr "Vybrať:"
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Vybrať &mdash;"
 
 # @ tablepress
 #: views/view-import.php:201
@@ -2794,8 +2796,8 @@ msgstr ""
 "náhľade!"
 
 #. Plugin URI of the plugin/theme
-msgid "http://tablepress.org/"
-msgstr "http://tablepress.org/"
+msgid "https://tablepress.org/"
+msgstr "https://tablepress.org/"
 
 #. Description of the plugin/theme
 msgid ""
