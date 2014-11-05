@@ -4,7 +4,7 @@ Donate link: https://tablepress.org/donate/
 Tags: table,data,html,csv,excel
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 1.5
+Stable tag: 1.5.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,10 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.5.1 =
+* Bugfix: Some properties in Custom CSS code were erroneously removed.
+* Updated the Spanish translation.
+
 = Version 1.5 =
 * Full compatibility with WordPress 4.0
 * Feature: Support for the new Media Manager when inserting images
@@ -178,6 +182,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.5.1 =
+This update includes several new features, enhancements, and bugfixes. Updating is recommended.
 
 = 1.5 =
 This update includes several new features, enhancements, and bugfixes. Updating is recommended.
