@@ -346,10 +346,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 */
 				$parameters = apply_filters( 'tablepress_datatables_parameters', $parameters, $table_id, $html_id, $js_options );
 
-				// If an existing parameter is set in "Custom Commands", remove its default value.
+				// If an existing parameter (in the from `"parameter":`) is set in the "Custom Commands", remove its default value.
 				if ( isset( $parameters['custom_commands'] ) ) {
 					foreach ( array_keys( $parameters ) as $maybe_overwritten_parameter ) {
-						if ( false !== strpos( $parameters['custom_commands'], $maybe_overwritten_parameter ) ) {
+						if ( false !== strpos( $parameters['custom_commands'], "\"{$maybe_overwritten_parameter}\":" ) ) {
 							unset( $parameters[ $maybe_overwritten_parameter ] );
 						}
 					}
