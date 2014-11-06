@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: TablePress v1.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: 2014-11-02 18:23:23+00:00\n"
-"PO-Revision-Date: 2014-11-06 15:42+0900\n"
+"PO-Revision-Date: 2014-11-06 17:10+0900\n"
 "Last-Translator: Josh Kim <joshkkim@gmail.com>\n"
 "Language-Team: \n"
 "Language: ko\n"
@@ -610,8 +610,8 @@ msgid ""
 "You can then show the tables in your posts, on your pages, or in text "
 "widgets by using a Shortcode."
 msgstr ""
-"그런 다음 단축코드를 이용해 글, 페이지 또는 텍스트 위젯에 표를 표시할 수 있습"
-"니다."
+"그런 다음 단축코드를 사용하여 글, 페이지 또는 텍스트 위젯에 표를 표시할 수 있"
+"습니다."
 
 # @ tablepress
 #: views/view-about.php:65
@@ -669,8 +669,8 @@ msgid ""
 "To insert a table into a page, post, or text widget, copy its Shortcode %s "
 "and paste it at the desired place in the editor."
 msgstr ""
-"페이지, 글 또는 텍스트 위젯에 표를 삽입하려면, Shortcode %s을(를) 복사한 후"
-"에 편집기에서 원하는 위치에 붙여넣으세요."
+"페이지, 글 또는 텍스트 위젯에 표를 삽입하려면, 단축코드 %s을(를) 복사한 후에 "
+"편집기에서 원하는 위치에 붙여넣으세요."
 
 # @ tablepress
 #: views/view-about.php:91 views/view-list.php:190
@@ -936,7 +936,7 @@ msgstr "표를 성공적으로 가져왔습니다."
 # @ tablepress
 #: views/view-edit.php:52
 msgid "The table was imported successfully from WP-Table Reloaded."
-msgstr "WP-Table Reloaded로부터 표를 성공적으로 가져왔습니다."
+msgstr "WP-Table Reloaded에서 표를 성공적으로 가져왔습니다."
 
 # @ tablepress
 #: views/view-edit.php:53 views/view-list.php:101
@@ -1042,7 +1042,7 @@ msgstr[0] "정말로 선택한 열을 삭제하시겠습니까?"
 msgid ""
 "Please click into the cell that you want to edit using the &#8220;Advanced "
 "Editor&#8221;."
-msgstr "&#8220;고급 편집기&#8221;.를 사용하여 편집할 셀을 클릭해주세요."
+msgstr "&#8220;고급 편집기&#8221;를 사용하여 편집할 셀을 클릭해주세요."
 
 # @ tablepress
 #: views/view-edit.php:132
@@ -1265,12 +1265,12 @@ msgstr "단축코드"
 # @ tablepress
 #: views/view-edit.php:243 views/view-list.php:325
 msgid "Last Modified"
-msgstr "마지막 수정"
+msgstr "최근 수정"
 
 # @ tablepress
 #: views/view-edit.php:244
 msgid "%1$s by %2$s"
-msgstr "%2$s이(가) %1$s"
+msgstr "%1$s에 %2$s이(가)"
 
 # @ tablepress
 #: views/view-edit.php:376
@@ -1295,12 +1295,12 @@ msgstr "셀 병합"
 # @ tablepress
 #: views/view-edit.php:382
 msgid "in a column (rowspan)"
-msgstr "열에서(rowspan)"
+msgstr "열(rowspan)"
 
 # @ tablepress
 #: views/view-edit.php:383
 msgid "in a row (colspan)"
-msgstr "행에서(colspan)"
+msgstr "행(colspan)"
 
 # @ tablepress
 #: views/view-edit.php:384
@@ -1641,8 +1641,8 @@ msgid ""
 "Enable the table information display, with information about the currently "
 "visible data, like the number of rows."
 msgstr ""
-"표 정보를 행 개수와 같이 현재 보이는 데이터에 대한 정보와 함께 표시할 수 있도"
-"록 합니다."
+"행 개수와 같은 현재 표시되고있는 데이터에 대한 정보를 포함한 표 정보 표시를 "
+"활성화합니다."
 
 # @ tablepress
 #: views/view-edit.php:620
@@ -1666,8 +1666,8 @@ msgid ""
 "Additional parameters from the <a href=\"http://www.datatables.net/"
 "\">DataTables documentation</a> to be added to the JS call."
 msgstr ""
-"JS 호출에 추가될 <a href=\"http://www.datatables.net/\">DataTables 문서</a>에"
-"서 추가 파라미터."
+"JS 호출에 추가될 <a href=\"http://www.datatables.net/\">DataTables 문서</a>"
+"의 추가 파라미터."
 
 # @ tablepress
 #: views/view-edit.php:628
@@ -1950,7 +1950,7 @@ msgstr "ZIP 파일"
 # @ tablepress
 #: views/view-export.php:179
 msgid "Create a ZIP archive."
-msgstr "ZIP 압축파일을 생성하세요."
+msgstr "ZIP 압축파일을 생성합니다."
 
 # @ tablepress
 #: views/view-export.php:179
@@ -1966,7 +1966,7 @@ msgstr "참고 : ZIP 파일 생성은 이 서버에서 지원되지 않는 것 �
 # @ tablepress
 #: views/view-import.php:44 views/view-import.php:56
 msgid "Error: You did not select what to import from WP-Table Reloaded!"
-msgstr "오류: WP-Table Reloaded(으)로부터 무엇을 가져올지 선택하지 않았습니다!"
+msgstr "오류: WP-Table Reloaded에서 무엇을 가져올지 선택하지 않았습니다!"
 
 # @ tablepress
 #: views/view-import.php:49
@@ -2031,7 +2031,7 @@ msgstr "표 가져오기"
 # @ tablepress
 #: views/view-import.php:65
 msgid "Import from WP-Table Reloaded"
-msgstr "WP-Table Reloaded로부터 가져오기"
+msgstr "WP-Table Reloaded에서 가져오기"
 
 # @ tablepress
 #: views/view-import.php:97
@@ -2041,15 +2041,15 @@ msgid ""
 "resembling a webpage, or its own JSON format."
 msgstr ""
 "TablePress는 스프레드시트 응용 프로그램(예: 엑셀)의 CSV, XLS 또는 XLSX 파일, "
-"웹페이지와 유사한 HTML 파일, 또는 자체 JSON 형식 등과 같은 기존 데이터로부터 "
-"표를 가져올 수 있습니다."
+"웹페이지와 유사한 HTML 파일, 또는 자체 JSON 형식 등과 같은 기존 데이터에서 표"
+"를 가져올 수 있습니다."
 
 # @ tablepress
 #: views/view-import.php:98
 msgid ""
 "You can also import existing tables from the WP-Table Reloaded plugin below."
 msgstr ""
-"또한 아래 WP-Table Reloaded 플러그인으로부터 기존 표를 가져올 수도 있습니다."
+"또한 아래 WP-Table Reloaded 플러그인에서 기존 표를 가져올 수도 있습니다."
 
 # @ tablepress
 #: views/view-import.php:102
@@ -2130,7 +2130,7 @@ msgstr "HTML 파일 가져오기를 이 서버에서 사용할 수 없습니다.
 # @ tablepress
 #: views/view-import.php:192
 msgid "Add, Replace, or Append?"
-msgstr "새로 추가, 바꾸기 또는 행으로 추가?"
+msgstr "추가, 교체 또는 행 추가?"
 
 # @ tablepress
 #: views/view-import.php:194
@@ -2140,17 +2140,17 @@ msgstr "새로운 표로 추가"
 # @ tablepress
 #: views/view-import.php:195
 msgid "Replace existing table"
-msgstr "기존 표 바꾸기"
+msgstr "기존 표를 교체"
 
 # @ tablepress
 #: views/view-import.php:196
 msgid "Append rows to existing table"
-msgstr "기존 표에 행으로 추가"
+msgstr "기존 표에 행 추가"
 
 # @ tablepress
 #: views/view-import.php:200
 msgid "Table to replace or append to"
-msgstr "바꾸거나 행으로 추가할 표"
+msgstr "교체하거나 행을 추가할 표"
 
 #: views/view-import.php:203
 msgid "&mdash; Select &mdash;"
@@ -2243,12 +2243,12 @@ msgstr ""
 #: views/view-import.php:277
 msgctxt "button"
 msgid "Import from WP-Table Reloaded"
-msgstr "WP-Table Reloaded로부터 가져오기"
+msgstr "WP-Table Reloaded에서 가져오기"
 
 # @ tablepress
 #: views/view-import.php:294
 msgid "TablePress Feature: Import from WP-Table Reloaded"
-msgstr "TablePress 기능: WP-Table Reloaded로부터 가져오기"
+msgstr "TablePress 기능: WP-Table Reloaded에서 가져오기"
 
 # @ tablepress
 #: views/view-import.php:295
@@ -2346,7 +2346,7 @@ msgstr ""
 # @ tablepress
 #: views/view-list.php:66
 msgid "Import your tables from WP-Table Reloaded"
-msgstr "WP-Table Reloaded로부터 표 가져오기"
+msgstr "WP-Table Reloaded에서 표 가져오기"
 
 # @ tablepress
 #: views/view-list.php:73
@@ -2480,7 +2480,7 @@ msgstr "표를 성공적으로 가져왔습니다."
 # @ tablepress
 #: views/view-list.php:112
 msgid "The tables were imported successfully from WP-Table Reloaded."
-msgstr "WP-Table Reloaded로부터 표를 성공적으로 가져왔습니다."
+msgstr "WP-Table Reloaded에서 표를 성공적으로 가져왔습니다."
 
 # @ tablepress
 #: views/view-list.php:118
@@ -2503,7 +2503,7 @@ msgstr ""
 # @ tablepress
 #: views/view-list.php:189
 msgid "Each table has a unique ID that needs to be adjusted in that Shortcode."
-msgstr "각 표마다 Shortcode에서 조정이 필요한 고유 ID가 존재합니다."
+msgstr "각 표마다 단축코드에서 조정이 필요한 고유 ID가 존재합니다."
 
 # @ tablepress
 #: views/view-list.php:323
@@ -2703,8 +2703,8 @@ msgid ""
 "Information on available CSS selectors can be found in the <a href=\"%s"
 "\">documentation</a>."
 msgstr ""
-"사용 가능한 CSS 선택기에 대한 정보는 <a href=\"%s\">문서</a>.에서 찾을 수 있"
-"습니다."
+"사용 가능한 CSS 선택기에 대한 정보는 <a href=\"%s\">문서</a>에서 찾을 수 있습"
+"니다."
 
 # @ tablepress
 #: views/view-options.php:115
