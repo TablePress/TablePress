@@ -2807,8 +2807,8 @@ msgstr ""
 # @ tablepress
 #. translators: plugin header field 'Version'
 #: tablepress.php:0
-msgid "1.1.1"
-msgstr "1.1.1"
+msgid "1.5"
+msgstr "1.5"
 
 # @ tablepress
 #: views/view-about.php:77

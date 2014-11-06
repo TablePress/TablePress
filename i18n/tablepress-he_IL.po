@@ -2797,10 +2797,6 @@ msgstr "http://tobias.baethge.com/"
 #~ msgstr ""
 #~ "תכונות ספריית ג'אווהסקריפט DataTables  גם הן אינן נראות בתצוגה מקדימה זו!"
 
-# @ default
-#~ msgid "Insert into Post"
-#~ msgstr "הכנס לתוך פוסט"
-
 #~ msgid "File exists"
 #~ msgstr "הקובץ קיים"
 

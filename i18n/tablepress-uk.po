@@ -1832,10 +1832,6 @@ msgstr "Додати рядки до існуючої таблиці"
 msgid "Table to replace or append to"
 msgstr "Таблиця, яку потрібно замінити чи розширити"
 
-#: views/view-import.php:198
-msgid "Select:"
-msgstr "Виберіть:"
-
 #: views/view-import.php:218
 msgctxt "button"
 msgid "Import"

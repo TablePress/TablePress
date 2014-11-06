@@ -2583,7 +2583,7 @@ msgstr "https://tablepress.org/"
 #. translators: plugin header field 'Version'
 #: tablepress.php:0
 #@ tablepress
-msgid "1.5-beta"
+msgid "1.5"
 msgstr "1.5"
 
 #: views/view-edit.php:648

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v1.5-beta\n"
+"Project-Id-Version: TablePress v1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2014-10-20 20:29:14+0000\n"
@@ -2534,8 +2534,8 @@ msgstr "Chinois (Taiwan)"
 #. translators: plugin header field 'Version'
 #: tablepress.php:0
 #@ tablepress
-msgid "1.5-beta"
-msgstr "1.5-beta"
+msgid "1.5"
+msgstr "1.5"
 
 #: views/view-edit.php:648
 #@ tablepress

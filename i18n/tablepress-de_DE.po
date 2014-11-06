@@ -2928,7 +2928,3 @@ msgstr "Tobias Bäthge"
 #. Author URI of the plugin/theme
 msgid "http://tobias.baethge.com/"
 msgstr "http://tobias.baethge.com/"
-
-# @ default
-#~ msgid "Insert into Post"
-#~ msgstr "In die Tabelle einfügen"

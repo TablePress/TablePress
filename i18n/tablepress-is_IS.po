@@ -490,8 +490,8 @@ msgstr "http://tobias.baethge.com/"
 #. translators: plugin header field 'Version'
 #: tablepress.php:0
 #@ tablepress
-msgid "1.0"
-msgstr "1.0"
+msgid "1.5"
+msgstr "1.5"
 
 #: views/view-about.php:43
 #@ tablepress

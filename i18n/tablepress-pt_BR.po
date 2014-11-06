@@ -2348,7 +2348,7 @@ msgstr "Desinstalar o TablePress"
 #. translators: plugin header field 'Version'
 #: tablepress.php:0
 #@ tablepress
-msgid "1.1.1"
+msgid "1.5"
 msgstr ""
 
 #: views/view-about.php:77

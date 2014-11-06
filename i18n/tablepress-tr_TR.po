@@ -2487,9 +2487,6 @@ msgstr "http://tobias.baethge.com/"
 #~ "Ayrıca, DataTable JavaScript kütüphane özellikleri de bu önizlemede "
 #~ "görünmez!"
 
-#~ msgid "Insert into Post"
-#~ msgstr "Yazıya Ekle"
-
 #~ msgid "TablePress Plugin page"
 #~ msgstr "TablePress Eklenti sayfası"
 
