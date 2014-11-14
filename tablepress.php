@@ -45,12 +45,7 @@ define( 'TABLEPRESS_ABSPATH', plugin_dir_path( __FILE__ ) );
 define( 'TABLEPRESS__FILE__', __FILE__ );
 define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
 
-/**
- * This file doesn't do anything.
- * It's only purpose is to list the strings that would otherwise be missed by
- * gettext parsers.
- */
-/// TRANSLATORS: This is the description that of the plug-in that appears in the "Plugins" page.
+// TRANSLATORS: This is the description that of the plug-in that appears in the "Plugins" page.
 __( 'TablePress enables you to create and manage tables in your posts and pages, without having to write HTML code, and it adds valuable functions for your visitors.', 'tablepress' );
 
 /**
