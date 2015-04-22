@@ -570,7 +570,7 @@ class EvalMath {
 						$stack->push( $op1 * $op2 );
 						break;
 					case '/':
-						if ( 0 === $op2 ) {
+						if ( 0 === $op2 || '0' === $op2 ) {
 							return $this->raise_error( 'division_by_zero' );
 						}
 						$stack->push( $op1 / $op2 );
