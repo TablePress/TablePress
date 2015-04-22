@@ -81,10 +81,8 @@ body #wp-link-backdrop {
 /* Spinner/loading animation that is shown during saving/preview preparation */
 .spinner.animation-saving,
 .spinner.animation-preview {
-	display: inline-block;
 	float: none;
 	margin: 0 0 0 6px;
-	vertical-align: middle;
 }
 
 /* Margins for dynamically created (inline) .notice messages */

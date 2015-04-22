@@ -199,7 +199,7 @@ jQuery( document ).ready( function( $ ) {
 					return;
 				}
 
-				$(this).closest( 'p' ).append( '<span class="animation-preview spinner" title="' + tablepress_strings.preparing_preview + '"/>' );
+				$(this).closest( 'p' ).append( '<span class="animation-preview spinner is-active" title="' + tablepress_strings.preparing_preview + '"/>' );
 				$( 'body' ).addClass( 'wait' );
 				$id( 'table-preview' ).empty(); // clear preview
 
@@ -1036,7 +1036,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 
-			$(this).closest( 'p' ).append( '<span class="animation-saving spinner" title="' + tablepress_strings.saving_changes + '"/>' );
+			$(this).closest( 'p' ).append( '<span class="animation-saving spinner is-active" title="' + tablepress_strings.saving_changes + '"/>' );
 			$( '.save-changes-button' ).prop( 'disabled', true );
 			$( 'body' ).addClass( 'wait' );
 
