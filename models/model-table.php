@@ -711,6 +711,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( isset( $GLOBALS['quick_cache'] ) && method_exists( $GLOBALS['quick_cache'], 'clear_cache' ) ) {
 			$GLOBALS['quick_cache']->clear_cache();
 		}
+		// WP Fastest Cache
+		if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
+			$GLOBALS['wp_fastest_cache']->deleteCache();
+		}
 	}
 
 	/**
