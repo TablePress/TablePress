@@ -54,7 +54,7 @@ class TablePress_List_View extends TablePress_View {
 				. __( 'Thank you for using TablePress for the first time!', 'tablepress' ) . ' '
 				. sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '<br /><br />'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ),
-				'notice-success not-dismissible'
+				'notice-info not-dismissible'
 			);
 		}
 
@@ -90,7 +90,7 @@ class TablePress_List_View extends TablePress_View {
 				. sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' )
 				. '<br /><br />';
 			$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) );
-			$this->add_header_message( $message, 'notice-success not-dismissible' );
+			$this->add_header_message( $message, 'notice-info not-dismissible' );
 		}
 
 		$this->process_action_messages( array(
