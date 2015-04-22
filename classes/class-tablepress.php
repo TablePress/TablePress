@@ -443,7 +443,7 @@ abstract class TablePress {
 	 */
 	public static function show_minimum_requirements_error_notice() {
 		// Message is not translated as it is shown on every admin screen, for which we don't want to load translations.
-		echo '<div class="error form-invalid"><p>' .
+		echo '<div class="notice notice-error form-invalid"><p>' .
 			'<strong>Attention:</strong> ' .
 			'The installed version of WordPress is too old for the TablePress plugin! TablePress requires an up-to-date version! <strong>Please <a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">update your WordPress installation</a></strong>!' .
 			"</p></div>\n";

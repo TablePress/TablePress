@@ -1114,10 +1114,10 @@ jQuery( document ).ready( function( $ ) {
 			var delay,
 				div_class = 'save-changes-' + type;
 			if ( 'success' === type ) {
-				div_class += ' updated';
+				div_class += ' notice notice-success';
 				delay = 3000;
 			} else {
-				div_class += ' error';
+				div_class += ' notice notice-error';
 				delay = 6000;
 			}
 			$( '.animation-saving' ).closest( 'p' )

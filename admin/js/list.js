@@ -61,7 +61,7 @@ jQuery( document ).ready( function( $ ) {
 					case 'hide_message':
 						/* Donation message links show new message */
 						if ( 'donation_nag' === item && '' !== target ) {
-							$link.closest( 'div' ).after( '<div class="donation-message-after-click-message updated"><p><strong>' + tablepress_list['donation-message-' + target] + '</strong></p></div>' );
+							$link.closest( 'div' ).after( '<div class="donation-message-after-click-message notice notice-success"><p><strong>' + tablepress_list['donation-message-' + target] + '</strong></p></div>' );
 							$( '.donation-message-after-click-message' ).delay( 10000 ).fadeOut( 2000, function() { $(this).remove(); } );
 						}
 

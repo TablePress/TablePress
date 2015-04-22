@@ -8,8 +8,7 @@
  */
 
 /* Margins for messages on screens */
-#tablepress-page div.updated,
-#tablepress-page div.error {
+#tablepress-page div.notice {
 	margin: 10px 0 0;
 }
 

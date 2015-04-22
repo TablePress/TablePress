@@ -179,8 +179,11 @@ abstract class TablePress_View {
 	 * @param string $text  Text for the header message.
 	 * @param string $class Optional. Additional CSS class for the header message.
 	 */
-	protected function add_header_message( $text, $class = 'updated' ) {
-		$this->header_messages[] = "<div class=\"{$class}\"><p>{$text}</p></div>\n";
+	protected function add_header_message( $text, $class = 'notice-success' ) {
+		if ( ! stripos( $class, 'not-dismissible' ) ) {
+			$class .= ' is-dismissible';
+		}
+		$this->header_messages[] = "<div class=\"notice {$class}\"><p>{$text}</p></div>\n";
 	}
 
 	/**
@@ -192,7 +195,7 @@ abstract class TablePress_View {
 	 */
 	protected function process_action_messages( array $action_messages ) {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
-			$class = ( 'error' === substr( $this->data['message'], 0, 5 ) ) ? 'error' : 'updated';
+			$class = ( 'error' === substr( $this->data['message'], 0, 5 ) ) ? 'notice-error' : 'notice-success';
 			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>", $class );
 		}
 	}

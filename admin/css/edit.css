@@ -87,7 +87,7 @@ body #wp-link-backdrop {
 	vertical-align: middle;
 }
 
-/* Margins for dynamically created (inline) .error/.updated messages */
+/* Margins for dynamically created (inline) .notice messages */
 #tablepress-page div.ajax-alert {
 	margin: -10px 0 15px;
 }
