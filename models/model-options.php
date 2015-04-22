@@ -33,7 +33,6 @@ class TablePress_Options_Model extends TablePress_Model {
 		'tablepress_version' => TablePress::version,
 		'first_activation' => 0,
 		'message_plugin_update' => false,
-		'message_plugin_update_content' => '',
 		'message_donation_nag' => true,
 		'use_custom_css' => true,
 		'use_custom_css_file' => true,
@@ -344,24 +343,6 @@ class TablePress_Options_Model extends TablePress_Model {
 		 * @param array  $args    Adds the context to the cap, typically the table ID.
 		 */
 		return apply_filters( 'tablepress_map_meta_caps', $caps, $cap, $user_id, $args );
-	}
-
-	/**
-	 * Retrieve the update message from the development server to notify users of the included changes in this update, in his language.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $current_version Version before the update.
-	 * @param string $new_version     Version after the update.
-	 * @param string $locale          Desired locale of the message.
-	 * @return string Plugin update message.
-	 */
-	public function plugin_update_message( $current_version, $new_version, $locale ) {
-		$update_message = wp_remote_fopen( "http://dev.tablepress.org/plugin/update/{$current_version}/{$new_version}/{$locale}/" );
-		if ( empty( $update_message ) ) {
-			$update_message = '';
-		}
-		return $update_message;
 	}
 
 	/**

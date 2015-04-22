@@ -55,11 +55,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			wp_die( '-1' );
 		}
 
-		$updated_options = array( "message_{$message_item}" => false );
-		if ( 'plugin_update' === $message_item ) {
-			$updated_options['message_plugin_update_content'] = '';
-		}
-		TablePress::$model_options->update( $updated_options );
+		TablePress::$model_options->update( "message_{$message_item}", false );
 
 		wp_die( '1' );
 	}

@@ -154,10 +154,6 @@ abstract class TablePress_Controller {
 					TablePress::$model_table->convert_datatables_parameter_names_tp15();
 				}
 			}
-
-			TablePress::$model_options->update( array(
-				'message_plugin_update_content' => TablePress::$model_options->plugin_update_message( TablePress::$model_options->get( 'prev_tablepress_version' ), TablePress::version, get_locale() ),
-			) );
 		}
 
 		// Maybe update the table scheme in each existing table, independently from updating the plugin options.

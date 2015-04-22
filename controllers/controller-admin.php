@@ -387,8 +387,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				} else {
 					$data['messages']['wp_table_reloaded_warning'] = false;
 				}
-				$data['messages']['show_plugin_update'] = TablePress::$model_options->get( 'message_plugin_update' );
-				$data['messages']['plugin_update_message'] = TablePress::$model_options->get( 'message_plugin_update_content' );
+				$data['messages']['plugin_update_message'] = TablePress::$model_options->get( 'message_plugin_update' );
 				$data['messages']['donation_message'] = $this->maybe_show_donation_message();
 				$data['table_count'] = count( $data['table_ids'] );
 				break;
@@ -1853,11 +1852,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
 		}
 
-		$updated_options = array( "message_{$message_item}" => false );
-		if ( 'plugin_update' === $message_item ) {
-			$updated_options['message_plugin_update_content'] = '';
-		}
-		TablePress::$model_options->update( $updated_options );
+		TablePress::$model_options->update( "message_{$message_item}", false );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		TablePress::redirect( array( 'action' => $return ) );
