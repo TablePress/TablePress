@@ -1,4 +1,4 @@
-# Copyright (C) 2014 TablePress
+# Copyright (C) 2015 TablePress
 # This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
