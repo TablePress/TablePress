@@ -288,23 +288,6 @@ class TablePress_Edit_View extends TablePress_View {
 			<th></th>
 		</tr>
 	</thead>
-	<tfoot>
-		<tr id="edit-form-foot">
-			<th></th>
-			<th></th>
-<?php
-	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-		$column_class = '';
-		if ( 0 === $visibility['columns'][ $col_idx ] ) {
-			$column_class = ' class="column-hidden"';
-		}
-		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
-	}
-?>
-			<th></th>
-		</tr>
-	</tfoot>
 	<tbody id="edit-form-body">
 <?php
 	foreach ( $table as $row_idx => $row_data ) {
@@ -340,6 +323,23 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 ?>
 	</tbody>
+	<tfoot>
+		<tr id="edit-form-foot">
+			<th></th>
+			<th></th>
+<?php
+	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
+		$column_class = '';
+		if ( 0 === $visibility['columns'][ $col_idx ] ) {
+			$column_class = ' class="column-hidden"';
+		}
+		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
+		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
+	}
+?>
+			<th></th>
+		</tr>
+	</tfoot>
 </table>
 <input type="hidden" id="number-rows" name="table[number][rows]" value="<?php echo $rows; ?>" />
 <input type="hidden" id="number-columns" name="table[number][columns]" value="<?php echo $columns; ?>" />
