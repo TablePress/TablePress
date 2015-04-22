@@ -70,21 +70,8 @@ class TablePress_Edit_View extends TablePress_View {
 		add_filter( 'media_view_strings', array( $this, 'change_media_view_strings' ) );
 		wp_enqueue_media();
 
-		// Use modified version of wpLink, instead of default version (changes "Title" to "Link Text").
-		wp_deregister_script( 'wplink' );
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		// See wp-includes/script-loader.php for default parameters.
-		$wplink_url = plugins_url( "admin/js/tp_wplink{$suffix}.js", TABLEPRESS__FILE__ );
-		wp_enqueue_script( 'wplink', $wplink_url, array( 'jquery' ), TablePress::version, true );
-		wp_localize_script( 'wplink', 'wpLinkL10n', array(
-			'title' => _x( 'Insert/edit link', 'Insert Link dialog', 'tablepress' ),
-			'update' => _x( 'Update', 'Insert Link dialog', 'tablepress' ),
-			'save' => _x( 'Add Link', 'Insert Link dialog', 'tablepress' ),
-			'noTitle' => _x( '(no title)', 'Insert Link dialog', 'tablepress' ),
-			'noMatchesFound' => _x( 'No matches found.', 'Insert Link dialog', 'tablepress' ),
-			// The previous strings are default strings, this is a string that the modified tp_wplink.js inserts.
-			'link_text' => _x( 'Link Text', 'Insert Link dialog', 'tablepress' ),
-		) );
+		// Enqueue JS for the "Insert Link" button.
+		wp_enqueue_script( 'wplink' );
 
 		$this->admin_page->enqueue_style( 'edit' );
 		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable', 'json2' ), array(
