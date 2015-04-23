@@ -622,7 +622,7 @@ class CSSTidy_optimise {
 	 * @since 1.0.0
 	 *
 	 * @param string $property [description]
-	 * @param string$value    [description]
+	 * @param string $value    [description]
 	 *
 	 * @return [type] [description]
 	 */
