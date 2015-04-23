@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, wpLink, tb_show, wp */
+/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, wpLink, tb_show, wp, JSON */
 
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};
