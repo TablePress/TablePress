@@ -461,11 +461,29 @@ class TablePress_Import {
 			return;
 		}
 
+		// Require the iconv() function for the following checks.
+		if ( ! function_exists( 'iconv' ) ) {
+			return;
+		}
+
+		// Check for possible UTF-16 BOMs ("little endian" and "big endian") and try to convert the data to UTF-8.
+		if ( "\xFF\xFE" === substr( $this->import_data, 0, 2 ) || "\xFE\xFF" === substr( $this->import_data, 0, 2 ) ) {
+			$data = @iconv( 'UTF-16', 'UTF-8', $this->import_data );
+			if ( false !== $data ) {
+				$this->import_data = $data;
+				return;
+			}
+		}
+
 		// Detect the character encoding and convert to UTF-8, if it's different.
-		if ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) {
+		if ( function_exists( 'mb_detect_encoding' ) ) {
 			$current_encoding = mb_detect_encoding( $this->import_data, 'ASCII, UTF-8, ISO-8859-1' );
 			if ( 'UTF-8' !== $current_encoding ) {
-				$this->import_data = @iconv( $current_encoding, 'UTF-8', $this->import_data );
+				$data = @iconv( $current_encoding, 'UTF-8', $this->import_data );
+				if ( false !== $data ) {
+					$this->import_data = $data;
+					return;
+				}
 			}
 		}
 	}
