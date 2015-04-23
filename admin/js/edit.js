@@ -203,14 +203,14 @@ jQuery( document ).ready( function( $ ) {
 				$( 'body' ).addClass( 'wait' );
 				$id( 'table-preview' ).empty(); // clear preview
 
-				$.post(
-						ajaxurl,
-						tp.table.prepare_ajax_request( 'tablepress_preview_table', '#nonce-preview-table' ),
-						function() { /* done with .success() below */ },
-						'json'
-					)
-					.success( tp.table.preview.ajax_success )
-					.error( tp.table.preview.ajax_error );
+				$.ajax({
+					'type': 'POST',
+					'url': ajaxurl,
+					'data': tp.table.prepare_ajax_request( 'tablepress_preview_table', '#nonce-preview-table' ),
+					'success': tp.table.preview.ajax_success,
+					'error': tp.table.preview.ajax_error,
+					'dataType': 'json'
+				} );
 
 				return false;
 			},
@@ -1040,14 +1040,14 @@ jQuery( document ).ready( function( $ ) {
 			$( '.save-changes-button' ).prop( 'disabled', true );
 			$( 'body' ).addClass( 'wait' );
 
-			$.post(
-					ajaxurl,
-					tp.table.prepare_ajax_request( 'tablepress_save_table', '#nonce-edit-table' ),
-					function() { /* done with .success() below */ },
-					'json'
-				)
-				.success( tp.save_changes.ajax_success )
-				.error( tp.save_changes.ajax_error );
+			$.ajax({
+				'type': 'POST',
+				'url': ajaxurl,
+				'data': tp.table.prepare_ajax_request( 'tablepress_save_table', '#nonce-edit-table' ),
+				'success': tp.save_changes.ajax_success,
+				'error': tp.save_changes.ajax_error,
+				'dataType': 'json'
+			} );
 		},
 		ajax_success: function( data, status /*, jqXHR */ ) {
 			if ( ( 'undefined' === typeof status ) || ( 'success' !== status ) ) {
