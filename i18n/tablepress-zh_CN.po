@@ -163,7 +163,7 @@ msgstr[0] "您确定要删除该表格吗？"
 msgstr[1] "您确定要删除这些表格吗？"
 
 # @ tablepress
-#. #-#-#-#-#  tablepress.pot (TablePress 1.5)  #-#-#-#-#
+#. #-#-#-#-#  tablepress.pot (TablePress 1.6)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/class-view.php:387
 msgid "TablePress"
