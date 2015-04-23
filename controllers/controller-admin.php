@@ -1128,8 +1128,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
 			$download_filename = sanitize_file_name( $download_filename );
-			// export table
+			// Export the table.
 			$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
+			/**
+			 * Filter the exported table data.
+			 *
+			 * @since 1.6.0
+			 *
+			 * @param string $export_data   The exported table data.
+			 * @param array  $table         Table to be exported.
+			 * @param string $export_format Format for the export ('csv', 'html', 'json').
+			 * @param string $csv_delimiter Delimiter for CSV export.
+			 */
+			$export_data = apply_filters( 'tablepress_export_data', $export_data, $table, $export['format'], $export['csv_delimiter'] );
 			$download_data = $export_data;
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully.
@@ -1162,6 +1173,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					continue;
 				}
 				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
+				/** This filter is documented in controllers/controller-admin.php */
+				$export_data = apply_filters( 'tablepress_export_data', $export_data, $table, $export['format'], $export['csv_delimiter'] );
 				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
 				$export_filename = sanitize_file_name( $export_filename );
 				$zip_file->addFromString( $export_filename, $export_data );
