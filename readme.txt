@@ -101,7 +101,20 @@ You may use it free of charge for any purpose.
 
 = Version 1.6 =
 * Full compatibility with WordPress 4.2
-* TablePress 1.5 requires WordPress 4.2!
+* Bugfix: Fixed integration of the "Insert Link" dialog.
+* Bugfix: Divisions by zero were not caught properly in formulas in cells.
+* Bugfix: Numbers were sometimes not imported correctly in the Excel importer.
+* Enhancement: Importing files encoded as UTF-16 should work better now.
+* Enhancement: Support dismissible notices in the admin screens.
+* Enhancement: Support better tabbing on the "Edit" screen.
+* Enhancement: Add page cache clearing for the WP Fastest Cache plugin.
+* Enhancement: Add a plugin filter hook that allows modifying the exported data by plugins.
+* Enhancement: Support more CSS3 properties when cleaning "Custom CSS" code.
+* Updated external libraries (CodeMirror, DataTables, Build tools).
+* Added Korean translation.
+* Updated several translations (Chinese (Taiwan), English, German).
+* Many internal changes and fixes for better stability, cleaner code, and documentation.
+* TablePress 1.6 requires WordPress 4.2!
 
 = Version 1.5.1 =
 * Bugfix: Some properties in Custom CSS code were erroneously removed.
