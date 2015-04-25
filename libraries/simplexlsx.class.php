@@ -445,11 +445,7 @@ class SimpleXLSX {
 				$value = (string) $cell->v;
 				// Check for numeric values by converting them forth and back.
 				if ( is_numeric( $value ) && 's' !== $dataType ) {
-					if ( $value === (string) intval( $value ) ) {
-						$value = intval( $value );
-					} elseif ( $value === (string) floatval( $value ) ) {
-						$value = floatval( $value );
-					}
+					$value = (float) $value;
 				}
 		}
 		return $value;
@@ -585,7 +581,7 @@ class SimpleXLSX {
 
 			$vZ = substr( $vZ, 26 + $nF + $mF );
 
-			if ( strlen( $vZ ) !== $aP['CS'] ) { // check only if availabled
+			if ( strlen( $vZ ) !== $aP['CS'] ) { // Check only if available.
 				$aI['E'] = 1;
 				$aI['EM'] = 'Compressed size is not equal with the value in header information.';
 			} else {
