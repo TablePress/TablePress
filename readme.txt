@@ -200,6 +200,9 @@ Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
 
+= 1.6 =
+This update is a stability, maintenance, and compatibility release. Updating is recommended.
+
 = 1.5.1 =
 This update includes several new features, enhancements, and bugfixes. Updating is recommended.
 
