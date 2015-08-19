@@ -204,6 +204,9 @@ Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
 
+= 1.6.1 =
+This update fixes an issue with the JavaScript features after the update to WordPress 4.3.
+
 = 1.6 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
