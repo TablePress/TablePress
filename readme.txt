@@ -99,6 +99,10 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.6.1 =
+* Bugfix: Update the DataTables JS library to fix issues with the JS features after the release of WordPress 4.3.
+* Updated translations (Chinese (Simplified)).
+
 = Version 1.6 =
 * Full compatibility with WordPress 4.2
 * Bugfix: Fixed integration of the "Insert Link" dialog.
