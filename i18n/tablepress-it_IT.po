@@ -150,7 +150,7 @@ msgstr[0] "Vuoi veramente cancellare questa tabella?"
 msgstr[1] "Vuoi veramente cancellare queste tabelle?"
 
 # @ tablepress
-#. #-#-#-#-#  tablepress.pot (TablePress 1.6)  #-#-#-#-#
+#. #-#-#-#-#  tablepress.pot (TablePress 1.6.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/class-view.php:387
 msgid "TablePress"
