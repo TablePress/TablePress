@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the TablePress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TablePress v1.6\n"
+"Project-Id-Version: TablePress v1.6.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tablepress\n"
 "POT-Creation-Date: 2013-04-17 21:19+0100\n"
 "PO-Revision-Date: 2013-06-12 18:51:17+0000\n"
