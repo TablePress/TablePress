@@ -2166,5 +2166,5 @@ msgid "Tobias Bäthge"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://tobias.baethge.com/"
+msgid "https://tobias.baethge.com/"
 msgstr ""

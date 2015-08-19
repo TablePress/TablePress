@@ -362,8 +362,8 @@ msgstr "Tobias Bäthge"
 # @ tablepress
 #. translators: plugin header field 'AuthorURI'
 #: tablepress.php:0
-msgid "http://tobias.baethge.com/"
-msgstr "http://tobias.baethge.com/"
+msgid "https://tobias.baethge.com/"
+msgstr "https://tobias.baethge.com/"
 
 # @ tablepress
 #: views/view-about.php:42

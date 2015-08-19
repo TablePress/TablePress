@@ -127,7 +127,7 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_author_license( array $data, array $box ) {
 		?>
 	<p>
-		<?php printf( __( 'This plugin was written and developed by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'http://tobias.baethge.com/' ); ?>
+		<?php printf( __( 'This plugin was written and developed by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'https://tobias.baethge.com/' ); ?>
 		<?php _e( 'It is licensed as Free Software under GNU General Public License 2 (GPL 2).', 'tablepress' ); ?>
 	<br />
 		<?php printf( __( 'If you like the plugin, <a href="%s"><strong>giving a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' ); ?>

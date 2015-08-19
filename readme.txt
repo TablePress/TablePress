@@ -21,7 +21,7 @@ Please visit the plugin website at https://tablepress.org/ for more information 
 If you like TablePress, please rate and review it here in the WordPress Plugin Directory, support it with your [donation](https://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
 = TablePress Extensions =
-Additional features and useful enhancements are available as separate plugins, called [TablePress Extensions](http://tablepress.org/extensions/), on the plugin website.
+Additional features and useful enhancements are available as separate plugins, called [TablePress Extensions](https://tablepress.org/extensions/), on the plugin website.
 
 == Screenshots ==
 

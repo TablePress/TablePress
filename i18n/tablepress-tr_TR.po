@@ -2474,8 +2474,8 @@ msgid "Tobias Bäthge"
 msgstr "Tobias Bäthge"
 
 #. Author URI of the plugin/theme
-msgid "http://tobias.baethge.com/"
-msgstr "http://tobias.baethge.com/"
+msgid "https://tobias.baethge.com/"
+msgstr "https://tobias.baethge.com/"
 
 #~ msgid "Because of CSS styling, the table might look different on your page!"
 #~ msgstr "CSS stili nedeniyle, tablo sayfanız üzerinde farklı görünebilir!"

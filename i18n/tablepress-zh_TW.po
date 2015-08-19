@@ -2808,5 +2808,5 @@ msgstr "直接執行而不將&#8220;自訂 CSS&#8221; 儲存為檔案"
 #~ msgstr "Tobias Bäthge"
 
 # @ tablepress
-#~ msgid "http://tobias.baethge.com/"
-#~ msgstr "http://tobias.baethge.com/"
+#~ msgid "https://tobias.baethge.com/"
+#~ msgstr "https://tobias.baethge.com/"

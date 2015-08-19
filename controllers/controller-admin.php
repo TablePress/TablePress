@@ -537,12 +537,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'de_DE' => array(
 				'name' => __( 'German', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
-				'translator_url' => 'http://tobias.baethge.com/',
+				'translator_url' => 'https://tobias.baethge.com/',
 			),
 			'en_US' => array(
 				'name' => __( 'English', 'tablepress' ),
 				'translator_name' => 'Tobias Bäthge',
-				'translator_url' => 'http://tobias.baethge.com/',
+				'translator_url' => 'https://tobias.baethge.com/',
 			),
 			'es_ES' => array(
 				'name' => __( 'Spanish', 'tablepress' ),

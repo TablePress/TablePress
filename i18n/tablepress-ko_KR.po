@@ -25,7 +25,7 @@ msgstr ""
 #: classes/class-admin-page-helper.php:79
 msgid "Thank you for using <a href=\"https://tablepress.org/\">TablePress</a>."
 msgstr ""
-"<a href=\"http://tablepress.org/\">TablePress</a>를 사용해주셔서 감사합니다."
+"<a href=\"https://tablepress.org/\">TablePress</a>를 사용해주셔서 감사합니다."
 
 # @ tablepress
 #: classes/class-admin-page-helper.php:80
@@ -2867,8 +2867,8 @@ msgstr "Tobias Bäthge"
 
 # @ tablepress
 #. Author URI of the plugin/theme
-msgid "http://tobias.baethge.com/"
-msgstr "http://tobias.baethge.com/"
+msgid "https://tobias.baethge.com/"
+msgstr "https://tobias.baethge.com/"
 
 # @ tablepress
 #. translators: plugin header field 'Version'

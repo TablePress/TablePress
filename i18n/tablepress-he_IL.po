@@ -2775,8 +2775,8 @@ msgid "Tobias Bäthge"
 msgstr "טוביאס בתגה"
 
 #. Author URI of the plugin/theme
-msgid "http://tobias.baethge.com/"
-msgstr "http://tobias.baethge.com/"
+msgid "https://tobias.baethge.com/"
+msgstr "https://tobias.baethge.com/"
 
 # @ tablepress
 #~ msgid "TablePress Plugin page"
