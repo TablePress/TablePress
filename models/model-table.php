@@ -1294,7 +1294,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Extract the table IDs from the `_tablepress_export_table_id` post meta field.
 		$table_ids = array();
 		if ( isset( $post['postmeta'] ) && is_array( $post['postmeta'] ) ) {
-			foreach( $post['postmeta'] as $postmeta ) {
+			foreach ( $post['postmeta'] as $postmeta ) {
 				if ( '_tablepress_export_table_id' === $postmeta['key'] ) {
 					$table_ids = $postmeta['value'];
 					$table_ids = explode( ',', $table_ids );
@@ -1338,7 +1338,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		// Remove the `_tablepress_export_table_id` post meta field from the post meta fields.
-		foreach( $postmeta as $index => $meta ) {
+		foreach ( $postmeta as $index => $meta ) {
 			if ( '_tablepress_export_table_id' === $meta['key'] ) {
 				unset( $postmeta[ $index ] );
 			}
