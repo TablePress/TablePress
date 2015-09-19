@@ -11,7 +11,7 @@ php:
   - 5.5
   - 5.6
   - hhvm
-  - nightly
+  - 7.0
 
 env:
   - WP_VERSION=master WP_MULTISITE=0
