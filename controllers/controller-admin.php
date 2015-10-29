@@ -604,6 +604,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Renato Rodrigues',
 				'translator_url' => 'http://www.rlsrodrigues.com.br/',
 			),
+			'pt_PT' => array(
+				'name' => __( 'Portuguese', 'tablepress' ),
+				'translator_name' => 'Pedro Mendonça',
+				'translator_url' => 'http://www.pedromendonca.pt/',
+			),
 			'ru_RU' => array(
 				'name' => __( 'Russian', 'tablepress' ),
 				'translator_name' => 'Tomasina, Сергей Лапин',
