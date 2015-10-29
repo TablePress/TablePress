@@ -38,7 +38,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	protected $view_actions = array();
 
 	/**
-	 * Boolean to record whether language support has been loaded (to prevent to do it twice).
+	 * Whether language support has been loaded (to prevent doing it twice).
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -392,7 +392,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['table_count'] = count( $data['table_ids'] );
 				break;
 			case 'about':
-				$data['plugin_languages'] = $this->get_plugin_languages();
 				$data['first_activation'] = TablePress::$model_options->get( 'first_activation' );
 				$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
 				$data['zip_support_available'] = $exporter->zip_support_available;
@@ -426,8 +425,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['frontend_options']['use_custom_css'] = TablePress::$model_options->get( 'use_custom_css' );
 				$data['frontend_options']['custom_css'] = TablePress::$model_options->get( 'custom_css' );
 				$data['user_options']['parent_page'] = $this->parent_page;
-				$data['user_options']['plugin_language'] = TablePress::$model_options->get( 'plugin_language' );
-				$data['user_options']['plugin_languages'] = $this->get_plugin_languages();
 				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
@@ -512,152 +509,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( $this->i18n_support_loaded ) {
 			return;
 		}
-		// Allow changing the plugin language.
-		add_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 );
-		$language_directory = dirname( TABLEPRESS_BASENAME ) . '/i18n';
-		load_plugin_textdomain( 'tablepress', false, $language_directory );
-		remove_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 );
+		load_plugin_textdomain( 'tablepress', false, dirname( TABLEPRESS_BASENAME ) . '/i18n' );
 		$this->i18n_support_loaded = true;
-	}
-
-	/**
-	 * Get a list of available plugin languages and information on the translator.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array List of languages.
-	 */
-	protected function get_plugin_languages() {
-		$languages = array(
-			'cs_CZ' => array(
-				'name' => __( 'Czech', 'tablepress' ),
-				'translator_name' => 'Jiří Janda',
-				'translator_url' => 'http://gadjukin.net/',
-			),
-			'de_DE' => array(
-				'name' => __( 'German', 'tablepress' ),
-				'translator_name' => 'Tobias Bäthge',
-				'translator_url' => 'https://tobias.baethge.com/',
-			),
-			'en_US' => array(
-				'name' => __( 'English', 'tablepress' ),
-				'translator_name' => 'Tobias Bäthge',
-				'translator_url' => 'https://tobias.baethge.com/',
-			),
-			'es_ES' => array(
-				'name' => __( 'Spanish', 'tablepress' ),
-				'translator_name' => 'Darío Hereñú',
-				'translator_url' => '',
-			),
-			'fi' => array(
-				'name' => __( 'Finnish', 'tablepress' ),
-				'translator_name' => 'Joel Kosola',
-				'translator_url' => '',
-			),
-			'fr_FR' => array(
-				'name' => __( 'French', 'tablepress' ),
-				'translator_name' => 'Loïc Herry',
-				'translator_url' => 'http://www.lherry.fr/',
-			),
-			'he_IL' => array(
-				'name' => __( 'Hebrew', 'tablepress' ),
-				'translator_name' => 'Mulli Bahr',
-				'translator_url' => 'http://www.site2goal.co.il/',
-			),
-			'it_IT' => array(
-				'name' => __( 'Italian', 'tablepress' ),
-				'translator_name' => 'Stefano Cotterli',
-				'translator_url' => 'http://faina09.it/',
-			),
-			'is_IS' => array(
-				'name' => __( 'Icelandic', 'tablepress' ),
-				'translator_name' => 'Davíð Sævarsson',
-				'translator_url' => '',
-			),
-			'ja' => array(
-				'name' => __( 'Japanese', 'tablepress' ),
-				'translator_name' => 'Naoko Azuma',
-				'translator_url' => 'http://www.goju-on.com/profile_en/',
-			),
-			'ko_KR' => array(
-				'name' => __( 'Korean', 'tablepress' ),
-				'translator_name' => 'Josh Kim',
-				'translator_url' => '',
-			),
-			'lv' => array(
-				'name' => __( 'Latvian', 'tablepress' ),
-				'translator_name' => 'Johannes Rau',
-				'translator_url' => 'http://www.yamago.de/',
-			),
-			'nl_NL' => array(
-				'name' => __( 'Dutch', 'tablepress' ),
-				'translator_name' => 'Erik Vorstenbosch',
-				'translator_url' => '',
-			),
-			'pl_PL' => array(
-				'name' => __( 'Polish', 'tablepress' ),
-				'translator_name' => 'Kuba Mikita',
-				'translator_url' => 'http://www.wpart.pl/',
-			),
-			'pt_BR' => array(
-				'name' => __( 'Brazilian Portuguese', 'tablepress' ),
-				'translator_name' => 'Renato Rodrigues',
-				'translator_url' => 'http://www.rlsrodrigues.com.br/',
-			),
-			'ru_RU' => array(
-				'name' => __( 'Russian', 'tablepress' ),
-				'translator_name' => 'Tomasina, Сергей Лапин',
-				'translator_url' => '',
-			),
-			'sk_SK' => array(
-				'name' => __( 'Slovak', 'tablepress' ),
-				'translator_name' => 'sle',
-				'translator_url' => 'http://fooddrink.sk/',
-			),
-			'sr_RS' => array(
-				'name' => __( 'Serbian', 'tablepress' ),
-				'translator_name' => 'Borisa Djuraskovic',
-				'translator_url' => 'http://www.webhostinghub.com/',
-			),
-			'tr_TR' => array(
-				'name' => __( 'Turkish', 'tablepress' ),
-				'translator_name' => 'Hakan Er',
-				'translator_url' => 'http://hakanertr.wordpress.com/',
-			),
-			'uk' => array(
-				'name' => __( 'Ukrainian', 'tablepress' ),
-				'translator_name' => 'Ostap Kutsyy',
-				'translator_url' => '',
-			),
-			'zh_CN' => array(
-				'name' => __( 'Chinese (Simplified)', 'tablepress' ),
-				'translator_name' => 'Haoxian Zeng',
-				'translator_url' => 'http://cnzhx.net/',
-			),
-			'zh_TW' => array(
-				'name' => __( 'Chinese (Taiwan)', 'tablepress' ),
-				'translator_name' => 'Lu Yu Xin',
-				'translator_url' => 'http://www.hdlulu.com/',
-			),
-		);
-		// Sort the language names after they have been translated.
-		uasort( $languages, array( $this, '_get_plugin_languages_sort_cb' ) );
-		return $languages;
-	}
-
-	/**
-	 * Callback for sorting the language array in @see get_plugin_languages().
-	 *
-	 * @since 1.0.0
-	 *
-	 * @see get_plugin_languages()
-	 *
-	 * @param array $a First language to sort.
-	 * @param array $b Second language to sort.
-	 * @return int -1, 0, 1, depending on sort.
-	 */
-	protected function _get_plugin_languages_sort_cb( array $a, array $b ) {
-		return strnatcasecmp( $a['name'], $b['name'] );
 	}
 
 	/**
@@ -748,24 +601,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		 * @param array $view_actions The available Views/Actions and their parameters.
 		 */
 		$this->view_actions = apply_filters( 'tablepress_admin_view_actions', $this->view_actions );
-	}
-
-	/**
-	 * Change the WordPress locale to the desired plugin locale, applied as a filter in get_locale(), while loading the plugin textdomain.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $locale     Current WordPress locale.
-	 * @param string $textdomain Text domain of the currently filtered plugin.
-	 * @return string TablePress locale.
-	 */
-	public function change_plugin_locale( $locale, $textdomain ) {
-		if ( 'tablepress' !== $textdomain ) {
-			return $locale;
-		}
-		$new_locale = TablePress::$model_options->get( 'plugin_language' );
-		$locale = ( ! empty( $new_locale ) && 'auto' !== $new_locale ) ? $new_locale : $locale;
-		return $locale;
 	}
 
 	/*
@@ -1017,12 +852,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			/** This filter is documented in classes/class-controller.php */
 			$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', $posted_options['admin_menu_parent_page'] );
 			$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
-		}
-		if ( ! empty( $posted_options['plugin_language'] ) && '-' !== $posted_options['plugin_language'] ) {
-			// Only allow "auto" language and all values that have a translation.
-			if ( 'auto' === $posted_options['plugin_language'] || array_key_exists( $posted_options['plugin_language'], $this->get_plugin_languages() ) ) {
-				$new_options['plugin_language'] = $posted_options['plugin_language'];
-			}
 		}
 
 		// Custom CSS can only be saved if the user is allowed to do so.

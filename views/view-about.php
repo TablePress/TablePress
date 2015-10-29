@@ -207,20 +207,9 @@ class TablePress_About_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'Special Thanks go to:', 'tablepress' ); ?>
-			<br />&middot; <?php _e( 'Allan Jardine for <a href="http://www.datatables.net/">DataTables</a>,', 'tablepress' ); ?>
-		</p>
-		<p>
-			<?php _e( 'Thanks to the translators:', 'tablepress' ); ?>
-			<?php
-				foreach ( $data['plugin_languages'] as $lang_abbr => $language ) {
-					$link_template = ( ! empty( $language['translator_url'] ) ) ? '<a href="%1$s">%2$s</a>' : '%2$s';
-					$link = sprintf( $link_template, $language['translator_url'], $language['translator_name'] );
-					echo '<br />&middot; ' . sprintf( __( '%s (thanks to %s)', 'tablepress' ), $language['name'], $link ) . "\n";
-				}
-			?>
-		</p>
-		<p>
-			<?php _e( 'Thank you to all donors, contributors, supporters, reviewers and users of the plugin!', 'tablepress' ); ?>
+			<br />&middot; <?php printf( __( 'Allan Jardine for <a href="%s">DataTables</a>,', 'tablepress' ), 'http://www.datatables.net/' ); ?>
+			<br />&middot; <?php printf( __( 'the translators in the <a href="%s">Plugin Directory</a>,', 'tablepress' ), 'https://translate.wordpress.org/projects/wp-plugins/tablepress/' ); ?>
+			<br />&middot; <?php _e( 'all donors, contributors, supporters, reviewers, and users of the plugin!', 'tablepress' ); ?>
 		</p>
 		<?php
 	}

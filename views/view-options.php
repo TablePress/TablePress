@@ -78,7 +78,7 @@ class TablePress_Options_View extends TablePress_View {
 					_e( 'Frontend Options influence the styling of tables in pages, posts, or text widgets, by defining which CSS code shall be loaded.', 'tablepress' );
 					echo '<br />';
 				}
-				_e( 'In the User Options, every TablePress user can choose the position of the plugin in his WordPress admin menu, and his desired plugin language.', 'tablepress' );
+				_e( 'In the User Options, every TablePress user can choose the position of the plugin in his WordPress admin menu.', 'tablepress' );
 			?>
 		</p>
 		<?php
@@ -162,22 +162,9 @@ class TablePress_Options_View extends TablePress_View {
 		}
 		$select_box .= "</select>\n";
 		?>
-	<tr class="bottom-border">
+	<tr>
 		<th class="column-1" scope="row"><label for="option-admin-menu-parent-page"><?php _e( 'Admin menu entry', 'tablepress' ); ?>:</label></th>
 		<td class="column-2"><?php printf( __( 'TablePress shall be shown in this section of my admin menu: %s', 'tablepress' ), $select_box ); ?></td>
-	</tr>
-		<?php
-		$select_box = '<select id="option-plugin-language" name="options[plugin_language]">' . "\n";
-		$select_box .= '<option' . selected( $data['user_options']['plugin_language'], 'auto', false ) . ' value="auto">' . sprintf( __( 'WordPress Default (currently %s)', 'tablepress' ), get_locale() ) . "</option>\n";
-		$select_box .= '<option value="-" disabled="disabled">---</option>' . "\n";
-		foreach ( $data['user_options']['plugin_languages'] as $lang_abbr => $language ) {
-			$select_box .= '<option' . selected( $data['user_options']['plugin_language'], $lang_abbr, false ) . ' value="' . $lang_abbr . '">' . "{$language['name']} ({$lang_abbr})</option>\n";
-		}
-		$select_box .= "</select>\n";
-		?>
-	<tr class="top-border">
-		<th class="column-1" scope="row"><label for="option-plugin-language"><?php _e( 'Plugin Language', 'tablepress' ); ?>:</label></th>
-		<td class="column-2"><?php printf( __( 'I want to use TablePress in this language: %s', 'tablepress' ), $select_box ); ?></td>
 	</tr>
 </tbody>
 </table>
