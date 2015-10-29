@@ -10,6 +10,10 @@
 /* jshint node: true */
 
 module.exports = function( grunt ) {
+	var autoprefixer = require( 'autoprefixer' );
+
+	// Load tasks
+	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
 	// Task configuration
 	grunt.initConfig( {
@@ -78,10 +82,14 @@ module.exports = function( grunt ) {
 		},
 
 		// CSS vendor autoprefixing
-		autoprefixer: {
+		postcss: {
 			options: {
-				browsers: [ 'Android >= 2.1', 'Chrome >= 21', 'Explorer >= 7', 'Firefox >= 17', 'Opera >= 12.1', 'Safari >= 6.0' ],
-				cascade: false
+				processors: [
+					autoprefixer( {
+						browsers: [ 'Android >= 2.1', 'Chrome >= 21', 'Explorer >= 7', 'Firefox >= 17', 'Opera >= 12.1', 'Safari >= 6.0' ],
+						cascade: false
+					} )
+				]
 			},
 			all: {
 				src: [
@@ -159,17 +167,14 @@ module.exports = function( grunt ) {
 			},
 			css: {
 				files: '<%= csslint.all.src %>',
-				tasks: [ 'autoprefixer:changed', 'csslint:changed', 'cssmin:changed' ]
+				tasks: [ 'postcss:changed', 'csslint:changed', 'cssmin:changed' ]
 			}
 		}
 	} );
 
-	// Load tasks
-	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
-
 	// Register "build" task
 	grunt.registerTask( 'build:js', [ 'jshint:all', 'jsonlint:all', 'uglify:all', 'jsvalidate:all' ] );
-	grunt.registerTask( 'build:css', [ 'autoprefixer:all', 'csslint:all', 'cssmin:all' ] );
+	grunt.registerTask( 'build:css', [ 'postcss:all', 'csslint:all', 'cssmin:all' ] );
 	grunt.registerTask( 'build', [ 'build:js', 'build:css' ] );
 
 	// Make "watch" the default task
@@ -184,7 +189,7 @@ module.exports = function( grunt ) {
 		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
 		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'autoprefixer', 'changed', 'src' ], filepath );
+		grunt.config( [ 'postcss', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'cssmin', 'changed', 'src' ], filepath );
 	} );
