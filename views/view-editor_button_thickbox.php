@@ -125,6 +125,13 @@ body {
 	padding: 4px 7px 1px;
 	vertical-align: middle;
 }
+/* Responsiveness on the All Tables screen */
+@media screen and (max-width: 782px) {
+	.tablepress-editor-button-list .column-table_id {
+		display: none !important;
+		padding: 3px 8px 3px 35%;
+	}
+}
 
 /* Shortcode input field */
 #tablepress-page .table-shortcode-inline {
@@ -190,7 +197,12 @@ body.rtl {
 </div>
 <script type="text/javascript">
 jQuery( document ).ready( function( $ ) {
-	$( '.tablepress-editor-button-list' ).on( 'click', '.insert-shortcode', function() {
+	// Toggle list table rows on small screens
+	$( '.tablepress-editor-button-list' )
+	.on( 'click', '.toggle-row', function() {
+		$( this ).closest( 'tr' ).toggleClass( 'is-expanded' );
+	})
+	.on( 'click', '.insert-shortcode', function() {
 		var win = window.dialogArguments || opener || parent || top;
 		win.send_to_editor( $(this).attr( 'title' ) );
 	} );
@@ -300,6 +312,17 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 			'table_description' => array( 'description', false ),
 		);
 		return $sortable_columns;
+	}
+
+	/**
+	 * Gets the name of the default primary column.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @return string Name of the default primary column, in this case, the table name.
+	 */
+	protected function get_default_primary_column_name() {
+		return 'table_name';
 	}
 
 	/**
