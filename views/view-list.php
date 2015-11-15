@@ -354,6 +354,17 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Gets the name of the default primary column.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @return string Name of the default primary column, in this case, the table name.
+	 */
+	protected function get_default_primary_column_name() {
+		return 'table_name';
+	}
+
+	/**
 	 * Render a cell in the "cb" column.
 	 *
 	 * @since 1.0.0

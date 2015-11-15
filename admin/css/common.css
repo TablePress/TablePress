@@ -56,6 +56,13 @@
 .tablepress-all-tables tbody .column-table_id {
 	font-weight: bold;
 }
+/* Responsiveness on the All Tables screen */
+@media screen and (max-width: 782px) {
+	.tablepress-all-tables .column-table_id {
+		display: none !important;
+		padding: 3px 8px 3px 35%;
+	}
+}
 
 /* Search results for WP_List_Table */
 #tablepress-page .subtitle {
