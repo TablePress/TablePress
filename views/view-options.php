@@ -194,7 +194,7 @@ class TablePress_Options_View extends TablePress_View {
 	 */
 	public function textbox_uninstall_tablepress( array $data, array $box ) {
 		?>
-		<h2 style="margin-top:40px;"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></h2>
+		<h1 style="margin-top:40px;"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></h1>
 		<p><?php
 			echo __( 'Uninstalling <strong>will permanently delete</strong> all TablePress tables and options from the database.', 'tablepress' ) . '<br />'
 				. __( 'It is recommended that you create a backup of the tables (by exporting the tables in the JSON format), in case you later change your mind.', 'tablepress' ) . '<br />'

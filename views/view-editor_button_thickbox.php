@@ -168,7 +168,7 @@ body.rtl {
 </head>
 <body class="wp-admin wp-core-ui js iframe<?php echo is_rtl() ? ' rtl' : ''; ?>">
 <div id="tablepress-page" class="wrap">
-<h2><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h2>
+<h1><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h1>
 <div id="poststuff">
 <p>
 <?php _e( 'This is a list of all available tables.', 'tablepress' ); ?> <?php _e( 'You may insert a table into a post or page here.', 'tablepress' ); ?>
