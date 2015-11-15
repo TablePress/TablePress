@@ -13,14 +13,11 @@
 }
 
 /* Nav Tab Menu */
+#tablepress-nav  {
+	font-size: 23px;
+}
 #tablepress-nav .separator {
 	margin: 6px;
-}
-#tablepress-nav .nav-tab {
-	border-bottom: 1px solid #cccccc;
-}
-#tablepress-nav .nav-tab-active {
-	border-bottom: 1px solid #f1f1f1;
 }
 
 /* Add New Table form */

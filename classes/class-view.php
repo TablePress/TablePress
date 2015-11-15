@@ -377,7 +377,7 @@ abstract class TablePress_View {
 	 */
 	protected function print_nav_tab_menu() {
 		?>
-		<h2 id="tablepress-nav" class="nav-tab-wrapper">
+		<h1 id="tablepress-nav" class="nav-tab-wrapper">
 			<?php
 			echo __( 'TablePress', 'tablepress' ) . '<span class="separator"></span>';
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
@@ -398,7 +398,7 @@ abstract class TablePress_View {
 				echo "<a class=\"nav-tab{$active}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
 			}
 			?>
-		</h2>
+		</h1>
 		<?php
 	}
 
