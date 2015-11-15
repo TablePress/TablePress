@@ -133,7 +133,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	 */
 	public function textbox_proceed_no_file_saving( array $data, array $box ) {
 		?>
-		<h3><?php _e( 'Proceed without saving a file', 'tablepress' ) ?></h3>
+		<h2><?php _e( 'Proceed without saving a file', 'tablepress' ) ?></h2>
 		<p>
 			<?php _e( 'To proceed without trying to save the &#8220;Custom CSS&#8221; to a file, click the button below.', 'tablepress' ); ?>
 			<?php _e( 'Your &#8220;Custom CSS&#8221; will then be loaded inline.', 'tablepress' ); ?>
