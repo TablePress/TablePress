@@ -379,7 +379,7 @@ abstract class TablePress_View {
 		?>
 		<h1 id="tablepress-nav" class="nav-tab-wrapper">
 			<?php
-			echo __( 'TablePress', 'tablepress' ) . '<span class="separator"></span>';
+			echo '<span class="plugin-name">' . __( 'TablePress', 'tablepress' ) . '</span><span class="separator"></span>';
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
 				// Special case: Add a separator before the group that starts with "Plugin Options", for some spacing.
 				if ( 'options' === $action ) {

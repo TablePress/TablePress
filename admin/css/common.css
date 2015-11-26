@@ -13,11 +13,13 @@
 }
 
 /* Nav Tab Menu */
-#tablepress-nav  {
-	font-size: 23px;
+#tablepress-nav .plugin-name {
+	float: left;
+	padding: 5px 0;
 }
 #tablepress-nav .separator {
 	margin: 6px;
+	float: left;
 }
 
 /* Add New Table form */
