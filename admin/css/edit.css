@@ -203,12 +203,12 @@ body #wp-link-backdrop {
 	margin-right: 2px;
 }
 #edit-form-head .sorting-indicator {
-	display: block;
+	display: block; /* BC for WP 4.3, can be removed later */
+	visibility: visible;
 }
 #edit-form-head .sort-asc .sorting-indicator:before {
 	content: '\f142';
 }
-
 #edit-form-head .sort-desc .sorting-indicator:before {
 	content: '\f140';
 }
