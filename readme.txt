@@ -3,7 +3,7 @@ Contributors: TobiasBg
 Donate link: https://tablepress.org/donate/
 Tags: table,data,html,csv,excel
 Requires at least: 4.3
-Tested up to: 4.3.1
+Tested up to: 4.4
 Stable tag: 1.6.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -100,6 +100,7 @@ You may use it free of charge for any purpose.
 == Changelog ==
 
 = Version 1.7 =
+* Full compatibility with WordPress 4.4
 * TablePress 1.6 requires WordPress 4.3!
 
 = Version 1.6.1 =
