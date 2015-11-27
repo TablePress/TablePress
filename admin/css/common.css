@@ -13,6 +13,12 @@
 }
 
 /* Nav Tab Menu */
+@media screen and (max-width: 1150px) {
+	/* Push nav bar down on small screens to not have tabs flow in mid-air, due to screen meta pushing */
+	#tablepress-nav {
+		padding-top: 30px;
+	}
+}
 #tablepress-nav .plugin-name {
 	float: left;
 	padding: 5px 0;
