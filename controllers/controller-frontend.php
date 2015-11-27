@@ -111,13 +111,12 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 * @param int $version The "Custom CSS" version.
 		 */
 		$custom_css_version = apply_filters( 'tablepress_custom_css_version', TablePress::$model_options->get( 'custom_css_version' ) );
-		$use_minified_css = ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG );
 
 		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 
 		// Determine Default CSS URL.
 		$rtl = ( is_rtl() ) ? '-rtl' : '';
-		$suffix = ( $use_minified_css ) ? '.min' : '';
+		$suffix = SCRIPT_DEBUG ? '' : '.min';
 		$unfiltered_default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
 		/**
 		 * Filter the URL from which the TablePress Default CSS file is loaded.
@@ -128,7 +127,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 */
 		$default_css_url = apply_filters( 'tablepress_default_css_url', $unfiltered_default_css_url );
 
-		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && $use_minified_css && ! is_rtl() && $unfiltered_default_css_url === $default_css_url && $tablepress_css->load_custom_css_from_file( 'combined' ) );
+		$use_custom_css_combined_file = ( $use_default_css && $use_custom_css_file && ! SCRIPT_DEBUG && ! is_rtl() && $unfiltered_default_css_url === $default_css_url && $tablepress_css->load_custom_css_from_file( 'combined' ) );
 
 		if ( $use_custom_css_combined_file ) {
 			$custom_css_combined_url = $tablepress_css->get_custom_css_location( 'combined', 'url' );
@@ -142,7 +141,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				$custom_css_dependencies[] = 'tablepress-default';
 			}
 
-			$use_custom_css_minified_file = ( $use_custom_css_file && $use_minified_css && $tablepress_css->load_custom_css_from_file( 'minified' ) );
+			$use_custom_css_minified_file = ( $use_custom_css_file && ! SCRIPT_DEBUG && $tablepress_css->load_custom_css_from_file( 'minified' ) );
 			if ( $use_custom_css_minified_file ) {
 				$custom_css_minified_url = $tablepress_css->get_custom_css_location( 'minified', 'url' );
 				wp_enqueue_style( 'tablepress-custom', $custom_css_minified_url, $custom_css_dependencies, $custom_css_version );

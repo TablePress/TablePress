@@ -29,7 +29,7 @@ class TablePress_Admin_Page {
 	 * @param array  $dependencies Optional. List of names of CSS stylesheets that this stylesheet depends on, and which need to be included before this one.
 	 */
 	public function enqueue_style( $name, array $dependencies = array() ) {
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$suffix = SCRIPT_DEBUG ? '' : '.min';
 		$css_file = "admin/css/{$name}{$suffix}.css";
 		$css_url = plugins_url( $css_file, TABLEPRESS__FILE__ );
 		wp_enqueue_style( "tablepress-{$name}", $css_url, $dependencies, TablePress::version );
@@ -46,7 +46,7 @@ class TablePress_Admin_Page {
 	 * @param bool   $force_minified  Optional. Always load the minified version, regardless of SCRIPT_DEBUG constant value.
 	 */
 	public function enqueue_script( $name, array $dependencies = array(), array $localize_script = array(), $force_minified = false ) {
-		$suffix = ( ! $force_minified && defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$suffix = ( ! $force_minified && SCRIPT_DEBUG ) ? '' : '.min';
 		$js_file = "admin/js/{$name}{$suffix}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		wp_enqueue_script( "tablepress-{$name}", $js_url, $dependencies, TablePress::version, true );
