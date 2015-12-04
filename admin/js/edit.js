@@ -1153,7 +1153,7 @@ jQuery( document ).ready( function( $ ) {
 				'.show-help-box':		function() {
 					$(this).next().wpdialog( {
 						title: $(this).attr( 'title' ),
-						height: 420,
+						height: 470,
 						width: 320,
 						modal: true,
 						dialogClass: 'wp-dialog',
