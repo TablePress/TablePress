@@ -243,7 +243,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'post_title' => $table['name'],
 			// 'post_author' => $table['author'],
 			'post_excerpt' => $table['description'],
-			'post_content' => json_encode( $table['data'] ),
+			'post_content' => wp_json_encode( $table['data'] ),
 			'post_mime_type' => 'application/json',
 		);
 
@@ -1014,7 +1014,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	protected function _add_table_options( $post_id, array $options ) {
-		$options = json_encode( $options );
+		$options = wp_json_encode( $options );
 		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
 	}
 
@@ -1028,7 +1028,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	protected function _update_table_options( $post_id, array $options ) {
-		$options = json_encode( $options );
+		$options = wp_json_encode( $options );
 		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options );
 	}
 
@@ -1058,7 +1058,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	protected function _add_table_visibility( $post_id, array $visibility ) {
-		$visibility = json_encode( $visibility );
+		$visibility = wp_json_encode( $visibility );
 		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
 	}
 
@@ -1072,7 +1072,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	protected function _update_table_visibility( $post_id, array $visibility ) {
-		$visibility = json_encode( $visibility );
+		$visibility = wp_json_encode( $visibility );
 		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
 	}
 
