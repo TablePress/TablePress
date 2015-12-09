@@ -244,6 +244,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$success = true;
 		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
 
+		// Initialize i18n support, load plugin's textdomain, to retrieve correct translations for the description of the preview.
+		load_plugin_textdomain( 'tablepress', false, dirname( TABLEPRESS_BASENAME ) . '/i18n' );
+
 		if ( $success ) {
 			// Create a render class instance.
 			$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
