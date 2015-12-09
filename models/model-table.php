@@ -132,6 +132,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		'sInfoEmpty' => 'infoEmpty',
 		'bStateSave' => 'stateSave',
 		'bAutoWidth' => 'autoWidth',
+		'className' => 'className', // Replace "className" with itself, to avoid that the replacement for "sName" breaks it.
 		'sPrevious' => 'previous',
 		'sCellType' => 'cellType',
 		'oPaginate' => 'paginate',
