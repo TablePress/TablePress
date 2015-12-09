@@ -346,6 +346,7 @@ abstract class TablePress {
 	 * @return string Nice looking string with the date and time.
 	 */
 	public static function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
+		// @TODO: Maybe change from using the stored WP Options to translated date/time schemes, like in https://core.trac.wordpress.org/changeset/35811.
 		if ( 'mysql' === $type ) {
 			return mysql2date( get_option( 'date_format' ), $datetime ) . $separator . mysql2date( get_option( 'time_format' ), $datetime );
 		} else {
