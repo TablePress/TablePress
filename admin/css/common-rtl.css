@@ -14,6 +14,8 @@
 	direction: ltr;
 	text-align: right;
 }
+#tablepress-nav .plugin-name,
+#tablepress-nav .separator,
 #tablepress_add-add-table .form-field-small,
 #table-new-id {
 	float:right;
