@@ -31,7 +31,7 @@ class TablePress_Add_View extends TablePress_View {
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
-		$this->admin_page->enqueue_script( 'add', array( 'jquery' ) );
+		$this->admin_page->enqueue_script( 'add', array( 'jquery-core' ) );
 
 		$this->process_action_messages( array(
 			'error_add' => __( 'Error: The table could not be added.', 'tablepress' ),

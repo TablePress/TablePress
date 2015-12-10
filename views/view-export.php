@@ -42,7 +42,7 @@ class TablePress_Export_View extends TablePress_View {
 		if ( 0 === $data['tables_count'] ) {
 			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_no_tables' ), 'normal' );
 		} else {
-			$this->admin_page->enqueue_script( 'export', array( 'jquery' ) );
+			$this->admin_page->enqueue_script( 'export', array( 'jquery-core' ) );
 			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_export_form' ), 'normal' );
 			$this->data['submit_button_caption'] = _x( 'Download Export File', 'button', 'tablepress' );
 			$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );

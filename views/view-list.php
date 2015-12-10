@@ -40,7 +40,7 @@ class TablePress_List_View extends TablePress_View {
 		parent::setup( $action, $data );
 
 		add_thickbox();
-		$this->admin_page->enqueue_script( 'list', array( 'jquery' ), array(
+		$this->admin_page->enqueue_script( 'list', array( 'jquery-core' ), array(
 			'list' => array(
 				'shortcode_popup' => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ),
 				'donation-message-already-donated' => __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' ),

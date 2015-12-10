@@ -33,7 +33,7 @@ class TablePress_Options_View extends TablePress_View {
 
 		$this->admin_page->enqueue_style( 'codemirror' );
 		$this->admin_page->enqueue_script( 'codemirror', array(), array(), true );
-		$this->admin_page->enqueue_script( 'options', array( 'jquery', 'tablepress-codemirror', 'jquery-ui-resizable' ), array(
+		$this->admin_page->enqueue_script( 'options', array( 'jquery-core', 'tablepress-codemirror', 'jquery-ui-resizable' ), array(
 			'strings' => array(
 				'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
 				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' ),
