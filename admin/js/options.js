@@ -14,7 +14,7 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	/**
-	 * Invoke CodeMirror on the "Custom CSS" textarea
+	 * Invoke CodeMirror on the "Custom CSS" textarea.
 	 *
 	 * @since 1.0.0
 	 */
@@ -26,7 +26,20 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
-	 * "Custom CSS" textarea grows on focus, if it is not disabled, but only once
+	 * Make the CodeMirror textarea vertically resizable.
+	 *
+	 * @since 1.7.0
+	 */
+	$( CM_custom_css.getWrapperElement() ).resizable( {
+		handles: 's',
+		resize: function() {
+			var $this = $(this);
+			CM_custom_css.setSize( $this.width(), $this.height() );
+		}
+	} );
+
+	/**
+	 * "Custom CSS" textarea grows on focus, if it is not disabled, but only once.
 	 *
 	 * @since 1.0.0
 	 */
@@ -40,7 +53,7 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
-	 * Enable/disable "Custom CSS" textarea and "Load from file" checkbox according to state of "Use Custom CSS" checkbox
+	 * Enable/disable "Custom CSS" textarea and "Load from file" checkbox according to state of "Use Custom CSS" checkbox.
 	 *
 	 * @since 1.0.0
 	 */
@@ -51,7 +64,7 @@ jQuery( document ).ready( function( $ ) {
 	} ).change();
 
 	/**
-	 * On form submit: Enable disabled fields, so that they are transmitted in the POST request
+	 * On form submit: Enable disabled fields, so that they are transmitted in the POST request.
 	 *
 	 * @since 1.0.0
 	 */
@@ -60,7 +73,7 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
-	 * Require double confirmation when wanting to uninstall TablePress
+	 * Require double confirmation when wanting to uninstall TablePress.
 	 *
 	 * @since 1.0.0
 	 */
