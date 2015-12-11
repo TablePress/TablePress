@@ -285,41 +285,16 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['is_corrupted'] = true;
 
 			// If possible, try to find out what error prevented the JSON from being decoded.
-			$table['json_error'] = $json_error = '';
-			if ( function_exists( 'json_last_error' ) ) {
-				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3.
-				if ( ! defined( 'JSON_ERROR_UTF8' ) ) {
-					define( 'JSON_ERROR_UTF8', 5 );
+			$table['json_error'] = 'The error could not be determined.';
+			// @TODO: The `function_exists` check can be removed once support for WP 4.3 is dropped, as a compat function was added in WP 4.4.
+			if ( function_exists( 'json_last_error_msg' ) ) {
+				$json_error_msg = json_last_error_msg();
+				if ( false !== $json_error_msg ) {
+					$table['json_error'] = $json_error_msg;
 				}
-
-				switch ( json_last_error() ) {
-					case JSON_ERROR_NONE:
-						// Should never happen here, as this is only called in case of an error.
-						$table['json_error'] = 'JSON_ERROR_NONE';
-						break;
-					case JSON_ERROR_DEPTH:
-						$table['json_error'] = 'JSON_ERROR_DEPTH';
-						break;
-					case JSON_ERROR_STATE_MISMATCH:
-						$table['json_error'] = 'JSON_ERROR_STATE_MISMATCH';
-						break;
-					case JSON_ERROR_CTRL_CHAR:
-						$table['json_error'] = 'JSON_ERROR_CTRL_CHAR';
-						break;
-					case JSON_ERROR_SYNTAX:
-						$table['json_error'] = 'JSON_ERROR_SYNTAX';
-						break;
-					case JSON_ERROR_UTF8:
-						$table['json_error'] = 'JSON_ERROR_UTF8';
-						break;
-					default:
-						$table['json_error'] = 'UNKNOWN ERROR';
-						break;
-				}
-				$json_error = " ({$table['json_error']})";
 			}
 
-			$table['description'] = "[ERROR] TABLE IS CORRUPTED{$json_error}!  DO NOT EDIT THIS TABLE NOW!\nInstead, please see https://tablepress.org/faq/corrupted-tables/ for instructions.\n-\n{$table['description']}";
+			$table['description'] = "[ERROR] TABLE IS CORRUPTED (JSON error: {$table['json_error']})!  DO NOT EDIT THIS TABLE NOW!\nInstead, please see https://tablepress.org/faq/corrupted-tables/ for instructions.\n-\n{$table['description']}";
 		} else {
 			// Specifically cast to an array again.
 			$table['data'] = (array) $table['data'];

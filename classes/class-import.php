@@ -268,43 +268,17 @@ class TablePress_Import {
 
 		// Check if JSON could be decoded.
 		if ( is_null( $json_table ) ) {
-			if ( function_exists( 'json_last_error' ) ) {
-				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3.
-				if ( ! defined( 'JSON_ERROR_UTF8' ) ) {
-					define( 'JSON_ERROR_UTF8', 5 );
+			// If possible, try to find out what error prevented the JSON from being decoded.
+			$json_error = 'The error could not be determined.';
+			// @TODO: The `function_exists` check can be removed once support for WP 4.3 is dropped, as a compat function was added in WP 4.4.
+			if ( function_exists( 'json_last_error_msg' ) ) {
+				$json_error_msg = json_last_error_msg();
+				if ( false !== $json_error_msg ) {
+					$json_error = $json_error_msg;
 				}
-
-				switch ( json_last_error() ) {
-					case JSON_ERROR_NONE:
-						// Should never happen here, as this is only called in case of an error.
-						$json_error = 'JSON_ERROR_NONE';
-						break;
-					case JSON_ERROR_DEPTH:
-						$json_error = 'JSON_ERROR_DEPTH';
-						break;
-					case JSON_ERROR_STATE_MISMATCH:
-						$json_error = 'JSON_ERROR_STATE_MISMATCH';
-						break;
-					case JSON_ERROR_CTRL_CHAR:
-						$json_error = 'JSON_ERROR_CTRL_CHAR';
-						break;
-					case JSON_ERROR_SYNTAX:
-						$json_error = 'JSON_ERROR_SYNTAX';
-						break;
-					case JSON_ERROR_UTF8:
-						$json_error = 'JSON_ERROR_UTF8';
-						break;
-					default:
-						$json_error = 'UNKNOWN ERROR';
-						break;
-				}
-				$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . "</strong><br /><br />{$json_error}<br />";
-				wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
-			} else {
-				// No JSON error detection available.
-				$this->imported_table = false;
-				return;
 			}
+			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . "</strong><br /><br />JSON error: {$json_error}<br />";
+			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
 		} else {
 			// Specifically cast to an array again.
 			$json_table = (array) $json_table;
