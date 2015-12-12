@@ -258,7 +258,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param WP_Post $post      Post.
 	 * @param string  $table_id  Table ID.
-	 * @param bool    $with_data Whether the table data shall be loaded.
+	 * @param bool    $load_data Whether the table data shall be loaded.
 	 * @return array Table.
 	 */
 	protected function _post_to_table( $post, $table_id, $load_data ) {
