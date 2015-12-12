@@ -101,7 +101,23 @@ You may use it free of charge for any purpose.
 
 = Version 1.7 =
 * Full compatibility with WordPress 4.4
-* TablePress 1.6 requires WordPress 4.3!
+* Bugfix: Properly align tabs and heading in the main navigation bar at the top.
+* Bugfix: Restore layout on small screens (responsiveness) for the "All Tables" screen.
+* Bugfix: Restore layout of the overlay when inserting tables into posts/pages.
+* Bugfix: Make input fiels on the "Edit" screen resizable in both directions again.
+* Bugfix: Restore sorting arrows on the "Edit" screen.
+* Bugfix: Some strings were unclear, had typos, or used wrong HTML entities.
+* Bugfix: Prevent certain "Custom Commands" from being rewritten to a new syntax in the wrong way.
+* Bugfix: Make sure that the table preview is properly translated to other languages.
+* Enhancement: Make the "Custom CSS" textarea vertically resizable.
+* Enhancement: Support more CSS3 properties when cleaning "Custom CSS" code.
+* Enhancement: Increase reliability when internally converting tables to their storage format (JSON).
+* Enhancement: Use correct HTML markup for better accessibility on the admin screens.
+* Enhancement: Only load required parts of jQuery, for faster page loads in some environments.
+* Updated external libraries (CodeMirror, DataTables, Build tools).
+* Translations: Switched from .po/.mo files to WordPress Plugin Language Packs.
+* Some internal changes and fixes for better stability, cleaner code, and documentation.
+* TablePress 1.7 requires WordPress 4.3!
 
 = Version 1.6.1 =
 * Bugfix: Update the DataTables JS library to fix issues with the JS features after the release of WordPress 4.3.
