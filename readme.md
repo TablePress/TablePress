@@ -1,4 +1,4 @@
-# [TablePress](https://tablepress.org/) [![Flattr TablePress](http://api.flattr.com/button/flattr-badge-large.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Build Status](https://travis-ci.org/TobiasBg/TablePress.png)](https://travis-ci.org/TobiasBg/TablePress)
+# [TablePress](https://tablepress.org/) [![Flattr TablePress](https://button.flattr.com/flattr-badge-large.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Build Status](https://travis-ci.org/TobiasBg/TablePress.png)](https://travis-ci.org/TobiasBg/TablePress)
 
 TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
 
@@ -27,7 +27,7 @@ Manual installation works just as for other WordPress plugins:
 
 If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress), support it with your [donation](https://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
 
-[![Flattr TablePress](http://api.flattr.com/button/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-but04.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Support TablePress on Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/TobiasBg/)
+[![Flattr TablePress](https://button.flattr.com/button-static-50x60.png)](http://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Support TablePress on Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/TobiasBg/)
 
 ## Frequently Asked Questions
 
