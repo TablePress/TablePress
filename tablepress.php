@@ -4,14 +4,14 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 1.6.1
+ * @version 1.7
  */
 
 /*
 Plugin Name: TablePress
 Plugin URI: https://tablepress.org/
 Description: Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
-Version: 1.6.1
+Version: 1.7
 Author: Tobias Bäthge
 Author URI: https://tobias.baethge.com/
 Author email: wordpress@tobias.baethge.com
