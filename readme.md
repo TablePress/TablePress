@@ -45,13 +45,11 @@ In short: WordPress 4.3 or higher, while the latest version of WordPress is alwa
 
 **Languages and Localization?**
 
-The plugin currently comes with the following translations:
+TablePress supports the ["Translate WordPress" platform](https://translate.wordpress.org/). With that, translating is possible on a website from which so-called Language Packs are automatically generated and shipped to plugin users. For a list of existing Language Packs, please see the sidebar on the TablePress page in the [WordPress Plugin Repository](https://wordpress.org/plugins/tablepress/).
 
-Brazilian Portuguese, Chinese (Simplified), Chinese (Taiwan), Czech, Dutch, English, Finnish, French, German, Hebrew, Icelandic, Italian, Japanese, Korean, Latvian, Polish, Russian, Serbian, Slovak, Spanish, Turkish and Ukrainian.
+It is therefore no longer necessary to generate and translate *.po and *.mo files manually. Instead, just go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress), log in with a free wordpress.org account and start translating TablePress into your language.
 
-Translations into other languages are always welcome! With the [Codestyling Localization](https://wordpress.org/plugins/codestyling-localization/) plugin, that's really easy. Just install the plugin, add your language, create the .po file, translate the strings, and create the .mo file. It will automatically be saved into the TablePress plugin folder. If you send me the .mo and .po files, I will gladly include them into future plugin releases.
-
-There is also a .pot file available in the "i18n" subfolder, which can be used e.g. with the [poEdit](http://www.poedit.net/) editor.
+If you want to become a Translation Editor for your language, who can confirm or reject translation suggestions by other users, please get in touch.
 
 **Migration from WP-Table Reloaded**
 
