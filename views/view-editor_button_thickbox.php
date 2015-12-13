@@ -121,10 +121,6 @@ body {
 .tablepress-editor-button-list thead .column-table_action {
 	width: 150px;
 }
-.tablepress-editor-button-list tbody .column-table_action {
-	padding: 4px 7px 1px;
-	vertical-align: middle;
-}
 /* Responsiveness on the All Tables screen */
 @media screen and (max-width: 782px) {
 	.tablepress-editor-button-list .column-table_id {
