@@ -145,23 +145,15 @@
 	padding-top: 6px;
 }
 /* Adjust positioning of labels in relation to checkboxes/radio buttons */
-#tablepress_edit-table-options .column-2 label,
-#tablepress_edit-datatables-features .column-2 label {
-	vertical-align: top;
-}
 #tablepress_import-import-form .column-2 label,
 #tablepress_import-import-wp-table-reloaded .column-2 label {
-	vertical-align: top;
 	margin-right: 20px; /* some margin on radio buttons */
-}
-#tablepress-page input,
-#tablepress-page .button {
-	vertical-align: middle;
-}
-#tablepress-page .widefat th input {
-	vertical-align: text-top;
 }
 /* Red color for the "Uninstall TablePress" button on the "Plugin Options" screen */
 #uninstall-tablepress {
 	color: #BC0B0B;
+}
+/* Select dropdown alignment on the "Plugin Options" screen */
+#tablepress-page select {
+	vertical-align: baseline;
 }

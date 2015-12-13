@@ -116,6 +116,11 @@ body #wp-link-backdrop {
 	width: 120px;
 }
 
+#table-information-shortcode,
+#tablepress-page .button {
+	vertical-align: middle;
+}
+
 /* Table cells */
 #edit-form-body td {
 	padding: 2px 1px;
