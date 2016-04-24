@@ -266,7 +266,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Import tables', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="import-wp-table-reloaded-tables"> <input type="checkbox" id="import-wp-table-reloaded-tables" name="import[wp_table_reloaded][tables]" value="true" checked="checked" /> <?php _e( 'Import all tables and their settings from WP-Table Reloaded.', 'tablepress' ); ?> <?php _e( '<span class="description">(recommended)</span>', 'tablepress' ); ?></label></td>
+		<td class="column-2"><label for="import-wp-table-reloaded-tables"> <input type="checkbox" id="import-wp-table-reloaded-tables" name="import[wp_table_reloaded][tables]" value="true" checked="checked" /> <?php _e( 'Import all tables and their settings from WP-Table Reloaded.', 'tablepress' ); ?> <span class="description"><?php _e( '(recommended)', 'tablepress' ); ?></span></label></td>
 	</tr>
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><?php _e( 'Import styling', 'tablepress' ); ?>:</th>

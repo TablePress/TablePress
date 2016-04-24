@@ -362,7 +362,7 @@ abstract class TablePress {
 	 */
 	public static function get_user_display_name( $user_id ) {
 		$user = get_userdata( $user_id );
-		return ( $user && isset( $user->display_name ) ) ? $user->display_name : __( '<em>unknown</em>', 'tablepress' );
+		return ( $user && isset( $user->display_name ) ) ? $user->display_name : sprintf( '<em>%s</em>', __( 'unknown', 'tablepress' ) );
 	}
 
 	/**
