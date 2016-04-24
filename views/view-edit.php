@@ -635,7 +635,7 @@ class TablePress_Edit_View extends TablePress_View {
 				<?php
 					printf( __( 'The internal data of table &#8220;%1$s&#8221; (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );
 					echo ' ';
-					printf( __( 'The following error was registered: <code>%s</code>.', 'tablepress' ), esc_html( $data['table']['json_error'] ) );
+					printf( __( 'The following error was registered: %s.', 'tablepress' ), '<code>' . esc_html( $data['table']['json_error'] ) . '</code>' );
 				?>
 			</p>
 			<p>
