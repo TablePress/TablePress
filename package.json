@@ -9,17 +9,17 @@
   "author": "Tobias Bäthge",
   "license": "GPLv2",
   "devDependencies": {
-    "autoprefixer": "~6.1.2",
-    "grunt": "~0.4.5",
-    "grunt-contrib-cssmin": "~0.14.0",
-    "grunt-contrib-uglify": "~0.11.0",
-    "grunt-contrib-csslint": "~0.5.0",
-    "grunt-contrib-jshint": "~0.11.3",
-    "grunt-contrib-watch": "~0.6.1",
+    "autoprefixer": "~6.3.6",
+    "grunt": "~1.0.1",
+    "grunt-contrib-cssmin": "~1.0.1",
+    "grunt-contrib-uglify": "~1.0.1",
+    "grunt-contrib-csslint": "~1.0.0",
+    "grunt-contrib-jshint": "~1.0.0",
+    "grunt-contrib-watch": "~1.0.0",
     "grunt-jsvalidate": "~0.2.2",
-    "grunt-postcss": "~0.7.1",
-    "grunt-jsonlint": "~1.0.6",
-    "matchdep": "~1.0.0"
+    "grunt-postcss": "~0.8.0",
+    "grunt-jsonlint": "~1.0.8",
+    "matchdep": "~1.0.1"
   },
   "jshintConfig": {
     "boss": true,
