@@ -1822,10 +1822,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		/** This filter is documented in controllers/controller-frontend.php */
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$_render->set_input( $table, $render_options );
+		$output = $_render->get_output();
+		$output = str_replace( array( '<script>', '</script>' ), array( '&lt;script&gt;', '&lt;/script&gt;' ), $output ); // Sanitize output in the admin area.
 		$view_data = array(
 			'table_id' => $table_id,
 			'head_html' => $_render->get_preview_css(),
-			'body_html' => $_render->get_output(),
+			'body_html' => $output,
 		);
 
 		$custom_css = TablePress::$model_options->get( 'custom_css' );
