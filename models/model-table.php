@@ -222,16 +222,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array Post.
 	 */
 	protected function _table_to_post( array $table, $post_id ) {
-		/*
-		 * Sanitize each cell, if the user is not allowed to work with unfiltered HTML.
-		 * Table name and description are sanitized by WordPress directly, but the JSON would break if we don't do it ourselves.
-		 */
+		// Sanitize each cell, table name, and table description, if the user is not allowed to work with unfiltered HTML.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			foreach ( $table['data'] as $row_idx => $row ) {
-				foreach ( $row as $column_idx => $cell_content ) {
-					$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // equals wp_filter_post_kses(), but without the unncessary slashes handling
-				}
-			}
+			$table = $this->sanitize( $table );
 		}
 
 		// New posts have a post ID of false in WordPress.
@@ -378,6 +371,31 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		return $table_ids;
+	}
+
+	/**
+	 * Sanitize the table to remove undesired HTML code using KSES.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array $table Table.
+	 * @return array Sanitized table.
+	 */
+	public function sanitize( array $table ) {
+		// Sanitize the table name and description.
+		$fields_to_sanitize = array( 'name', 'description' );
+		foreach ( $fields_to_sanitize as $field ) {
+			$table[ $field ] = wp_kses_post( $table[ $field ] );
+		}
+
+		// Sanitize each cell.
+		foreach ( $table['data'] as $row_idx => $row ) {
+			foreach ( $row as $column_idx => $cell_content ) {
+				$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // equals wp_filter_post_kses(), but without the unncessary slashes handling
+			}
+		}
+
+		return $table;
 	}
 
 	/**
