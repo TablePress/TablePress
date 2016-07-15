@@ -240,7 +240,10 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$table['id'] = $table['new_id'];
 			}
 
-			// At this point, the table data is valid and can be rendered.
+			// Sanitize all table data to remove unsafe HTML from the preview output.
+			$table = TablePress::$model_table->sanitize( $table );
+
+			// At this point, the table data is valid and sanitized and can be rendered.
 			$success = true;
 		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
 
@@ -263,15 +266,13 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			if ( ! empty( $custom_css ) ) {
 				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
 			}
-			$output = $_render->get_output();
-			$output = str_replace( array( '<script>', '</script>' ), array( '&lt;script&gt;', '&lt;/script&gt;' ), $output ); // Sanitize output in the admin area.
 
 			$body_html = '<div id="tablepress-page"><p>'
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
 				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
 				. __( 'The features of the DataTables JavaScript library are also not available or visible in this preview!', 'tablepress' ) . '<br />'
 				. sprintf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it into the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id={$table['id']} /]" ) . '" readonly="readonly" />' )
-				. '</p>' . $output . '</div>';
+				. '</p>' . $_render->get_output() . '</div>';
 		} else {
 			$head_html = '';
 			$body_html = __( 'The preview could not be loaded.', 'tablepress' );
