@@ -42,7 +42,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_tablepress_evaluate_class_loaded() {
-		$this->assertTrue( class_exists( 'TablePress_Evaluate' ) );
+		$this->assertTrue( class_exists( 'TablePress_Evaluate', false ) );
 	}
 
 	/**

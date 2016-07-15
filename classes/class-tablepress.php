@@ -202,7 +202,7 @@ abstract class TablePress {
 		 * @param string $class Name of the class that shall be loaded.
 		 */
 		$class = apply_filters( 'tablepress_load_class_name', $class );
-		if ( ! class_exists( $class ) ) {
+		if ( ! class_exists( $class, false ) ) {
 			self::load_file( $file, $folder );
 		}
 		$the_class = new $class( $params );

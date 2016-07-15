@@ -42,9 +42,9 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_evalmath_classes_loaded() {
-		$this->assertTrue( class_exists( 'EvalMath' ) );
-		$this->assertTrue( class_exists( 'EvalMath_Stack' ) );
-		$this->assertTrue( class_exists( 'EvalMath_Functions' ) );
+		$this->assertTrue( class_exists( 'EvalMath', false ) );
+		$this->assertTrue( class_exists( 'EvalMath_Stack', false ) );
+		$this->assertTrue( class_exists( 'EvalMath_Functions', false ) );
 	}
 
 	/**

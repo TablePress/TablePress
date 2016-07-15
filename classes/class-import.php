@@ -67,11 +67,11 @@ class TablePress_Import {
 	 */
 	public function __construct() {
 		/** This filter is documented in the WordPress function unzip_file() in wp-admin/includes/file.php */
-		if ( class_exists( 'ZipArchive' ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
+		if ( class_exists( 'ZipArchive', false ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
 			$this->zip_support_available = true;
 		}
 
-		if ( class_exists( 'DOMDocument' ) && function_exists( 'simplexml_import_dom' ) && function_exists( 'libxml_use_internal_errors' ) ) {
+		if ( class_exists( 'DOMDocument', false ) && function_exists( 'simplexml_import_dom' ) && function_exists( 'libxml_use_internal_errors' ) ) {
 			$this->html_import_support_available = true;
 		}
 

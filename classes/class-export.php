@@ -63,7 +63,7 @@ class TablePress_Export {
 		);
 
 		/** This filter is documented in the WordPress function unzip_file() in wp-admin/includes/file.php */
-		if ( class_exists( 'ZipArchive' ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
+		if ( class_exists( 'ZipArchive', false ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
 			$this->zip_support_available = true;
 		}
 	}
