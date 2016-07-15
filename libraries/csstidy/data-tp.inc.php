@@ -46,6 +46,7 @@ foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
 	}
 }
 
+// Allow vendor prefixes for any property that is allowed to be used multiple times inside a single selector.
 foreach ( $data['csstidy']['multiple_properties'] as $property ) {
 	if ( '-' !== $property[0] ) {
 		$data['csstidy']['multiple_properties'][] = '-o-' . $property;
@@ -86,3 +87,4 @@ $data['csstidy']['all_properties']['-o-text-overflow'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-ms-touch-action'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-overflow-scrolling'] = 'CSS3.0';
 $data['csstidy']['all_properties']['pointer-events'] = 'CSS3.0';
+$data['csstidy']['all_properties']['font-feature-settings'] = 'CSS3.0';
