@@ -12,7 +12,7 @@
     "autoprefixer": "~6.3.6",
     "grunt": "~1.0.1",
     "grunt-contrib-cssmin": "~1.0.1",
-    "grunt-contrib-uglify": "~1.0.1",
+    "grunt-contrib-uglify": "~2.0.0",
     "grunt-contrib-csslint": "~1.0.0",
     "grunt-contrib-jshint": "~1.0.0",
     "grunt-contrib-watch": "~1.0.0",
