@@ -59,7 +59,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 In short: WordPress 4.3 or higher, while the latest version of WordPress is always recommended.
 
 = Languages and Localization? =
-TablePress supports the ["Translate WordPress" platform](https://translate.wordpress.org/). With that, translating is possible on a website from which so-called Language Packs are automatically generated and shipped to plugin users. For a list of existing Language Packs, please see the sidebar on the TablePress page in the [WordPress Plugin Repository](https://wordpress.org/plugins/tablepress/).
+TablePress supports the ["Translate WordPress" platform](https://translate.wordpress.org/). With that, translating is possible on a website from which so-called Language Packs are automatically generated and shipped to plugin users. For a list of existing Language Packs, please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/).
 
 It is therefore no longer necessary to generate and translate *.po and *.mo files manually. Instead, just go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress), log in with a free wordpress.org account and start translating TablePress into your language.
 
