@@ -3,7 +3,7 @@ Contributors: TobiasBg
 Donate link: https://tablepress.org/donate/
 Tags: table,data,html,csv,excel
 Requires at least: 4.3
-Tested up to: 4.6
+Tested up to: 4.6.1
 Stable tag: 1.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
