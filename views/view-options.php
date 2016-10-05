@@ -106,11 +106,11 @@ class TablePress_Options_View extends TablePress_View {
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
 			<p class="description"><?php
-				printf( __( '&#8220;Custom CSS&#8221; (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'tablepress' ), 'http://www.htmldog.com/guides/css/beginner/' );
+				printf( __( '&#8220;Custom CSS&#8221; (<a target="_blank" href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'tablepress' ), 'http://www.htmldog.com/guides/css/beginner/' );
 				echo ' ';
-				printf( __( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'tablepress' ), 'https://tablepress.org/faq/' );
+				printf( __( 'You can get styling examples from the <a target="_blank" href="%s">FAQ</a>.', 'tablepress' ), 'https://tablepress.org/faq/' );
 				echo ' ';
-				printf( __( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' );
+				printf( __( 'Information on available CSS selectors can be found in the <a target="_blank" href="%s">documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' );
 				echo ' ';
 				_e( 'Please note that invalid CSS code will be stripped, if it can not be corrected automatically.', 'tablepress' );
 			?></p>
