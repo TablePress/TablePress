@@ -124,6 +124,7 @@ module.exports = function( grunt ) {
 				'overqualified-elements': false,
 				'known-properties': false,
 				'compatible-vendor-prefixes': false,
+				'order-alphabetical': false,
 				'universal-selector': false,
 				'bulletproof-font-face': false,
 				'box-sizing': false
