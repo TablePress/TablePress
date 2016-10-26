@@ -56,6 +56,7 @@ module.exports = function( grunt ) {
 			all: {
 				expand: true,
 				ext: '.min.js',
+				extDot: 'last',
 				src: [
 					'<%= jshint.all.src %>',
 					'!Gruntfile.js'
@@ -64,6 +65,7 @@ module.exports = function( grunt ) {
 			changed: {
 				expand: true,
 				ext: '.min.js',
+				extDot: 'last',
 				src: []
 			}
 		},
@@ -149,6 +151,7 @@ module.exports = function( grunt ) {
 			all: {
 				expand: true,
 				ext: '.min.css',
+				extDot: 'last',
 				src: [
 					'<%= csslint.all.src %>'
 				]
@@ -156,6 +159,7 @@ module.exports = function( grunt ) {
 			changed: {
 				expand: true,
 				ext: '.min.css',
+				extDot: 'last',
 				src: []
 			}
 		},
