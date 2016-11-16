@@ -511,6 +511,26 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Handles output for the default column.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @param array  $item        Data item for the current row.
+	 * @param string $column_name Current column name.
+	 */
+	function column_default( array $item, $column_name ) {
+		/**
+		 * Fires inside each custom column of the TablePress list table.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param array  $column_name Current column name.
+		 * @param string $item        Data item for the current row.
+		 */
+		do_action( 'manage_tablepress_list_custom_column', $column_name, $item );
+	}
+
+	/**
 	 * Get a list (name => title) bulk actions that are available.
 	 *
 	 * @since 1.0.0
