@@ -53,6 +53,10 @@ module.exports = function( grunt ) {
 
 		// JavaScript minification
 		uglify: {
+			options: {
+				ASCIIOnly: true,
+				screwIE8: false
+			},
 			all: {
 				expand: true,
 				ext: '.min.js',
