@@ -105,6 +105,9 @@
 	float: right;
 	white-space: nowrap;
 }
+.dataTables_wrapper .dataTables_filter input {
+	margin-right: 0.5em;
+}
 
 /* Table information */
 .dataTables_info {
