@@ -518,7 +518,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array  $item        Data item for the current row.
 	 * @param string $column_name Current column name.
 	 */
-	function column_default( array $item, $column_name ) {
+	protected function column_default( /* array */ $item, $column_name ) { // No `array` type hint to prevent a Strict Standards notice, as the method is inherited.
 		/**
 		 * Fires inside each custom column of the TablePress list table.
 		 *
