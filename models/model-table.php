@@ -279,12 +279,9 @@ class TablePress_Table_Model extends TablePress_Model {
 
 			// If possible, try to find out what error prevented the JSON from being decoded.
 			$table['json_error'] = 'The error could not be determined.';
-			// @TODO: The `function_exists` check can be removed once support for WP 4.3 is dropped, as a compat function was added in WP 4.4.
-			if ( function_exists( 'json_last_error_msg' ) ) {
-				$json_error_msg = json_last_error_msg();
-				if ( false !== $json_error_msg ) {
-					$table['json_error'] = $json_error_msg;
-				}
+			$json_error_msg = json_last_error_msg();
+			if ( false !== $json_error_msg ) {
+				$table['json_error'] = $json_error_msg;
 			}
 
 			$table['description'] = "[ERROR] TABLE IS CORRUPTED (JSON error: {$table['json_error']})!  DO NOT EDIT THIS TABLE NOW!\nInstead, please see https://tablepress.org/faq/corrupted-tables/ for instructions.\n-\n{$table['description']}";
