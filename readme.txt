@@ -100,6 +100,9 @@ You may use it free of charge for any purpose.
 == Changelog ==
 
 = Version 1.8 =
+* Full compatibility with WordPress 4.7
+* Updated external libraries (CodeMirror, DataTables, Build tools).
+* Some internal changes and fixes for better stability, cleaner code, translations, and documentation.
 * TablePress 1.8 requires WordPress 4.7!
 
 = Version 1.7 =
@@ -226,6 +229,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.8 =
+This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
 = 1.7 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
