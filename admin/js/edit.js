@@ -404,13 +404,14 @@ jQuery( document ).ready( function( $ ) {
 				$foot_rows = $table_body.find( '.foot-row' ).nextAll().addBack(),
 				rows = $table_body.children().not( $head_rows ).not( $foot_rows ).get(),
 				/*
-				 * Natural Sort algorithm for Javascript - Version 0.7 - Released under MIT license
+				 * Natural Sort algorithm for Javascript - Version 0.8.1 - Released under MIT license
 				 * Author: Jim Palmer (based on chunking idea from Dave Koelle)
 				 * See: https://github.com/overset/javascript-natural-sort and http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
 				 */
 				natural_sort = function( a, b ) {
-					var re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi,
-						sre = /(^[ ]*|[ ]*$)/g,
+					var re = /(^([+\-]?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?(?=\D|\s|$))|^0x[\da-fA-F]+$|\d+)/g,
+						sre = /^\s+|\s+$/g,   // trim pre-post whitespace
+						snre = /\s+/g,        // normalize all whitespace to single ' ' character
 						dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
 						hre = /^0x[0-9a-f]+$/i,
 						ore = /^0/,
@@ -421,30 +422,34 @@ jQuery( document ).ready( function( $ ) {
 						xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 						yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 						// numeric, hex or date detection
-						xD = parseInt(x.match(hre), 10) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
-						yD = parseInt(y.match(hre), 10) || xD && y.match(dre) && Date.parse(y) || null,
-						oFxNcL, oFyNcL, cLoc, numS;
+						xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && Date.parse(x)),
+						yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
+						normChunk = function(s, l) {
+							// normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
+							return (!s.match(ore) || l === 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
+						},
+						oFxNcL, oFyNcL;
 					// first try and sort Hex codes or Dates
 					if (yD) {
-						if ( xD < yD ) { return -1; }
-						else if ( xD > yD ) { return 1; }
+						if (xD < yD) { return -1; }
+						else if (xD > yD) { return 1; }
 					}
 					// natural sorting through split numeric strings and default strings
-					for(cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
-						// find floats not starting with '0', string or 0 if not defined (Clint Priest)
-						oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
-						oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+					for(var cLoc = 0, xNl = xN.length, yNl = yN.length, numS = Math.max(xNl, yNl); cLoc < numS; cLoc++) {
+						oFxNcL = normChunk(xN[cLoc] || '', xNl);
+						oFyNcL = normChunk(yN[cLoc] || '', yNl);
 						// handle numeric vs string comparison - number < string - (Kyle Adams)
-						if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
-						// rely on string comparison if different types - i.e. '02' < 2 !== '02' < '2'
-						else if (typeof oFxNcL !== typeof oFyNcL) {
-							oFxNcL += '';
-							oFyNcL += '';
+						if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
+							return isNaN(oFxNcL) ? 1 : -1;
+						}
+						// if unicode use locale comparison
+						if (/[^\x00-\x80]/.test(oFxNcL + oFyNcL) && oFxNcL.localeCompare) {
+							var comp = oFxNcL.localeCompare(oFyNcL);
+							return comp / Math.abs(comp);
 						}
 						if (oFxNcL < oFyNcL) { return -1; }
-						if (oFxNcL > oFyNcL) { return 1; }
+						else if (oFxNcL > oFyNcL) { return 1; }
 					}
-					return 0;
 				};
 
 			$.each( rows, function( row_idx, row ) {
