@@ -437,7 +437,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// At this point, post was successfully added.
 
 		// Invalidate table output caches that belong to this table.
-		$this->_invalidate_table_output_cache( $table['id'] );
+		$this->invalidate_table_output_cache( $table['id'] );
 		// Flush caching plugins' caches.
 		$this->_flush_caching_plugins_caches();
 
@@ -574,7 +574,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->_remove_post_id( $table_id );
 
 		// Invalidate table output caches that belong to this table.
-		$this->_invalidate_table_output_cache( $table_id );
+		$this->invalidate_table_output_cache( $table_id );
 		// Flush caching plugins' caches.
 		$this->_flush_caching_plugins_caches();
 
@@ -606,7 +606,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			$this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function.
 			unset( $tables['table_post'][ $table_id ] );
 			// Invalidate table output caches that belong to this table.
-			$this->_invalidate_table_output_cache( $table_id );
+			$this->invalidate_table_output_cache( $table_id );
 		}
 
 		$this->tables->update( $tables );
@@ -656,10 +656,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Delete all transients used for output caching of a table (e.g. when the table is updated or deleted).
 	 *
 	 * @since 1.0.0
+	 * @since 1.8.0 Renamed from _invalidate_table_output_cache to invalidate_table_output_cache and made public.
 	 *
 	 * @param string $table_id Table ID.
 	 */
-	protected function _invalidate_table_output_cache( $table_id ) {
+	public function invalidate_table_output_cache( $table_id ) {
 		$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
 		$caches_list = get_transient( $caches_list_transient_name );
 		if ( false !== $caches_list ) {
@@ -1225,7 +1226,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		foreach ( $table_post as $table_id => $post_id ) {
-			$this->_invalidate_table_output_cache( $table_id );
+			$this->invalidate_table_output_cache( $table_id );
 		}
 	}
 
