@@ -118,7 +118,7 @@ jQuery( document ).ready( function( $ ) {
 			} );
 			table_data = JSON.stringify( table_data );
 
-			// @TODO: maybe for options saving: http://stackoverflow.com/questions/1184624/serialize-form-to-json-with-jquery
+			// @TODO: maybe for options saving: https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
 			// or each()-loop through all checkboxes/textfields/selects
 			table_options = {
 				// Table Options

@@ -164,7 +164,7 @@ class TablePress_Import {
 		// Prepend XML declaration, for better encoding support.
 		$temp_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $temp_data;
 		if ( function_exists( 'libxml_disable_entity_loader' ) ) {
-			// Don't expand external entities (see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html).
+			// Don't expand external entities, see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
 			libxml_disable_entity_loader( true );
 		}
 		// No warnings/errors raised, but stored internally.
@@ -245,7 +245,7 @@ class TablePress_Import {
 				if ( 1 === preg_match( '#<t(?:d|h).*?>(.*)</t(?:d|h)>#is', $cell->asXML(), $matches ) ) {
 					/*
 					 * Decode HTML entities again, as there might be some left especially in attributes of HTML tags in the cells,
-					 * see http://php.net/manual/en/simplexmlelement.asxml.php#107137 .
+					 * see https://secure.php.net/manual/en/simplexmlelement.asxml.php#107137.
 					 */
 					$matches[1] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' );
 					$new_row[] = $matches[1];
