@@ -102,6 +102,11 @@ You may use it free of charge for any purpose.
 = Version 1.8 =
 * Full compatibility with WordPress 4.7
 * Updated external libraries (CodeMirror, DataTables, Build tools).
+* Enhancement: Better spacing between the label and input field for the search in tables.
+* Enhancement: Update list of allowed CSS properties in "Custom CSS".
+* Enhancement: Make it easier for other plugins to clear the TablePress output cache.
+* Enhancement: Simplification of some strings/text, to make translations easier.
+* Bugfix: Better sanitization of HTML code in the Preview (thanks to Gerard Arall).
 * Some internal changes and fixes for better stability, cleaner code, translations, and documentation.
 * TablePress 1.8 requires WordPress 4.7!
 
