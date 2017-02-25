@@ -738,6 +738,14 @@ JS;
 							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
 						}
 						break;
+					case 'date':
+						$modified_timestamp = strtotime( $table['last_modified'] );
+						$output = date_i18n( get_option( 'date_format' ), $modified_timestamp );
+						break;
+					case 'time':
+						$modified_timestamp = strtotime( $table['last_modified'] );
+						$output = date_i18n( get_option( 'time_format' ), $modified_timestamp );
+						break;
 					case 'mysql':
 					default:
 						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
