@@ -399,8 +399,8 @@ class CSSTidy_optimise {
 		}
 
 		// Fix bad color names.
-		if ( isset( $replace_colors[strtolower( $color )] ) ) {
-			$color = $replace_colors[strtolower( $color )];
+		if ( isset( $replace_colors[ strtolower( $color ) ] ) ) {
+			$color = $replace_colors[ strtolower( $color ) ];
 		}
 
 		// #aabbcc -> #abc
@@ -489,7 +489,7 @@ class CSSTidy_optimise {
 				if ( '' === $number[1] && in_array( $this->property, $unit_values, true ) ) {
 					$number[1] = 'px';
 				}
-			} else {
+			} elseif ( $number[1] !== 's' && $number[1] !== 'ms' ) {
 				$number[1] = '';
 			}
 
