@@ -9,7 +9,7 @@
   "author": "Tobias Bäthge",
   "license": "GPLv2",
   "devDependencies": {
-    "autoprefixer": "~6.7.3",
+    "autoprefixer": "~6.7.5",
     "grunt": "~1.0.1",
     "grunt-contrib-cssmin": "~2.0.0",
     "grunt-contrib-uglify": "~2.1.0",
