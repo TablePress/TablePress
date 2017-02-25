@@ -115,7 +115,7 @@ You may use it free of charge for any purpose.
 * Bugfix: Properly align tabs and heading in the main navigation bar at the top.
 * Bugfix: Restore layout on small screens (responsiveness) for the "All Tables" screen.
 * Bugfix: Restore layout of the overlay when inserting tables into posts/pages.
-* Bugfix: Make input fiels on the "Edit" screen resizable in both directions again.
+* Bugfix: Make input fields on the "Edit" screen resizable in both directions again.
 * Bugfix: Restore sorting arrows on the "Edit" screen.
 * Bugfix: Some strings were unclear, had typos, or used wrong HTML entities.
 * Bugfix: Prevent certain "Custom Commands" from being rewritten to a new syntax in the wrong way.
