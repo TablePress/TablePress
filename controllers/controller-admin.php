@@ -1173,6 +1173,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( ! isset( $import_data['data'] ) ) {
 				$import_data['data'] = file_get_contents( $import_data['file_location'] );
 			}
+			/* supports UTF-16 import */
+			if( substr( $import_data['data'], 0, 2 ) == "\xFF\xFE" ) {
+				    $import_data['data'] = iconv( 'UTF-16', 'UTF-8', $import_data['data'] );
+			}
 			if ( false === $import_data['data'] ) {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
 			}
