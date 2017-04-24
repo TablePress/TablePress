@@ -5,14 +5,13 @@ sudo: false
 language: php
 
 php:
-  - 5.2
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
   - 7.1
-  - hhvm
+  - 7.0
+  - 5.6
+  - 5.5
+  - 5.4
+  - 5.3
+  - 5.2
   - nightly
 
 env:
@@ -23,6 +22,14 @@ env:
 
 # Clone WordPress and configure the testing environment.
 before_script:
+  - mysql --version
+  - phpenv versions
+  - php --version
+  - php -m
+  - which phpunit
+  - phpunit --version
+  - git --version
+  - locale -a
   - export WP_DEVELOP_DIR=/tmp/wordpress
   - export WP_TESTS_DIR=$WP_DEVELOP_DIR/tests/phpunit/
   - export PLUGIN_SLUG=$(basename $(pwd))
