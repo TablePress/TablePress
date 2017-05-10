@@ -274,7 +274,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar The current WP Admin Bar object.
+	 * @param class $wp_admin_bar The current WP Admin Bar object.
 	 */
 	public function add_wp_admin_bar_new_content_menu_entry( $wp_admin_bar ) {
 		if ( ! current_user_can( 'tablepress_add_tables' ) ) {
