@@ -9,10 +9,10 @@
   "author": "Tobias Bäthge",
   "license": "GPLv2",
   "devDependencies": {
-    "autoprefixer": "~6.7.7",
+    "autoprefixer": "~7.0.1",
     "grunt": "~1.0.1",
-    "grunt-contrib-cssmin": "~2.1.0",
-    "grunt-contrib-uglify": "~2.3.0",
+    "grunt-contrib-cssmin": "~2.2.0",
+    "grunt-contrib-uglify": "~3.0.0",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-jshint": "~1.1.0",
     "grunt-contrib-watch": "~1.0.0",
