@@ -54,7 +54,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		$this->post_type = apply_filters( 'tablepress_post_type', $this->post_type );
 		$post_type_args = array(
 			'labels' => array(
-				'name' => 'TablePress Tables',
+				'name' => _x('TablePress Tables', 'post type general name', 'tablepress' ),
 			),
 			'public' => false,
 			'show_ui' => false,
