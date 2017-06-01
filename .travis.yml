@@ -8,17 +8,16 @@ php:
   - 7.1
   - 7.0
   - 5.6
-  - 5.5
-  - 5.4
   - 5.3
   - 5.2
   - nightly
 
 env:
-  - WP_VERSION=master WP_MULTISITE=0
-  - WP_VERSION=master WP_MULTISITE=1
-  - WP_VERSION=4.7.5 WP_MULTISITE=0
-  - WP_VERSION=4.7.5 WP_MULTISITE=1
+  - WP_VERSION=master
+  - WP_VERSION=4.7.5
+
+before_install:
+  - phpenv config-rm xdebug.ini
 
 # Clone WordPress and configure the testing environment.
 before_script:
@@ -45,4 +44,5 @@ before_script:
   - sed -i "s/yourpasswordhere//" wp-tests-config.php
   - cd "$WP_DEVELOP_DIR/src/wp-content/plugins/$PLUGIN_SLUG_LC"
 
-script: phpunit
+script:
+  - bash tests/run-tests.sh
