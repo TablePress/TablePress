@@ -13,19 +13,28 @@
 }
 
 /* Nav Tab Menu */
-@media screen and (max-width: 1150px) {
+@media screen and (min-width: 783px) and (max-width: 1150px) {
 	/* Push nav bar down on small screens to not have tabs flow in mid-air, due to screen meta pushing */
 	#tablepress-nav {
 		padding-top: 30px;
 	}
 }
-#tablepress-nav .plugin-name {
-	float: left;
-	padding: 5px 0;
+@media screen and (max-width: 700px) {
+	#tablepress-nav {
+		border-bottom: 0;
+	}
+	#tablepress-nav .nav-tab {
+		margin: 0 0 10px 0.5em;
+		border-bottom: 1px solid #ccc;
+	}
 }
-#tablepress-nav .separator {
-	margin: 6px;
+#tablepress-nav .wp-heading-inline {
 	float: left;
+	padding: 5px 0 0;
+	line-height: inherit;
+}
+#tablepress-nav .nav-tab-separator {
+	margin-left: 2em;
 }
 
 /* Add New Table form */

@@ -377,15 +377,10 @@ abstract class TablePress_View {
 	 */
 	protected function print_nav_tab_menu() {
 		?>
-		<h1 id="tablepress-nav" class="nav-tab-wrapper">
+		<div id="tablepress-nav" class="nav-tab-wrapper">
+			<h1 class="wp-heading-inline"><?php _e( 'TablePress', 'tablepress' ); ?></h1>
 			<?php
-			echo '<span class="plugin-name">' . __( 'TablePress', 'tablepress' ) . '</span><span class="separator"></span>';
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
-				// Special case: Add a separator before the group that starts with "Plugin Options", for some spacing.
-				if ( 'options' === $action ) {
-					echo '<span class="separator"></span><span class="separator"></span>';
-				}
-
 				if ( '' === $entry['nav_tab_title'] ) {
 					continue;
 				}
@@ -395,10 +390,11 @@ abstract class TablePress_View {
 
 				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
 				$active = ( $action === $this->action ) ? ' nav-tab-active' : '';
-				echo "<a class=\"nav-tab{$active}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
+				$separator = ( 'options' === $action ) ? ' nav-tab-separator' : ''; // Make the "Plugin Options" entry a separator, for some spacing.
+				echo "<a class=\"nav-tab{$active}{$separator}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
 			}
 			?>
-		</h1>
+		</div><hr class="wp-header-end" />
 		<?php
 	}
 
