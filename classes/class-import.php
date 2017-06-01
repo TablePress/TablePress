@@ -148,21 +148,13 @@ class TablePress_Import {
 			return false;
 		}
 
-		/* Extract table from HTML, pattern: <table> (with eventually class, id, ...
-		 * . means any charactery (except newline),
-		 * * means in any count,
-		 * ? means non-gready (shortest possible),
-		 * is at the end: i: case-insensitive, s: include newline (in .)
-		 */
-		if ( 1 === preg_match( '#<table.*?>.*?</table>#is', $this->import_data, $matches ) ) {
-			$temp_data = $matches[0]; // if found, take match as table to import
-		} else {
+		if ( false === stripos( $this->import_data, '<table' ) || false === stripos( $this->import_data, '</table>' ) ) {
 			$this->imported_table = false;
 			return;
 		}
 
 		// Prepend XML declaration, for better encoding support.
-		$temp_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $temp_data;
+		$full_html = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $this->import_data;
 		if ( function_exists( 'libxml_disable_entity_loader' ) ) {
 			// Don't expand external entities, see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
 			libxml_disable_entity_loader( true );
@@ -172,13 +164,19 @@ class TablePress_Import {
 		$dom = new DOMDocument( '1.0', 'UTF-8' );
 		// No strict checking for invalid HTML.
 		$dom->strictErrorChecking = false;
-		$dom->loadHTML( $temp_data );
+		$dom->loadHTML( $full_html );
 		if ( false === $dom ) {
 			$this->imported_table = false;
 			return;
 		}
-		$table_html = simplexml_import_dom( $dom );
-		if ( false === $table_html ) {
+		$dom_tables = $dom->getElementsByTagName( 'table' );
+		if ( 0 === count( $dom_tables ) ) {
+			$this->imported_table = false;
+			return;
+		}
+		libxml_clear_errors(); // Clear errors so that we only catch those inside the table in the next line.
+		$table = simplexml_import_dom( $dom_tables[0] );
+		if ( false === $table ) {
 			$this->imported_table = false;
 			return;
 		}
@@ -202,8 +200,6 @@ class TablePress_Import {
 			}
 			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
 		}
-
-		$table = $table_html->body->table;
 
 		$html_table = array(
 			'data' => array(),
