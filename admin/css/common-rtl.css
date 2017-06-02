@@ -14,18 +14,21 @@
 	direction: ltr;
 	text-align: right;
 }
-#tablepress-nav .plugin-name,
-#tablepress-nav .separator,
+#tablepress-nav .wp-heading-inline,
 #tablepress_add-add-table .form-field-small,
 #table-new-id {
-	float:right;
+	float: right;
 }
-#tablepress-page .table-shortcode {
-	width: 125px;
-	direction: ltr;
-	font-size: 13px;
-	vertical-align: baseline;
+@media screen and (max-width: 700px) {
+	#tablepress-nav .nav-tab {
+		margin: 0 0.5em 10px 0;
+	}
 }
+#tablepress-nav .nav-tab-separator {
+	margin-left: 0;
+	margin-right: 2em;
+}
+#tablepress-page .table-shortcode,
 #tablepress-page .CodeMirror {
 	direction: ltr;
 }
