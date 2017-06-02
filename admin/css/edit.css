@@ -156,8 +156,8 @@ body #wp-link-backdrop {
 #tablepress-page select {
 	-webkit-box-shadow: none;
 	box-shadow: none;
-	-webkit-transition: all 0 ease 0;
-	transition: all 0 ease 0;
+	-webkit-transition: none;
+	transition: none;
 }
 
 #edit-form-foot input[type="checkbox"] {
