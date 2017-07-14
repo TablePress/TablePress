@@ -121,16 +121,7 @@ class TablePress_CSS {
 				break;
 		}
 
-		if ( is_multisite() ) {
-			// Multisite installation: /wp-content/uploads/sites/<ID>/
-			$upload_location = wp_upload_dir();
-		} else {
-			// Singlesite installation: /wp-content/
-			$upload_location = array(
-				'basedir' => WP_CONTENT_DIR,
-				'baseurl' => content_url(),
-			);
-		}
+		$upload_location = wp_upload_dir();
 
 		switch ( $location ) {
 			case 'url':
