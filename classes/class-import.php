@@ -247,6 +247,13 @@ class TablePress_Import {
 					 */
 					$matches[1] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' );
 					$new_row[] = $matches[1];
+
+					//Looking for colspan and adding correct numbers of the rows
+                    if(1 === preg_match('#<t(?:d|h).*colspan\=\"(\d+)\".*?>#is', $cell->asXml(), $matches)){
+                        for( $i = 1; $i < (int) $matches[1]; $i++){
+                            $new_row[] = '';
+                        }
+                    }
 				} else {
 					$new_row[] = '';
 				}
