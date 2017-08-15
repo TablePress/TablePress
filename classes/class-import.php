@@ -96,7 +96,7 @@ class TablePress_Import {
 	 * @return bool|array False on error, table array on success.
 	 */
 	public function import_table( $format, $data ) {
-		$this->import_data = $data;
+		$this->import_data = apply_filters('tablepress_import_table_data', $data);
 
 		if ( ! in_array( $format, array( 'xlsx', 'xls' ) ) ) {
 			$this->fix_table_encoding();
@@ -132,7 +132,7 @@ class TablePress_Import {
 	 */
 	protected function import_csv() {
 		$csv_parser = TablePress::load_class( 'CSV_Parser', 'csv-parser.class.php', 'libraries' );
-		$csv_parser->load_data( $this->import_data );
+		$csv_parser->load_data( apply_filters( 'tablepress_import_csv_data', $this->import_data ) );
 		$delimiter = $csv_parser->find_delimiter();
 		$data = $csv_parser->parse( $delimiter );
 		$this->imported_table = array( 'data' => $this->pad_array_to_max_cols( $data ) );
@@ -148,13 +148,15 @@ class TablePress_Import {
 			return false;
 		}
 
-		if ( false === stripos( $this->import_data, '<table' ) || false === stripos( $this->import_data, '</table>' ) ) {
+		$data = apply_filters( 'tablepress_import_html_data', $this->import_data );
+
+		if ( false === stripos( $data, '<table' ) || false === stripos( $data, '</table>' ) ) {
 			$this->imported_table = false;
 			return;
 		}
 
 		// Prepend XML declaration, for better encoding support.
-		$full_html = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $this->import_data;
+		$full_html = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $data;
 		if ( function_exists( 'libxml_disable_entity_loader' ) ) {
 			// Don't expand external entities, see http://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
 			libxml_disable_entity_loader( true );
@@ -245,6 +247,13 @@ class TablePress_Import {
 					 */
 					$matches[1] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' );
 					$new_row[] = $matches[1];
+
+					//Looking for colspan and adding correct numbers of the rows
+                    if(1 === preg_match('#<t(?:d|h).*colspan\=\"(\d+)\".*?>#is', $cell->asXml(), $matches)){
+                        for( $i = 1; $i < (int) $matches[1]; $i++){
+                            $new_row[] = '';
+                        }
+                    }
 				} else {
 					$new_row[] = '';
 				}
@@ -260,7 +269,7 @@ class TablePress_Import {
 	 * @since 1.0.0
 	 */
 	protected function import_json() {
-		$json_table = json_decode( $this->import_data, true );
+		$json_table = json_decode( apply_filters( 'tablepress_import_json_data', $this->import_data ), true );
 
 		// Check if JSON could be decoded.
 		if ( is_null( $json_table ) ) {
@@ -298,7 +307,7 @@ class TablePress_Import {
 	 * @since 1.1.0
 	 */
 	protected function import_xls() {
-		$excel_reader = TablePress::load_class( 'Spreadsheet_Excel_Reader', 'excel-reader.class.php', 'libraries', $this->import_data );
+		$excel_reader = TablePress::load_class( 'Spreadsheet_Excel_Reader', 'excel-reader.class.php', 'libraries', apply_filters( 'tablepress_import_xls_data', $this->import_data ) );
 
 		// Loop through Excel file and retrieve value and colspan/rowspan properties for each cell.
 		$sheet = 0; // 0 means first sheet of the Workbook
@@ -363,7 +372,7 @@ class TablePress_Import {
 	 */
 	protected function import_xlsx() {
 		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
-		$simplexlsx = new SimpleXLSX( $this->import_data, true );
+		$simplexlsx = new SimpleXLSX( apply_filters('tablepress_import_xlsx_data', $this->import_data ), true );
 
 		if ( $simplexlsx->success() && 0 < $simplexlsx->sheetsCount() ) {
 			// Get Worksheet ID of the first Worksheet (not necessarily "1", which is the default in SimpleXLSX).
