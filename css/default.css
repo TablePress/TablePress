@@ -127,7 +127,6 @@
 	outline: none;
 	position: relative;
 	text-decoration: underline;
-	text-decoration: none\0/IE; /* Hack for IE8, IE9, and IE10pp4, as those have trouble with text-decoration in :after pseudo-elements */
 	margin: 0 5px;
 }
 .dataTables_paginate a:first-child {
