@@ -136,7 +136,7 @@ class CSSTidy_optimise {
 			return;
 		}
 
-		if ( 2 === $this->parser->get_cfg( 'merge_selectors' ) ) {
+		if ( 2 === (int) $this->parser->get_cfg( 'merge_selectors' ) ) {
 			foreach ( $this->css as $medium => $value ) {
 				$this->merge_selectors( $this->css[ $medium ] );
 			}
