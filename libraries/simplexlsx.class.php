@@ -169,6 +169,7 @@ class SimpleXLSX {
 	 * @param bool   $is_data  Optional. [description]
 	 */
 	public function __construct( $filename, $is_data = false ) {
+		$this->datetime_format = get_option( 'date_format' );
 		if ( $this->_unzip( $filename, $is_data ) ) {
 			$this->_parse();
 		}
