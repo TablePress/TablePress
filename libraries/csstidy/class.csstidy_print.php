@@ -269,6 +269,10 @@ class CSSTidy_print {
 					$import_components[0] = '\'' . trim( substr( $import_components[0], 4, -1 ), "'\"" ) . '\'';
 					$this->import[ $i ] = implode( ' ', $import_components );
 					$this->parser->log( 'Optimised @import : Removed "url("', 'Information' );
+				} elseif ( ! preg_match( '/^".+"$/', $this->import[ $i ] ) ) {
+					// Fixes a bug for @import ".." instead of the expected @import url("..")/
+					// If it comes in due to @import ".." the "" will be missing and the output will become @import .. (which is an error)/
+					$this->import[ $i ] = '"' . $this->import[ $i ] . '"';
 				}
 				$output .= $template[0] . '@import ' . $template[5] . $this->import[ $i ] . $template[6] . $template[13];
 			}
