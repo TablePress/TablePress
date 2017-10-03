@@ -99,6 +99,16 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.8.1 =
+* Enhancement: Make HTML import more robust and faster.
+* Enhancement: The HTML import can now import merged cells in a row.
+* Enhancement: Harden the XLSX import against potential security issues (thanks to Yuji Tounai).
+* Enhancement: Allow easier changes to import data for developers, by adding a filter hook.
+* Enhancement: The layout of the TablePress admin screens will look better on small screens.
+* Enhancement: Update list of allowed CSS properties in "Custom CSS".
+* Enhancement: Reduce size of default CSS, by removing old hacks for Internet Explorer.
+* Updated external libraries (CodeMirror, DataTables, SimpleXLSX, CSSTidy, Build tools).
+
 = Version 1.8 =
 * Full compatibility with WordPress 4.7
 * Updated external libraries (CodeMirror, DataTables, Build tools).
@@ -234,6 +244,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.8.1 =
+This update is a stability, security, and maintenance release. Updating is highly recommended.
 
 = 1.8 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
