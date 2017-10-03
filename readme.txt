@@ -99,6 +99,13 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.9 =
+* Full compatibility with WordPress 4.9
+* Feature: The "Custom CSS" text field highlights and notifies about CSS code syntax errors.
+* Updated external libraries (Build tools).
+* Some internal changes and fixes for better stability, cleaner code, translations, and documentation.
+* TablePress 1.8 requires WordPress 4.9!
+
 = Version 1.8.1 =
 * Enhancement: Make HTML import more robust and faster.
 * Enhancement: The HTML import can now import merged cells in a row.
@@ -244,6 +251,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.9 =
+This update includes several new features, enhancements, and bugfixes. Updating is recommended.
 
 = 1.8.1 =
 This update is a stability, security, and maintenance release. Updating is highly recommended.
