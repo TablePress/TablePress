@@ -3,7 +3,7 @@
  * Excel 97/2003 Reader Class
  *
  * Based on PHP Excel Reader 2.21.
- * @link https://code.google.com/p/php-excel-reader/
+ * @link https://code.google.com/archive/p/php-excel-reader/
  *
  * @package TablePress
  * @subpackage Import
@@ -19,12 +19,11 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  *
  * Version 2.21
  *
- * Enhanced and maintained by Matt Kruse <http://mattkruse.com>
- * Maintained at http://code.google.com/p/php-excel-reader/
+ * Enhanced and maintained by Matt Kruse <https://mattkruse.com/>
+ * Maintained at https://code.google.com/archive/p/php-excel-reader/
  * Licensed under MIT license
  *
- * Format parsing and MUCH more contributed by:
- *      Matt Roxburgh <http://www.roxburgh.me.uk>
+ * Format parsing and MUCH more contributed by Matt Roxburgh
  *
  * Cleanup and changes for TablePress by Tobias Bäthge
  * --------------------------------------------------------------------------
@@ -1501,7 +1500,7 @@ class Spreadsheet_Excel_Reader {
 	 */
 	protected function _format_value( $format, $num, $f ) {
 		// 49 = TEXT format
-		// http://code.google.com/p/php-excel-reader/issues/detail?id=7
+		// https://code.google.com/archive/p/php-excel-reader/issues/7
 		if ( ( ! $f && '%s' === $format ) || ( 49 === (int) $f ) || ( 'GENERAL' === $format ) ) {
 			return array( 'string' => $num, 'formatColor' => null );
 		}
@@ -2129,12 +2128,12 @@ class Spreadsheet_Excel_Reader {
 					if ( 0 === ord( $data[ $spos + 6 ] ) && 255 === ord( $data[ $spos + 12 ] ) && 255 === ord( $data[ $spos + 13 ] ) ) {
 						// String formula. Result follows in a STRING record
 						// This row/col are stored to be referenced in that record
-						// http://code.google.com/p/php-excel-reader/issues/detail?id=4
+						// https://code.google.com/archive/p/php-excel-reader/issues/4
 						$previousRow = $row;
 						$previousCol = $column;
 					} elseif ( 1 === ord( $data[ $spos + 6 ] ) && 255 === ord( $data[ $spos + 12 ] ) && 255 === ord( $data[ $spos + 13 ] ) ) {
 						// Boolean formula. Result is in +2; 0 = false,1 = true
-						// http://code.google.com/p/php-excel-reader/issues/detail?id=4
+						// https://code.google.com/archive/p/php-excel-reader/issues/4
 						if ( 1 === ord( $this->data[ $spos + 8 ] ) ) {
 							$this->addcell( $row, $column, 'TRUE' );
 						} else {
@@ -2164,7 +2163,7 @@ class Spreadsheet_Excel_Reader {
 					$this->addcell( $row, $column, $string );
 					break;
 				case SPREADSHEET_EXCEL_READER_TYPE_STRING:
-					// http://code.google.com/p/php-excel-reader/issues/detail?id=4
+					// https://code.google.com/archive/p/php-excel-reader/issues/4
 					if ( SPREADSHEET_EXCEL_READER_BIFF8 === $version ) {
 						// Unicode 16 string, like an SST record
 						$xpos = $spos;
@@ -2307,7 +2306,6 @@ class Spreadsheet_Excel_Reader {
 	}
 	/**
 	 * [gmgetdate description]
-	 * http://uk.php.net/manual/en/function.getdate.php
 	 *
 	 * @since 1.0.0
 	 *
@@ -2344,7 +2342,7 @@ class Spreadsheet_Excel_Reader {
 		}
 
 		if ( 'date' === $type ) {
-			// See http://groups.google.com/group/php-excel-reader-discuss/browse_frm/thread/9c3f9790d12d8e10/f2045c2369ac79de
+			// See https://groups.google.com/forum/#!topic/php-excel-reader-discuss/nD-XkNEtjhA
 			$rectype = 'date';
 			// Convert numeric value into a date
 			$utcDays = floor( $numValue - ( $this->nineteenFour ? SPREADSHEET_EXCEL_READER_UTCOFFSETDAYS1904 : SPREADSHEET_EXCEL_READER_UTCOFFSETDAYS ) );

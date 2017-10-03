@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * along with CSSTidy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/licenses/gpl-license.php GNU Public License
  * @package CSSTidy
  * @author Florian Schmitz (floele at gmail dot com) 2005
  * @author Nikolay Matsievsky (speed at webo dot name) 2010

@@ -106,7 +106,7 @@ class TablePress_Options_View extends TablePress_View {
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
 			<p class="description"><?php
-				printf( __( '&#8220;Custom CSS&#8221; (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'tablepress' ), 'http://www.htmldog.com/guides/css/beginner/' );
+				printf( __( '&#8220;Custom CSS&#8221; (<a href="%s">Cascading Style Sheets</a>) can be used to change the styling or layout of a table.', 'tablepress' ), 'https://www.htmldog.com/guides/css/beginner/' );
 				echo ' ';
 				printf( __( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'tablepress' ), 'https://tablepress.org/faq/' );
 				echo ' ';

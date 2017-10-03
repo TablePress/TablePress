@@ -207,7 +207,7 @@ class TablePress_About_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'Special Thanks go to:', 'tablepress' ); ?>
-			<br />&middot; <?php printf( __( 'Allan Jardine for <a href="%s">DataTables</a>,', 'tablepress' ), 'http://www.datatables.net/' ); ?>
+			<br />&middot; <?php printf( __( 'Allan Jardine for <a href="%s">DataTables</a>,', 'tablepress' ), 'https://www.datatables.net/' ); ?>
 			<br />&middot; <?php printf( __( 'the translators in the <a href="%s">Plugin Directory</a>,', 'tablepress' ), 'https://translate.wordpress.org/projects/wp-plugins/tablepress/' ); ?>
 			<br />&middot; <?php _e( 'all donors, contributors, supporters, reviewers, and users of the plugin!', 'tablepress' ); ?>
 		</p>

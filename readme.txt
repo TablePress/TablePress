@@ -6,7 +6,7 @@ Requires at least: 4.7
 Tested up to: 4.8.2
 Stable tag: 1.8
 License: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
 
@@ -88,13 +88,13 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 == Acknowledgements ==
 
-Special thanks go to [Allan Jardine](http://www.sprymedia.co.uk/) for the [DataTables JavaScript library](http://www.datatables.net/).
+Special thanks go to [Allan Jardine](https://www.sprymedia.co.uk/) for the [DataTables JavaScript library](https://www.datatables.net/).
 Thanks to all language file translators!
 Thanks to every donor, supporter, and bug reporter!
 
 == License ==
 
-This plugin is Free Software, released and licensed under the GPL, version 2 (http://www.gnu.org/licenses/gpl-2.0.html).
+This plugin is Free Software, released and licensed under the GPL, version 2 (https://www.gnu.org/licenses/gpl-2.0.html).
 You may use it free of charge for any purpose.
 
 == Changelog ==
