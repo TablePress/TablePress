@@ -2,20 +2,26 @@
 
 sudo: false
 
-language: php
+dist: trusty
 
-php:
-  - 7.1
-  - 7.0
-  - 5.6
-  - 5.3
-  - 5.2
-  - nightly
+language: php
 
 env:
   - WP_VERSION=master
   - WP_VERSION=4.8.2
   - WP_VERSION=4.7.6
+
+matrix:
+  include:
+  - php: 7.2
+  - php: 7.1
+  - php: 7.0
+  - php: 5.6
+  - php: 5.3
+    dist: precise
+  - php: 5.2
+    dist: precise
+  - php: nightly
 
 # Clone WordPress and configure the testing environment.
 before_script:
