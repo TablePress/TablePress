@@ -31,13 +31,22 @@ class TablePress_Options_View extends TablePress_View {
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
-		$this->admin_page->enqueue_style( 'codemirror' );
-		$this->admin_page->enqueue_script( 'codemirror', array(), array(), true );
-		$this->admin_page->enqueue_script( 'options', array( 'jquery-core', 'tablepress-codemirror', 'jquery-ui-resizable' ), array(
+		// Enqueue WordPress copy of CodeMirror, with CSS linting, etc.
+		wp_enqueue_script( 'underscore' ); // The WP `code-editor` script requires underscore, but does (currently) not list it as a dependency. Once it does, this can be removed.
+		$codemirror_settings = wp_enqueue_code_editor( array( 'type' => 'text/css' ) );
+		if ( empty( $codemirror_settings ) ) {
+			$codemirror_settings = array();
+		}
+
+		// Load CSS adjustments for CodeMirror and the added vertical resizing.
+        $this->admin_page->enqueue_style( 'codemirror', array( 'code-editor' ) );
+
+		$this->admin_page->enqueue_script( 'options', array( 'jquery-core', 'jquery-ui-resizable' ), array(
 			'strings' => array(
 				'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
 				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' ),
 			),
+			'codemirror_settings' => $codemirror_settings,
 		) );
 
 		$this->process_action_messages( array(

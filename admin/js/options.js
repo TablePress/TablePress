@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-/* global confirm, CodeMirror, tablepress_strings */
+/* global confirm, wp, tablepress_strings, tablepress_codemirror_settings */
 
 jQuery( document ).ready( function( $ ) {
 
@@ -16,25 +16,20 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Invoke CodeMirror on the "Custom CSS" textarea.
 	 *
-	 * @since 1.0.0
+	 * @since 1.9.0
 	 */
-	var CM_custom_css = CodeMirror.fromTextArea( document.getElementById( 'option-custom-css' ), {
-		mode: 'css',
-		indentUnit: 2,
-		tabSize: 2,
-		indentWithTabs: true
-	} );
+	var CM_custom_css = wp.codeEditor.initialize( document.getElementById( 'option-custom-css' ), tablepress_codemirror_settings );
 
 	/**
 	 * Make the CodeMirror textarea vertically resizable.
 	 *
 	 * @since 1.7.0
 	 */
-	$( CM_custom_css.getWrapperElement() ).resizable( {
+	$( CM_custom_css.codemirror.getWrapperElement() ).resizable( {
 		handles: 's',
 		resize: function() {
 			var $this = $(this);
-			CM_custom_css.setSize( $this.width(), $this.height() );
+			CM_custom_css.codemirror.setSize( $this.width(), $this.height() );
 		}
 	} );
 
@@ -47,7 +42,7 @@ jQuery( document ).ready( function( $ ) {
 		var $this = $(this);
 		if ( ! $this.hasClass( 'disabled' ) ) {
 			$this.addClass( 'large' );
-			CM_custom_css.refresh();
+			CM_custom_css.codemirror.refresh();
 			$this.off( 'mousedown.codemirror' );
 		}
 	} );
@@ -59,7 +54,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( '#option-use-custom-css' ).on( 'change', function() {
 		var use_custom_css = $(this).prop( 'checked' );
-		CM_custom_css.setOption( 'readOnly', ! use_custom_css );
+		CM_custom_css.codemirror.setOption( 'readOnly', ! use_custom_css );
 		$( '#tablepress-page' ).find( '.CodeMirror' ).toggleClass( 'disabled', ! use_custom_css );
 	} ).change();
 

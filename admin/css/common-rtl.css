@@ -28,7 +28,6 @@
 	margin-left: 0;
 	margin-right: 2em;
 }
-#tablepress-page .table-shortcode,
-#tablepress-page .CodeMirror {
+#tablepress-page .table-shortcode {
 	direction: ltr;
 }
