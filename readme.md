@@ -83,4 +83,4 @@ You may use it free of charge for any purpose.
 
 ## Changelog
 
-A changelog is available at https://wordpress.org/plugins/tablepress/changelog/.
+A changelog is available at https://tablepress.org/info/#changelog.
