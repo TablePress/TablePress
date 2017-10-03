@@ -21,10 +21,10 @@ matrix:
 
 before_install:
   - |
-  # Remove Xdebug for a huge performance increase:
-  if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-    phpenv config-rm xdebug.ini
-  fi
+    # Remove Xdebug for a huge performance increase:
+    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+      phpenv config-rm xdebug.ini
+    fi
 
 # Clone WordPress and configure the testing environment.
 before_script:
