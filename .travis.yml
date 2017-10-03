@@ -7,7 +7,7 @@ dist: trusty
 language: php
 
 env:
-  global:
+  matrix:
     - WP_VERSION=master
     - WP_VERSION=4.8.2
     - WP_VERSION=4.7.6
