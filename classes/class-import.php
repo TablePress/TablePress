@@ -175,7 +175,7 @@ class TablePress_Import {
 			return;
 		}
 		libxml_clear_errors(); // Clear errors so that we only catch those inside the table in the next line.
-		$table = simplexml_import_dom( $dom_tables[0] );
+		$table = simplexml_import_dom( $dom_tables->item( 0 ) );
 		if ( false === $table ) {
 			$this->imported_table = false;
 			return;
