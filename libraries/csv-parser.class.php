@@ -160,6 +160,14 @@ class CSV_Parser {
 			}
 		}
 		ksort( $potential_delimiters );
+
+		// If no valid delimiter was found, use the character that was found in most rows.
+		if ( empty( $potential_delimiters ) ) {
+			$delimiter_counts = array_map( 'count', $delimiter_count );
+			arsort( $delimiter_counts, SORT_NUMERIC );
+			$potential_delimiters = array_keys( $delimiter_counts );
+		}
+
 		// Return first array element, as that has the highest count.
 		return array_shift( $potential_delimiters );
 	}
