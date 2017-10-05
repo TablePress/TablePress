@@ -1196,7 +1196,7 @@ class CSSTidy {
 			return $media;
 		}
 		end( $this->css );
-		list( $at, ) = each( $this->css );
+		$at = key( $this->css );
 		if ( $at === $media ) {
 			return $media;
 		}
@@ -1239,7 +1239,7 @@ class CSSTidy {
 
 			// If last is the same, keep it.
 			end( $this->css[ $media ] );
-			list( $sel, ) = each( $this->css[ $media ] );
+			$sel = key( $this->css[ $media ] );
 			if ( $sel === $selector ) {
 				return $selector;
 			}
