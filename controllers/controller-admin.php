@@ -1877,7 +1877,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$plugin = TABLEPRESS_BASENAME;
 
-		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) || is_plugin_active_for_network( $plugin ) ) {
+		if ( ! current_user_can( 'deactivate_plugin', $plugin ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) || is_plugin_active_for_network( $plugin ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
 		}
 
