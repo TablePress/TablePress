@@ -53,9 +53,6 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// Remove WP-Table Reloaded Shortcodes and CSS, and add TablePress Shortcodes.
 		add_action( 'init', array( $this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
 
-		// Make TablePress Shortcodes work in text widgets.
-		add_filter( 'widget_text', array( $this, 'widget_text_filter' ) );
-
 		/**
 		 * Filter whether the WordPress search shall also search TablePress tables.
 		 *
@@ -798,32 +795,6 @@ JS;
 		 */
 		$output = apply_filters( 'tablepress_shortcode_table_info_output', $output, $table, $shortcode_atts );
 		return $output;
-	}
-
-	/**
-	 * Handle Shortcodes in text widgets, by temporarily removing all Shortcodes, registering only the plugin's two,
-	 * running WP's Shortcode routines, and then restoring old behavior/Shortcodes.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @global array $shortcode_tags WordPress container for storing Shortcode definitions.
-	 *
-	 * @param string $content Text content of the text widget, will be searched for one of TablePress's Shortcodes.
-	 * @return string Text of the text widget, with eventually found Shortcodes having been replaced by corresponding output.
-	 */
-	public function widget_text_filter( $content ) {
-		global $shortcode_tags;
-		// Backup the currently registered Shortcodes and clear the global array.
-		$orig_shortcode_tags = $shortcode_tags;
-		$shortcode_tags = array();
-		// Register TablePress's Shortcodes (which are then the only ones registered).
-		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
-		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
-		// Run the WP Shortcode routines on the widget text (i.e. search for TablePress's Shortcodes).
-		$content = do_shortcode( $content );
-		// Restore the original Shortcodes (which includes TablePress's Shortcodes, for use in posts and pages).
-		$shortcode_tags = $orig_shortcode_tags;
-		return $content;
 	}
 
 	/**
