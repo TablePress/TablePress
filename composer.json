@@ -1,20 +1,20 @@
 {
-  "name": "tobiasbg/tablepress",
-  "version": "1.8.1",
-  "description": "TablePress plugin for WordPress",
-  "keywords": ["wordpress", "plugin", "table"],
-  "homepage": "https://tablepress.org/",
-  "license": "GPL2",
-  "authors": [
-    {
-      "name": "Tobias Bäthge",
-      "email": "wordpress@tobias.baethge.com",
-      "homepage": "https://tobias.baethge.com/"
-    }
-  ],
-  "type": "wordpress-plugin",
-  "require": {
-    "php": ">=5.2.4",
-    "composer/installers": "v1.0.6"
-  }
+	"name": "tobiasbg/tablepress",
+	"version": "1.8.1",
+	"description": "TablePress plugin for WordPress",
+	"keywords": ["wordpress", "plugin", "table"],
+	"homepage": "https://tablepress.org/",
+	"license": "GPL2",
+	"authors": [
+		{
+			"name": "Tobias Bäthge",
+			"email": "wordpress@tobias.baethge.com",
+			"homepage": "https://tobias.baethge.com/"
+		}
+	],
+	"type": "wordpress-plugin",
+	"require": {
+		"php": ">=5.2.4",
+		"composer/installers": "v1.0.6"
+	}
 }
