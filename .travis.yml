@@ -13,6 +13,7 @@ php:
 
 env:
   - WP_VERSION=master
+  - WP_VERSION=4.9.0
 
 matrix:
   fast_finish: true
