@@ -875,6 +875,7 @@ JS;
 		// If $_GET['exact'] is set, WordPress doesn't use % in SQL LIKE clauses.
 		$exact = get_query_var( 'exact' );
 		$n = ( empty( $exact ) ) ? '%' : '';
+		$search_sql = $wpdb->remove_placeholder_escape( $search_sql );
 		foreach ( $query_result as $search_term => $table_ids ) {
 			$search_term = esc_sql( $wpdb->esc_like( $search_term ) );
 			$old_or = "OR ({$wpdb->posts}.post_content LIKE '{$n}{$search_term}{$n}')";
@@ -883,6 +884,7 @@ JS;
 			$new_or = $old_or . " OR ({$wpdb->posts}.post_content REGEXP '{$regexp}')";
 			$search_sql = str_replace( $old_or, $new_or, $search_sql );
 		}
+		$search_sql = $wpdb->add_placeholder_escape( $search_sql );
 
 		return $search_sql;
 	}
