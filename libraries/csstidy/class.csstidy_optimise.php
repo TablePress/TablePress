@@ -51,7 +51,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
  * @version 1.0
  */
-class CSSTidy_optimise {
+class TablePress_CSSTidy_optimise {
 
 	/**
 	 * CSSTidy instance.
@@ -1072,12 +1072,12 @@ class CSSTidy_optimise {
 		return $input_css;
 	}
 
-} // class CSSTidy_optimise
+} // class TablePress_CSSTidy_optimise
 
 /**
  * Sanitization class
  */
-class CSSTidy_custom_sanitize extends CSSTidy_optimise {
+class TablePress_CSSTidy_custom_sanitize extends TablePress_CSSTidy_optimise {
 
 	/**
 	 * [$props_w_urls description]
@@ -1173,4 +1173,4 @@ class CSSTidy_custom_sanitize extends CSSTidy_optimise {
 		return "url('$url')";
 	}
 
-} // class CSSTidy_custom_sanitize
+} // class TablePress_CSSTidy_custom_sanitize

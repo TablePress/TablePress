@@ -128,7 +128,7 @@ require dirname( __FILE__ ) . '/class.csstidy_optimise.php';
  * @package CSSTidy
  * @since 1.0.0
  */
-class CSSTidy {
+class TablePress_CSSTidy {
 
 	/**
 	 * The parsed CSS.
@@ -152,7 +152,7 @@ class CSSTidy {
 	 * Instance of the CSS Printer class.
 	 *
 	 * @since 1.0.0
-	 * @var CSSTidy_print
+	 * @var TablePress_CSSTidy_print
 	 */
 	public $print;
 
@@ -160,7 +160,7 @@ class CSSTidy {
 	 * Instance of the CSS Optimiser class.
 	 *
 	 * @since 1.0.0
-	 * @var CSSTidy_optimise
+	 * @var TablePress_CSSTidy_optimise
 	 */
 	public $optimise;
 
@@ -421,8 +421,8 @@ class CSSTidy {
 		$this->settings['template'] = ''; // say that property exists.
 		$this->set_cfg( 'template', 'default' ); // Call load_template.
 
-		$this->print = new CSSTidy_print( $this );
-		$this->optimise = new CSSTidy_optimise( $this );
+		$this->print = new TablePress_CSSTidy_print( $this );
+		$this->optimise = new TablePress_CSSTidy_optimise( $this );
 
 		$this->tokens_list = &$this->data['csstidy']['tokens'];
 	}
@@ -1429,4 +1429,4 @@ class CSSTidy {
 		return $strings;
 	}
 
-} // class CSSTidy
+} // class TablePress_CSSTidy

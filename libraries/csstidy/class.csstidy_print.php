@@ -50,7 +50,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
  * @version 1.1.0
  */
-class CSSTidy_print {
+class TablePress_CSSTidy_print {
 
 	/**
 	 * CSSTidy instance.
@@ -529,4 +529,4 @@ class CSSTidy_print {
 		}
 	}
 
-} // class CSSTidy_print
+} // class TablePress_CSSTidy_print
