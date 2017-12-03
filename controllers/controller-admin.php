@@ -251,7 +251,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function add_tablepress_hidpi_css() {
-		echo '<style type="text/css">@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){';
+		echo '<style type="text/css">@media print,(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){';
 		echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
 		echo '#content_tablepress_insert_table img{display:none}';
 		echo '}</style>' . "\n";
