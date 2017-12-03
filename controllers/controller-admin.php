@@ -1129,7 +1129,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				break;
 			case 'server':
-				if ( ! empty( $import['server'] ) && ABSPATH !== $import['server'] ) {
+				if ( ! empty( $import['server'] ) && ABSPATH !== $import['server']
+					&& ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() )
+				) {
+					// For security reasons, the `server` source is only available for administrators.
 					$import_data['file_location'] = $import['server'];
 					$import_data['file_name'] = pathinfo( $import['server'], PATHINFO_BASENAME );
 					if ( is_readable( $import['server'] ) ) {

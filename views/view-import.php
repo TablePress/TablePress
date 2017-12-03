@@ -127,7 +127,9 @@ class TablePress_Import_View extends TablePress_View {
 		<td class="column-2">
 			<label for="tables-import-source-file-upload"><input name="import[source]" id="tables-import-source-file-upload" type="radio" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <?php _e( 'File Upload', 'tablepress' ); ?></label>
 			<label for="tables-import-source-url"><input name="import[source]" id="tables-import-source-url" type="radio" value="url"<?php checked( $data['import_source'], 'url', true ); ?> /> <?php _e( 'URL', 'tablepress' ); ?></label>
+			<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
 			<label for="tables-import-source-server"><input name="import[source]" id="tables-import-source-server" type="radio" value="server"<?php checked( $data['import_source'], 'server', true ); ?> /> <?php _e( 'File on server', 'tablepress' ); ?></label>
+			<?php } ?>
 			<label for="tables-import-source-form-field"><input name="import[source]" id="tables-import-source-form-field" type="radio" value="form-field"<?php checked( $data['import_source'], 'form-field', true ); ?> /> <?php _e( 'Manual Input', 'tablepress' ); ?></label>
 		</td>
 	</tr>
@@ -153,6 +155,7 @@ class TablePress_Import_View extends TablePress_View {
 			?>
 		</td>
 	</tr>
+	<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
 	<tr id="row-import-source-server" class="bottom-border">
 		<th class="column-1 top-align" scope="row"><label for="tables-import-server"><?php _e( 'Server Path to file', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
@@ -164,6 +167,7 @@ class TablePress_Import_View extends TablePress_View {
 			?>
 		</td>
 	</tr>
+	<?php } ?>
 	<tr id="row-import-source-form-field" class="bottom-border">
 		<th class="column-1 top-align" scope="row"><label for="tables-import-form-field"><?php _e( 'Import data', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
