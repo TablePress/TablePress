@@ -53,17 +53,17 @@ class TablePress_Post_Model extends TablePress_Model {
 		 */
 		$this->post_type = apply_filters( 'tablepress_post_type', $this->post_type );
 		$post_type_args = array(
-			'labels' => array(
+			'labels'          => array(
 				'name' => 'TablePress Tables',
 			),
-			'public' => false,
-			'show_ui' => false,
-			'query_var' => false,
-			'rewrite' => false,
+			'public'          => false,
+			'show_ui'         => false,
+			'query_var'       => false,
+			'rewrite'         => false,
 			'capability_type' => 'tablepress_table', // This ensures, that WP's regular CPT UI respects our capabilities.
-			'map_meta_cap' => false, // Integrated WP mapping does not fit our needs, therefore use our own in a filter.
-			'supports' => array( 'title', 'editor', 'excerpt', 'revisions' ),
-			'can_export' => true,
+			'map_meta_cap'    => false, // Integrated WP mapping does not fit our needs, therefore use our own in a filter.
+			'supports'        => array( 'title', 'editor', 'excerpt', 'revisions' ),
+			'can_export'      => true,
 		);
 		/**
 		 * Filter the arguments for the registration of the "Custom Post Type" that TablePress uses.
@@ -86,19 +86,19 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function insert( array $post ) {
 		$default_post = array(
-			'ID' => false, // false on new insert, but existing post ID on update
+			'ID'             => false, // false on new insert, but existing post ID on update
 			'comment_status' => 'closed',
-			'ping_status' => 'closed',
-			'post_category' => false,
-			'post_content' => '',
-			'post_excerpt' => '',
-			'post_parent' => 0,
-			'post_password' => '',
-			'post_status' => 'publish',
-			'post_title' => '',
-			'post_type' => $this->post_type,
-			'tags_input' => '',
-			'to_ping' => '',
+			'ping_status'    => 'closed',
+			'post_category'  => false,
+			'post_content'   => '',
+			'post_excerpt'   => '',
+			'post_parent'    => 0,
+			'post_password'  => '',
+			'post_status'    => 'publish',
+			'post_title'     => '',
+			'post_type'      => $this->post_type,
+			'tags_input'     => '',
+			'to_ping'        => '',
 		);
 		$post = array_merge( $default_post, $post );
 		// WP expects everything to be slashed.
@@ -136,19 +136,19 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function update( array $post ) {
 		$default_post = array(
-			'ID' => false, // false on new insert, but existing post ID on update
+			'ID'             => false, // false on new insert, but existing post ID on update
 			'comment_status' => 'closed',
-			'ping_status' => 'closed',
-			'post_category' => false,
-			'post_content' => '',
-			'post_excerpt' => '',
-			'post_parent' => 0,
-			'post_password' => '',
-			'post_status' => 'publish',
-			'post_title' => '',
-			'post_type' => $this->post_type,
-			'tags_input' => '',
-			'to_ping' => '',
+			'ping_status'    => 'closed',
+			'post_category'  => false,
+			'post_content'   => '',
+			'post_excerpt'   => '',
+			'post_parent'    => 0,
+			'post_password'  => '',
+			'post_status'    => 'publish',
+			'post_title'     => '',
+			'post_type'      => $this->post_type,
+			'tags_input'     => '',
+			'to_ping'        => '',
 		);
 		$post = array_merge( $default_post, $post );
 		// WP expects everything to be slashed.

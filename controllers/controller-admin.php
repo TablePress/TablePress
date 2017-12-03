@@ -202,10 +202,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$admin_page->enqueue_script( 'quicktags-button', array( 'quicktags', 'media-upload' ), array(
 			'editor_button' => array(
-				'caption' => __( 'Table', 'tablepress' ),
-				'title' => __( 'Insert a Table from TablePress', 'tablepress' ),
+				'caption'        => __( 'Table', 'tablepress' ),
+				'title'          => __( 'Insert a Table from TablePress', 'tablepress' ),
 				'thickbox_title' => __( 'Insert a Table from TablePress', 'tablepress' ),
-				'thickbox_url' => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' ),
+				'thickbox_url'   => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' ),
 			),
 		) );
 
@@ -284,9 +284,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Might need $this->init_i18n_support(); here.
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'new-content',
-			'id' => 'new-tablepress-table',
-			'title' => __( 'TablePress Table', 'tablepress' ),
-			'href' => TablePress::url( array( 'action' => 'add' ) ),
+			'id'     => 'new-tablepress-table',
+			'title'  => __( 'TablePress Table', 'tablepress' ),
+			'href'   => TablePress::url( array( 'action' => 'add' ) ),
 		) );
 	}
 
@@ -371,7 +371,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Pre-define some view data.
 		$data = array(
 			'view_actions' => $this->view_actions,
-			'message' => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
+			'message'      => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
 		);
 
 		// Depending on the action, load more necessary data for the corresponding view.
@@ -414,7 +414,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 						 */
 						TablePress::$model_options->update( array(
 							'use_custom_css_file' => true,
-							'custom_css_version' => TablePress::$model_options->get( 'custom_css_version' ) + 1,
+							'custom_css_version'  => TablePress::$model_options->get( 'custom_css_version' ) + 1,
 						) );
 						TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 					} else { // leaves only $result = false
@@ -542,54 +542,54 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	protected function init_view_actions() {
 		$this->view_actions = array(
-			'list' => array(
-				'show_entry' => true,
-				'page_title' => __( 'All Tables', 'tablepress' ),
+			'list'    => array(
+				'show_entry'       => true,
+				'page_title'       => __( 'All Tables', 'tablepress' ),
 				'admin_menu_title' => __( 'All Tables', 'tablepress' ),
-				'nav_tab_title' => __( 'All Tables', 'tablepress' ),
-				'required_cap' => 'tablepress_list_tables',
+				'nav_tab_title'    => __( 'All Tables', 'tablepress' ),
+				'required_cap'     => 'tablepress_list_tables',
 			),
-			'add' => array(
-				'show_entry' => true,
-				'page_title' => __( 'Add New Table', 'tablepress' ),
+			'add'     => array(
+				'show_entry'       => true,
+				'page_title'       => __( 'Add New Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Add New Table', 'tablepress' ),
-				'nav_tab_title' => __( 'Add New', 'tablepress' ),
-				'required_cap' => 'tablepress_add_tables',
+				'nav_tab_title'    => __( 'Add New', 'tablepress' ),
+				'required_cap'     => 'tablepress_add_tables',
 			),
-			'edit' => array(
-				'show_entry' => false,
-				'page_title' => __( 'Edit Table', 'tablepress' ),
+			'edit'    => array(
+				'show_entry'       => false,
+				'page_title'       => __( 'Edit Table', 'tablepress' ),
 				'admin_menu_title' => '',
-				'nav_tab_title' => '',
-				'required_cap' => 'tablepress_edit_tables',
+				'nav_tab_title'    => '',
+				'required_cap'     => 'tablepress_edit_tables',
 			),
-			'import' => array(
-				'show_entry' => true,
-				'page_title' => __( 'Import a Table', 'tablepress' ),
+			'import'  => array(
+				'show_entry'       => true,
+				'page_title'       => __( 'Import a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Import a Table', 'tablepress' ),
-				'nav_tab_title' => _x( 'Import', 'navigation bar', 'tablepress' ),
-				'required_cap' => 'tablepress_import_tables',
+				'nav_tab_title'    => _x( 'Import', 'navigation bar', 'tablepress' ),
+				'required_cap'     => 'tablepress_import_tables',
 			),
-			'export' => array(
-				'show_entry' => true,
-				'page_title' => __( 'Export a Table', 'tablepress' ),
+			'export'  => array(
+				'show_entry'       => true,
+				'page_title'       => __( 'Export a Table', 'tablepress' ),
 				'admin_menu_title' => __( 'Export a Table', 'tablepress' ),
-				'nav_tab_title' => _x( 'Export', 'navigation bar', 'tablepress' ),
-				'required_cap' => 'tablepress_export_tables',
+				'nav_tab_title'    => _x( 'Export', 'navigation bar', 'tablepress' ),
+				'required_cap'     => 'tablepress_export_tables',
 			),
 			'options' => array(
-				'show_entry' => true,
-				'page_title' => __( 'Plugin Options', 'tablepress' ),
+				'show_entry'       => true,
+				'page_title'       => __( 'Plugin Options', 'tablepress' ),
 				'admin_menu_title' => __( 'Plugin Options', 'tablepress' ),
-				'nav_tab_title' => __( 'Plugin Options', 'tablepress' ),
-				'required_cap' => 'tablepress_access_options_screen',
+				'nav_tab_title'    => __( 'Plugin Options', 'tablepress' ),
+				'required_cap'     => 'tablepress_access_options_screen',
 			),
-			'about' => array(
-				'show_entry' => true,
-				'page_title' => __( 'About', 'tablepress' ),
+			'about'   => array(
+				'show_entry'       => true,
+				'page_title'       => __( 'About', 'tablepress' ),
 				'admin_menu_title' => __( 'About TablePress', 'tablepress' ),
-				'nav_tab_title' => __( 'About', 'tablepress' ),
-				'required_cap' => 'tablepress_access_about_screen',
+				'nav_tab_title'    => __( 'About', 'tablepress' ),
+				'required_cap'     => 'tablepress_access_about_screen',
 			),
 		);
 
@@ -719,9 +719,20 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked)).
 		$checkbox_options = array(
 			// Table Options.
-			'table_head', 'table_foot', 'alternating_row_colors', 'row_hover', 'print_name', 'print_description',
+			'table_head',
+			'table_foot',
+			'alternating_row_colors',
+			'row_hover',
+			'print_name',
+			'print_description',
 			// DataTables JS Features.
-			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollx',
+			'use_datatables',
+			'datatables_sort',
+			'datatables_filter',
+			'datatables_paginate',
+			'datatables_lengthchange',
+			'datatables_info',
+			'datatables_scrollx',
 		);
 		foreach ( $checkbox_options as $option ) {
 			$edit_table['options'][ $option ] = ( isset( $edit_table['options'][ $option ] ) && 'true' === $edit_table['options'][ $option ] );
@@ -801,11 +812,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Create a new table array with information from the posted data.
 		$new_table = array(
-			'name' => $name,
+			'name'        => $name,
 			'description' => $description,
-			'data' => array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) ),
-			'visibility' => array(
-				'rows' => array_fill( 0, $num_rows, 1 ),
+			'data'        => array_fill( 0, $num_rows, array_fill( 0, $num_columns, '' ) ),
+			'visibility'  => array(
+				'rows'    => array_fill( 0, $num_rows, 1 ),
 				'columns' => array_fill( 0, $num_columns, 1 ),
 			),
 		);
@@ -1352,7 +1363,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$num_rows = count( $imported_table['data'] );
 		$num_columns = count( $imported_table['data'][0] );
 		$imported_table['visibility'] = array(
-			'rows' => array_pad( array_slice( $existing_table['visibility']['rows'], 0, $num_rows ), $num_rows, 1 ),
+			'rows'    => array_pad( array_slice( $existing_table['visibility']['rows'], 0, $num_rows ), $num_rows, 1 ),
 			'columns' => array_pad( array_slice( $existing_table['visibility']['columns'], 0, $num_columns ), $num_columns, 1 ),
 		);
 
@@ -1548,12 +1559,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		//
 		// Create a new table array with information from the imported table.
 		$new_table = array(
-			'name' => $wptr_table['name'],
+			'name'        => $wptr_table['name'],
 			'description' => $wptr_table['description'],
-			'data' => $wptr_table['data'],
-			'options' => array(),
-			'visibility' => array(
-				'rows' => array_fill( 0, count( $wptr_table['data'] ), 1 ),
+			'data'        => $wptr_table['data'],
+			'options'     => array(),
+			'visibility'  => array(
+				'rows'    => array_fill( 0, count( $wptr_table['data'] ), 1 ),
 				'columns' => array_fill( 0, count( $wptr_table['data'][0] ), 1 ),
 			),
 		);
@@ -1583,10 +1594,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 		}
 		// Array key is the same in both plugins for the following options.
-		foreach ( array( 'alternating_row_colors', 'row_hover',
-			'print_name', 'print_name_position', 'print_description', 'print_description_position',
-			'datatables_sort', 'datatables_filter', 'datatables_paginate',
-			'datatables_lengthchange', 'datatables_paginate_entries', 'datatables_info'
+		foreach ( array(
+			'alternating_row_colors',
+			'row_hover',
+			'print_name',
+			'print_name_position',
+			'print_description',
+			'print_description_position',
+			'datatables_sort',
+			'datatables_filter',
+			'datatables_paginate',
+			'datatables_lengthchange',
+			'datatables_paginate_entries',
+			'datatables_info',
 		) as $_option ) {
 			if ( isset( $wptr_table['options'][ $_option ] ) ) {
 				$new_table['options'][ $_option ] = $wptr_table['options'][ $_option ];
@@ -1829,7 +1849,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
-			'table_id' => $table_id,
+			'table_id'  => $table_id,
 			'head_html' => $_render->get_preview_css(),
 			'body_html' => $_render->get_output(),
 		);

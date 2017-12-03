@@ -32,8 +32,8 @@ class TablePress_Export_View extends TablePress_View {
 		parent::setup( $action, $data );
 
 		$this->process_action_messages( array(
-			'error_export' => __( 'Error: The export failed.', 'tablepress' ),
-			'error_load_table' => __( 'Error: This table could not be loaded!', 'tablepress' ),
+			'error_export'          => __( 'Error: The export failed.', 'tablepress' ),
+			'error_load_table'      => __( 'Error: This table could not be loaded!', 'tablepress' ),
 			'error_table_corrupted' => __( 'Error: The internal data of this table is corrupted!', 'tablepress' ),
 			'error_create_zip_file' => __( 'Error: The ZIP file could not be created.', 'tablepress' ),
 		) );
@@ -86,7 +86,7 @@ class TablePress_Export_View extends TablePress_View {
 		$import_url = TablePress::url( array( 'action' => 'import' ) );
 		?>
 		<p><?php _e( 'No tables found.', 'tablepress' ); ?></p>
-		<p><?php printf( __( 'You should <a href="%s">add</a> or <a href="%s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url ); ?></p>
+		<p><?php printf( __( 'You should <a href="%1$s">add</a> or <a href="%2$s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url ); ?></p>
 		<?php
 	}
 
@@ -106,9 +106,9 @@ class TablePress_Export_View extends TablePress_View {
 		<th class="column-1 top-align" scope="row">
 			<label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label>
 			<?php
-				if ( $data['zip_support_available'] ) {
-					echo '<br /><br /><label for="tables-export-select-all"><input type="checkbox" id="tables-export-select-all"> ' . __( 'Select all', 'tablepress' ) . '</label>';
-				}
+			if ( $data['zip_support_available'] ) {
+				echo '<br /><br /><label for="tables-export-select-all"><input type="checkbox" id="tables-export-select-all"> ' . __( 'Select all', 'tablepress' ) . '</label>';
+			}
 			?>
 		</th>
 		<td class="column-2">
@@ -121,25 +121,25 @@ class TablePress_Export_View extends TablePress_View {
 			?>
 			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
 			<?php
-				foreach ( $data['table_ids'] as $table_id ) {
-					// Load table, without table data, options, and visibility settings.
-					$table = TablePress::$model_table->load( $table_id, false, false );
-					if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) ) {
-						continue;
-					}
-					if ( '' === trim( $table['name'] ) ) {
-						$table['name'] = __( '(no name)', 'tablepress' );
-					}
-					$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
-					$selected = selected( true, in_array( $table['id'], $data['export_ids'], true ), false );
-					echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
+			foreach ( $data['table_ids'] as $table_id ) {
+				// Load table, without table data, options, and visibility settings.
+				$table = TablePress::$model_table->load( $table_id, false, false );
+				if ( ! current_user_can( 'tablepress_export_table', $table['id'] ) ) {
+					continue;
 				}
+				if ( '' === trim( $table['name'] ) ) {
+					$table['name'] = __( '(no name)', 'tablepress' );
+				}
+				$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
+				$selected = selected( true, in_array( $table['id'], $data['export_ids'], true ), false );
+				echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
+			}
 			?>
 			</select>
 			<?php
-				if ( $data['zip_support_available'] ) {
-					echo '<br /><span class="description">' . __( 'You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac).', 'tablepress' ) . '</span>';
-				}
+			if ( $data['zip_support_available'] ) {
+				echo '<br /><span class="description">' . __( 'You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac).', 'tablepress' ) . '</span>';
+			}
 			?>
 		</td>
 	</tr>
@@ -148,10 +148,10 @@ class TablePress_Export_View extends TablePress_View {
 		<td class="column-2">
 			<select id="tables-export-format" name="export[format]">
 			<?php
-				foreach ( $data['export_formats'] as $format => $name ) {
-					$selected = selected( $format, $data['export_format'], false );
-					echo "<option{$selected} value=\"{$format}\">{$name}</option>";
-				}
+			foreach ( $data['export_formats'] as $format => $name ) {
+				$selected = selected( $format, $data['export_format'], false );
+				echo "<option{$selected} value=\"{$format}\">{$name}</option>";
+			}
 			?>
 			</select>
 		</td>
@@ -161,10 +161,10 @@ class TablePress_Export_View extends TablePress_View {
 		<td class="column-2">
 			<select id="tables-export-csv-delimiter" name="export[csv_delimiter]">
 			<?php
-				foreach ( $data['csv_delimiters'] as $delimiter => $name ) {
-					$selected = selected( $delimiter, $data['csv_delimiter'], false );
-					echo "<option{$selected} value=\"{$delimiter}\">{$name}</option>";
-				}
+			foreach ( $data['csv_delimiters'] as $delimiter => $name ) {
+				$selected = selected( $delimiter, $data['csv_delimiter'], false );
+				echo "<option{$selected} value=\"{$delimiter}\">{$name}</option>";
+			}
 			?>
 			</select> <span id="tables-export-csv-delimiter-description" class="description hide-if-js"><?php _e( '(Only needed for CSV export.)', 'tablepress' ); ?></span>
 		</td>
@@ -173,14 +173,14 @@ class TablePress_Export_View extends TablePress_View {
 		<th class="column-1" scope="row"><?php _e( 'ZIP file', 'tablepress' ); ?>:</th>
 		<td class="column-2">
 		<?php
-			if ( $data['zip_support_available'] ) {
+		if ( $data['zip_support_available'] ) {
 		?>
-			<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
-			<label for="tables-export-zip-file"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?> <span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span></label>
+		<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
+		<label for="tables-export-zip-file"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?> <span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span></label>
 		<?php
-			} else {
-				_e( 'Note: Support for ZIP file creation seems not to be available on this server.', 'tablepress' );
-			}
+		} else {
+			_e( 'Note: Support for ZIP file creation seems not to be available on this server.', 'tablepress' );
+		}
 		?>
 		</td>
 	</tr>

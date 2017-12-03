@@ -28,17 +28,17 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	protected $default_plugin_options = array(
 		'plugin_options_db_version' => 0,
-		'table_scheme_db_version' => 0,
-		'prev_tablepress_version' => '0',
-		'tablepress_version' => TablePress::version,
-		'first_activation' => 0,
-		'message_plugin_update' => false,
-		'message_donation_nag' => true,
-		'use_custom_css' => true,
-		'use_custom_css_file' => true,
-		'custom_css' => '',
-		'custom_css_minified' => '',
-		'custom_css_version' => 0,
+		'table_scheme_db_version'   => 0,
+		'prev_tablepress_version'   => '0',
+		'tablepress_version'        => TablePress::version,
+		'first_activation'          => 0,
+		'message_plugin_update'     => false,
+		'message_donation_nag'      => true,
+		'use_custom_css'            => true,
+		'use_custom_css_file'       => true,
+		'custom_css'                => '',
+		'custom_css_minified'       => '',
+		'custom_css_version'        => 0,
 	);
 
 	/**
@@ -49,8 +49,8 @@ class TablePress_Options_Model extends TablePress_Model {
 	 */
 	protected $default_user_options = array(
 		'user_options_db_version' => TablePress::db_version, // to prevent saving on first load
-		'admin_menu_parent_page' => 'middle',
-		'message_first_visit' => true,
+		'admin_menu_parent_page'  => 'middle',
+		'message_first_visit'     => true,
 	);
 
 	/**
@@ -78,13 +78,13 @@ class TablePress_Options_Model extends TablePress_Model {
 		parent::__construct();
 
 		$params = array(
-			'option_name' => 'tablepress_plugin_options',
+			'option_name'   => 'tablepress_plugin_options',
 			'default_value' => $this->default_plugin_options,
 		);
 		$this->plugin_options = TablePress::load_class( 'TablePress_WP_Option', 'class-wp_option.php', 'classes', $params );
 
 		$params = array(
-			'option_name' => 'tablepress_user_options',
+			'option_name'   => 'tablepress_user_options',
 			'default_value' => $this->default_user_options,
 		);
 		$this->user_options = TablePress::load_class( 'TablePress_WP_User_Option', 'class-wp_user_option.php', 'classes', $params );

@@ -336,7 +336,7 @@ class TablePress_CSSTidy_print {
 					break;
 				case AT_END:
 					$out = &$output;
-					$in_at_out = str_replace( "\n\n", "\r\n", $in_at_out); // don't fill empty lines
+					$in_at_out = str_replace( "\n\n", "\r\n", $in_at_out ); // don't fill empty lines
 					$in_at_out = str_replace( "\n", "\n" . $template[10], $in_at_out );
 					$in_at_out = str_replace( "\r\n", "\n\n", $in_at_out );
 					$out .= $template[10] . $in_at_out . $template[9];

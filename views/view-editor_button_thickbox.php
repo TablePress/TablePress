@@ -185,8 +185,10 @@ body.rtl {
 ?>
 <form method="get" action="">
 	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
-	<?php wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false ); echo "\n"; ?>
-	<?php $this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' ); ?>
+<?php
+	wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false );
+	$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' );
+?>
 </form>
 	<?php $this->wp_list_table->display(); ?>
 </div>
@@ -236,10 +238,10 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'singular'	=> 'tablepress-table',				// Singular name of the listed records.
-			'plural'	=> 'tablepress-editor-button-list', // Plural name of the listed records.
-			'ajax'		=> false,							// Does this list table support AJAX?
-			'screen'	=> get_current_screen(),			// WP_Screen object.
+			'singular' => 'tablepress-table',              // Singular name of the listed records.
+			'plural'   => 'tablepress-editor-button-list', // Plural name of the listed records.
+			'ajax'     => false,                           // Does this list table support AJAX?
+			'screen'   => get_current_screen(),            // WP_Screen object.
 		) );
 	}
 
@@ -279,10 +281,10 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			// "name" is special in WP, which is why we prefix every entry here, to be safe!
-			'table_id' => __( 'ID', 'tablepress' ),
-			'table_name' => __( 'Table Name', 'tablepress' ),
+			'table_id'          => __( 'ID', 'tablepress' ),
+			'table_name'        => __( 'Table Name', 'tablepress' ),
 			'table_description' => __( 'Description', 'tablepress' ),
-			'table_action' => __( 'Action', 'tablepress' ),
+			'table_action'      => __( 'Action', 'tablepress' ),
 		);
 		return $columns;
 	}
@@ -303,8 +305,8 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		}
 
 		$sortable_columns = array(
-			'table_id' => array( 'id', true ), // true means its already sorted
-			'table_name' => array( 'name', false ),
+			'table_id'          => array( 'id', true ), // true means its already sorted
+			'table_name'        => array( 'name', false ),
 			'table_description' => array( 'description', false ),
 		);
 		return $sortable_columns;
@@ -495,7 +497,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 		// Maybe sort the items.
 		$_sortable_columns = $this->get_sortable_columns();
-		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) ) {
+		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns[ "table_{$orderby}" ] ) ) {
 			usort( $this->items, array( $this, '_order_callback' ) );
 		}
 
@@ -512,7 +514,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		// Register pagination options and calculation results.
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,                     // Total number of records/items
-			'per_page' => $per_page,                           // Number of items per page
+			'per_page'    => $per_page,                           // Number of items per page
 			'total_pages' => ceil( $total_items / $per_page ), // Total number of pages
 		) );
 	}

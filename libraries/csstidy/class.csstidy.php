@@ -71,7 +71,7 @@ if ( ! function_exists( 'ctype_alpha' ) ) {
 	 * @return bool Whether all characters in the string are alphabetic characters.
 	 */
 	function ctype_alpha( $text ) {
-    	return ( 1 === preg_match( '/^[a-zA-Z]+$/', $text ) );
+		return ( 1 === preg_match( '/^[a-zA-Z]+$/', $text ) );
 	}
 }
 if ( ! function_exists( 'ctype_xdigit' ) ) {
@@ -84,7 +84,7 @@ if ( ! function_exists( 'ctype_xdigit' ) ) {
 	 * @return bool Whether $text is a hexadecimal number.
 	 */
 	function ctype_xdigit( $text ) {
-    	return ( 1 === preg_match( '/^[a-fA-F0-9]+$/', $text ) );
+		return ( 1 === preg_match( '/^[a-fA-F0-9]+$/', $text ) );
 	}
 }
 
@@ -94,13 +94,13 @@ if ( ! function_exists( 'ctype_xdigit' ) ) {
  * @TODO: Make these class constants of CSSTidy.
  * @since 1.0.0
  */
-define( 'AT_START',    1 );
-define( 'AT_END',      2 );
-define( 'SEL_START',   3 );
-define( 'SEL_END',     4 );
-define( 'PROPERTY',    5 );
-define( 'VALUE',       6 );
-define( 'COMMENT',     7 );
+define( 'AT_START', 1 );
+define( 'AT_END', 2 );
+define( 'SEL_START', 3 );
+define( 'SEL_END', 4 );
+define( 'PROPERTY', 5 );
+define( 'VALUE', 6 );
+define( 'COMMENT', 7 );
 define( 'DEFAULT_AT', 41 );
 
 /**
@@ -522,7 +522,10 @@ class TablePress_CSSTidy {
 			$line = $this->line;
 		}
 		$line = intval( $line );
-		$add = array( 'm' => $message, 't' => $type );
+		$add = array(
+			'm' => $message,
+			't' => $type,
+		);
 		if ( ! isset( $this->log[ $line ] ) || ! in_array( $add, $this->log[ $line ], true ) ) {
 			$this->log[ $line ][] = $add;
 		}
@@ -766,7 +769,7 @@ class TablePress_CSSTidy {
 								}
 								$this->log( 'Invalid @-rule: ' . $invalid_at_name . ' (removed)', 'Warning' );
 							}
-						} elseif ( ( '"' === $string[ $i ] || "'" === $string[ $i ]  ) ) {
+						} elseif ( ( '"' === $string[ $i ] || "'" === $string[ $i ] ) ) {
 							$this->cur_string[] = $string[ $i ];
 							$this->status = 'instr';
 							$this->str_char[] = $string[ $i ];
@@ -805,7 +808,7 @@ class TablePress_CSSTidy {
 						}
 					} else {
 						$lastpos = strlen( $this->selector ) - 1;
-						if ( -1 === $lastpos  || ! ( ( ctype_space( $this->selector[ $lastpos ] ) || $this->is_token( $this->selector, $lastpos ) && ',' === $this->selector[ $lastpos ] ) && ctype_space( $string[ $i ] ) ) ) {
+						if ( -1 === $lastpos || ! ( ( ctype_space( $this->selector[ $lastpos ] ) || $this->is_token( $this->selector, $lastpos ) && ',' === $this->selector[ $lastpos ] ) && ctype_space( $string[ $i ] ) ) ) {
 							$this->selector .= $string[ $i ];
 						}
 					}
@@ -851,7 +854,7 @@ class TablePress_CSSTidy {
 					break;
 				/* Case in-value */
 				case 'iv':
-					$pn = ( ( "\n" === $string[ $i ] || "\r" === $string[ $i ] ) && $this->property_is_next( $string, $i + 1 ) || $i === strlen( $string ) - 1 );
+					$pn = ( ( "\n" === $string[ $i ] || "\r" === $string[ $i ] ) && $this->property_is_next( $string, $i + 1 ) || ( strlen( $string ) - 1 ) === $i );
 					if ( ( $this->is_token( $string, $i ) || $pn ) && ( ! ( ',' === $string[ $i ] && ! ctype_space( $string[ $i + 1 ] ) ) ) ) {
 						if ( '/' === $string[ $i ] && '*' === @$string[ $i + 1 ] ) {
 							$this->status = 'ic';
@@ -888,7 +891,7 @@ class TablePress_CSSTidy {
 										if ( empty( $this->sub_value_arr ) ) {
 											// Quote URLs in imports only if they're not already inside url() and not already quoted.
 											if ( 'url(' !== substr( $this->sub_value, 0, 4 ) ) {
-												if ( ! ( $this->sub_value[0] === substr( $this->sub_value, -1 ) && in_array( $this->sub_value[0], array( "'", '"' ), true ) ) ) {
+												if ( ! ( substr( $this->sub_value, -1 ) === $this->sub_value[0] && in_array( $this->sub_value[0], array( "'", '"' ), true ) ) ) {
 													$this->sub_value = '"' . $this->sub_value . '"';
 												}
 											}
@@ -986,9 +989,9 @@ class TablePress_CSSTidy {
 					break;
 				/* Case in string */
 				case 'instr':
-					$_str_char = $this->str_char[count( $this->str_char ) - 1];
-					$_cur_string = $this->cur_string[count( $this->cur_string ) - 1];
-					$_quoted_string = $this->quoted_string[count( $this->quoted_string ) - 1];
+					$_str_char = $this->str_char[ count( $this->str_char ) - 1 ];
+					$_cur_string = $this->cur_string[ count( $this->cur_string ) - 1 ];
+					$_quoted_string = $this->quoted_string[ count( $this->quoted_string ) - 1 ];
 					$temp_add = $string[ $i ];
 
 					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses,
@@ -1034,7 +1037,7 @@ class TablePress_CSSTidy {
 						array_pop( $this->str_char );
 
 						if ( ')' === $_str_char ) {
-							$_cur_string = "(" . trim( substr( $_cur_string, 1, -1 ) ) . ")";
+							$_cur_string = '(' . trim( substr( $_cur_string, 1, -1 ) ) . ')';
 						}
 
 						if ( 'iv' === $this->status ) {
@@ -1119,7 +1122,7 @@ class TablePress_CSSTidy {
 			$lastpos = 0;
 			$this->sel_separate[] = strlen( $this->selector );
 			foreach ( $this->sel_separate as $num => $pos ) {
-				if ( $num === count( $this->sel_separate ) - 1 ) {
+				if ( ( count( $this->sel_separate ) - 1 ) === $num ) {
 					$pos += 1;
 				}
 
@@ -1400,7 +1403,7 @@ class TablePress_CSSTidy {
 			if ( ( ',' === $value[ $i ] || ' ' === $value[ $i ] ) && true === $in_str ) {
 				$in_str = false;
 				$strings[] = $current_string;
-				$current_string = "";
+				$current_string = '';
 			} elseif ( '"' === $value[ $i ] || "'" === $value[ $i ] ) {
 				if ( $in_str === $value[ $i ] ) {
 					$strings[] = $current_string;

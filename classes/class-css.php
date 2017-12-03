@@ -327,7 +327,7 @@ class TablePress_CSS {
 			$default_css = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css );
 		}
 		$file_content = array(
-			'normal' => $custom_css_normal,
+			'normal'   => $custom_css_normal,
 			'minified' => $custom_css_minified,
 			'combined' => $default_css . "\n" . $custom_css_minified,
 		);

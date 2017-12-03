@@ -99,8 +99,8 @@ abstract class TablePress_View {
 		add_filter( "get_user_option_screen_layout_{$screen->id}", array( $this, 'set_current_screen_layout_columns' ) );
 
 		$screen->add_help_tab( array(
-			'id' => 'tablepress-help', // This should be unique for the screen.
-			'title' => __( 'TablePress Help', 'tablepress' ),
+			'id'      => 'tablepress-help', // This should be unique for the screen.
+			'title'   => __( 'TablePress Help', 'tablepress' ),
 			'content' => '<p>' . $this->help_tab_content() . '</p>'
 						. '<p>' . sprintf( __( 'More information about TablePress can be found on the <a href="%1$s">plugin&#8217;s website</a> or on its page in the <a href="%2$s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://tablepress.org/', 'https://wordpress.org/plugins/tablepress/' ) . ' '
 						. sprintf( __( 'For technical information, please see the <a href="%s">documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' ) . ' '
@@ -155,7 +155,7 @@ abstract class TablePress_View {
 		}
 		$this->admin_page->enqueue_script( 'common', array( 'jquery-core', 'postbox' ), array(
 			'common' => array(
-				'ays_delete_single_table' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
+				'ays_delete_single_table'    => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
 				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' ),
 			)
 		) );
@@ -217,10 +217,10 @@ abstract class TablePress_View {
 
 		$long_id = "tablepress_{$this->action}-{$id}";
 		$this->textboxes[ $context ][ $id ] = array(
-			'id' => $long_id,
+			'id'       => $long_id,
 			'callback' => $callback,
-			'context' => $context,
-			'wrap' => $wrap,
+			'context'  => $context,
+			'wrap'     => $wrap,
 		);
 	}
 
@@ -292,8 +292,10 @@ abstract class TablePress_View {
 		if ( ! $this->has_meta_boxes ) {
 			return;
 		}
-		wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); echo "\n";
-		wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); echo "\n";
+		wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+		echo "\n";
+		wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
+		echo "\n";
 	}
 
 	/**
@@ -305,7 +307,8 @@ abstract class TablePress_View {
 	 * @param array $box  Information about the text box.
 	 */
 	protected function action_nonce_field( array $data, array $box ) {
-		wp_nonce_field( TablePress::nonce( $this->action ) ); echo "\n";
+		wp_nonce_field( TablePress::nonce( $this->action ) );
+		echo "\n";
 	}
 
 	/**

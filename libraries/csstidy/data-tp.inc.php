@@ -19,14 +19,14 @@ $data['csstidy']['all_properties']['zoom'] = 'CSS3.0';
 
 // Support browser prefixes for properties only in the latest CSS draft.
 foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
-	$data['csstidy']['all_properties']['*' . $property] = $levels; // IE7 hacks
+	$data['csstidy']['all_properties'][ '*' . $property ] = $levels; // IE7 hacks
 
 	if ( false === strpos( $levels, ',' ) ) {
-		$data['csstidy']['all_properties']['-moz-' . $property] = $levels;
-		$data['csstidy']['all_properties']['-webkit-' . $property] = $levels;
-		$data['csstidy']['all_properties']['-ms-' . $property] = $levels;
-		$data['csstidy']['all_properties']['-o-' . $property] = $levels;
-		$data['csstidy']['all_properties']['-khtml-' . $property] = $levels;
+		$data['csstidy']['all_properties'][ '-moz-' . $property ] = $levels;
+		$data['csstidy']['all_properties'][ '-webkit-' . $property ] = $levels;
+		$data['csstidy']['all_properties'][ '-ms-' . $property ] = $levels;
+		$data['csstidy']['all_properties'][ '-o-' . $property ] = $levels;
+		$data['csstidy']['all_properties'][ '-khtml-' . $property ] = $levels;
 
 		if ( in_array( $property, $data['csstidy']['unit_values'] ) ) {
 			$data['csstidy']['unit_values'][] = '-moz-' . $property;

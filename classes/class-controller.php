@@ -99,7 +99,7 @@ abstract class TablePress_Controller {
 			if ( 0 === TablePress::$model_options->get( 'first_activation' ) ) {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation.
 				TablePress::$model_options->update( array(
-					'first_activation' => current_time( 'timestamp' ),
+					'first_activation'          => current_time( 'timestamp' ),
 					'plugin_options_db_version' => TablePress::db_version,
 				) );
 			} else {
@@ -107,9 +107,9 @@ abstract class TablePress_Controller {
 				TablePress::$model_options->merge_plugin_options_defaults();
 				$updated_options = array(
 					'plugin_options_db_version' => TablePress::db_version,
-					'prev_tablepress_version' => TablePress::$model_options->get( 'tablepress_version' ),
-					'tablepress_version' => TablePress::version,
-					'message_plugin_update' => true,
+					'prev_tablepress_version'   => TablePress::$model_options->get( 'tablepress_version' ),
+					'tablepress_version'        => TablePress::version,
+					'message_plugin_update'     => true,
 				);
 
 				// Only write files, if "Custom CSS" is to be used, and if there is "Custom CSS".

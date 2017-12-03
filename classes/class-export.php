@@ -52,13 +52,13 @@ class TablePress_Export {
 	public function __construct() {
 		// Initiate here, because function call not possible outside a class method.
 		$this->export_formats = array(
-			'csv' => __( 'CSV - Character-Separated Values', 'tablepress' ),
+			'csv'  => __( 'CSV - Character-Separated Values', 'tablepress' ),
 			'html' => __( 'HTML - Hypertext Markup Language', 'tablepress' ),
 			'json' => __( 'JSON - JavaScript Object Notation', 'tablepress' ),
 		);
 		$this->csv_delimiters = array(
-			';' => __( '; (semicolon)', 'tablepress' ),
-			',' => __( ', (comma)', 'tablepress' ),
+			';'   => __( '; (semicolon)', 'tablepress' ),
+			','   => __( ', (comma)', 'tablepress' ),
 			'tab' => __( '\t (tabulator)', 'tablepress' ),
 		);
 

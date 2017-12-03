@@ -280,7 +280,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 		// Generate the response.
 		$response = array(
-			'success' => $success,
+			'success'   => $success,
 			'head_html' => $head_html,
 			'body_html' => $body_html,
 		);

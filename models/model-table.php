@@ -50,11 +50,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 * @var array $args {
 	 *     @type int   $last_id    Last table ID that was given to a new table.
- 	 *     @type array $table_post Connections between table ID and post ID (key: table ID, value: post ID).
- 	 * }
+	 *     @type array $table_post Connections between table ID and post ID (key: table ID, value: post ID).
+	 * }
 	 */
 	protected $default_tables = array(
-		'last_id' => 0,
+		'last_id'    => 0,
 		'table_post' => array(),
 	);
 
@@ -76,102 +76,102 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @var array
 	 * @link https://www.datatables.net/upgrade/1.10-convert
 	 */
-	protected $datatables_parameter_mappings = array (
+	protected $datatables_parameter_mappings = array(
 		'fnStateSaveParams' => 'stateSaveParams',
 		'fnStateLoadParams' => 'stateLoadParams',
 		'fnPreDrawCallback' => 'preDrawCallback',
-		'fnHeaderCallback' => 'headerCallback',
-		'fnFooterCallback' => 'footerCallback',
-		'sSortDescending' => 'sortDescending',
-		'sPaginationType' => 'pagingType',
-		'sLoadingRecords' => 'loadingRecords',
-		'sDefaultContent' => 'defaultContent',
-		'sContentPadding' => 'contentPadding',
-		'iCookieDuration' => 'stateDuration',
-		'bScrollCollapse' => 'scrollCollapse',
-		'asStripeClasses' => 'stripeClasses',
-		'sSortAscending' => 'sortAscending',
-		'sInfoThousands' => 'thousands',
-		'iDisplayLength' => 'pageLength',
-		'fnServerParams' => 'ajax',
-		'fnInitComplete' => 'initComplete',
-		'fnInfoCallback' => 'infoCallback',
-		'fnFormatNumber' => 'formatNumber',
-		'fnDrawCallback' => 'drawCallback',
-		'aaSortingFixed' => 'orderFixed',
-		'sSortDataType' => 'orderDataType',
-		'sServerMethod' => 'ajax',
-		'sScrollXInner' => 'scrollXInner',
-		'sInfoFiltered' => 'infoFiltered',
-		'sAjaxDataProp' => 'dataSrc',
-		'iDisplayStart' => 'displayStart',
-		'iDeferLoading' => 'deferLoading',
-		'fnStateLoaded' => 'stateLoaded',
-		'fnRowCallback' => 'rowCallback',
-		'fnCreatedCell' => 'createdCell',
-		'bSortCellsTop' => 'orderCellsTop',
-		'bLengthChange' => 'lengthChange',
-		'sZeroRecords' => 'zeroRecords',
-		'sInfoPostFix' => 'infoPostFix',
-		'fnServerData' => 'ajax',
-		'fnCreatedRow' => 'createdRow',
-		'bSortClasses' => 'orderClasses',
-		'bDeferRender' => 'deferRender',
-		'aoSearchCols' => 'searchCols',
-		'aoColumnDefs' => 'columnDefs',
-		'sProcessing' => 'processing',
-		'sLengthMenu' => 'lengthMenu',
-		'sEmptyTable' => 'emptyTable',
-		'sAjaxSource' => 'ajax',
-		'fnStateSave' => 'stateSaveCallback',
-		'fnStateLoad' => 'stateLoadCallback',
-		'bServerSide' => 'serverSide',
-		'bSearchable' => 'searchable',
-		'bProcessing' => 'processing',
-		'aLengthMenu' => 'lengthMenu',
-		'sInfoEmpty' => 'infoEmpty',
-		'bStateSave' => 'stateSave',
-		'bAutoWidth' => 'autoWidth',
-		'className' => 'className', // Replace "className" with itself, to avoid that the replacement for "sName" breaks it.
-		'sPrevious' => 'previous',
-		'sCellType' => 'cellType',
-		'oPaginate' => 'paginate',
-		'oLanguage' => 'language',
-		'iTabIndex' => 'tabIndex',
-		'iDataSort' => 'orderData',
-		'bSortable' => 'orderable',
-		'bRetrieve' => 'retrieve',
-		'bPaginate' => 'paging',
-		'bJQueryUI' => 'jQueryUI',
-		'asSorting' => 'orderSequence',
-		'aoColumns' => 'columns',
-		'aaSorting' => 'order',
-		'aDataSort' => 'orderData',
-		'sScrollY' => 'scrollY',
-		'sScrollX' => 'scrollX',
-		'bVisible' => 'visible',
-		'bDestroy' => 'destroy',
-		'aTargets' => 'targets',
-		'sSearch' => 'search',
-		'oSearch' => 'search',
-		'mRender' => 'render',
-		'bFilter' => 'searching',
-		'sWidth' => 'width',
-		'sTitle' => 'title',
-		'sFirst' => 'first',
-		'sClass' => 'className',
-		'aaData' => 'data',
-		'sType' => 'type',
-		'sNext' => 'next',
-		'sName' => 'name',
-		'sLast' => 'last',
-		'sInfo' => 'info',
-		'oAria' => 'aria',
-		'mData' => 'data',
-		'bSort' => 'ordering',
-		'bInfo' => 'info',
-		'sUrl' => 'url',
-		'sDom' => 'dom',
+		'fnHeaderCallback'  => 'headerCallback',
+		'fnFooterCallback'  => 'footerCallback',
+		'sSortDescending'   => 'sortDescending',
+		'sPaginationType'   => 'pagingType',
+		'sLoadingRecords'   => 'loadingRecords',
+		'sDefaultContent'   => 'defaultContent',
+		'sContentPadding'   => 'contentPadding',
+		'iCookieDuration'   => 'stateDuration',
+		'bScrollCollapse'   => 'scrollCollapse',
+		'asStripeClasses'   => 'stripeClasses',
+		'sSortAscending'    => 'sortAscending',
+		'sInfoThousands'    => 'thousands',
+		'iDisplayLength'    => 'pageLength',
+		'fnServerParams'    => 'ajax',
+		'fnInitComplete'    => 'initComplete',
+		'fnInfoCallback'    => 'infoCallback',
+		'fnFormatNumber'    => 'formatNumber',
+		'fnDrawCallback'    => 'drawCallback',
+		'aaSortingFixed'    => 'orderFixed',
+		'sSortDataType'     => 'orderDataType',
+		'sServerMethod'     => 'ajax',
+		'sScrollXInner'     => 'scrollXInner',
+		'sInfoFiltered'     => 'infoFiltered',
+		'sAjaxDataProp'     => 'dataSrc',
+		'iDisplayStart'     => 'displayStart',
+		'iDeferLoading'     => 'deferLoading',
+		'fnStateLoaded'     => 'stateLoaded',
+		'fnRowCallback'     => 'rowCallback',
+		'fnCreatedCell'     => 'createdCell',
+		'bSortCellsTop'     => 'orderCellsTop',
+		'bLengthChange'     => 'lengthChange',
+		'sZeroRecords'      => 'zeroRecords',
+		'sInfoPostFix'      => 'infoPostFix',
+		'fnServerData'      => 'ajax',
+		'fnCreatedRow'      => 'createdRow',
+		'bSortClasses'      => 'orderClasses',
+		'bDeferRender'      => 'deferRender',
+		'aoSearchCols'      => 'searchCols',
+		'aoColumnDefs'      => 'columnDefs',
+		'sProcessing'       => 'processing',
+		'sLengthMenu'       => 'lengthMenu',
+		'sEmptyTable'       => 'emptyTable',
+		'sAjaxSource'       => 'ajax',
+		'fnStateSave'       => 'stateSaveCallback',
+		'fnStateLoad'       => 'stateLoadCallback',
+		'bServerSide'       => 'serverSide',
+		'bSearchable'       => 'searchable',
+		'bProcessing'       => 'processing',
+		'aLengthMenu'       => 'lengthMenu',
+		'sInfoEmpty'        => 'infoEmpty',
+		'bStateSave'        => 'stateSave',
+		'bAutoWidth'        => 'autoWidth',
+		'className'         => 'className', // Replace "className" with itself, to avoid that the replacement for "sName" breaks it.
+		'sPrevious'         => 'previous',
+		'sCellType'         => 'cellType',
+		'oPaginate'         => 'paginate',
+		'oLanguage'         => 'language',
+		'iTabIndex'         => 'tabIndex',
+		'iDataSort'         => 'orderData',
+		'bSortable'         => 'orderable',
+		'bRetrieve'         => 'retrieve',
+		'bPaginate'         => 'paging',
+		'bJQueryUI'         => 'jQueryUI',
+		'asSorting'         => 'orderSequence',
+		'aoColumns'         => 'columns',
+		'aaSorting'         => 'order',
+		'aDataSort'         => 'orderData',
+		'sScrollY'          => 'scrollY',
+		'sScrollX'          => 'scrollX',
+		'bVisible'          => 'visible',
+		'bDestroy'          => 'destroy',
+		'aTargets'          => 'targets',
+		'sSearch'           => 'search',
+		'oSearch'           => 'search',
+		'mRender'           => 'render',
+		'bFilter'           => 'searching',
+		'sWidth'            => 'width',
+		'sTitle'            => 'title',
+		'sFirst'            => 'first',
+		'sClass'            => 'className',
+		'aaData'            => 'data',
+		'sType'             => 'type',
+		'sNext'             => 'next',
+		'sName'             => 'name',
+		'sLast'             => 'last',
+		'sInfo'             => 'info',
+		'oAria'             => 'aria',
+		'mData'             => 'data',
+		'bSort'             => 'ordering',
+		'bInfo'             => 'info',
+		'sUrl'              => 'url',
+		'sDom'              => 'dom',
 	);
 
 	/**
@@ -184,7 +184,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$this->model_post = TablePress::load_model( 'post' );
 
 		$params = array(
-			'option_name' => 'tablepress_tables',
+			'option_name'   => 'tablepress_tables',
 			'default_value' => $this->default_tables,
 		);
 		$this->tables = TablePress::load_class( 'TablePress_WP_Option', 'class-wp_option.php', 'classes', $params );
@@ -233,11 +233,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		$post = array(
-			'ID' => $post_id,
-			'post_title' => $table['name'],
+			'ID'             => $post_id,
+			'post_title'     => $table['name'],
 			// 'post_author' => $table['author'],
-			'post_excerpt' => $table['description'],
-			'post_content' => wp_json_encode( $table['data'] ),
+			'post_excerpt'   => $table['description'],
+			'post_content'   => wp_json_encode( $table['data'] ),
 			'post_mime_type' => 'application/json',
 		);
 
@@ -256,10 +256,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _post_to_table( $post, $table_id, $load_data ) {
 		$table = array(
-			'id' => $table_id,
-			'name' => $post->post_title,
-			'description' => $post->post_excerpt,
-			'author' => $post->post_author,
+			'id'            => $table_id,
+			'name'          => $post->post_title,
+			'description'   => $post->post_excerpt,
+			'author'        => $post->post_author,
 			// 'created' => $post->post_date,
 			'last_modified' => $post->post_modified,
 		);
@@ -649,7 +649,10 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		$count_db = $this->model_post->count_posts();
-		return array( 'list' => $count_list, 'db' => $count_db );
+		return array(
+			'list' => $count_list,
+			'db'   => $count_db,
+		);
 	}
 
 	/**
@@ -823,37 +826,37 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function get_table_template() {
 		// Attention: Array keys have to be lowercase, to make it possible to match them with Shortcode attributes!
 		$table = array(
-			'id' => false,
-			'name' => '',
-			'description' => '',
-			'data' => array( array( '' ) ), // one empty cell
+			'id'            => false,
+			'name'          => '',
+			'description'   => '',
+			'data'          => array( array( '' ) ), // one empty cell
 			// 'created' => current_time( 'mysql' ),
 			'last_modified' => current_time( 'mysql' ),
-			'author' => get_current_user_id(),
-			'options' => array(
-				'last_editor' => get_current_user_id(),
-				'table_head' => true,
-				'table_foot' => false,
-				'alternating_row_colors' => true,
-				'row_hover' => true,
-				'print_name' => false,
-				'print_name_position' => 'above',
-				'print_description' => false,
-				'print_description_position' => 'below',
-				'extra_css_classes' => '',
+			'author'        => get_current_user_id(),
+			'options'       => array(
+				'last_editor'                 => get_current_user_id(),
+				'table_head'                  => true,
+				'table_foot'                  => false,
+				'alternating_row_colors'      => true,
+				'row_hover'                   => true,
+				'print_name'                  => false,
+				'print_name_position'         => 'above',
+				'print_description'           => false,
+				'print_description_position'  => 'below',
+				'extra_css_classes'           => '',
 				// DataTables JavaScript library
-				'use_datatables' => true,
-				'datatables_sort' => true,
-				'datatables_filter' => true,
-				'datatables_paginate' => true,
-				'datatables_lengthchange' => true,
+				'use_datatables'              => true,
+				'datatables_sort'             => true,
+				'datatables_filter'           => true,
+				'datatables_paginate'         => true,
+				'datatables_lengthchange'     => true,
 				'datatables_paginate_entries' => 10,
-				'datatables_info' => true,
-				'datatables_scrollx' => false,
-				'datatables_custom_commands' => '',
+				'datatables_info'             => true,
+				'datatables_scrollx'          => false,
+				'datatables_custom_commands'  => '',
 			),
-			'visibility' => array(
-				'rows' => array( 1 ), // one visbile row
+			'visibility'    => array(
+				'rows'    => array( 1 ), // one visbile row
 				'columns' => array( 1 ), // one visible column
 			),
 		);
@@ -917,13 +920,13 @@ class TablePress_Table_Model extends TablePress_Model {
 			$new_table['number']['columns'] = intval( $new_table['number']['columns'] );
 			if ( 0 === $new_table['number']['rows']
 			|| 0 === $new_table['number']['columns']
-			|| $new_table['number']['rows'] !== count( $new_table['data'] )
-			|| $new_table['number']['columns'] !== count( $new_table['data'][0] ) ) {
+			|| count( $new_table['data'] ) !== $new_table['number']['rows']
+			|| count( $new_table['data'][0] ) !== $new_table['number']['columns'] ) {
 				return new WP_Error( 'table_prepare_size_check_numbers_dont_match' );
 			}
 			// Visibility also needs to have correct dimensions.
-			if ( $new_table['number']['rows'] !== count( $new_table['visibility']['rows'] )
-			|| $new_table['number']['columns'] !== count( $new_table['visibility']['columns'] ) ) {
+			if ( count( $new_table['visibility']['rows'] ) !== $new_table['number']['rows']
+			|| count( $new_table['visibility']['columns'] ) !== $new_table['number']['columns'] ) {
 				return new WP_Error( 'table_prepare_size_check_visibility_doesnt_match' );
 			}
 

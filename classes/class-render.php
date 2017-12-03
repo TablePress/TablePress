@@ -53,7 +53,7 @@ class TablePress_Render {
 	protected $span_trigger = array(
 		'colspan' => '#colspan#',
 		'rowspan' => '#rowspan#',
-		'span' => '#span#',
+		'span'    => '#span#',
 	);
 
 	/**
@@ -174,25 +174,25 @@ class TablePress_Render {
 		$elements = array( 'rows', 'columns' );
 		foreach ( $actions as $action ) {
 			foreach ( $elements as $element ) {
-				if ( empty( $this->render_options["{$action}_{$element}"] ) ) {
-					$this->render_options["{$action}_{$element}"] = array();
+				if ( empty( $this->render_options[ "{$action}_{$element}" ] ) ) {
+					$this->render_options[ "{$action}_{$element}" ] = array();
 					continue;
 				}
 
 				// Add all rows/columns to array if "all" value set for one of the four parameters.
-				if ( 'all' === $this->render_options["{$action}_{$element}"] ) {
-					$this->render_options["{$action}_{$element}"] = range( 0, ${'num_' . $element} - 1 );
+				if ( 'all' === $this->render_options[ "{$action}_{$element}" ] ) {
+					$this->render_options[ "{$action}_{$element}" ] = range( 0, ${'num_' . $element} - 1 );
 					continue;
 				}
 
 				// We have a list of rows/columns (possibly with ranges in it).
-				$this->render_options["{$action}_{$element}"] = explode( ',', $this->render_options["{$action}_{$element}"] );
+				$this->render_options[ "{$action}_{$element}" ] = explode( ',', $this->render_options[ "{$action}_{$element}" ] );
 				// Support for ranges like 3-6 or A-BA.
 				$range_cells = array();
-				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
+				foreach ( $this->render_options[ "{$action}_{$element}" ] as $key => $value ) {
 					$range_dash = strpos( $value, '-' );
 					if ( false !== $range_dash ) {
-						unset( $this->render_options["{$action}_{$element}"][ $key ] );
+						unset( $this->render_options[ "{$action}_{$element}" ][ $key ] );
 						$start = substr( $value, 0, $range_dash );
 						if ( ! is_numeric( $start ) ) {
 							$start = TablePress::letter_to_number( $start );
@@ -205,21 +205,21 @@ class TablePress_Render {
 						$range_cells = array_merge( $range_cells, $current_range );
 					}
 				}
-				$this->render_options["{$action}_{$element}"] = array_merge( $this->render_options["{$action}_{$element}"], $range_cells );
+				$this->render_options[ "{$action}_{$element}" ] = array_merge( $this->render_options[ "{$action}_{$element}" ], $range_cells );
 				/*
 				 * Parse single letters and change from regular numbering to zero-based numbering,
 				 * as rows/columns are indexed from 0 internally, but from 1 externally
 				 */
-				foreach ( $this->render_options["{$action}_{$element}"] as $key => $value ) {
+				foreach ( $this->render_options[ "{$action}_{$element}" ] as $key => $value ) {
 					if ( ! is_numeric( $value ) ) {
 						$value = TablePress::letter_to_number( $value );
 					}
-					$this->render_options["{$action}_{$element}"][ $key ] = (int) $value - 1;
+					$this->render_options[ "{$action}_{$element}" ][ $key ] = (int) $value - 1;
 				}
 
 				// Remove duplicate entries and sort the array.
-				$this->render_options["{$action}_{$element}"] = array_unique( $this->render_options["{$action}_{$element}"] );
-				sort( $this->render_options["{$action}_{$element}"], SORT_NUMERIC );
+				$this->render_options[ "{$action}_{$element}" ] = array_unique( $this->render_options[ "{$action}_{$element}" ] );
+				sort( $this->render_options[ "{$action}_{$element}" ], SORT_NUMERIC );
 			}
 		}
 
@@ -684,7 +684,7 @@ class TablePress_Render {
 		$tr_attributes = array();
 
 		// "class" attribute.
-		$row_classes = 'row-' . ( $row_idx + 1 ) ;
+		$row_classes = 'row-' . ( $row_idx + 1 );
 		if ( $this->render_options['alternating_row_colors'] ) {
 			$row_classes .= ( 1 === ( $row_idx % 2 ) ) ? ' even' : ' odd';
 		}
@@ -778,39 +778,39 @@ class TablePress_Render {
 	public function get_default_render_options() {
 		// Attention: Array keys have to be lowercase, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP.
 		return array(
-			'id' => '',
-			'column_widths' => '',
-			'alternating_row_colors' => null,
-			'row_hover' => null,
-			'table_head' => null,
-			'table_foot' => null,
-			'first_column_th' => false,
-			'print_name' => null,
-			'print_name_position' => null,
-			'print_description' => null,
-			'print_description_position' => null,
-			'cache_table_output' => true,
-			'convert_line_breaks' => true,
-			'extra_css_classes' => null,
-			'use_datatables' => null,
-			'datatables_sort' => null,
-			'datatables_paginate' => null,
+			'id'                          => '',
+			'column_widths'               => '',
+			'alternating_row_colors'      => null,
+			'row_hover'                   => null,
+			'table_head'                  => null,
+			'table_foot'                  => null,
+			'first_column_th'             => false,
+			'print_name'                  => null,
+			'print_name_position'         => null,
+			'print_description'           => null,
+			'print_description_position'  => null,
+			'cache_table_output'          => true,
+			'convert_line_breaks'         => true,
+			'extra_css_classes'           => null,
+			'use_datatables'              => null,
+			'datatables_sort'             => null,
+			'datatables_paginate'         => null,
 			'datatables_paginate_entries' => null,
-			'datatables_lengthchange' => null,
-			'datatables_filter' => null,
-			'datatables_info' => null,
-			'datatables_scrollx' => null,
-			'datatables_scrolly' => false,
-			'datatables_custom_commands' => null,
-			'datatables_locale' => get_locale(),
-			'show_rows' => '',
-			'show_columns' => '',
-			'hide_rows' => '',
-			'hide_columns' => '',
-			'cellspacing' => false,
-			'cellpadding' => false,
-			'border' => false,
-			'shortcode_debug' => false,
+			'datatables_lengthchange'     => null,
+			'datatables_filter'           => null,
+			'datatables_info'             => null,
+			'datatables_scrollx'          => null,
+			'datatables_scrolly'          => false,
+			'datatables_custom_commands'  => null,
+			'datatables_locale'           => get_locale(),
+			'show_rows'                   => '',
+			'show_columns'                => '',
+			'hide_rows'                   => '',
+			'hide_columns'                => '',
+			'cellspacing'                 => false,
+			'cellpadding'                 => false,
+			'border'                      => false,
+			'shortcode_debug'             => false,
 		);
 	}
 

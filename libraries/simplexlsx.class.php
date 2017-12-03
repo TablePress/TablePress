@@ -71,10 +71,10 @@ class SimpleXLSX {
 	 */
 	protected $package = array(
 		'filename' => '',
-		'mtime' => 0,
-		'size' => 0,
-		'comment' => '',
-		'entries' => array(),
+		'mtime'    => 0,
+		'size'     => 0,
+		'comment'  => '',
+		'entries'  => array(),
 	);
 
 	/**
@@ -356,11 +356,11 @@ class SimpleXLSX {
 				}
 
 				$rows[ $current_row ][ $current_cell ] = array(
-					'type' => $t,
-					'name' => (string) $c['r'],
-					'value' => $this->value( $c, $format ),
-					'href' => $this->href( $c ),
-					'f' => (string) $c->f,
+					'type'   => $t,
+					'name'   => (string) $c['r'],
+					'value'  => $this->value( $c, $format ),
+					'href'   => $this->href( $c ),
+					'f'      => (string) $c->f,
 					'format' => $format,
 				);
 			}
@@ -371,12 +371,12 @@ class SimpleXLSX {
 					}
 
 					$rows[ $current_row ][ $i ] = array(
-						'type' => '',
+						'type'   => '',
 						// 'name' => chr( $i + 65 ) . ( $current_row + 1 ),
-						'name' => $c . ( $current_row + 1 ),
-						'value' => '',
-						'href' => '',
-						'f' => '',
+						'name'   => $c . ( $current_row + 1 ),
+						'value'  => '',
+						'href'   => '',
+						'f'      => '',
 						'format' => '',
 					);
 				}
@@ -660,21 +660,23 @@ class SimpleXLSX {
 			$aI['D'] = $vZ;
 
 			// DOS to UNIX timestamp.
-			$aI['T'] = mktime( ( $aP['FT'] & 0xf800 ) >> 11,
+			$aI['T'] = mktime(
+				( $aP['FT'] & 0xf800 ) >> 11,
 				( $aP['FT'] & 0x07e0 ) >> 5,
 				( $aP['FT'] & 0x001f ) << 1,
 				( $aP['FD'] & 0x01e0 ) >> 5,
 				( $aP['FD'] & 0x001f ),
-				( ( $aP['FD'] & 0xfe00 ) >> 9 ) + 1980 );
+				( ( $aP['FD'] & 0xfe00 ) >> 9 ) + 1980
+			);
 
 			// $this->Entries[] = new SimpleUnzipEntry( $aI );
 			$this->package['entries'][] = array(
-				'data' => $aI['D'],
-				'error' => $aI['E'],
+				'data'      => $aI['D'],
+				'error'     => $aI['E'],
 				'error_msg' => $aI['EM'],
-				'name' => $aI['N'],
-				'path' => $aI['P'],
-				'time' => $aI['T'],
+				'name'      => $aI['N'],
+				'path'      => $aI['P'],
+				'time'      => $aI['T'],
 			);
 
 		} // end foreach entries

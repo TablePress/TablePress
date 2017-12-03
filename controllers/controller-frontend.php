@@ -307,7 +307,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 						$parameters['lengthChange'] = '"lengthChange":false';
 					}
 					if ( 10 !== $js_options['datatables_paginate_entries'] ) {
-						$parameters['pageLength'] = '"pageLength":'. $js_options['datatables_paginate_entries'];
+						$parameters['pageLength'] = '"pageLength":' . $js_options['datatables_paginate_entries'];
 					}
 				} else {
 					$parameters['paging'] = '"paging":false';
@@ -519,7 +519,7 @@ JS;
 		// Generate unique HTML ID, depending on how often this table has already been shown on this page.
 		if ( ! isset( $this->shown_tables[ $table_id ] ) ) {
 			$this->shown_tables[ $table_id ] = array(
-				'count' => 0,
+				'count'     => 0,
 				'instances' => array(),
 			);
 		}
@@ -572,10 +572,20 @@ JS;
 		if ( $render_options['use_datatables'] && $render_options['table_head'] && count( $table['data'] ) > 1 ) {
 			// Get options for the DataTables JavaScript library from the table's render options.
 			$js_options = array();
-			foreach ( array( 'alternating_row_colors', 'datatables_sort', 'datatables_paginate',
-								'datatables_paginate', 'datatables_paginate_entries', 'datatables_lengthchange',
-								'datatables_filter', 'datatables_info', 'datatables_scrollx', 'datatables_scrolly',
-								'datatables_locale', 'datatables_custom_commands' ) as $option ) {
+			foreach ( array(
+				'alternating_row_colors',
+				'datatables_sort',
+				'datatables_paginate',
+				'datatables_paginate',
+				'datatables_paginate_entries',
+				'datatables_lengthchange',
+				'datatables_filter',
+				'datatables_info',
+				'datatables_scrollx',
+				'datatables_scrolly',
+				'datatables_locale',
+				'datatables_custom_commands',
+			) as $option ) {
 				$js_options[ $option ] = $render_options[ $option ];
 			}
 			/**
@@ -657,9 +667,9 @@ JS;
 
 		// Parse Shortcode attributes, only allow those that are specified.
 		$default_shortcode_atts = array(
-				'id' => '',
-				'field' => '',
-				'format' => '',
+			'id'     => '',
+			'field'  => '',
+			'format' => '',
 		);
 		/**
 		 * Filter the available/default attributes for the [table-info] Shortcode.
