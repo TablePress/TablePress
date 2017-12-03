@@ -1,4 +1,4 @@
-# [TablePress](https://tablepress.org/) [![Flattr TablePress](https://button.flattr.com/flattr-badge-large.png)](https://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Build Status](https://travis-ci.org/TobiasBg/TablePress.png)](https://travis-ci.org/TobiasBg/TablePress)
+# [TablePress](https://tablepress.org/) [![plugin version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)]() [![WordPress Plugin Directory](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)]() [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)]() [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.org/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg)
 
 TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
 
@@ -8,7 +8,7 @@ Please visit the plugin website at https://tablepress.org/ for the latest inform
 
 ## Screenshots
 
-Screenshots of the TablePress interface are available at https://wordpress.org/plugins/tablepress/screenshots/.
+Screenshots of the TablePress interface are available at https://wordpress.org/plugins/tablepress/#screenshots.
 
 ## Installation
 
@@ -25,9 +25,9 @@ Manual installation works just as for other WordPress plugins:
 
 ## Supporting future development
 
-If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress), support it with your [donation](https://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
+If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress) or support it with your [donation](https://tablepress.org/donate/). Thank you!
 
-[![Flattr TablePress](https://button.flattr.com/button-static-50x60.png)](https://flattr.com/thing/783658/TablePress) [![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5XDSNLGYWMVV2) [![Support TablePress on Gratipay](https://assets.gratipay.com/gratipay.svg)](https://gratipay.com/TobiasBg/)
+[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg)
 
 ## Frequently Asked Questions
 
@@ -37,7 +37,7 @@ Many questions, regarding different features or styling, have been answered on t
 
 **Support?**
 
-For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress). Please [search](https://wordpress.org/support/) through the forums first, and only [open a new thread](https://wordpress.org/support/plugin/tablepress) if you don't find an existing answer. Thank you!
+For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress#new-post) if you don't find an existing answer. Thank you!
 
 **Requirements?**
 

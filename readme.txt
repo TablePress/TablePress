@@ -18,7 +18,7 @@ TablePress allows you to easily create and manage beautiful tables. You can embe
 Please visit the plugin website at https://tablepress.org/ for more information or a [demo](https://tablepress.org/demo/)).
 
 = Supporting future development =
-If you like TablePress, please rate and review it here in the WordPress Plugin Directory, support it with your [donation](https://tablepress.org/donate/), or [flattr it](https://flattr.com/thing/783658/TablePress). Thank you!
+If you like TablePress, please rate and review it here in the WordPress Plugin Directory or support it with your [donation](https://tablepress.org/donate/). Thank you!
 
 = TablePress Extensions =
 Additional features and useful enhancements are available as separate plugins, called [TablePress Extensions](https://tablepress.org/extensions/), on the plugin website.
@@ -53,7 +53,7 @@ Manual installation works just as for other WordPress plugins:
 Many questions, regarding different features or styling, have been answered on the [FAQ page](https://tablepress.org/faq/) on the plugin website.
 
 = Support? =
-For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress). Please [search](https://wordpress.org/support/) through the forums first, and only [open a new thread](https://wordpress.org/support/plugin/tablepress) if you don't find an existing answer. Thank you!
+For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress#new-post) if you don't find an existing answer. Thank you!
 
 = Requirements? =
 In short: WordPress 4.9.1 or higher, while the latest version of WordPress is always recommended.
@@ -102,9 +102,13 @@ You may use it free of charge for any purpose.
 = Version 1.9 =
 * Full compatibility with WordPress 4.9
 * Feature: The "Custom CSS" text field highlights and notifies about CSS code syntax errors.
+* Enhancement: Update list of allowed CSS properties in "Custom CSS".
+* Enhancement: Make the CSV import more robust against malformed input.
+* Bugfix: The integration into the WordPress search was broken since a WordPress core change.
+* Bugfix: The HTML import was broken on certain server configurations.
 * Updated external libraries (Build tools).
 * Some internal changes and fixes for better stability, cleaner code, translations, and documentation.
-* TablePress 1.8 requires WordPress 4.9.1!
+* TablePress 1.9 requires WordPress 4.9.1!
 
 = Version 1.8.1 =
 * Enhancement: Make HTML import more robust and faster.
