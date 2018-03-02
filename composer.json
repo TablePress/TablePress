@@ -4,7 +4,7 @@
 	"description": "TablePress plugin for WordPress",
 	"keywords": ["wordpress", "plugin", "table"],
 	"homepage": "https://tablepress.org/",
-	"license": "GPL2",
+	"license": "GPL-2.0-only",
 	"authors": [
 		{
 			"name": "Tobias Bäthge",

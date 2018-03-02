@@ -7,7 +7,7 @@
     "url": "https://github.com/TobiasBg/TablePress"
   },
   "author": "Tobias Bäthge",
-  "license": "GPLv2",
+  "license": "GPL-2.0-only",
   "devDependencies": {
     "autoprefixer": "~7.2.5",
     "grunt": "~1.0.1",
