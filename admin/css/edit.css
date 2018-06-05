@@ -233,3 +233,8 @@ body #wp-link-backdrop {
 #tablepress_edit-table-manipulation .column-2 {
 	width: 55%;
 }
+
+/* Align with checkbox labels */
+.checkbox-left {
+	padding-left: 24px; /* Checkboxes are 16px wide + 4px margin, with 4px :before */
+}
