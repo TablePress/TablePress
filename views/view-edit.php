@@ -490,6 +490,7 @@ class TablePress_Edit_View extends TablePress_View {
 ?>
 <div class="hidden-container">
 	<div id="advanced-editor">
+		<label for="advanced-editor-content" class="screen-reader-text"><?php esc_html_e( 'Advanced Editor', 'tablepress' ); ?></label>
 	<?php
 		$wp_editor_options = array(
 			'textarea_rows' => 10,
