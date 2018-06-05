@@ -274,8 +274,8 @@ class TablePress_Edit_View extends TablePress_View {
 <table id="edit-form" class="tablepress-edit-screen-id-<?php echo esc_attr( $data['table']['id'] ); ?>">
 	<thead>
 		<tr id="edit-form-head">
-			<th></th>
-			<th></th>
+			<th><span class="screen-reader-text"><?php esc_html_e( 'Row Index', 'tablepress' ); ?></th>
+			<th><span class="screen-reader-text"><?php esc_html_e( 'Bulk action selectors for rows', 'tablepress' ); ?></span></th>
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
@@ -286,7 +286,7 @@ class TablePress_Edit_View extends TablePress_View {
 		echo "\t\t\t<th class=\"head{$column_class}\"><span class=\"sort-control sort-desc hide-if-no-js\" title=\"" . esc_attr__( 'Sort descending', 'tablepress' ) . '"><span class="sorting-indicator"></span></span><span class="sort-control sort-asc hide-if-no-js" title="' . esc_attr__( 'Sort ascending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"move-handle\">{$column}</span></th>\n";
 	}
 ?>
-			<th></th>
+			<th><span class="screen-reader-text"><?php esc_html_e( 'Row Index', 'tablepress' ); ?></th>
 		</tr>
 	</thead>
 	<tbody id="edit-form-body">
@@ -326,8 +326,8 @@ class TablePress_Edit_View extends TablePress_View {
 	</tbody>
 	<tfoot>
 		<tr id="edit-form-foot">
-			<th></th>
-			<th></th>
+			<th><span class="screen-reader-text"><?php esc_html_e( 'Row Index', 'tablepress' ); ?></th>
+			<th><span class="screen-reader-text"><?php esc_html_e( 'Bulk action selectors for rows', 'tablepress' ); ?></span></th>
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
@@ -338,7 +338,7 @@ class TablePress_Edit_View extends TablePress_View {
 		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
 	}
 ?>
-			<th></th>
+			<th><span class="screen-reader-text"><?php esc_html_e( 'Row Index', 'tablepress' ); ?></th>
 		</tr>
 	</tfoot>
 </table>
