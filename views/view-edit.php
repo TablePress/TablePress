@@ -306,9 +306,10 @@ class TablePress_Edit_View extends TablePress_View {
 			$classes[] = 'row-hidden';
 		}
 		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
+		$row_selector_text = esc_attr( sprintf( __( 'Bulk action selector for row %s', 'tablepress' ), number_format_i18n( $row ) ) );
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></td>";
+		echo "<td><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$row_selector_text}</span><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></span></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
 			$column_class = '';
@@ -334,7 +335,8 @@ class TablePress_Edit_View extends TablePress_View {
 		if ( 0 === $visibility['columns'][ $col_idx ] ) {
 			$column_class = ' class="column-hidden"';
 		}
-		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
+		$column_selector_text = esc_attr( sprintf( __( 'Bulk action selector for column %s', 'tablepress' ), TablePress::number_to_letter( $col_idx + 1 ) ) );
+		echo "\t\t\t<th{$column_class}><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$column_selector_text}</span><input type=\"checkbox\" /></label>";
 		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
 	}
 ?>
