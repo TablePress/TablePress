@@ -309,7 +309,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$row_selector_text = esc_attr( sprintf( __( 'Bulk action selector for row %s', 'tablepress' ), number_format_i18n( $row ) ) );
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$row_selector_text}</span><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></td>";
+		echo "<td><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$row_selector_text}</span><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></label></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
 			$column_class = '';
