@@ -318,7 +318,8 @@ class TablePress_Edit_View extends TablePress_View {
 			}
 			// Sanitize, so that HTML is possible in table cells.
 			$cell = esc_textarea( $cell );
-			echo "<td{$column_class}><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
+			$cell_label = esc_attr( sprintf( __( 'Column %s Row %s', 'tablepress' ), number_format_i18n( $column ), number_format_i18n( $row ) ) );
+			echo "<td{$column_class}><label><span class=\"screen-reader-text\">{$cell_label}</span><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" title=\"{$cell_title}\" rows=\"1\">{$cell}</textarea></label></td>";
 		}
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
 		echo "\t\t</tr>\n";
