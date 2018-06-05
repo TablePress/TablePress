@@ -555,7 +555,7 @@ class TablePress_Edit_View extends TablePress_View {
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><label for="option-print-description"><?php _e( 'Print Table Description', 'tablepress' ); ?></label>:</th>
 		<?php
-			$position_select  = '<select id="option-print-description-position" name="table[options][print_description_position]">';
+			$position_select = '<select id="option-print-description-position" name="table[options][print_description_position]">';
 			$position_select .= '<option' . selected( 'above', $options['print_description_position'], false ) . ' value="above">' . __( 'above', 'tablepress' ) . '</option>';
 			$position_select .= '<option' . selected( 'below', $options['print_description_position'], false ) . ' value="below">' . __( 'below', 'tablepress' ) . '</option>';
 			$position_select .= '</select>';
