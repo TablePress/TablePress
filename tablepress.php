@@ -41,9 +41,17 @@ Donate URI: https://tablepress.org/donate/
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 // Define certain plugin variables as constants.
-define( 'TABLEPRESS_ABSPATH', plugin_dir_path( __FILE__ ) );
-define( 'TABLEPRESS__FILE__', __FILE__ );
-define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
+if ( ! defined( 'TABLEPRESS_ABSPATH' ) ) {
+	define( 'TABLEPRESS_ABSPATH', plugin_dir_path( __FILE__ ) );
+}
+
+if ( ! defined( 'TABLEPRESS__FILE__' ) ) {
+	define( 'TABLEPRESS__FILE__', __FILE__ );
+}
+
+if ( ! defined( 'TABLEPRESS_BASENAME' ) ) {
+	define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
+}
 
 /**
  * Load TablePress class, which holds common functions and variables.
