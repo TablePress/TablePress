@@ -382,7 +382,11 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $item['id'] );
 
 		if ( $user_can_copy_table || $user_can_delete_table || $user_can_export_table ) {
-			return '<input type="checkbox" name="table[]" value="' . esc_attr( $item['id'] ) . '" />';
+			return sprintf(
+				'<label><span class="screen-reader-text">%s</span><input type="checkbox" name="table[]" value="%s" /></label>',
+				esc_html__( 'Bulk action selector', 'tablepress' ),
+				esc_attr( $item['id'] )
+			);
 		} else {
 			return '';
 		}
