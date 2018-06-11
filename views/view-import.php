@@ -223,7 +223,7 @@ class TablePress_Import_View extends TablePress_View {
 		</td>
 	</tr>
 	<tr class="top-border">
-		<th class="column-1" scope="row"></th>
+		<td class="column-1"></td>
 		<td class="column-2"><input type="submit" value="<?php echo esc_attr_x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" name="submit" /></td>
 	</tr>
 </tbody>
@@ -268,7 +268,7 @@ class TablePress_Import_View extends TablePress_View {
 		</td>
 	</tr>
 	<tr id="row-import-wp-table-reloaded-source-db" class="bottom-border">
-		<th class="column-1 top-align" scope="row" style="padding:2px;"></th>
+		<td class="column-1 top-align" scope="row" style="padding:2px;"></td>
 		<td class="column-2" style="padding:2px;"></td>
 	</tr>
 	<tr class="top-border">
@@ -280,7 +280,7 @@ class TablePress_Import_View extends TablePress_View {
 		<td class="column-2"><label for="import-wp-table-reloaded-css"> <input type="checkbox" id="import-wp-table-reloaded-css" name="import[wp_table_reloaded][css]" value="true" checked="checked" /> <?php _e( 'Try to automatically convert the &#8220;Custom CSS&#8221; code from the &#8220;Plugin Options&#8221; screen of WP-Table Reloaded.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
-		<th class="column-1" scope="row"></th>
+		<td class="column-1" scope="row"></td>
 		<td class="column-2"><input type="submit" value="<?php echo esc_attr_x( 'Import from WP-Table Reloaded', 'button', 'tablepress' ); ?>" class="button button-large" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
 	</tr>
 </tbody>
