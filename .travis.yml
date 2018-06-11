@@ -31,6 +31,25 @@ before_script:
   - phpenv versions
   - php --version
   - php -m
+  - |
+    # Install the specified version of PHPUnit depending on the PHP version:
+    if [[ 1 == 1 ]]; then
+      case "$TRAVIS_PHP_VERSION" in
+        7.2|7.1|7.0|nightly)
+          echo "Using PHPUnit 6.x"
+          composer global require "phpunit/phpunit:^6"
+          ;;
+        5.6)
+          echo "Using PHPUnit 4.x"
+          composer global require "phpunit/phpunit:^4"
+          ;;
+        *)
+          echo "No PHPUnit version handling for PHP version $TRAVIS_PHP_VERSION"
+          exit 1
+          ;;
+      esac
+    fi
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - which phpunit
   - phpunit --version
   - git --version
