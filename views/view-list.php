@@ -186,7 +186,9 @@ class TablePress_List_View extends TablePress_View {
 			<?php _e( 'Click the corresponding links within the list to edit, copy, delete, or preview a table.', 'tablepress' ); ?>
 		</p>
 		<p>
-			<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
+			<label class="screen-reader-only" for="table-shortcode-inline"><?php esc_html_e( 'Shortcode text for editor', 'tablepress' ); ?></label>
+
+			<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" id="table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
 			<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
 			<?php printf( __( 'You can also click the &#8220;%s&#8221; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
 		</p>
