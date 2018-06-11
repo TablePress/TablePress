@@ -110,7 +110,7 @@ class TablePress_Options_View extends TablePress_View {
 		</td>
 	</tr>
 	<tr>
-		<th class="column-1" scope="row"></th>
+		<td class="column-1"></td>
 		<td class="column-2">
 			<textarea name="options[custom_css]" id="option-custom-css" class="large-text" rows="8"><?php echo esc_textarea( $data['frontend_options']['custom_css'] ); ?></textarea>
 			<p class="description">
