@@ -123,14 +123,14 @@ class TablePress_Import_View extends TablePress_View {
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr id="row-import-source">
-		<th class="column-1" scope="row"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
+		<th class="column-1" scope="row" id="import-source-header"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<label for="tables-import-source-file-upload"><input name="import[source]" id="tables-import-source-file-upload" type="radio" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <?php _e( 'File Upload', 'tablepress' ); ?></label>
-			<label for="tables-import-source-url"><input name="import[source]" id="tables-import-source-url" type="radio" value="url"<?php checked( $data['import_source'], 'url', true ); ?> /> <?php _e( 'URL', 'tablepress' ); ?></label>
+			<label for="tables-import-source-file-upload"><input name="import[source]" id="tables-import-source-file-upload" type="radio" aria-labelledby="import-source-header" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <?php _e( 'File Upload', 'tablepress' ); ?></label>
+			<label for="tables-import-source-url"><input name="import[source]" id="tables-import-source-url" type="radio" aria-labelledby="import-source-header" value="url"<?php checked( $data['import_source'], 'url', true ); ?> /> <?php _e( 'URL', 'tablepress' ); ?></label>
 			<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
-			<label for="tables-import-source-server"><input name="import[source]" id="tables-import-source-server" type="radio" value="server"<?php checked( $data['import_source'], 'server', true ); ?> /> <?php _e( 'File on server', 'tablepress' ); ?></label>
+			<label for="tables-import-source-server"><input name="import[source]" id="tables-import-source-server" type="radio" aria-labelledby="import-source-header" value="server"<?php checked( $data['import_source'], 'server', true ); ?> /> <?php _e( 'File on server', 'tablepress' ); ?></label>
 			<?php } ?>
-			<label for="tables-import-source-form-field"><input name="import[source]" id="tables-import-source-form-field" type="radio" value="form-field"<?php checked( $data['import_source'], 'form-field', true ); ?> /> <?php _e( 'Manual Input', 'tablepress' ); ?></label>
+			<label for="tables-import-source-form-field"><input name="import[source]" id="tables-import-source-form-field" type="radio" aria-labelledby="import-source-header" value="form-field"<?php checked( $data['import_source'], 'form-field', true ); ?> /> <?php _e( 'Manual Input', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr id="row-import-source-file-upload" class="bottom-border">
@@ -193,11 +193,11 @@ class TablePress_Import_View extends TablePress_View {
 		</td>
 	</tr>
 	<tr id="row-import-type" class="top-border">
-		<th class="column-1" scope="row"><?php _e( 'Add, Replace, or Append?', 'tablepress' ); ?>:</th>
+		<th class="column-1" scope="row" id="import-type-header"><?php _e( 'Add, Replace, or Append?', 'tablepress' ); ?>:</th>
 		<td class="column-2">
-			<label for="tables-import-type-add"><input name="import[type]" id="tables-import-type-add" type="radio" value="add"<?php checked( $data['import_type'], 'add', true ); ?> /> <?php _e( 'Add as new table', 'tablepress' ); ?></label>
-			<label for="tables-import-type-replace"><input name="import[type]" id="tables-import-type-replace" type="radio" value="replace"<?php checked( $data['import_type'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Replace existing table', 'tablepress' ); ?></label>
-			<label for="tables-import-type-append"><input name="import[type]" id="tables-import-type-append" type="radio" value="append"<?php checked( $data['import_type'], 'append', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Append rows to existing table', 'tablepress' ); ?></label>
+			<label for="tables-import-type-add"><input name="import[type]" id="tables-import-type-add" type="radio" aria-labelledby="import-type-header" value="add"<?php checked( $data['import_type'], 'add', true ); ?> /> <?php _e( 'Add as new table', 'tablepress' ); ?></label>
+			<label for="tables-import-type-replace"><input name="import[type]" id="tables-import-type-replace" type="radio" aria-labelledby="import-type-header" value="replace"<?php checked( $data['import_type'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Replace existing table', 'tablepress' ); ?></label>
+			<label for="tables-import-type-append"><input name="import[type]" id="tables-import-type-append" type="radio" aria-labelledby="import-type-header" value="append"<?php checked( $data['import_type'], 'append', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Append rows to existing table', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr id="row-import-existing-table" class="bottom-border">
@@ -223,7 +223,7 @@ class TablePress_Import_View extends TablePress_View {
 		</td>
 	</tr>
 	<tr class="top-border">
-		<th class="column-1" scope="row"></th>
+		<td class="column-1"></td>
 		<td class="column-2"><input type="submit" value="<?php echo esc_attr_x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" name="submit" /></td>
 	</tr>
 </tbody>
@@ -268,7 +268,7 @@ class TablePress_Import_View extends TablePress_View {
 		</td>
 	</tr>
 	<tr id="row-import-wp-table-reloaded-source-db" class="bottom-border">
-		<th class="column-1 top-align" scope="row" style="padding:2px;"></th>
+		<td class="column-1 top-align" scope="row" style="padding:2px;"></td>
 		<td class="column-2" style="padding:2px;"></td>
 	</tr>
 	<tr class="top-border">
@@ -280,7 +280,7 @@ class TablePress_Import_View extends TablePress_View {
 		<td class="column-2"><label for="import-wp-table-reloaded-css"> <input type="checkbox" id="import-wp-table-reloaded-css" name="import[wp_table_reloaded][css]" value="true" checked="checked" /> <?php _e( 'Try to automatically convert the &#8220;Custom CSS&#8221; code from the &#8220;Plugin Options&#8221; screen of WP-Table Reloaded.', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
-		<th class="column-1" scope="row"></th>
+		<td class="column-1" scope="row"></td>
 		<td class="column-2"><input type="submit" value="<?php echo esc_attr_x( 'Import from WP-Table Reloaded', 'button', 'tablepress' ); ?>" class="button button-large" id="submit_wp_table_reloaded_import" name="submit_wp_table_reloaded_import" /></td>
 	</tr>
 </tbody>
