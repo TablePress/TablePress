@@ -1130,7 +1130,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'url':
 				if ( ! empty( $import['url'] ) && 'http://' !== $import['url'] ) {
-					// download URL to local file.
+					// Check the host of the Import URL against a blacklist of hosts, which should not be accessible, e.g. for security considerations.
+					$host = wp_parse_url( $import['url'], PHP_URL_HOST );
+					$blocked_hosts = array(
+						'169.254.169.254' // AWS Meta-data API
+					);
+					if ( in_array( $host, $blocked_hosts, true ) ) {
+						$import_error = true;
+						break;
+					}
+
+					// Download URL to local file.
 					$import_data['file_location'] = download_url( $import['url'] );
 					$import_data['file_name'] = $import['url'];
 					if ( ! is_wp_error( $import_data['file_location'] ) ) {
