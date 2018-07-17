@@ -128,7 +128,7 @@ class TablePress_Export {
 				$output = "<table>\n" . $thead . $tfoot . $tbody . "</table>\n";
 				break;
 			case 'json':
-				$output = wp_json_encode( $table );
+				$output = wp_json_encode( $table, TABLEPRESS_JSON_OPTIONS );
 				break;
 			default:
 				$output = '';

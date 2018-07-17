@@ -103,7 +103,7 @@ class TablePress_WP_Option {
 	 */
 	public function update( array $new_options ) {
 		$this->option_value = $new_options;
-		return $this->_update_option( $this->option_name, wp_json_encode( $this->option_value ) );
+		return $this->_update_option( $this->option_name, wp_json_encode( $this->option_value, TABLEPRESS_JSON_OPTIONS ) );
 	}
 
 	/**

@@ -97,7 +97,7 @@ class TablePress_Admin_Page {
 		?>
 		<script type="text/javascript">
 		( function( $ ) {
-			var options = <?php echo wp_json_encode( $args ); ?>, setup;
+			var options = <?php echo wp_json_encode( $args, TABLEPRESS_JSON_OPTIONS ); ?>, setup;
 
 			if ( ! options ) {
 				return;
