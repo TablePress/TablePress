@@ -306,7 +306,7 @@ class TablePress_Edit_View extends TablePress_View {
 			$classes[] = 'row-hidden';
 		}
 		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
-		$row_selector_text = esc_attr( sprintf( __( 'Bulk action selector for row %s', 'tablepress' ), number_format_i18n( $row ) ) );
+		$row_selector_text = esc_html( sprintf( __( 'Bulk action selector for row %s', 'tablepress' ), number_format_i18n( $row ) ) );
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
 		echo "<td><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$row_selector_text}</span><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></label></td>";
@@ -318,7 +318,7 @@ class TablePress_Edit_View extends TablePress_View {
 			}
 			// Sanitize, so that HTML is possible in table cells.
 			$cell = esc_textarea( $cell );
-			$cell_label = esc_attr( sprintf( __( 'Column %s Row %s', 'tablepress' ), number_format_i18n( $column ), number_format_i18n( $row ) ) );
+			$cell_label = esc_html( sprintf( __( 'Column %s Row %s', 'tablepress' ), number_format_i18n( $column ), number_format_i18n( $row ) ) );
 			echo "<td{$column_class}><label><span class=\"screen-reader-text\">{$cell_label}</span><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" title=\"{$cell_title}\" rows=\"1\">{$cell}</textarea></label></td>";
 		}
 		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
@@ -336,7 +336,7 @@ class TablePress_Edit_View extends TablePress_View {
 		if ( 0 === $visibility['columns'][ $col_idx ] ) {
 			$column_class = ' class="column-hidden"';
 		}
-		$column_selector_text = esc_attr( sprintf( __( 'Bulk action selector for column %s', 'tablepress' ), TablePress::number_to_letter( $col_idx + 1 ) ) );
+		$column_selector_text = esc_html( sprintf( __( 'Bulk action selector for column %s', 'tablepress' ), TablePress::number_to_letter( $col_idx + 1 ) ) );
 		echo "\t\t\t<th scope=\"col\" {$column_class}><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$column_selector_text}</span><input type=\"checkbox\" /></label>";
 		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
 	}
