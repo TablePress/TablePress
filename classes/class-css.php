@@ -227,7 +227,7 @@ class TablePress_CSS {
 		 * @param bool $save Whether to save the "Custom CSS" to a file. Default true.
 		 */
 		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) ) {
-			return false;
+			return true;
 		}
 
 		// Start capturing the output, to later prevent it.
