@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.7.11 by Sergey Schuchkin.
+ * Based on SimpleXLSX v0.7.12 by Sergey Schuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -46,6 +46,14 @@ class SimpleXLSX {
 	 * @var array
 	 */
 	protected $sheets = array();
+
+	/**
+	 * [$sheetNames description]
+	 *
+	 * @since 1.9.1
+	 * @var array
+	 */
+	protected $sheetNames = array();
 
 	/**
 	 * [$styles description]
@@ -202,17 +210,12 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param [type] $worksheet_id [description]
+	 * @param [type] $worksheet_index [description]
 	 * @return string|bool [description]
 	 */
-	public function sheetName( $worksheet_id ) {
-		if ( ! isset( $this->workbook->sheets->sheet ) ) {
-			return false;
-		}
-		foreach ( $this->workbook->sheets->sheet as $s ) {
-			if ( (int) $s->attributes()->sheetId === (int) $worksheet_id ) {
-				return (string) $s->attributes()->name;
-			}
+	public function sheetName( $worksheet_index ) {
+		if ( isset( $this->sheetNames[ $worksheet_index ] ) ) {
+			return $this->sheetNames[ $worksheet_index ];
 		}
 		return false;
 	}
@@ -225,11 +228,7 @@ class SimpleXLSX {
 	 * @return array [description]
 	 */
 	public function sheetNames() {
-		$result = array();
-		foreach ( $this->workbook->sheets->sheet as $s ) {
-			$result[ (int) $s->attributes()->sheetId ] = (string) $s->attributes()->name;
-		}
-		return $result;
+		return $this->sheetNames;
 	}
 
 	/**
@@ -237,16 +236,12 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param [type] $worksheet_id [description]. Optional.
+	 * @param [type] $worksheet_index [description]. Optional.
 	 * @return [type] [description]
 	 */
-	public function worksheet( $worksheet_id = 0 ) {
-		if ( 0 === $worksheet_id ) {
-			reset( $this->sheets );
-			$worksheet_id = key( $this->sheets );
-		}
-		if ( isset( $this->sheets[ $worksheet_id ] ) ) {
-			$ws = $this->sheets[ $worksheet_id ];
+	public function worksheet( $worksheet_index = 0 ) {
+		if ( isset( $this->sheets[ $worksheet_index ] ) ) {
+			$ws = $this->sheets[ $worksheet_index ];
 			if ( isset( $ws->hyperlinks ) ) {
 				$this->hyperlinks = array();
 				foreach ( $ws->hyperlinks->hyperlink as $hyperlink ) {
@@ -255,7 +250,7 @@ class SimpleXLSX {
 			}
 			return $ws;
 		}
-		$this->error( 'Worksheet ' . $worksheet_id . ' not found.' );
+		$this->error( 'Worksheet ' . $worksheet_index . ' not found.' );
 		return false;
 	}
 
@@ -266,11 +261,11 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param int $worksheet_id Optional. [description]
+	 * @param int $worksheet_index Optional. [description]
 	 * @return array|false [description]
 	 */
-	public function dimension( $worksheet_id = 0 ) {
-		if ( false === ( $ws = $this->worksheet( $worksheet_id ) ) ) {
+	public function dimension( $worksheet_index = 0 ) {
+		if ( false === ( $ws = $this->worksheet( $worksheet_index ) ) ) {
 			return false;
 		}
 
@@ -297,18 +292,18 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param int $worksheet_id Optional. [description]
+	 * @param int $worksheet_index Optional. [description]
 	 * @return array|bool [description]
 	 */
-	public function rows( $worksheet_id = 0 ) {
-		if ( false === ( $ws = $this->worksheet( $worksheet_id ) ) ) {
+	public function rows( $worksheet_index = 0 ) {
+		if ( false === ( $ws = $this->worksheet( $worksheet_index ) ) ) {
 			return false;
 		}
 
 		$rows = array();
 		$current_row = 0;
 
-		list( $cols, ) = $this->dimension( $worksheet_id );
+		list( $cols, ) = $this->dimension( $worksheet_index );
 
 		foreach ( $ws->sheetData->row as $row ) {
 			$rows[ $current_row ] = array();
@@ -332,17 +327,17 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param int $worksheet_id Optional. [description]
+	 * @param int $worksheet_index Optional. [description]
 	 * @return array|bool [description]
 	 */
-	public function rowsEx( $worksheet_id = 0 ) {
-		if ( false === ( $ws = $this->worksheet( $worksheet_id ) ) ) {
+	public function rowsEx( $worksheet_index = 0 ) {
+		if ( false === ( $ws = $this->worksheet( $worksheet_index ) ) ) {
 			return false;
 		}
 
 		$rows = array();
 		$current_row = 0;
-		list( $cols, ) = $this->dimension( $worksheet_id );
+		list( $cols, ) = $this->dimension( $worksheet_index );
 
 		foreach ( $ws->sheetData->row as $row ) {
 			$r_idx = (int) $row['r'];
@@ -621,45 +616,39 @@ class SimpleXLSX {
 			if ( strlen( $vZ ) !== (int) $aP['CS'] ) { // Check only if available.
 				$aI['E'] = 1;
 				$aI['EM'] = 'Compressed size is not equal with the value in header information.';
+			} elseif ( $bE ) {
+				$aI['E']  = 5;
+				$aI['EM'] = 'File is encrypted, which is not supported by this class.';
 			} else {
-				if ( $bE ) {
-					$aI['E'] = 5;
-					$aI['EM'] = 'File is encrypted, which is not supported by this class.';
-				} else {
-					switch ( $aP['CM'] ) {
-						case 0: // Stored
-							// Here is nothing to do, the file ist flat.
-							break;
-						case 8: // Deflated
-							$vZ = gzinflate( $vZ );
-							break;
-						case 12: // BZIP2
-							if ( extension_loaded( 'bz2' ) ) {
-								$vZ = bzdecompress( $vZ );
-							} else {
-								$aI['E'] = 7;
-								$aI['EM'] = 'PHP BZIP2 extension not available.';
-							}
-							break;
-						default:
-							$aI['E'] = 6;
-							$aI['EM'] = "De-/Compression method {$aP['CM']} is not supported.";
-					}
-					if ( ! $aI['E'] ) {
-						if ( false === $vZ ) {
-							$aI['E'] = 2;
-							$aI['EM'] = 'Decompression of data failed.';
+				switch ( $aP['CM'] ) {
+					case 0: // Stored
+						// Here is nothing to do, the file is flat.
+						break;
+					case 8: // Deflated
+						$vZ = gzinflate( $vZ );
+						break;
+					case 12: // BZIP2
+						if ( extension_loaded( 'bz2' ) ) {
+							$vZ = bzdecompress( $vZ );
 						} else {
-							if ( strlen( $vZ ) !== (int) $aP['UCS'] ) {
-								$aI['E'] = 3;
-								$aI['EM'] = 'Uncompressed size is not equal with the value in header information.';
-							} else {
-								if ( crc32( $vZ ) !== $aP['CRC'] ) {
-									$aI['E'] = 4;
-									$aI['EM'] = 'CRC32 checksum is not equal with the value in header information.';
-								}
-							}
+							$aI['E']  = 7;
+							$aI['EM'] = 'PHP BZIP2 extension not available.';
 						}
+						break;
+					default:
+						$aI['E']  = 6;
+						$aI['EM'] = "De-/Compression method {$aP['CM']} is not supported.";
+				}
+				if ( ! $aI['E'] ) {
+					if ( false === $vZ ) {
+						$aI['E']  = 2;
+						$aI['EM'] = 'Decompression of data failed.';
+					} elseif ( strlen( $vZ ) !== (int) $aP['UCS'] ) {
+						$aI['E']  = 3;
+						$aI['EM'] = 'Uncompressed size is not equal with the value in header information.';
+					} elseif ( crc32( $vZ ) !== $aP['CRC'] ) {
+						$aI['E']  = 4;
+						$aI['EM'] = 'CRC32 checksum is not equal with the value in header information.';
 					}
 				}
 			}
@@ -832,62 +821,69 @@ class SimpleXLSX {
 			foreach ( $relations->Relationship as $rel ) {
 				$rel_type = trim( (string) $rel['Type'] );
 				$rel_target = trim( (string) $rel['Target'] );
- 				if ( self::SCHEMA_REL_OFFICEDOCUMENT === $rel_type) {
-					// Found officeDocument! Read workbook and relations.
-					if ( $this->workbook = $this->getEntryXML( $rel_target ) ) {
-						if ( $workbookRelations = $this->getEntryXML( dirname( $rel_target ) . '/_rels/workbook.xml.rels' ) ) {
-							// Loop relations for workbook and extract sheets.
-							foreach ( $workbookRelations->Relationship as $workbookRelation ) {
-								$wrel_type = trim( (string) $workbookRelation['Type'] );
-								$wrel_path = dirname( trim( (string) $rel['Target'] ) ) . '/' . trim( $workbookRelation['Target'] );
-								if ( ! $this->entryExists( $wrel_path ) ) {
-									continue;
+ 				if ( self::SCHEMA_REL_OFFICEDOCUMENT === $rel_type && $this->workbook = $this->getEntryXML( $rel_target ) ) {
+ 					$index_rId = array(); // [0 => rId1]
+
+					$index = 0;
+					foreach ( $this->workbook->sheets->sheet as $s ) {
+						$this->sheetNames[ $index ] = (string) $s->attributes()->name;
+						$index_rId[ $index ] = (string) $s->attributes()->rId;
+						$index++;
+					}
+
+					if ( $workbookRelations = $this->getEntryXML( dirname( $rel_target ) . '/_rels/workbook.xml.rels' ) ) {
+						// Loop relations for workbook and extract sheets.
+						foreach ( $workbookRelations->Relationship as $workbookRelation ) {
+							$wrel_type = trim( (string) $workbookRelation['Type'] );
+							$wrel_path = dirname( trim( (string) $rel['Target'] ) ) . '/' . trim( $workbookRelation['Target'] );
+							if ( ! $this->entryExists( $wrel_path ) ) {
+								continue;
+							}
+							if ( self::SCHEMA_REL_WORKSHEET === $wrel_type ) {
+								if ( $sheet = $this->getEntryXML( $wrel_path ) ) {
+									$index = array_search( (string) $workbookRelation['Id'], $index_rId, false );
+									$this->sheets[ $index ] = $sheet;
 								}
-								if ( self::SCHEMA_REL_WORKSHEET === $wrel_type ) {
-									if ( $sheet = $this->getEntryXML( $wrel_path ) ) {
-										$this->sheets[ str_replace( 'rId', '', (string) $workbookRelation['Id'] ) ] = $sheet;
-									}
-								} elseif ( self::SCHEMA_REL_SHAREDSTRINGS === $wrel_type ) {
-									if ( $sharedStrings = $this->getEntryXML( $wrel_path ) ) {
-										foreach ( $sharedStrings->si as $val ) {
-											if ( isset( $val->t ) ) {
-												$this->sharedstrings[] = (string) $val->t;
-											} elseif ( isset( $val->r ) ) {
-												$this->sharedstrings[] = $this->_parseRichText( $val );
-											}
-										}
-									}
-								} elseif ( self::SCHEMA_REL_STYLES === $wrel_type ) {
-									$this->styles = $this->getEntryXML( $wrel_path );
-
-									$nf = array();
-									if ( null !== $this->styles->numFmts->numFmt ) {
-										foreach ( $this->styles->numFmts->numFmt as $v ) {
-											$nf[ (int) $v['numFmtId'] ] = (string) $v['formatCode'];
-										}
-									}
-
-									if ( null !== $this->styles->cellXfs->xf ) {
-										foreach ( $this->styles->cellXfs->xf as $v ) {
-											$v = (array) $v->attributes();
-											$v['format'] = '';
-
-											if ( isset( $v['@attributes']['numFmtId'] ) ) {
-												$v = $v['@attributes'];
-												$fid = (int) $v['numFmtId'];
-												if ( isset( self::$built_in_cell_formats[ $fid ] ) ) {
-													$v['format'] = self::$built_in_cell_formats[ $fid ];
-												} elseif ( isset( $nf[ $fid ] ) ) {
-													$v['format'] = $nf[ $fid ];
-												}
-											}
-											$this->workbook_cell_formats[] = $v;
+							} elseif ( self::SCHEMA_REL_SHAREDSTRINGS === $wrel_type ) {
+								if ( $sharedStrings = $this->getEntryXML( $wrel_path ) ) {
+									foreach ( $sharedStrings->si as $val ) {
+										if ( isset( $val->t ) ) {
+											$this->sharedstrings[] = (string) $val->t;
+										} elseif ( isset( $val->r ) ) {
+											$this->sharedstrings[] = $this->_parseRichText( $val );
 										}
 									}
 								}
-							} // foreach
-							break;
-						}
+							} elseif ( self::SCHEMA_REL_STYLES === $wrel_type ) {
+								$this->styles = $this->getEntryXML( $wrel_path );
+
+								$nf = array();
+								if ( null !== $this->styles->numFmts->numFmt ) {
+									foreach ( $this->styles->numFmts->numFmt as $v ) {
+										$nf[ (int) $v['numFmtId'] ] = (string) $v['formatCode'];
+									}
+								}
+
+								if ( null !== $this->styles->cellXfs->xf ) {
+									foreach ( $this->styles->cellXfs->xf as $v ) {
+										$v = (array) $v->attributes();
+										$v['format'] = '';
+
+										if ( isset( $v['@attributes']['numFmtId'] ) ) {
+											$v = $v['@attributes'];
+											$fid = (int) $v['numFmtId'];
+											if ( isset( self::$built_in_cell_formats[ $fid ] ) ) {
+												$v['format'] = self::$built_in_cell_formats[ $fid ];
+											} elseif ( isset( $nf[ $fid ] ) ) {
+												$v['format'] = $nf[ $fid ];
+											}
+										}
+										$this->workbook_cell_formats[] = $v;
+									}
+								}
+							}
+						} // foreach
+						break;
 					}
 				}
 			} // foreach
@@ -966,14 +962,14 @@ class SimpleXLSX {
 	 *
 	 * @since 1.8.1
 	 *
-	 * @param int      $worksheet_id.
+	 * @param int      $worksheet_index.
 	 * @param string   $cell.
 	 * @param null|int $format.
 	 *
 	 * @return mixed
 	 */
-	public function getCell( $worksheet_id = 0, $cell = 'A1', $format = null ) {
-		if ( false === ( $ws = $this->worksheet( $worksheet_id ) ) ) {
+	public function getCell( $worksheet_index = 0, $cell = 'A1', $format = null ) {
+		if ( false === ( $ws = $this->worksheet( $worksheet_index ) ) ) {
 			return false;
 		}
 
