@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.7.9 by Sergey Schuchkin.
+ * Based on SimpleXLSX v0.7.10 by Sergey Schuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -973,10 +973,13 @@ class SimpleXLSX {
 			return false;
 		}
 
-		list( $current_cell, $current_row ) = $this->_columnIndex( (string) $cell );
+		list( $current_cell, $current_row ) = is_array( $cell ) ? $cell : $this->_columnIndex( (string) $cell );
 
-		$c = $ws->sheetData->row[ $current_row ]->c[ $current_cell ];
-		return $this->value( $c, $format );
+		if ( isset( $ws->sheetData->row[ $current_row ], $ws->sheetData->row[ $current_row ]->c[ $current_cell ] ) ) {
+			$c = $ws->sheetData->row[ $current_row ]->c[ $current_cell ];
+			return $this->value( $c, $format );
+		}
+		return null;
 	}
 
 } // class SimpleXLSX
