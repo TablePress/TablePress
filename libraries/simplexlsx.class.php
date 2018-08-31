@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.7.8 by Sergey Schuchkin.
+ * Based on SimpleXLSX v0.7.9 by Sergey Schuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -210,8 +210,8 @@ class SimpleXLSX {
 			return false;
 		}
 		foreach ( $this->workbook->sheets->sheet as $s ) {
-			if ( 'rId' . $worksheet_id === $s->attributes( 'r', true )->id ) {
-				return (string) $s['name'];
+			if ( (int) $s->attributes()->sheetId === (int) $worksheet_id ) {
+				return (string) $s->attributes()->name;
 			}
 		}
 		return false;
@@ -227,7 +227,7 @@ class SimpleXLSX {
 	public function sheetNames() {
 		$result = array();
 		foreach ( $this->workbook->sheets->sheet as $s ) {
-			$result[ substr( $s->attributes( 'r', true )->id, 3 ) ] = (string) $s['name'];
+			$result[ (int) $s->attributes()->sheetId ] = (string) $s->attributes()->name;
 		}
 		return $result;
 	}
@@ -261,6 +261,8 @@ class SimpleXLSX {
 
 	/**
 	 * [dimension description]
+	 *
+	 * "Don't trust ->dimension(), so xlsx generators very lazy and don't publish a dimension attribute."
 	 *
 	 * @since 1.1.0
 	 *
@@ -309,6 +311,7 @@ class SimpleXLSX {
 		list( $cols, ) = $this->dimension( $worksheet_id );
 
 		foreach ( $ws->sheetData->row as $row ) {
+			$rows[ $current_row ] = array();
 			foreach ( $row->c as $c ) {
 				list( $current_cell, ) = $this->_columnIndex( (string) $c['r'] );
 				$rows[ $current_row ][ $current_cell ] = $this->value( $c );
@@ -867,10 +870,11 @@ class SimpleXLSX {
 
 											if ( isset( $v['@attributes']['numFmtId'] ) ) {
 												$v = $v['@attributes'];
-												if ( isset( self::$built_in_cell_formats[ $v['numFmtId'] ] ) ) {
-													$v['format'] = self::$built_in_cell_formats[ $v['numFmtId'] ];
-												} elseif ( isset( $nf[ $v['numFmtId'] ] ) ) {
-													$v['format'] = $nf[ $v['numFmtId'] ];
+												$fid = (int) $v['numFmtId'];
+												if ( isset( self::$built_in_cell_formats[ $fid ] ) ) {
+													$v['format'] = self::$built_in_cell_formats[ $fid ];
+												} elseif ( isset( $nf[ $fid ] ) ) {
+													$v['format'] = $nf[ $fid ];
 												}
 											}
 											$this->workbook_cell_formats[] = $v;
