@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.7.7 by Sergey Schuchkin.
+ * Based on SimpleXLSX v0.7.8 by Sergey Schuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -237,10 +237,10 @@ class SimpleXLSX {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param [type] $worksheet_id [description]
+	 * @param [type] $worksheet_id [description]. Optional.
 	 * @return [type] [description]
 	 */
-	public function worksheet( $worksheet_id ) {
+	public function worksheet( $worksheet_id = 0 ) {
 		if ( 0 === $worksheet_id ) {
 			reset( $this->sheets );
 			$worksheet_id = key( $this->sheets );
@@ -744,6 +744,12 @@ class SimpleXLSX {
 	 */
 	public function getEntryXML( $name ) {
 		if ( $entry_xml = $this->getEntryData( $name ) ) {
+			// Remove dirty namespace prefixes.
+			$entry_xml = preg_replace( '/xmlns[^=]*="[^"]*"/i', '', $entry_xml ); // remove namespaces
+			$entry_xml = preg_replace( '/[a-zA-Z0-9]+:([a-zA-Z0-9]+="[^"]+")/', '$1$2', $entry_xml ); // remove namespaced attrs
+			$entry_xml = preg_replace( '/<[a-zA-Z0-9]+:([^>]+)>/', '<$1>', $entry_xml ); // fix namespaced opened tags
+			$entry_xml = preg_replace( '/<\/[a-zA-Z0-9]+:([^>]+)>/', '</$1>', $entry_xml ); // fix namespaced closed tags
+
 			// XML External Entity (XXE) Prevention.
 			$_old_value = libxml_disable_entity_loader( true );
 			$entry_xmlobj = simplexml_load_string( $entry_xml );
@@ -817,14 +823,16 @@ class SimpleXLSX {
 		// Read relations and search for officeDocument.
 		if ( $relations = $this->getEntryXML( '_rels/.rels' ) ) {
 			foreach ( $relations->Relationship as $rel ) {
-				if ( self::SCHEMA_REL_OFFICEDOCUMENT === trim( $rel['Type'] ) ) {
+				$rel_type = trim( (string) $rel['Type'] );
+				$rel_target = trim( (string) $rel['Target'] );
+ 				if ( self::SCHEMA_REL_OFFICEDOCUMENT === $rel_type) {
 					// Found officeDocument! Read workbook and relations.
-					if ( $this->workbook = $this->getEntryXML( $rel['Target'] ) ) {
-						if ( $workbookRelations = $this->getEntryXML( dirname( $rel['Target'] ) . '/_rels/workbook.xml.rels' ) ) {
+					if ( $this->workbook = $this->getEntryXML( $rel_target ) ) {
+						if ( $workbookRelations = $this->getEntryXML( dirname( $rel_target ) . '/_rels/workbook.xml.rels' ) ) {
 							// Loop relations for workbook and extract sheets.
 							foreach ( $workbookRelations->Relationship as $workbookRelation ) {
-								$wrel_type = trim( $workbookRelation['Type'] );
-								$wrel_path = dirname( trim( $rel['Target'] ) ) . '/' . trim( $workbookRelation['Target'] );
+								$wrel_type = trim( (string) $workbookRelation['Type'] );
+								$wrel_path = dirname( trim( (string) $rel['Target'] ) ) . '/' . trim( $workbookRelation['Target'] );
 								if ( ! $this->entryExists( $wrel_path ) ) {
 									continue;
 								}
