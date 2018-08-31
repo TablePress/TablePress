@@ -99,6 +99,12 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.9.1 =
+* Enhancement: Improve accessibility on several admin screens (thanks to Boone Gorges).
+* Enhancement: Update list of allowed CSS properties in "Custom CSS".
+* Updated external libraries (DataTables, SimpleXLSX, CSSTidy, Build tools).
+* Some internal changes for better stability, security, translations, and documentation.
+
 = Version 1.9 =
 * Full compatibility with WordPress 4.9
 * Feature: The "Custom CSS" text field highlights and notifies about CSS code syntax errors.
@@ -255,6 +261,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.9.1 =
+This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
 = 1.9 =
 This update includes several new features, enhancements, and bugfixes. Updating is recommended.
