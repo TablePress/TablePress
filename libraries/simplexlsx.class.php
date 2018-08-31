@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.7.12 by Sergey Schuchkin.
+ * Based on SimpleXLSX v0.7.13 by Sergey Schuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -826,8 +826,8 @@ class SimpleXLSX {
 
 					$index = 0;
 					foreach ( $this->workbook->sheets->sheet as $s ) {
-						$this->sheetNames[ $index ] = (string) $s->attributes()->name;
-						$index_rId[ $index ] = (string) $s->attributes()->rId;
+						$this->sheetNames[ $index ] = (string) $s['name'];
+						$index_rId[ $index ] = (string) $s['id'];
 						$index++;
 					}
 
