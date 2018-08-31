@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.7.10 by Sergey Schuchkin.
+ * Based on SimpleXLSX v0.7.11 by Sergey Schuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -345,10 +345,12 @@ class SimpleXLSX {
 		list( $cols, ) = $this->dimension( $worksheet_id );
 
 		foreach ( $ws->sheetData->row as $row ) {
+			$r_idx = (int) $row['r'];
 			foreach ( $row->c as $c ) {
-				list( $current_cell, ) = $this->_columnIndex( (string) $c['r'] );
+				$r = (string) $c['r'];
 				$t = (string) $c['t'];
 				$s = (int) $c['s'];
+				list( $current_cell, ) = $this->_columnIndex( $r );
 				if ( $s > 0 && isset( $this->workbook_cell_formats[ $s ] ) ) {
 					$format = $this->workbook_cell_formats[ $s ]['format'];
 					if ( false !== strpos( $format, 'm' ) ) {
@@ -360,11 +362,12 @@ class SimpleXLSX {
 
 				$rows[ $current_row ][ $current_cell ] = array(
 					'type'   => $t,
-					'name'   => (string) $c['r'],
+					'name'   => $r,
 					'value'  => $this->value( $c, $format ),
 					'href'   => $this->href( $c ),
 					'f'      => (string) $c->f,
 					'format' => $format,
+					'r'      => $r_idx,
 				);
 			}
 			for ( $i = 0; $i < $cols; $i++ ) {
@@ -381,6 +384,7 @@ class SimpleXLSX {
 						'href'   => '',
 						'f'      => '',
 						'format' => '',
+						'r'      => $r_idx,
 					);
 				}
 			}
