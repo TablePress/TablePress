@@ -378,7 +378,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param array $commands The JS commands for the DataTables JS library.
+		 * @param string $commands The JS commands for the DataTables JS library.
 		 */
 		$commands = apply_filters( 'tablepress_all_datatables_commands', $commands );
 		if ( empty( $commands ) ) {
