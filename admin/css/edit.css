@@ -25,7 +25,8 @@ body.wait * {
 /* Allow wide tables to scroll sideways, only on "Edit" screen */
 body,
 #wpwrap,
-#wpbody-content {
+#wpbody-content,
+div#post-body.metabox-holder.columns-1 {
 	overflow: visible !important; /* !important is necessary to override an inline style that postboxes.js sets via JS */
 }
 
