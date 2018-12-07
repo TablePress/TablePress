@@ -5,6 +5,7 @@ sudo: false
 language: php
 
 php:
+  - 7.3
   - 7.2
   - 7.1
   - 7.0
@@ -13,6 +14,7 @@ php:
 
 env:
   - WP_VERSION=master
+  - WP_VERSION=5.0.0
   - WP_VERSION=4.9.8
 
 matrix:
