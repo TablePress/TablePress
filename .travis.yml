@@ -39,11 +39,11 @@ before_script:
       case "$TRAVIS_PHP_VERSION" in
         7.3|7.2|7.1|7.0|nightly)
           echo "Using PHPUnit 6.x for PHP version $TRAVIS_PHP_VERSION"
-          composer global require "phpunit/phpunit:^6"
+          composer require "phpunit/phpunit:^6"
           ;;
         5.6)
           echo "Using PHPUnit 4.x for PHP version $TRAVIS_PHP_VERSION"
-          composer global require "phpunit/phpunit:^4"
+          composer require "phpunit/phpunit:^4"
           ;;
         *)
           echo "No PHPUnit version handling for PHP version $TRAVIS_PHP_VERSION"
@@ -52,8 +52,6 @@ before_script:
       esac
     fi
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - which phpunit
-  - phpunit --version
   - git --version
   - locale -a
   - export WP_DEVELOP_DIR=/tmp/wordpress
