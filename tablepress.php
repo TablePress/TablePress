@@ -21,7 +21,7 @@ License: GPL 2
 Donate URI: https://tablepress.org/donate/
 */
 
-/*	Copyright 2012-2018 Tobias Bäthge
+/*	Copyright 2012-2019 Tobias Bäthge
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
