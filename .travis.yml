@@ -37,7 +37,7 @@ before_script:
     # Install the specified version of PHPUnit depending on the PHP version:
     if [[ 1 == 1 ]]; then
       case "$TRAVIS_PHP_VERSION" in
-        7.3|7.2|7.1||nightly)
+        7.3|7.2|7.1|nightly)
           echo "Using PHPUnit 7.x for PHP version $TRAVIS_PHP_VERSION"
           composer require "phpunit/phpunit:^7"
           ;;
