@@ -14,6 +14,7 @@ php:
 
 env:
   - WP_VERSION=master
+  - WP_VERSION=5.1.0
   - WP_VERSION=5.0.3
   - WP_VERSION=4.9.9
 
