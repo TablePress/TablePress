@@ -99,6 +99,11 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.9.2 =
+* Compatibility with WordPress 5.1
+* Enhancement: Make the save process more robust against data corruption.
+* Minor internal changes on CSS and typos in the documentation.
+
 = Version 1.9.1 =
 * Enhancement: Improve accessibility on several admin screens (thanks to Boone Gorges).
 * Enhancement: Update list of allowed CSS properties in "Custom CSS".
@@ -261,6 +266,9 @@ Release candidate in which all intended features are included and very stable.
 Initial version where most features are ready and pretty stable.
 
 == Upgrade Notice ==
+
+= 1.9.2 =
+This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
 = 1.9.1 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
