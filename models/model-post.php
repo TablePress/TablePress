@@ -108,19 +108,21 @@ class TablePress_Post_Model extends TablePress_Model {
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		/*
-		 * Remove possible KSES filtering here, as it can destroy the JSON when messing with HTML.
+		 * Remove possible KSES filtering, as it can destroy the JSON when messing with HTML.
 		 * KSES filtering is done to table cells individually, when saving.
 		 */
-		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		$has_kses = ( false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' ) );
+		if ( $has_kses ) {
+			kses_remove_filters();
+		}
 
 		$post_id = wp_insert_post( $post, true );
 
-		// Re-add balanceTags() to sanitize_post().
+		// Restore removed content filters.
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
-		// Re-add KSES filtering, if necessary.
-		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		if ( $has_kses ) {
+			kses_init_filters();
 		}
 
 		return $post_id;
@@ -158,19 +160,21 @@ class TablePress_Post_Model extends TablePress_Model {
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		/*
-		 * Remove possible KSES filtering here, as it can destroy the JSON when messing with HTML
+		 * Remove possible KSES filtering, as it can destroy the JSON when messing with HTML.
 		 * KSES filtering is done to table cells individually, when saving.
 		 */
-		remove_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		$has_kses = ( false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' ) );
+		if ( $has_kses ) {
+			kses_remove_filters();
+		}
 
 		$post_id = wp_update_post( $post, true );
 
-		// Re-add balanceTags() to sanitize_post().
+		// Restore removed content filters.
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
-		// Re-add KSES filtering, if necessary.
-		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		if ( $has_kses ) {
+			kses_init_filters();
 		}
 
 		return $post_id;
