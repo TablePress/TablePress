@@ -115,6 +115,11 @@ class TablePress_Post_Model extends TablePress_Model {
 		if ( $has_kses ) {
 			kses_remove_filters();
 		}
+		// Remove filter that adds `rel="noopener noreferrer" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
+		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
+		if ( $has_targeted_link_rel_filters ) {
+			wp_remove_targeted_link_rel_filters();
+		}
 
 		$post_id = wp_insert_post( $post, true );
 
@@ -123,6 +128,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		if ( $has_kses ) {
 			kses_init_filters();
+		}
+		if ( $has_targeted_link_rel_filters ) {
+			wp_init_targeted_link_rel_filters();
 		}
 
 		return $post_id;
@@ -167,6 +175,11 @@ class TablePress_Post_Model extends TablePress_Model {
 		if ( $has_kses ) {
 			kses_remove_filters();
 		}
+		// Remove filter that adds `rel="noopener noreferrer" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
+		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
+		if ( $has_targeted_link_rel_filters ) {
+			wp_remove_targeted_link_rel_filters();
+		}
 
 		$post_id = wp_update_post( $post, true );
 
@@ -175,6 +188,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		if ( $has_kses ) {
 			kses_init_filters();
+		}
+		if ( $has_targeted_link_rel_filters ) {
+			wp_init_targeted_link_rel_filters();
 		}
 
 		return $post_id;
