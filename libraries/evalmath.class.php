@@ -107,6 +107,7 @@ class EvalMath {
 		'number_format' => array( 1, 2 ),
 		'number_format_eu' => array( 1, 2 ),
 		'sum' => array( -1 ),
+		'counta' => array ( -1 ),
 		'product' => array( -1 ),
 		'rand_int' => array( 2 ),
 		'rand_float' => array( 0 ),
@@ -872,6 +873,19 @@ class EvalMath_Functions {
 	public static function sum( $args ) {
 		$args = func_get_args();
 		return array_sum( $args );
+	}
+
+	/**
+	 * Count the number of non-empty arguments.
+	 *
+	 * @since 1.9.3
+	 *
+	 * @param double|int $args Values for which the number of non-empty elements shall be counted.
+	 * @return double|int Counted number of non-empty elements in the passed values.
+	 */
+	public static function counta( $args ) {
+		$args = func_get_args();
+		return count( array_filter( $args ) );
 	}
 
 	/**
