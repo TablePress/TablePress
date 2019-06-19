@@ -437,6 +437,10 @@ class TablePress_CSS {
 		if ( function_exists( 'w3tc_minify_flush' ) ) {
 			w3tc_minify_flush();
 		}
+		// WP Fastest Cache
+		if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
+			$GLOBALS['wp_fastest_cache']->deleteCache( true );
+		}
 	}
 
 } // class TablePress_CSS
