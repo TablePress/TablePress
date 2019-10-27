@@ -40,5 +40,8 @@
     "globals": {
       "jQuery": false
     }
+  },
+  "scripts": {
+    "grunt": "grunt"
   }
 }
