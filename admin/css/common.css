@@ -94,15 +94,10 @@
 	box-shadow: none;
 	text-align: center;
 }
-#tablepress-page .table-shortcode {
-	cursor: text;
-}
 
 /* Table ID/name dropdown on "Export" screen */
 #tablepress-page #tables-export {
 	width: 100%;
-	height: auto;
-	line-height: normal;
 }
 
 /* Red border for form fields that have invalid values */
