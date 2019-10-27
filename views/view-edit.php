@@ -676,7 +676,7 @@ class TablePress_Edit_View extends TablePress_View {
 		<?php _e( 'For example, you can insert things like text, images, or links into the table, or change the used table features. You can also insert, delete, move, hide, and swap columns and rows.', 'tablepress' ); ?>
 	</p>
 	<p>
-		<label class="screen-reader-only" for="table-shortcode-inline"><?php esc_html_e( 'Shortcode text for editor', 'tablepress' ); ?></label>
+		<label class="screen-reader-text" for="table-shortcode-inline"><?php esc_html_e( 'Shortcode text for editor', 'tablepress' ); ?></label>
 		<?php printf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" id="table-shortcode-inline" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id={$data['table']['id']} /]" ) . '" readonly="readonly" />' ); ?>
 	</p>
 		<?php
