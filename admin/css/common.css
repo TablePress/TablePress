@@ -51,11 +51,6 @@
 	margin-right: 20px;
 }
 
-/* Placeholder fields in gray text color, but only if JS is enabled */
-.js #tablepress-page .placeholder-active {
-	color: #bbbbbb;
-}
-
 /* Width of the columns on the "All Tables" list */
 .tablepress-all-tables thead .column-table_id {
 	width: 50px;

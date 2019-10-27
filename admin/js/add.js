@@ -21,14 +21,6 @@ jQuery( document ).ready( function( $ ) {
 	$( '#tablepress-page' ).find( 'form' ).on( 'submit', function( /* event */ ) {
 		var valid_form = true;
 
-		// remove default values from required placeholders, if no value was entered
-		$( '#tablepress-page' ).find( '.form-required' ).find( '.placeholder' ).each( function() {
-			if ( this.value === this.defaultValue ) {
-				this.value = '';
-				$(this).removeClass( 'placeholder-active' );
-			}
-		} );
-
 		// WordPress validation function, checks if required fields (.form-required) are non-empty
 		if ( ! validateForm( $(this) ) ) {
 			valid_form = false;
@@ -58,17 +50,10 @@ jQuery( document ).ready( function( $ ) {
 			valid_form = false;
 		} );
 
+		// Don't submit the form if it's not valid.
 		if ( ! valid_form ) {
 			return false;
 		}
-		// at this point, the form is valid and will be submitted
-
-		// remove the default values of optional fields, as we don't want to save those
-		$( '#tablepress-page' ).find( '.placeholder' ).each( function() {
-			if ( this.value === this.defaultValue ) {
-				this.value = '';
-			}
-		} );
 	} );
 
 } );
