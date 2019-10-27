@@ -1109,11 +1109,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$import['source'] = '';
 		}
 
-		// Check if a table to replace or append to was selected.
-		if ( in_array( $import['type'], array( 'replace', 'append' ), true ) && empty( $import['existing_table'] ) ) {
-			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_no_existing_id', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_source' => $import['source'] ) );
-		}
-
 		$import_error = true;
 		$unlink_file = false;
 		$import_data = array();
@@ -1180,20 +1175,25 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$this->importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
 
-		if ( 'zip' === pathinfo( $import_data['file_name'], PATHINFO_EXTENSION ) ) {
-			// Determine if ZIP file support is available.
-			if ( ! $this->importer->zip_support_available ) {
-				if ( $unlink_file ) {
-					@unlink( $import_data['file_location'] );
-				}
-				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_no_zip_import', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_existing_table' => $import['existing_table'], 'import_source' => $import['source'] ) );
+		$import_zip = ( 'zip' === pathinfo( $import_data['file_name'], PATHINFO_EXTENSION ) );
+
+		// Determine if ZIP file support is available.
+		if ( $import_zip && ! $this->importer->zip_support_available ) {
+			if ( $unlink_file ) {
+				@unlink( $import_data['file_location'] );
 			}
-			$import_zip = true;
-		} else {
-			$import_zip = false;
+			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_no_zip_import', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_existing_table' => $import['existing_table'], 'import_source' => $import['source'] ) );
 		}
 
 		if ( ! $import_zip ) {
+			// Check if a table to replace or append to was selected (which is only necessary for import from non-ZIP files).
+			if ( in_array( $import['type'], array( 'replace', 'append' ), true ) && empty( $import['existing_table'] ) ) {
+				if ( $unlink_file ) {
+					@unlink( $import_data['file_location'] );
+				}
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_no_existing_id', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_source' => $import['source'] ) );
+			}
+
 			if ( ! isset( $import_data['data'] ) ) {
 				$import_data['data'] = file_get_contents( $import_data['file_location'] );
 			}
@@ -1247,8 +1247,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 				$name = $file_name;
 				$description = $file_name;
-				$existing_table_id = ( in_array( $import['type'], array( 'replace', 'append' ), true ) ) ? false : false; // @TODO: Find a way to extract the replace/append ID from the filename, maybe?
-				$table_id = $this->_import_tablepress_table( $import['format'], $data, $name, $description, $existing_table_id, 'add' );
+				$existing_table_id = ( in_array( $import['type'], array( 'replace', 'append' ), true ) ) ? false : false; // @TODO: Find a way to extract the replace/append ID from the filename, maybe? For the JSON format, a check is done after the import.
+				$table_id = $this->_import_tablepress_table( $import['format'], $data, $name, $description, $existing_table_id, $import['type'] );
 				if ( is_wp_error( $table_id ) ) {
 					continue;
 				} else {
@@ -1291,8 +1291,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return new WP_Error( 'table_import_import_failed' );
 		}
 
+		// Full JSON format table can contain a table ID, try to keep that.
+		$table_id_in_import = isset( $imported_table['id'] ) ? $imported_table['id'] : false;
+
+		// If no ID for an existing table was specified in the import form, we add the imported table,
+		// except for replacing and appending of JSON files in ZIP archives, where we try to use the imported table ID.
 		if ( false === $existing_table_id ) {
-			$import_type = 'add';
+			if ( false !== $table_id_in_import && TablePress::$model_table->table_exists( $table_id_in_import ) ) {
+				$existing_table_id = $table_id_in_import;
+			} else {
+				$import_type = 'add';
+			}
 		}
 
 		// To be able to replace or append to a table, editing that table must be allowed.
@@ -1300,16 +1309,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return new WP_Error( 'table_import_replace_append_capability_check_failed' );
 		}
 
-		// Full JSON format table can contain a table ID, try to keep that.
-		$table_id_in_import = false;
-
 		switch ( $import_type ) {
 			case 'add':
 				$existing_table = TablePress::$model_table->get_table_template();
 				// If name and description are imported from a new table, use those.
-				if ( isset( $imported_table['id'] ) ) {
-					$table_id_in_import = $imported_table['id'];
-				}
 				if ( ! isset( $imported_table['name'] ) ) {
 					$imported_table['name'] = $name;
 				}
