@@ -92,13 +92,12 @@
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 110px;
+	width: 120px;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
 	box-shadow: none;
 	text-align: center;
-	vertical-align: top;
 }
 #tablepress-page .table-shortcode {
 	cursor: text;
