@@ -9,7 +9,7 @@
   "author": "Tobias Bäthge",
   "license": "GPL-2.0-only",
   "devDependencies": {
-    "autoprefixer": "~9.5.1",
+    "autoprefixer": "~9.7.0",
     "grunt": "~1.0.4",
     "grunt-contrib-cssmin": "~3.0.0",
     "grunt-contrib-uglify": "~4.0.1",
@@ -18,7 +18,7 @@
     "grunt-contrib-watch": "~1.1.0",
     "grunt-jsvalidate": "~0.2.2",
     "grunt-postcss": "~0.9.0",
-    "grunt-jsonlint": "~1.1.0",
+    "grunt-jsonlint": "~2.0.0",
     "matchdep": "~2.0.0"
   },
   "jshintConfig": {
@@ -41,6 +41,18 @@
       "jQuery": false
     }
   },
+  "browserslist": [
+    "> 1%",
+    "ie >= 11",
+    "last 1 Android versions",
+    "last 1 ChromeAndroid versions",
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Edge versions",
+    "last 2 Opera versions"
+  ],
   "scripts": {
     "grunt": "grunt"
   }

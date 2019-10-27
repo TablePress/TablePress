@@ -155,9 +155,7 @@ body #wp-link-backdrop {
 #tablepress-page input[type="text"],
 #tablepress-page textarea,
 #tablepress-page select {
-	-webkit-box-shadow: none;
 	box-shadow: none;
-	-webkit-transition: none;
 	transition: none;
 }
 
