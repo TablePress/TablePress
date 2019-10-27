@@ -55,13 +55,10 @@ if ( ! defined( 'TABLEPRESS_BASENAME' ) ) {
 
 /*
  * Define global JSON encoding options that TablePress uses.
- * We don't escape slashes (anymore), which makes search/replace of URLs in the database much easier.
  */
 if ( ! defined( 'TABLEPRESS_JSON_OPTIONS' ) ) {
 	$tablepress_json_options = 0;
-	if ( defined( 'JSON_UNESCAPED_SLASHES' ) ) {
-		$tablepress_json_options |= JSON_UNESCAPED_SLASHES; // Introduced in PHP 5.4.
-	}
+	$tablepress_json_options |= JSON_UNESCAPED_SLASHES; // Don't escape slashes to make search/replace of URLs in the database much easier.
 	define( 'TABLEPRESS_JSON_OPTIONS', $tablepress_json_options );
 	unset( $tablepress_json_options );
 }
