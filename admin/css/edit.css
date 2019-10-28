@@ -109,17 +109,16 @@ body #wp-link-backdrop {
 	display: none;
 }
 
-#tablepress-page .small-text {
-	width: 65px;
-	padding: 3px 5px;
-}
 #tablepress-page #table-new-id {
 	width: 120px;
 }
 
-#table-information-shortcode,
-#tablepress-page .button {
+#table-information-shortcode {
 	vertical-align: middle;
+}
+
+#tablepress-page .button {
+	vertical-align: baseline;
 }
 
 /* Table cells */
