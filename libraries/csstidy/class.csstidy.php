@@ -44,51 +44,6 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  */
 
 /**
- * Defines ctype functions if required.
- *
- * @TODO: Make these methods of CSSTidy.
- */
-if ( ! function_exists( 'ctype_space' ) ) {
-	/**
-	 * Check for whitespace character(s).
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $text Text to check.
-	 * @return bool Whether all characters in the string are whitespace characters.
-	 */
-	function ctype_space( $text ) {
-		return ( 1 === preg_match( "/^[ \r\n\t\f]+$/", $text ) );
-	}
-}
-if ( ! function_exists( 'ctype_alpha' ) ) {
-	/**
-	 * Check for alphabetic character(s).
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $text Text to check.
-	 * @return bool Whether all characters in the string are alphabetic characters.
-	 */
-	function ctype_alpha( $text ) {
-		return ( 1 === preg_match( '/^[a-zA-Z]+$/', $text ) );
-	}
-}
-if ( ! function_exists( 'ctype_xdigit' ) ) {
-	/**
-	 * Check for character(s) representing a hexadecimal digit.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $text Text to check.
-	 * @return bool Whether $text is a hexadecimal number.
-	 */
-	function ctype_xdigit( $text ) {
-		return ( 1 === preg_match( '/^[a-fA-F0-9]+$/', $text ) );
-	}
-}
-
-/**
  * Defines constants.
  *
  * @TODO: Make these class constants of CSSTidy.
