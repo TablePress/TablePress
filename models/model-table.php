@@ -383,8 +383,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function sanitize( array $table ) {
 		// Sanitize the table name and description.
-		$fields_to_sanitize = array( 'name', 'description' );
-		foreach ( $fields_to_sanitize as $field ) {
+		$fields = array( 'name', 'description' );
+		foreach ( $fields as $field ) {
 			$table[ $field ] = wp_kses_post( $table[ $field ] );
 		}
 
