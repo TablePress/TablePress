@@ -109,7 +109,7 @@ abstract class TablePress_View {
 						. sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>',
 		) );
 		// "sidebar" in the help tab.
-		$screen->set_help_sidebar( '<p><strong>' . __( 'For more information:', 'tablepress' ) . '</strong></p><p><a href="https://tablepress.org/" target="_blank">TablePress Website</a></p><p><a href="https://tablepress.org/faq/" target="_blank">TablePress FAQ</a></p><p><a href="https://tablepress.org/documentation/" target="_blank">TablePress Documentation</a></p><p><a href="https://tablepress.org/support/" target="_blank">TablePress Support</a></p>' );
+		$screen->set_help_sidebar( '<p><strong>' . __( 'For more information:', 'tablepress' ) . '</strong></p><p><a href="https://tablepress.org/">TablePress Website</a></p><p><a href="https://tablepress.org/faq/">TablePress FAQ</a></p><p><a href="https://tablepress.org/documentation/">TablePress Documentation</a></p><p><a href="https://tablepress.org/support/">TablePress Support</a></p>' );
 	}
 
 	/**

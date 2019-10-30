@@ -77,7 +77,7 @@ class TablePress_List_View extends TablePress_View {
 				. sprintf( _n( 'If everything works and you are satisfied with the results of managing your %s table, isn&#8217;t that worth a coffee or two?', 'If everything works and you are satisfied with the results of managing your %s tables, isn&#8217;t that worth a coffee or two?', $data['table_count'], 'tablepress' ), esc_html( $data['table_count'] ) ) . '<br />'
 				. sprintf( __( '<a href="%s">Donations</a> help me to continue user support and development of this <em>free</em> software &mdash; things for which I spend countless hours of my free time! Thank you very much!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '<br /><br />'
 				. __( 'Sincerely, Tobias', 'tablepress' ) . '<br /><br />'
-				. sprintf( '<a href="%s" target="_blank"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;'
+				. sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'already-donated' ), __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later' ), __( 'No, thanks. Don&#8217;t ask again.', 'tablepress' ) ),
 				'notice-success not-dismissible'
@@ -444,7 +444,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$row_actions['delete'] = sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, esc_attr( sprintf( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Delete', 'tablepress' ) );
 		}
 		if ( $user_can_preview_table ) {
-			$row_actions['table-preview'] = sprintf( '<a href="%1$s" title="%2$s" target="_blank">%3$s</a>', $preview_url, esc_attr( sprintf( __( 'Show a preview of &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Preview', 'tablepress' ) );
+			$row_actions['table-preview'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $preview_url, esc_attr( sprintf( __( 'Show a preview of &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Preview', 'tablepress' ) );
 		}
 
 		return $row_text . $this->row_actions( $row_actions );
