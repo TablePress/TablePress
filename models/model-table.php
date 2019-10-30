@@ -222,6 +222,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array Post.
 	 */
 	protected function _table_to_post( array $table, $post_id ) {
+		// Run filters on content in each cell and other fields.
+		$table = $this->filter_content( $table );
+
 		// Sanitize each cell, table name, and table description, if the user is not allowed to work with unfiltered HTML.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			$table = $this->sanitize( $table );
@@ -389,6 +392,44 @@ class TablePress_Table_Model extends TablePress_Model {
 		foreach ( $table['data'] as $row_idx => $row ) {
 			foreach ( $row as $column_idx => $cell_content ) {
 				$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // equals wp_filter_post_kses(), but without the unncessary slashes handling
+			}
+		}
+
+		return $table;
+	}
+
+	/**
+	 * Filter/modify the content of table cells and other fields, e.g. for security hardening.
+	 *
+	 * This is similar to the `sanitize()` method, but executed for all users.
+	 * In 1.10.0, adding `rel="noopener noreferrer"` to all HTML link elements like `<a target=` was added. See https://core.trac.wordpress.org/ticket/43187.
+	 *
+	 * @since 1.10.0
+	 *
+	 * @param array $table Table.
+	 * @return array Filtered/modified table.
+	 */
+	public function filter_content( array $table ) {
+		/**
+		 * Filter whether the contents of table cells and fields should be filtered/modified.
+		 *
+		 * @since 1.10.0
+		 *
+		 * @param bool $filter Whether to filter the content of table cells and other fields. Default true.
+		 */
+		if ( ! apply_filters( 'tablepress_filter_table_cell_content', true ) ) {
+			return;
+		}
+
+		// Filter the table name and description.
+		$fields = array( 'name', 'description' );
+		foreach ( $fields as $field ) {
+			$table[ $field ] = wp_targeted_link_rel( $table[ $field ] );
+		}
+
+		foreach ( $table['data'] as $row_idx => $row ) {
+			foreach ( $row as $column_idx => $cell_content ) {
+				$table['data'][ $row_idx ][ $column_idx ] = wp_targeted_link_rel( $cell_content );
 			}
 		}
 
