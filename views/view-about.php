@@ -60,7 +60,7 @@ class TablePress_About_View extends TablePress_View {
 		?>
 	<p>
 		<?php _e( 'TablePress allows you to create and manage tables in the admin area of WordPress.', 'tablepress' ); ?>
-		<?php _e( 'Tables may contain text, numbers and even HTML (e.g. to include images or links).', 'tablepress' ); ?>
+		<?php _e( 'Tables may contain text, numbers, and even HTML (e.g. to include images or links).', 'tablepress' ); ?>
 		<?php _e( 'You can then show the tables in your posts, on your pages, or in text widgets by using a Shortcode.', 'tablepress' ); ?>
 		<?php _e( 'If you want to show your tables anywhere else in your theme, you can use a Template Tag function.', 'tablepress' ); ?>
 	</p>
@@ -82,20 +82,20 @@ class TablePress_About_View extends TablePress_View {
 		<?php _e( 'This means that you either let the plugin create an empty table for you or that you load an existing table from either a CSV, HTML, JSON, XLS, or XLSX file.', 'tablepress' ); ?>
 	</p>
 	<p>
-		<?php _e( 'Then you can edit your data or change the structure of your table (e.g. by inserting, deleting, moving, or swapping rows or columns or sorting them) and select specific table features like alternating row colors or whether to print the name or description, if you want.', 'tablepress' ); ?>
+		<?php _e( 'Then, you can edit your data or change the structure of your table (e.g. by inserting, deleting, moving, or swapping rows or columns or sorting them) and select specific table features like alternating row colors or whether to print the name or description, if you want.', 'tablepress' ); ?>
 		<?php _e( 'To easily add a link or an image to a cell, use the provided buttons.', 'tablepress' ); ?>
 		<?php _e( 'Those will ask you for the necessary information and corresponding HTML code will be added to the cell automatically.', 'tablepress' ); ?>
 	</p>
 	<p>
 		<label class="screen-reader-text" for="table-shortcode-inline"><?php esc_html_e( 'Shortcode text for editor', 'tablepress' ); ?></label>
-		<?php printf( __( 'To insert a table into a page, post, or text widget, copy its Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" id="table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
-		<?php printf( __( 'You can also click the &#8220;%s&#8221; button in the editor toolbar to select and insert a table.', 'tablepress' ), __( 'Table', 'tablepress' ) ); ?>
+		<?php printf( __( 'To insert a table into a post or page, copy its Shortcode %s and paste it into a &#8220;Shortcode&#8221; block at the desired place in the block editor.', 'tablepress' ), '<label class="screen-reader-text" for="table-shortcode-inline">' . esc_html__( 'Shortcode text for editor', 'tablepress' ) . '</label>' . '<input type="text" class="table-shortcode table-shortcode-inline" id="table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
+		<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
 	</p>
 	<p>
 		<?php _e( 'Tables can be styled by changing and adding CSS commands.', 'tablepress' ); ?>
 		<?php _e( 'The plugin ships with default CSS stylesheets, which can be customized with own code or replaced with other stylesheets.', 'tablepress' ); ?>
 		<?php _e( 'For this, each table is given certain CSS classes that can be used as CSS selectors.', 'tablepress' ); ?>
-		<?php printf( __( 'Please see the <a href="%s">documentation</a> for a list of these selectors and for styling examples.', 'tablepress' ), 'https://tablepress.org/documentation/' ); ?>
+		<?php printf( __( 'Please see the <a href="%s">Documentation</a> for a list of these selectors and for styling examples.', 'tablepress' ), 'https://tablepress.org/documentation/' ); ?>
 	</p>
 		<?php
 	}
@@ -111,8 +111,8 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_more_information( array $data, array $box ) {
 		?>
 	<p>
-		<?php printf( __( 'More information about TablePress can be found on the <a href="%1$s">plugin&#8217;s website</a> or on its page in the <a href="%2$s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://tablepress.org/', 'https://wordpress.org/plugins/tablepress/' ); ?>
-		<?php printf( __( 'For technical information, please see the <a href="%s">documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' ); ?>
+		<?php printf( __( 'More information about TablePress can be found on the <a href="%1$s">plugin website</a> or on its page in the <a href="%2$s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://tablepress.org/', 'https://wordpress.org/plugins/tablepress/' ); ?>
+		<?php printf( __( 'For technical information, please see the <a href="%s">Documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' ); ?>
 	</p>
 		<?php
 	}
