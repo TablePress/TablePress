@@ -287,8 +287,9 @@ class TablePress_CSSTidy_print {
 			$output .= $template[0] . '@namespace ' . $template[5] . $this->namespace . $template[6] . $template[13];
 		}
 
-		$in_at_out = '';
+		$in_at_out = array();
 		$out = &$output;
+		$indent_level = 0;
 
 		foreach ( $this->tokens as $key => $token ) {
 			switch ( $token[0] ) {
@@ -297,7 +298,11 @@ class TablePress_CSSTidy_print {
 						$token[1] = str_replace( ',', ",\n", $token[1] );
 					}
 					$out .= $template[0] . $this->_htmlsp( $token[1], $plain ) . $template[1];
-					$out = &$in_at_out;
+					$indent_level++;
+					if ( ! isset( $in_at_out[ $indent_level ] ) ) {
+						$in_at_out[ $indent_level ] = '';
+					}
+					$out = &$in_at_out[ $indent_level ];
 					break;
 				case SEL_START:
 					if ( $this->parser->get_cfg( 'lowercase_s' ) ) {
@@ -335,12 +340,25 @@ class TablePress_CSSTidy_print {
 					}
 					break;
 				case AT_END:
-					$out = &$output;
-					$in_at_out = str_replace( "\n\n", "\r\n", $in_at_out ); // don't fill empty lines
-					$in_at_out = str_replace( "\n", "\n" . $template[10], $in_at_out );
-					$in_at_out = str_replace( "\r\n", "\n\n", $in_at_out );
-					$out .= $template[10] . $in_at_out . $template[9];
-					$in_at_out = '';
+					if ( strlen( $template[10] ) ) {
+						// Indent the block we are closing.
+						$out = str_replace( "\n\n", "\r\n", $out ); // Don't fill empty lines.
+						$out = str_replace( "\n", "\n" . $template[10], $out );
+						$out = str_replace( "\r\n", "\n\n", $out );
+					}
+					if ( $indent_level > 1 ) {
+						$out = &$in_at_out[ $indent_level - 1 ];
+					}else {
+						$out = &$output;
+					}
+					$out .= $template[10] . $in_at_out[$indent_level];
+					if ( AT_END !== $this->_seeknocomment( $key, 1 ) ) {
+						$out .= $template[9];
+					} else {
+						$out .= rtrim( $template[9] );
+					}
+					unset( $in_at_out[ $indent_level ] );
+					$indent_level--;
 					break;
 				case COMMENT:
 					$out .= $template[11] . '/*' . $this->_htmlsp( $token[1], $plain ) . '*/' . $template[12];
@@ -405,8 +423,10 @@ class TablePress_CSSTidy_print {
 			if ( intval( $medium ) < DEFAULT_AT ) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if ( strlen( trim( $medium ) ) ) {
-					$this->parser->_add_token( AT_START, $medium, true );
-				}
+					$parts_to_open = explode( '{', $medium );
+					foreach ( $parts_to_open as $part ) {
+						$this->parser->_add_token( AT_START, $part, true );
+					}				}
 			} elseif ( $default_media ) {
 				$this->parser->_add_token( AT_START, $default_media, true );
 			}
@@ -446,7 +466,10 @@ class TablePress_CSSTidy_print {
 			if ( intval( $medium ) < DEFAULT_AT ) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if ( strlen( trim( $medium ) ) ) {
-					$this->parser->_add_token( AT_END, $medium, true );
+					$parts_to_close = explode( '{', $medium );
+					foreach ( array_reverse( $parts_to_close ) as $part ) {
+						$this->parser->_add_token( AT_END, $part, true );
+					}
 				}
 			} elseif ( $default_media ) {
 				$this->parser->_add_token( AT_END, $default_media, true );

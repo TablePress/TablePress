@@ -459,7 +459,16 @@ class TablePress_CSSTidy {
 	 */
 	public function _add_token( $type, $data, $do = false ) {
 		if ( $this->get_cfg( 'preserve_css' ) || $do ) {
-			$this->tokens[] = array( $type, ( COMMENT === $type ) ? $data : trim( $data ) );
+			// nested @...: if opening a new part we just closed, remove the previous closing instead of adding opening.
+			if ( AT_START === $type
+				&& count( $this->tokens )
+				&& ( $last = end( $this->tokens ) )
+				&& AT_END === $last[0]
+				&& trim( $data ) === $last[1] ) {
+					array_pop( $this->tokens );
+			} else {
+				$this->tokens[] = array( $type, ( COMMENT === $type ) ? $data : trim( $data ) );
+			}
 		}
 	}
 
@@ -650,6 +659,7 @@ class TablePress_CSSTidy {
 		$this->print->input_css = $string;
 		$string = str_replace( "\r\n", "\n", $string ) . ' ';
 		$cur_comment = '';
+		$cur_at = '';
 
 		for ( $i = 0, $size = strlen( $string ); $i < $size; $i++ ) {
 			if ( "\n" === $string[ $i ] || "\r" === $string[ $i ] ) {
@@ -666,22 +676,22 @@ class TablePress_CSSTidy {
 							$this->from[] = 'at';
 						} elseif ( '{' === $string[ $i ] ) {
 							$this->status = 'is';
-							$this->at = $this->css_new_media_section( $this->at );
+							$this->at = $this->css_new_media_section( $this->at, $cur_at );
 							$this->_add_token( AT_START, $this->at );
 						} elseif ( ',' === $string[ $i ] ) {
-							$this->at = trim( $this->at ) . ',';
+							$cur_at = trim( $cur_at ) . ',';
 						} elseif ( '\\' === $string[ $i ] ) {
-							$this->at .= $this->_unicode( $string, $i );
+							$cur_at .= $this->_unicode( $string, $i );
 						}
 						// Fix for complicated media, i.e @media screen and (-webkit-min-device-pixel-ratio:1.5)
 						// '/' is included for ratios in Opera: (-o-min-device-pixel-ratio: 3/2)
 						elseif ( in_array( $string[ $i ], array( '(', ')', ':', '.', '/' ), true ) ) {
-							$this->at .= $string[ $i ];
+							$cur_at .= $string[ $i ];
 						}
 					} else {
-						$lastpos = strlen( $this->at ) - 1;
-						if ( ! ( ( ctype_space( $this->at[ $lastpos ] ) || $this->is_token( $this->at, $lastpos ) && ',' === $this->at[ $lastpos ] ) && ctype_space( $string[ $i ] ) ) ) {
-							$this->at .= $string[ $i ];
+						$lastpos = strlen( $cur_at ) - 1;
+						if ( ! ( ( ctype_space( $cur_at[ $lastpos ] ) || $this->is_token( $cur_at, $lastpos ) && ',' === $cur_at[ $lastpos ] ) && ctype_space( $string[ $i ] ) ) ) {
+							$cur_at .= $string[ $i ];
 						}
 					}
 					break;
@@ -698,18 +708,19 @@ class TablePress_CSSTidy {
 							foreach ( $at_rules as $name => $type ) {
 								if ( ! strcasecmp( substr( $string, $i + 1, strlen( $name ) ), $name ) ) {
 									if ( 'at' === $type ) {
-										$this->at = '@' . $name;
+										$cur_at = '@' . $name;
 									} else {
 										$this->selector = '@' . $name;
 									}
 									if ( 'atis' === $type ) {
 										$this->next_selector_at = ( $this->next_selector_at ? $this->next_selector_at : ( $this->at ? $this->at : DEFAULT_AT ) );
-										$this->at = $this->css_new_media_section( ' ' );
+										$this->at = $this->css_new_media_section( $this->at, ' ', true );
 										$type = 'is';
 									}
 									$this->status = $type;
 									$i += strlen( $name );
 									$this->invalid_at = false;
+									break;
 								}
 							}
 
@@ -735,20 +746,21 @@ class TablePress_CSSTidy {
 							$this->invalid_at = false;
 							$this->status = 'is';
 							if ( $this->next_selector_at ) {
-								$this->at = $this->css_new_media_section( $this->next_selector_at );
+								$this->at = $this->css_close_media_section( $this->at );
+								$this->at = $this->css_new_media_section( $this->at, $this->next_selector_at );
 								$this->next_selector_at = '';
 							}
 						} elseif ( '{' === $string[ $i ] ) {
 							$this->status = 'ip';
 							if ( '' === $this->at ) {
-								$this->at = $this->css_new_media_section( DEFAULT_AT );
+								$this->at = $this->css_new_media_section( $this->at, DEFAULT_AT );
 							}
 							$this->selector = $this->css_new_selector( $this->at, $this->selector );
 							$this->_add_token( SEL_START, $this->selector );
 							$this->added = false;
 						} elseif ( '}' === $string[ $i ] ) {
 							$this->_add_token( AT_END, $this->at );
-							$this->at = '';
+							$this->at = $this->css_close_media_section( $this->at );
 							$this->selector = '';
 							$this->sel_separate = array();
 						} elseif ( ',' === $string[ $i ] ) {
@@ -790,7 +802,8 @@ class TablePress_CSSTidy {
 							$this->selector = '';
 							$this->property = '';
 							if ( $this->next_selector_at ) {
-								$this->at = $this->css_new_media_section( $this->next_selector_at );
+								$this->at = $this->css_close_media_section( $this->at );
+								$this->at = $this->css_new_media_section( $this->at, $this->next_selector_at );
 								$this->next_selector_at = '';
 							}
 						} elseif ( ';' === $string[ $i ] ) {
@@ -1136,28 +1149,26 @@ class TablePress_CSSTidy {
 	}
 
 	/**
-	 * Start a new media section.
+	 * Check if a current media section is the continuation of the last one.
+	 * If not increase the name of the media section to avoid a merging.
 	 *
-	 * Check if the media is not already known, else rename it with extra spaces to avoid merging.
+	 * @since 1.10.0
 	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $media Media.
-	 * @return string [return value]
+	 * @param int|string $media Media.
+	 * @return int|string [return value]
 	 */
-	protected function css_new_media_section( $media ) {
-		if ( $this->get_cfg( 'preserve_css' ) ) {
-			return $media;
-		}
-		// If the last @media is the same as this, keep it.
+	protected function css_check_last_media_section_or_inc( $media ) {
+		// Are we starting?
 		if ( ! $this->css || ! is_array( $this->css ) || empty( $this->css ) ) {
 			return $media;
 		}
+		// If the last @media is the same as this, keep it.
 		end( $this->css );
 		$at = key( $this->css );
 		if ( $at === $media ) {
 			return $media;
 		}
+		// Otherwise increase the section in the array.
 		while ( isset( $this->css[ $media ] ) ) {
 			if ( is_numeric( $media ) ) {
 				$media++;
@@ -1166,6 +1177,57 @@ class TablePress_CSSTidy {
 			}
 		}
 		return $media;
+	}
+
+	/**
+	 * Start a new media section.
+	 *
+	 * Check if the media is not already known, else rename it with extra spaces to avoid merging.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $current_media Media.
+	 * @param string $media         Media.
+	 * @param bool   $at_root
+	 * @return string [return value]
+	 */
+	protected function css_new_media_section( $current_media, $new_media, $at_root = false ) {
+		if ( $this->get_cfg( 'preserve_css' ) ) {
+			return $new_media;
+		}
+		// If we already are in a media and CSS level is 3, manage nested medias.
+		if ( $current_media
+			&& ! $at_root
+			// numeric $current_media means DEFAULT_AT or inc
+			&& ! is_numeric( $current_media )
+			&& 0 === strncmp( $this->get_cfg( 'css_level' ), 'CSS3', 4 ) ) {
+				$new_media = rtrim( $current_media ) . '{' . rtrim( $new_media );
+		}
+		return $this->css_check_last_media_section_or_inc( $new_media );
+	}
+
+	/**
+	 * Close a media section.
+	 *
+	 * Find the parent media we were in before or the root.
+	 *
+	 * @since 1.10.0
+	 *
+	 * @param string $current_media Current Media.
+	 * @return string [return value]
+	 */
+	protected function css_close_media_section( $current_media ) {
+		if ( $this->get_cfg( 'preserve_css' ) ) {
+			return '';
+		}
+		if ( false !== strpos( $current_media, '{' ) ) {
+			$current_media = explode( '{', $current_media );
+			array_pop( $current_media );
+			$current_media = implode( '{', $current_media );
+			return $current_media;
+		}
+
+		return '';
 	}
 
 	/**
