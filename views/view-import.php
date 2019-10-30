@@ -21,14 +21,6 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Import_View extends TablePress_View {
 
 	/**
-	 * List of WP feature pointers for this view.
-	 *
-	 * @since 1.0.0
-	 * @var array
-	 */
-	protected $wp_pointers = array( 'tp100_wp_table_reloaded_import' );
-
-	/**
 	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
@@ -288,25 +280,6 @@ class TablePress_Import_View extends TablePress_View {
 </tbody>
 </table>
 		<?php
-	}
-
-	/**
-	 * Set the content for the WP feature pointer about the WP-Table Reloaded import feature.
-	 *
-	 * @since 1.0.0
-	 */
-	public function wp_pointer_tp100_wp_table_reloaded_import() {
-		if ( ! $this->data['wp_table_reloaded_installed'] ) {
-			return;
-		}
-
-		$content  = '<h3>' . __( 'TablePress Feature: Import from WP-Table Reloaded', 'tablepress' ) . '</h3>';
-		$content .= '<p>' . __( 'You can import your existing tables and &#8220;Custom CSS&#8221; from WP-Table Reloaded into TablePress.', 'tablepress' ) . '</p>';
-
-		$this->admin_page->print_wp_pointer_js( 'tp100_wp_table_reloaded_import', '#tablepress_import-import-wp-table-reloaded', array(
-			'content'  => $content,
-			'position' => array( 'edge' => 'bottom', 'align' => 'left', 'offset' => '16 -16' ),
-		) );
 	}
 
 } // class TablePress_Import_View
