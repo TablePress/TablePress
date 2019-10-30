@@ -75,22 +75,9 @@ body {
 	margin: 0 0 15px 15px;
 }
 
-/* Fix search field positioning */
-#tablepress-page .search-box {
-	position: relative;
-	height: auto;
-	width: auto;
-	float: right;
-	clear: none;
-	margin: 0;
-}
 #tablepress-page .subtitle {
 	float: left;
 	padding: 10px 0 0;
-}
-#tablepress-page .search-box input[name="s"] {
-	float: left;
-	width: auto;
 }
 
 /* Fix pagination layout */
@@ -134,37 +121,24 @@ body {
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 110px;
+	width: 120px;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
-	font-size: 14px;
-	-webkit-box-shadow: none;
 	box-shadow: none;
 	text-align: center;
-	vertical-align: top;
-}
-#tablepress-page .table-shortcode {
-	cursor: text;
 }
 <?php if ( is_rtl() ) : ?>
 /* RTL CSS */
 body.rtl {
 	margin: 0 15px 15px 0;
 }
-.rtl #tablepress-page .search-box {
-	float: left;
-}
 .rtl #tablepress-page .subtitle {
-	float: right;
-}
-.rtl #tablepress-page .search-box input[name="s"] {
 	float: right;
 }
 .rtl #tablepress-page .table-shortcode-inline {
 	width: 125px;
 	font-size: 13px;
-	vertical-align: baseline;
 }
 <?php endif; ?>
 </style>
