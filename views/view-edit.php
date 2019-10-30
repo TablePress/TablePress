@@ -672,12 +672,8 @@ class TablePress_Edit_View extends TablePress_View {
 	public function textbox_head( array $data, array $box ) {
 		?>
 	<p>
-		<?php printf( __( 'On this screen, you can edit the content and structure of the table with the ID %s.', 'tablepress' ), esc_html( $data['table']['id'] ) ); ?>
-		<?php _e( 'For example, you can insert things like text, images, or links into the table, or change the used table features. You can also insert, delete, move, hide, and swap columns and rows.', 'tablepress' ); ?>
-	</p>
-	<p>
-		<label class="screen-reader-text" for="table-shortcode-inline"><?php esc_html_e( 'Shortcode text for editor', 'tablepress' ); ?></label>
-		<?php printf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it at the desired place in the editor.', 'tablepress' ), '<input type="text" id="table-shortcode-inline" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id={$data['table']['id']} /]" ) . '" readonly="readonly" />' ); ?>
+		<?php _e( 'To edit the content or modify the structure of this table, use the input fields and buttons below.', 'tablepress' ); ?>
+		<?php printf( __( 'To insert a table into a post or page, copy its Shortcode %s and paste it into a &#8220;Shortcode&#8221; block at the desired place in the block editor.', 'tablepress' ), '<label class="screen-reader-text" for="table-shortcode-inline">' . esc_html__( 'Shortcode text for editor', 'tablepress' ) . '</label>' . '<input type="text" class="table-shortcode table-shortcode-inline" id="table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id={$data['table']['id']} /]" ) . '" readonly="readonly" />' ); ?>
 	</p>
 		<?php
 	}
