@@ -875,7 +875,7 @@ class EvalMath_Functions {
 	/**
 	 * Count the number of non-empty arguments.
 	 *
-	 * @since 1.9.3
+	 * @since 1.10.0
 	 *
 	 * @param double|int $args Values for which the number of non-empty elements shall be counted.
 	 * @return double|int Counted number of non-empty elements in the passed values.
