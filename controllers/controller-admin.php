@@ -179,7 +179,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		add_action( 'load-plugins.php', array( $this, 'plugins_page' ) );
-		add_action( 'admin_print_styles-media-upload-popup', array( $this, 'add_media_upload_thickbox_css' ) );
 
 		// Add filters and actions for the integration into the WP WXR exporter and importer.
 		add_action( 'wp_import_insert_post', array( TablePress::$model_table, 'add_table_id_on_wp_import' ), 10, 4 );
@@ -263,18 +262,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
 		echo '#content_tablepress_insert_table img{display:none}';
 		echo '}</style>' . "\n";
-	}
-
-	/**
-	 * Print some CSS in the Media Upload Thickbox to fix some positioning issues.
-	 *
-	 * These will most likely not be fixed in core, as the old media uploader is deprecated.
-	 * They will be removed in TablePress, once the new media uploader is used.
-	 *
-	 * @since 1.4.0
-	 */
-	public function add_media_upload_thickbox_css() {
-		echo '<style type="text/css">#media-items,#media-upload #filter{width:auto!important}.media-item .describe input[type="text"],.media-item .describe textarea{width:100%!important}.media-item .image-editor input[type="text"]{width:3em!important}</style>' . "\n";
 	}
 
 	/**
