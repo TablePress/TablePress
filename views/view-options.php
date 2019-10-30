@@ -57,7 +57,7 @@ class TablePress_Options_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		if ( current_user_can( 'tablepress_edit_options' ) ) {
-			$this->add_meta_box( 'frontend-options', __( 'Frontend Options', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
+			$this->add_meta_box( 'frontend-options', __( 'Frontend Options and Styling', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
 		}
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( $this, 'postbox_user_options' ), 'normal' );
 		$this->data['submit_button_caption'] = __( 'Save Changes', 'tablepress' );
@@ -78,16 +78,7 @@ class TablePress_Options_View extends TablePress_View {
 	public function textbox_head( array $data, array $box ) {
 		?>
 		<p>
-			<?php _e( 'TablePress has several options which affect the plugin&#8217;s behavior in different areas.', 'tablepress' ); ?>
-		</p>
-		<p>
-			<?php
-				if ( current_user_can( 'tablepress_edit_options' ) ) {
-					_e( 'Frontend Options influence the styling of tables in pages, posts, or text widgets, by defining which CSS code shall be loaded.', 'tablepress' );
-					echo '<br />';
-				}
-				_e( 'In the User Options, every TablePress user can choose the position of the plugin in his WordPress admin menu.', 'tablepress' );
-			?>
+			<?php _e( 'TablePress has some options which affect the plugin&#8217;s behavior in different areas.', 'tablepress' ); ?>
 		</p>
 		<?php
 	}
@@ -106,7 +97,7 @@ class TablePress_Options_View extends TablePress_View {
 <tbody>
 	<tr>
 		<th class="column-1" scope="row"><label for="option-custom-css"><?php _e( 'Custom CSS', 'tablepress' ); ?></label>:</th>
-		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load these &#8220;Custom CSS&#8221; commands to influence the table styling:', 'tablepress' ); ?></label>
+		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load this &#8220;Custom CSS&#8221; code to change the table styling:', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr>
@@ -119,7 +110,7 @@ class TablePress_Options_View extends TablePress_View {
 				echo ' ';
 				printf( __( 'You can get styling examples from the <a href="%s">FAQ</a>.', 'tablepress' ), 'https://tablepress.org/faq/' );
 				echo ' ';
-				printf( __( 'Information on available CSS selectors can be found in the <a href="%s">documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' );
+				printf( __( 'Information on available CSS selectors can be found in the <a href="%s">Documentation</a>.', 'tablepress' ), 'https://tablepress.org/documentation/' );
 				echo ' ';
 				_e( 'Please note that invalid CSS code will be stripped, if it can not be corrected automatically.', 'tablepress' );
 			?>
