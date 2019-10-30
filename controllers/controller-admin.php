@@ -197,6 +197,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return;
 		}
 
+		/*
+		 * Only load the toolbar integration when the Classic Editor plugin (https://wordpress.org/plugins/classic-editor/) is activated.
+		 * Without it, the Block Editor user interface is used, which can not directly use these buttons.
+		 */
+		if ( ! class_exists( 'Classic_Editor' ) ) {
+			return;
+		}
+
 		$this->init_i18n_support();
 		add_thickbox(); // usually already loaded by media upload functions
 		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
