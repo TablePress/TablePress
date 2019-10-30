@@ -138,34 +138,40 @@ class TablePress_CSSTidy_optimise {
 
 		if ( 2 === (int) $this->parser->get_cfg( 'merge_selectors' ) ) {
 			foreach ( $this->css as $medium => $value ) {
-				$this->merge_selectors( $this->css[ $medium ] );
+				if ( is_array( $value ) ) {
+					$this->merge_selectors( $this->css[ $medium ] );
+				}
 			}
 		}
 
 		if ( $this->parser->get_cfg( 'discard_invalid_selectors' ) ) {
 			foreach ( $this->css as $medium => $value ) {
-				$this->discard_invalid_selectors( $this->css[ $medium ] );
+				if ( is_array( $value ) ) {
+					$this->discard_invalid_selectors( $this->css[ $medium ] );
+				}
 			}
 		}
 
 		if ( $this->parser->get_cfg( 'optimise_shorthands' ) > 0 ) {
 			foreach ( $this->css as $medium => $value ) {
-				foreach ( $value as $selector => $value1 ) {
-					$this->css[ $medium ][ $selector ] = $this->merge_4value_shorthands( $this->css[ $medium ][ $selector ] );
+				if ( is_array( $value ) ) {
+					foreach ( $value as $selector => $value1 ) {
+						$this->css[ $medium ][ $selector ] = $this->merge_4value_shorthands( $this->css[ $medium ][ $selector ] );
 
-					if ( $this->parser->get_cfg( 'optimise_shorthands' ) < 2 ) {
-						continue;
-					}
+						if ( $this->parser->get_cfg( 'optimise_shorthands' ) < 2 ) {
+							continue;
+						}
 
-					$this->css[ $medium ][ $selector ] = $this->merge_font( $this->css[ $medium ][ $selector ] );
+						$this->css[ $medium ][ $selector ] = $this->merge_font( $this->css[ $medium ][ $selector ] );
 
-					if ( $this->parser->get_cfg( 'optimise_shorthands' ) < 3 ) {
-						continue;
-					}
+						if ( $this->parser->get_cfg( 'optimise_shorthands' ) < 3 ) {
+							continue;
+						}
 
-					$this->css[ $medium ][ $selector ] = $this->merge_bg( $this->css[ $medium ][ $selector ] );
-					if ( empty( $this->css[ $medium ][ $selector ] ) ) {
-						unset( $this->css[ $medium ][ $selector ] );
+						$this->css[ $medium ][ $selector ] = $this->merge_bg( $this->css[ $medium ][ $selector ] );
+						if ( empty( $this->css[ $medium ][ $selector ] ) ) {
+							unset( $this->css[ $medium ][ $selector ] );
+						}
 					}
 				}
 			}
