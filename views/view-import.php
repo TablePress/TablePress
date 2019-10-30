@@ -95,16 +95,18 @@ class TablePress_Import_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'TablePress can import tables from existing data, like from a CSV, XLS, or XLSX file from a spreadsheet application (e.g. Excel), an HTML file resembling a webpage, or its own JSON format.', 'tablepress' ); ?>
-			<?php _e( 'You can also import existing tables from the WP-Table Reloaded plugin below.', 'tablepress' ); ?>
+			<?php
+				if ( $data['wp_table_reloaded_installed'] ) {
+					_e( 'You can also import existing tables from the WP-Table Reloaded plugin below.', 'tablepress' );
+				}
+			?>
 		</p>
 		<p>
+			<?php _e( 'To import a table, select and enter the import source in the following form.', 'tablepress' ); ?>
 			<?php
-				_e( 'To import a table, select and enter the import source in the following form.', 'tablepress' );
-			if ( 0 < $data['tables_count'] ) {
-				echo ' ';
-				_e( 'You can also choose to import it as a new table, to replace an existing table, or to append the rows to an existing table.', 'tablepress' );
-			}
-
+				if ( 0 < $data['tables_count'] ) {
+					_e( 'You can also choose to import it as a new table, to replace an existing table, or to append the rows to an existing table.', 'tablepress' );
+				}
 			?>
 		</p>
 		<?php
