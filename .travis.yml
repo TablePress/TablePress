@@ -8,12 +8,12 @@ services:
   - mysql
 
 php:
+  - 7.4snapshot
   - 7.3
   - 7.2
   - 7.1
   - 7.0
   - 5.6
-  - nightly
 
 env:
   - WP_VERSION=master
@@ -39,11 +39,11 @@ before_script:
     # Install the specified version of PHPUnit depending on the PHP version:
     if [[ 1 == 1 ]]; then
       case "$TRAVIS_PHP_VERSION" in
-        nightly)
-          echo "Using PHPUnit 8.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^8"
+        7.4snapshot|7.3|7.2|7.1)
+          echo "Using PHPUnit 7.x for PHP version $TRAVIS_PHP_VERSION"
+          composer require "phpunit/phpunit:^7"
           ;;
-        7.3|7.2|7.1|7.0)
+        7.0)
           echo "Using PHPUnit 6.x for PHP version $TRAVIS_PHP_VERSION"
           composer require "phpunit/phpunit:^6"
           ;;
