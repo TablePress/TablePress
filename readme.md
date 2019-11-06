@@ -1,15 +1,16 @@
-# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.org/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-%20-ff5441
-)](https://www.patreon.com/TobiasBg)
+# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.org/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-%20-ff5441)](https://www.patreon.com/TobiasBg)
 
 TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
 
 TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or text widgets with a simple Shortcode. Table data can be edited in a spreadsheet-like interface, so no coding is necessary. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library adds features like sorting, pagination, filtering, and more for site visitors. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
-Please visit the plugin website at https://tablepress.org/ for the latest information on this plugin, or [follow @TablePress](https://twitter.com/TablePress) on Twitter.
+Please visit the plugin website at [tablepress.org](https://tablepress.org/) for the latest information on this plugin, or [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
-## Screenshots
+## Screenshots and Demo
 
 Screenshots of the TablePress interface are available at https://wordpress.org/plugins/tablepress/#screenshots.
+
+A demo of the frontend functionality is available at https://tablepress.org/demo/.
 
 ## Installation
 
@@ -18,18 +19,17 @@ The easiest way to install TablePress is via your WordPress Dashboard. Go to the
 Manual installation works just as for other WordPress plugins:
 
 1. [Download](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip) and extract the ZIP file.
-1. Move the folder "tablepress" into the "wp-content/plugins/" directory of your WordPress installation.
+1. Move the folder "tablepress" to the "wp-content/plugins/" directory of your WordPress installation, e.g. via FTP.
 1. Activate the plugin "TablePress" on the "Plugins" screen of your WordPress Dashboard.
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
-1. To insert a table into a post or page, copy its Shortcode Shortcode text for editor `[table id=<ID> /]`  and paste it into a "Shortcode" block at the desired place in the block editor. Each table has a unique ID that needs to be adjusted in that Shortcode.
+1. To insert a table into a post or page, copy its Shortcode `[table id=<ID> /]` and paste it into a "Shortcode" block at the desired place in the block editor. Each table has a unique ID that needs to be adjusted in that Shortcode.
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
 ## Supporting future development
 
 If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress) or support it with your [donation](https://tablepress.org/donate/). Thank you!
 
-[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png
-)](https://www.patreon.com/TobiasBg)
+[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg) [<img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a patron on Patreon" height="44">](https://www.patreon.com/TobiasBg)
 
 ## Frequently Asked Questions
 
@@ -70,14 +70,11 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Special thanks go to [Allan Jardine](https://www.sprymedia.co.uk/) for the [DataTables JavaScript library](https://www.datatables.net/).
 
-Thanks to all language file translators!
-
-Thanks to every donor, supporter, and bug reporter!
+Thanks to all language file translators! Thanks to every donor, supporter, and bug reporter!
 
 ## License
 
-This plugin is Free Software, released and licensed under the GPL, version 2 (https://www.gnu.org/licenses/gpl-2.0.html).
-You may use it free of charge for any purpose.
+This plugin is Free Software, released and licensed under the GPL, version 2 (https://www.gnu.org/licenses/gpl-2.0.html). You may use it free of charge for any purpose.
 
 ## Changelog
 

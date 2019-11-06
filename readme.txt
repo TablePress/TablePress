@@ -42,10 +42,10 @@ The easiest way to install TablePress is via your WordPress Dashboard. Go to the
 Manual installation works just as for other WordPress plugins:
 
 1. [Download](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip) and extract the ZIP file.
-1. Move the folder "tablepress" into the "wp-content/plugins/" directory of your WordPress installation.
+1. Move the folder "tablepress" to the "wp-content/plugins/" directory of your WordPress installation, e.g. via FTP.
 1. Activate the plugin "TablePress" on the "Plugins" screen of your WordPress Dashboard.
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
-1. To insert a table into a post or page, copy its Shortcode Shortcode text for editor `[table id=<ID> /]`  and paste it into a "Shortcode" block at the desired place in the block editor. Each table has a unique ID that needs to be adjusted in that Shortcode.
+1. To insert a table into a post or page, copy its Shortcode `[table id=<ID> /]` and paste it into a "Shortcode" block at the desired place in the block editor. Each table has a unique ID that needs to be adjusted in that Shortcode.
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
 == Frequently Asked Questions ==
