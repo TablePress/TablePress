@@ -1,4 +1,5 @@
-# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.org/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg)
+# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.org/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-%20-ff5441
+)](https://www.patreon.com/TobiasBg)
 
 TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
 
@@ -27,7 +28,8 @@ Manual installation works just as for other WordPress plugins:
 
 If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress) or support it with your [donation](https://tablepress.org/donate/). Thank you!
 
-[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg)
+[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png
+)](https://www.patreon.com/TobiasBg)
 
 ## Frequently Asked Questions
 
