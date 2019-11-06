@@ -60,7 +60,7 @@ class TablePress_CSS {
 		$csstidy->set_cfg( 'css_level', 'CSS3.0' );
 		$csstidy->set_cfg( 'preserve_css', true );
 		$csstidy->set_cfg( 'timestamp', false );
-		$csstidy->set_cfg( 'template', dirname( TABLEPRESS__FILE__ ) . '/libraries/csstidy/tablepress-standard.tpl' );
+		$csstidy->set_cfg( 'template', TABLEPRESS__DIR__ . '/libraries/csstidy/tablepress-standard.tpl' );
 
 		$csstidy->parse( $css );
 		return $csstidy->print->plain();

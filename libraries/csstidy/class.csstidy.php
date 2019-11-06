@@ -64,14 +64,14 @@ define( 'DEFAULT_AT',       41 );
  *
  * @since 1.0.0
  */
-require dirname( __FILE__ ) . '/class.csstidy_print.php';
+require __DIR__ . '/class.csstidy_print.php';
 
 /**
  * Load the class for optimising CSS code.
  *
  * @since 1.0.0
  */
-require dirname( __FILE__ ) . '/class.csstidy_optimise.php';
+require __DIR__ . '/class.csstidy_optimise.php';
 
 /**
  * CSS Parser class
@@ -339,7 +339,7 @@ class TablePress_CSSTidy {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		include dirname( __FILE__ ) . '/data.inc.php';
+		include __DIR__ . '/data.inc.php';
 		$this->data = $data;
 
 		$this->settings['remove_bslash'] = true;
@@ -570,7 +570,7 @@ class TablePress_CSSTidy {
 		if ( ! is_dir( 'temp' ) ) {
 			$madedir = mkdir( 'temp' );
 			if ( ! $madedir ) {
-				print 'Could not make directory "temp" in ' . dirname( __FILE__ );
+				print 'Could not make directory "temp" in ' . __DIR__;
 				exit;
 			}
 		}

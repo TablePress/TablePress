@@ -25,7 +25,7 @@ require_once $wp_tests_dir . 'includes/functions.php';
 
 // Activates TablePress in WordPress so it can be tested.
 function tablepress_tests_init() {
-	require dirname( dirname( __FILE__) ) . '/tablepress.php';
+	require dirname( __DIR__ ) . '/tablepress.php';
 }
 tests_add_filter( 'plugins_loaded', 'tablepress_tests_init' );
 

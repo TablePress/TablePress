@@ -49,6 +49,10 @@ if ( ! defined( 'TABLEPRESS__FILE__' ) ) {
 	define( 'TABLEPRESS__FILE__', __FILE__ );
 }
 
+if ( ! defined( 'TABLEPRESS__DIR__' ) ) {
+	define( 'TABLEPRESS__DIR__', __DIR__ );
+}
+
 if ( ! defined( 'TABLEPRESS_BASENAME' ) ) {
 	define( 'TABLEPRESS_BASENAME', plugin_basename( TABLEPRESS__FILE__ ) );
 }

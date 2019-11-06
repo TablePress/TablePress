@@ -711,4 +711,4 @@ $data['csstidy']['predefined_templates']['low_compression'][] = '</span>' . "\n"
 $data['csstidy']['predefined_templates']['low_compression'][] = "\n";
 
 // Add TablePress specific modifications.
-require dirname( __FILE__ ) . '/data-tp.inc.php';
+require __DIR__ . '/data-tp.inc.php';
