@@ -96,6 +96,19 @@ You may use it free of charge for any purpose.
 
 == Changelog ==
 
+= Version 1.10 =
+* Full compatibility with WordPress 5.3
+* Enhancement: Allow importing with replacing/appending existing tables with ZIP archives of JSON files.
+* Enhancement: Greatly enhance the code quality by removing old code and using modern features of PHP.
+* Enhancement: Flush the caches of more caching plugins when the "Custom CSS" was modified.
+* Enhancement: Update list of allowed CSS features in "Custom CSS".
+* Enhancement: Add more math formulas to the formula parser.
+* Bugfix: Restore correct behavior when moving columns on the "Edit" screen.
+* Bugfix: Properly hide text that is intended for screen readers only.
+* Updated external libraries (DataTables, SimpleXLSX, CSSTidy, Build tools).
+* Some internal changes for better stability, security, translations, and documentation.
+* TablePress 1.10 requires WordPress 5.3!
+
 = Version 1.9.2 =
 * Compatibility with WordPress 5.1
 * Enhancement: Make the save process more robust against data corruption.
