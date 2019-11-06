@@ -154,3 +154,12 @@
 #tablepress-page select {
 	vertical-align: baseline;
 }
+/* Equal heights for UI elements */
+#tablepress-page textarea,
+.tablepress-postbox-table .button {
+	margin: 1px;
+}
+#tablepress-page .button,
+#tablepress-page select {
+	min-height: 30px;
+}
