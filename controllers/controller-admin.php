@@ -333,7 +333,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Check if action is a supported action, and whether the user is allowed to access this screen.
 		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['required_cap'] ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		// Changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling.
@@ -410,7 +410,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
 					}
 					if ( ! current_user_can( 'tablepress_edit_table', $_GET['table_id'] ) ) {
-						wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+						wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 					}
 				} else {
 					TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_table' ) );
@@ -670,7 +670,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'edit', $edit_table['id'], 'nonce-edit-table' );
 
 		if ( ! current_user_can( 'tablepress_edit_table', $edit_table['id'] ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		// Options array must exist, so that checkboxes can be evaluated.
@@ -750,7 +750,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'add' );
 
 		if ( ! current_user_can( 'tablepress_add_tables' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) ) {
@@ -806,7 +806,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'options' );
 
 		if ( ! current_user_can( 'tablepress_access_options_screen' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		if ( empty( $_POST['options'] ) || ! is_array( $_POST['options'] ) ) {
@@ -878,7 +878,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'export' );
 
 		if ( ! current_user_can( 'tablepress_export_tables' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		if ( empty( $_POST['export'] ) || ! is_array( $_POST['export'] ) ) {
@@ -918,7 +918,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! $export_to_zip ) {
 			// This is only possible for one table, so take the first one.
 			if ( ! current_user_can( 'tablepress_export_table', $tables[0] ) ) {
-				wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+				wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 			}
 			// Load table, with table data, options, and visibility settings.
 			$table = TablePress::$model_table->load( $tables[0], true, true );
@@ -1021,7 +1021,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'import' );
 
 		if ( ! current_user_can( 'tablepress_import_tables' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		if ( empty( $_POST['import'] ) || ! is_array( $_POST['import'] ) ) {
@@ -1033,7 +1033,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Determine if this is a regular import or an import from WP-Table Reloaded.
 		if ( isset( $_POST['submit_wp_table_reloaded_import'] ) && isset( $import['wp_table_reloaded'] ) && isset( $import['wp_table_reloaded']['source'] ) ) {
 			if ( ! current_user_can( 'tablepress_import_tables_wptr' ) ) {
-				wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+				wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 			}
 
 			// Handle checkbox selections.
@@ -1689,7 +1689,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'hide_message', $message_item );
 
 		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		TablePress::$model_options->update( "message_{$message_item}", false );
@@ -1716,7 +1716,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( ! current_user_can( 'tablepress_delete_table', $table_id ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		$deleted = TablePress::$model_table->delete( $table_id );
@@ -1757,7 +1757,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( ! current_user_can( 'tablepress_copy_table', $table_id ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		$copy_table_id = TablePress::$model_table->copy( $table_id );
@@ -1797,7 +1797,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( ! current_user_can( 'tablepress_preview_table', $table_id ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		// Load table, with table data, options, and visibility settings.
@@ -1844,7 +1844,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
 		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		$view_data = array(
@@ -1870,7 +1870,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$plugin = TABLEPRESS_BASENAME;
 
 		if ( ! current_user_can( 'deactivate_plugin', $plugin ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) || is_plugin_active_for_network( $plugin ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
 		// Deactivate TablePress for the site (but not for the network).
