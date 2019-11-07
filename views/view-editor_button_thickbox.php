@@ -106,7 +106,7 @@ body {
 	font-weight: bold;
 }
 .tablepress-editor-button-list thead .column-table_action {
-	width: 150px;
+	min-width: 150px;
 }
 /* Responsiveness on the All Tables screen */
 @media screen and (max-width: 782px) {
