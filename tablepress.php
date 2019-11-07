@@ -16,8 +16,6 @@
  * Author: Tobias Bäthge
  * Author URI: https://tobias.baethge.com/
  * Author email: wordpress@tobias.baethge.com
- * Text Domain: tablepress
- * Domain Path: /i18n
  * License: GPL 2
  * Donate URI: https://tablepress.org/donate/
  *

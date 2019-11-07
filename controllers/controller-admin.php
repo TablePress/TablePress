@@ -38,14 +38,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	protected $view_actions = array();
 
 	/**
-	 * Whether language support has been loaded (to prevent doing it twice).
-	 *
-	 * @since 1.0.0
-	 * @var bool
-	 */
-	protected $i18n_support_loaded = false;
-
-	/**
 	 * Instance of the TablePress Admin View that is rendered.
 	 *
 	 * @since 1.0.0
@@ -111,12 +103,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		 */
 		$admin_menu_entry_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
 
-		if ( $this->is_top_level_page ) {
-			// Init i18n support here as translated strings for admin menu are needed already.
-			$this->init_i18n_support();
-			$this->init_view_actions(); // after init_i18n_support(), as it requires translation
-			$min_access_cap = $this->view_actions['list']['required_cap'];
+		$this->init_view_actions();
+		$min_access_cap = $this->view_actions['list']['required_cap'];
 
+		if ( $this->is_top_level_page ) {
 			$icon_url = 'dashicons-list-view';
 			switch ( $this->parent_page ) {
 				case 'top':
@@ -142,8 +132,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ), $entry['admin_menu_title'], $entry['required_cap'], $slug, $callback );
 			}
 		} else {
-			$this->init_view_actions(); // no translation necessary here
-			$min_access_cap = $this->view_actions['list']['required_cap'];
 			$this->page_hooks[] = add_submenu_page( $this->parent_page, 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback );
 		}
 	}
@@ -204,7 +192,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			return;
 		}
 
-		$this->init_i18n_support();
 		add_thickbox(); // usually already loaded by media upload functions
 		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
 		$admin_page->enqueue_script( 'quicktags-button', array( 'quicktags', 'media-upload' ), array(
@@ -275,8 +262,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( ! current_user_can( 'tablepress_add_tables' ) ) {
 			return;
 		}
-		// @TODO: Translation might not work, as textdomain might not yet be loaded here (for submenu entries).
-		// Might need $this->init_i18n_support(); here.
+
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'new-content',
 			'id'     => 'new-tablepress-table',
@@ -291,7 +277,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function plugins_page() {
-		$this->init_i18n_support();
 		// Add additional links on Plugins page.
 		add_filter( 'plugin_action_links_' . TABLEPRESS_BASENAME, array( $this, 'add_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
@@ -344,10 +329,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Actions that are top-level entries, but don't have an action GET parameter (action is after last _ in string).
 				$action = substr( $_GET['page'], 11 ); // $_GET['page'] has the format 'tablepress_{$action}'
 			}
-		} else {
-			// Do this here in the else-part, instead of adding another if ( ! $this->is_top_level_page ) check.
-			$this->init_i18n_support(); // done here, as for sub menu admin pages this is the first time translated strings are needed.
-			$this->init_view_actions(); // for top-level menu entries, this has been done above, just like init_i18n_support().
 		}
 
 		// Check if action is a supported action, and whether the user is allowed to access this screen.
@@ -496,19 +477,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Initialize i18n support, load plugin's textdomain, to retrieve correct translations.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function init_i18n_support() {
-		if ( $this->i18n_support_loaded ) {
-			return;
-		}
-		load_plugin_textdomain( 'tablepress', false, dirname( TABLEPRESS_BASENAME ) . '/i18n' );
-		$this->i18n_support_loaded = true;
-	}
-
-	/**
 	 * Decide whether a donate message shall be shown on the "All Tables" screen, depending on passed days since installation and whether it was shown before.
 	 *
 	 * @since 1.0.0
@@ -632,7 +600,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		switch ( $bulk_action ) {
 			case 'copy':
-				$this->init_i18n_support(); // for the translation of "Copy of"
 				foreach ( $tables as $table_id ) {
 					if ( current_user_can( 'tablepress_copy_table', $table_id ) ) {
 						$copy_table_id = TablePress::$model_table->copy( $table_id );
@@ -1793,8 +1760,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
 		}
 
-		$this->init_i18n_support(); // for the translation of "Copy of".
-
 		$copy_table_id = TablePress::$model_table->copy( $table_id );
 		if ( is_wp_error( $copy_table_id ) ) {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
@@ -1825,8 +1790,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_get_action_preview_table() {
 		$table_id = ( ! empty( $_GET['item'] ) ) ? $_GET['item'] : false;
 		TablePress::check_nonce( 'preview_table', $table_id );
-
-		$this->init_i18n_support();
 
 		// Nonce check should actually catch this already.
 		if ( false === $table_id ) {
@@ -1884,8 +1847,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ), 403 );
 		}
 
-		$this->init_i18n_support();
-
 		$view_data = array(
 			// Load all table IDs without priming the post meta cache, as table options/visibility are not needed.
 			'table_ids' => TablePress::$model_table->load_all( false ),
@@ -1924,8 +1885,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		TablePress::$model_table->destroy();
 		TablePress::$model_options->destroy();
-
-		$this->init_i18n_support();
 
 		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />';
 		$output .= __( 'All tables, data, and options were deleted.', 'tablepress' );
