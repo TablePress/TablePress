@@ -13,7 +13,7 @@ This Shortcode would change the used language to German for table 123:
 [table id=123 datatables_locale="de_DE" /]
 
 * If you want to translate the language file into your own language, copy the file "lang-en_US.json", rename the copy to
-"lang-XX_XX.json", where `XX_XX` is the ISO code for your language. That is the same one as in your WordPress language files (*.po, *.mo).
+"lang-XX_XX.json", where `XX_XX` is the ISO code for your language, which you also find on https://translate.wordpress.org/.
 Then, you can translate that file. If you email the file to me, I'll gladly add it to the next release of the plugin.
 
 Most languages in the folder are from https://www.datatables.net/plug-ins/i18n/#Translations.
