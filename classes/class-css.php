@@ -249,7 +249,7 @@ class TablePress_CSS {
 	/**
 	 * Save "Custom CSS" to files, delete "Custom CSS" files, or return HTML for the credentials form.
 	 *
-	 * Only used from "Plugin Options" screen, save_custom_css_to_file() is used in cases where no form output/redirection is possible (plugin updates, WP-Table Reloaded Import).
+	 * Only used from "Plugin Options" screen, save_custom_css_to_file() is used in cases where no form output/redirection is possible (e.g. during plugin updates).
 	 *
 	 * @since 1.0.0
 	 *

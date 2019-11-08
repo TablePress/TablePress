@@ -142,8 +142,7 @@
 	padding-top: 6px;
 }
 /* Adjust positioning of labels in relation to checkboxes/radio buttons */
-#tablepress_import-import-form .column-2 label,
-#tablepress_import-import-wp-table-reloaded .column-2 label {
+#tablepress_import-import-form .column-2 label {
 	margin-right: 20px; /* some margin on radio buttons */
 }
 /* Red color for the "Uninstall TablePress" button on the "Plugin Options" screen */

@@ -7,8 +7,6 @@
  * @since 1.0.0
  */
 
-/* global alert, tablepress_import */
-
 jQuery( document ).ready( function( $ ) {
 
 	'use strict';
@@ -37,17 +35,6 @@ jQuery( document ).ready( function( $ ) {
 	$( '#row-import-source' ).on( 'change', 'input', function() {
 		$( '#row-import-source-file-upload, #row-import-source-url, #row-import-source-server, #row-import-source-form-field' ).hide();
 		$( '#row-import-source-' + $(this).val() ).show();
-	} )
-	.find( 'input:checked' ).change();
-
-	/**
-	 * Show only the WP-Table Reloaded import source field that was selected with the radio button.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#row-import-wp-table-reloaded-source' ).on( 'change', 'input', function() {
-		$( '#row-import-wp-table-reloaded-source-dump-file, #row-import-wp-table-reloaded-source-db' ).hide();
-		$( '#row-import-wp-table-reloaded-source-' + $(this).val() ).show();
 	} )
 	.find( 'input:checked' ).change();
 
@@ -135,31 +122,6 @@ jQuery( document ).ready( function( $ ) {
 		if ( ! valid_form ) {
 			return false;
 		}
-	} );
-
-	/**
-	 * Remove form validation check if "Import from WP-Table Reloaded" button is clicked
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).find( '#submit_wp_table_reloaded_import' ).on( 'click', function() {
-		$( '#tablepress-page' ).find( 'form' ).off( 'submit.tablepress' );
-
-		// File upload must have a file, if Dump File is selected as the source.
-		if ( $( '#import-wp-table-reloaded-source-dump-file' ).prop( 'checked' ) && '' === $( '#tables-import-wp-table-reloaded-dump-file' ).val() ) {
-			$( '#tables-import-wp-table-reloaded-dump-file' )
-				.addClass( 'invalid' )
-				.one( 'change', function() { $(this).removeClass( 'invalid' ); } )
-				.focus().select();
-			return false;
-		}
-
-		// At least one checkbox must be checked, to have something imported.
-		if ( ! $( '#import-wp-table-reloaded-tables' ).prop( 'checked' ) && ! $( '#import-wp-table-reloaded-css' ).prop( 'checked' ) ) {
-			alert( tablepress_import.error_wp_table_reloaded_nothing_selected );
-			return false;
-		}
-
 	} );
 
 } );

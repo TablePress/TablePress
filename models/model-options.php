@@ -235,7 +235,6 @@ class TablePress_Options_Model extends TablePress_Model {
 		// Capabilities for single roles.
 		$role = get_role( 'administrator' );
 		if ( ! empty( $role ) ) {
-			$role->add_cap( 'tablepress_import_tables_wptr' );
 			$role->add_cap( 'tablepress_edit_options' );
 		}
 
@@ -274,7 +273,7 @@ class TablePress_Options_Model extends TablePress_Model {
 			$role->remove_cap( 'tablepress_export_tables' );
 			$role->remove_cap( 'tablepress_access_options_screen' );
 			$role->remove_cap( 'tablepress_access_about_screen' );
-			$role->remove_cap( 'tablepress_import_tables_wptr' );
+            $role->remove_cap( 'tablepress_import_tables_wptr' ); // No longer used since 1.10, but might still be in the database.
 			$role->remove_cap( 'tablepress_edit_options' );
 		}
 

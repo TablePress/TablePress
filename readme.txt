@@ -65,8 +65,7 @@ TablePress uses the ["Translate WordPress" platform](https://translate.wordpress
 To make TablePress available in your language, go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress), log in with a free wordpress.org account and start translating.
 
 = Migration from WP-Table Reloaded =
-TablePress is the official successor of the WP-Table Reloaded plugin. It has been rewritten from the ground up and uses an entirely new internal structure. This fixes some major flaws of WP-Table Reloaded and prepares the plugin for easier, safer, and better future development.
-If you are currently using WP-Table Reloaded, it is highly recommended that you switch to TablePress. WP-Table Reloaded will no longer be maintained or developed. For further information on how to switch from WP-Table Reloaded to TablePress, please see the [migration guide](https://tablepress.org/migration-from-wp-table-reloaded/) on the plugin website.
+Several years ago, TablePress has superseded the now discontinued WP-Table Reloaded plugin. If you are still using that, please see the [migration guide](https://tablepress.org/migration-from-wp-table-reloaded/) and switch to TablePress.
 
 = Development =
 You can follow the development of TablePress more closely in its official [GitHub repository](https://github.com/TobiasBg/TablePress).
@@ -107,6 +106,7 @@ You may use it free of charge for any purpose.
 * Bugfix: Properly hide text that is intended for screen readers only.
 * Updated external libraries (DataTables, SimpleXLSX, CSSTidy, Build tools).
 * Some internal changes for better stability, security, translations, and documentation.
+* Removed the migration/import code for the discontinued WP-Table Reloaded plugin.
 * TablePress 1.10 requires WordPress 5.3!
 
 = Version 1.9.2 =
