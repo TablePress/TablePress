@@ -16,7 +16,7 @@ Embed beautiful and feature-rich tables into your posts and pages, without havin
 TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or text widgets with a simple Shortcode. Table data can be edited in a spreadsheet-like interface, so no coding is necessary. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library adds features like sorting, pagination, filtering, and more for site visitors. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
 = More information =
-Please visit the plugin website at https://tablepress.org/ for more information or a [demo](https://tablepress.org/demo/)). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
+Please visit the plugin website at [tablepress.org](https://tablepress.org/) for more information or a [demo](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
 = Supporting future development =
 If you like TablePress, please rate and review it here in the WordPress Plugin Directory or support it with your [donation](https://tablepress.org/donate/). Thank you!
