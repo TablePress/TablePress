@@ -1,7 +1,7 @@
 === TablePress ===
 Contributors: TobiasBg
 Donate link: https://tablepress.org/donate/
-Tags: table,data,html,csv,excel
+Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.3
 Requires PHP: 5.6.20
 Tested up to: 5.3
