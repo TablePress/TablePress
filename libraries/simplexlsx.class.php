@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2013 Reader Class
  *
- * Based on SimpleXLSX v0.8.9 by Sergey Shuchkin.
+ * Based on SimpleXLSX v0.8.10 by Sergey Shuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -468,19 +468,21 @@ class SimpleXLSX {
 	*/
 	public function getEntryXML( $name ) {
 		if ( $entry_xml = $this->getEntryData( $name ) ) {
+			$entry_xml = trim( $entry_xml );
 			// dirty remove namespace prefixes and empty rows
 			$entry_xml = preg_replace('/xmlns[^=]*="[^"]*"/i','', $entry_xml ); // remove namespaces
 			$entry_xml = preg_replace('/[a-zA-Z0-9]+:([a-zA-Z0-9]+="[^"]+")/','$1$2', $entry_xml ); // remove namespaced attrs
 			$entry_xml = preg_replace('/<[a-zA-Z0-9]+:([^>]+)>/', '<$1>', $entry_xml); // fix namespaced openned tags
 			$entry_xml = preg_replace('/<\/[a-zA-Z0-9]+:([^>]+)>/', '</$1>', $entry_xml); // fix namespaced closed tags
+
 			if ( $this->skipEmptyRows && strpos($name, '/sheet') ) {
-				$entry_xml = preg_replace( '/<row[^>]+>\s*?(<c[^\/]+\/>)+\s*?<\/row>/', '', $entry_xml,-1, $cnt ); // remove empty rows
-				if ( $cnt ) {
+				$entry_xml = preg_replace( '/<row[^>]+>\s*(<c[^\/]+\/>\s*)+<\/row>/', '', $entry_xml,-1, $cnt ); // remove empty rows
+				$entry_xml = preg_replace( '/<row[^\/>]*\/>/', '', $entry_xml, -1, $cnt2 );
+				if ( $cnt || $cnt2 ) {
 					$entry_xml = preg_replace('/<dimension[^\/]+\/>/', '', $entry_xml);
 				}
+//				file_put_contents( basename( $name ), $entry_xml ); // @to do comment!!!
 			}
-
-//			echo '<pre>'.$name."\r\n".htmlspecialchars( $entry_xml ).'</pre>'.
 
 			// XML External Entity (XXE) Prevention
 			$_old         = libxml_disable_entity_loader();
