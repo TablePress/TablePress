@@ -520,7 +520,7 @@ class TablePress_Render {
 		$table_attributes = $this->_attributes_array_to_string( $table_attributes );
 
 		$output .= "\n<table{$table_attributes}>\n";
-		$output .= $caption . $colgroup . $thead . $tfoot . $tbody;
+		$output .= $caption . $colgroup . $thead . $tbody . $tfoot;
 		$output .= "</table>\n";
 
 		// name/description below table (HTML already generated above).
