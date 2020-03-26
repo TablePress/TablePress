@@ -178,12 +178,19 @@ abstract class TablePress_View {
 	 *
 	 * @param string $text  Text for the header message.
 	 * @param string $class Optional. Additional CSS class for the header message.
+	 * @param string $title Optional. Text for the header title.
 	 */
-	protected function add_header_message( $text, $class = 'notice-success' ) {
+	protected function add_header_message( $text, $class = 'notice-success', $title = '' ) {
 		if ( ! stripos( $class, 'not-dismissible' ) ) {
 			$class .= ' is-dismissible';
 		}
-		$this->header_messages[] = "<div class=\"notice {$class}\"><p>{$text}</p></div>\n";
+		if ( ! empty( $title ) ) {
+			$title = "<h3>{$title}</h3>";
+		}
+		if ( ! empty( $text ) ) {
+			$text = "<p>{$text}</p>";
+		}
+		$this->header_messages[] = "<div class=\"notice {$class}\">{$title}{$text}</div>\n";
 	}
 
 	/**
