@@ -1,8 +1,8 @@
 <?php
 /**
- * Excel 2007-2013 Reader Class
+ * Excel 2007-2013/Office 365 Reader Class
  *
- * Based on SimpleXLSX v0.8.10 by Sergey Shuchkin.
+ * Based on SimpleXLSX v0.8.13 by Sergey Shuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /** @noinspection MultiAssignmentUsageInspection */
 
 /**
- * PHP Excel 2007-2013 Reader Class
+ * PHP Excel 2007-2013/Office 365 Reader Class
  * @package TablePress
  * @subpackage Import
  * @author Sergey Shuchkin, Tobias Bäthge
@@ -80,7 +80,6 @@ class SimpleXLSX {
 	);
 	public $cellFormats = array();
 	public $datetimeFormat = 'Y-m-d H:i:s';
-	public $skipEmptyRows = false;
 	public $debug;
 
 	/* @var SimpleXMLElement $workbook */
@@ -155,17 +154,33 @@ class SimpleXLSX {
 			$this->_parse();
 		}
 	}
-	public function parseFile( $filename ) {
-		if ( $this->_unzip( $filename )) {
-			return $this->_parse();
+	public static function parseFile( $filename, $debug = false ) {
+		return self::parse( $filename, false, $debug );
+	}
+	public static function parseData( $data, $debug = false ) {
+		return self::parse( $data, true, $debug );
+	}
+	public static function parse( $filename, $is_data = false, $debug = false ) {
+		$xlsx = new self();
+		$xlsx->debug = $debug;
+		if ( $xlsx->_unzip($filename, $is_data )) {
+			$xlsx->_parse();
 		}
+		if ( $xlsx->success() ) {
+			return $xlsx;
+		}
+		self::parseError( $xlsx->error() );
+		self::parseErrno( $xlsx->errno() );
+
 		return false;
 	}
-	public function parseData( $data ) {
-		if ( $this->_unzip($data, true )) {
-			return $this->_parse();
-		}
-		return false;
+	public static function parseError( $set = false ) {
+		static $error = false;
+		return $set ? $error = $set : $error;
+	}
+	public static function parseErrno( $set = false ) {
+		static $errno = false;
+		return $set ? $errno = $set : $errno;
 	}
 
 	private function _unzip( $filename, $is_data = false ) {
@@ -436,10 +451,11 @@ class SimpleXLSX {
 										if ( isset( $v['@attributes']['numFmtId'] ) ) {
 											$v = $v['@attributes'];
 											$fid = (int) $v['numFmtId'];
-											if ( isset( self::$CF[ $fid ] ) ) {
-												$v['format'] = self::$CF[ $fid ];
-											} else if ( isset( $nf[ $fid ] ) ) {
+											// formats priority
+											if ( isset( $nf[ $fid ] ) ) {
 												$v['format'] = $nf[ $fid ];
+											} else if ( isset( self::$CF[ $fid ] ) ) {
+												$v['format'] = self::$CF[ $fid ];
 											}
 										}
 										$this->cellFormats[] = $v;
@@ -475,10 +491,12 @@ class SimpleXLSX {
 			$entry_xml = preg_replace('/<[a-zA-Z0-9]+:([^>]+)>/', '<$1>', $entry_xml); // fix namespaced openned tags
 			$entry_xml = preg_replace('/<\/[a-zA-Z0-9]+:([^>]+)>/', '</$1>', $entry_xml); // fix namespaced closed tags
 
-			if ( $this->skipEmptyRows && strpos($name, '/sheet') ) {
+//			if ( $this->skipEmptyRows && strpos($name, '/sheet') ) {
+			if ( strpos($name, '/sheet') ) { // dirty skip empty rows
 				$entry_xml = preg_replace( '/<row[^>]+>\s*(<c[^\/]+\/>\s*)+<\/row>/', '', $entry_xml,-1, $cnt ); // remove empty rows
 				$entry_xml = preg_replace( '/<row[^\/>]*\/>/', '', $entry_xml, -1, $cnt2 );
-				if ( $cnt || $cnt2 ) {
+				$entry_xml = preg_replace( '/<row[^>]*><\/row>/', '', $entry_xml, -1, $cnt3 );
+				if ( $cnt || $cnt2 || $cnt3  ) {
 					$entry_xml = preg_replace('/<dimension[^\/]+\/>/', '', $entry_xml);
 				}
 //				file_put_contents( basename( $name ), $entry_xml ); // @to do comment!!!
@@ -537,28 +555,6 @@ class SimpleXLSX {
 		}
 
 		return implode( '', $value );
-	}
-
-	public static function parse( $filename, $is_data = false, $debug = false, $skip_empty_rows = false ) {
-		$xlsx = new self();
-		$xlsx->debug = $debug;
-		$xlsx->skipEmptyRows = $skip_empty_rows;
-		$is_data ? $xlsx->parseData( $filename ) : $xlsx->parseFile( $filename );
-		if ( $xlsx->success() ) {
-			return $xlsx;
-		}
-		self::parseError( $xlsx->error() );
-		self::parseErrno( $xlsx->errno() );
-
-		return false;
-	}
-	public static function parseError( $set = false ) {
-		static $error = false;
-		return $set ? $error = $set : $error;
-	}
-	public static function parseErrno( $set = false ) {
-		static $errno = false;
-		return $set ? $errno = $set : $errno;
 	}
 
 	public function success() {
@@ -621,9 +617,7 @@ class SimpleXLSX {
 		$numCols = $dim[0];
 		$numRows = $dim[1];
 
-		/** @noinspection ForeachInvariantsInspection */
 		for ( $y = 0; $y < $numRows; $y++ ) {
-			/** @noinspection ForeachInvariantsInspection */
 			for ( $x = 0; $x < $numCols; $x++ ) {
 				// 0.6.8
 				$c = '';
@@ -842,8 +836,10 @@ class SimpleXLSX {
 
 				break;
 			case 'd':
-				// Value is a date
-				$value = $this->datetimeFormat ? gmdate( $this->datetimeFormat, $this->unixstamp( (float) $cell->v ) ) : (float) $cell->v;
+				// Value is a date and non-empty
+				if ( ! empty($cell->v) ) {
+					$value = $this->datetimeFormat ? gmdate( $this->datetimeFormat, $this->unixstamp( (float) $cell->v ) ) : (float) $cell->v;
+				}
 				break;
 
 
@@ -871,12 +867,9 @@ class SimpleXLSX {
 		$t = $excelDateTime - $d;
 
 		if ( $this->date1904 ) {
-			/** @noinspection SummerTimeUnsafeTimeManipulationInspection */
 			$d += 1462;
 		}
 
-
-		/** @noinspection SummerTimeUnsafeTimeManipulationInspection */
 		$t = ( abs( $d ) > 0 ) ? ( $d - 25569 ) * 86400 + round( $t * 86400 ) : round( $t * 86400 );
 
 		return (int) $t;
