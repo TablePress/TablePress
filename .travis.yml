@@ -17,6 +17,7 @@ php:
 
 env:
   - WP_VERSION=master
+  - WP_VERSION=5.4
   - WP_VERSION=5.3
 
 matrix:
