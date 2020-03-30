@@ -136,13 +136,7 @@ abstract class TablePress_Controller {
 				TablePress::$model_options->update( $updated_options );
 
 				// Clear table caches.
-				if ( $current_plugin_options_db_version < 16 ) {
-					// For pre-0.9-RC, where the arrays are serialized and not JSON encoded.
-					TablePress::$model_table->invalidate_table_output_caches_tp09();
-				} else {
-					// For 0.9-RC and onwards.
-					TablePress::$model_table->invalidate_table_output_caches();
-				}
+				TablePress::$model_table->invalidate_table_output_caches();
 
 				// Add mime type field to existing posts with the TablePress Custom Post Type, so that other plugins know that they are not dealing with plain text.
 				if ( $current_plugin_options_db_version < 25 ) {

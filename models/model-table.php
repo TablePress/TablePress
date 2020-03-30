@@ -1195,9 +1195,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	/**
 	 * Invalidate all table output caches, e.g. after a plugin update.
 	 *
-	 * For TablePress 0.9-RC and onwards.
-	 *
-	 * @since 0.9-RC
+	 * @since 1.0.0
 	 */
 	public function invalidate_table_output_caches() {
 		$table_post = $this->tables->get( 'table_post' );
@@ -1207,30 +1205,6 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		foreach ( $table_post as $table_id => $post_id ) {
 			$this->invalidate_table_output_cache( $table_id );
-		}
-	}
-
-	/**
-	 * Invalidate all table output caches, e.g. after a plugin update.
-	 * For TablePress pre-0.9-RC updates.
-	 *
-	 * @since 0.9-RC
-	 */
-	public function invalidate_table_output_caches_tp09() {
-		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) ) {
-			return;
-		}
-
-		foreach ( $table_post as $table_id => $post_id ) {
-			$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
-			$caches_list = get_transient( $caches_list_transient_name );
-			if ( is_array( $caches_list ) ) {
-				foreach ( $caches_list as $cache_transient_name => $dummy_value ) {
-					delete_transient( $cache_transient_name );
-				}
-			}
-			delete_transient( $caches_list_transient_name );
 		}
 	}
 
