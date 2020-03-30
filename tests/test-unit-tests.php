@@ -28,18 +28,23 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 			$this->markTestSkipped( 'Test skipped since Travis CI was not detected.' );
 		}
 
-		$requested_version = getenv( 'WP_VERSION' ) . '-src';
-		// Strip .0 from the end of the version string, as that's only used in the git branch, but not in the code.
-		$requested_version = preg_replace( '#(\d\.\d)\.0#', '$1', $requested_version );
+		$requested_version = getenv( 'WP_VERSION' );
 
-		// The "master" version requires special handling.
-		if ( 'master-src' === $requested_version ) {
+		// For the "master" branch, get the current version number from the wordpress.org SVN server.
+		if ( 'master' === $requested_version ) {
 			$file = file_get_contents( 'https://develop.svn.wordpress.org/trunk/src/wp-includes/version.php' );
 			preg_match( '#\$wp_version = \'([^\']+)\';#', $file, $matches );
 			$requested_version = $matches[1];
 		}
 
-		$this->assertSame( get_bloginfo( 'version' ), $requested_version );
+		/*
+		 * Version string can contain various strings, like "src", "RC1", "alpha-12345" (SVN revision), etc.,
+		 * which is why we only compare the major versions, in the first three characters.
+		 */
+		$installed_version = substr( get_bloginfo( 'version' ), 0, 3 );
+		$requested_version = substr( $requested_version, 0, 3 );
+
+		$this->assertSame( $installed_version, $requested_version );
 	}
 
 	/**
