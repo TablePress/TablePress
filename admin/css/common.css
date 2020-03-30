@@ -93,6 +93,7 @@
 	font-weight: bold;
 	box-shadow: none;
 	text-align: center;
+	vertical-align: baseline;
 }
 
 /* Table ID/name dropdown on "Export" screen */
