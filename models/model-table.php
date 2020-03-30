@@ -1195,34 +1195,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Merge changes made for TablePress 0.8-beta:
-	 * Conversion of parameter "datatables_scrollX" to "datatables_scrollx".
-	 * Fixes a bug that affects about the first 600 downloaders of 0.8-beta.
-	 *
-	 * @since 0.8-beta
-	 */
-	public function merge_table_options_tp08() {
-		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) ) {
-			return;
-		}
-
-		// Prime the meta cache with the table options of all tables.
-		update_meta_cache( 'post', array_values( $table_post ) );
-
-		foreach ( $table_post as $table_id => $post_id ) {
-			$table_options = $this->_get_table_options( $post_id );
-
-			// Convert parameter "datatables_scrollX" to "datatables_scrollx".
-			if ( isset( $table_options['datatables_scrollX'] ) && ! isset( $table_options['datatables_scrollx'] ) ) {
-				$table_options['datatables_scrollx'] = $table_options['datatables_scrollX'];
-			}
-
-			$this->_update_table_options( $post_id, $table_options );
-		}
-	}
-
-	/**
 	 * Convert old parameter names to new ones in DataTables "Custom Commands".
 	 * DataTables 1.9 used Hungarian notation, while DataTables 1.10+ (used since TablePress 1.5) uses camelCase notation.
 	 *
