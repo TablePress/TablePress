@@ -370,6 +370,25 @@ abstract class TablePress {
 	}
 
 	/**
+	 * Sanitizes a CSS class to ensure it only contains valid characters.
+	 *
+	 * Strips the string down to A-Z, a-z, 0-9, :, _, -.
+	 * This is an extension to WP's `sanitize_html_class()`, to also allow `:` which are used in some CSS frameworks.
+	 *
+	 * @since 1.11.0
+	 *
+	 * @param string $class The CSS class name to be sanitized.
+	 * @return string The sanitized CSS class.
+	 */
+	public static function sanitize_css_class( $class ) {
+		// Strip out any %-encoded octets.
+		$sanitized_class = preg_replace( '|%[a-fA-F0-9][a-fA-F0-9]|', '', $class );
+		// Limit to A-Z, a-z, 0-9, ':', '_', and '-'.
+		$sanitized_class = preg_replace( '/[^A-Za-z0-9:_-]/', '', $sanitized_class );
+		return $sanitized_class;
+	}
+
+	/**
 	 * Generate the action URL, to be used as a link within the plugin (e.g. in the submenu navigation or List of Tables).
 	 *
 	 * @since 1.0.0
