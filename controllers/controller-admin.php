@@ -1475,8 +1475,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			wp_die( __( 'The table could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
 		}
 
-		// Sanitize all table data to remove unsafe HTML from the preview output.
-		$table = TablePress::$model_table->sanitize( $table );
+		// Sanitize all table data to remove unsafe HTML from the preview output, if the user is not allowed to work with unfiltered HTML.
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
+			$table = TablePress::$model_table->sanitize( $table );
+		}
 
 		// Create a render class instance.
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );

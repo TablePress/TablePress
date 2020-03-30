@@ -240,8 +240,10 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$table['id'] = $table['new_id'];
 			}
 
-			// Sanitize all table data to remove unsafe HTML from the preview output.
-			$table = TablePress::$model_table->sanitize( $table );
+			// Sanitize all table data to remove unsafe HTML from the preview output, if the user is not allowed to work with unfiltered HTML.
+			if ( ! current_user_can( 'unfiltered_html' ) ) {
+				$table = TablePress::$model_table->sanitize( $table );
+			}
 
 			// At this point, the table data is valid and sanitized and can be rendered.
 			$success = true;
