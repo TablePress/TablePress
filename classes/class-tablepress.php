@@ -340,6 +340,8 @@ abstract class TablePress {
 	/**
 	 * Get a nice looking date and time string from the mySQL format of datetime strings for output.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param string $datetime  DateTime string in mySQL format or a Unix timestamp.
 	 * @param string $type      Optional. Type of $datetime, 'mysql' or 'timestamp'.
 	 * @param string $separator Optional. Separator between date and time.
@@ -356,6 +358,8 @@ abstract class TablePress {
 
 	/**
 	 * Get the name from a WP user ID (used to store information on last editor of a table).
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id WP user ID.
 	 * @return string Nickname of the WP user with the $user_id.
