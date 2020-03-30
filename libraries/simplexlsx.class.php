@@ -1,6 +1,6 @@
 <?php
 /**
- * Excel 2007-2013/Office 365 Reader Class
+ * Excel 2007-2019/Office 365 Reader Class
  *
  * Based on SimpleXLSX v0.8.13 by Sergey Shuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
