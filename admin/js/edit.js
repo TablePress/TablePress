@@ -193,7 +193,7 @@ jQuery( document ).ready( function( $ ) {
 					$id( 'option-datatables-paginate_entries' ).focus().select();
 					return;
 				}
-				if ( ( /[^A-Za-z0-9- _]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
+				if ( ( /[^A-Za-z0-9- _:]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
 					alert( tablepress_strings.extra_css_classes_invalid );
 					$id( 'option-extra-css-classes' ).focus().select();
 					return;
@@ -1029,7 +1029,7 @@ jQuery( document ).ready( function( $ ) {
 				$id( 'option-datatables-paginate_entries' ).focus().select();
 				return;
 			}
-			if ( ( /[^A-Za-z0-9- _]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
+			if ( ( /[^A-Za-z0-9- _:]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
 				alert( tablepress_strings.extra_css_classes_invalid );
 				$id( 'option-extra-css-classes' ).focus().select();
 				return;
