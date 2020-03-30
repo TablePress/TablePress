@@ -1159,42 +1159,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Merge changes made for TablePress 0.6-beta:
-	 * Table Name/Table Description.
-	 *
-	 * @since 0.6-beta
-	 */
-	public function merge_table_options_tp06() {
-		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) ) {
-			return;
-		}
-
-		// Prime the meta cache with the table options of all tables.
-		update_meta_cache( 'post', array_values( $table_post ) );
-
-		// Go through all tables.
-		foreach ( $table_post as $table_id => $post_id ) {
-			$table_options = $this->_get_table_options( $post_id );
-
-			// Move "Print Name" to new format.
-			$print_name = in_array( $table_options['print_name'], array( 'above', 'below' ), true );
-			if ( $print_name ) {
-				$table_options['print_name_position'] = $table_options['print_name'];
-			}
-			$table_options['print_name'] = $print_name;
-			// Move "Print Description" to new format.
-			$print_description = in_array( $table_options['print_description'], array( 'above', 'below' ), true );
-			if ( $print_description ) {
-				$table_options['print_description_position'] = $table_options['print_description'];
-			}
-			$table_options['print_description'] = $print_description;
-
-			$this->_update_table_options( $post_id, $table_options );
-		}
-	}
-
-	/**
 	 * Convert old parameter names to new ones in DataTables "Custom Commands".
 	 * DataTables 1.9 used Hungarian notation, while DataTables 1.10+ (used since TablePress 1.5) uses camelCase notation.
 	 *

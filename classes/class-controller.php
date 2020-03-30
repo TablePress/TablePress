@@ -160,11 +160,6 @@ abstract class TablePress_Controller {
 		if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < TablePress::table_scheme_version ) {
 			TablePress::$model_table->merge_table_options_defaults();
 
-			// Merge print_name/print_description changes made for 0.6-beta.
-			if ( TablePress::$model_options->get( 'table_scheme_db_version' ) < 2 ) {
-				TablePress::$model_table->merge_table_options_tp06();
-			}
-
 			TablePress::$model_options->update( array(
 				'table_scheme_db_version' => TablePress::table_scheme_version,
 			) );
