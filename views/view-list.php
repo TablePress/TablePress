@@ -50,11 +50,11 @@ class TablePress_List_View extends TablePress_View {
 
 		if ( $data['messages']['first_visit'] ) {
 			$this->add_header_message(
-				'<strong><em>' . __( 'Welcome!', 'tablepress' ) . '</em></strong><br />'
-				. __( 'Thank you for using TablePress for the first time!', 'tablepress' ) . ' '
-				. sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '<br /><br />'
+				__( 'Thank you for using TablePress for the first time!', 'tablepress' ) . ' '
+				. sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p><p>'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ),
-				'notice-info not-dismissible'
+				'notice-info not-dismissible',
+				'<em>' . __( 'Welcome!', 'tablepress' ) . '</em>'
 			);
 		}
 
