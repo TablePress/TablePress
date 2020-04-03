@@ -116,7 +116,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				break;
 			}
 
-			// DataTables Custom Commands can only be edit by trusted users.
+			// DataTables Custom Commands can only be edited by trusted users.
 			if ( ! current_user_can( 'unfiltered_html' ) ) {
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 			}
@@ -230,7 +230,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				break;
 			}
 
-			// DataTables Custom Commands can only be edit by trusted users.
+			// DataTables Custom Commands can only be edited by trusted users.
 			if ( ! current_user_can( 'unfiltered_html' ) ) {
 				$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
 			}
