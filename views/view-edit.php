@@ -40,7 +40,7 @@ class TablePress_Edit_View extends TablePress_View {
 		parent::setup( $action, $data );
 
 		if ( isset( $data['table']['is_corrupted'] ) && $data['table']['is_corrupted'] ) {
-			$this->add_text_box( 'table-corrupted', array( $this, 'textbox_corrupted_table' ), 'normal' );
+			$this->add_text_box( 'table-corrupted', array( $this, 'textbox_corrupted_table' ), 'header' );
 			return;
 		};
 
@@ -635,8 +635,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_corrupted_table( array $data, array $box ) {
 		?>
-		<div class="error">
-			<p><strong><?php _e( 'Attention: Unfortunately, an error occurred.', 'tablepress' ); ?></strong></p>
+		<div class="notice notice-error notice-large">
+			<h3><em>
+				<?php _e( 'Attention: Unfortunately, an error occurred.', 'tablepress' ); ?>
+			</em></h3>
 			<p>
 				<?php
 					printf( __( 'The internal data of table &#8220;%1$s&#8221; (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );
