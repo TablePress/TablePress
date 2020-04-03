@@ -73,7 +73,7 @@ class TablePress_Edit_View extends TablePress_View {
 		wp_enqueue_script( 'wplink' );
 
 		$this->admin_page->enqueue_style( 'edit' );
-		$this->admin_page->enqueue_script( 'edit', array( 'jquery-core', 'jquery-ui-sortable', 'json2' ), array(
+		$this->admin_page->enqueue_script( 'edit', array( 'jquery-core', 'jquery-ui-sortable' ), array(
 			'options' => array(
 				/**
 				 * Filter whether debug output shall be printed to the page.
