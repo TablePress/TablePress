@@ -260,7 +260,7 @@ class TablePress_Edit_View extends TablePress_View {
 				}
 			}
 		}
-		// Fetermine row index of the table foot row, by excluding all hidden rows from the end.
+		// Determine row index of the table foot row, by excluding all hidden rows from the end.
 		if ( $options['table_foot'] ) {
 			for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
 				if ( 1 === $visibility['rows'][ $row_idx ] ) {
