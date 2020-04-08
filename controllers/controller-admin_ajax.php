@@ -108,7 +108,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$edit_table['visibility'] = (array) json_decode( $edit_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table.
-			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true, true );
+			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true );
 			if ( is_wp_error( $table ) ) {
 				// Add an error code to the existing WP_Error.
 				$table->add( 'ajax_save_table_prepare', '', $edit_table['id'] );
@@ -225,7 +225,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$preview_table['visibility'] = (array) json_decode( $preview_table['visibility'], true );
 
 			// Check consistency of new table, and then merge with existing table.
-			$table = TablePress::$model_table->prepare_table( $existing_table, $preview_table, true, true );
+			$table = TablePress::$model_table->prepare_table( $existing_table, $preview_table, true );
 			if ( is_wp_error( $table ) ) {
 				break;
 			}

@@ -921,10 +921,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param array $table                     Table to merge into.
 	 * @param array $new_table                 Table to merge.
 	 * @param bool  $table_size_check          Optional. Whether to check the number of rows and columns (e.g. not necessary for added or copied tables).
-	 * @param bool  $extended_visibility_check Optional. Whether to check the counts of hidden rows and columns (only possible for Admin_AJAX controller as of now).
 	 * @return array|WP_Error Merged table on success, WP_Error on error.
 	 */
-	public function prepare_table( array $table, array $new_table, $table_size_check = true, $extended_visibility_check = false ) {
+	public function prepare_table( array $table, array $new_table, $table_size_check = true ) {
 		// Table ID must be the same (if there was an ID already).
 		if ( false !== $table['id'] ) {
 			if ( $table['id'] !== $new_table['id'] ) {
@@ -969,31 +968,6 @@ class TablePress_Table_Model extends TablePress_Model {
 			if ( count( $new_table['visibility']['rows'] ) !== $new_table['number']['rows']
 			|| count( $new_table['visibility']['columns'] ) !== $new_table['number']['columns'] ) {
 				return new WP_Error( 'table_prepare_size_check_visibility_doesnt_match' );
-			}
-
-			if ( $extended_visibility_check ) { // only for Admin_AJAX controller
-				if ( ! isset( $new_table['number']['hidden_rows'] )
-				|| ! isset( $new_table['number']['hidden_columns'] ) ) {
-					return new WP_Error( 'table_prepare_extended_visibility_check_numbers_not_set' );
-				}
-				$new_table['number']['hidden_rows'] = intval( $new_table['number']['hidden_rows'] );
-				$new_table['number']['hidden_columns'] = intval( $new_table['number']['hidden_columns'] );
-				// Count hidden and visible rows.
-				$num_visible_rows = count( array_keys( $new_table['visibility']['rows'], 1 ) );
-				$num_hidden_rows = count( array_keys( $new_table['visibility']['rows'], 0 ) );
-				// Check number of hidden and visible rows.
-				if ( $new_table['number']['hidden_rows'] !== $num_hidden_rows
-				|| ( $new_table['number']['rows'] - $new_table['number']['hidden_rows'] ) !== $num_visible_rows ) {
-					return new WP_Error( 'table_prepare_extended_visibility_check_rows_dont_match' );
-				}
-				// Count hidden and visible columns.
-				$num_visible_columns = count( array_keys( $new_table['visibility']['columns'], 1 ) );
-				$num_hidden_columns = count( array_keys( $new_table['visibility']['columns'], 0 ) );
-				// Check number of hidden and visible columns.
-				if ( $new_table['number']['hidden_columns'] !== $num_hidden_columns
-				|| ( $new_table['number']['columns'] - $new_table['number']['hidden_columns'] ) !== $num_visible_columns ) {
-					return new WP_Error( 'table_prepare_extended_visibility_check_columns_dont_match' );
-				}
 			}
 		}
 
