@@ -60,9 +60,10 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_empty_one_cell_table() {
+		$table_id = '123';
 		$input_table = array( array( '' ) );
 		$expected_table = $input_table;
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
@@ -72,13 +73,14 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_table_without_formulas() {
+		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( '123', '456', '789' ),
 			array( 'abc', 'def', 'ghi' ),
 		);
 		$expected_table = $input_table;
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
@@ -88,6 +90,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_table_with_basic_formulas() {
+		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( '=3*4', '=4.5-1.0', '=POWER(2,3)' ),
@@ -98,7 +101,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 			array( '12', '3.5', '8' ),
 			array( '6', '2', '0.0' ),
 		);
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
@@ -108,6 +111,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_table_with_formulas_and_references() {
+		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( '1', '4', '=MOD(8,3)' ),
@@ -118,7 +122,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 			array( '1', '4', '2' ),
 			array( '7', '8', '2' ),
 		);
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
@@ -128,6 +132,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_table_with_formulas_and_reference_ranges() {
+		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( '1', '4', '=MAX(8,3)' ),
@@ -138,7 +143,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 			array( '1', '4', '8' ),
 			array( '13', '1', '52' ),
 		);
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
@@ -148,6 +153,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_table_with_formulas_and_circle_reference_error() {
+		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( '1', '4', '=B3+A3' ),
@@ -158,7 +164,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 			array( '1', '4', '!ERROR! Circle Reference' ),
 			array( '!ERROR! Circle Reference', '2', '5' ),
 		);
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
@@ -168,6 +174,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_table_with_formulas_and_missing_reference_error() {
+		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( '1', '4', '5' ),
@@ -178,7 +185,7 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 			array( '1', '4', '5' ),
 			array( '!ERROR! Cell D2 does not exist', '!ERROR! Cell B4 does not exist', '5' ),
 		);
-		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table );
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 

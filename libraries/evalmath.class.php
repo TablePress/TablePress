@@ -54,7 +54,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	protected $variables = array();
+	public $variables = array();
 
 	/**
 	 * User-defined functions.

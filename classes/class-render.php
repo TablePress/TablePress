@@ -145,7 +145,7 @@ class TablePress_Render {
 		$orig_table = $this->table;
 
 		$formula_evaluator = TablePress::load_class( 'TablePress_Evaluate', 'class-evaluate.php', 'classes' );
-		$this->table['data'] = $formula_evaluator->evaluate_table_data( $this->table['data'] );
+		$this->table['data'] = $formula_evaluator->evaluate_table_data( $this->table['data'], $this->table['id'] );
 		/**
 		 * Filter the table after evaluating formulas in the table.
 		 *

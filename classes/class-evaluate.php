@@ -63,18 +63,24 @@ class TablePress_Evaluate {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table_data Table data in which formulas shall be evaluated.
+	 * @param array  $table_data Table data in which formulas shall be evaluated.
+	 * @param string $table_id   ID of the passed table.
 	 * @return array Table data with evaluated formulas.
 	 */
-	public function evaluate_table_data( array $table_data ) {
+	public function evaluate_table_data( array $table_data, $table_id ) {
 		$this->table_data = $table_data;
+		$num_rows = count( $this->table_data );
+		$num_columns = count( $this->table_data[0] );
 
-		$rows = count( $this->table_data );
-		$columns = count( $this->table_data[0] );
+		// Make fixed table data available as variables in formulas.
+		$this->evalmath->variables['table_id'] = $table_id;
+		$this->evalmath->variables['num_rows'] = $num_rows;
+		$this->evalmath->variables['num_columns'] = $num_columns;
+
 		// Use two for-loops instead of foreach here to be sure to always work on the "live" table data and not some in-memory copy.
-		for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
-			for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-				$this->table_data[ $row_idx ][ $col_idx ] = $this->_evaluate_cell( $this->table_data[ $row_idx ][ $col_idx ] );
+		for ( $row_idx = 0; $row_idx < $num_rows; $row_idx++ ) {
+			for ( $col_idx = 0; $col_idx < $num_columns; $col_idx++ ) {
+				$this->table_data[ $row_idx ][ $col_idx ] = $this->_evaluate_cell( $this->table_data[ $row_idx ][ $col_idx ], $row_idx, $col_idx );
 			}
 		}
 
@@ -87,10 +93,12 @@ class TablePress_Evaluate {
 	 * @since 1.0.0
 	 *
 	 * @param string $content Content of a cell.
+	 * @param int    $row_idx Row index of the cell.
+	 * @param int    $col_idx Column index of the cell.
 	 * @param array  $parents Optional. List of cells that depend on this cell (to prevent circle references).
 	 * @return string Result of the parsing/evaluation.
 	 */
-	protected function _evaluate_cell( $content, array $parents = array() ) {
+	protected function _evaluate_cell( $content, $row_idx, $col_idx, array $parents = array() ) {
 		if ( '' === $content || '=' === $content || '=' !== $content[0] ) {
 			return $content;
 		}
@@ -179,7 +187,7 @@ class TablePress_Evaluate {
 					$ref_parents = $parents;
 					$ref_parents[] = $cell_reference[0];
 
-					$result = $this->table_data[ $ref_row ][ $ref_col ] = $this->_evaluate_cell( $this->table_data[ $ref_row ][ $ref_col ], $ref_parents );
+					$result = $this->table_data[ $ref_row ][ $ref_col ] = $this->_evaluate_cell( $this->table_data[ $ref_row ][ $ref_col ], $ref_row, $ref_col, $ref_parents );
 					// Bail if there was an error already.
 					if ( false !== strpos( $result, '!ERROR!' ) ) {
 						return $result;
@@ -199,7 +207,7 @@ class TablePress_Evaluate {
 				}
 			}
 
-			$result = $this->_evaluate_math_expression( $expression );
+			$result = $this->_evaluate_math_expression( $expression, $row_idx, $col_idx );
 			// Support putting formulas in strings, like =Total: {A3+A4}.
 			if ( $formula_in_string ) {
 				$content = str_replace( $orig_expression, $result, $content );
@@ -219,7 +227,11 @@ class TablePress_Evaluate {
 	 * @param string $expression without leading = sign.
 	 * @return string Result of the evaluation.
 	 */
-	protected function _evaluate_math_expression( $expression ) {
+	protected function _evaluate_math_expression( $expression, $row_idx, $col_idx ) {
+		// Make current cell's name and row and column number available as variables in formulas.
+		$this->evalmath->variables['row'] = $row_idx + 1;
+		$this->evalmath->variables['column'] = $col_idx + 1;
+		$this->evalmath->variables['cell'] = TablePress::number_to_letter( $this->evalmath->variables['column'] ) . $this->evalmath->variables['row'];
 		// Straight up evaluation, without parsing of variable or function assignments (which is why we only need one instance of the object).
 		$result = $this->evalmath->evaluate( $expression );
 		if ( false === $result ) {
