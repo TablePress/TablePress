@@ -106,6 +106,48 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	}
 
 	/**
+	 * Test a table with variables.
+	 *
+	 * @since 1.12.0
+	 */
+	public function test_table_with_variables() {
+		$table_id = '123';
+		$input_table = array(
+			array( 'foo', 'bar', 'baz' ),
+			array( '=TABLE_ID', '=NUM_ROWS', '=NUM_COLUMNS' ),
+			array( '=CELL', '=ROW', '=COLUMN' ),
+		);
+		$expected_table = array(
+			array( 'foo', 'bar', 'baz' ),
+			array( '123', '3', '3' ),
+			array( 'A3', '3', '3' ),
+		);
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
+		$this->assertSame( $expected_table, $evaluated_table );
+	}
+
+	/**
+	 * Test a table with text around math expressions.
+	 *
+	 * @since 1.12.0
+	 */
+	public function test_table_with_text_around_expressions() {
+		$table_id = '123';
+		$input_table = array(
+			array( 'foo', 'bar', 'baz' ),
+			array( '=Table ID: {TABLE_ID}', '={5*2}', '{5*2}' ),
+			array( '=This is row {ROW}, column {COLUMN}.', '=Total: {SUM(1,2,B2)}', '=' ),
+		);
+		$expected_table = array(
+			array( 'foo', 'bar', 'baz' ),
+			array( 'Table ID: 123', '10', '{5*2}' ),
+			array( 'This is row 3, column 1.', 'Total: 13', '=' ),
+		);
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
+		$this->assertSame( $expected_table, $evaluated_table );
+	}
+
+	/**
 	 * Test a table with formulas and single cell references.
 	 *
 	 * @since 1.5.0
