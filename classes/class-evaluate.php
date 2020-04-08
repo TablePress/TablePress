@@ -157,7 +157,7 @@ class TablePress_Evaluate {
 			}
 
 			// Parse and evaluate single cell references (like A3 or XY312), while prohibiting circle references.
-			if ( preg_match_all( '#([A-Z]+)([0-9]+)#', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
+			if ( preg_match_all( '#([A-Z]+)([0-9]+)(?![0-9A-Z\(])#', $expression, $referenced_cells, PREG_SET_ORDER ) ) {
 				foreach ( $referenced_cells as $cell_reference ) {
 					if ( in_array( $cell_reference[0], $parents, true ) ) {
 						return '!ERROR! Circle Reference';
