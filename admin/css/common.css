@@ -105,6 +105,7 @@
 #tablepress-page form :invalid,
 #tablepress-page form .invalid {
 	border-color: #cc0000 !important;
+	box-shadow: 0 0 0 1px #cc0000;
 }
 
 /* Tables in postboxes (on the "Edit" and "Plugin Options" screens) */
