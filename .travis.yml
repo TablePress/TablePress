@@ -1,7 +1,7 @@
 # Travis CI Configuration File
 
 os: linux
-dist: bionic
+dist: xenial
 
 language: php
 
