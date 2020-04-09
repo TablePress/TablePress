@@ -1,6 +1,7 @@
 # Travis CI Configuration File
 
-sudo: false
+os: linux
+dist: bionic
 
 language: php
 
@@ -20,7 +21,7 @@ env:
   - WP_VERSION=5.4
   - WP_VERSION=5.3
 
-matrix:
+jobs:
   fast_finish: true
 
 before_install:
