@@ -1,4 +1,4 @@
-# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.org/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-%20-ff5441)](https://www.patreon.com/TobiasBg)
+# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Build Status](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.com/TobiasBg/TablePress) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-%20-ff5441)](https://www.patreon.com/TobiasBg)
 
 TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
 
@@ -49,7 +49,7 @@ In short: WordPress 5.3 or higher, while the latest version of WordPress is alwa
 
 TablePress uses the ["Translate WordPress" platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
 
-To make TablePress available in your language, go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress), log in with a free wordpress.org account and start translating.
+To make TablePress available in your language, go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress/), log in with a free wordpress.org account and start translating.
 
 **Migration from WP-Table Reloaded**
 
