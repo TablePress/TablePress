@@ -50,8 +50,8 @@ before_script:
           composer require "phpunit/phpunit:^6"
           ;;
         5.6)
-          echo "Using PHPUnit 4.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^4"
+          echo "Using PHPUnit 5.x for PHP version $TRAVIS_PHP_VERSION"
+          composer require "phpunit/phpunit:^5"
           ;;
         *)
           echo "No PHPUnit version handling for PHP version $TRAVIS_PHP_VERSION"
