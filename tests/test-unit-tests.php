@@ -32,7 +32,14 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 
 		// For the "master" branch, get the current version number from the wordpress.org SVN server.
 		if ( 'master' === $requested_version ) {
-			$file = file_get_contents( 'https://develop.svn.wordpress.org/trunk/src/wp-includes/version.php' );
+			// Requests to wordpress.org servers require a User agent to be set.
+			$options = array(
+				'http' => array(
+					'user_agent' => 'TablePress Unit Tests'
+				)
+			);
+			$context = stream_context_create( $options );
+			$file = file_get_contents( 'https://develop.svn.wordpress.org/trunk/src/wp-includes/version.php', false, $context );
 			preg_match( '#\$wp_version = \'([^\']+)\';#', $file, $matches );
 			$requested_version = $matches[1];
 		}
