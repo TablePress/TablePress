@@ -147,7 +147,7 @@ abstract class TablePress {
 
 		if ( is_admin() ) {
 			$controller = 'admin';
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			if ( wp_doing_ajax() ) {
 				$controller .= '_ajax';
 			}
 		} else {
