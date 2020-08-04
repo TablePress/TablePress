@@ -37,30 +37,6 @@
 	margin-left: 2em;
 }
 
-/* Hide empty drop zones for post boxes, except when one is actively dragged. */
-#post-body #side-sortables.empty-container,
-#post-body #normal-sortables.empty-container,
-#post-body #additional-sortables.empty-container {
-	/* Sortables need some initial height to work correctly. */
-	height: 1px;
-	outline: none;
-}
-.is-dragging-metaboxes #post-body #side-sortables,
-.is-dragging-metaboxes #post-body #normal-sortables,
-.is-dragging-metaboxes #post-body #additional-sortables {
-	outline: 3px dashed #606a73;
-	/* Prevent margin on the child from collapsing with margin on the parent. */
-	display: flow-root;
-	/*
-	 * This min-height is meant to limit jumpiness while dragging. It's equivalent
-	 * to the minimum height of the sortable-placeholder which is given by the height
-	 * of a collapsed post box (36px + 1px top and bottom borders) + the placeholder
-	 * bottom margin (20px) + 2 additional pixels to compensate browsers rounding.
-	 */
-	min-height: 60px;
-	margin-bottom: 20px;
-}
-
 /* Add New Table form */
 #tablepress_add-add-table .form-wrap {
 	max-width: 500px;
