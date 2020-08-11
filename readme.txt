@@ -97,6 +97,14 @@ You may use it free of charge for any purpose.
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 1.12 =
+* Full compatibility with WordPress 5.5.
+* Enhancement: Add placeholder variables with table and cell information for use in formulas.
+* Bugfix: Properly handle math formulas with numbers in their names in the math parser.
+* Bugfix: Restore proper highlighting of input fields with invalid values in the admin area.
+* Updated external libraries (DataTables, SimpleXLSX, Build tools).
+* Some internal changes for better stability, translations, and documentation.
+
 = Version 1.11 =
 * Full compatibility with WordPress 5.4.
 * Enhancement: Update list of allowed CSS features in "Custom CSS".
@@ -107,24 +115,10 @@ Recent changes are shown below. For earlier changes, please see the [changelog h
 * Updated external libraries (SimpleXLSX, CSSTidy, Build tools).
 * Some internal changes for better stability, translations, and documentation.
 
-= Version 1.10 =
-* Full compatibility with WordPress 5.3.
-* Enhancement: Allow importing with replacing/appending existing tables with ZIP archives of JSON files.
-* Enhancement: Greatly enhance the code quality by removing old code and using modern features of PHP.
-* Enhancement: Flush the caches of more caching plugins when the "Custom CSS" was modified.
-* Enhancement: Update list of allowed CSS features in "Custom CSS".
-* Enhancement: Add more math formulas to the formula parser.
-* Bugfix: Restore correct behavior when moving columns on the "Edit" screen.
-* Bugfix: Properly hide text that is intended for screen readers only.
-* Updated external libraries (DataTables, SimpleXLSX, CSSTidy, Build tools).
-* Some internal changes for better stability, security, translations, and documentation.
-* Removed the migration/import code for the discontinued WP-Table Reloaded plugin.
-* TablePress 1.10 requires WordPress 5.3!
-
 == Upgrade Notice ==
 
-= 1.11 =
+= 1.12 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
-= 1.10 =
+= 1.11 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
