@@ -36,12 +36,12 @@ class TablePress_Options_View extends TablePress_View {
 		if ( ! empty( $codemirror_settings ) ) {
 			// Load CSS adjustments for CodeMirror and the added vertical resizing.
 			$this->admin_page->enqueue_style( 'codemirror', array( 'code-editor' ) );
-			$this->admin_page->enqueue_script( 'codemirror', array( 'jquery-core', 'jquery-ui-resizable' ), array(
+			$this->admin_page->enqueue_script( 'codemirror', array( 'jquery', 'jquery-ui-resizable' ), array(
 				'codemirror_settings' => $codemirror_settings,
 			) );
 		}
 
-		$this->admin_page->enqueue_script( 'options', array( 'jquery-core' ), array(
+		$this->admin_page->enqueue_script( 'options', array( 'jquery' ), array(
 			'strings' => array(
 				'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
 				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' ),

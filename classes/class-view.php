@@ -153,7 +153,7 @@ abstract class TablePress_View {
 		if ( is_rtl() ) {
 			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
 		}
-		$this->admin_page->enqueue_script( 'common', array( 'jquery-core', 'postbox' ), array(
+		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ), array(
 			'common' => array(
 				'ays_delete_single_table'    => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
 				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' ),

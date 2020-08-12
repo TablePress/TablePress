@@ -63,7 +63,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 		_wp_admin_html_begin();
 
 		wp_print_styles( 'colors' );
-		wp_print_scripts( 'jquery-core' );
+		wp_print_scripts( 'jquery' );
 ?>
 <title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">

@@ -31,7 +31,7 @@ class TablePress_Import_View extends TablePress_View {
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
-		$this->admin_page->enqueue_script( 'import', array( 'jquery-core' ) );
+		$this->admin_page->enqueue_script( 'import', array( 'jquery' ) );
 
 		$this->process_action_messages( array(
 			'error_import'                             => __( 'Error: The import failed.', 'tablepress' ),

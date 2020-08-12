@@ -214,7 +214,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 * @param string $js_file Path and file name of the DataTables JS library file.
 		 */
 		$js_url = apply_filters( 'tablepress_datatables_js_url', $js_url, $js_file );
-		wp_enqueue_script( 'tablepress-datatables', $js_url, array( 'jquery-core' ), TablePress::version, true );
+		wp_enqueue_script( 'tablepress-datatables', $js_url, array( 'jquery' ), TablePress::version, true );
 	}
 
 	/**
