@@ -503,7 +503,7 @@ class TablePress_Render {
 		// Legacy support for attributes that are not encouraged in HTML5.
 		foreach ( array( 'cellspacing', 'cellpadding', 'border' ) as $attribute ) {
 			if ( false !== $this->render_options[ $attribute ] ) {
-				$table_attributes[ $attribute ] = intval( $this->render_options[ $attribute ] );
+				$table_attributes[ $attribute ] = (int) $this->render_options[ $attribute ];
 			}
 		}
 

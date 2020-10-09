@@ -427,7 +427,7 @@ class TablePress_CSSTidy_print {
 			if ( $sort_selectors ) {
 				ksort( $val );
 			}
-			if ( intval( $medium ) < DEFAULT_AT ) {
+			if ( (int) $medium < DEFAULT_AT ) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if ( strlen( trim( $medium ) ) ) {
 					$parts_to_open = explode( '{', $medium );
@@ -470,7 +470,7 @@ class TablePress_CSSTidy_print {
 				$this->parser->_add_token( SEL_END, $selector, true );
 			}
 
-			if ( intval( $medium ) < DEFAULT_AT ) {
+			if ( (int) $medium  < DEFAULT_AT ) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if ( strlen( trim( $medium ) ) ) {
 					$parts_to_close = explode( '{', $medium );

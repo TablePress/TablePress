@@ -486,7 +486,7 @@ class TablePress_CSSTidy {
 		if ( -1 === $line ) {
 			$line = $this->line;
 		}
-		$line = intval( $line );
+		$line = (int) $line;
 		$add = array(
 			'm' => $message,
 			't' => $type,

@@ -956,8 +956,8 @@ class TablePress_Table_Model extends TablePress_Model {
 				return new WP_Error( 'table_prepare_size_check_numbers_not_set' );
 			}
 			// Table data needs to be ok, and have the correct number of rows and columns.
-			$new_table['number']['rows'] = intval( $new_table['number']['rows'] );
-			$new_table['number']['columns'] = intval( $new_table['number']['columns'] );
+			$new_table['number']['rows'] = (int) $new_table['number']['rows'];
+			$new_table['number']['columns'] = (int) $new_table['number']['columns'];
 			if ( 0 === $new_table['number']['rows']
 			|| 0 === $new_table['number']['columns']
 			|| count( $new_table['data'] ) !== $new_table['number']['rows']
@@ -992,7 +992,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				$new_table['options']['extra_css_classes'] = trim( implode( ' ', $new_table['options']['extra_css_classes'] ) );
 			}
 			if ( isset( $new_table['options']['datatables_paginate_entries'] ) ) {
-				$new_table['options']['datatables_paginate_entries'] = intval( $new_table['options']['datatables_paginate_entries'] );
+				$new_table['options']['datatables_paginate_entries'] = (int) $new_table['options']['datatables_paginate_entries'];
 				if ( $new_table['options']['datatables_paginate_entries'] < 1 ) {
 					$new_table['options']['datatables_paginate_entries'] = 10; // default value
 				}
