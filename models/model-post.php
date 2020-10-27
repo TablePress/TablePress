@@ -115,7 +115,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		if ( $has_kses ) {
 			kses_remove_filters();
 		}
-		// Remove filter that adds `rel="noopener noreferrer" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
+		// Remove filter that adds `rel="noopener" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
 		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
 		if ( $has_targeted_link_rel_filters ) {
 			wp_remove_targeted_link_rel_filters();
@@ -175,7 +175,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		if ( $has_kses ) {
 			kses_remove_filters();
 		}
-		// Remove filter that adds `rel="noopener noreferrer" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
+		// Remove filter that adds `rel="noopener" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
 		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
 		if ( $has_targeted_link_rel_filters ) {
 			wp_remove_targeted_link_rel_filters();

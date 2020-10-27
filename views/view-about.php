@@ -213,8 +213,8 @@ class TablePress_About_View extends TablePress_View {
 		</p>
 		<hr />
 		<p>
-			<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener noreferrer"><img src="<?php echo plugins_url( 'admin/img/wsal-logo.png', TABLEPRESS__FILE__ ); ?>" alt="<?php printf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ); ?>" style="width:100%;height:auto;max-width:320px;display:block;margin:0 auto" /></a>
-			<?php printf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener noreferrer">WP Activity Log</a>' ); ?>
+			<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="<?php echo plugins_url( 'admin/img/wsal-logo.png', TABLEPRESS__FILE__ ); ?>" alt="<?php printf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ); ?>" style="width:100%;height:auto;max-width:320px;display:block;margin:0 auto" /></a>
+			<?php printf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ); ?>
 		</p>
 		<?php
 	}

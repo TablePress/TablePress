@@ -403,6 +403,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * This is similar to the `sanitize()` method, but executed for all users.
 	 * In 1.10.0, adding `rel="noopener noreferrer"` to all HTML link elements like `<a target=` was added. See https://core.trac.wordpress.org/ticket/43187.
+	 * Since 1.13.0, and on WP 5.6, only `rel="noopener"` is added. See https://core.trac.wordpress.org/ticket/49558.
 	 *
 	 * @since 1.10.0
 	 *
