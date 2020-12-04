@@ -231,7 +231,7 @@ class TablePress_List_View extends TablePress_View {
 	 * @param string $text   Text for the link.
 	 * @return string HTML code for the link.
 	 */
-	protected function ajax_link( array $params = array( 'action' => 'list', 'item' => '' ), $text ) {
+	protected function ajax_link( array $params, $text ) {
 		$url = TablePress::url( $params, true, 'admin-post.php' );
 		$action = esc_attr( $params['action'] );
 		$item = esc_attr( $params['item'] );
