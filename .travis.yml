@@ -45,15 +45,7 @@ before_script:
     # Install the specified version of PHPUnit depending on the PHP version:
     if [[ 1 == 1 ]]; then
       case "$TRAVIS_PHP_VERSION" in
-        8.0|7.4|7.3)
-          echo "Using PHPUnit 9.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^9"
-          ;;
-        7.2)
-          echo "Using PHPUnit 8.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^8"
-          ;;
-        7.1)
+        8.0|7.4|7.3|7.2|7.1)
           echo "Using PHPUnit 7.x for PHP version $TRAVIS_PHP_VERSION"
           composer require "phpunit/phpunit:^7"
           ;;
