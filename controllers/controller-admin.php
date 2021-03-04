@@ -1162,7 +1162,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				foreach ( $table_ids as $table_id ) {
 					// Load table, without table data, options, and visibility settings.
 					$table = TablePress::$model_table->load( $table_id, false, false );
-					$existing_tables[ $table['name'] ] = $table['id']; // Attention: The table name is not unique!
+					$existing_tables[ $table['name'] ][] = $table['id']; // Attention: The table name is not unique!
 				}
 			}
 
@@ -1184,8 +1184,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 				$name = $file_name;
 				$description = $file_name;
-				// Use the replace/append ID of tables where the table name matches the file name, except for JSON imports.
-				$existing_table_id = ( isset( $existing_tables[ $file_name ] ) ) ? $existing_tables[ $file_name ] : false;
+				// Use the replace/append ID of tables where the table name matches the file name, except for JSON imports, and only if there was exactly one file name match.
+				$existing_table_id = ( isset( $existing_tables[ $file_name ] ) && 1 === count( $existing_tables[ $file_name ] ) ) ? $existing_tables[ $file_name ][0] : false;
 				$table_id = $this->_import_tablepress_table( $import['format'], $data, $name, $description, $existing_table_id, $import['type'] );
 				if ( is_wp_error( $table_id ) ) {
 					continue;
