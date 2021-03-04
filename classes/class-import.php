@@ -155,7 +155,7 @@ class TablePress_Import {
 
 		// Prepend XML declaration, for better encoding support.
 		$full_html = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $this->import_data;
-		if ( function_exists( 'libxml_disable_entity_loader' ) ) {
+		if ( PHP_VERSION_ID < 80000 && function_exists( 'libxml_disable_entity_loader' ) ) {
 			// Don't expand external entities, see https://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
 			libxml_disable_entity_loader( true );
 		}
