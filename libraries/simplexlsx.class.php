@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2019/Office 365 Reader Class
  *
- * Based on SimpleXLSX v0.8.18 by Sergey Shuchkin.
+ * Based on SimpleXLSX v0.8.21 by Sergey Shuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -292,7 +292,7 @@ class SimpleXLSX {
 			if ( $this->_strlen( $vZ ) !== (int) $aP['CS'] ) { // check only if availabled
 				$aI['E']  = 1;
 				$aI['EM'] = 'Compressed size is not equal with the value in header information.';
-			} else if ( $bE ) {
+			} elseif ( $bE ) {
 				$aI['E']  = 5;
 				$aI['EM'] = 'File is encrypted, which is not supported from this class.';
 			} else {
@@ -320,10 +320,10 @@ class SimpleXLSX {
 					if ( $vZ === false ) {
 						$aI['E']  = 2;
 						$aI['EM'] = 'Decompression of data failed.';
-					} else if ( $this->_strlen( $vZ ) !== (int) $aP['UCS'] ) {
+					} elseif ( $this->_strlen( $vZ ) !== (int) $aP['UCS'] ) {
 						$aI['E']  = 3;
 						$aI['EM'] = 'Uncompressed size is not equal with the value in header information.';
-					} else if ( crc32( $vZ ) !== $aP['CRC'] ) {
+					} elseif ( crc32( $vZ ) !== $aP['CRC'] ) {
 						$aI['E']  = 4;
 						$aI['EM'] = 'CRC32 checksum is not equal with the value in header information.';
 					}
@@ -422,7 +422,7 @@ class SimpleXLSX {
 									$this->sheetFiles[ $index ] = $wrel_path;
 								}
 
-							} else if ( $wrel_type === 'sharedStrings' ) {
+							} elseif ( $wrel_type === 'sharedStrings' ) {
 
 								if ( $sharedStrings = $this->getEntryXML( $wrel_path ) ) {
 									foreach ( $sharedStrings->si as $val ) {
@@ -433,7 +433,7 @@ class SimpleXLSX {
 										}
 									}
 								}
-							} else if ( $wrel_type === 'styles' ) {
+							} elseif ( $wrel_type === 'styles' ) {
 
 								$this->styles = $this->getEntryXML( $wrel_path );
 
@@ -455,7 +455,7 @@ class SimpleXLSX {
 											// formats priority
 											if ( isset( $nf[ $fid ] ) ) {
 												$v['format'] = $nf[ $fid ];
-											} else if ( isset( self::$CF[ $fid ] ) ) {
+											} elseif ( isset( self::$CF[ $fid ] ) ) {
 												$v['format'] = self::$CF[ $fid ];
 											}
 										}
@@ -504,16 +504,22 @@ class SimpleXLSX {
 //				file_put_contents( basename( $name ), $entry_xml ); // @to do comment!!!
 			}
 
-			// XML External Entity (XXE) Prevention
-			$_old         = libxml_disable_entity_loader();
+			// XML External Entity (XXE) Prevention, libxml_disable_entity_loader deprecated in PHP 8
+			if ( LIBXML_VERSION < 20900 ) {
+				$_old = libxml_disable_entity_loader();
+			}
 			$entry_xmlobj = simplexml_load_string( $entry_xml );
-
-			libxml_disable_entity_loader( $_old );
+			if ( LIBXML_VERSION < 20900 ) {
+				/** @noinspection PhpUndefinedVariableInspection */
+				libxml_disable_entity_loader( $_old );
+			}
 			if ( $entry_xmlobj ) {
 				return $entry_xmlobj;
 			}
 			$e = libxml_get_last_error();
-			$this->error( 3, 'XML-entry ' . $name . ' parser error ' . $e->message . ' line ' . $e->line );
+			if ( $e ) {
+				$this->error( 3, 'XML-entry ' . $name . ' parser error ' . $e->message . ' line ' . $e->line );
+			}
 		} else {
 			$this->error( 4, 'XML-entry not found ' . $name );
 		}
@@ -552,7 +558,7 @@ class SimpleXLSX {
 
 		if ( isset( $is->t ) ) {
 			$value[] = (string) $is->t;
-		} else if ( isset( $is->r ) ) {
+		} elseif ( isset( $is->r ) ) {
 			foreach ( $is->r as $run ) {
 				$value[] = (string) $run->t;
 			}
@@ -818,9 +824,14 @@ class SimpleXLSX {
 		if ( $dataType === '' || $dataType === 'n' ) { // number
 			$s = (int) $cell['s'];
 			if ( $s > 0 && isset( $this->cellFormats[ $s ] ) ) {
-				$format = $this->cellFormats[ $s ]['format'];
-				if ( preg_match( '/[mM]/', $format ) ) { // [m]onth
-					$dataType = 'd';
+				if (array_key_exists('format', $this->cellFormats[ $s ])) {
+					$format = $this->cellFormats[ $s ]['format'];
+					if ( preg_match( '/[mM]/', $format ) ) { // [m]onth
+						$dataType = 'd';
+					}
+				}
+				else {
+					$dataType = 's';
 				}
 			}
 		}
@@ -841,7 +852,7 @@ class SimpleXLSX {
 				$value = (string) $cell->v;
 				if ( $value === '0' ) {
 					$value = false;
-				} else if ( $value === '1' ) {
+				} elseif ( $value === '1' ) {
 					$value = true;
 				} else {
 					$value = (bool) $cell->v;
