@@ -303,18 +303,35 @@ class TablePress_Render {
 			 * @param string $tag      The HTML tag around the table name. Default h2.
 			 * @param string $table_id The current table ID.
 			 */
-			$print_name_html_tag = apply_filters( 'tablepress_print_name_html_tag', 'h2', $this->table['id'] );
-			$print_name_html_id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}-name\"" : '';
+			$name_html_tag = apply_filters( 'tablepress_print_name_html_tag', 'h2', $this->table['id'] );
+
+			$name_attributes = array();
+			if ( ! empty( $this->render_options['html_id'] ) ) {
+				$name_attributes['id'] = "{$this->render_options['html_id']}-name";
+			}
 			/**
 			 * Filter the class attribute for the printed table name.
 			 *
 			 * @since 1.0.0
+			 * @deprecated 1.13.0 Use {@see 'tablepress_table_name_tag_attributes'} instead.
 			 *
 			 * @param string $class    The class attribute for the table name that can be used in CSS code.
 			 * @param string $table_id The current table ID.
 			 */
-			$print_name_css_class = apply_filters( 'tablepress_print_name_css_class', "tablepress-table-name tablepress-table-name-id-{$this->table['id']}", $this->table['id'] );
-			$print_name_html = "<{$print_name_html_tag}{$print_name_html_id} class=\"{$print_name_css_class}\">" . $this->safe_output( $this->table['name'] ) . "</{$print_name_html_tag}>\n";
+			$name_attributes['class'] = apply_filters_deprecated( 'tablepress_print_name_css_class', array( "tablepress-table-name tablepress-table-name-id-{$this->table['id']}", $this->table['id'] ), 'TablePress 1.13.0', 'tablepress_table_name_tag_attributes' );
+			/**
+			 * Filter the attributes for the table name (HTML h2 element, by default).
+			 *
+			 * @since 1.13.0
+			 *
+			 * @param array $name_attributes The attributes for the table name element.
+			 * @param array $table           The current table.
+			 * @param array $render_options  The render options for the table.
+			 */
+			$name_attributes = apply_filters( 'tablepress_table_name_tag_attributes', $name_attributes, $this->table, $this->render_options );
+			$name_attributes = $this->_attributes_array_to_string( $name_attributes );
+
+			$print_name_html = "<{$name_html_tag}{$name_attributes}>" . $this->safe_output( $this->table['name'] ) . "</{$name_html_tag}>\n";
 		}
 		if ( $this->render_options['print_description'] ) {
 			/**
@@ -325,18 +342,35 @@ class TablePress_Render {
 			 * @param string $tag      The HTML tag around the table description. Default span.
 			 * @param string $table_id The current table ID.
 			 */
-			$print_description_html_tag = apply_filters( 'tablepress_print_description_html_tag', 'span', $this->table['id'] );
-			$print_description_html_id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}-description\"" : '';
+			$description_html_tag = apply_filters( 'tablepress_print_description_html_tag', 'span', $this->table['id'] );
+
+			$description_attributes = array();
+			if ( ! empty( $this->render_options['html_id'] ) ) {
+				$description_attributes['id'] = "{$this->render_options['html_id']}-description";
+			}
 			/**
 			 * Filter the class attribute for the printed table description.
 			 *
 			 * @since 1.0.0
+			 * @deprecated 1.13.0 Use {@see 'tablepress_table_description_tag_attributes'} instead.
 			 *
 			 * @param string $class    The class attribute for the table description that can be used in CSS code.
 			 * @param string $table_id The current table ID.
 			 */
-			$print_description_css_class = apply_filters( 'tablepress_print_description_css_class', "tablepress-table-description tablepress-table-description-id-{$this->table['id']}", $this->table['id'] );
-			$print_description_html = "<{$print_description_html_tag}{$print_description_html_id} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
+			$description_attributes['class'] = apply_filters_deprecated( 'tablepress_print_description_css_class', array( "tablepress-table-description tablepress-table-description-id-{$this->table['id']}", $this->table['id'] ), 'TablePress 1.13.0', 'tablepress_table_description_tag_attributes' );
+			/**
+			 * Filter the attributes for the table description (HTML span element, by default).
+			 *
+			 * @since 1.13.0
+			 *
+			 * @param array $description_attributes The attributes for the table description element.
+			 * @param array $table                  The current table.
+			 * @param array $render_options         The render options for the table.
+			 */
+			$description_attributes = apply_filters( 'tablepress_table_description_tag_attributes', $description_attributes, $this->table, $this->render_options );
+			$description_attributes = $this->_attributes_array_to_string( $description_attributes );
+
+			$print_description_html = "<{$description_html_tag}{$description_attributes}>" . $this->safe_output( $this->table['description'] ) . "</{$description_html_tag}>\n";
 		}
 
 		if ( $this->render_options['print_name'] && 'above' === $this->render_options['print_name_position'] ) {
