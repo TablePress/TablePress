@@ -304,6 +304,7 @@ class TablePress_Render {
 			 * @param string $table_id The current table ID.
 			 */
 			$print_name_html_tag = apply_filters( 'tablepress_print_name_html_tag', 'h2', $this->table['id'] );
+			$print_name_html_id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}-name\"" : '';
 			/**
 			 * Filter the class attribute for the printed table name.
 			 *
@@ -313,7 +314,7 @@ class TablePress_Render {
 			 * @param string $table_id The current table ID.
 			 */
 			$print_name_css_class = apply_filters( 'tablepress_print_name_css_class', "tablepress-table-name tablepress-table-name-id-{$this->table['id']}", $this->table['id'] );
-			$print_name_html = "<{$print_name_html_tag} class=\"{$print_name_css_class}\">" . $this->safe_output( $this->table['name'] ) . "</{$print_name_html_tag}>\n";
+			$print_name_html = "<{$print_name_html_tag}{$print_name_html_id} class=\"{$print_name_css_class}\">" . $this->safe_output( $this->table['name'] ) . "</{$print_name_html_tag}>\n";
 		}
 		if ( $this->render_options['print_description'] ) {
 			/**
@@ -325,6 +326,7 @@ class TablePress_Render {
 			 * @param string $table_id The current table ID.
 			 */
 			$print_description_html_tag = apply_filters( 'tablepress_print_description_html_tag', 'span', $this->table['id'] );
+			$print_description_html_id = ( ! empty( $this->render_options['html_id'] ) ) ? " id=\"{$this->render_options['html_id']}-description\"" : '';
 			/**
 			 * Filter the class attribute for the printed table description.
 			 *
@@ -334,7 +336,7 @@ class TablePress_Render {
 			 * @param string $table_id The current table ID.
 			 */
 			$print_description_css_class = apply_filters( 'tablepress_print_description_css_class', "tablepress-table-description tablepress-table-description-id-{$this->table['id']}", $this->table['id'] );
-			$print_description_html = "<{$print_description_html_tag} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
+			$print_description_html = "<{$print_description_html_tag}{$print_description_html_id} class=\"{$print_description_css_class}\">" . $this->safe_output( $this->table['description'] ) . "</{$print_description_html_tag}>\n";
 		}
 
 		if ( $this->render_options['print_name'] && 'above' === $this->render_options['print_name_position'] ) {
@@ -481,6 +483,14 @@ class TablePress_Render {
 		$css_classes = trim( implode( ' ', $css_classes ) );
 		if ( ! empty( $css_classes ) ) {
 			$table_attributes['class'] = $css_classes;
+		}
+
+		// ARIA label attributes.
+		if ( $this->render_options['print_name'] && ! empty( $this->render_options['html_id'] ) ) {
+			$table_attributes['aria-labelledby'] = "{$this->render_options['html_id']}-name";
+		}
+		if ( $this->render_options['print_description'] && ! empty( $this->render_options['html_id'] ) ) {
+			$table_attributes['aria-describedby'] = "{$this->render_options['html_id']}-description";
 		}
 
 		// "summary" attribute.
