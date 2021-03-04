@@ -727,8 +727,7 @@ class TablePress_CSSTidy_optimise {
 		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
 		foreach ( $shorthands as $key => $value ) {
-			if ( isset( $array[ $value[0] ] ) && isset( $array[ $value[1] ] )
-				&& isset( $array[ $value[2] ] ) && isset( $array[ $value[3] ] ) && 0 !== $value ) {
+			if ( 0 !== $value && isset( $array[ $value[0] ], $array[ $value[1] ], $array[ $value[2] ], $array[ $value[3] ] ) ) {
 				$return[ $key ] = '';
 
 				$important = '';
