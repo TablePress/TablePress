@@ -1154,6 +1154,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_open' ) );
 			}
 
+			// Prepare a list of table names/IDs when importing a ZIP archive and replacing/appending existing tables (except for the JSON format).
+			$existing_tables = array();
+			if ( in_array( $import['type'], array( 'replace', 'append' ), true ) && 'json' !== $import['format'] ) {
+				// Load all table IDs and names for a comparison with the file name.
+				$table_ids = TablePress::$model_table->load_all( false );
+				foreach ( $table_ids as $table_id ) {
+					// Load table, without table data, options, and visibility settings.
+					$table = TablePress::$model_table->load( $table_id, false, false );
+					$existing_tables[ $table['name'] ] = $table['id']; // Attention: The table name is not unique!
+				}
+			}
+
 			$imported_files = array();
 			for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
 				$file_name = $zip->getNameIndex( $file_idx );
@@ -1172,7 +1184,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 				$name = $file_name;
 				$description = $file_name;
-				$existing_table_id = ( in_array( $import['type'], array( 'replace', 'append' ), true ) ) ? false : false; // @TODO: Find a way to extract the replace/append ID from the filename, maybe? For the JSON format, a check is done after the import.
+				// Use the replace/append ID of tables where the table name matches the file name, except for JSON imports.
+				$existing_table_id = ( isset( $existing_tables[ $file_name ] ) ) ? $existing_tables[ $file_name ] : false;
 				$table_id = $this->_import_tablepress_table( $import['format'], $data, $name, $description, $existing_table_id, $import['type'] );
 				if ( is_wp_error( $table_id ) ) {
 					continue;
