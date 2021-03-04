@@ -395,6 +395,7 @@ $data['csstidy']['all_properties']['break-inside'] = 'CSS3.0';
 $data['csstidy']['all_properties']['caption-side'] = 'CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['clear'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['clip'] = 'CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['clip-path'] = 'CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['color'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['color-profile'] = 'CSS3.0';
 $data['csstidy']['all_properties']['column-count'] = 'CSS3.0';
