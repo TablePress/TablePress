@@ -400,7 +400,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// Echo DataTables strings and JS calls.
 		echo <<<JS
 <script type="text/javascript">
-jQuery(document).ready(function($){
+jQuery(function($){
 {$datatables_strings}{$commands}
 });
 </script>

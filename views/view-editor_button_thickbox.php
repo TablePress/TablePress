@@ -168,7 +168,7 @@ body.rtl {
 </div>
 </div>
 <script type="text/javascript">
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 	// Toggle list table rows on small screens
 	$( '.tablepress-editor-button-list' )
 	.on( 'click', '.toggle-row', function() {

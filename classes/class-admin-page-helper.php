@@ -117,9 +117,9 @@ class TablePress_Admin_Page {
 			};
 
 			if ( options.position && options.position.defer_loading ) {
-				$( window ).bind( 'load.wp-pointers', setup );
+				$( window ).on( 'load.wp-pointers', setup );
 			} else {
-				$( document ).ready( setup );
+				$( setup );
 			}
 		} )( jQuery );
 		</script>
