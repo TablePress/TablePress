@@ -53,13 +53,13 @@ jQuery( document ).ready( function( $ ) {
 		},
 		change_id: function( /* event */ ) {
 			// empty table IDs are not allowed
-			if ( '' === $.trim( $id( 'table-new-id' ).val() ) ) {
+			if ( '' === $id( 'table-new-id' ).val().toString().trim() ) {
 				alert( tablepress_strings.table_id_not_empty );
 				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).select();
 				return;
 			}
 			// the '0' table ID is not allowed
-			if ( '0' === $.trim( $id( 'table-new-id' ).val() ) ) {
+			if ( '0' === $id( 'table-new-id' ).val().toString().trim() ) {
 				alert( tablepress_strings.table_id_not_zero );
 				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).select();
 				return;
