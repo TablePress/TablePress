@@ -478,7 +478,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			helper = $( helper );
 			var $rows = $id( 'edit-form-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
-			$rows.filter( ':even' ).addClass( 'odd' );
+			$rows.even().addClass( 'odd' );
 			$rows = $rows.not( '.row-hidden' );
 			if ( helper.hasClass( 'row-hidden' ) ) {
 				$rows = $rows.not( '.ui-sortable-placeholder' );
