@@ -56,7 +56,7 @@ jQuery( document ).ready( function( $ ) {
 	 * @since 1.0.0
 	 */
 	$( '#tablepress-page' ).on( 'click', '.table-shortcode', function() {
-		$(this).focus().select();
+		$(this).trigger( 'focus' ).select();
 	} );
 
 } );

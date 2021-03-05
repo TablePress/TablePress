@@ -84,6 +84,6 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#tables-export' ).focus();
+	$( '#tables-export' ).trigger( 'focus' );
 
 } );

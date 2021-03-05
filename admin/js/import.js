@@ -101,7 +101,7 @@ jQuery( document ).ready( function( $ ) {
 			$( selected_import_source_field )
 				.addClass( 'invalid' )
 				.one( 'change', function() { $(this).removeClass( 'invalid' ); } )
-				.focus().select();
+				.trigger( 'focus' ).select();
 			valid_form = false;
 		}
 
@@ -113,7 +113,7 @@ jQuery( document ).ready( function( $ ) {
 				$( '#tables-import-existing-table' )
 					.addClass( 'invalid' )
 					.one( 'change', function() { $(this).removeClass( 'invalid' ); } )
-					.focus().select();
+					.trigger( 'focus' ).select();
 				valid_form = false;
 			}
 		}
