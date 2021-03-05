@@ -71,7 +71,7 @@ jQuery( document ).ready( function( $ ) {
 
 			if ( confirm( tablepress_strings.ays_change_table_id ) ) {
 				tp.table.new_id = this.value;
-				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' ).click(); // click() to focus and select
+				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' ).trigger( 'click' ); // click() to focus and select
 				tp.table.set_table_changed();
 			} else {
 				$(this).val( tp.table.new_id );
