@@ -9,7 +9,7 @@
 
 /* global wp, tablepress_codemirror_settings */
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 

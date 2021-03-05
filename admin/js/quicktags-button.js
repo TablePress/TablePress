@@ -9,7 +9,7 @@
 
 /* global tablepress_editor_button, QTags, tb_show */
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 

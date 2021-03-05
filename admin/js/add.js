@@ -9,7 +9,7 @@
 
 /* global validateForm */
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 

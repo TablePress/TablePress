@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 

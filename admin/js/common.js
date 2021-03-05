@@ -12,7 +12,7 @@
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 

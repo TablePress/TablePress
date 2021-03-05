@@ -9,7 +9,7 @@
 
 /* global confirm, tablepress_strings */
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 

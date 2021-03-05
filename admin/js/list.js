@@ -9,7 +9,7 @@
 
 /* global prompt, confirm, tablepress_common, tablepress_list, tb_show, ajaxurl */
 
-jQuery( document ).ready( function( $ ) {
+jQuery( function( $ ) {
 
 	'use strict';
 
