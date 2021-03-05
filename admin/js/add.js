@@ -45,7 +45,7 @@ jQuery( document ).ready( function( $ ) {
 
 			$field
 				.one( 'change', function() { $(this).closest( '.form-invalid' ).removeClass( 'form-invalid' ); } )
-				.trigger( 'focus' ).select()
+				.trigger( 'focus' ).trigger( 'select' )
 				.closest( '.form-field' ).addClass( 'form-invalid' );
 			valid_form = false;
 		} );

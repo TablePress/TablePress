@@ -55,13 +55,13 @@ jQuery( document ).ready( function( $ ) {
 			// empty table IDs are not allowed
 			if ( '' === $id( 'table-new-id' ).val().toString().trim() ) {
 				alert( tablepress_strings.table_id_not_empty );
-				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).select();
+				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).trigger( 'select' );
 				return;
 			}
 			// the '0' table ID is not allowed
 			if ( '0' === $id( 'table-new-id' ).val().toString().trim() ) {
 				alert( tablepress_strings.table_id_not_zero );
-				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).select();
+				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).trigger( 'select' );
 				return;
 			}
 
@@ -190,12 +190,12 @@ jQuery( document ).ready( function( $ ) {
 				// validation checks
 				if ( $id( 'option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $id( 'option-datatables-paginate_entries' ).val() ) ) {
 					alert( tablepress_strings.num_pagination_entries_invalid );
-					$id( 'option-datatables-paginate_entries' ).trigger( 'focus' ).select();
+					$id( 'option-datatables-paginate_entries' ).trigger( 'focus' ).trigger( 'select' );
 					return;
 				}
 				if ( ( /[^A-Za-z0-9- _:]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
 					alert( tablepress_strings.extra_css_classes_invalid );
-					$id( 'option-extra-css-classes' ).trigger( 'focus' ).select();
+					$id( 'option-extra-css-classes' ).trigger( 'focus' ).trigger( 'select' );
 					return;
 				}
 
@@ -282,7 +282,7 @@ jQuery( document ).ready( function( $ ) {
 
 			if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
 				alert( tablepress_strings.append_num_rows_invalid );
-				$id( 'rows-append-number' ).trigger( 'focus' ).select();
+				$id( 'rows-append-number' ).trigger( 'focus' ).trigger( 'select' );
 				return;
 			}
 
@@ -500,7 +500,7 @@ jQuery( document ).ready( function( $ ) {
 
 			if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
 				alert( tablepress_strings.append_num_columns_invalid );
-				$id( 'columns-append-number' ).trigger( 'focus' ).select();
+				$id( 'columns-append-number' ).trigger( 'focus' ).trigger( 'select' );
 				return;
 			}
 
@@ -1026,12 +1026,12 @@ jQuery( document ).ready( function( $ ) {
 			// validation checks
 			if ( $id( 'option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $id( 'option-datatables-paginate_entries' ).val() ) ) {
 				alert( tablepress_strings.num_pagination_entries_invalid );
-				$id( 'option-datatables-paginate_entries' ).trigger( 'focus' ).select();
+				$id( 'option-datatables-paginate_entries' ).trigger( 'focus' ).trigger( 'select' );
 				return;
 			}
 			if ( ( /[^A-Za-z0-9- _:]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
 				alert( tablepress_strings.extra_css_classes_invalid );
-				$id( 'option-extra-css-classes' ).trigger( 'focus' ).select();
+				$id( 'option-extra-css-classes' ).trigger( 'focus' ).trigger( 'select' );
 				return;
 			}
 
