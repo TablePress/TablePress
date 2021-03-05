@@ -76,9 +76,9 @@ class TablePress_List_View extends TablePress_View {
 				. sprintf( _n( 'If everything works and you are satisfied with the results of managing your %s table, isn&#8217;t that worth a coffee or two?', 'If everything works and you are satisfied with the results of managing your %s tables, isn&#8217;t that worth a coffee or two?', $data['table_count'], 'tablepress' ), esc_html( $data['table_count'] ) ) . '<br />'
 				. sprintf( __( '<a href="%s">Donations</a> help me to continue user support and development of this <em>free</em> software &mdash; things for which I spend countless hours of my free time! Thank you very much!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p><p>'
 				. __( 'Sincerely, Tobias', 'tablepress' ) . '</p><p style="font-size:14px">'
-				. sprintf( '<a href="%s" target="_blank" rel="noopener"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'already-donated' ), __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later' ), __( 'No, thanks. Don&#8217;t ask again.', 'tablepress' ) ),
+				. sprintf( '<a href="%s" class="button" target="_blank" rel="noopener"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
+				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'already-donated', 'class' => 'button' ), __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
+				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later', 'class' => 'button' ), __( 'No, thanks. Don&#8217;t ask again.', 'tablepress' ) ),
 				'notice-success not-dismissible',
 				'<em>' . __( 'TablePress needs you!', 'tablepress' ) . '</em>'
 			);
@@ -232,11 +232,15 @@ class TablePress_List_View extends TablePress_View {
 	 * @return string HTML code for the link.
 	 */
 	protected function ajax_link( array $params, $text ) {
+		$class = 'ajax-link';
+		if ( ! empty( $params['class'] ) ) {
+			$class .= ' ' . esc_attr( $params['class'] );
+		}
 		$url = TablePress::url( $params, true, 'admin-post.php' );
 		$action = esc_attr( $params['action'] );
 		$item = esc_attr( $params['item'] );
 		$target = isset( $params['target'] ) ? esc_attr( $params['target'] ) : '';
-		return "<a class=\"ajax-link\" href=\"{$url}\" data-action=\"{$action}\" data-item=\"{$item}\" data-target=\"{$target}\">{$text}</a>";
+		return "<a class=\"{$class}\" href=\"{$url}\" data-action=\"{$action}\" data-item=\"{$item}\" data-target=\"{$target}\">{$text}</a>";
 	}
 
 } // class TablePress_List_View
