@@ -760,7 +760,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				var $advanced_editor = $id( 'advanced-editor-content' );
-				tp.cells.$textarea = $(this).blur();
+				tp.cells.$textarea = $(this).trigger( 'blur' );
 				$advanced_editor.val( tp.cells.$textarea.val() );
 				$id( 'advanced-editor' ).wpdialog( 'open' );
 				$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
@@ -776,7 +776,7 @@ jQuery( document ).ready( function( $ ) {
 				tp.cells.advanced_editor.prompt_shown = true;
 				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
 					var $advanced_editor = $id( 'advanced-editor-content' );
-					tp.cells.$textarea = $(this).blur();
+					tp.cells.$textarea = $(this).trigger( 'blur' );
 					$advanced_editor.val( tp.cells.$textarea.val() );
 					$id( 'advanced-editor' ).wpdialog( 'open' );
 					$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
@@ -784,7 +784,7 @@ jQuery( document ).ready( function( $ ) {
 				} );
 			},
 			save: function() {
-				var $ve_content = $id( 'advanced-editor-content' ).blur().val();
+				var $ve_content = $id( 'advanced-editor-content' ).trigger( 'blur' ).val();
 				if ( tp.cells.$textarea.val() !== $ve_content ) {
 					tp.cells.$textarea.val( $ve_content );
 					// position cursor at the end
@@ -873,7 +873,7 @@ jQuery( document ).ready( function( $ ) {
 
 					// Remove focus from the textarea to prevent Opera from showing the outline of the textarea above the modal.
 					// See: WP Core #22445
-					$(this).blur();
+					$(this).trigger( 'blur' );
 
 					wp.media.editor.open( editor, options );
 					tp.table.set_table_changed();
