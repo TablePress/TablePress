@@ -1037,7 +1037,7 @@ jQuery( document ).ready( function( $ ) {
 
 			if ( event.shiftKey ) {
 				tp.made_changes = false; // to prevent onunload warning
-				$id( 'tablepress-page' ).find( 'form' ).submit();
+				$id( 'tablepress-page' ).find( 'form' ).trigger( 'submit' );
 				return;
 			}
 
