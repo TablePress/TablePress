@@ -1191,8 +1191,8 @@ jQuery( document ).ready( function( $ ) {
 
 		// do this before the next lines, to not trigger set_table_changed()
 		$id( 'option-table-head' ).trigger( 'change' ); // init changed/disabled states of DataTables JS features checkboxes
-		$id( 'option-print-name' ).change( tp.table.change_print_name_description ).trigger( 'change' ); // init dropdowns for name and description position
-		$id( 'option-print-description' ).change( tp.table.change_print_name_description ).trigger( 'change' );
+		$id( 'option-print-name' ).on( 'change', tp.table.change_print_name_description ).trigger( 'change' ); // init dropdowns for name and description position
+		$id( 'option-print-description' ).on( 'change', tp.table.change_print_name_description ).trigger( 'change' );
 
 		// just once is enough, will be reset after saving
 		$table.one( 'change', 'textarea', tp.table.set_table_changed );
