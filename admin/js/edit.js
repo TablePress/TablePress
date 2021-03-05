@@ -79,7 +79,7 @@ jQuery( document ).ready( function( $ ) {
 		},
 		change_table_head: function( /* event */ ) {
 			tp.table.head = $(this).prop( 'checked' );
-			$id( 'option-use-datatables' ).prop( 'disabled', ! tp.table.head ).change();
+			$id( 'option-use-datatables' ).prop( 'disabled', ! tp.table.head ).trigger( 'change' );
 			$id( 'notice-datatables-head-row' ).toggle( ! tp.table.head );
 			tp.rows.stripe();
 		},
@@ -894,7 +894,7 @@ jQuery( document ).ready( function( $ ) {
 				// Automatically deactivate DataTables, if cells are combined
 				if ( $id( 'option-use-datatables' ).prop( 'checked' ) ) {
 					if ( confirm( tablepress_strings.span_add_datatables_warning ) ) {
-						$id( 'option-use-datatables' ).prop( 'checked', false ).change();
+						$id( 'option-use-datatables' ).prop( 'checked', false ).trigger( 'change' );
 					} else {
 						return;
 					}
@@ -1190,9 +1190,9 @@ jQuery( document ).ready( function( $ ) {
 		$( window ).on( 'beforeunload', tp.check.changes_saved );
 
 		// do this before the next lines, to not trigger set_table_changed()
-		$id( 'option-table-head' ).change(); // init changed/disabled states of DataTables JS features checkboxes
-		$id( 'option-print-name' ).change( tp.table.change_print_name_description ).change(); // init dropdowns for name and description position
-		$id( 'option-print-description' ).change( tp.table.change_print_name_description ).change();
+		$id( 'option-table-head' ).trigger( 'change' ); // init changed/disabled states of DataTables JS features checkboxes
+		$id( 'option-print-name' ).change( tp.table.change_print_name_description ).trigger( 'change' ); // init dropdowns for name and description position
+		$id( 'option-print-description' ).change( tp.table.change_print_name_description ).trigger( 'change' );
 
 		// just once is enough, will be reset after saving
 		$table.one( 'change', 'textarea', tp.table.set_table_changed );

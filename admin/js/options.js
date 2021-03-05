@@ -20,7 +20,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( '#option-use-custom-css' ).on( 'change', function() {
 		$( '#option-custom-css' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
-	} ).change();
+	} ).trigger( 'change' );
 
 	/**
 	 * On form submit: Enable disabled fields, so that they are transmitted in the POST request.

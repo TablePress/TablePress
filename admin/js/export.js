@@ -44,7 +44,7 @@ jQuery( document ).ready( function( $ ) {
 		$( '#tables-export-csv-delimiter' ).prop( 'disabled', non_csv_selected );
 		$( '#tables-export-csv-delimiter-description' ).toggle( non_csv_selected );
 	} )
-	.change();
+	.trigger( 'change' );
 
 	/**
 	 * Automatically check and disable the "ZIP file" checkbox whenever more than one table is selected
@@ -66,7 +66,7 @@ jQuery( document ).ready( function( $ ) {
 		// set state of "Select all" checkbox
 		$( '#tables-export-select-all' ).prop( 'checked', 0 === $(this).find( 'option' ).not( ':selected' ).length );
 	} )
-	.change();
+	.trigger( 'change' );
 
 	/**
 	 * Select all entries from the multiple-select dropdown on checkbox change
@@ -76,7 +76,7 @@ jQuery( document ).ready( function( $ ) {
 	$( '#tables-export-select-all' ).on( 'change', function() {
 		var $tables = $( '#tables-export' );
 		$tables.find( 'option' ).prop( 'selected', $(this).prop( 'checked' ) );
-		$tables.change(); // to update ZIP file checkbox
+		$tables.trigger( 'change' ); // to update ZIP file checkbox
 	} );
 
 	/**
