@@ -967,39 +967,52 @@ jQuery( function( $ ) {
 			$row = $( row );
 			$row.find( 'textarea' )
 				.val( function( column_idx, value ) {
-					// If the cell is not a formula, there's nothing to do here
+					// If the cell is not a formula, there's nothing to do here.
 					if ( ( '' === value ) || ( '=' !== value.charAt(0) ) ) {
 						return value;
 					}
 
-					return value.replace( /([A-Z]+[0-9]+)(?::([A-Z]+[0-9]+))?/g, function( full_match, first_cell, second_cell ) {
-						// first_cell must always exist, while second_cell only exists in ranges like A4:B7
-						// we will use full_match as our result variable, so that we don't need an extra one
+					// Support putting formulas in strings, like =Total: {A3+A4}.
+					var expressions = value.match( /{.+?}/g );
+					if ( null === expressions ) {
+						// Fill array so that it has the same structure as if it came from match().
+						expressions = new Array( value );
+					}
 
-						if ( ! known_references.hasOwnProperty( first_cell ) ) {
-							$cell = $id( 'cell-' + first_cell );
-							if ( $cell.length ) {
-								known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
-							} else {
-								known_references[ first_cell ] = first_cell;
-							}
-						}
-						full_match = known_references[ first_cell ];
+					// Find the replacement value (with updated cell references) for each expression and replace the old one with it.
+					expressions.forEach( function( expression ) {
+						var new_expression = expression.replace( /([A-Z]+[0-9]+)(?::([A-Z]+[0-9]+))?/g, function( full_match, first_cell, second_cell ) {
+							// first_cell must always exist, while second_cell only exists in ranges like A4:B7
+							// we will use full_match as our result variable, so that we don't need an extra one
 
-						if ( ( 'undefined' !== typeof second_cell ) && ( '' !== second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
-							if ( ! known_references.hasOwnProperty( second_cell ) ) {
-								$cell = $id( 'cell-' + second_cell );
+							if ( ! known_references.hasOwnProperty( first_cell ) ) {
+								$cell = $id( 'cell-' + first_cell );
 								if ( $cell.length ) {
-									known_references[ second_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
+									known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
 								} else {
-									known_references[ second_cell ] = second_cell;
+									known_references[ first_cell ] = first_cell;
 								}
 							}
-							full_match += ':' + known_references[ second_cell ];
-						}
+							full_match = known_references[ first_cell ];
 
-						return full_match;
+							if ( ( 'undefined' !== typeof second_cell ) && ( '' !== second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
+								if ( ! known_references.hasOwnProperty( second_cell ) ) {
+									$cell = $id( 'cell-' + second_cell );
+									if ( $cell.length ) {
+										known_references[ second_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
+									} else {
+										known_references[ second_cell ] = second_cell;
+									}
+								}
+								full_match += ':' + known_references[ second_cell ];
+							}
+
+							return full_match;
+						} );
+						value = value.replace( expression, new_expression );
 					} );
+
+					return value;
 				} )
 				.attr( 'name', function( column_idx /*, old_name */ ) {
 					return 'table[data][' + row_idx + '][' + column_idx + ']';
