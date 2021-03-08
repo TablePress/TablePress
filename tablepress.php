@@ -11,7 +11,7 @@
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
  * Version: 1.12
- * Requires at least: 5.3
+ * Requires at least: 5.6
  * Requires PHP: 5.6.20
  * Author: Tobias Bäthge
  * Author URI: https://tobias.baethge.com/

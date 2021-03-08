@@ -2,7 +2,7 @@
 Contributors: TobiasBg
 Donate link: https://tablepress.org/donate/
 Tags: table,spreadsheet,data,csv,excel,html,tables
-Requires at least: 5.3
+Requires at least: 5.6
 Requires PHP: 5.6.20
 Tested up to: 5.7
 Stable tag: 1.12
@@ -57,7 +57,7 @@ Many questions, regarding different features or styling, have been answered on t
 For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress#new-post) if you don't find an existing answer. Thank you!
 
 = Requirements? =
-In short: WordPress 5.3 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 5.6 or higher, while the latest version of WordPress is always recommended.
 
 = Languages and Localization? =
 TablePress uses the ["Translate WordPress" platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
