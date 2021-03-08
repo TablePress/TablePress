@@ -97,6 +97,17 @@ You may use it free of charge for any purpose.
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 1.13 =
+* Full compatibility with WordPress 5.7.
+* Enhancement: Allow replacing/appending existing tables when importing a ZIP archive of files.
+* Enhancement: Add ARIA labels to the table when its name or description is printed.
+* Enhancement: Update list of allowed CSS features in "Custom CSS".
+* Enhancement: Increase compatibility with PHP 8 and jQuery 3.x by no longer using deprecated functions.
+* Bugfix: Properly update cell references in formulas when one is moved, on the "Edit" screen.
+* Updated external libraries (DataTables, SimpleXLSX, CSSTidy, Build tools).
+* Some internal changes for better stability, translations, and documentation.
+* TablePress 1.13 requires WordPress 5.6!
+
 = Version 1.12 =
 * Full compatibility with WordPress 5.5.
 * Enhancement: Add placeholder variables with table and cell information for use in formulas.
@@ -105,20 +116,10 @@ Recent changes are shown below. For earlier changes, please see the [changelog h
 * Updated external libraries (DataTables, SimpleXLSX, Build tools).
 * Some internal changes for better stability, translations, and documentation.
 
-= Version 1.11 =
-* Full compatibility with WordPress 5.4.
-* Enhancement: Update list of allowed CSS features in "Custom CSS".
-* Enhancement: Allow more complex "Extra CSS classes", to support more CSS frameworks.
-* Enhancement: Modernize the arrow icons web font loading for faster loading.
-* Enhancement: Support the table markup structure of HTML 5.1.
-* Bugfix: Prevent fatal error due to misspelled function name during Excel import.
-* Updated external libraries (SimpleXLSX, CSSTidy, Build tools).
-* Some internal changes for better stability, translations, and documentation.
-
 == Upgrade Notice ==
 
-= 1.12 =
+= 1.13 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
-= 1.11 =
+= 1.12 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
