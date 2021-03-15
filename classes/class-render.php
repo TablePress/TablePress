@@ -443,7 +443,7 @@ class TablePress_Render {
 			} else {
 				$caption .= '<br />';
 			}
-			$caption .= "<a href=\"{$this->render_options['edit_table_url']}\">" . __( 'Edit', 'default' ) . '</a>';
+			$caption .= '<a href="' . esc_url( $this->render_options['edit_table_url'] ) . '" rel="nofollow">' . __( 'Edit', 'default' ) . '</a>';
 		}
 		if ( ! empty( $caption ) ) {
 			$caption = "<caption{$caption_class}{$caption_style}>{$caption}</caption>\n";
