@@ -155,9 +155,12 @@ class TablePress_Import {
 
 		// Prepend XML declaration, for better encoding support.
 		$full_html = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $this->import_data;
-		if ( PHP_VERSION_ID < 80000 && function_exists( 'libxml_disable_entity_loader' ) ) {
-			// Don't expand external entities, see https://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
-			libxml_disable_entity_loader( true );
+		if ( function_exists( 'libxml_disable_entity_loader' ) ) {
+			/*
+			 * Don't expand external entities, see https://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
+			 * Silence warnings as the function is deprecated in PHP 8, but can be necessary with LIBXML_NOENT being defined, see https://core.trac.wordpress.org/changeset/50714.
+			 */
+			@libxml_disable_entity_loader( true );
 		}
 		// No warnings/errors raised, but stored internally.
 		libxml_use_internal_errors( true );
