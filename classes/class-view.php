@@ -117,7 +117,7 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int|bool Current value of the user option.
+	 * @param int|bool $result Current value of the user option.
 	 * @return int New value for the user option.
 	 */
 	public function set_current_screen_layout_columns( $result ) {
