@@ -419,7 +419,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		 * @param bool $filter Whether to filter the content of table cells and other fields. Default true.
 		 */
 		if ( ! apply_filters( 'tablepress_filter_table_cell_content', true ) ) {
-			return;
+			return $table;
 		}
 
 		// Filter the table name and description.
