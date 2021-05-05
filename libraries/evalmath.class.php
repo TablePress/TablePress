@@ -1082,7 +1082,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string The seed.
+	 * @param string $random_seed The seed.
 	 */
 	protected static function _set_random_seed( $random_seed ) {
 		self::$random_seed = $random_seed;
