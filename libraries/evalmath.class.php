@@ -1120,7 +1120,7 @@ class EvalMath_Functions {
 			$min = $tmp;
 			unset( $tmp );
 		}
-		$number_characters = ceil( log( $max + 1 - $min, '16' ) );
+		$number_characters = ceil( log( $max + 1 - $min, 16 ) );
 		$md5string = md5( self::_get_random_seed() );
 		$offset = 0;
 		do {
