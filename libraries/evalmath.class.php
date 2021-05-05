@@ -163,7 +163,7 @@ class EvalMath {
 			}
 			// Evaluate the assignment.
 			$tmp = $this->pfx( $this->nfx( $matches[2] ) );
-			if ( fales === $tmp ) {
+			if ( false === $tmp ) {
 				return false;
 			}
 			// If it could be evaluated, add it to the variable array,
