@@ -215,7 +215,7 @@ abstract class TablePress_View {
 	 * @param string   $id       Unique HTML ID for the text box container (only visible with $wrap = true).
 	 * @param callback $callback Callback that prints the contents of the text box.
 	 * @param string   $context  Optional. Context/position of the text box (normal, side, additional, header, submit).
-	 * @param bool $   wrap      Whether the content of the text box shall be wrapped in a <div> container.
+	 * @param bool     $wrap     Whether the content of the text box shall be wrapped in a <div> container.
 	 */
 	protected function add_text_box( $id, $callback, $context = 'normal', $wrap = false ) {
 		if ( ! isset( $this->textboxes[ $context ] ) ) {
