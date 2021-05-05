@@ -1055,8 +1055,8 @@ class EvalMath_Functions {
 	 * @since 1.0.0
 	 *
 	 * @param double|int $value    Number to be rounded and formatted.
-	 * @param double|int $decimals Optional. Number of decimals after the decimal separator after the rounding.
-	 * @return double Formatted number.
+	 * @param int        $decimals Optional. Number of decimals after the decimal separator after the rounding.
+	 * @return string Formatted number.
 	 */
 	public static function number_format( $value, $decimals = 0 ) {
 		return number_format( $value, $decimals, '.', ',' );
@@ -1070,8 +1070,8 @@ class EvalMath_Functions {
 	 * @since 1.0.0
 	 *
 	 * @param double|int $value    Number to be rounded and formatted.
-	 * @param double|int $decimals Optional. Number of decimals after the decimal separator after the rounding.
-	 * @return double Formatted number.
+	 * @param int        $decimals Optional. Number of decimals after the decimal separator after the rounding.
+	 * @return string Formatted number.
 	 */
 	public static function number_format_eu( $value, $decimals = 0 ) {
 		return number_format( $value, $decimals, ',', ' ' );
