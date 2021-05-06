@@ -241,7 +241,7 @@ abstract class TablePress_View {
 	 * @param callback $callback      Callback that prints the contents of the post meta box.
 	 * @param string   $context       Optional. Context/position of the post meta box (normal, side, additional).
 	 * @param string   $priority      Optional. Order of the post meta box for the $context position (high, default, low).
-	 * @param bool     $callback_args Optional. Additional data for the callback function (e.g. useful when in different class).
+	 * @param array    $callback_args Optional. Additional data for the callback function (e.g. useful when in different class).
 	 */
 	protected function add_meta_box( $id, $title, $callback, $context = 'normal', $priority = 'default', $callback_args = null ) {
 		$this->has_meta_boxes = true;
