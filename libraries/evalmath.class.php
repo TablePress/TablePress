@@ -1,9 +1,9 @@
 <?php
 /**
- * EvalMath - Safely evaluate math expressions
+ * EvalMath - Safely evaluate math expressions.
  *
  * Based on EvalMath by Miles Kaufmann, with modifications by Petr Skoda.
- * @link https://github.com/moodle/moodle/blob/4efc3d4096bc1d29e9d77f9af7194b2babfa2821/lib/evalmath/evalmath.class.php
+ * @link https://github.com/moodle/moodle/blob/master/lib/evalmath/evalmath.class.php
  *
  * @package TablePress
  * @subpackage Formulas
@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Class to safely evaluate math expressions.
+ *
  * @package TablePress
  * @subpackage Formulas
  * @since 1.0.0
@@ -25,7 +26,7 @@ class EvalMath {
 	/**
 	 * Pattern used for a valid function or variable name.
 	 *
-	 * Note, var and func names are case insensitive.
+	 * Note, variable and function names are case insensitive.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -125,7 +126,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		// Sets default  constants.
+		// Set default constants.
 		$this->variables['pi'] = pi();
 		$this->variables['e'] = exp( 1 );
 	}
@@ -143,7 +144,7 @@ class EvalMath {
 	}
 
 	/**
-	 * Evaluate a math expression or formula, and check it for variable an function assignments.
+	 * Evaluate a math expression or formula, and check it for variable and function assignments.
 	 *
 	 * @since 1.0.0
 	 *

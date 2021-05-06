@@ -870,7 +870,7 @@ JS;
 						}
 						// @TODO: Cells are not evaluated here, so math formulas are searched.
 						if ( false !== stripos( $table_cell, $search_term ) ) {
-							// Found the  search term in the cell content.
+							// Found the search term in the cell content.
 							$query_result[ $search_term ][] = $table_id; // Add table ID to result list
 							// No need to continue searching this search term in this table.
 							continue 3;
