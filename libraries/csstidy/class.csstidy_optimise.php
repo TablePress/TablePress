@@ -1143,7 +1143,7 @@ class TablePress_CSSTidy_custom_sanitize extends TablePress_CSSTidy_optimise {
 			$this->parser->import = array();
 		}
 		if ( ! empty( $this->parser->charset ) ) {
-			$this->parser->charset = array();
+			$this->parser->charset = '';
 		}
 
 		parent::postparse();
