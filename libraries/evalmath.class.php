@@ -189,7 +189,8 @@ class EvalMath {
 				return false;
 			}
 			// Freeze the state of the non-argument variables.
-			for ( $i = 0; $i < count( $stack ); $i++ ) {
+			$stack_count = count( $stack );
+			for ( $i = 0; $i < $stack_count; $i++ ) {
 				$token = $stack[ $i ];
 				if ( 1 === preg_match( '/^' . self::$name_pattern . '$/', $token ) && ! in_array( $token, $args, true ) ) {
 					if ( array_key_exists( $token, $this->variables ) ) {
@@ -317,7 +318,7 @@ class EvalMath {
 					$function_name = $matches[1];
 					// See how many arguments there were (cleverly stored on the stack, thank you).
 					$arg_count = $stack->pop();
-					$fn = $stack->pop();
+					$stack->pop(); // $fn
 					// Send function to output.
 					$output[] = array( 'function_name' => $function_name, 'arg_count' => $arg_count );
 					// Check the argument count, depending on what type of function we have.
@@ -407,7 +408,7 @@ class EvalMath {
 				if ( 1 === preg_match( '/^(' . self::$name_pattern . ')\($/', $stack->last( 3 ), $matches ) ) {
 					$stack->pop(); // (
 					$stack->pop(); // 1
-					$fn = $stack->pop();
+					$stack->pop(); // $fn
 					// Get the function name.
 					$function_name = $matches[1];
 					if ( isset( $this->calc_functions[ $function_name ] ) ) {
@@ -1040,7 +1041,7 @@ class EvalMath_Functions {
 	 * @since 1.0.0
 	 *
 	 * @param double|int $value    Number to be rounded.
-	 * @param double|int $decimals Optional. Number of decimals after the comma after the rounding.
+	 * @param int        $decimals Optional. Number of decimals after the comma after the rounding.
 	 * @return double Rounded number.
 	 */
 	public static function round( $value, $decimals = 0 ) {
@@ -1120,7 +1121,7 @@ class EvalMath_Functions {
 			$min = $tmp;
 			unset( $tmp );
 		}
-		$number_characters = ceil( log( $max + 1 - $min, 16 ) );
+		$number_characters = (int) ceil( log( $max + 1 - $min, 16 ) );
 		$md5string = md5( self::_get_random_seed() );
 		$offset = 0;
 		do {
