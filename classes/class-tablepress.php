@@ -342,9 +342,9 @@ abstract class TablePress {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $datetime  DateTime string in mySQL format or a Unix timestamp.
-	 * @param string $type      Optional. Type of $datetime, 'mysql' or 'timestamp'.
-	 * @param string $separator Optional. Separator between date and time.
+	 * @param string|int $datetime  DateTime string in mySQL format or a Unix timestamp integer.
+	 * @param string     $type      Optional. Type of $datetime, 'mysql' or 'timestamp'.
+	 * @param string     $separator Optional. Separator between date and time.
 	 * @return string Nice looking string with the date and time.
 	 */
 	public static function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
