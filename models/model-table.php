@@ -682,7 +682,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param bool $single_value Optional. Whether to return just the number of tables from the list, or also count in the database.
-	 * @return bool int|array Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value).
+	 * @return int|array Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value).
 	 */
 	public function count_tables( $single_value = true ) {
 		$count_list = count( $this->tables->get( 'table_post' ) );
@@ -760,7 +760,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id Table ID.
-	 * @return int|bool Post ID on success, false on error.
+	 * @return int|false Post ID on success, false on error.
 	 */
 	protected function _get_post_id( $table_id ) {
 		$table_post = $this->tables->get( 'table_post' );
