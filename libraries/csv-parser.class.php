@@ -192,7 +192,7 @@ class CSV_Parser {
 		$first = null;
 		$equal = null;
 		$almost = false;
-		foreach ( $line_counts as $line => $count ) {
+		foreach ( $line_counts as $count ) {
 			if ( is_null( $first ) ) {
 				$first = $count;
 			} elseif ( $count === $first && false !== $equal ) {
