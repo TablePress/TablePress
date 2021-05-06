@@ -232,7 +232,7 @@ class TablePress_CSS {
 
 		// Start capturing the output, to later prevent it.
 		ob_start();
-		$credentials = request_filesystem_credentials( '', '', false, false, null );
+		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
 		/*
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
@@ -265,7 +265,7 @@ class TablePress_CSS {
 
 		// Start capturing the output, to get HTML of the credentials form (if needed).
 		ob_start();
-		$credentials = request_filesystem_credentials( '', '', false, false, null );
+		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
 		// Do we have credentials already? (Otherwise the form will have been rendered already.)
 		if ( false === $credentials ) {
 			$form_data = ob_get_clean();
@@ -276,7 +276,7 @@ class TablePress_CSS {
 		// We have received credentials, but don't know if they are valid yet.
 		if ( ! WP_Filesystem( $credentials ) ) {
 			// Credentials failed, so ask again (with $error flag true).
-			request_filesystem_credentials( '', '', true, false, null );
+			request_filesystem_credentials( '', '', true, '', null, false );
 			$form_data = ob_get_clean();
 			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data );
 			return $form_data;
