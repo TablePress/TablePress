@@ -282,10 +282,10 @@ class TablePress_Import {
 			}
 			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . "</strong><br /><br />JSON error: {$json_error}<br />";
 			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
-		} else {
-			// Specifically cast to an array again.
-			$json_table = (array) $json_table;
 		}
+
+		// Specifically cast to an array again.
+		$json_table = (array) $json_table;
 
 		if ( isset( $json_table['data'] ) ) {
 			// JSON data contained a full export.
@@ -375,12 +375,12 @@ class TablePress_Import {
 		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
 		$xlsx_file = SimpleXLSX::parse( $this->import_data, true );
 
-		if ( $xlsx_file ) {
-			$this->imported_table = array( 'data' => $xlsx_file->rows() );
-		} else {
+		if ( ! $xlsx_file ) {
 			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . '</strong><br /><br />' . SimpleXLSX::parseError() . '<br />';
 			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
 		}
+
+		$this->imported_table = array( 'data' => $xlsx_file->rows() );
 	}
 
 	/**

@@ -45,9 +45,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	public function ajax_action_hide_message() {
 		if ( empty( $_GET['item'] ) ) {
 			wp_die( '0' );
-		} else {
-			$message_item = $_GET['item'];
 		}
+
+		$message_item = $_GET['item'];
 
 		TablePress::check_nonce( 'hide_message', $message_item, '_wpnonce', true );
 
@@ -68,9 +68,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	public function ajax_action_save_table() {
 		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
-		} else {
-			$edit_table = wp_unslash( $_POST['tablepress'] );
 		}
+
+		$edit_table = wp_unslash( $_POST['tablepress'] );
 
 		// Check if the submitted nonce matches the generated nonce we created earlier, dies -1 on failure.
 		TablePress::check_nonce( 'edit', $edit_table['id'], '_ajax_nonce', true );
@@ -193,9 +193,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	public function ajax_action_preview_table() {
 		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
-		} else {
-			$preview_table = wp_unslash( $_POST['tablepress'] );
 		}
+
+		$preview_table = wp_unslash( $_POST['tablepress'] );
 
 		// Check if the submitted nonce matches the generated nonce we created earlier, dies -1 on failure.
 		TablePress::check_nonce( 'preview_table', $preview_table['id'], '_ajax_nonce', true );
