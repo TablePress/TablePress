@@ -976,7 +976,7 @@ jQuery( function( $ ) {
 					var expressions = value.match( /{.+?}/g );
 					if ( null === expressions ) {
 						// Fill array so that it has the same structure as if it came from match().
-						expressions = new Array( value );
+						expressions = [ value ];
 					}
 
 					// Find the replacement value (with updated cell references) for each expression and replace the old one with it.
