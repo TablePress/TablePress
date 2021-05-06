@@ -180,7 +180,7 @@ class TablePress_Evaluate {
 					$ref_col = TablePress::letter_to_number( $cell_reference[1] ) - 1;
 					$ref_row = $cell_reference[2] - 1;
 
-					if ( ! isset( $this->table_data[ $ref_row ] ) || ! isset( $this->table_data[ $ref_row ][ $ref_col ] ) ) {
+					if ( ! isset( $this->table_data[ $ref_row ][ $ref_col ] ) ) {
 						return "!ERROR! Cell {$cell_reference[0]} does not exist";
 					}
 
