@@ -53,10 +53,10 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_CSSTidy_print {
 
 	/**
-	 * CSSTidy instance.
+	 * TablePress_CSSTidy instance.
 	 *
 	 * @since 1.0.0
-	 * @var CSSTidy
+	 * @var TablePress_CSSTidy
 	 */
 	public $parser;
 
@@ -137,7 +137,7 @@ class TablePress_CSSTidy_print {
 	 *
 	 * @since 1.0
 	 *
-	 * @param CSSTidy $css Instance of the CSSTidy class.
+	 * @param TablePress_CSSTidy $css Instance of the TablePress_CSSTidy class.
 	 */
 	public function __construct( $css ) {
 		$this->parser = $css;

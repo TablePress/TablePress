@@ -389,7 +389,7 @@ class TablePress_CSSTidy {
 	 * @since 1.0.0
 	 *
 	 * @param string $setting Setting to get.
-	 * @return string|bool Value of the setting.
+	 * @return string|int|bool Value of the setting.
 	 */
 	public function get_cfg( $setting ) {
 		if ( isset( $this->settings[ $setting ] ) ) {
@@ -431,15 +431,7 @@ class TablePress_CSSTidy {
 	 * @return bool [return value]
 	 */
 	public function set_cfg( $setting, $value = null ) {
-		if ( is_array( $setting ) && is_null( $value ) ) {
-			foreach ( $setting as $setprop => $setval ) {
-				$this->settings[ $setprop ] = $setval;
-			}
-			if ( array_key_exists( 'template', $setting ) ) {
-				$this->_load_template( $this->settings['template'] );
-			}
-			return true;
-		} elseif ( isset( $this->settings[ $setting ] ) && '' !== $value ) {
+		if ( isset( $this->settings[ $setting ] ) && '' !== $value ) {
 			$this->settings[ $setting ] = $value;
 			if ( 'template' === $setting ) {
 				$this->_load_template( $this->settings['template'] );
@@ -609,7 +601,8 @@ class TablePress_CSSTidy {
 		$content = str_replace( "\r\n", "\n", $content );
 		$template = explode( '|', $content );
 
-		for ( $i = 0; $i < count( $template ); $i++ ) {
+		$template_count = count( $template );
+		for ( $i = 0; $i < $template_count; $i++ ) {
 			$this->template[ $i ] = $template[ $i ];
 		}
 	}
@@ -652,7 +645,6 @@ class TablePress_CSSTidy {
 		$old = @setlocale( LC_ALL, 0 );
 		@setlocale( LC_ALL, 'C' );
 
-		$all_properties = &$this->data['csstidy']['all_properties'];
 		$at_rules = &$this->data['csstidy']['at_rules'];
 		$quoted_string_properties = &$this->data['csstidy']['quoted_string_properties'];
 
@@ -883,7 +875,7 @@ class TablePress_CSSTidy {
 						}
 						if ( ( '}' === $string[ $i ] || ';' === $string[ $i ] || $pn ) && ! empty( $this->selector ) ) {
 							if ( '' === $this->at ) {
-								$this->at = $this->css_new_media_section( DEFAULT_AT );
+								$this->at = $this->css_new_media_section( $this->at, DEFAULT_AT );
 							}
 
 							// Case settings.
@@ -940,7 +932,8 @@ class TablePress_CSSTidy {
 							$this->invalid_at = false;
 							$this->selector = '';
 							if ( $this->next_selector_at ) {
-								$this->at = $this->css_new_media_section( $this->next_selector_at );
+								$this->at = $this->css_close_media_section( $this->at );
+								$this->at = $this->css_new_media_section( $this->at, $this->next_selector_at );
 								$this->next_selector_at = '';
 							}
 						}
@@ -1184,7 +1177,7 @@ class TablePress_CSSTidy {
 	 */
 	protected function css_check_last_media_section_or_inc( $media ) {
 		// Are we starting?
-		if ( ! $this->css || ! is_array( $this->css ) || empty( $this->css ) ) {
+		if ( empty( $this->css ) || ! is_array( $this->css ) ) {
 			return $media;
 		}
 		// If the last @media is the same as this, keep it.
@@ -1278,7 +1271,7 @@ class TablePress_CSSTidy {
 				return $selector;
 			}
 
-			if ( ! $this->css || ! isset( $this->css[ $media ] ) || ! $this->css[ $media ] ) {
+			if ( empty( $this->css ) || ! isset( $this->css[ $media ] ) || ! $this->css[ $media ] ) {
 				return $selector;
 			}
 
@@ -1312,7 +1305,7 @@ class TablePress_CSSTidy {
 		if ( $this->get_cfg( 'preserve_css' ) ) {
 			return $property;
 		}
-		if ( ! $this->css || ! isset( $this->css[ $media ][ $selector ] ) || ! $this->css[ $media ][ $selector ] ) {
+		if ( empty( $this->css ) || ! isset( $this->css[ $media ][ $selector ] ) || ! $this->css[ $media ][ $selector ] ) {
 			return $property;
 		}
 

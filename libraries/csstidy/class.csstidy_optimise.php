@@ -54,10 +54,10 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_CSSTidy_optimise {
 
 	/**
-	 * CSSTidy instance.
+	 * TablePress_CSSTidy instance.
 	 *
 	 * @since 1.0.0
-	 * @var CSSTidy
+	 * @var TablePress_CSSTidy
 	 */
 	public $parser;
 
@@ -114,7 +114,7 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param CSSTidy $css Instance of the CSSTidy class.
+	 * @param TablePress_CSSTidy $css Instance of the TablePress_CSSTidy class.
 	 */
 	public function __construct( $css ) {
 		$this->parser = $css;
@@ -385,7 +385,8 @@ class TablePress_CSSTidy_optimise {
 		if ( 0 === strncasecmp( $color, 'rgb(', 4 ) ) {
 			$color_tmp = substr( $color, 4, strlen( $color ) - 5 );
 			$color_tmp = explode( ',', $color_tmp );
-			for ( $i = 0; $i < count( $color_tmp ); $i++ ) {
+			$color_tmp_count = count( $color_tmp );
+			for ( $i = 0; $i < $color_tmp_count; $i++ ) {
 				$color_tmp[ $i ] = trim( $color_tmp[ $i ] );
 				if ( '%' === substr( $color_tmp[ $i ], -1 ) ) {
 					$color_tmp[ $i ] = round( ( 255 * $color_tmp[ $i ] ) / 100 );
@@ -473,7 +474,8 @@ class TablePress_CSSTidy_optimise {
 			$temp = array( $subvalue );
 		}
 
-		for ( $l = 0; $l < count( $temp ); $l++ ) {
+		$temp_count = count( $temp );
+		for ( $l = 0; $l < $temp_count; $l++ ) {
 			// If we are not dealing with a number at this point, do not optimize anything.
 			$number = $this->AnalyseCssNumber( $temp[ $l ] );
 			if ( false === $number ) {
@@ -510,7 +512,7 @@ class TablePress_CSSTidy_optimise {
 	 * @since 1.0.0
 	 *
 	 * @param string $string String.
-	 * @return array ('unit' if unit is found or '' if no unit exists, number value) or false if no number.
+	 * @return array|false ('unit' if unit is found or '' if no unit exists, number value) or false if no number.
 	 */
 	public function analyseCssNumber( $string ) {
 		// most simple checks first
@@ -788,7 +790,8 @@ class TablePress_CSSTidy_optimise {
 
 		$have = array();
 		$str_value = $this->explode_ws( ',', $str_value );
-		for ( $i = 0; $i < count( $str_value ); $i++ ) {
+		$str_value_count = count( $str_value );
+		for ( $i = 0; $i < $str_value_count; $i++ ) {
 			$have['clip'] = false;
 			$have['pos'] = false;
 			$have['color'] = false;
@@ -799,7 +802,8 @@ class TablePress_CSSTidy_optimise {
 			}
 			$str_value[ $i ] = $this->explode_ws( ' ', trim( $str_value[ $i ] ) );
 
-			for ( $j = 0; $j < count( $str_value[ $i ] ); $j++ ) {
+			$str_value_i_count = count( $str_value[ $i ] );
+			for ( $j = 0; $j < $str_value_i_count; $j++ ) {
 				if ( false === $have['bg'] && ( 'url(' === substr( $str_value[ $i ][ $j ], 0, 4 ) || 'none' === $str_value[ $i ][ $j ] ) ) {
 					$return['background-image'] .= $str_value[ $i ][ $j ] . ',';
 					$have['bg'] = true;
@@ -966,7 +970,8 @@ class TablePress_CSSTidy_optimise {
 
 		$str_value[0] = $this->explode_ws( ' ', trim( $str_value[0] ) );
 
-		for ( $j = 0; $j < count( $str_value[0] ); $j++ ) {
+		$str_value_0_count = count( $str_value[0] );
+		for ( $j = 0; $j < $str_value_0_count; $j++ ) {
 			if ( false === $have['weight'] && in_array( $str_value[0][ $j ], $font_weight ) ) {
 				$return['font-weight'] = $str_value[0][ $j ];
 				$have['weight'] = true;
@@ -995,7 +1000,7 @@ class TablePress_CSSTidy_optimise {
 			}
 		}
 		// Add quotes if we have several words in font-family.
-		if ( false !== $multiwords ) {
+		if ( $multiwords ) {
 			$return['font-family'] = '"' . $return['font-family'] . '"';
 		}
 		$i = 1;
@@ -1123,7 +1128,7 @@ class TablePress_CSSTidy_custom_sanitize extends TablePress_CSSTidy_optimise {
 	 * @param [type] $css [description]
 	 */
 	public function __construct( $css ) {
-		return parent::__construct( $css );
+		parent::__construct( $css );
 	}
 
 	/**
@@ -1141,7 +1146,7 @@ class TablePress_CSSTidy_custom_sanitize extends TablePress_CSSTidy_optimise {
 			$this->parser->charset = array();
 		}
 
-		return parent::postparse();
+		parent::postparse();
 	}
 
 	/**
@@ -1164,7 +1169,7 @@ class TablePress_CSSTidy_custom_sanitize extends TablePress_CSSTidy_optimise {
 			$this->sub_value = '';
 		}
 
-		return parent::subvalue();
+		parent::subvalue();
 	}
 
 	/**
