@@ -10,11 +10,11 @@
   "license": "GPL-2.0-only",
   "devDependencies": {
     "autoprefixer": "~9.8.6",
-    "grunt": "~1.3.0",
+    "grunt": "~1.4.0",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-cssmin": "~4.0.0",
     "grunt-contrib-jshint": "~3.0.0",
-    "grunt-contrib-uglify": "~5.0.0",
+    "grunt-contrib-uglify": "~5.0.1",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-jsonlint": "~2.1.2",
     "grunt-jsvalidate": "~0.2.2",
