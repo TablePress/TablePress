@@ -244,7 +244,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return array|bool Post on success, false on error.
+	 * @return WP_Post|bool Post on success, false on error.
 	 */
 	public function untrash( $post_id ) {
 		return wp_untrash_post( $post_id );
@@ -337,7 +337,7 @@ class TablePress_Post_Model extends TablePress_Model {
 
 		// WP expects a slashed value.
 		$value = wp_slash( $value );
-		return update_post_meta( $post_id, $field, $value, $prev_value );
+		return (bool) update_post_meta( $post_id, $field, $value, $prev_value );
 	}
 
 	/**
