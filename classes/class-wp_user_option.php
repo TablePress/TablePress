@@ -65,7 +65,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 
 		// WP expects a slashed value.
 		$new_value = wp_slash( $new_value );
-		return update_user_option( get_current_user_id(), $option_name, $new_value, false );
+		return (bool) update_user_option( get_current_user_id(), $option_name, $new_value, false );
 	}
 
 	/**
