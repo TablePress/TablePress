@@ -128,8 +128,8 @@ class TablePress_Options_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string|bool $name          Optional. Name of a single option to get, or false for all options.
-	 * @param mixed       $default_value Optional. Default value, if the option $name does not exist.
+	 * @param string|false $name          Optional. Name of a single option to get, or false for all options.
+	 * @param mixed        $default_value Optional. Default value, if the option $name does not exist.
 	 * @return mixed Value of the retrieved option $name, or $default_value if it does not exist, or array of all options.
 	 */
 	public function get( $name = false, $default_value = null ) {
