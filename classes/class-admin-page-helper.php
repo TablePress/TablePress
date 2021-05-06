@@ -91,7 +91,7 @@ class TablePress_Admin_Page {
 	 * @param array  $args       Arguments to be passed to the pointer JS (see wp-pointer.js).
 	 */
 	public function print_wp_pointer_js( $pointer_id, $selector, array $args ) {
-		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args ) || empty( $args['content'] ) ) {
+		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args['content'] ) ) {
 			return;
 		}
 		?>

@@ -658,7 +658,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function handle_post_action_edit() {
-		if ( empty( $_POST['table'] ) || empty( $_POST['table']['id'] ) ) {
+		if ( empty( $_POST['table']['id'] ) ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
 		}
 

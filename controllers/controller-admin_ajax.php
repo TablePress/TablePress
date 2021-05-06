@@ -66,7 +66,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_save_table() {
-		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) ) {
+		if ( empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
 		}
 
@@ -191,7 +191,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function ajax_action_preview_table() {
-		if ( empty( $_POST['tablepress'] ) || empty( $_POST['tablepress']['id'] ) ) {
+		if ( empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
 		}
 
