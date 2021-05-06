@@ -56,7 +56,7 @@ class TablePress_Import {
 	 * Imported table.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var array|false
 	 */
 	protected $imported_table = false;
 
