@@ -1033,7 +1033,7 @@ class TablePress_CSSTidy_optimise {
 		$new_font_value = '';
 		$important = '';
 		// Skip if no font-family and font-size set.
-		if ( isset( $input_css['font-family'] ) && isset( $input_css['font-size'] ) && 'inherit' !== $input_css['font-family'] ) {
+		if ( isset( $input_css['font-family'], $input_css['font-size'] ) && 'inherit' !== $input_css['font-family'] ) {
 			// Fix several words in font-family - add quotes.
 			if ( isset( $input_css['font-family'] ) ) {
 				$families = explode( ',', $input_css['font-family'] );

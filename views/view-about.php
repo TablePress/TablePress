@@ -168,7 +168,7 @@ class TablePress_About_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_debug_version_information( array $data, array $box ) {
-		$mysqli = ( isset( $GLOBALS['wpdb']->use_mysqli ) && $GLOBALS['wpdb']->use_mysqli && isset( $GLOBALS['wpdb']->dbh ) );
+		$mysqli = ( isset( $GLOBALS['wpdb']->use_mysqli, $GLOBALS['wpdb']->dbh ) && $GLOBALS['wpdb']->use_mysqli );
 		?>
 		<p>
 			<strong><?php _e( 'Please provide this information in bug reports and support requests.', 'tablepress' ); ?></strong>

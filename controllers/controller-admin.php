@@ -757,7 +757,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Perform sanity checks of posted data.
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
 		$description = ( isset( $add_table['description'] ) ) ? $add_table['description'] : '';
-		if ( ! isset( $add_table['rows'] ) || ! isset( $add_table['columns'] ) ) {
+		if ( ! isset( $add_table['rows'], $add_table['columns'] ) ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
 		}
 
@@ -1258,7 +1258,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( ! isset( $imported_table['description'] ) ) {
 					$imported_table['description'] = $description;
 				}
-				if ( isset( $imported_table['visibility']['rows'] ) && isset( $imported_table['visibility']['columns'] ) ) {
+				if ( isset( $imported_table['visibility']['rows'], $imported_table['visibility']['columns'] ) ) {
 					$existing_table['visibility']['rows'] = $imported_table['visibility']['rows'];
 					$existing_table['visibility']['columns'] = $imported_table['visibility']['columns'];
 				}
@@ -1274,7 +1274,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				// Don't change name and description when a table is replaced.
 				$imported_table['name'] = $existing_table['name'];
 				$imported_table['description'] = $existing_table['description'];
-				if ( isset( $imported_table['visibility']['rows'] ) && isset( $imported_table['visibility']['columns'] ) ) {
+				if ( isset( $imported_table['visibility']['rows'], $imported_table['visibility']['columns'] ) ) {
 					$existing_table['visibility']['rows'] = $imported_table['visibility']['rows'];
 					$existing_table['visibility']['columns'] = $imported_table['visibility']['columns'];
 				}
