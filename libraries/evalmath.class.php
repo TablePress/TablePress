@@ -136,7 +136,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 *
 	 * @param string $expression The expression that shall be evaluated.
-	 * @return string Evaluated expression.
+	 * @return string|false Evaluated expression.
 	 */
 	public function evaluate( $expression ) {
 		return $this->pfx( $this->nfx( $expression ) );
