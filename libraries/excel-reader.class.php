@@ -2368,8 +2368,8 @@ class Spreadsheet_Excel_Reader {
 			$totalseconds = floor( SPREADSHEET_EXCEL_READER_MSINADAY * $fractionalDay );
 			$secs = $totalseconds % 60;
 			$totalseconds -= $secs;
-			$hours = floor( $totalseconds / ( 60 * 60 ) );
-			$mins = floor( $totalseconds / 60 ) % 60;
+			$hours = (int) floor( $totalseconds / ( 60 * 60 ) );
+			$mins = (int) floor( $totalseconds / 60 ) % 60;
 			$string = date( $format, mktime( $hours, $mins, $secs, $dateinfo['mon'], $dateinfo['mday'], $dateinfo['year'] ) );
 		} elseif ( 'number' === $type ) {
 			$rectype = 'number';
