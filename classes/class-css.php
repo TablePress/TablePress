@@ -362,7 +362,7 @@ class TablePress_CSS {
 	public function delete_custom_css_files() {
 		// Start capturing the output, to later prevent it.
 		ob_start();
-		$credentials = request_filesystem_credentials( '', '', false, false, null );
+		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
 		/*
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
