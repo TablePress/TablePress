@@ -338,8 +338,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling.
 		set_current_screen( "tablepress_{$action}" );
-		// Set the $typenow global to the current CPT ourselves, as WP_Screen::get() does not determine the CPT correctly.
-		// This is necessary as the WP Admin Menu can otherwise highlight wrong entries, see https://github.com/TobiasBg/TablePress/issues/24.
+		/*
+		 * Set the `$typenow` global to the current CPT ourselves, as `WP_Screen::get()` does not determine the CPT correctly.
+		 * This is necessary as the WP Admin Menu can otherwise highlight wrong entries, see https://github.com/TobiasBg/TablePress/issues/24.
+		 */
 		if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
 			$GLOBALS['typenow'] = $_GET['post_type'];
 		}
@@ -369,8 +371,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['zip_support_available'] = $exporter->zip_support_available;
 				break;
 			case 'options':
-				// Maybe try saving "Custom CSS" to a file:
-				// (called here, as the credentials form posts to this handler again, due to how request_filesystem_credentials() works)
+				/*
+				 * Maybe try saving "Custom CSS" to a file:
+				 * (called here, as the credentials form posts to this handler again, due to how `request_filesystem_credentials()` works)
+				 */
 				if ( isset( $_GET['item'] ) && 'save_custom_css' === $_GET['item'] ) {
 					TablePress::check_nonce( 'options', $_GET['item'] ); // Nonce check here, as we don't have an explicit handler, and even viewing the screen needs to be checked.
 					$action = 'options_custom_css'; // to load a different view
