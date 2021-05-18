@@ -79,11 +79,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @return bool|int False to not save the changed setting, or the int value to be saved.
 	 */
 	public function save_list_tables_screen_option( $false, $option, $value ) {
-		if ( 'tablepress_list_per_page' === $option ) {
-			return $value;
-		} else {
-			return $false;
-		}
+		return ( 'tablepress_list_per_page' === $option ) ? $value : $false;
 	}
 
 	/**
@@ -296,6 +292,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 		return $links;
 	}
+
 	/**
 	 * Add links to the TablePress entry in the "Description" column on the Plugins page.
 	 *
