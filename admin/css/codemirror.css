@@ -30,7 +30,7 @@
 	touch-action: none;
 }
 .ui-resizable-s {
-	cursor: s-resize;
+	cursor: row-resize;
 	height: 10px;
 	width: 100%;
 	bottom: -5px;
