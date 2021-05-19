@@ -586,7 +586,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			return;
 		}
 
-		$name_id = "bulk-action-{$which}";
+		$name_id = "bulk-action-selector-{$which}";
 		echo "<label for='{$name_id}' class='screen-reader-text'>" . __( 'Select Bulk Action', 'tablepress' ) . "</label>\n";
 		echo "<select name='{$name_id}' id='{$name_id}'>\n";
 		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'tablepress' ) . "</option>\n";

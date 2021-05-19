@@ -572,10 +572,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_list() {
 		TablePress::check_nonce( 'list' );
 
-		if ( isset( $_POST['bulk-action-top'] ) && '-1' !== $_POST['bulk-action-top'] ) {
-			$bulk_action = $_POST['bulk-action-top'];
-		} elseif ( isset( $_POST['bulk-action-bottom'] ) && '-1' !== $_POST['bulk-action-bottom'] ) {
-			$bulk_action = $_POST['bulk-action-bottom'];
+		if ( isset( $_POST['bulk-action-selector-top'] ) && '-1' !== $_POST['bulk-action-selector-top'] ) {
+			$bulk_action = $_POST['bulk-action-selector-top'];
+		} elseif ( isset( $_POST['bulk-action-selector-bottom'] ) && '-1' !== $_POST['bulk-action-selector-bottom'] ) {
+			$bulk_action = $_POST['bulk-action-selector-bottom'];
 		} else {
 			$bulk_action = false;
 		}
