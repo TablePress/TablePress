@@ -441,7 +441,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['import_type'] = ( ! empty( $_GET['import_type'] ) ) ? $_GET['import_type'] : 'add';
 				$data['import_existing_table'] = ( ! empty( $_GET['import_existing_table'] ) ) ? $_GET['import_existing_table'] : false;
 				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
-				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? wp_unslash( $_GET['import_url'] ) : 'http://';
+				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? wp_unslash( $_GET['import_url'] ) : 'https://';
 				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? wp_unslash( $_GET['import_server'] ) : ABSPATH;
 				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? wp_unslash( $_GET['import_form_field'] ) : '';
 				break;
@@ -1047,13 +1047,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				}
 				break;
 			case 'url':
-				if ( ! empty( $import['url'] ) && 'http://' !== $import['url'] ) {
+				if ( ! empty( $import['url'] ) && 'https://' !== $import['url'] ) {
 					// Check the host of the Import URL against a blacklist of hosts, which should not be accessible, e.g. for security considerations.
 					$host = wp_parse_url( $import['url'], PHP_URL_HOST );
 					$blocked_hosts = array(
 						'169.254.169.254' // AWS Meta-data API
 					);
-					if ( in_array( $host, $blocked_hosts, true ) ) {
+					if ( empty( $host ) || in_array( $host, $blocked_hosts, true ) ) {
 						$import_error = true;
 						break;
 					}
@@ -1064,7 +1064,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					if ( ! is_wp_error( $import_data['file_location'] ) ) {
 						$import_error = false;
 					}
-					$unlink_file = true;
 				}
 				break;
 			case 'server':
