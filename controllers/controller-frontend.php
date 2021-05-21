@@ -399,13 +399,22 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// Echo DataTables strings and JS calls.
 		$script_type_attr = current_theme_supports( 'html5', 'script' ) ? '' : ' type="text/javascript"';
-		echo <<<JS
+		$js_wrapper = <<<JS
 <script{$script_type_attr}>
 jQuery(function($){
-{$datatables_strings}{$commands}
+%s
 });
 </script>
 JS;
+		/**
+		 * Filter the script/jQuery wrapper code for the DataTables commands calls.
+		 *
+		 * @since 1.14.0
+		 *
+		 * @param string $js_wrapper Default script/jQuery wrapper code for the DataTables commands calls.
+		 */
+		$js_wrapper = apply_filters( 'tablepress_all_datatables_commands_wrapper', $js_wrapper );
+		printf(	$js_wrapper, $datatables_strings . $commands );
 	}
 
 	/**
