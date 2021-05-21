@@ -398,8 +398,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		}
 
 		// Echo DataTables strings and JS calls.
+		$script_type_attr = current_theme_supports( 'html5', 'script' ) ? '' : ' type="text/javascript"';
 		echo <<<JS
-<script type="text/javascript">
+<script{$script_type_attr}>
 jQuery(function($){
 {$datatables_strings}{$commands}
 });
