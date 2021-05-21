@@ -1063,6 +1063,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$import_data['file_name'] = $import['url'];
 					if ( ! is_wp_error( $import_data['file_location'] ) ) {
 						$import_error = false;
+						$unlink_file = true;
 					}
 				}
 				break;
