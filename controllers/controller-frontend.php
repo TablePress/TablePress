@@ -414,7 +414,7 @@ JS;
 		 * @param string $js_wrapper Default script/jQuery wrapper code for the DataTables commands calls.
 		 */
 		$js_wrapper = apply_filters( 'tablepress_all_datatables_commands_wrapper', $js_wrapper );
-		printf(	$js_wrapper, $datatables_strings, $commands, $script_type_attr );
+		printf( $js_wrapper, $datatables_strings, $commands, $script_type_attr );
 	}
 
 	/**
