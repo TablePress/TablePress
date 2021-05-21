@@ -348,7 +348,7 @@ class TablePress_CSSTidy_print {
 					}
 					if ( $indent_level > 1 ) {
 						$out = &$in_at_out[ $indent_level - 1 ];
-					}else {
+					} else {
 						$out = &$output;
 					}
 					$out .= $template[10] . $in_at_out[$indent_level];

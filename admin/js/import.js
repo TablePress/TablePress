@@ -96,7 +96,7 @@ jQuery( function( $ ) {
 			valid_form = true,
 			import_type = $( '#row-import-type' ).find( 'input:checked' ).val();
 
-		// Te value of the selected import source field must be set/changed from the default.
+		// The value of the selected import source field must be set/changed from the default.
 		if ( selected_import_source_field.defaultValue === selected_import_source_field.value ) {
 			$( selected_import_source_field )
 				.addClass( 'invalid' )
