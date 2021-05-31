@@ -760,7 +760,7 @@ class TablePress_CSSTidy_optimise {
 	 * @return array Array.
 	 */
 	public function dissolve_short_bg( $str_value ) {
-		// Don't try to explose background gradient!
+		// Don't try to explode background gradient!
 		if ( false !== stripos( $str_value, 'gradient(' ) ) {
 			return array( 'background' => $str_value );
 		}
