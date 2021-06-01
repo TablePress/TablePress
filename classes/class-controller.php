@@ -99,7 +99,7 @@ abstract class TablePress_Controller {
 			if ( 0 === TablePress::$model_options->get( 'first_activation' ) ) {
 				// Save initial set of plugin options, and time of first activation of the plugin, on first activation.
 				TablePress::$model_options->update( array(
-					'first_activation'          => current_time( 'timestamp' ),
+					'first_activation'          => time(),
 					'plugin_options_db_version' => TablePress::db_version,
 				) );
 			} else {

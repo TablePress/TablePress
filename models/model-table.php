@@ -872,8 +872,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			'name'          => '',
 			'description'   => '',
 			'data'          => array( array( '' ) ), // one empty cell
-			// 'created' => current_time( 'mysql' ),
-			'last_modified' => current_time( 'mysql' ),
+			// 'created' => wp_date( 'Y-m-d H:i:s' ),
+			'last_modified' => wp_date( 'Y-m-d H:i:s' ),
 			'author'        => get_current_user_id(),
 			'options'       => array(
 				'last_editor'                 => get_current_user_id(),
@@ -980,8 +980,8 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table['description'] = $new_table['description'];
 		$table['data'] = $new_table['data'];
 		// $table['author'] = get_current_user_id(); // We don't want this, as it would override the original author.
-		// $table['created'] = current_time( 'mysql' ); // We don't want this, as it would override the original datetime.
-		$table['last_modified'] = current_time( 'mysql' );
+		// $table['created'] = wp_date( 'Y-m-d H:i:s' ); // We don't want this, as it would override the original datetime.
+		$table['last_modified'] = wp_date( 'Y-m-d H:i:s' );
 		$table['options']['last_editor'] = get_current_user_id();
 		// Table Options.
 		if ( isset( $new_table['options'] ) ) { // is for example not set for newly added tables

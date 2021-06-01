@@ -943,7 +943,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			@set_time_limit( 300 );
 
 			$zip_file = new ZipArchive();
-			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', date_i18n( 'Y-m-d-H-i-s' ), $export['format'] );
+			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', wp_date( 'Y-m-d-H-i-s' ), $export['format'] );
 			$download_filename = sanitize_file_name( $download_filename );
 			$full_filename = wp_tempnam( $download_filename );
 			if ( true !== $zip_file->open( $full_filename, ZIPARCHIVE::OVERWRITE ) ) {

@@ -342,18 +342,16 @@ abstract class TablePress {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string|int $datetime  DateTime string in mySQL format or a Unix timestamp integer.
-	 * @param string     $type      Optional. Type of $datetime, 'mysql' or 'timestamp'.
-	 * @param string     $separator Optional. Separator between date and time.
+	 * @param string $datetime  DateTime string, often in mySQL format..
+	 * @param string $separator Optional. Separator between date and time.
 	 * @return string Nice looking string with the date and time.
 	 */
-	public static function format_datetime( $datetime, $type = 'mysql', $separator = ' ' ) {
-		// @TODO: Maybe change from using the stored WP Options to translated date/time schemes, like in https://core.trac.wordpress.org/changeset/35811.
-		if ( 'mysql' === $type ) {
-			return mysql2date( get_option( 'date_format' ), $datetime ) . $separator . mysql2date( get_option( 'time_format' ), $datetime );
-		} else {
-			return date_i18n( get_option( 'date_format' ), $datetime ) . $separator . date_i18n( get_option( 'time_format' ), $datetime );
-		}
+	public static function format_datetime( $datetime, $separator = ' ' ) {
+		$timezone = wp_timezone();
+		$datetime = date_create( $datetime, $timezone );
+		$date = wp_date( get_option( 'date_format' ), $datetime->getTimestamp(), $timezone );
+		$time = wp_date( get_option( 'time_format' ), $datetime->getTimestamp(), $timezone );
+		return "{$date}{$separator}{$time}";
 	}
 
 	/**

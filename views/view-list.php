@@ -504,17 +504,17 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell.
 	 */
 	protected function column_table_last_modified( array $item ) {
-		$modified_timestamp = strtotime( $item['last_modified'] );
-		$current_timestamp = current_time( 'timestamp' );
+		$modified_timestamp = date_create( $item['last_modified'], wp_timezone() );
+		$modified_timestamp = $modified_timestamp->getTimestamp();
+		$current_timestamp = time();
 		$time_diff = $current_timestamp - $modified_timestamp;
-		// Time difference is only shown up to one day.
-		if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) {
-			$time_diff = sprintf( __( '%s ago', 'tablepress' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
+		// Time difference is only shown up to one week.
+		if ( $time_diff >= 0 && $time_diff < WEEK_IN_SECONDS ) {
+			$time_diff = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 		} else {
-			$time_diff = TablePress::format_datetime( $item['last_modified'], 'mysql', '<br />' );
+			$time_diff = TablePress::format_datetime( $table['last_modified'], '<br />' );
 		}
-
-		$readable_time = TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' );
+		$readable_time = TablePress::format_datetime( $item['last_modified'] );
 		return '<abbr title="' . esc_attr( $readable_time ) . '">' . $time_diff . '</abbr>';
 	}
 
@@ -684,7 +684,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		|| false !== stripos( $item['description'], $term )
 		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::get_user_display_name( $item['options']['last_editor'] ), $term )
-		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
+		|| false !== stripos( TablePress::format_datetime( $item['last_modified'] ), $term )
 		|| false !== stripos( wp_json_encode( $item['data'], TABLEPRESS_JSON_OPTIONS ), $json_encoded_term ) ) {
 			return true;
 		}

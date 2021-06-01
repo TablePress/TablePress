@@ -742,30 +742,33 @@ JS;
 			case 'last_modified':
 				switch ( $format ) {
 					case 'raw':
+					case 'mysql':
 						$output = $table['last_modified'];
 						break;
 					case 'human':
-						$modified_timestamp = strtotime( $table['last_modified'] );
-						$current_timestamp = current_time( 'timestamp' );
+						$modified_timestamp = date_create( $table['last_modified'], wp_timezone() );
+						$modified_timestamp = $modified_timestamp->getTimestamp();
+						$current_timestamp = time();
 						$time_diff = $current_timestamp - $modified_timestamp;
-						// Time difference is only shown up to one day.
-						if ( $time_diff >= 0 && $time_diff < DAY_IN_SECONDS ) {
+						// Time difference is only shown up to one week.
+						if ( $time_diff >= 0 && $time_diff < WEEK_IN_SECONDS ) {
 							$output = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 						} else {
-							$output = TablePress::format_datetime( $table['last_modified'], 'mysql', '<br />' );
+							$output = TablePress::format_datetime( $table['last_modified'], '<br />' );
 						}
 						break;
 					case 'date':
-						$modified_timestamp = strtotime( $table['last_modified'] );
-						$output = date_i18n( get_option( 'date_format' ), $modified_timestamp );
+						$timezone = wp_timezone();
+ 						$datetime = date_create( $table['last_modified'], $timezone );
+ 						$output = wp_date( get_option( 'date_format' ), $datetime->getTimestamp(), $timezone );
 						break;
 					case 'time':
-						$modified_timestamp = strtotime( $table['last_modified'] );
-						$output = date_i18n( get_option( 'time_format' ), $modified_timestamp );
+						$timezone = wp_timezone();
+ 						$datetime = date_create( $table['last_modified'], $timezone );
+ 						$output = wp_date( get_option( 'time_format' ), $datetime->getTimestamp(), $timezone );
 						break;
-					case 'mysql':
 					default:
-						$output = TablePress::format_datetime( $table['last_modified'], 'mysql', ' ' );
+						$output = TablePress::format_datetime( $table['last_modified'] );
 						break;
 				}
 				break;
