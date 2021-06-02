@@ -758,14 +758,10 @@ JS;
 						}
 						break;
 					case 'date':
-						$timezone = wp_timezone();
- 						$datetime = date_create( $table['last_modified'], $timezone );
- 						$output = wp_date( get_option( 'date_format' ), $datetime->getTimestamp(), $timezone );
+						$output = TablePress::format_datetime( $table['last_modified'], get_option( 'date_format' ) );
 						break;
 					case 'time':
-						$timezone = wp_timezone();
- 						$datetime = date_create( $table['last_modified'], $timezone );
- 						$output = wp_date( get_option( 'time_format' ), $datetime->getTimestamp(), $timezone );
+						$output = TablePress::format_datetime( $table['last_modified'], get_option( 'time_format' ) );
 						break;
 					default:
 						$output = TablePress::format_datetime( $table['last_modified'] );

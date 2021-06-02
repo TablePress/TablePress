@@ -342,16 +342,28 @@ abstract class TablePress {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $datetime  DateTime string, often in mySQL format..
-	 * @param string $separator Optional. Separator between date and time.
+	 * @param string $datetime_string     DateTime string, often in mySQL format..
+	 * @param string $separator_or_format Optional. Separator between date and time, or format string.
 	 * @return string Nice looking string with the date and time.
 	 */
-	public static function format_datetime( $datetime, $separator = ' ' ) {
+	public static function format_datetime( $datetime_string, $separator_or_format = ' ' ) {
 		$timezone = wp_timezone();
-		$datetime = date_create( $datetime, $timezone );
-		$date = wp_date( get_option( 'date_format' ), $datetime->getTimestamp(), $timezone );
-		$time = wp_date( get_option( 'time_format' ), $datetime->getTimestamp(), $timezone );
-		return "{$date}{$separator}{$time}";
+		$datetime = date_create( $datetime_string, $timezone );
+		$timestamp = $datetime->getTimestamp();
+
+		switch ( $separator_or_format ) {
+			case ' ':
+			case '<br />':
+				$date = wp_date( get_option( 'date_format' ), $timestamp, $timezone );
+				$time = wp_date( get_option( 'time_format' ), $timestamp, $timezone );
+				$output = "{$date}{$separator_or_format}{$time}";
+				break;
+			default:
+				$output = wp_date( $separator_or_format, $timestamp, $timezone );
+				break;
+		}
+
+		return $output;
 	}
 
 	/**
