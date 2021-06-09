@@ -158,7 +158,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 *
 	 * @param string $expression The expression that shall be evaluated.
-	 * @return string|false Evaluated expression.
+	 * @return string|false Evaluated expression or false on error.
 	 */
 	public function evaluate( $expression ) {
 		return $this->pfx( $this->nfx( $expression ) );
@@ -272,7 +272,7 @@ class EvalMath {
 	protected function nfx( $expression ) {
 		$index = 0;
 		$stack = new EvalMath_Stack;
-		$output = array(); // postfix form of expression, to be passed to pfx()
+		$output = array(); // postfix form of expression, to be passed to pfx().
 		$expression = trim( strtolower( $expression ) );
 
 		$ops   = array( '+', '-', '*', '/', '^', '_', '>', '<', '=' );

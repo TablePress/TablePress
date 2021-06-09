@@ -202,7 +202,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return WP_Post|bool Post on success, false on error.
+	 * @return WP_Post|false Post on success, false on error.
 	 */
 	public function get( $post_id ) {
 		$post = get_post( $post_id );
@@ -218,7 +218,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return mixed|bool Post on success, false on error.
+	 * @return WP_Post|false|null Post data on success, false or null on failure.
 	 */
 	public function delete( $post_id ) {
 		return wp_delete_post( $post_id, true ); // true means force delete, although for CPTs this is automatic in this function
@@ -231,7 +231,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return mixed|bool Post on success, false on error.
+	 * @return WP_Post|false|null Post data on success, false or null on failure.
 	 */
 	public function trash( $post_id ) {
 		return wp_trash_post( $post_id );
@@ -244,7 +244,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return WP_Post|bool Post on success, false on error.
+	 * @return WP_Post|false Post on success, false on error.
 	 */
 	public function untrash( $post_id ) {
 		return wp_untrash_post( $post_id );

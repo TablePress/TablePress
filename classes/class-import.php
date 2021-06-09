@@ -93,7 +93,7 @@ class TablePress_Import {
 	 *
 	 * @param string $format Import format.
 	 * @param string $data   Data to import.
-	 * @return bool|array False on error, table array on success.
+	 * @return array|false Table array on success, false on error.
 	 */
 	public function import_table( $format, $data ) {
 		$this->import_data = apply_filters( 'tablepress_import_table_data', $data, $format );

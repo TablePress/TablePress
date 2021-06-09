@@ -170,7 +170,7 @@ class TablePress_CSS {
 	 * @since 1.0.0
 	 *
 	 * @param string $type Optional. Whether to load "normal" version or "minified" version. Default "normal".
-	 * @return string|bool Custom CSS on success, false on error.
+	 * @return string|false Custom CSS on success, false on error.
 	 */
 	public function load_custom_css_from_file( $type = 'normal' ) {
 		$filename = $this->get_custom_css_location( $type, 'path' );
@@ -192,7 +192,7 @@ class TablePress_CSS {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @return string|bool TablePress Default CSS on success, false on error.
+	 * @return string|false TablePress Default CSS on success, false on error.
 	 */
 	public function load_default_css_from_file() {
 		$filename = TABLEPRESS_ABSPATH . 'css/default.min.css';
