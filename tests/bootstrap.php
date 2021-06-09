@@ -38,32 +38,5 @@ require $wp_tests_dir . 'includes/bootstrap.php';
  * @since 1.1.0
  */
 class TablePress_TestCase extends WP_UnitTestCase {
-
-	/**
-	 * Set variables for a faked HTTP POST request.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param string $key   Name of the POST variable.
-	 * @param string $value Value of the POST variable.
-	 */
-	public function set_post( $key, $value ) {
-		// Add slashing as expected by the PHP setting.
-		if ( get_magic_quotes_gpc() ) {
-			$value = addslashes( $value );
-		}
-		$_POST[ $key ] = $_REQUEST[ $key ] = $value;
-	}
-
-	/**
-	 * Unset variables from a faked HTTP POST request.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param string $key Name of the POST variable.
-	 */
-	public function unset_post( $key ) {
-		unset( $_POST[ $key ], $_REQUEST[ $key ] );
-	}
-
+	// Intentionally left blank.
 } // class TablePress_TestCase
