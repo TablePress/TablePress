@@ -103,48 +103,50 @@ class TablePress_Edit_View extends TablePress_View {
 				'cells_auto_grow'       => apply_filters( 'tablepress_edit_cells_auto_grow', true ),
 				'shortcode'             => esc_js( TablePress::$shortcode ),
 			),
-			'strings' => array_merge( array(
-				'no_remove_all_rows'             => __( 'You can not delete all table rows!', 'tablepress' ),
-				'no_remove_all_columns'          => __( 'You can not delete all table columns!', 'tablepress' ),
-				'no_rows_selected'               => __( 'You did not select any rows!', 'tablepress' ),
-				'no_columns_selected'            => __( 'You did not select any columns!', 'tablepress' ),
-				'append_num_rows_invalid'        => __( 'The value for the number of rows is invalid!', 'tablepress' ),
-				'append_num_columns_invalid'     => __( 'The value for the number of columns is invalid!', 'tablepress' ),
-				'ays_remove_rows_singular'       => _n( 'Do you really want to delete the selected row?', 'Do you really want to delete the selected rows?', 1, 'tablepress' ),
-				'ays_remove_rows_plural'         => _n( 'Do you really want to delete the selected row?', 'Do you really want to delete the selected rows?', 2, 'tablepress' ),
-				'ays_remove_columns_singular'    => _n( 'Do you really want to delete the selected column?', 'Do you really want to delete the selected columns?', 1, 'tablepress' ),
-				'ays_remove_columns_plural'      => _n( 'Do you really want to delete the selected column?', 'Do you really want to delete the selected columns?', 2, 'tablepress' ),
-				'advanced_editor_open'           => __( 'Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;.', 'tablepress' ),
-				'rowspan_add'                    => __( 'To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have.', 'tablepress' ),
-				'colspan_add'                    => __( 'To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have.', 'tablepress' ),
-				'span_add_datatables_warning'    => __( 'Attention: You have enabled the usage of the DataTables JavaScript library for features like sorting, search, or pagination.', 'tablepress' ) . "\n" .
-								__( 'Unfortunately, these can not be used in tables with combined cells.', 'tablepress' ) . "\n" .
-								__( 'Do you want to proceed and automatically turn off the usage of DataTables for this table?', 'tablepress' ),
-				'link_add'                       => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ) . "\n" .
-								__( 'You can then enter the Link URL and Text or choose an existing page or post.', 'tablepress' ),
-				'image_add'                      => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
-								__( 'The Media Library will open, where you can select or upload the desired image or enter the image URL.', 'tablepress' ) . "\n" .
-								sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Table', 'tablepress' ) ),
-				'unsaved_changes_unload'         => __( 'The changes to this table were not saved yet and will be lost if you navigate away from this page.', 'tablepress' ),
-				'preparing_preview'              => __( 'The Table Preview is being loaded...', 'tablepress' ),
-				'preview_error'                  => __( 'The Table Preview could not be loaded.', 'tablepress' ),
-				'save_changes_success'           => __( 'Saving successful', 'tablepress' ),
-				'save_changes_error'             => __( 'Saving failed', 'tablepress' ),
-				'saving_changes'                 => __( 'Changes are being saved...', 'tablepress' ),
-				'table_id_not_empty'             => __( 'The Table ID field can not be empty. Please enter a Table ID!', 'tablepress' ),
-				'table_id_not_zero'              => __( 'The Table ID &#8220;0&#8221; is not supported. Please enter a different Table ID!', 'tablepress' ),
-				'ays_change_table_id'            => __( 'Do you really want to change the Table ID? All Shortcodes for this table in your pages and posts will have to be adjusted!', 'tablepress' ),
-				'extra_css_classes_invalid'      => __( 'The entered value in the field &#8220;Extra CSS classes&#8221; is invalid.', 'tablepress' ),
-				'num_pagination_entries_invalid' => __( 'The entered value in the field &#8220;Pagination Entries&#8221; is not a number.', 'tablepress' ),
-				'sort_asc'                       => __( 'Sort ascending', 'tablepress' ),
-				'sort_desc'                      => __( 'Sort descending', 'tablepress' ),
-				'no_rowspan_first_row'           => __( 'You can not add rowspan to the first row!', 'tablepress' ),
-				'no_colspan_first_col'           => __( 'You can not add colspan to the first column!', 'tablepress' ),
-				'no_rowspan_table_head'          => __( 'You can not connect cells into the table head row!', 'tablepress' ),
-				'no_rowspan_table_foot'          => __( 'You can not connect cells out of the table foot row!', 'tablepress' ),
+			'strings' => array_merge(
+				array(
+					'no_remove_all_rows'             => __( 'You can not delete all table rows!', 'tablepress' ),
+					'no_remove_all_columns'          => __( 'You can not delete all table columns!', 'tablepress' ),
+					'no_rows_selected'               => __( 'You did not select any rows!', 'tablepress' ),
+					'no_columns_selected'            => __( 'You did not select any columns!', 'tablepress' ),
+					'append_num_rows_invalid'        => __( 'The value for the number of rows is invalid!', 'tablepress' ),
+					'append_num_columns_invalid'     => __( 'The value for the number of columns is invalid!', 'tablepress' ),
+					'ays_remove_rows_singular'       => _n( 'Do you really want to delete the selected row?', 'Do you really want to delete the selected rows?', 1, 'tablepress' ),
+					'ays_remove_rows_plural'         => _n( 'Do you really want to delete the selected row?', 'Do you really want to delete the selected rows?', 2, 'tablepress' ),
+					'ays_remove_columns_singular'    => _n( 'Do you really want to delete the selected column?', 'Do you really want to delete the selected columns?', 1, 'tablepress' ),
+					'ays_remove_columns_plural'      => _n( 'Do you really want to delete the selected column?', 'Do you really want to delete the selected columns?', 2, 'tablepress' ),
+					'advanced_editor_open'           => __( 'Please click into the cell that you want to edit using the &#8220;Advanced Editor&#8221;.', 'tablepress' ),
+					'rowspan_add'                    => __( 'To combine cells within a column, click into the cell below the cell that has the content the combined cells shall have.', 'tablepress' ),
+					'colspan_add'                    => __( 'To combine cells within a row, click into the cell to the right of the cell that has the content the combined cells shall have.', 'tablepress' ),
+					'span_add_datatables_warning'    => __( 'Attention: You have enabled the usage of the DataTables JavaScript library for features like sorting, search, or pagination.', 'tablepress' ) . "\n" .
+									__( 'Unfortunately, these can not be used in tables with combined cells.', 'tablepress' ) . "\n" .
+									__( 'Do you want to proceed and automatically turn off the usage of DataTables for this table?', 'tablepress' ),
+					'link_add'                       => __( 'Please click into the cell that you want to add a link to.', 'tablepress' ) . "\n" .
+									__( 'You can then enter the Link URL and Text or choose an existing page or post.', 'tablepress' ),
+					'image_add'                      => __( 'Please click into the cell that you want to add an image to.', 'tablepress' ) . "\n" .
+									__( 'The Media Library will open, where you can select or upload the desired image or enter the image URL.', 'tablepress' ) . "\n" .
+									sprintf( __( 'Click the &#8220;%s&#8221; button to insert the image.', 'tablepress' ), __( 'Insert into Table', 'tablepress' ) ),
+					'unsaved_changes_unload'         => __( 'The changes to this table were not saved yet and will be lost if you navigate away from this page.', 'tablepress' ),
+					'preparing_preview'              => __( 'The Table Preview is being loaded...', 'tablepress' ),
+					'preview_error'                  => __( 'The Table Preview could not be loaded.', 'tablepress' ),
+					'save_changes_success'           => __( 'Saving successful', 'tablepress' ),
+					'save_changes_error'             => __( 'Saving failed', 'tablepress' ),
+					'saving_changes'                 => __( 'Changes are being saved...', 'tablepress' ),
+					'table_id_not_empty'             => __( 'The Table ID field can not be empty. Please enter a Table ID!', 'tablepress' ),
+					'table_id_not_zero'              => __( 'The Table ID &#8220;0&#8221; is not supported. Please enter a different Table ID!', 'tablepress' ),
+					'ays_change_table_id'            => __( 'Do you really want to change the Table ID? All Shortcodes for this table in your pages and posts will have to be adjusted!', 'tablepress' ),
+					'extra_css_classes_invalid'      => __( 'The entered value in the field &#8220;Extra CSS classes&#8221; is invalid.', 'tablepress' ),
+					'num_pagination_entries_invalid' => __( 'The entered value in the field &#8220;Pagination Entries&#8221; is not a number.', 'tablepress' ),
+					'sort_asc'                       => __( 'Sort ascending', 'tablepress' ),
+					'sort_desc'                      => __( 'Sort descending', 'tablepress' ),
+					'no_rowspan_first_row'           => __( 'You can not add rowspan to the first row!', 'tablepress' ),
+					'no_colspan_first_col'           => __( 'You can not add colspan to the first column!', 'tablepress' ),
+					'no_rowspan_table_head'          => __( 'You can not connect cells into the table head row!', 'tablepress' ),
+					'no_rowspan_table_foot'          => __( 'You can not connect cells out of the table foot row!', 'tablepress' ),
+				),
+				// Merge this to have messages available for AJAX after save dialog.
+				$action_messages
 			),
-			// Merge this to have messages available for AJAX after save dialog.
-			$action_messages )
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
