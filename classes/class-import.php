@@ -98,7 +98,7 @@ class TablePress_Import {
 	public function import_table( $format, $data ) {
 		$this->import_data = apply_filters( 'tablepress_import_table_data', $data, $format );
 
-		if ( ! in_array( $format, array( 'xlsx', 'xls' ) ) ) {
+		if ( ! in_array( $format, array( 'xlsx', 'xls' ), true ) ) {
 			$this->fix_table_encoding();
 		}
 
