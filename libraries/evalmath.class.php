@@ -255,10 +255,8 @@ class EvalMath {
 		$expression = trim( strtolower( $expression ) );
 
 		$ops   = array( '+', '-', '*', '/', '^', '_', '>', '<', '=' );
-		// Right-associative operator?
-		$ops_r = array( '+' => 0, '-' => 0, '*' => 0, '/' => 0, '^' => 1, '>' => 0, '<' => 0, '=' => 0 );
-		// Operator precedence.
-		$ops_p = array( '+' => 0, '-' => 0, '*' => 1, '/' => 1, '_' => 1, '^' => 2, '>' => 0, '<' => 0, '=' => 0 );
+		$ops_r = array( '+' => 0, '-' => 0, '*' => 0, '/' => 0, '^' => 1, '>' => 0, '<' => 0, '=' => 0 ); // Right-associative operator?
+		$ops_p = array( '+' => 0, '-' => 0, '*' => 1, '/' => 1, '_' => 1, '^' => 2, '>' => 0, '<' => 0, '=' => 0 ); // Operator precedence.
 
 		// We use this in syntax-checking the expression and determining when a - (minus) is a negation.
 		$expecting_operator = false;

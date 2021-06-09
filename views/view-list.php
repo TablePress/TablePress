@@ -376,7 +376,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_cb( /* array */ $item ) { // No `array` type hint to prevent a Strict Standards notice, as the method is inherited.
+	protected function column_cb( /* array */ $item ) {
+		// Don't use `array` type hint in method declaration to prevent a Strict Standards notice, as the method is inherited.
 		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $item['id'] );
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $item['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $item['id'] );
@@ -526,7 +527,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array  $item        Data item for the current row.
 	 * @param string $column_name Current column name.
 	 */
-	protected function column_default( /* array */ $item, $column_name ) { // No `array` type hint to prevent a Strict Standards notice, as the method is inherited.
+	protected function column_default( /* array */ $item, $column_name ) {
+		// Don't use `array` type hint in method declaration to prevent a Strict Standards notice, as the method is inherited.
 		/**
 		 * Fires inside each custom column of the TablePress list table.
 		 *
