@@ -513,7 +513,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( $time_diff >= 0 && $time_diff < WEEK_IN_SECONDS ) {
 			$time_diff = sprintf( __( '%s ago', 'default' ), human_time_diff( $modified_timestamp, $current_timestamp ) );
 		} else {
-			$time_diff = TablePress::format_datetime( $table['last_modified'], '<br />' );
+			$time_diff = TablePress::format_datetime( $item['last_modified'], '<br />' );
 		}
 		$readable_time = TablePress::format_datetime( $item['last_modified'] );
 		return '<abbr title="' . esc_attr( $readable_time ) . '">' . $time_diff . '</abbr>';
