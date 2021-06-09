@@ -920,7 +920,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_table_corrupted', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
 			}
-			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], wp_date( 'Y-m-d' ), $export['format'] );
 			$download_filename = sanitize_file_name( $download_filename );
 			// Export the table.
 			$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
@@ -969,7 +969,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 				/** This filter is documented in controllers/controller-admin.php */
 				$export_data = apply_filters( 'tablepress_export_data', $export_data, $table, $export['format'], $export['csv_delimiter'] );
-				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], wp_date( 'Y-m-d' ), $export['format'] );
 				$export_filename = sanitize_file_name( $export_filename );
 				$zip_file->addFromString( $export_filename, $export_data );
 			}
