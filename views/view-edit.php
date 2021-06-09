@@ -208,7 +208,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_table_information( array $data, array $box ) {
-?>
+		?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr class="bottom-border">
@@ -234,7 +234,7 @@ class TablePress_Edit_View extends TablePress_View {
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 	/**
@@ -272,84 +272,84 @@ class TablePress_Edit_View extends TablePress_View {
 				}
 			}
 		}
-?>
+		?>
 <table id="edit-form" class="tablepress-edit-screen-id-<?php echo esc_attr( $data['table']['id'] ); ?>">
 	<thead>
 		<tr id="edit-form-head">
 			<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Row Number', 'tablepress' ); ?></span></th>
 			<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Bulk action selectors for rows', 'tablepress' ); ?></span></th>
-<?php
-	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-		$column_class = '';
-		if ( 0 === $visibility['columns'][ $col_idx ] ) {
-			$column_class = ' column-hidden';
+		<?php
+		for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
+			$column_class = '';
+			if ( 0 === $visibility['columns'][ $col_idx ] ) {
+				$column_class = ' column-hidden';
+			}
+			$column = TablePress::number_to_letter( $col_idx + 1 );
+			echo "\t\t\t<th scope=\"col\" class=\"head{$column_class}\"><span class=\"sort-control sort-desc hide-if-no-js\" title=\"" . esc_attr__( 'Sort descending', 'tablepress' ) . '"><span class="sorting-indicator"></span></span><span class="sort-control sort-asc hide-if-no-js" title="' . esc_attr__( 'Sort ascending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"move-handle\">{$column}</span></th>\n";
 		}
-		$column = TablePress::number_to_letter( $col_idx + 1 );
-		echo "\t\t\t<th scope=\"col\" class=\"head{$column_class}\"><span class=\"sort-control sort-desc hide-if-no-js\" title=\"" . esc_attr__( 'Sort descending', 'tablepress' ) . '"><span class="sorting-indicator"></span></span><span class="sort-control sort-asc hide-if-no-js" title="' . esc_attr__( 'Sort ascending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"move-handle\">{$column}</span></th>\n";
-	}
-?>
+		?>
 			<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Row Number', 'tablepress' ); ?></span></th>
 		</tr>
 	</thead>
 	<tbody id="edit-form-body">
-<?php
-	foreach ( $table as $row_idx => $row_data ) {
-		$row = $row_idx + 1;
-		$classes = array();
-		if ( 0 === ( $row_idx % 2 ) ) {
-			$classes[] = 'odd';
-		}
-		if ( $head_row_idx === $row_idx ) {
-			$classes[] = 'head-row';
-		} elseif ( $foot_row_idx === $row_idx ) {
-			$classes[] = 'foot-row';
-		}
-		if ( 0 === $visibility['rows'][ $row_idx ] ) {
-			$classes[] = 'row-hidden';
-		}
-		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
-		$row_selector_text = esc_html( sprintf( __( 'Bulk action selector for row %s', 'tablepress' ), number_format_i18n( $row ) ) );
-		echo "\t\t<tr{$row_class}>\n";
-		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$row_selector_text}</span><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></label></td>";
-		foreach ( $row_data as $col_idx => $cell ) {
-			$column = TablePress::number_to_letter( $col_idx + 1 );
-			$column_class = '';
-			if ( 0 === $visibility['columns'][ $col_idx ] ) {
-				$column_class = ' class="column-hidden"';
+		<?php
+		foreach ( $table as $row_idx => $row_data ) {
+			$row = $row_idx + 1;
+			$classes = array();
+			if ( 0 === ( $row_idx % 2 ) ) {
+				$classes[] = 'odd';
 			}
-			// Sanitize, so that HTML is possible in table cells.
-			$cell = esc_textarea( $cell );
-			$cell_label = esc_html( sprintf( __( 'Column %1$s, Row %2$s', 'tablepress' ), number_format_i18n( $col_idx + 1 ), number_format_i18n( $row ) ) );
-			echo "<td{$column_class}><label for=\"cell-{$column}{$row}\"><span class=\"screen-reader-text\">{$cell_label}</span></label><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
+			if ( $head_row_idx === $row_idx ) {
+				$classes[] = 'head-row';
+			} elseif ( $foot_row_idx === $row_idx ) {
+				$classes[] = 'foot-row';
+			}
+			if ( 0 === $visibility['rows'][ $row_idx ] ) {
+				$classes[] = 'row-hidden';
+			}
+			$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
+			$row_selector_text = esc_html( sprintf( __( 'Bulk action selector for row %s', 'tablepress' ), number_format_i18n( $row ) ) );
+			echo "\t\t<tr{$row_class}>\n";
+			echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
+			echo "<td><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$row_selector_text}</span><input type=\"checkbox\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></label></td>";
+			foreach ( $row_data as $col_idx => $cell ) {
+				$column = TablePress::number_to_letter( $col_idx + 1 );
+				$column_class = '';
+				if ( 0 === $visibility['columns'][ $col_idx ] ) {
+					$column_class = ' class="column-hidden"';
+				}
+				// Sanitize, so that HTML is possible in table cells.
+				$cell = esc_textarea( $cell );
+				$cell_label = esc_html( sprintf( __( 'Column %1$s, Row %2$s', 'tablepress' ), number_format_i18n( $col_idx + 1 ), number_format_i18n( $row ) ) );
+				echo "<td{$column_class}><label for=\"cell-{$column}{$row}\"><span class=\"screen-reader-text\">{$cell_label}</span></label><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
+			}
+			echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
+			echo "\t\t</tr>\n";
 		}
-		echo "<td><span class=\"move-handle\">{$row}</span></td>\n";
-		echo "\t\t</tr>\n";
-	}
-?>
+		?>
 	</tbody>
 	<tfoot>
 		<tr id="edit-form-foot">
 			<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Row Number', 'tablepress' ); ?></span></th>
 			<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Bulk action selectors for rows', 'tablepress' ); ?></span></th>
-<?php
-	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
-		$column_class = '';
-		if ( 0 === $visibility['columns'][ $col_idx ] ) {
-			$column_class = ' class="column-hidden"';
+		<?php
+		for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
+			$column_class = '';
+			if ( 0 === $visibility['columns'][ $col_idx ] ) {
+				$column_class = ' class="column-hidden"';
+			}
+			$column_selector_text = esc_html( sprintf( __( 'Bulk action selector for column %s', 'tablepress' ), TablePress::number_to_letter( $col_idx + 1 ) ) );
+			echo "\t\t\t<th scope=\"col\" {$column_class}><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$column_selector_text}</span><input type=\"checkbox\" /></label>";
+			echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
 		}
-		$column_selector_text = esc_html( sprintf( __( 'Bulk action selector for column %s', 'tablepress' ), TablePress::number_to_letter( $col_idx + 1 ) ) );
-		echo "\t\t\t<th scope=\"col\" {$column_class}><label class=\"hide-if-no-js\"><span class=\"screen-reader-text\">{$column_selector_text}</span><input type=\"checkbox\" /></label>";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
-	}
-?>
+		?>
 			<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Row Number', 'tablepress' ); ?></span></th>
 		</tr>
 	</tfoot>
 </table>
 <input type="hidden" id="number-rows" name="table[number][rows]" value="<?php echo $rows; ?>" />
 <input type="hidden" id="number-columns" name="table[number][columns]" value="<?php echo $columns; ?>" />
-<?php
+		<?php
 	}
 
 	/**
@@ -361,7 +361,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_table_manipulation( array $data, array $box ) {
-?>
+		?>
 <table class="tablepress-postbox-table fixed hide-if-no-js">
 <tbody>
 	<tr class="bottom-border">
@@ -424,7 +424,7 @@ class TablePress_Edit_View extends TablePress_View {
 	</tr>
 </table>
 <p class="hide-if-js"><?php _e( 'To use the Table Manipulation features, JavaScript needs to be enabled in your browser.', 'tablepress' ); ?></p>
-<?php
+		<?php
 	}
 
 	/**
@@ -489,11 +489,11 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $box  Information about the text box.
 	 */
 	public function textbox_hidden_containers( array $data, array $box ) {
-?>
+		?>
 <div class="hidden-container">
 	<div id="advanced-editor">
 		<label for="advanced-editor-content" class="screen-reader-text"><?php esc_html_e( 'Advanced Editor', 'tablepress' ); ?></label>
-	<?php
+		<?php
 		$wp_editor_options = array(
 			'textarea_rows' => 10,
 			'tinymce'       => false,
@@ -502,7 +502,7 @@ class TablePress_Edit_View extends TablePress_View {
 			),
 		);
 		wp_editor( '', 'advanced-editor-content', $wp_editor_options );
-	?>
+		?>
 	<div class="submitbox">
 		<a href="#" class="submitdelete" id="advanced-editor-cancel"><?php _e( 'Cancel', 'tablepress' ); ?></a>
 		<input type="button" class="button button-primary button-large" id="advanced-editor-confirm" value="<?php esc_attr_e( 'OK', 'tablepress' ); ?>" />
@@ -512,7 +512,7 @@ class TablePress_Edit_View extends TablePress_View {
 <div id="preview-container" class="hidden-container">
 	<div id="table-preview"></div>
 </div>
-<?php
+		<?php
 	}
 
 	/**
@@ -525,7 +525,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function postbox_table_options( array $data, array $box ) {
 		$options = $data['table']['options'];
-?>
+		?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr>
@@ -570,7 +570,7 @@ class TablePress_Edit_View extends TablePress_View {
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 	/**
@@ -583,7 +583,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function postbox_datatables_features( array $data, array $box ) {
 		$options = $data['table']['options'];
-?>
+		?>
 <p id="notice-datatables-head-row" class="hide-if-js"><?php printf( __( 'These features and options are only available, when the &#8220;%1$s&#8221; checkbox in the &#8220;%2$s&#8221; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></p>
 <table class="tablepress-postbox-table fixed">
 <tbody>
@@ -616,16 +616,16 @@ class TablePress_Edit_View extends TablePress_View {
 		<th class="column-1" scope="row"><?php _e( 'Horizontal Scrolling', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-scrollx"><input type="checkbox" id="option-datatables-scrollx" name="table[options][datatables_scrollx]" value="true"<?php checked( $options['datatables_scrollx'] ); ?> /> <?php _e( 'Enable horizontal scrolling, to make viewing tables with many columns easier.', 'tablepress' ); ?></label></td>
 	</tr>
-	<?php
+		<?php
 		// "Custom Commands" must only be available to trusted users. The text field must be in the page however, so that it's part of the HTTP POST request.
-	?>
+		?>
 	<tr class="<?php echo current_user_can( 'unfiltered_html' ) ? 'top-border' : 'hidden'; ?>">
 		<th class="column-1" scope="row"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-custom-commands"><textarea id="option-datatables-custom-commands" class="large-text" name="table[options][datatables_custom_commands]" rows="1"><?php echo esc_textarea( $options['datatables_custom_commands'] ); ?></textarea><p class="description"><?php echo sprintf( __( 'Additional parameters from the <a href="%s">DataTables documentation</a> to be added to the JS call.', 'tablepress' ), 'https://www.datatables.net/' ) . ' ' . __( 'For advanced use only.', 'tablepress' ); ?></p></label></td>
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 	/**

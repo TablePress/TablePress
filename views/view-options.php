@@ -91,7 +91,7 @@ class TablePress_Options_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_frontend_options( array $data, array $box ) {
-?>
+		?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr>
@@ -118,7 +118,7 @@ class TablePress_Options_View extends TablePress_View {
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 	/**
@@ -168,7 +168,7 @@ class TablePress_Options_View extends TablePress_View {
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 	/**

@@ -58,13 +58,13 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php
-			$this->print_nav_tab_menu();
-			// Print all header messages.
-			foreach ( $this->header_messages as $message ) {
-				echo $message;
-			}
+		$this->print_nav_tab_menu();
+		// Print all header messages.
+		foreach ( $this->header_messages as $message ) {
+			echo $message;
+		}
 
-			$this->do_text_boxes( 'header' );
+		$this->do_text_boxes( 'header' );
 		?>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">

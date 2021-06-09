@@ -193,7 +193,7 @@ class EvalMath {
 			// and return the resulting value.
 			return $tmp;
 
-		// Is the expression a function assignment?
+			// Is the expression a function assignment?
 		} elseif ( 1 === preg_match( '/^\s*(' . self::$name_pattern . ')\s*\(\s*(' . self::$name_pattern . '(?:\s*,\s*' . self::$name_pattern . ')*)\s*\)\s*=\s*(.+)$/', $expression, $matches ) ) {
 			// Get the function name.
 			$function_name = $matches[1];
@@ -225,7 +225,7 @@ class EvalMath {
 			$this->functions[ $function_name ] = array( 'args' => $args, 'func' => $stack );
 			return true;
 
-		// No variable or function assignment, so straight-up evaluation.
+			// No variable or function assignment, so straight-up evaluation.
 		} else {
 			return $this->evaluate( $expression );
 		}
@@ -303,7 +303,7 @@ class EvalMath {
 				// We have to explicitly deny underscores (as they mean negation), because they are legal on the stack.
 				return $this->raise_error( 'illegal_character_underscore' );
 
-			// Are we putting an operator on the stack?
+				// Are we putting an operator on the stack?
 			} elseif ( ( in_array( $op, $ops, true ) || $ex ) && $expecting_operator ) {
 				// Are we expecting an operator but have a number/variable/function/opening parethesis?
 				if ( $ex ) {
@@ -322,7 +322,7 @@ class EvalMath {
 				$index++;
 				$expecting_operator = false;
 
-			// Ready to close a parenthesis?
+				// Ready to close a parenthesis?
 			} elseif ( ')' === $op && $expecting_operator ) {
 				// Pop off the stack back to the last (.
 				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
@@ -372,7 +372,7 @@ class EvalMath {
 				}
 				$index++;
 
-			// Did we just finish a function argument?
+				// Did we just finish a function argument?
 			} elseif ( ',' === $op && $expecting_operator ) {
 				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				while ( '(' !== ( $o2 = $stack->pop() ) ) {
@@ -399,7 +399,7 @@ class EvalMath {
 				$stack->push( '(' ); // That was easy.
 				$index++;
 
-			// Do we now have a function/variable/number?
+				// Do we now have a function/variable/number?
 			} elseif ( $ex && ! $expecting_operator ) {
 				$expecting_operator = true;
 				$value = $match[1];
@@ -411,7 +411,7 @@ class EvalMath {
 						$stack->push( 1 );
 						$stack->push( '(' );
 						$expecting_operator = false;
-					// It's a variable with implicit multiplication.
+						// It's a variable with implicit multiplication.
 					} else {
 						$value = $matches[1];
 						$output[] = $value;
@@ -453,11 +453,11 @@ class EvalMath {
 					return $this->raise_error( 'unexpected_closing_bracket' );
 				}
 
-			// Miscellaneous error checking.
+				// Miscellaneous error checking.
 			} elseif ( in_array( $op, $ops, true ) && ! $expecting_operator ) {
 				return $this->raise_error( 'unexpected_operator', $op );
 
-			// I don't even want to know what you did to get here.
+				// I don't even want to know what you did to get here.
 			} else {
 				return $this->raise_error( 'an_unexpected_error_occurred' );
 			}
@@ -528,7 +528,7 @@ class EvalMath {
 					// phpcs:ignore Squiz.PHP.Eval.Discouraged
 					eval( '$stack->push( ' . $function_name . '( $op1 ) );' );
 
-				// Calc-emulation function.
+					// Calc-emulation function.
 				} elseif ( array_key_exists( $function_name, $this->calc_functions ) ) {
 					// Get function arguments.
 					$args = array();
@@ -560,7 +560,7 @@ class EvalMath {
 					}
 					$stack->push( $result );
 
-				// User-defined function.
+					// User-defined function.
 				} elseif ( array_key_exists( $function_name, $this->functions ) ) {
 					// Get function arguments.
 					$args = array();
@@ -576,7 +576,7 @@ class EvalMath {
 					$stack->push( $this->pfx( $this->functions[ $function_name ]['func'], $args ) );
 				}
 
-			// If the token is a binary operator, pop two values off the stack, do the operation, and push the result back on.
+				// If the token is a binary operator, pop two values off the stack, do the operation, and push the result back on.
 			} elseif ( in_array( $token, array( '+', '-', '*', '/', '^', '>', '<', '=' ), true ) ) {
 				$op2 = $stack->pop();
 				if ( is_null( $op2 ) ) {
@@ -617,11 +617,11 @@ class EvalMath {
 						break;
 				}
 
-			// If the token is a unary operator, pop one value off the stack, do the operation, and push it back on.
+				// If the token is a unary operator, pop one value off the stack, do the operation, and push it back on.
 			} elseif ( '_' === $token ) {
 				$stack->push( -1 * $stack->pop() );
 
-			// If the token is a number or variable, push it on the stack.
+				// If the token is a number or variable, push it on the stack.
 			} else {
 				if ( is_numeric( $token ) ) {
 					$stack->push( $token );

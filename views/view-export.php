@@ -99,7 +99,7 @@ class TablePress_Export_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_export_form( array $data, array $box ) {
-?>
+		?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr>
@@ -174,10 +174,10 @@ class TablePress_Export_View extends TablePress_View {
 		<td class="column-2">
 		<?php
 		if ( $data['zip_support_available'] ) {
-		?>
+			?>
 		<input type="checkbox" id="tables-export-zip-file" name="export[zip_file]" value="true" />
 		<label for="tables-export-zip-file"><?php _e( 'Create a ZIP archive.', 'tablepress' ); ?> <span id="tables-export-zip-file-description" class="description hide-if-js"><?php _e( '(Mandatory if more than one table is selected.)', 'tablepress' ); ?></span></label>
-		<?php
+			<?php
 		} else {
 			_e( 'Note: Support for ZIP file creation seems not to be available on this server.', 'tablepress' );
 		}
@@ -186,7 +186,7 @@ class TablePress_Export_View extends TablePress_View {
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 } // class TablePress_Export_View

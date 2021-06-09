@@ -136,14 +136,14 @@ class TablePress_List_View extends TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php
-			$this->print_nav_tab_menu();
-			// Print all header messages.
-			foreach ( $this->header_messages as $message ) {
-				echo $message;
-			}
+		$this->print_nav_tab_menu();
+		// Print all header messages.
+		foreach ( $this->header_messages as $message ) {
+			echo $message;
+		}
 
-			// For this screen, this is done in textbox_tables_list(), to get the fields into the correct <form>:
-			// $this->do_text_boxes( 'header' );
+		// For this screen, this is done in textbox_tables_list(), to get the fields into the correct <form>:
+		// $this->do_text_boxes( 'header' );
 		?>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
@@ -203,23 +203,23 @@ class TablePress_List_View extends TablePress_View {
 		if ( ! empty( $_GET['s'] ) ) {
 			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( wp_unslash( $_GET['s'] ) ) );
 		}
-	?>
+		?>
 <form method="get" action="">
-	<?php
-	if ( isset( $_GET['page'] ) ) {
-		echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />' . "\n";
-	}
-	$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' );
-	?>
+		<?php
+		if ( isset( $_GET['page'] ) ) {
+			echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />' . "\n";
+		}
+		$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' );
+		?>
 </form>
 <form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-	<?php
+		<?php
 		// This prints the nonce and action fields for this screen (done here instead of render(), due to moved <form>).
 		$this->do_text_boxes( 'header' );
 		$this->wp_list_table->display();
-	?>
+		?>
 </form>
-	<?php
+		<?php
 	}
 
 	/**

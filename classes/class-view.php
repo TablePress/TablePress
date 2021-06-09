@@ -339,13 +339,13 @@ abstract class TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php
-			$this->print_nav_tab_menu();
-			// Print all header messages.
-			foreach ( $this->header_messages as $message ) {
-				echo $message;
-			}
-			// "Import" screen has file upload.
-			$enctype = ( 'import' === $this->action ) ? ' enctype="multipart/form-data"' : '';
+		$this->print_nav_tab_menu();
+		// Print all header messages.
+		foreach ( $this->header_messages as $message ) {
+			echo $message;
+		}
+		// "Import" screen has file upload.
+		$enctype = ( 'import' === $this->action ) ? ' enctype="multipart/form-data"' : '';
 		?>
 		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?>>
 			<?php

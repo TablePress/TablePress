@@ -63,9 +63,9 @@ class TablePress_Import_View extends TablePress_View {
 		<p>
 			<?php _e( 'To import a table, select and enter the import source in the following form.', 'tablepress' ); ?>
 			<?php
-				if ( 0 < $data['tables_count'] ) {
-					_e( 'You can also choose to import it as a new table, to replace an existing table, or to append the rows to an existing table.', 'tablepress' );
-				}
+			if ( 0 < $data['tables_count'] ) {
+				_e( 'You can also choose to import it as a new table, to replace an existing table, or to append the rows to an existing table.', 'tablepress' );
+			}
 			?>
 		</p>
 		<?php
@@ -80,7 +80,7 @@ class TablePress_Import_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_import_form( array $data, array $box ) {
-?>
+		?>
 <table class="tablepress-postbox-table fixed">
 <tbody>
 	<tr id="row-import-source">
@@ -116,7 +116,7 @@ class TablePress_Import_View extends TablePress_View {
 			?>
 		</td>
 	</tr>
-	<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
+		<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
 	<tr id="row-import-source-server" class="bottom-border">
 		<th class="column-1 top-align" scope="row"><label for="tables-import-server"><?php _e( 'Server Path to file', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
@@ -189,7 +189,7 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 </tbody>
 </table>
-<?php
+		<?php
 	}
 
 } // class TablePress_Import_View
