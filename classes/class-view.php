@@ -157,7 +157,7 @@ abstract class TablePress_View {
 			'common' => array(
 				'ays_delete_single_table'    => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
 				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' ),
-			)
+			),
 		) );
 
 		$this->admin_page->add_admin_footer_text();

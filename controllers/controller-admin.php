@@ -1051,7 +1051,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					// Check the host of the Import URL against a blacklist of hosts, which should not be accessible, e.g. for security considerations.
 					$host = wp_parse_url( $import['url'], PHP_URL_HOST );
 					$blocked_hosts = array(
-						'169.254.169.254' // AWS Meta-data API
+						'169.254.169.254', // AWS Meta-data API
 					);
 					if ( empty( $host ) || in_array( $host, $blocked_hosts, true ) ) {
 						$import_error = true;

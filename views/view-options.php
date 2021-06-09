@@ -45,7 +45,7 @@ class TablePress_Options_View extends TablePress_View {
 			'strings' => array(
 				'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
 				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' ),
-			)
+			),
 		) );
 
 		$this->process_action_messages( array(
