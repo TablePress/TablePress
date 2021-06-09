@@ -45,14 +45,14 @@ class TablePress_Edit_View extends TablePress_View {
 		};
 
 		$action_messages = array(
-			'success_save'                     => __( 'The table was saved successfully.', 'tablepress' ),
-			'success_add'                      => __( 'The table was added successfully.', 'tablepress' ),
-			'success_copy'                     => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ' ' . sprintf( __( 'You are now seeing the copied table, which has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table']['id'] ) ),
-			'success_import'                   => __( 'The table was imported successfully.', 'tablepress' ),
-			'error_save'                       => __( 'Error: The table could not be saved.', 'tablepress' ),
-			'error_delete'                     => __( 'Error: The table could not be deleted.', 'tablepress' ),
-			'success_save_success_id_change'   => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
-			'success_save_error_id_change'     => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' ),
+			'success_save'                   => __( 'The table was saved successfully.', 'tablepress' ),
+			'success_add'                    => __( 'The table was added successfully.', 'tablepress' ),
+			'success_copy'                   => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ' ' . sprintf( __( 'You are now seeing the copied table, which has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table']['id'] ) ),
+			'success_import'                 => __( 'The table was imported successfully.', 'tablepress' ),
+			'error_save'                     => __( 'Error: The table could not be saved.', 'tablepress' ),
+			'error_delete'                   => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'success_save_success_id_change' => __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
+			'success_save_error_id_change'   => __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' ),
 		);
 		// Custom handling instead of $this->process_action_messages(). Also, $action_messages is used below.
 		if ( $data['message'] && isset( $action_messages[ $data['message'] ] ) ) {

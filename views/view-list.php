@@ -99,20 +99,20 @@ class TablePress_List_View extends TablePress_View {
 		}
 
 		$this->process_action_messages( array(
-			'success_delete'                   => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),
-			'success_delete_plural'            => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
-			'error_delete'                     => __( 'Error: The table could not be deleted.', 'tablepress' ),
-			'error_save'                       => __( 'Error: The table could not be saved.', 'tablepress' ),
-			'success_copy'                     => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ( ( false !== $data['table_id'] ) ? ' ' . sprintf( __( 'The copied table has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table_id'] ) ) : '' ),
-			'success_copy_plural'              => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
-			'error_copy'                       => __( 'Error: The table could not be copied.', 'tablepress' ),
-			'error_no_table'                   => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
-			'error_load_table'                 => __( 'Error: This table could not be loaded!', 'tablepress' ),
-			'error_bulk_action_invalid'        => __( 'Error: This bulk action is invalid!', 'tablepress' ),
-			'error_no_selection'               => __( 'Error: You did not select any tables!', 'tablepress' ),
-			'error_delete_not_all_tables'      => __( 'Notice: Not all selected tables could be deleted!', 'tablepress' ),
-			'error_copy_not_all_tables'        => __( 'Notice: Not all selected tables could be copied!', 'tablepress' ),
-			'success_import'                   => __( 'The tables were imported successfully.', 'tablepress' ),
+			'success_delete'              => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),
+			'success_delete_plural'       => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
+			'error_delete'                => __( 'Error: The table could not be deleted.', 'tablepress' ),
+			'error_save'                  => __( 'Error: The table could not be saved.', 'tablepress' ),
+			'success_copy'                => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ( ( false !== $data['table_id'] ) ? ' ' . sprintf( __( 'The copied table has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table_id'] ) ) : '' ),
+			'success_copy_plural'         => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
+			'error_copy'                  => __( 'Error: The table could not be copied.', 'tablepress' ),
+			'error_no_table'              => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
+			'error_load_table'            => __( 'Error: This table could not be loaded!', 'tablepress' ),
+			'error_bulk_action_invalid'   => __( 'Error: This bulk action is invalid!', 'tablepress' ),
+			'error_no_selection'          => __( 'Error: You did not select any tables!', 'tablepress' ),
+			'error_delete_not_all_tables' => __( 'Notice: Not all selected tables could be deleted!', 'tablepress' ),
+			'error_copy_not_all_tables'   => __( 'Notice: Not all selected tables could be copied!', 'tablepress' ),
+			'success_import'              => __( 'The tables were imported successfully.', 'tablepress' ),
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );

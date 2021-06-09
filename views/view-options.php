@@ -49,9 +49,9 @@ class TablePress_Options_View extends TablePress_View {
 		) );
 
 		$this->process_action_messages( array(
-			'success_save'                     => __( 'Options saved successfully.', 'tablepress' ),
-			'success_save_error_custom_css'    => __( 'Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file.', 'tablepress' ),
-			'error_save'                       => __( 'Error: Options could not be saved.', 'tablepress' ),
+			'success_save'                  => __( 'Options saved successfully.', 'tablepress' ),
+			'success_save_error_custom_css' => __( 'Options saved successfully, but &#8220;Custom CSS&#8221; was not saved to file.', 'tablepress' ),
+			'error_save'                    => __( 'Error: Options could not be saved.', 'tablepress' ),
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
