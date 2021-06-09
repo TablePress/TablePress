@@ -120,7 +120,8 @@ class TablePress_Evaluate {
 			$orig_expression = $expression[0];
 			$expression = $expression[1];
 
-			$replaced_references = $replaced_ranges = array();
+			$replaced_references = array();
+			$replaced_ranges = array();
 
 			// Remove all whitespace characters.
 			$expression = str_replace( array( "\n", "\r", "\t", ' ' ), '', $expression );
@@ -187,7 +188,8 @@ class TablePress_Evaluate {
 					$ref_parents = $parents;
 					$ref_parents[] = $cell_reference[0];
 
-					$result = $this->table_data[ $ref_row ][ $ref_col ] = $this->_evaluate_cell( $this->table_data[ $ref_row ][ $ref_col ], $ref_row, $ref_col, $ref_parents );
+					$result = $this->_evaluate_cell( $this->table_data[ $ref_row ][ $ref_col ], $ref_row, $ref_col, $ref_parents );
+					$this->table_data[ $ref_row ][ $ref_col ] = $result;
 					// Bail if there was an error already.
 					if ( false !== strpos( $result, '!ERROR!' ) ) {
 						return $result;

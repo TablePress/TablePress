@@ -424,7 +424,8 @@ class TablePress_Render {
 		 * @param array  $table   The current table.
 		 */
 		$caption = apply_filters( 'tablepress_print_caption_text', '', $this->table );
-		$caption_style = $caption_class = '';
+		$caption_style = '';
+		$caption_class = '';
 		if ( ! empty( $caption ) ) {
 			/**
 			 * Filter the class attribute for the HTML caption element of the table.

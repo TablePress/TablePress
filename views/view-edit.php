@@ -250,7 +250,8 @@ class TablePress_Edit_View extends TablePress_View {
 		$rows = count( $table );
 		$columns = count( $table[0] );
 
-		$head_row_idx = $foot_row_idx = -1;
+		$head_row_idx = -1;
+		$foot_row_idx = -1;
 		// Determine row index of the table head row, by excluding all hidden rows from the beginning.
 		if ( $options['table_head'] ) {
 			for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
