@@ -1202,11 +1202,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.5.0
 	 *
 	 * @param int   $post_id          Post ID of the imported post.
-	 * @param int   $original_post_ID Original post ID that the post had on the site where it was exported from.
+	 * @param int   $original_post_id Original post ID that the post had on the site where it was exported from.
 	 * @param array $postdata         Post data that was imported into the database.
 	 * @param array $post             Original post data as it was exported.
 	 */
-	public function add_table_id_on_wp_import( $post_id, $original_post_ID, array $postdata, array $post ) {
+	public function add_table_id_on_wp_import( $post_id, $original_post_id, array $postdata, array $post ) {
 		// Bail if the post could not be imported or if the post is not a TablePress table.
 		if ( is_wp_error( $post_id ) || $this->model_post->get_post_type() !== $postdata['post_type'] ) {
 			return;
