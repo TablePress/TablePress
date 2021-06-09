@@ -108,7 +108,7 @@ class EvalMath {
 		'number_format' => array( 1, 2 ),
 		'number_format_eu' => array( 1, 2 ),
 		'sum' => array( -1 ),
-		'counta' => array ( -1 ),
+		'counta' => array( -1 ),
 		'product' => array( -1 ),
 		'rand_int' => array( 2 ),
 		'rand_float' => array( 0 ),
