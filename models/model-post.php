@@ -274,6 +274,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			$post_ids = _get_non_cached_ids( $post_ids, 'posts' );
 			if ( ! empty( $post_ids ) ) {
 				$post_ids_list = implode( ',', $post_ids );
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$posts = $wpdb->get_results( "SELECT {$wpdb->posts}.* FROM {$wpdb->posts} WHERE ID IN ({$post_ids_list})" );
 				update_post_cache( $posts );
 				if ( $update_meta_cache ) {

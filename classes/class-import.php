@@ -160,13 +160,13 @@ class TablePress_Import {
 			 * Don't expand external entities, see https://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
 			 * Silence warnings as the function is deprecated in PHP 8, but can be necessary with LIBXML_NOENT being defined, see https://core.trac.wordpress.org/changeset/50714.
 			 */
-			@libxml_disable_entity_loader( true );
+			@libxml_disable_entity_loader( true ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 		// No warnings/errors raised, but stored internally.
 		libxml_use_internal_errors( true );
 		$dom = new DOMDocument( '1.0', 'UTF-8' );
 		// No strict checking for invalid HTML.
-		$dom->strictErrorChecking = false;
+		$dom->strictErrorChecking = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$dom->loadHTML( $full_html );
 		if ( false === $dom ) {
 			$this->imported_table = false;
@@ -442,6 +442,7 @@ class TablePress_Import {
 
 		// Check for possible UTF-16 BOMs ("little endian" and "big endian") and try to convert the data to UTF-8.
 		if ( "\xFF\xFE" === substr( $this->import_data, 0, 2 ) || "\xFE\xFF" === substr( $this->import_data, 0, 2 ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			$data = @iconv( 'UTF-16', 'UTF-8', $this->import_data );
 			if ( false !== $data ) {
 				$this->import_data = $data;
@@ -453,6 +454,7 @@ class TablePress_Import {
 		if ( function_exists( 'mb_detect_encoding' ) ) {
 			$current_encoding = mb_detect_encoding( $this->import_data, 'ASCII, UTF-8, ISO-8859-1' );
 			if ( 'UTF-8' !== $current_encoding ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				$data = @iconv( $current_encoding, 'UTF-8', $this->import_data );
 				if ( false !== $data ) {
 					$this->import_data = $data;

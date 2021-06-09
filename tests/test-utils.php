@@ -60,6 +60,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @return array Test data.
 	 */
 	public function data_letter_to_number() {
+		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener
 		return array(
 			array(    '',     0 ),
 			array(   'a',     1 ),
@@ -75,6 +76,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 			array( 'ZZZ', 18278 ),
 			array( 'zzz', 18278 ),
 		);
+		// phpcs:enable
 	}
 
 	/**
@@ -99,6 +101,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @return array Test data.
 	 */
 	public function data_number_to_letter() {
+		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener
 		return array(
 			array(    -1,    '' ),
 			array(     0,    '' ),
@@ -110,6 +113,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 			array(   703, 'AAA' ),
 			array( 18278, 'ZZZ' ),
 		);
+		// phpcs:enable
 	}
 
 	/**

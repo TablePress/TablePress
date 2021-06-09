@@ -73,7 +73,7 @@ class TablePress_Edit_View extends TablePress_View {
 		wp_enqueue_script( 'wplink' );
 
 		$this->admin_page->enqueue_style( 'edit' );
-		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable' ), array(
+		$this->admin_page->enqueue_script( 'edit', array( 'jquery', 'jquery-ui-sortable' ), array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
 			'options' => array(
 				/**
 				 * Filter whether debug output shall be printed to the page.
@@ -691,7 +691,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$content  = '<h3>' . __( 'TablePress Feature: Moving rows and columns', 'tablepress' ) . '</h3>';
 		$content .= '<p>' . __( 'Did you know? You can drag and drop rows and columns via the row number and the column title. And the arrows next to the column title can be used for sorting.', 'tablepress' ) . '</p>';
 
-		$this->admin_page->print_wp_pointer_js( 'tp09_edit_drag_drop_sort', '#edit-form-head', array(
+		$this->admin_page->print_wp_pointer_js( 'tp09_edit_drag_drop_sort', '#edit-form-head', array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
 			'content'  => $content,
 			'position' => array( 'edge' => 'top', 'align' => 'left', 'offset' => '56 2' ),
 		) );

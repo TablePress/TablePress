@@ -35,13 +35,13 @@ class TablePress_Options_View extends TablePress_View {
 		$codemirror_settings = wp_enqueue_code_editor( array( 'type' => 'text/css' ) );
 		if ( ! empty( $codemirror_settings ) ) {
 			// Load CSS adjustments for CodeMirror and the added vertical resizing.
-			$this->admin_page->enqueue_style( 'codemirror', array( 'code-editor' ) );
-			$this->admin_page->enqueue_script( 'codemirror', array( 'jquery', 'jquery-ui-resizable' ), array(
+			$this->admin_page->enqueue_style( 'codemirror', array( 'code-editor' ) ); // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
+			$this->admin_page->enqueue_script( 'codemirror', array( 'jquery', 'jquery-ui-resizable' ), array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
 				'codemirror_settings' => $codemirror_settings,
 			) );
 		}
 
-		$this->admin_page->enqueue_script( 'options', array( 'jquery' ), array(
+		$this->admin_page->enqueue_script( 'options', array( 'jquery' ), array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
 			'strings' => array(
 				'uninstall_warning_1' => __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ),
 				'uninstall_warning_2' => __( 'Are you really sure?', 'tablepress' ),

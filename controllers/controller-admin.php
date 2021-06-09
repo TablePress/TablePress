@@ -190,7 +190,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		add_thickbox(); // usually already loaded by media upload functions
 		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
-		$admin_page->enqueue_script( 'quicktags-button', array( 'quicktags', 'media-upload' ), array(
+		$admin_page->enqueue_script( 'quicktags-button', array( 'quicktags', 'media-upload' ), array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
 			'editor_button' => array(
 				'caption'        => __( 'Table', 'tablepress' ),
 				'title'          => __( 'Insert a Table from TablePress', 'tablepress' ),
@@ -939,8 +939,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully.
 			/** This filter is documented in the WordPress file wp-admin/admin.php */
-			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
-			@set_time_limit( 300 );
+			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 			$zip_file = new ZipArchive();
 			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', wp_date( 'Y-m-d-H-i-s' ), $export['format'] );
@@ -975,6 +975,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 
 			// If something went wrong, or no files were added to the ZIP file, bail out.
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( ! ZIPARCHIVE::ER_OK === $zip_file->status || 0 === $zip_file->numFiles ) {
 				$zip_file->close();
 				@unlink( $full_filename );
@@ -998,7 +999,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		header( 'Content-Length: ' . strlen( $download_data ) );
 		// $filetype = text/csv, text/html, application/json
 		// header( 'Content-Type: ' . $filetype. '; charset=' . get_option( 'blog_charset' ) );
-		@ob_end_clean();
+		@ob_end_clean(); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		flush();
 		echo $download_data;
 		exit;
@@ -1141,8 +1142,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully.
 			/** This filter is documented in the WordPress file wp-admin/admin.php */
-			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
-			@set_time_limit( 300 );
+			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 			$zip = new ZipArchive();
 			if ( true !== $zip->open( $import_data['file_location'], ZIPARCHIVE::CHECKCONS ) ) {
@@ -1165,6 +1166,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 
 			$imported_files = array();
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
 				$file_name = $zip->getNameIndex( $file_idx );
 				// Skip directories.
