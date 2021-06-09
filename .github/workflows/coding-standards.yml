@@ -1,0 +1,82 @@
+name: Coding Standards
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      # Any change to a PHP file should run checks.
+      - '**.php'
+      # These files configure Composer. Changes could affect the outcome.
+      - 'composer.*'
+      # This file configures PHPCS. Changes could affect the outcome.
+      - 'phpcs.xml.dist'
+      # Changes to workflow files should always verify all workflows are successful.
+      - '.github/workflows/*.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      # Any change to a PHP file should run checks.
+      - '**.php'
+      # These files configure Composer. Changes could affect the outcome.
+      - 'composer.*'
+      # This file configures PHPCS. Changes could affect the outcome.
+      - 'phpcs.xml.dist'
+      # Changes to workflow files should always verify all workflows are successful.
+      - '.github/workflows/*.yml'
+  workflow_dispatch:
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name for pull requests
+  # or the commit hash for any other events.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  # Runs PHP coding standards checks.
+  #
+  # Violations are reported inline with annotations.
+  #
+  # Performs the following steps:
+  # - Checks out the repository.
+  # - Sets up PHP.
+  # - Logs debug information.
+  # - Installs Composer dependencies (use cache if possible).
+  # - Make Composer packages available globally.
+  # - Logs PHP_CodeSniffer debug information.
+  # - Runs PHPCS on the full code base without warnings suppressed.
+  phpcs:
+    name: PHP coding standards
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+          tools: composer, cs2pr
+
+      - name: Log debug information
+        run: |
+          php --version
+          composer --version
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v1
+        with:
+          composer-options: "--no-progress --no-ansi --no-interaction"
+
+      - name: Make Composer packages available globally
+        run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
+
+      - name: Log PHPCS debug information
+        run: phpcs -i
+
+      - name: Run PHPCS on all files
+        run: phpcs -q --report=checkstyle | cs2pr
