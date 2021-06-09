@@ -14,7 +14,22 @@
 	],
 	"type": "wordpress-plugin",
 	"require": {
-		"php": ">=5.6.20",
-		"composer/installers": "v1.0.6"
+		"php": ">=5.6.20"
+	},
+	"support": {
+		"issues": "https://github.com/TobiasBg/TablePress/issues",
+		"source": "https://github.com/TobiasBg/TablePress"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "~0.7.0",
+		"wp-coding-standards/wpcs": "~2.3.0",
+		"phpcompatibility/phpcompatibility-wp": "~2.1.0"
+	},
+ 	"scripts": {
+		"compat": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
+		"phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source",
+		"phpcs:errors": "@phpcs -n",
+		"phpcs:full": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"fix-phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source"
 	}
 }
