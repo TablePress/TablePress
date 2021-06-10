@@ -24,8 +24,8 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	 * @since 1.4.0
 	 */
 	public function test_wp_version() {
-		if ( ! getenv( 'TRAVIS' ) ) {
-			$this->markTestSkipped( 'Test skipped since Travis CI was not detected.' );
+		if ( ! getenv( 'CI' ) ) {
+			$this->markTestSkipped( "Test skipped as it's not running in a CI environment." );
 		}
 
 		$requested_version = getenv( 'WP_VERSION' );
