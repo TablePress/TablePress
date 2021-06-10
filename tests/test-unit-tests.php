@@ -18,8 +18,8 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	}
 
 	/**
-	 * If these tests are being run on Travis CI, verify that the version of
-	 * WordPress installed is the version that we requested.
+	 * If the unit tests are being run in a CI environment, verify that the
+	 * installed version of WordPress is the version that was requested.
 	 *
 	 * @since 1.4.0
 	 */
