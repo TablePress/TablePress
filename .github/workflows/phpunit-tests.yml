@@ -1,0 +1,146 @@
+name: PHPUnit Tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      # Any change to a PHP file should run checks.
+      - '**.php'
+      # This file configures PHPUnit. Changes could affect the outcome.
+      - 'phpunit.xml.dist'
+      # Changes to workflow files should always verify all workflows are successful.
+      - '.github/workflows/*.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      # Any change to a PHP file should run checks.
+      - '**.php'
+      # This file configures PHPUnit. Changes could affect the outcome.
+      - 'phpunit.xml.dist'
+      # Changes to workflow files should always verify all workflows are successful.
+      - '.github/workflows/*.yml'
+  workflow_dispatch:
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name for pull requests
+  # or the commit hash for any other events.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    name: WP ${{ matrix.wp }}${{ matrix.multisite && ' multisite' || '' }}, PHP ${{ matrix.php }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        wp:
+          - master
+          - '5.7'
+          - '5.6'
+        php: 
+          - '7.4'
+          - '7.3'
+          - '7.2'
+          - '7.1'
+          - '7.0'
+          - '5.6'
+        os: [ ubuntu-latest ]
+        multisite: [ false, true ]
+    env:
+      WP_VERSION: ${{ matrix.wp }}
+      WP_DEVELOP_DIR: /tmp/wordpress
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer
+
+      - name: Install PHPUnit depending on the PHP version
+        run: |
+          if [[ 1 == 1 ]]; then
+            case "${{ matrix.php }}" in
+              7.4|7.3|7.2|7.1)
+                echo "Using PHPUnit 7.x for PHP ${{ matrix.php }}"
+                composer require "phpunit/phpunit:^7"
+                ;;
+              7.0)
+                echo "Using PHPUnit 6.x for PHP ${{ matrix.php }}"
+                composer require "phpunit/phpunit:^6"
+                ;;
+              5.6)
+                echo "Using PHPUnit 5.x for PHP ${{ matrix.php }}"
+                composer require "phpunit/phpunit:^5"
+                ;;
+              *)
+                echo "No PHPUnit version handling for PHP ${{ matrix.php }}"
+                exit 1
+                ;;
+            esac
+          fi
+
+      - name: Make Composer packages available globally
+        run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
+
+      - name: Log debug information
+        run: |
+          php --version
+          phpunit --version
+          mysql --version
+          git --version
+      
+      - name: Adjust mySQL configuration
+        # This is to work around mySQL authentication errors on older versions of PHP, by resetting the authentication method.
+        run: |
+          echo "[mysqld]" | sudo tee -a /etc/mysql/my.cnf
+          echo "default-authentication-plugin=mysql_native_password" | sudo tee -a /etc/mysql/my.cnf
+          sudo cat /etc/mysql/my.cnf
+        
+      - name: Start mySQL service
+        run: sudo systemctl start mysql.service
+
+      - name: Create the WordPress unit tests database
+        run: mysql -e "CREATE DATABASE wordpress_tests;" -uroot -proot
+
+      - name: Work around mySQL authentication errors on older versions of PHP
+        # This is to work around mySQL authentication errors on older versions of PHP, by resetting the authentication method.
+        run: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -uroot -proot
+
+      - name: Clone the WordPress development repository
+        run: git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
+
+      - name: Setup WordPress unit tests
+        run: |
+          export PLUGIN_SLUG=$(basename $(pwd))
+          export PLUGIN_SLUG_LC=${PLUGIN_SLUG,,}
+          export PLUGIN_DIR="$WP_DEVELOP_DIR/src/wp-content/plugins/$PLUGIN_SLUG_LC"
+          echo "PLUGIN_DIR=$PLUGIN_DIR" >> $GITHUB_ENV
+          cd ..
+          cp -r "$PLUGIN_SLUG" "$PLUGIN_DIR"
+
+      - name: Set up the WordPress unit tests configuration file
+        working-directory: ${{ env.WP_DEVELOP_DIR }}
+        run: |
+          cp wp-tests-config-sample.php wp-tests-config.php
+          sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
+          sed -i "s/yourusernamehere/root/" wp-tests-config.php
+          sed -i "s/yourpasswordhere/root/" wp-tests-config.php
+
+      - name: Run PHPUnit
+        env:
+          WP_TESTS_DIR: ${{ env.WP_DEVELOP_DIR }}/tests/phpunit/
+          WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
+        working-directory: ${{ env.PLUGIN_DIR }}
+        run: phpunit --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
