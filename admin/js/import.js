@@ -75,6 +75,11 @@ jQuery( function( $ ) {
 			extension = 'html';
 		}
 
+		// Allow .xlsm for Excel as well.
+		if ( 'xlsm' === extension ) {
+			extension = 'xlsx';
+		}
+
 		$( '#tables-import-existing-table' ).prop( 'disabled', ( ( 'replace' !== import_type && 'append' !== import_type ) || 'zip' === extension ) );
 
 		// Don't change the format for ZIP archives.
