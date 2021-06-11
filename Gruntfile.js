@@ -29,7 +29,8 @@ module.exports = function( grunt ) {
 			all: {
 				src: [
 						'**/*.js',
-						'!node_modules/**/*.js'
+						'!node_modules/**/*.js',
+						'!vendor/**/*.js'
 				]
 			},
 			changed: {
@@ -79,7 +80,8 @@ module.exports = function( grunt ) {
 			all: {
 				src: [
 					'**/*.json',
-					'!node_modules/**/*.json'
+					'!node_modules/**/*.json',
+					'!vendor/**/*.json'
 				]
 			},
 			changed: {
@@ -130,7 +132,8 @@ module.exports = function( grunt ) {
 				src: [
 					'**/*.css',
 					'!**/*.min.css',
-					'!node_modules/**/*.css'
+					'!node_modules/**/*.css',
+					'!vendor/**/*.css'
 				]
 			},
 			changed: {
