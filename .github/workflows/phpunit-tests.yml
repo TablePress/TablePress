@@ -39,6 +39,15 @@ jobs:
   phpunit:
     name: WP ${{ matrix.wp }}${{ matrix.multisite && ' multisite' || '' }}, PHP ${{ matrix.php }}
     runs-on: ${{ matrix.os }}
+    services:
+      mysql:
+        image: mariadb:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_tests
+        ports:
+        - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
     strategy:
       fail-fast: false
       matrix:
@@ -46,7 +55,7 @@ jobs:
           - master
           - '5.7'
           - '5.6'
-        php: 
+        php:
           - '7.4'
           - '7.3'
           - '7.2'
@@ -58,7 +67,7 @@ jobs:
     env:
       WP_VERSION: ${{ matrix.wp }}
       WP_DEVELOP_DIR: /tmp/wordpress
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -69,6 +78,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: composer
+          extensions: mysql
 
       - name: Install PHPUnit depending on the PHP version
         run: |
@@ -100,25 +110,7 @@ jobs:
         run: |
           php --version
           phpunit --version
-          mysql --version
           git --version
-      
-      - name: Adjust mySQL configuration
-        # This is to work around mySQL authentication errors on older versions of PHP, by resetting the authentication method.
-        run: |
-          echo "[mysqld]" | sudo tee -a /etc/mysql/my.cnf
-          echo "default-authentication-plugin=mysql_native_password" | sudo tee -a /etc/mysql/my.cnf
-          sudo cat /etc/mysql/my.cnf
-        
-      - name: Start mySQL service
-        run: sudo systemctl start mysql.service
-
-      - name: Create the WordPress unit tests database
-        run: mysql -e "CREATE DATABASE wordpress_tests;" -uroot -proot
-
-      - name: Work around mySQL authentication errors on older versions of PHP
-        # This is to work around mySQL authentication errors on older versions of PHP, by resetting the authentication method.
-        run: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -uroot -proot
 
       - name: Clone the WordPress development repository
         run: git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
@@ -139,6 +131,7 @@ jobs:
           sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
           sed -i "s/yourusernamehere/root/" wp-tests-config.php
           sed -i "s/yourpasswordhere/root/" wp-tests-config.php
+          sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Run PHPUnit
         env:
