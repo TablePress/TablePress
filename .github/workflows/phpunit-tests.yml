@@ -24,6 +24,8 @@ on:
       - 'phpunit.xml.dist'
       # Changes to workflow files should always verify all workflows are successful.
       - '.github/workflows/*.yml'
+  schedule:
+    - cron: '45 3 * * SUN'
   workflow_dispatch:
 
 # Cancels all previous workflow runs for pull requests that have not completed.
