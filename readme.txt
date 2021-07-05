@@ -24,6 +24,8 @@ If you like TablePress, please rate and review it here in the WordPress Plugin D
 = TablePress Extensions =
 Additional features and useful enhancements are available as separate plugins, called [TablePress Extensions](https://tablepress.org/extensions/), on the plugin website.
 
+Do you have a lot of tables? You can organize them in folders! [Wicked Folders Pro supports TablePress](https://tablepress.org/extensions/wicked-folders-pro/) and might be the right solution for you.
+
 == Screenshots ==
 
 1. "All Tables" screen
