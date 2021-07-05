@@ -53,6 +53,7 @@ jobs:
       matrix:
         wp:
           - master
+          - '5.8'
           - '5.7'
           - '5.6'
         php:

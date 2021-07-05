@@ -4,7 +4,7 @@ Donate link: https://tablepress.org/donate/
 Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.6
 Requires PHP: 5.6.20
-Tested up to: 5.7
+Tested up to: 5.8
 Stable tag: 1.13
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
