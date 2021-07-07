@@ -53,6 +53,7 @@ jobs:
   # - Make Composer packages available globally.
   # - Logs PHP_CodeSniffer debug information.
   # - Runs PHPCS on the full code base without warnings suppressed.
+  # - Ensures version-controlled files are not modified or deleted.
   phpcs:
     name: PHP coding standards
     runs-on: ubuntu-latest
@@ -86,3 +87,6 @@ jobs:
 
       - name: Run PHPCS on all files
         run: phpcs -q --report=checkstyle | cs2pr
+
+      - name: Ensure version-controlled files are not modified during the tests
+        run: git diff --exit-code

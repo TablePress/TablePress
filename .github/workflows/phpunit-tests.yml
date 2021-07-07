@@ -36,6 +36,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Runs the PHPUnit tests for TablePress.
   phpunit:
     name: WP ${{ matrix.wp }}${{ matrix.multisite && ' multisite' || '' }}, PHP ${{ matrix.php }}
     runs-on: ${{ matrix.os }}
@@ -140,3 +141,6 @@ jobs:
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
         run: phpunit --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
+
+      - name: Ensure version-controlled files are not modified during the tests
+        run: git diff --exit-code
