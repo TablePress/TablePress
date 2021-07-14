@@ -142,5 +142,5 @@ jobs:
         working-directory: ${{ env.PLUGIN_DIR }}
         run: phpunit --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
-      - name: Ensure version-controlled files are not modified during the tests
-        run: git diff --exit-code
+      - name: Ensure version-controlled files, except for Composer files (due to installing PHPUnit), are not modified during the tests
+        run: git diff --exit-code -- . ':!composer.json' ':!composer.lock'
