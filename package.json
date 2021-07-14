@@ -10,7 +10,7 @@
   "license": "GPL-2.0-only",
   "devDependencies": {
     "autoprefixer": "~9.8.6",
-    "grunt": "~1.4.0",
+    "grunt": "~1.4.1",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-cssmin": "~4.0.0",
     "grunt-contrib-jshint": "~3.0.0",
