@@ -112,7 +112,7 @@ jQuery( function( $ ) {
 			$table_body.children().each( function( idx, row ) {
 				table_data[ idx ] = $( row ).find( 'textarea' )
 					.map( function() {
-						return $(this).val();
+						return this.value;
 					} )
 					.get();
 			} );
