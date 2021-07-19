@@ -99,6 +99,19 @@ You may use it free of charge for any purpose.
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 1.14 =
+* Full compatibility with WordPress 5.8.
+* Enhancement: Make behavior of bulk action selectors on the "All tables" screen more user-friendly.
+* Enhancement: Apply and enforce more granular coding standards for better code maintainability.
+* Enhancement: Allow import files with an .xlsm file extension, in addition to .xlsx files.
+* Enhancement: Add more options (filter and action hooks) for external integration of custom code.
+* Bugfix: Fix handling of the help box on the "Edit" screen when it's opened again after closing it.
+* Bugfix: Properly return modified table data when external code integrates into TablePress.
+* Bugfix: Correctly localize dates in files names of downloaded export files.
+* Bugfix: Fix typos in the code for math formula parsing that could lead to error messages in rare cases.
+* Updated external libraries (DataTables, SimpleXLSX, Build tools).
+* Some internal changes for better stability, translations, and documentation.
+
 = Version 1.13 =
 * Full compatibility with WordPress 5.7.
 * Enhancement: Allow replacing/appending existing tables when importing a ZIP archive of files.
@@ -110,18 +123,10 @@ Recent changes are shown below. For earlier changes, please see the [changelog h
 * Some internal changes for better stability, translations, and documentation.
 * TablePress 1.13 requires WordPress 5.6!
 
-= Version 1.12 =
-* Full compatibility with WordPress 5.5.
-* Enhancement: Add placeholder variables with table and cell information for use in formulas.
-* Bugfix: Properly handle math formulas with numbers in their names in the math parser.
-* Bugfix: Restore proper highlighting of input fields with invalid values in the admin area.
-* Updated external libraries (DataTables, SimpleXLSX, Build tools).
-* Some internal changes for better stability, translations, and documentation.
-
 == Upgrade Notice ==
 
-= 1.13 =
+= 1.14 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
 
-= 1.12 =
+= 1.13 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.
