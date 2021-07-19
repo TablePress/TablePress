@@ -1176,7 +1176,7 @@ jQuery( function( $ ) {
 						width: 320,
 						modal: true,
 						dialogClass: 'wp-dialog',
-						resizable: false
+						closeOnEscape: true
 					} );
 				}
 			},
@@ -1223,7 +1223,8 @@ jQuery( function( $ ) {
 				width: 600,
 				modal: true,
 				dialogClass: 'wp-dialog',
-				resizable: false
+				resizable: false,
+				closeOnEscape: true
 			} );
 			// Fix issue with input fields not being usable (they are immediately losing focus without this) in the wpLink dialog when called through the "Advanced Editor"
 			$id( 'wp-link' ).on( 'focus', 'input', function( event ) {
