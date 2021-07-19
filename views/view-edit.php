@@ -374,8 +374,8 @@ class TablePress_Edit_View extends TablePress_View {
 			<?php _e( 'Combine cells', 'tablepress' ); ?>:&nbsp;
 			<input type="button" class="button" id="span-add-rowspan" value="<?php esc_attr_e( 'in a column (rowspan)', 'tablepress' ); ?>" />
 			<input type="button" class="button" id="span-add-colspan" value="<?php esc_attr_e( 'in a row (colspan)', 'tablepress' ); ?>" />
-			<input type="button" class="button show-help-box" value="<?php esc_attr_e( '?', 'tablepress' ); ?>" title="<?php esc_attr_e( 'Help on combining cells', 'tablepress' ); ?>" />
-			<div class="hidden-container hidden-help-box-container">
+			<input type="button" class="button show-help-box" value="<?php esc_attr_e( '?', 'tablepress' ); ?>" title="<?php esc_attr_e( 'Help on combining cells', 'tablepress' ); ?>" data-help-box="#help-box-combine-cells" />
+			<div id="help-box-combine-cells" class="hidden-container hidden-help-box-container">
 			<?php
 				echo '<p>' . __( 'Table cells can span across more than one column or row.', 'tablepress' ) . '</p>';
 				echo '<p>' . __( 'Combining consecutive cells within the same row is called &#8220;colspanning&#8221;.', 'tablepress' )

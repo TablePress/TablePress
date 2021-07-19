@@ -1169,7 +1169,8 @@ jQuery( function( $ ) {
 				'.show-preview-button': tp.table.preview.trigger,
 				'.save-changes-button': tp.save_changes.trigger,
 				'.show-help-box':		function() {
-					$(this).next().wpdialog( {
+					var helpbox_id = $(this).data( 'help-box' );
+					$( helpbox_id ).wpdialog( {
 						title: $(this).attr( 'title' ),
 						height: 470,
 						width: 320,
