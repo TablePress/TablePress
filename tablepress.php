@@ -4,13 +4,13 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 1.13
+ * @version 1.14
  *
  *
  * Plugin Name: TablePress
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
- * Version: 1.13
+ * Version: 1.14
  * Requires at least: 5.6
  * Requires PHP: 5.6.20
  * Author: Tobias Bäthge
