@@ -9,16 +9,6 @@
 class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 
 	/**
-	 * Initialize TablePress before every test.
-	 *
-	 * @since 1.1.0
-	 */
-	public function setUp() {
-		parent::setUp();
-		TablePress::run();
-	}
-
-	/**
 	 * Test that the TablePress Controller object was initialized.
 	 *
 	 * @since 1.4.0
