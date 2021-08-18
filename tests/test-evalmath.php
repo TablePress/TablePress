@@ -203,10 +203,10 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 */
 	public function test_rand_functions_type() {
 		$result = $this->evalmath->evaluate( 'rand_float()' );
-		$this->assertInternalType( 'float', $result );
+		$this->assertIsFloat( $result );
 
 		$result = $this->evalmath->evaluate( 'rand_int(0,1000)' );
-		$this->assertInternalType( 'int', $result );
+		$this->assertIsInt( $result );
 	}
 
 } // class TablePress_Test_EvalMath
