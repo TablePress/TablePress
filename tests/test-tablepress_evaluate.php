@@ -21,8 +21,8 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public static function setUpBeforeClass() {
-		TablePress_TestCase::setUpBeforeClass();
+	public static function set_up_before_class() {
+		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-evaluate.php';
 	}
 
@@ -31,8 +31,8 @@ class TablePress_Test_TablePress_Evaluate extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$this->evaluate = new TablePress_Evaluate();
 	}
 
