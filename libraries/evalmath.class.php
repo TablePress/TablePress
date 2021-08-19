@@ -336,7 +336,7 @@ class EvalMath {
 				}
 
 				// Did we just close a function?
-				if ( 1 === preg_match( '/^(' . self::$name_pattern . ')\($/', $stack->last( 2 ), $matches ) ) {
+				if ( 1 === preg_match( '/^(' . self::$name_pattern . ')\($/', (string) $stack->last( 2 ), $matches ) ) {
 					// Get the function name.
 					$function_name = $matches[1];
 					// See how many arguments there were (cleverly stored on the stack, thank you).
@@ -386,7 +386,7 @@ class EvalMath {
 					}
 				}
 				// Make sure there was a function.
-				if ( 0 === preg_match( '/^(' . self::$name_pattern . ')\($/', $stack->last( 2 ), $matches ) ) {
+				if ( 0 === preg_match( '/^(' . self::$name_pattern . ')\($/', (string) $stack->last( 2 ), $matches ) ) {
 					return $this->raise_error( 'unexpected_comma' );
 				}
 				// Increment the argument count.
@@ -429,7 +429,7 @@ class EvalMath {
 					return $this->raise_error( 'unexpected_closing_bracket' );
 				}
 				// Did we just close a function?
-				if ( 1 === preg_match( '/^(' . self::$name_pattern . ')\($/', $stack->last( 3 ), $matches ) ) {
+				if ( 1 === preg_match( '/^(' . self::$name_pattern . ')\($/', (string) $stack->last( 3 ), $matches ) ) {
 					$stack->pop(); // (
 					$stack->pop(); // 1
 					$stack->pop(); // $fn
