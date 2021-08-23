@@ -63,7 +63,6 @@ $data['csstidy']['at_rules'] = array(
 	'import'            => 'iv',
 	'namespace'         => 'iv',
 	'media'             => 'at',
-	'supports'          => 'at',
 	'keyframes'         => 'at',
 	'-moz-keyframes'    => 'at',
 	'-o-keyframes'      => 'at',
