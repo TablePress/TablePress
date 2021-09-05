@@ -212,8 +212,8 @@ class CSV_Parser {
 		// At this point, count is equal in all lines, so determine a string to sort priority.
 		$match = ( $almost ) ? 2 : 1;
 		$pref = strpos( $this->preferred_delimiter_chars, $char );
-		$pref = ( false !== $pref ) ? str_pad( $pref, 3, '0', STR_PAD_LEFT ) : '999';
-		return $pref . $match . '.' . ( 99999 - str_pad( $first, 5, '0', STR_PAD_LEFT ) );
+		$pref = ( false !== $pref ) ? str_pad( strval( $pref ), 3, '0', STR_PAD_LEFT ) : '999';
+		return $pref . $match . '.' . ( 99999 - str_pad( strval( $first ), 5, '0', STR_PAD_LEFT ) );
 	}
 
 	/**
