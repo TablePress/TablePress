@@ -46,6 +46,7 @@ class CSV_Parser {
 
 	/**
 	 * The preferred delimiter characters, only used when all filtering method return multiple possible delimiters (happens very rarely).
+	 * There must not be more than 9 characters in the preferred delimiter character list, see `_check_delimiter_count()`.
 	 *
 	 * @since 1.0.0
 	 * @var string
@@ -211,9 +212,12 @@ class CSV_Parser {
 
 		// At this point, count is equal in all lines, so determine a string to sort priority.
 		$match = ( $almost ) ? 2 : 1;
+		// There must not be more than 9 characters in the preferred delimiter character list.
 		$pref = strpos( $this->preferred_delimiter_chars, $char );
-		$pref = ( false !== $pref ) ? str_pad( $pref, 3, '0', STR_PAD_LEFT ) : '999';
-		return $pref . $match . '.' . ( 99999 - str_pad( $first, 5, '0', STR_PAD_LEFT ) );
+		if ( false === $pref ) {
+			$pref = 9;
+		}
+		return $pref . $match . '.' . ( 99999 - $first );
 	}
 
 	/**
