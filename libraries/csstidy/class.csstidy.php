@@ -340,7 +340,7 @@ class TablePress_CSSTidy {
 	 */
 	public function __construct() {
 		include __DIR__ . '/data.inc.php';
-		$this->data = $data;
+		$this->data = [];
 
 		$this->settings['remove_bslash'] = true;
 		$this->settings['compress_colors'] = true;
