@@ -73,7 +73,6 @@ $data['csstidy']['at_rules'] = array(
 	'-webkit-viewport'  => 'at',
 	'-moz-viewport'     => 'at',
 	'-ms-viewport'      => 'at',
-	'supports'          => 'at',
 );
 
 /**
