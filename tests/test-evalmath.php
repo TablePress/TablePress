@@ -189,11 +189,11 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 * @since 1.5.0
 	 */
 	public function test_scientific_notation() {
-		$this->assertEquals( 1e11, $this->evalmath->evaluate( '10e10' ), '', 1e11 * 1e-15 );
-		$this->assertEquals( 1e-9, $this->evalmath->evaluate( '10e-10' ), '', 1e11 * 1e-15 );
-		$this->assertEquals( 1e11, $this->evalmath->evaluate( '10e+10' ), '', 1e11 * 1e-15 );
-		$this->assertEquals( 5e11, $this->evalmath->evaluate( '10e10*5' ), '', 1e11 * 1e-15 );
-		$this->assertEquals( 1e22, $this->evalmath->evaluate( '10e10^2' ), '', 1e22 * 1e-15 );
+		$this->assertEqualsWithDelta( 1e11, $this->evalmath->evaluate( '10e10' ), 1e11 * 1e-15 );
+		$this->assertEqualsWithDelta( 1e-9, $this->evalmath->evaluate( '10e-10' ), 1e11 * 1e-15 );
+		$this->assertEqualsWithDelta( 1e11, $this->evalmath->evaluate( '10e+10' ), 1e11 * 1e-15 );
+		$this->assertEqualsWithDelta( 5e11, $this->evalmath->evaluate( '10e10*5' ), 1e11 * 1e-15 );
+		$this->assertEqualsWithDelta( 1e22, $this->evalmath->evaluate( '10e10^2' ), 1e22 * 1e-15 );
 	}
 
 	/**
