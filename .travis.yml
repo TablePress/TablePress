@@ -38,28 +38,9 @@ before_script:
   - phpenv versions
   - php --version
   - php -m
-  - |
-    # Install the specified version of PHPUnit depending on the PHP version:
-    if [[ 1 == 1 ]]; then
-      case "$TRAVIS_PHP_VERSION" in
-        7.4|7.3|7.2|7.1)
-          echo "Using PHPUnit 7.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^7"
-          ;;
-        7.0)
-          echo "Using PHPUnit 6.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^6"
-          ;;
-        5.6)
-          echo "Using PHPUnit 5.x for PHP version $TRAVIS_PHP_VERSION"
-          composer require "phpunit/phpunit:^5"
-          ;;
-        *)
-          echo "No PHPUnit version handling for PHP version $TRAVIS_PHP_VERSION"
-          exit 1
-          ;;
-      esac
-    fi
+  - composer --version
+  - composer require --dev "phpunit/phpunit:^5.7.21 || ^6.5 || ^7.5" --no-install
+  - composer install
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - git --version
   - locale -a
@@ -67,7 +48,7 @@ before_script:
   - export WP_TESTS_DIR=$WP_DEVELOP_DIR/tests/phpunit/
   - export PLUGIN_SLUG=$(basename $(pwd))
   - export PLUGIN_SLUG_LC=${PLUGIN_SLUG,,}
-  - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
+  - git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
   - cd ..
   - mv "$PLUGIN_SLUG" "$WP_DEVELOP_DIR/src/wp-content/plugins/$PLUGIN_SLUG_LC"
   - cd $WP_DEVELOP_DIR
