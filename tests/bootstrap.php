@@ -14,8 +14,10 @@
 if ( false !== getenv( 'WP_TESTS_DIR' ) ) {
 	$wp_tests_dir = getenv( 'WP_TESTS_DIR' );
 } else {
-	$wp_tests_dir = '../../../../../tests/phpunit';
+	$wp_tests_dir = '../../../../../tests/phpunit/';
 }
+
+define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', dirname( __DIR__ ) . '/vendor/yoast/phpunit-polyfills/' );
 
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array( 'tablepress/tablepress.php' ),
