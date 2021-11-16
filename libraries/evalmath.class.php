@@ -129,7 +129,6 @@ class EvalMath {
 		'number_format'    => array( 1, 2 ),
 		'number_format_eu' => array( 1, 2 ),
 		'sum'              => array( -1 ),
-		'sum_sliced'       => array( -1 ),
 		'counta'           => array( -1 ),
 		'product'          => array( -1 ),
 		'rand_int'         => array( 2 ),
@@ -898,29 +897,6 @@ class EvalMath_Functions {
 	 */
 	public static function sum( ...$args ) {
 		return array_sum( $args );
-	}
-
-	/**
-	 * Calculate the sum of the arguments while ignoring the specified number of lowest and highest elements.
-	 *
-	 * @since 1.15.0
-	 *
-	 * @param int        $num_high Number of highest/biggest elements of the passed values that shall be ignored.
-	 * @param int        $num_low  Number of lowest/smallest elements of the passed values that shall be ignored.
-	 * @param double|int $values   Values for which the sliced sum shall be calculated.
-	 * @return double|int Sum of the passed values, ignoring the highest $num_high and lowest $num_low elements.
-	 */
-	public static function sum_sliced( $num_high, $num_low, ...$values ) {
-		$num_high = (int) $num_high;
-		$num_low = (int) $num_low;
-		if ( 0 === $num_high ) {
-			$num_high = null; // Make array_slice slice until the end of the array.
-		} else {
-			$num_high = - $num_high; // Negative number as array_slice length parameter to count from end.
-		}
-		sort( $values );
-		$values = array_slice( $values, $num_low, $num_high );
-		return array_sum( $values );
 	}
 
 	/**
