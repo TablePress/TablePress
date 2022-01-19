@@ -30,8 +30,8 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 
 		$requested_version = getenv( 'WP_VERSION' );
 
-		// For the "master" branch, get the current version number from the wordpress.org SVN server.
-		if ( 'master' === $requested_version ) {
+		// For the "trunk" branch, get the current version number from the wordpress.org SVN server.
+		if ( 'trunk' === $requested_version ) {
 			// Requests to wordpress.org servers require a User agent to be set.
 			$options = array(
 				'http' => array(

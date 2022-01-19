@@ -57,7 +57,7 @@ jobs:
       fail-fast: false
       matrix:
         wp:
-          - master
+          - trunk
           - '5.9'
           - '5.8'
           - '5.7'
@@ -71,11 +71,17 @@ jobs:
           - '5.6'
         multisite: [ false, true ]
         include:
-          - wp: master
+          - wp: trunk
             php: '8.2'
-          - wp: master
+          - wp: trunk
             php: '8.1'
-          - wp: master
+          - wp: trunk
+            php: '8.0'
+          - wp: '5.9'
+            php: '8.2'
+          - wp: '5.9'
+            php: '8.1'
+          - wp: '5.9'
             php: '8.0'
     env:
       WP_VERSION: ${{ matrix.wp }}
@@ -94,7 +100,7 @@ jobs:
           extensions: mysql
 
       - name: Manually install PHPUnit when running WP <= 5.8, depending on the PHP version
-        if: ${{ matrix.wp != 'master' }}
+        if: ${{ matrix.wp == '5.6' || matrix.wp == '5.7' || matrix.wp == '5.8' }}
         run: composer require --dev "phpunit/phpunit:^5.7.21 || ^6.5 || ^7.5" --no-install
 
       - name: Install Composer dependencies
@@ -137,8 +143,9 @@ jobs:
           WP_TESTS_DIR: ${{ env.WP_DEVELOP_DIR }}/tests/phpunit/
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
+        continue-on-error: ${{ matrix.php == '8.2' }} # WP still runs into dynamic property deprecations.
         run: phpunit --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       # composer.json will have been modified on WP <= 5.8, where PHPUnit is installed.
       - name: Ensure version-controlled files are not modified or deleted
-        run: git diff --exit-code${{ matrix.wp != 'master' && ' -- . ":!composer.json"' || '' }}
+        run: git diff --exit-code${{ ( matrix.wp == '5.6' || matrix.wp == '5.7' || matrix.wp == '5.8' ) && ' -- . ":!composer.json"' || '' }}
