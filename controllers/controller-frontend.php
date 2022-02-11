@@ -409,7 +409,7 @@ JS;
 		/**
 		 * Filter the script/jQuery wrapper code for the DataTables commands calls.
 		 *
-		 * @since 1.14.0
+		 * @since 1.14.1
 		 *
 		 * @param string $js_wrapper Default script/jQuery wrapper code for the DataTables commands calls.
 		 */

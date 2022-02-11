@@ -106,11 +106,24 @@ abstract class TablePress {
 		 */
 		do_action( 'tablepress_run' );
 
+
+        // Default logic to exit early if TablePress doesn't have to be loaded.
+        $should_exit = ( 'wp-login.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) // Login screen
+                       || ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
+                       || ( defined( 'DOING_CRON' ) && DOING_CRON );
+
+        /**
+         * Allow TablePress to load if required
+         *
+         * @since 1.14.1
+         *
+         * @param bool $should_exit Should TablePress Exit Early if it does not have to be loaded
+         */
+        $should_exit = apply_filters( 'tablepress_disable_exit', true );
+
 		// Exit early if TablePress doesn't have to be loaded.
-		if ( ( 'wp-login.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) // Login screen
-			|| ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
-			|| ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
-			return;
+		if ( $should_exit ) {
+            return;
 		}
 
 		// Check if minimum requirements are fulfilled, currently WordPress 5.6.
