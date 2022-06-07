@@ -1067,7 +1067,7 @@ class Spreadsheet_Excel_Reader {
 	 * @param [type] $prop  [description]
 	 * @return [type] [description]
 	 */
-	public function fontProperty( $row, $col, $sheet = 0, $prop ) {
+	public function fontProperty( $row, $col, $sheet = 0, $prop = null ) {
 		$font = $this->fontRecord( $row, $col, $sheet );
 		if ( null !== $font ) {
 			return $font[ $prop ];
