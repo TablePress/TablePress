@@ -7,10 +7,8 @@
  * @since 1.0.0
  */
 
-/* Hour glass cursor, while waiting for AJAX */
-body.wait * {
-	cursor: wait !important;
-}
+/* Import spinner and alert box styling. */
+@import "spinner-alert";
 
 /* container for Table Preview, Advanced Editor, and Help Box dialogs */
 .hidden-container {
@@ -66,31 +64,6 @@ body #wp-link-backdrop {
 }
 #advanced-editor .wp-editor-container {
 	border: none;
-}
-
-/* Spinner/loading animation that is shown during saving/preview preparation */
-.spinner.spinner-save-changes,
-.spinner.spinner-table-preview {
-	float: none;
-	margin: 0 0 0 6px;
-}
-
-/* Margins for dynamically created (inline) .notice messages */
-#tablepress-page div.ajax-alert {
-	margin: -10px 0 15px;
-	transition: opacity 2s 3s;
-}
-#tablepress-page div.ajax-alert.notice-error {
-	transition-delay: 6s;
-}
-#tablepress-page div.ajax-alert p {
-	font-weight: bold;
-}
-#tablepress-page div.ajax-alert pre {
-	margin: -6px 0 0.5em 2px;
-}
-#tablepress-page div.ajax-alert pre + p {
-	display: none;
 }
 
 #tablepress-page #tablepress_edit-table-data {

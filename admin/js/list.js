@@ -89,21 +89,25 @@ $( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
  *
  * @since 1.0.0
  */
-$( '#doaction' ).addEventListener( 'click', ( event ) => {
-	const action = $( '#bulk-action-selector-top' ).value;
-	const num_selected = $( '.tablepress-all-tables tbody input:checked' ).length;
+const bulk_action_dropdown = $( '#doaction' );
+// The bulk action dropdown is only in the DOM if at least one table is shown in the list, thus an existence check is needed.
+if ( bulk_action_dropdown ) {
+	bulk_action_dropdown.addEventListener( 'click', ( event ) => {
+		const action = $( '#bulk-action-selector-top' ).value;
+		const num_selected = $( '.tablepress-all-tables tbody input:checked' ).length;
 
-	// Do nothing if no action or no tables were selected.
-	if ( '-1' === action || 0 === num_selected ) {
-		event.preventDefault();
-		return;
-	}
-
-	// Show AYS prompt when deleting tables.
-	if ( 'delete' === action ) {
-		if ( ! confirm( _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', num_selected, 'tablepress' ) ) ) {
+		// Do nothing if no action or no tables were selected.
+		if ( '-1' === action || 0 === num_selected ) {
 			event.preventDefault();
 			return;
 		}
-	}
-} );
+
+		// Show AYS prompt when deleting tables.
+		if ( 'delete' === action ) {
+			if ( ! confirm( _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', num_selected, 'tablepress' ) ) ) {
+				event.preventDefault();
+				return;
+			}
+		}
+	} );
+}

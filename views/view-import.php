@@ -22,6 +22,14 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Import_View extends TablePress_View {
 
 	/**
+	 * List of WP feature pointers for this view.
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	protected $wp_pointers = array( 'tp20_import_drag_drop_detect_format' );
+
+	/**
 	 * Set up the view with data and do things that are specific for this view.
 	 *
 	 * @since 1.0.0
@@ -65,7 +73,7 @@ class TablePress_Import_View extends TablePress_View {
 	public function textbox_head( array $data, array $box ) {
 		?>
 		<p>
-			<?php _e( 'TablePress can import tables from existing data, like CSV, XLS, or XLSX files from a spreadsheet application (e.g. Excel), HTML files resembling a web page, or its own JSON format.', 'tablepress' ); ?>
+			<?php _e( 'TablePress can import tables from common spreadsheet applications, like XLSX files fom Excel, or CSV, ODS, HTML, and JSON files.', 'tablepress' ); ?>
 		</p>
 		<p>
 			<?php _e( 'To import tables, select and enter the import source in the following form.', 'tablepress' ); ?>
@@ -175,11 +183,30 @@ class TablePress_Import_View extends TablePress_View {
 	</tr>
 	<tr class="top-border">
 		<td class="column-1"></td>
-		<td class="column-2"><input type="hidden" name="import[legacy_import]" value="<?php echo ( 'true' === $data['legacy_import'] ) ? 'true' : 'false'; ?>" /><input type="submit" value="<?php echo esc_attr_x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" name="submit" id="import-submit-button" /></td>
+		<td class="column-2"><input type="hidden" name="import[legacy_import]" value="<?php echo ( 'true' === $data['legacy_import'] ) ? 'true' : 'false'; ?>" /><input type="submit" value="<?php echo esc_attr_x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" id="import-submit-button" /></td>
 	</tr>
 </tbody>
 </table>
 		<?php
+	}
+
+	/**
+	 * Sets the content for the WP feature pointer about the drag and drop import and format detection on the "Import" screen.
+	 *
+	 * @since 1.0.0
+	 */
+	public function wp_pointer_tp20_import_drag_drop_detect_format() {
+		$content  = '<h3>' . __( 'TablePress feature: Drag and Drop Import with Format Detection', 'tablepress' ) . '</h3>';
+		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . __( 'The import of tables is now even more powerful! You can simply drag and drop your files into this area and TablePress will automatically detect the file format!', 'tablepress' ) . '</p>';
+
+		$this->admin_page->print_wp_pointer_js(
+			'tp20_import_drag_drop_detect_format',
+			'#tables-import-file-upload-dropzone span',
+			array(
+				'content'  => $content,
+				'position' => array( 'edge' => 'bottom', 'align' => 'center' ),
+			)
+		);
 	}
 
 } // class TablePress_Import_View

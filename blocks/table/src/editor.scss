@@ -10,34 +10,53 @@
 .wp-block-tablepress-table {
 	$parent: &;
 
-	/* Limit size of shown table in the block editor. */
-	.render-wrapper {
+	/* Limit the height of server-side render preview in the block editor. */
+	> .render-wrapper {
 		overflow: scroll;
 		min-height: 64px;
 		max-height: 400px;
+
+		/* Prevent interaction with elements like links inside tables, similar to the `Disabled` component from Gutenberg. */
+		> .tablepress {
+			pointer-events: none;
+		}
+	}
+
+	/* Hide the server-side render wrapper while it's being refreshed. */
+	> div > div > .render-wrapper {
+		display: none;
+	}
+
+	/* Move the loading spinner inside the table overlay. */
+	> div > div {
+		margin-top: 8px !important; /* The !important flag is necessary to overwrite an inline style. */
 	}
 
 	/* Show an overlay on top of the table, to indicate that it's not fully shown. */
 	@at-root .table-overlay {
 		#{$parent} & {
-			position: absolute;
 			box-sizing: border-box;
 			top: 0;
 			width: 100%;
 			height: 100%;
 			box-shadow: inset 0 0 50px #cccccc;
-			background-color: rgba(255, 255, 255, 0.3);
-			padding: 1em;
+			background-color: rgba(255, 255, 255, 0.5);
+			padding: 2em;
 			font-weight: bold;
 
 			/* Hide the table overlay in the block preview. */
-			.block-editor-block-preview__container & {
+			.block-editor-block-preview__content-iframe & {
 				display: none;
 			}
 		}
 
-		/* Hide the table overlay when it's hovered. */
-		#{$parent}:hover & {
+		/* Position the table overlay above the table preview once it's loaded. */
+		#{$parent} .render-wrapper + & {
+			position: absolute;
+		}
+
+		/* Hide the table overlay when it's hovered while a table preview is shown. */
+		#{$parent}:hover .render-wrapper + & {
 			display: none;
 		}
 	}

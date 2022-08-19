@@ -188,7 +188,7 @@ class TablePress_CSSTidy_print {
 	/**
 	 * Returns the formatted CSS code to make a complete webpage.
 	 *
-	 * @since 1.4
+	 * @since 1.0
 	 *
 	 * @param string  $doctype     Optional. Shorthand for the document type.
 	 * @param bool    $externalcss Optional. Indicates whether styles to be attached internally or as an external stylesheet.
@@ -233,7 +233,7 @@ class TablePress_CSSTidy_print {
 	/**
 	 * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain.
 	 *
-	 * @since 2.0
+	 * @since 1.0
 	 *
 	 * @param bool   $plain         Optional. Plain text or not.
 	 * @param string $default_media Optional. Default @media to add to selectors without any @media.

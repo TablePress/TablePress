@@ -45,8 +45,6 @@ class TablePress_Export_View extends TablePress_View {
 		} else {
 			$this->admin_page->enqueue_script( 'export' );
 			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_export_form' ), 'normal' );
-			$this->data['submit_button_caption'] = _x( 'Download Export File', 'button', 'tablepress' );
-			$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
 		}
 	}
 
@@ -171,7 +169,7 @@ class TablePress_Export_View extends TablePress_View {
 			</select> <span id="tables-export-csv-delimiter-description" class="description hide-if-js"><?php _e( '(Only needed for CSV export.)', 'tablepress' ); ?></span>
 		</td>
 	</tr>
-	<tr>
+	<tr class="bottom-border">
 		<th class="column-1" scope="row"><?php _e( 'ZIP file', 'tablepress' ); ?>:</th>
 		<td class="column-2">
 		<?php
@@ -185,6 +183,10 @@ class TablePress_Export_View extends TablePress_View {
 		}
 		?>
 		</td>
+	</tr>
+	<tr class="top-border">
+		<td class="column-1"></td>
+		<td class="column-2"><input type="submit" value="<?php echo esc_attr_x( 'Download Export File', 'button', 'tablepress' ); ?>" class="button button-primary button-large" /></td>
 	</tr>
 </tbody>
 </table>

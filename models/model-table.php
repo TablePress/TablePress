@@ -617,23 +617,74 @@ class TablePress_Table_Model extends TablePress_Model {
 			return;
 		}
 
-		// W3 Total Cache.
-		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
-			w3tc_pgcache_flush();
+		// Common cache flush callback.
+		$cache_flush_callbacks = array(
+			array( 'Breeze_PurgeCache', 'breeze_cache_flush' ), // Breeze.
+			array( 'comet_cache', 'clear' ), // Comet Cache.
+			'pantheon_wp_clear_edge_all', // Pantheon.
+			'sg_cachepress_purge_cache', // SG Optimizer.
+			array( 'Swift_Performance_Cache', 'clear_all_cache' ), // Swift Performance.
+			'w3tc_pgcache_flush', // W3 Total Cache.
+			array( 'WpeCommon', 'purge_memcached' ), // WP Engine.
+			array( 'WpeCommon', 'clear_maxcdn_cache' ), // WP Engine.
+			array( 'WpeCommon', 'purge_varnish_cache' ), // WP Engine.
+			'wpfc_clear_all_cache', // WP Fastest Cache.
+			'rocket_clean_domain', // WP Rocket.
+			'wp_cache_clear_cache', // WP Super Cache.
+			array( 'zencache', 'clear' ), // Zen Cache.
+		);
+		foreach ( $cache_flush_callbacks as $cache_flush_callback ) {
+			if ( is_callable( $cache_flush_callback ) ) {
+				call_user_func( $cache_flush_callback );
+			}
 		}
-		// WP Super Cache.
-		if ( function_exists( 'wp_cache_clear_cache' ) ) {
-			wp_cache_clear_cache();
+
+		// Common cache flush hooks.
+		$cache_flush_hooks = array(
+			'ce_clear_cache', // Cache Enabler.
+			'cachify_flush_cache', // Cachify.
+			'autoptimize_action_cachepurged', // Hyper Cache.
+		);
+		foreach ( $cache_flush_hooks as $cache_flush_hook ) {
+			do_action( $cache_flush_hook );
 		}
-		// Cachify.
-		do_action( 'cachify_flush_cache' );
-		// Quick Cache.
-		if ( isset( $GLOBALS['quick_cache'] ) && method_exists( $GLOBALS['quick_cache'], 'clear_cache' ) ) {
-			$GLOBALS['quick_cache']->clear_cache();
+
+		// Kinsta.
+		if ( isset( $GLOBALS['kinsta_cache'] ) && ! empty( $GLOBALS['kinsta_cache']->kinsta_cache_purge ) && is_callable( array( $GLOBALS['kinsta_cache']->kinsta_cache_purge, 'purge_complete_caches' ) ) ) {
+			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches();
+		}
+		// LiteSpeed Cache.
+		if ( is_callable( array( 'LiteSpeed_Cache_Tags', 'add_purge_tag' ) ) ) {
+			LiteSpeed_Cache_Tags::add_purge_tag( '*' );
+		}
+		// Pagely.
+		if ( class_exists( 'PagelyCachePurge' ) ) {
+			$_pagely = new PagelyCachePurge();
+			if ( is_callable( array( $_pagely, 'purgeAll' ) ) ) {
+				$_pagely->purgeAll();
+			}
+		}
+		// Pressidum.
+		if ( is_callable( array( 'Ninukis_Plugin', 'get_instance' ) ) ) {
+			$_pressidum = Ninukis_Plugin::get_instance();
+			if ( is_callable( array( $_pressidum, 'purgeAllCaches' ) ) ) {
+				$_pressidum->purgeAllCaches();
+			}
+		}
+		// Savvii.
+		if ( defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' ) ) {
+			$_savvii = new \Savvii\CacheFlusherPlugin();
+			if ( is_callable( array( $_savvii, 'domainflush' ) ) ) {
+				$_savvii->domainflush();
+			}
 		}
 		// WP Fastest Cache.
-		if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
+		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
 			$GLOBALS['wp_fastest_cache']->deleteCache();
+		}
+		// WP-Optimize.
+		if ( function_exists( 'WP_Optimize' ) ) {
+			WP_Optimize()->get_page_cache()->purge();
 		}
 	}
 

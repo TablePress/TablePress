@@ -47,14 +47,14 @@ module.exports = function ( grunt ) {
 					'!admin/js/build/*.js',
 					'!blocks/**/build/index.js',
 					// Exclude external libraries and scripts from jshint checking.
-					'!node_modules/**/*',
-					'!vendor/**/*',
-					'!/libraries/vendor/**/*',
-					'!/libraries/composer/**/*',
-					'!freemius/**/*',
-					'!js/jquery.datatables.min.js',
 					'!admin/js/jspreadsheet.js',
 					'!admin/js/jsuites.js',
+					'!freemius/**/*',
+					'!js/jquery.datatables.min.js',
+					'!node_modules/**/*',
+					'!libraries/composer/**/*',
+					'!libraries/vendor/**/*',
+					'!vendor/**/*',
 				],
 			},
 			changed: {
@@ -70,11 +70,11 @@ module.exports = function ( grunt ) {
 					// Explicitly add hidden files.
 					'.stylelintrc.json',
 					// Exclude external JSON files from jsonlint checking.
+					'!freemius/**/*',
+					'!libraries/composer/**/*',
+					'!libraries/vendor/**/*',
 					'!node_modules/**/*',
 					'!vendor/**/*',
-					'!/libraries/vendor/**/*',
-					'!/libraries/composer/**/*',
-					'!freemius/**/*',
 				],
 			},
 			changed: {
@@ -96,17 +96,17 @@ module.exports = function ( grunt ) {
 					'**/*.scss',
 					'**/*.css',
 					'!admin/css/build/*.css',
-					'!css/build/*.css',
 					'!blocks/**/build/*.css',
+					'!css/build/*.css',
 					// Exclude .scss files that use features that postcss does not understand.
 					'!blocks/table/src/editor.scss',
 					'!css/_default-datatables.scss',
 					// Exclude external libraries from autoprefixing and csslint checking.
+					'!freemius/**/*',
+					'!libraries/composer/**/*',
+					'!libraries/vendor/**/*',
 					'!node_modules/**/*',
 					'!vendor/**/*',
-					'!/libraries/vendor/**/*',
-					'!/libraries/composer/**/*',
-					'!freemius/**/*',
 				],
 			},
 			changed: {
@@ -135,12 +135,14 @@ module.exports = function ( grunt ) {
 				src: [
 					'<%= postcss.all.src %>',
 					// Exclude .scss files that use features that csslint does not understand.
+					'!admin/css/codemirror.scss',
+					'!admin/css/edit.scss',
+					'!admin/css/import.scss',
+					'!admin/css/_spinner-alert.scss',
 					'!css/default.scss',
 					'!css/default-rtl.scss',
 					'!css/_default-core.scss',
 					'!css/_default-datatables.scss',
-					'!admin/css/codemirror.scss',
-					'!admin/css/import.scss',
 					// Exclude external libraries from csslint checking.
 					'!admin/css/jspreadsheet.css',
 					'!admin/css/jsuites.css',

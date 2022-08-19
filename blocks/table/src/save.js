@@ -28,6 +28,7 @@ export default function save( { attributes: { id = '', parameters = '' } } ) {
 		return;
 	}
 
+	parameters = parameters.trim();
 	if ( '' !== parameters ) {
 		parameters += ' ';
 	}

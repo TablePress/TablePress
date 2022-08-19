@@ -14,11 +14,17 @@ import { __, sprintf } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { useBlockProps, InspectorControls, InspectorAdvancedControls } from '@wordpress/block-editor';
 import { ComboboxControl, ExternalLink, Icon, PanelBody, Placeholder, TextControl } from '@wordpress/components';
+import shortcode from '@wordpress/shortcode';
 
 /**
  * Get the block name from the block.json.
  */
 import block from '../block.json';
+
+/**
+ * Internal dependencies.
+ */
+import { shortcode_attrs_to_string } from './_common-functions';
 
 /**
  * Load CSS code that only applies inside the block editor.
@@ -32,6 +38,18 @@ const ComboboxControl_options = Object.entries( tp.tables ).map( ( [ id, name ] 
 		label: sprintf( __( 'ID %1$s: “%2$s”', 'tablepress' ), id, name ),
 	};
 } );
+
+/**
+ * Custom component for the "Manage your tables." link.
+ */
+const ManageTablesLink = function() {
+	return (
+		'' !== tp.url &&
+			<ExternalLink href={ tp.url }>
+				{ __( 'Manage your tables.', 'tablepress' ) }
+			</ExternalLink>
+	);
+}
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -49,35 +67,35 @@ export default function TablePressTableEdit( { attributes, setAttributes } ) {
 	if ( attributes.id && tp.tables.hasOwnProperty( attributes.id ) ) {
 		blockMarkup = (
 			<div { ...blockProps }>
-				<ServerSideRender
-					block={ block.name }
-					attributes={ attributes }
-					className="render-wrapper"
-				/>
+				{ tp.load_block_preview &&
+					<ServerSideRender
+						block={ block.name }
+						attributes={ attributes }
+						className="render-wrapper"
+					/>
+				}
 				<div className="table-overlay">
 					{ sprintf( __( 'TablePress table %1$s: “%2$s”', 'tablepress' ), attributes.id, tp.tables[ attributes.id ] ) }
 				</div>
 			</div>
 		);
 	} else {
-		// Show an error message if a table could not be found (e.g. after a table was deleted).
-		let message_not_found = '';
-		if ( attributes.id ) { // The tp.tables.hasOwnProperty( attributes.id ) check happens above.
-			message_not_found = sprintf( __( 'There is a problem: The TablePress table with the ID “%1$s” could not be found.', 'tablepress' ), attributes.id ) + ' ';
-		}
-
 		blockMarkup = (
 			<div { ...blockProps }>
 				<Placeholder
 					icon={ <Icon icon="list-view" /> }
 					label={ __( 'TablePress table', 'tablepress' ) }
-					instructions={ message_not_found + __( 'Select the TablePress table that you want to embed in the Settings sidebar.', 'tablepress' ) }
+					instructions={
+						<>
+							{ /* Show an error message if a table could not be found (e.g. after a table was deleted).
+							     The tp.tables.hasOwnProperty( attributes.id ) check happens above.*/ }
+							{ attributes.id && sprintf( __( 'There is a problem: The TablePress table with the ID “%1$s” could not be found.', 'tablepress' ), attributes.id ) + ' ' }
+
+							{ 0 < ComboboxControl_options.length ? __( 'Select the TablePress table that you want to embed in the Settings sidebar.', 'tablepress' ) : __( 'There are no TablePress tables on this site yet.', 'tablepress' ) }
+						</>
+					}
 				>
-					{ ( '' !== tp.url ) && (
-						<ExternalLink href={ tp.url }>
-							{ __( 'Manage your tables.', 'tablepress' ) }
-						</ExternalLink>
-					) }
+					<ManageTablesLink />
 				</Placeholder>
 			</div>
 		);
@@ -89,43 +107,59 @@ export default function TablePressTableEdit( { attributes, setAttributes } ) {
 				<PanelBody
 					opened={ true }
 				>
-					<ComboboxControl
-						label={ __( 'Table:', 'tablepress' ) }
-						help={
-							<>
-								{ __( 'Select the TablePress table that you want to embed.', 'tablepress' ) }
-								{ ( '' !== tp.url ) && ' ' }
-								{ ( '' !== tp.url ) && (
-									<ExternalLink href={ tp.url }>
-										{ __( 'Manage your tables.', 'tablepress' ) }
-									</ExternalLink>
-								) }
-							</>
-						}
-						value={ attributes.id }
-						options={ ComboboxControl_options }
-						onChange={ ( id ) => {
-							id ??= '';
-							setAttributes( { id: id.replace( /[^0-9a-zA-Z-_]/g, '' ) } );
-						} }
-					/>
+					{ 0 < ComboboxControl_options.length
+						?
+						<ComboboxControl
+							label={ __( 'Table:', 'tablepress' ) }
+							help={
+								<>
+									{ __( 'Select the TablePress table that you want to embed.', 'tablepress' ) }
+									{ '' !== tp.url && ' ' }
+									<ManageTablesLink />
+								</>
+							}
+							value={ attributes.id }
+							options={ ComboboxControl_options }
+							onChange={ ( id ) => {
+								id ??= '';
+								setAttributes( { id: id.replace( /[^0-9a-zA-Z-_]/g, '' ) } );
+							} }
+						/>
+						:
+						<>
+							{ __( 'There are no TablePress tables on this site yet.', 'tablepress' ) }
+							{ '' !== tp.url && ' ' }
+							<ManageTablesLink />
+						</>
+					}
 				</PanelBody>
 			</InspectorControls>
-			<InspectorAdvancedControls>
-				<TextControl
-					label={ __( 'Configuration parameters:', 'tablepress' ) }
-					help={ __( 'These additional parameters can be used to modify specific table features.', 'tablepress' ) + ' ' + __( 'See the TablePress Documentation for more information.', 'tablepress' ) }
-					value={ attributes.parameters }
-					onChange={ ( parameters ) => setAttributes( { parameters } ) }
-				/>
-			</InspectorAdvancedControls>
+			{ attributes.id && tp.tables.hasOwnProperty( attributes.id ) &&
+				<InspectorAdvancedControls>
+					<TextControl
+						label={ __( 'Configuration parameters:', 'tablepress' ) }
+						help={ __( 'These additional parameters can be used to modify specific table features.', 'tablepress' ) + ' ' + __( 'See the TablePress Documentation for more information.', 'tablepress' ) }
+						value={ attributes.parameters }
+						onChange={ ( parameters ) => {
+							parameters = shortcode.replace(
+								tp.table.shortcode,
+								parameters,
+								( { attrs: { named: { id, ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } } ) => { // eslint-disable-line no-unused-vars
+									return ' ' + shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs ) + ' '; // Add spaces around replacement text to have separation to possibly already existing parameters.
+								}
+							);
+							setAttributes( { parameters } );
+						} }
+					/>
+				</InspectorAdvancedControls>
+			}
 		</>
 	);
 
 	return (
 		<>
-			{blockMarkup}
-			{sidebarMarkup}
+			{ blockMarkup }
+			{ sidebarMarkup}
 		</>
 	);
 }

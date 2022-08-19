@@ -40,11 +40,6 @@ class TablePress_List_View extends TablePress_View {
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
-		// Don't load TablePress assets on the Freemius opt-in/activation screen.
-		if ( tb_tp_fs()->is_activation_mode() && tb_tp_fs()->is_activation_page() ) {
-			return;
-		}
-
 		add_thickbox(); // For the table preview.
 		$this->admin_page->enqueue_script( 'list' );
 
@@ -531,6 +526,23 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Generates and display row actions links for the list table.
+	 *
+	 * The "Table Name" column already gets these, so return an empty string here to prevent them from being duplicated.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param object|array $item        The item being acted upon.
+	 * @param string       $column_name Current column name.
+	 * @param string       $primary     Primary column name.
+	 * @return string The row actions HTML, or an empty string
+	 *                if the current column is not the primary column.
+	 */
+	protected function handle_row_actions( $item, $column_name, $primary ) {
+		return '';
+	}
+
+	/**
 	 * Get a list (name => title) bulk actions that are available.
 	 *
 	 * @since 1.0.0
@@ -618,28 +630,51 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	/**
 	 * Generate the elements above or below the table (like bulk actions and pagination).
 	 *
-	 * In comparison with parent class, this has modified HTML (no nonce field), and a check whether there are items.
+	 * In comparison with parent class, this has no nonce field in its HTML code and a one-time filter around the pagination call, to change a string.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $which Location ("top" or "bottom").
 	 */
 	protected function display_tablenav( $which ) {
-		if ( ! $this->has_items() ) {
-			return;
-		}
 		?>
-		<div class="tablenav <?php echo esc_attr( $which ); ?>">
-			<div class="alignleft actions">
-				<?php $this->bulk_actions( $which ); ?>
-			</div>
-		<?php
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
-		?>
-			<br class="clear" />
+	<div class="tablenav <?php echo esc_attr( $which ); ?>">
+
+		<?php if ( $this->has_items() ) : ?>
+		<div class="alignleft actions bulkactions">
+			<?php $this->bulk_actions( $which ); ?>
 		</div>
+			<?php
+		endif;
+		$this->extra_tablenav( $which );
+
+		add_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
+		$this->pagination( $which );
+		add_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
+		?>
+
+		<br class="clear" />
+	</div>
 		<?php
+	}
+
+	/**
+	 * Replaces the "%s item/%s items" string in the pagination with "%s table/%s tables".
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $translation The current translation of a singular or plural form.
+	 * @param string $single      The text to be used if the number is singular.
+	 * @param string $plural      The text to be used if the number is plural.
+	 * @param int    $number      The number to compare against to use either the singular or plural form.
+	 * @param string $domain      Text domain. Defaults to 'default'.
+	 * @return string The changed translation.
+	 */
+	public function change_pagination_items_string( $translation, $single, $plural, $number, $domain ) {
+		if ( '%s item' === $single && '%s items' === $plural ) {
+			$translation = _n( '%s table', '%s tables', $number, 'tablepress' );
+		}
+		return $translation;
 	}
 
 	/**
@@ -651,7 +686,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @return bool Whether the search term was found or not.
 	 */
 	protected function _search_callback( $item ) {
-		static $term, $json_encoded_term;
+		static $term;
+		static $json_encoded_term;
 		if ( is_null( $term ) || is_null( $json_encoded_term ) ) {
 			$term = wp_unslash( $_GET['s'] );
 			$json_encoded_term = substr( wp_json_encode( $term, TABLEPRESS_JSON_OPTIONS ), 1, -1 );

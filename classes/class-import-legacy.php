@@ -264,10 +264,10 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 */
 	protected function import_xlsx() {
 		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
-		$xlsx_file = SimpleXLSX::parse( $this->import_data, true );
+		$xlsx_file = \Shuchkin\SimpleXLSX::parse( $this->import_data, true );
 
 		if ( ! $xlsx_file ) {
-			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . '</strong><br /><br />' . SimpleXLSX::parseError() . '<br />';
+			$output = '<strong>' . __( 'The imported file contains errors:', 'tablepress' ) . '</strong><br /><br />' . \Shuchkin\SimpleXLSX::parseError() . '<br />';
 			wp_die( $output, 'Import Error', array( 'response' => 200, 'back_link' => true ) );
 		}
 

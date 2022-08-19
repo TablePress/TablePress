@@ -69,13 +69,13 @@
 	<exclude-pattern>/admin/js/*\.asset\.php</exclude-pattern>
 
 	<!-- Directories and third party library exclusions. -->
-	<exclude-pattern>/node_modules/*</exclude-pattern>
-	<exclude-pattern>/vendor/*</exclude-pattern>
-	<exclude-pattern>/libraries/vendor/*</exclude-pattern>
-	<exclude-pattern>/libraries/composer/*</exclude-pattern>
-	<exclude-pattern>/libraries/autoload.php</exclude-pattern>
-	<exclude-pattern>/freemius/*</exclude-pattern>
-	<exclude-pattern>/libraries/simplexlsx\.class\.php</exclude-pattern>
-	<exclude-pattern>/libraries/excel-reader\.class\.php</exclude-pattern>
-	<exclude-pattern>/libraries/csstidy/*\.php</exclude-pattern>
+	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
+	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/autoload.php</exclude-pattern>
+	<exclude-pattern type="relative">^freemius/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/csstidy/*\.php</exclude-pattern>
 </ruleset>

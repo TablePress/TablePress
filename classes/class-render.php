@@ -215,11 +215,11 @@ class TablePress_Render {
 					$range_dash = strpos( $value, '-' );
 					if ( false !== $range_dash ) {
 						unset( $this->render_options[ "{$action}_{$element}" ][ $key ] );
-						$start = substr( $value, 0, $range_dash );
+						$start = trim( substr( $value, 0, $range_dash ) );
 						if ( ! is_numeric( $start ) ) {
 							$start = TablePress::letter_to_number( $start );
 						}
-						$end = substr( $value, $range_dash + 1 );
+						$end = trim( substr( $value, $range_dash + 1 ) );
 						if ( ! is_numeric( $end ) ) {
 							$end = TablePress::letter_to_number( $end );
 						}
@@ -233,6 +233,7 @@ class TablePress_Render {
 				 * as rows/columns are indexed from 0 internally, but from 1 externally.
 				 */
 				foreach ( $this->render_options[ "{$action}_{$element}" ] as $key => $value ) {
+					$value = trim( $value );
 					if ( ! is_numeric( $value ) ) {
 						$value = TablePress::letter_to_number( $value );
 					}

@@ -1282,7 +1282,7 @@ $table_id_field.addEventListener( 'input', tp.callbacks.table_id.sanitize );
 $table_id_field.addEventListener( 'change', tp.callbacks.table_id.change );
 
 // Register callback for inserting a link into a cell after it has been constructed in the wpLink dialog.
-jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_helper_textarea ); // This must use jQuery, as wpLink triggers jQuery events, which can not be observer by native JS listeners.
+jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_helper_textarea ); // This must use jQuery, as wpLink triggers jQuery events, which can not be observed by native JS listeners.
 
 // Register change callbacks for the table name, description, and options.
 [ '#table-name', '#table-description' ].forEach( ( $field_id ) => $( $field_id ).addEventListener( 'change', tp.helpers.unsaved_changes.set ) );

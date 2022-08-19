@@ -144,11 +144,6 @@ abstract class TablePress_View {
 		$this->action = $action;
 		$this->data = $data;
 
-		// Don't load TablePress assets on the Freemius opt-in/activation screen.
-		if ( tb_tp_fs()->is_activation_mode() && tb_tp_fs()->is_activation_page() ) {
-			return;
-		}
-
 		// Set page title.
 		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' );
 
@@ -402,7 +397,7 @@ abstract class TablePress_View {
 				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
 				$active = ( $action === $this->action ) ? ' nav-tab-active' : '';
 				$separator = ( 'options' === $action ) ? ' nav-tab-separator' : ''; // Make the "Plugin Options" entry a separator, for some spacing.
-				echo "<a class=\"nav-tab{$active}{$separator}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
+				echo "<a id=\"tablepress-nav-tab-{$action}\" class=\"nav-tab{$active}{$separator}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
 			}
 			?>
 		</div><hr class="wp-header-end" />
@@ -420,7 +415,7 @@ abstract class TablePress_View {
 	protected function textbox_submit_button( array $data, array $box ) {
 		$caption = isset( $data['submit_button_caption'] ) ? $data['submit_button_caption'] : __( 'Save Changes', 'tablepress' );
 		?>
-		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary button-large" name="submit" /></p>
+		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary button-large" /></p>
 		<?php
 	}
 

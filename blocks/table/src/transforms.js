@@ -21,17 +21,9 @@ import shortcode from '@wordpress/shortcode';
 import block from '../block.json';
 
 /**
- * Converts a Shortcode attributes object to a string.
- *
- * @param {Object} attrs The Shortcode attributes.
- * @return {string} The attributes as a key=value string.
+ * Internal dependencies.
  */
-const shortcode_attrs_to_string = ( attrs ) => {
-	return Object.entries( attrs ).map( ( [ attribute, value ] ) => {
-		const enclose = value.includes( '"' ) ? '\'' : '"'; // Use ' as delimiter if value contains ".
-		return `${ attribute }=${ enclose }${ value }${ enclose }`;
-	} ).join( ' ' );
-};
+import { shortcode_attrs_to_string } from './_common-functions';
 
 const transforms = {
 	from: [
@@ -48,8 +40,8 @@ const transforms = {
 				},
 				parameters: {
 					type: 'string',
-					shortcode: ( { named: { id, ...attrs } } ) => { // eslint-disable-line no-unused-vars
-						return shortcode_attrs_to_string( attrs );
+					shortcode: ( { named: { id, ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } ) => { // eslint-disable-line no-unused-vars
+						return shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs );
 					},
 				},
 			},
@@ -60,8 +52,8 @@ const transforms = {
 			type: 'enter',
 			regExp: shortcode.regexp( tp.table.shortcode ),
 			transform: ( { content } ) => {
-				let { id = '', ...parameters } = shortcode.next( tp.table.shortcode, content ).shortcode.attrs.named;
-				parameters = shortcode_attrs_to_string( parameters );
+				const { named: { id = '', ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
+				const parameters = shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs );
 				return createBlock( block.name, { id, parameters } );
 			},
 		},
@@ -71,8 +63,8 @@ const transforms = {
 			type: 'block',
 			blocks: [ 'core/shortcode' ],
 			transform: ( { text: content } ) => {
-				let { id = '', ...parameters } = shortcode.next( tp.table.shortcode, content ).shortcode.attrs.named;
-				parameters = shortcode_attrs_to_string( parameters );
+				const { named: { id = '', ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
+				const parameters = shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs );
 				return createBlock( block.name, { id, parameters } );
 			},
 			isMatch: ( { text } ) => {
@@ -88,6 +80,7 @@ const transforms = {
 			type: 'block',
 			blocks: [ 'core/shortcode' ],
 			transform: ( { id, parameters } ) => {
+				parameters = parameters.trim();
 				if ( '' !== parameters ) {
 					parameters += ' ';
 				}

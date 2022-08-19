@@ -91,6 +91,39 @@ You may use it free of charge for any purpose.
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.0 =
+
+**Completely new “Edit” screen for tables:**
+
+* TablePress now has an even more spreadsheet-like user interface that can much better cope with large tables.
+* Editing will be much faster: A right-click context menu allows for quick access to the table manipulation tools.
+
+**Block editor support instead of having to deal with Shortcodes:**
+
+* The new “TablePress table” block will give you a preview of the table when inserting it into a post or page, for a more intuitive embedding of tables. You won’t even have to remember the table ID, as a table search is included.
+* And if you want, converting existing Shortcodes is just a few clicks away.
+
+**Importing tables is easier and more powerful than ever:**
+
+* Simply drag&drop files, even multiple files at once, even of different formats!
+* No more need to choose the import file format: The auto detection will know if it’s importing a CSV, Excel, HTML, or JSON file.
+* In addition, more file formats are recognized, like the LibreOffice ODS format.
+* The Excel import is much more powerful: For example, clickable links and simple styling will be recognized and imported!
+* The Replace/Append select box also has a live-search with autocomplete now, which makes finding the right table much faster.
+
+**New formula calculation engine:**
+
+* TablePress now understands many more formulas, just as you know them from Excel.
+* The formulas even support text strings now, which enables many new ways of automatically creating table content.
+
+**Behind the scenes:**
+
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Updated external libraries to benefit from enhancements and bug fixes.
+* Automated code compatibility checks and build tools simplify simple chores for easier development.
+* Support for PHP 8.1.
+* TablePress 2.0 requires WordPress 5.8.
+
 = Version 1.14 =
 * Full compatibility with WordPress 5.8.
 * Enhancement: Make behavior of bulk action selectors on the "All tables" screen more user-friendly.
@@ -104,21 +137,10 @@ Recent changes are shown below. For earlier changes, please see the [changelog h
 * Updated external libraries (DataTables, SimpleXLSX, Build tools).
 * Some internal changes for better stability, translations, and documentation.
 
-= Version 1.13 =
-* Full compatibility with WordPress 5.7.
-* Enhancement: Allow replacing/appending existing tables when importing a ZIP archive of files.
-* Enhancement: Add ARIA labels to the table when its name or description is printed.
-* Enhancement: Update list of allowed CSS features in "Custom CSS".
-* Enhancement: Increase compatibility with PHP 8 and jQuery 3.x by no longer using deprecated functions.
-* Bugfix: Properly update cell references in formulas when one is moved, on the "Edit" screen.
-* Updated external libraries (DataTables, SimpleXLSX, CSSTidy, Build tools).
-* Some internal changes for better stability, translations, and documentation.
-* TablePress 1.13 requires WordPress 5.6!
-
 == Upgrade Notice ==
 
-= 1.14 =
-This update is a stability, maintenance, and compatibility release. Updating is recommended.
+= 2.0 =
+This update is a major feature update that brings many cool and new things. Updating is highly recommended.
 
-= 1.13 =
+= 1.14 =
 This update is a stability, maintenance, and compatibility release. Updating is recommended.

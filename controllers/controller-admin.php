@@ -59,7 +59,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu_entry' ) );
 		add_action( 'admin_init', array( $this, 'add_admin_actions' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+		add_action( 'enqueue_block_editor_assets', array( $this, 'add_block_editor_js' ) );
 	}
 
 	/**
@@ -160,17 +161,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Loads additional JavaScript code into certain admin pages.
+	 * Loads additional JavaScript code for the TablePress table block.
 	 *
 	 * @since 2.0.0
 	 */
-	public function admin_enqueue_scripts() {
+	public function add_block_editor_js() {
 		// Add table information for the Block Editor to the page.
-		if ( get_current_screen()->is_block_editor() ) {
-			$handle = generate_block_asset_handle( 'tablepress/table', 'editorScript' );
-			$data = $this->get_block_editor_data();
-			wp_add_inline_script( $handle, $data, 'before' );
-		}
+		$handle = generate_block_asset_handle( 'tablepress/table', 'editorScript' );
+		$data = $this->get_block_editor_data();
+		wp_add_inline_script( $handle, $data, 'before' );
 	}
 
 	/**
@@ -192,11 +191,36 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 			$tables[ $table_id ] = esc_html( $table['name'] );
 		}
+
+		/**
+		 * Filters the list of table IDs and names that is passed to the block editor, and is then used in the dropdown of the TablePress table block.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $tables List of table names, the table ID is the array key.
+		 */
+		$tables = apply_filters( 'tablepress_block_editor_tables_list', $tables );
+
 		$tables = wp_json_encode( $tables, TABLEPRESS_JSON_OPTIONS );
 		// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
 		$tables = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $tables );
 
 		$shortcode = esc_js( TablePress::$shortcode );
+
+		$template = TablePress::$model_table->get_table_template();
+		$template = wp_json_encode( $template['options'], TABLEPRESS_JSON_OPTIONS );
+		// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
+		$template = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $template );
+
+		/**
+		 * Filters whether the table block preview should be loaded via a <ServerSideRender> in the block editor.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $load_block_preview Whether the table block preview should be loaded.
+		 */
+		$load_block_preview = apply_filters( 'tablepress_show_block_editor_preview', true );
+		$load_block_preview = (bool) $load_block_preview ? 'true' : 'false';
 
 		$url = '';
 		if ( current_user_can( 'tablepress_list_tables' ) ) {
@@ -207,8 +231,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};
 tp.url = '{$url}';
+tp.load_block_preview = {$load_block_preview};
 tp.table = {};
 tp.table.shortcode = '{$shortcode}';
+tp.table.template = JSON.parse( '{$template}' );
 tp.tables = JSON.parse( '{$tables}' );
 JS;
 	}
@@ -222,6 +248,11 @@ JS;
 	 */
 	public function add_wp_admin_bar_new_content_menu_entry( $wp_admin_bar ) {
 		if ( ! current_user_can( 'tablepress_add_tables' ) ) {
+			return;
+		}
+
+		// Don't load TablePress assets on the Freemius opt-in/activation screen.
+		if ( tb_tp_fs()->is_activation_mode() && tb_tp_fs()->is_activation_page() ) {
 			return;
 		}
 
@@ -297,6 +328,11 @@ JS;
 		// Check if action is a supported action, and whether the user is allowed to access this screen.
 		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['required_cap'] ) ) {
 			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
+		}
+
+		// Don't load TablePress assets on the Freemius opt-in/activation screen.
+		if ( tb_tp_fs()->is_activation_mode() && tb_tp_fs()->is_activation_page() ) {
+			return;
 		}
 
 		// Changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling.

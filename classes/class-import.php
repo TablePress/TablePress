@@ -206,8 +206,12 @@ class TablePress_Import {
 
 			$file['extension'] = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
 
-			$file['mime_type'] = mime_content_type( $file['location'] );
-			if ( false === $file['mime_type'] ) {
+			if ( function_exists( 'mime_content_type' ) ) {
+				$file['mime_type'] = mime_content_type( $file['location'] );
+				if ( false === $file['mime_type'] ) {
+					$file['mime_type'] = '';
+				}
+			} else {
 				$file['mime_type'] = '';
 			}
 

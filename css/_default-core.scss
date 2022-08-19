@@ -75,6 +75,7 @@ $align-side: left !default;
 		background-color: var(--head-bg-color);
 		color: var(--head-text-color);
 		font-weight: bold;
+		word-break: normal;
 	}
 	> :where(tbody) {
 		> .odd > * {

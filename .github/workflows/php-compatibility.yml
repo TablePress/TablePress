@@ -13,8 +13,9 @@ on:
       - '**.php'
       # These files configure Composer. Changes could affect the outcome.
       - 'composer.*'
-      # This file configures PHP Compatibility scanning. Changes could affect the outcome.
+      # These files configure PHP Compatibility scanning. Changes could affect the outcome.
       - 'phpcompat.xml.dist'
+      - 'phpcompat-7.2.xml.dist'
       # Changes to workflow files should always verify all workflows are successful.
       - '.github/workflows/*.yml'
   pull_request:
@@ -25,8 +26,9 @@ on:
       - '**.php'
       # These files configure Composer. Changes could affect the outcome.
       - 'composer.*'
-      # This file configures PHP Compatibility scanning. Changes could affect the outcome.
+      # These files configure PHP Compatibility scanning. Changes could affect the outcome.
       - 'phpcompat.xml.dist'
+      - 'phpcompat-7.2.xml.dist'
       # Changes to workflow files should always verify all workflows are successful.
       - '.github/workflows/*.yml'
   schedule:
@@ -60,7 +62,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@945c34c1751f6d2c8106ec0feba5662fcbc1c943 # v2.21.0
+        uses: shivammathur/setup-php@e04e1d97f0c0481c6e1ba40f8a538454fe5d7709 # v2.21.2
         with:
           php-version: '8.1'
           coverage: none
@@ -86,12 +88,19 @@ jobs:
       - name: Log PHPCS debug information
         run: phpcs -i
 
-      - name: Run PHP compatibility tests
+      - name: Run PHP compatibility tests, excluding PHPSpreadsheet
         continue-on-error: true
         run: phpcs --standard=phpcompat.xml.dist --report-full --report-checkstyle=./phpcs-report.xml
 
-      - name: Show PHPCS results in PR/commit
+      - name: Show PHPCS results in PR/commit, excluding PHPSpreadsheet
         run: cs2pr ./phpcs-report.xml
+
+      - name: Run PHP compatibility tests for PHPSpreadsheet
+        continue-on-error: true
+        run: phpcs --standard=phpcompat-7.2.xml.dist --report-full --report-checkstyle=./phpcs-report-7.2.xml
+
+      - name: Show PHPCS results in PR/commit for PHPSpreadsheet
+        run: cs2pr ./phpcs-report-7.2.xml
 
       - name: Ensure version-controlled files are not modified during the tests
         run: git diff --exit-code

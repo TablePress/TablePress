@@ -93,7 +93,7 @@ const adminCssConfig = {
 	entry:
 		// Find all .scss and .css files in ./admin/css and contruct an "entry" object ( { name: <file> } ).
 		glob.sync(
-			'*.?(s)css',
+			'[^_]*.?(s)css',
 			{
 				cwd: './admin/css/',
 			}
@@ -126,12 +126,23 @@ const frontendCssConfig = {
 	...defaultConfig,
 	name: 'tablepress-frontend-css',
 	context: __dirname,
-	entry: {
-		default: './css/default.scss',
-		'default-rtl': './css/default-rtl.scss',
-	},
+	entry:
+		// Find all .scss and .css files in ./css and contruct an "entry" object ( { name: <file> } ).
+		glob.sync(
+			'[^_]*.?(s)css',
+			{
+				cwd: './css/',
+			}
+		).reduce(
+			( entries, path ) => {
+				const name = path.replace( '.scss', '' ).replace( '.css', '' );
+				entries[ name ] = `./css/${ path }`;
+				return entries;
+			},
+			{}
+		),
 	output: {
-		filename: '[name].js',
+		filename: '[name].js', // File extension .js is necessary here, as a temporary .js file is created.
 		path: `${ __dirname }/css/build`,
 	},
 	module: {

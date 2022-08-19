@@ -225,6 +225,12 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function add_datatables_calls() {
+		// Prevent repeated execution (which would lead to DataTables error messages) via a static variable.
+		static $datatables_calls_printed = false;
+		if ( $datatables_calls_printed ) {
+			return;
+		}
+
 		if ( empty( $this->shown_tables ) ) {
 			// There are no tables with activated DataTables on the page that is currently rendered.
 			return;
@@ -417,6 +423,9 @@ JS;
 		 */
 		$js_wrapper = apply_filters( 'tablepress_all_datatables_commands_wrapper', $js_wrapper );
 		printf( $js_wrapper, $datatables_strings, $commands, $script_type_attr );
+
+		// Prevent repeated execution (which would lead to DataTables error messages) via a static variable.
+		$datatables_calls_printed = true;
 	}
 
 	/**

@@ -560,16 +560,22 @@ class Csv extends BaseReader
             return true;
         }
 
-        // Attempt to guess mimetype
-        $type = mime_content_type($filename);
-        $supportedTypes = [
-            'application/csv',
-            'text/csv',
-            'text/plain',
-            'inode/x-empty',
-        ];
+        // TablePress: Add a `function_exists()` check around `mime_type_content()` as the PHP fileinfo extension might not be loaded.
+        if ( function_exists( 'mime_content_type' ) ) {
+            // Attempt to guess mimetype
+            $type = mime_content_type($filename);
+            $supportedTypes = [
+                'application/csv',
+                'text/csv',
+                'text/plain',
+                'inode/x-empty',
+            ];
 
-        return in_array($type, $supportedTypes, true);
+            return in_array($type, $supportedTypes, true);
+        } else {
+            return false;
+        }
+
     }
 
     private static function guessEncodingTestNoBom(string &$encoding, string &$contents, string $compare, string $setEncoding): void

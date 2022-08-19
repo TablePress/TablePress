@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit657773ce6bc82f286647590cd28b9a9c
+class ComposerStaticInite91e32192042d28fa8c601fa49b507a3
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -274,7 +274,10 @@ class ComposerStaticInit657773ce6bc82f286647590cd28b9a9c
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\Properties' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/Properties.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\Renderer\\IRenderer' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/Renderer/IRenderer.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\Renderer\\JpGraph' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/Renderer/JpGraph.php',
+        'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\Renderer\\JpGraphRendererBase' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/Renderer/JpGraphRendererBase.php',
+        'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\Renderer\\MtJpGraphRenderer' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/Renderer/MtJpGraphRenderer.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\Title' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/Title.php',
+        'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\TrendLine' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/TrendLine.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\Cells' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/Cells.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\CellsFactory' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/CellsFactory.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\Memory' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/Memory.php',
@@ -487,9 +490,9 @@ class ComposerStaticInit657773ce6bc82f286647590cd28b9a9c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit657773ce6bc82f286647590cd28b9a9c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit657773ce6bc82f286647590cd28b9a9c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit657773ce6bc82f286647590cd28b9a9c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite91e32192042d28fa8c601fa49b507a3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite91e32192042d28fa8c601fa49b507a3::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite91e32192042d28fa8c601fa49b507a3::$classMap;
 
         }, null, ClassLoader::class);
     }

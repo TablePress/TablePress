@@ -146,7 +146,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 		try {
 			// Treat all cell values as strings, except for formulas (due to recognition of quoted/escaped formulas like `'=A2`).
-			\TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new TablePress\PhpOffice\PhpSpreadsheet\Cell\StringValueBinder() );
+			\TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \TablePress\PhpOffice\PhpSpreadsheet\Cell\StringValueBinder() );
 			\TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell::getValueBinder()->setFormulaConversion( false );
 
 			$reader = \TablePress\PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile( $file['location'] );
@@ -163,9 +163,14 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			$reader->setIncludeCharts( false );
 			$reader->setReadEmptyCells( true );
 
+			// For non-Excel files, import only the data, but ignore formatting.
 			if ( ! in_array( $detected_format, array( 'xlsx', 'xls' ), true ) ) {
 				$reader->setReadDataOnly( true );
-				$reader->setSheetIndex( 0 ); // Import only the first sheet.
+			}
+
+			// For formats where it's supported, import only the first sheet.
+			if ( in_array( $detected_format, array( 'csv', 'html', 'slk' ), true ) ) {
+				$reader->setSheetIndex( 0 );
 			}
 
 			$spreadsheet = $reader->load( $file['location'] );
@@ -182,7 +187,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			$max_col = $worksheet->getHighestColumn();
 			$max_row = $worksheet->getHighestRow();
 
-			// Adapted from TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::rangeToArray().
+			// Adapted from \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::rangeToArray().
 			++$max_col; // Due to for-loop with characters for columns.
 			for ( $row = $min_row; $row <= $max_row; $row++ ) {
 				$row_data = array();
@@ -200,7 +205,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 						continue;
 					}
 
-					if ( $value instanceof TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText ) {
+					if ( $value instanceof \TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText ) {
 						$cell_data = $this->parse_rich_text( $value );
 					} else {
 						$cell_data = $value;
@@ -208,9 +213,9 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 					// Apply data type formatting.
 					$style = $spreadsheet->getCellXfByIndex( $cell->getXfIndex() );
-					$cell_data = TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString(
+					$cell_data = \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString(
 						$cell_data,
-						$style->getNumberFormat() ? $style->getNumberFormat()->getFormatCode() : TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL,
+						$style->getNumberFormat() ? $style->getNumberFormat()->getFormatCode() : \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL,
 						array( $this, 'format_color' )
 					);
 
@@ -232,7 +237,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 					if ( $font->getStrikethrough() ) {
 						$cell_data = "<del>{$cell_data}</del>";
 					}
-					if ( $font->getUnderline() !== TablePress\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE && ! $cell_has_hyperlink ) {
+					if ( $font->getUnderline() !== \TablePress\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE && ! $cell_has_hyperlink ) {
 						$cell_data = "<u>{$cell_data}</u>";
 					}
 					if ( $font->getBold() ) {
@@ -318,7 +323,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			$element_data = $element->getText();
 
 			// Rich text start?
-			if ( $element instanceof TablePress\PhpOffice\PhpSpreadsheet\RichText\Run ) {
+			if ( $element instanceof \TablePress\PhpOffice\PhpSpreadsheet\RichText\Run ) {
 				$font = $element->getFont();
 
 				if ( $font->getSuperscript() ) {
@@ -330,7 +335,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 				if ( $font->getStrikethrough() ) {
 					$element_data = "<del>{$element_data}</del>";
 				}
-				if ( $font->getUnderline() !== TablePress\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE ) {
+				if ( $font->getUnderline() !== \TablePress\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE ) {
 					$element_data = "<u>{$element_data}</u>";
 				}
 				if ( $font->getBold() ) {

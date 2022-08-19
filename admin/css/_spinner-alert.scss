@@ -1,0 +1,44 @@
+/**
+ * CSS code for the spinner animation and AJAX alert boxes.
+ *
+ * @package TablePress
+ * @subpackage Admin CSS
+ * @author Tobias Bäthge
+ * @since 2.0.0
+ */
+
+/* Hour glass cursor, while waiting for AJAX */
+body.wait * {
+	cursor: wait !important;
+}
+
+/* Spinner/loading animation that is shown during saving/preview preparation */
+.spinner.spinner-save-changes,
+.spinner.spinner-table-preview {
+	float: none;
+	margin: 0 0 0 6px;
+}
+
+#tablepress-page {
+	/* Margins for dynamically created (inline) .notice messages */
+	div.ajax-alert {
+		margin: -10px 0 15px;
+		transition: opacity 2s 3s;
+
+		&.notice-error {
+			transition-delay: 6s;
+		}
+
+		p {
+			font-weight: bold;
+		}
+
+		pre {
+			margin: -6px 0 0.5em 2px;
+
+			+ p {
+				display: none;
+			}
+		}
+	}
+}

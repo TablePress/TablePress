@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	const version = '2.0-beta1'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	const version = '2.0-beta2'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	const db_version = 44; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	const db_version = 45; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -109,24 +109,6 @@ abstract class TablePress {
 		 */
 		do_action( 'tablepress_run' );
 
-		// Exit early if TablePress doesn't have to be loaded.
-		$exit_early = false;
-		if ( ( isset( $_SERVER['SCRIPT_FILENAME'] ) && 'wp-login.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) // Detect the WordPress Login screen.
-			|| ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
-			|| wp_doing_cron() ) {
-			$exit_early = true;
-		}
-		/**
-		 * Filters whether TablePress should exit early, e.g. during wp-login.php, XML-RPC, and WP-Cron requests.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param bool $exit_early Whether TablePress should exit early.
-		 */
-		if ( apply_filters( 'tablepress_exit_early', $exit_early ) ) {
-			return;
-		}
-
 		// Check if minimum requirements are fulfilled, currently WordPress 5.8.
 		include( ABSPATH . WPINC . '/version.php' ); // Include an unmodified $wp_version.
 		if ( version_compare( str_replace( '-src', '', $wp_version ), '5.8', '<' ) ) {
@@ -158,6 +140,24 @@ abstract class TablePress {
 		// Load modals for table and options, to be accessible from everywhere via `TablePress::$model_options` and `TablePress::$model_table`.
 		self::$model_options = self::load_model( 'options' );
 		self::$model_table = self::load_model( 'table' );
+
+		// Exit early, i.e. before a controller is loaded, if TablePress functionality is likely not needed.
+		$exit_early = false;
+		if ( ( isset( $_SERVER['SCRIPT_FILENAME'] ) && 'wp-login.php' === basename( $_SERVER['SCRIPT_FILENAME'] ) ) // Detect the WordPress Login screen.
+			|| ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
+			|| wp_doing_cron() ) {
+			$exit_early = true;
+		}
+		/**
+		 * Filters whether TablePress should exit early, e.g. during wp-login.php, XML-RPC, and WP-Cron requests.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $exit_early Whether TablePress should exit early.
+		 */
+		if ( apply_filters( 'tablepress_exit_early', $exit_early ) ) {
+			return;
+		}
 
 		if ( is_admin() ) {
 			$controller = 'admin';

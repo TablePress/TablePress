@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress PHP Compatibility">
+	<description>Apply PHP compatibility checks to PHPSpreadsheet and its dependencies in TablePress.</description>
+
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- PHPSpreadsheet and its dependencies in TablePress need PHP 7.2+. -->
+	<config name="testVersion" value="7.2-"/>
+
+	<!-- Only scan PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Whenever possible, cache the scan results and re-use those for unchanged files on the next scan. -->
+	<arg name="cache"/>
+
+	<!-- Set the memory limit to 256M.
+		 For most standard PHP configurations, this means the memory limit will temporarily be raised.
+		 Ref: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#specifying-phpini-settings
+	-->
+	<ini name="memory_limit" value="256M"/>
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 20 files simultaneously. -->
+	<arg name="parallel" value="20"/>
+
+	<!-- Show sniff codes in all reports. -->
+	<arg value="ps"/>
+
+	<!-- Scan the folders of PHPSpreadsheet and its dependencies. -->
+	<file>./libraries/vendor</file>
+
+</ruleset>

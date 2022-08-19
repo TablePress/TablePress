@@ -85,7 +85,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@945c34c1751f6d2c8106ec0feba5662fcbc1c943 # v2.21.0
+        uses: shivammathur/setup-php@e04e1d97f0c0481c6e1ba40f8a538454fe5d7709 # v2.21.2
         with:
           php-version: ${{ matrix.php }}
           coverage: none

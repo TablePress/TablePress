@@ -7,7 +7,6 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\CyclicReferenceStack;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\Logger;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
-use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\Value;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Token\Stack;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
@@ -305,8 +304,8 @@ class Calculation
         ],
         'ARRAYTOTEXT' => [
             'category' => Category::CATEGORY_TEXT_AND_DATA,
-            'functionCall' => [Functions::class, 'DUMMY'],
-            'argumentCount' => '?',
+            'functionCall' => [TextData\Text::class, 'fromArray'],
+            'argumentCount' => '1,2',
         ],
         'ASC' => [
             'category' => Category::CATEGORY_TEXT_AND_DATA,
@@ -2490,13 +2489,13 @@ class Calculation
         ],
         'TEXTAFTER' => [
             'category' => Category::CATEGORY_TEXT_AND_DATA,
-            'functionCall' => [Functions::class, 'DUMMY'],
-            'argumentCount' => '2-4',
+            'functionCall' => [TextData\Extract::class, 'after'],
+            'argumentCount' => '2-6',
         ],
         'TEXTBEFORE' => [
             'category' => Category::CATEGORY_TEXT_AND_DATA,
-            'functionCall' => [Functions::class, 'DUMMY'],
-            'argumentCount' => '2-4',
+            'functionCall' => [TextData\Extract::class, 'before'],
+            'argumentCount' => '2-6',
         ],
         'TEXTJOIN' => [
             'category' => Category::CATEGORY_TEXT_AND_DATA,
@@ -2505,8 +2504,8 @@ class Calculation
         ],
         'TEXTSPLIT' => [
             'category' => Category::CATEGORY_TEXT_AND_DATA,
-            'functionCall' => [Functions::class, 'DUMMY'],
-            'argumentCount' => '2-5',
+            'functionCall' => [TextData\Text::class, 'split'],
+            'argumentCount' => '2-6',
         ],
         'THAIDAYOFWEEK' => [
             'category' => Category::CATEGORY_DATE_AND_TIME,
