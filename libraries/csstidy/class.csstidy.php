@@ -339,8 +339,7 @@ class TablePress_CSSTidy {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		include __DIR__ . '/data.inc.php';
-		$this->data = $data;
+		$this->data = require __DIR__ . '/data.inc.php';
 
 		$this->settings['remove_bslash'] = true;
 		$this->settings['compress_colors'] = true;
@@ -1129,7 +1128,7 @@ class TablePress_CSSTidy {
 	 *
 	 * @param string $comment CSS Comment.
 	 */
-	protected function css_add_important_comment($comment) {
+	protected function css_add_important_comment( $comment ) {
 		if ( $this->get_cfg( 'preserve_css' ) || '' === trim( $comment ) ) {
 			return;
 		}
@@ -1205,8 +1204,8 @@ class TablePress_CSSTidy {
 	 * @since 1.0.0
 	 *
 	 * @param string $current_media Media.
-	 * @param string $media         Media.
-	 * @param bool   $at_root
+	 * @param string $new_media     Media.
+	 * @param bool   $at_root       Optional. Default false.
 	 * @return string [return value]
 	 */
 	protected function css_new_media_section( $current_media, $new_media, $at_root = false ) {
@@ -1399,7 +1398,9 @@ class TablePress_CSSTidy {
 	 */
 	public function property_is_valid( $property ) {
 		$property = strtolower( $property );
-		if ( in_array( trim( $property ), $this->data['csstidy']['multiple_properties'], true ) ) {
+		if ( 0 === strpos( $property, '--' ) ) {
+			$property = '--custom'; // Replace custom properties with a temporary placeholder that is marked as valid in the list of properties.
+		} elseif ( in_array( trim( $property ), $this->data['csstidy']['multiple_properties'], true ) ) {
 			$property = trim( $property );
 		}
 		$all_properties = &$this->data['csstidy']['all_properties'];

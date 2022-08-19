@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Frontend Controller class, extends Base Controller Class
+ *
  * @package TablePress
  * @subpackage Controllers
  * @author Tobias Bäthge
@@ -37,7 +38,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		parent::__construct();
 
 		/**
-		 * Filter whether the TablePress Default CSS code shall be loaded.
+		 * Filters whether the TablePress Default CSS code shall be loaded.
 		 *
 		 * @since 1.0.0
 		 *
@@ -48,13 +49,13 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		}
 
 		// Add DataTables invocation calls.
-		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 11 ); // after inclusion of files
+		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 11 ); // After inclusion of files.
 
-		// Remove WP-Table Reloaded Shortcodes and CSS, and add TablePress Shortcodes.
-		add_action( 'init', array( $this, 'init_shortcodes' ), 20 ); // run on priority 20 as WP-Table Reloaded Shortcodes are registered at priority 10
+		// Register TablePress Shortcodes. Priority 20 is kept for backwards-compatibility purposes.
+		add_action( 'init', array( $this, 'init_shortcodes' ), 20 );
 
 		/**
-		 * Filter whether the WordPress search shall also search TablePress tables.
+		 * Filters whether the WordPress search shall also search TablePress tables.
 		 *
 		 * @since 1.0.0
 		 *
@@ -68,23 +69,25 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		/**
 		 * Load TablePress Template Tag functions.
 		 */
-		require_once TABLEPRESS_ABSPATH . 'controllers/template-tag-functions.php';
+		TablePress::load_file( 'template-tag-functions.php', 'controllers' );
+
+		/**
+		 * Register the tablepress/table block and its dependencies.
+		 */
+		register_block_type(
+			TABLEPRESS_ABSPATH . 'blocks/table/',
+			array(
+				'render_callback' => array( $this, 'table_block_render_callback' ),
+			)
+		);
 	}
 
 	/**
-	 * Register TablePress Shortcodes, after removing WP-Table Reloaded Shortcodes.
+	 * Register TablePress Shortcodes.
 	 *
 	 * @since 1.0.0
 	 */
 	public function init_shortcodes() {
-		// Remove previously registered [table /] Shortcodes (e.g. from WP-Table Reloaded), as these would otherwise be used instead of TablePress's Shortcodes.
-		remove_shortcode( TablePress::$shortcode );
-		remove_shortcode( TablePress::$shortcode_info );
-		// Dequeue WP-Table Reloaded Default CSS, as it can influence TablePress table styling.
-		if ( isset( $GLOBALS['WP_Table_Reloaded_Frontend'] ) ) {
-			remove_action( 'wp_head', array( $GLOBALS['WP_Table_Reloaded_Frontend'], 'add_frontend_css' ) );
-		}
-
 		add_shortcode( TablePress::$shortcode, array( $this, 'shortcode_table' ) );
 		add_shortcode( TablePress::$shortcode_info, array( $this, 'shortcode_table_info' ) );
 	}
@@ -101,7 +104,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );
 		$use_custom_css_file = ( $use_custom_css && TablePress::$model_options->get( 'use_custom_css_file' ) );
 		/**
-		 * Filter the "Custom CSS" version number that is appended to the enqueued CSS files
+		 * Filters the "Custom CSS" version number that is appended to the enqueued CSS files
 		 *
 		 * @since 1.0.0
 		 *
@@ -113,10 +116,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// Determine Default CSS URL.
 		$rtl = ( is_rtl() ) ? '-rtl' : '';
-		$suffix = SCRIPT_DEBUG ? '' : '.min';
-		$unfiltered_default_css_url = plugins_url( "css/default{$rtl}{$suffix}.css", TABLEPRESS__FILE__ );
+		$unfiltered_default_css_url = plugins_url( "css/build/default{$rtl}.css", TABLEPRESS__FILE__ );
 		/**
-		 * Filter the URL from which the TablePress Default CSS file is loaded.
+		 * Filters the URL from which the TablePress Default CSS file is loaded.
 		 *
 		 * @since 1.0.0
 		 *
@@ -153,13 +155,13 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 
 			if ( $use_custom_css ) {
-				// Get "Custom CSS" from options, try minified Custom CSS first,
+				// Get "Custom CSS" from options, try minified Custom CSS first.
 				$custom_css_minified = TablePress::$model_options->get( 'custom_css_minified' );
 				if ( ! empty( $custom_css_minified ) ) {
 					$custom_css = $custom_css_minified;
 				}
 				/**
-				 * Filter the "Custom CSS" code that is to be loaded as inline CSS.
+				 * Filters the "Custom CSS" code that is to be loaded as inline CSS.
 				 *
 				 * @since 1.0.0
 				 *
@@ -167,12 +169,12 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 */
 				$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
 				if ( ! empty( $custom_css ) ) {
-					// wp_add_inline_style() requires a loaded CSS file, so we have to work around that if "Default CSS" is disabled,
+					// wp_add_inline_style() requires a loaded CSS file, so we have to work around that if "Default CSS" is disabled.
 					if ( $use_default_css ) {
 						// Handle of the file to which the <style> shall be appended.
 						wp_add_inline_style( 'tablepress-default', $custom_css );
 					} else {
-						add_action( 'wp_head', array( $this, '_print_custom_css' ), 8 ); // priority 8 to hook in right after WP_Styles has been processed
+						add_action( 'wp_head', array( $this, '_print_custom_css' ), 8 ); // Priority 8 to hook in right after WP_Styles has been processed.
 					}
 				}
 			}
@@ -182,7 +184,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	/**
 	 * Print "Custom CSS" to "wp_head" inline.
 	 *
-	 *  This is necessary if "Default CSS" is off, and saving "Custom CSS" to a file is not possible.
+	 * This is necessary if "Default CSS" is off, and saving "Custom CSS" to a file is not possible.
 	 *
 	 * @since 1.0.0
 	 */
@@ -206,7 +208,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		$js_file = 'js/jquery.datatables.min.js';
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 		/**
-		 * Filter the URL from which the DataTables JavaScript library file is loaded.
+		 * Filters the URL from which the DataTables JavaScript library file is loaded.
 		 *
 		 * @since 1.0.0
 		 *
@@ -250,7 +252,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 				// DataTables language/translation handling.
 				/**
-				 * Filter the locale/language for the DataTables JavaScript library.
+				 * Filters the locale/language for the DataTables JavaScript library.
 				 *
 				 * @since 1.0.0
 				 *
@@ -262,7 +264,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
 					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.json";
 					/**
-					 * Filter the language file for the DataTables JavaScript library.
+					 * Filters the language file for the DataTables JavaScript library.
 					 *
 					 * @since 1.0.0
 					 *
@@ -330,7 +332,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				}
 
 				/**
-				 * Filter the parameters that are passed to the DataTables JavaScript library.
+				 * Filters the parameters that are passed to the DataTables JavaScript library.
 				 *
 				 * @since 1.0.0
 				 *
@@ -353,9 +355,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				$parameters = implode( ',', $parameters );
 				$parameters = ( ! empty( $parameters ) ) ? '{' . $parameters . '}' : '';
 
-				$command = "$('#{$html_id}').dataTable({$parameters});";
+				$command = "$('#{$html_id}').DataTable({$parameters});";
 				/**
-				 * Filter the JavaScript command that invokes the DataTables JavaScript library on one table.
+				 * Filters the JavaScript command that invokes the DataTables JavaScript library on one table.
 				 *
 				 * @since 1.0.0
 				 *
@@ -374,7 +376,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		$commands = implode( "\n", $commands );
 		/**
-		 * Filter the JavaScript commands that invoke the DataTables JavaScript library on all tables on the page.
+		 * Filters the JavaScript commands that invoke the DataTables JavaScript library on all tables on the page.
 		 *
 		 * @since 1.0.0
 		 *
@@ -407,7 +409,7 @@ jQuery(function($){
 </script>
 JS;
 		/**
-		 * Filter the script/jQuery wrapper code for the DataTables commands calls.
+		 * Filters the script/jQuery wrapper code for the DataTables commands calls.
 		 *
 		 * @since 1.14.0
 		 *
@@ -418,7 +420,7 @@ JS;
 	}
 
 	/**
-	 * Handle Shortcode [table id=<ID> /] in `the_content()`.
+	 * Handle Shortcode [table id=<ID> /].
 	 *
 	 * @since 1.0.0
 	 *
@@ -426,14 +428,14 @@ JS;
 	 * @return string Resulting HTML code for the table with the ID <ID>.
 	 */
 	public function shortcode_table( $shortcode_atts ) {
-		// For empty Shortcodes like [table] or [table /], an empty string is passed, see WP Core #26927.
+		// Don't use `array` type hint in method declaration, as for empty Shortcodes like [table] or [table /], an empty string is passed, see WP Core #26927.
 		$shortcode_atts = (array) $shortcode_atts;
 
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
 
 		$default_shortcode_atts = $_render->get_default_render_options();
 		/**
-		 * Filter the available/default attributes for the [table] Shortcode.
+		 * Filters the available/default attributes for the [table] Shortcode.
 		 *
 		 * @since 1.0.0
 		 *
@@ -443,7 +445,7 @@ JS;
 		// Parse Shortcode attributes, only allow those that are specified.
 		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts ); // Optional third argument left out on purpose. Use filter in the next line instead.
 		/**
-		 * Filter the attributes that were passed to the [table] Shortcode.
+		 * Filters the attributes that were passed to the [table] Shortcode.
 		 *
 		 * @since 1.0.0
 		 *
@@ -456,7 +458,7 @@ JS;
 		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
 			/**
-			 * Filter the "Table not found" message.
+			 * Filters the "Table not found" message.
 			 *
 			 * @since 1.0.0
 			 *
@@ -472,7 +474,7 @@ JS;
 		if ( is_wp_error( $table ) ) {
 			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
 			/**
-			 * Filter the "Table could not be loaded" message.
+			 * Filters the "Table could not be loaded" message.
 			 *
 			 * @since 1.0.0
 			 *
@@ -486,7 +488,7 @@ JS;
 		if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
 			$message = "<div>Attention: The internal data of table &#8220;{$table_id}&#8221; is corrupted!</div>";
 			/**
-			 * Filter the "Table data is corrupted" message.
+			 * Filters the "Table data is corrupted" message.
 			 *
 			 * @since 1.0.0
 			 *
@@ -499,7 +501,7 @@ JS;
 		}
 
 		/**
-		 * Filter whether the "datatables_custom_commands" Shortcode parameter is disabled.
+		 * Filters whether the "datatables_custom_commands" Shortcode parameter is disabled.
 		 *
 		 * By default, the "datatables_custom_commands" Shortcode parameter is disabled for security reasons.
 		 *
@@ -540,7 +542,7 @@ JS;
 			$render_options['html_id'] .= "-no-{$count}";
 		}
 		/**
-		 * Filter the ID of the table HTML element.
+		 * Filters the ID of the table HTML element.
 		 *
 		 * @since 1.0.0
 		 *
@@ -553,7 +555,7 @@ JS;
 		// Generate the "Edit Table" link.
 		$render_options['edit_table_url'] = '';
 		/**
-		 * Filter whether the "Edit" link below the table shall be shown.
+		 * Filters whether the "Edit" link below the table shall be shown.
 		 *
 		 * The "Edit" link is only shown to logged-in users who possess the necessary capability to edit the table.
 		 *
@@ -567,7 +569,7 @@ JS;
 		}
 
 		/**
-		 * Filter the render options for the table.
+		 * Filters the render options for the table.
 		 *
 		 * The render options are determined from the settings on a table's "Edit" screen and the Shortcode parameters.
 		 *
@@ -599,7 +601,7 @@ JS;
 				$js_options[ $option ] = $render_options[ $option ];
 			}
 			/**
-			 * Filter the JavaScript options for the table.
+			 * Filters the JavaScript options for the table.
 			 *
 			 * The JavaScript options are determined from the settings on a table's "Edit" screen and the Shortcode parameters.
 			 * They are part of the render options and can be overwritten with Shortcode parameters.
@@ -641,7 +643,7 @@ JS;
 				set_transient( $caches_list_transient_name, wp_json_encode( $caches_list, TABLEPRESS_JSON_OPTIONS ), 2 * DAY_IN_SECONDS );
 			} else {
 				/**
-				 * Filter the cache hit comment message.
+				 * Filters the cache hit comment message.
 				 *
 				 * @since 1.0.0
 				 *
@@ -664,7 +666,7 @@ JS;
 	}
 
 	/**
-	 * Handle Shortcode [table-info id=<ID> field=<name> /] in the_content().
+	 * Handle Shortcode [table-info id=<ID> field=<name> /].
 	 *
 	 * @since 1.0.0
 	 *
@@ -672,7 +674,7 @@ JS;
 	 * @return string Text that replaces the Shortcode (error message or asked-for information).
 	 */
 	public function shortcode_table_info( $shortcode_atts ) {
-		// For empty Shortcodes like [table-info] or [table-info /], an empty string is passed, see Core #26927.
+		// Don't use `array` type hint in method declaration, as for empty Shortcodes like [table-info] or [table-info /], an empty string is passed, see WP Core #26927.
 		$shortcode_atts = (array) $shortcode_atts;
 
 		// Parse Shortcode attributes, only allow those that are specified.
@@ -682,7 +684,7 @@ JS;
 			'format' => '',
 		);
 		/**
-		 * Filter the available/default attributes for the [table-info] Shortcode.
+		 * Filters the available/default attributes for the [table-info] Shortcode.
 		 *
 		 * @since 1.0.0
 		 *
@@ -691,7 +693,7 @@ JS;
 		$default_shortcode_atts = apply_filters( 'tablepress_shortcode_table_info_default_shortcode_atts', $default_shortcode_atts );
 		$shortcode_atts = shortcode_atts( $default_shortcode_atts, $shortcode_atts ); // Optional third argument left out on purpose. Use filter in the next line instead.
 		/**
-		 * Filter the attributes that were passed to the [table-info] Shortcode.
+		 * Filters the attributes that were passed to the [table-info] Shortcode.
 		 *
 		 * @since 1.0.0
 		 *
@@ -700,7 +702,7 @@ JS;
 		$shortcode_atts = apply_filters( 'tablepress_shortcode_table_info_shortcode_atts', $shortcode_atts );
 
 		/**
-		 * Filter whether the output of the [table-info] Shortcode is overwritten/short-circuited.
+		 * Filters whether the output of the [table-info] Shortcode is overwritten/short-circuited.
 		 *
 		 * @since 1.0.0
 		 *
@@ -791,7 +793,7 @@ JS;
 			default:
 				$output = "[table-info field &#8220;{$field}&#8221; not found in table &#8220;{$table_id}&#8221; /]<br />\n";
 				/**
-				 * Filter the "table info field not found" message.
+				 * Filters the "table info field not found" message.
 				 *
 				 * @since 1.0.0
 				 *
@@ -804,7 +806,7 @@ JS;
 		}
 
 		/**
-		 * Filter the output of the [table-info] Shortcode.
+		 * Filters the output of the [table-info] Shortcode.
 		 *
 		 * @since 1.0.0
 		 *
@@ -906,6 +908,30 @@ JS;
 		$search_sql = $wpdb->add_placeholder_escape( $search_sql );
 
 		return $search_sql;
+	}
+
+	/**
+	 * Callback function for rendering the tablepress/table block.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $block_attributes List of attributes that where included in the block settings.
+	 * @return string Resulting HTML code for the table.
+	 */
+	public function table_block_render_callback( array $block_attributes ) {
+		// Don't return anything if no table was selected.
+		if ( '' === $block_attributes['id'] ) {
+			return;
+		}
+
+		if ( '' !== trim( $block_attributes['parameters'] ) ) {
+			$render_attributes = shortcode_parse_atts( $block_attributes['parameters'] );
+		} else {
+			$render_attributes = array();
+		}
+		$render_attributes['id'] = $block_attributes['id'];
+
+		return $this->shortcode_table( $render_attributes );
 	}
 
 } // class TablePress_Frontend_Controller

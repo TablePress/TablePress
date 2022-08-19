@@ -1,1284 +1,1303 @@
 /**
- * JavaScript code for the "Edit" screen
+ * JavaScript code for the "Edit" screen.
  *
  * @package TablePress
  * @subpackage Views JavaScript
  * @author Tobias Bäthge
- * @since 1.0.0
+ * @since 2.0.0
  */
 
-/* global alert, confirm, tp, tablepress_strings, tablepress_options, ajaxurl, wpLink, tb_show, wp, JSON */
+/* globals tp, wp, ajaxurl, JSON, jspreadsheet, jexcel, wpLink, jQuery */
+/* eslint-disable jsdoc/check-param-names, jsdoc/valid-types */
+
+/**
+ * WordPress dependencies.
+ */
+import { __, sprintf } from '@wordpress/i18n';
+import { doAction as do_action, applyFilters as apply_filters } from '@wordpress/hooks';
+import { buildQueryString } from '@wordpress/url';
+
+/**
+ * Internal dependencies.
+ */
+import { $ } from './_common-functions';
+import contextMenu from './_edit-contextmenu';
+import naturalSort from './_edit-naturalsort';
 
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};
 
-jQuery( function( $ ) {
+tp.made_changes = false;
 
-	'use strict';
+tp.helpers = tp.helpers || {};
+tp.callbacks = tp.callbacks || {};
 
-	/* Wrapper to find elements in the page faster with JS-native functions */
-	var $id = function( element_id ) {
-		return $( document.getElementById( element_id ) );
-	};
+// Initial selection: cell A1.
+tp.helpers.selection = tp.helpers.selection || {
+	rows: [ 0 ],
+	columns: [ 0 ],
+};
 
-	/**
-	 * TablePress object, mostly with functionality for the "Edit" screen
-	 *
-	 * @since 1.0.0
-	 */
+tp.helpers.unsaved_changes = tp.helpers.unsaved_changes || {};
+
+/**
+ * [unsaved_changes.unload_dialog description]
+ *
+ * @param {Event} event [description]
+ */
+tp.helpers.unsaved_changes.unload_dialog = function ( event ) {
+	event.preventDefault(); // Cancel the event as stated by the standard.
+	event.returnValue = ''; // Chrome requires returnValue to be set.
+};
+
+/**
+ * [unsaved_changes.set description]
+ */
+tp.helpers.unsaved_changes.set = function () {
+	// Bail early if this function was already called.
+	if ( tp.made_changes ) {
+		return;
+	}
+	tp.made_changes = true;
+	window.addEventListener( 'beforeunload', tp.helpers.unsaved_changes.unload_dialog );
+};
+
+/**
+ * [unsaved_changes.unset description]
+ */
+tp.helpers.unsaved_changes.unset = function () {
 	tp.made_changes = false;
+	window.removeEventListener( 'beforeunload', tp.helpers.unsaved_changes.unload_dialog );
+};
 
-	tp.table = {
-		id: $id( 'table-id' ).val(),
-		new_id: $id( 'table-new-id' ).val(),
-		rows: parseInt( $id( 'number-rows' ).val(), 10 ),
-		columns: parseInt( $id( 'number-columns' ).val(), 10 ),
-		head: $id( 'option-table-head' ).prop( 'checked' ),
-		foot: $id( 'option-table-foot' ).prop( 'checked' ),
-		no_data_columns_pre: 2,
-		no_data_columns_post: 1,
-		body_cells_pre: '<tr><td><span class="move-handle"></span></td><td><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][rows][]" value="1" /></td>',
-		body_cells_post: '<td><span class="move-handle"></span></td></tr>',
-		body_cell: '<td><textarea rows="1"></textarea></td>',
-		head_cell: '<th class="head"><span class="sort-control sort-desc" title="' + tablepress_strings.sort_desc + '"><span class="sorting-indicator"></span></span><span class="sort-control sort-asc" title="' + tablepress_strings.sort_asc + '"><span class="sorting-indicator"></span></span><span class="move-handle"></span></th>',
-		foot_cell: '<th><input type="checkbox" /><input type="hidden" class="visibility" name="table[visibility][columns][]" value="1" /></th>',
-		set_table_changed: function() {
-			tp.made_changes = true;
-		},
-		unset_table_changed: function() {
-			tp.made_changes = false;
-			$id( 'edit-form-body' ).one( 'change', 'textarea', tp.table.set_table_changed );
-			// @TODO: maybe use .tablepress-postbox-table here and further below
-			$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
-		},
-		change_id: function( /* event */ ) {
-			// empty table IDs are not allowed
-			if ( '' === $id( 'table-new-id' ).val().toString().trim() ) {
-				alert( tablepress_strings.table_id_not_empty );
-				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).trigger( 'select' );
-				return;
-			}
-			// the '0' table ID is not allowed
-			if ( '0' === $id( 'table-new-id' ).val().toString().trim() ) {
-				alert( tablepress_strings.table_id_not_zero );
-				$id( 'table-new-id' ).val( tp.table.new_id ).trigger( 'focus' ).trigger( 'select' );
-				return;
-			}
+tp.helpers.options = tp.helpers.options || {};
 
-			if ( this.value === tp.table.new_id ) {
-				return;
-			}
-
-			if ( confirm( tablepress_strings.ays_change_table_id ) ) {
-				tp.table.new_id = this.value;
-				$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' ).trigger( 'click' ); // click() to focus and select
-				tp.table.set_table_changed();
-			} else {
-				$(this).val( tp.table.new_id );
-			}
-		},
-		change_table_head: function( /* event */ ) {
-			tp.table.head = $(this).prop( 'checked' );
-			$id( 'option-use-datatables' ).prop( 'disabled', ! tp.table.head ).trigger( 'change' );
-			$id( 'notice-datatables-head-row' ).toggle( ! tp.table.head );
-			tp.rows.stripe();
-		},
-		change_table_foot: function( /* event */ ) {
-			tp.table.foot = $(this).prop( 'checked' );
-			tp.rows.stripe();
-		},
-		change_print_name_description: function( /* event */ ) {
-			$id( this.id + '-position' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
-		},
-		change_datatables: function() {
-			var $datatables_checkbox = $id( 'option-use-datatables' ),
-				checkboxes_disabled = ! ( $datatables_checkbox.prop( 'checked' ) && ! $datatables_checkbox.prop( 'disabled' ) );
-			$datatables_checkbox.closest( 'tbody' ).find( 'input' ).not( $datatables_checkbox ).prop( 'disabled', checkboxes_disabled );
-			tp.table.change_datatables_pagination();
-		},
-		change_datatables_pagination: function() {
-			var $pagination_checkbox = $id( 'option-datatables-paginate' ),
-				pagination_enabled = ( $pagination_checkbox.prop( 'checked' ) && ! $pagination_checkbox.prop( 'disabled' ) );
-			$id( 'option-datatables-lengthchange' ).prop( 'disabled', ! pagination_enabled );
-			$id( 'option-datatables-paginate_entries' ).prop( 'disabled', ! pagination_enabled );
-		},
-		prepare_ajax_request: function( wp_action, wp_nonce ) {
-			var $table_body = $id( 'edit-form-body' ),
-				table_data = [],
-				table_options,
-				table_number = { rows: tp.table.rows, columns: tp.table.columns, hidden_rows: 0, hidden_columns: 0 },
-				table_visibility = { rows: [], columns: [] };
-
-			$table_body.children().each( function( idx, row ) {
-				table_data[ idx ] = $( row ).find( 'textarea' )
-					.map( function() {
-						return this.value;
-					} )
-					.get();
-			} );
-			table_data = JSON.stringify( table_data );
-
-			// @TODO: maybe for options saving: https://stackoverflow.com/questions/1184624/convert-form-data-to-javascript-object-with-jquery
-			// or each()-loop through all checkboxes/textfields/selects
-			table_options = {
-				// Table Options
-				table_head: tp.table.head,
-				table_foot: tp.table.foot,
-				alternating_row_colors: $id( 'option-alternating-row-colors' ).prop( 'checked' ),
-				row_hover: $id( 'option-row-hover' ).prop( 'checked' ),
-				print_name: $id( 'option-print-name' ).prop( 'checked' ),
-				print_description: $id( 'option-print-description' ).prop( 'checked' ),
-				print_name_position: $id( 'option-print-name-position' ).val(),
-				print_description_position: $id( 'option-print-description-position' ).val(),
-				extra_css_classes: $id( 'option-extra-css-classes' ).val(),
-				// DataTables JS features
-				use_datatables: $id( 'option-use-datatables' ).prop( 'checked' ),
-				datatables_sort: $id( 'option-datatables-sort' ).prop( 'checked' ),
-				datatables_filter: $id( 'option-datatables-filter' ).prop( 'checked' ),
-				datatables_paginate: $id( 'option-datatables-paginate' ).prop( 'checked' ),
-				datatables_lengthchange: $id( 'option-datatables-lengthchange' ).prop( 'checked' ),
-				datatables_paginate_entries: $id( 'option-datatables-paginate_entries' ).val(),
-				datatables_info: $id( 'option-datatables-info' ).prop( 'checked' ),
-				datatables_scrollx: $id( 'option-datatables-scrollx' ).prop( 'checked' ),
-				datatables_custom_commands: $id( 'option-datatables-custom-commands' ).val()
-			};
-			table_options = JSON.stringify( table_options );
-
-			table_visibility.rows = $table_body.find( 'input[type="hidden"]' )
-				.map( function() {
-					if ( '1' === $(this).val() ) {
-						return 1;
-					}
-					table_number.hidden_rows += 1;
-					return 0;
-				} )
-				.get();
-			table_visibility.columns = $id( 'edit-form-foot' ).find( 'input[type="hidden"]' )
-				.map( function() {
-					if ( '1' === $(this).val() ) {
-						return 1;
-					}
-					table_number.hidden_columns += 1;
-					return 0;
-				} )
-				.get();
-			table_visibility = JSON.stringify( table_visibility );
-
-			// request_data =
-			return {
-				action: wp_action,
-				_ajax_nonce : $( wp_nonce ).val(),
-				tablepress: {
-					id: tp.table.id,
-					new_id: tp.table.new_id,
-					name: $id( 'table-name' ).val(),
-					description: $id( 'table-description' ).val(),
-					number: table_number,
-					data: table_data,
-					options: table_options,
-					visibility: table_visibility
-				}
-			};
-		},
-		preview: {
-			trigger: function( /* event */ ) {
-				if ( ! tp.made_changes ) {
-					tp.table.preview.show( $(this).attr( 'href' ) + '&TB_iframe=true' );
-					return false;
-				}
-
-				// validation checks
-				if ( $id( 'option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $id( 'option-datatables-paginate_entries' ).val() ) ) {
-					alert( tablepress_strings.num_pagination_entries_invalid );
-					$id( 'option-datatables-paginate_entries' ).trigger( 'focus' ).trigger( 'select' );
-					return;
-				}
-				if ( ( /[^A-Za-z0-9- _:]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
-					alert( tablepress_strings.extra_css_classes_invalid );
-					$id( 'option-extra-css-classes' ).trigger( 'focus' ).trigger( 'select' );
-					return;
-				}
-
-				$(this).closest( 'p' ).append( '<span class="animation-preview spinner is-active" title="' + tablepress_strings.preparing_preview + '"/>' );
-				$( 'body' ).addClass( 'wait' );
-				$id( 'table-preview' ).empty(); // clear preview
-
-				$.ajax({
-					'type': 'POST',
-					'url': ajaxurl,
-					'data': tp.table.prepare_ajax_request( 'tablepress_preview_table', '#nonce-preview-table' ),
-					'success': tp.table.preview.ajax_success,
-					'error': tp.table.preview.ajax_error,
-					'dataType': 'json'
-				} );
-
-				return false;
-			},
-			ajax_success: function( data, status /*, jqXHR */ ) {
-				if ( ( 'undefined' === typeof status ) || ( 'success' !== status ) ) {
-					tp.table.preview.error( 'AJAX call successful, but unclear status.' );
-				} else if ( ( 'undefined' === typeof data ) || ( null === data ) || ( '-1' === data ) || ( 'undefined' === typeof data.success ) || ( true !== data.success ) ) {
-					tp.table.preview.error( 'AJAX call successful, but unclear data.' );
-				} else {
-					tp.table.preview.success( data );
-				}
-			},
-			ajax_error: function( jqXHR, status, error_thrown ) {
-				tp.table.preview.error( 'AJAX call failed: ' + status + ' - ' + error_thrown );
-			},
-			success: function( data ) {
-				$id( 'table-preview' ).empty();
-				$( '<iframe id="table-preview-iframe" />' ).load( function() {
-					var $iframe = $(this).contents();
-					$iframe.find( 'head' ).append( data.head_html );
-					$iframe.find( 'body' ).append( data.body_html );
-				} ).appendTo( '#table-preview' );
-				$( '.animation-preview' ).remove();
-				$( 'body' ).removeClass( 'wait' );
-				tp.table.preview.show( '#TB_inline?inlineId=preview-container' );
-			},
-			error: function( message ) {
-				$( '.animation-preview' ).closest( 'p' )
-					.after( '<div class="ajax-alert preview-error error"><p>' + tablepress_strings.preview_error + ': ' + message + '</p></div>' );
-				$( '.animation-preview' ).remove();
-				$( '.preview-error' ).delay( 6000 ).fadeOut( 2000, function() { $(this).remove(); } );
-				$( 'body' ).removeClass( 'wait' );
-			},
-			show: function( url ) {
-				var width = $( window ).width() - 120,
-					height = $( window ).height() - 120;
-				if ( $( '#wpadminbar' ).length ) {
-					height -= parseInt( $( '#wpadminbar' ).css( 'height' ), 10 );
-				}
-				tb_show( $( '.show-preview-button' ).first().text(), url + '&height=' + height + '&width=' + width, false );
-			}
+/**
+ * Loads table options and sets DOM element states appropriately.
+ */
+tp.helpers.options.load = function () {
+	Object.keys( tp.table.options ).forEach( function ( option_name ) {
+		// Skip entries that are not actually option fields.
+		if ( 'last_editor' === option_name ) {
+			return;
 		}
-	};
 
-	tp.rows = {
-		create: function( num_rows ) {
-			var i, j,
-				column_idxs,
-				new_rows = '';
-
-			for ( i = 0; i < num_rows; i++ ) {
-				new_rows += tp.table.body_cells_pre;
-				for ( j = 0; j < tp.table.columns; j++ ) {
-					new_rows += tp.table.body_cell;
-				}
-				new_rows += tp.table.body_cells_post;
-			}
-
-			column_idxs = $id( 'edit-form-foot' ).find( '.column-hidden' )
-				.map( function() { return $(this).index(); } ).get();
-			return $( new_rows ).each( function( row_idx, row ) {
-				$( row ).children()
-					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
-					.addClass( 'column-hidden' );
-			} );
-		},
-		append: function( /* event */ ) {
-			var num_rows = $id( 'rows-append-number' ).val();
-
-			if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_rows ) ) {
-				alert( tablepress_strings.append_num_rows_invalid );
-				$id( 'rows-append-number' ).trigger( 'focus' ).trigger( 'select' );
-				return;
-			}
-
-			$id( 'edit-form-body' ).append( tp.rows.create( num_rows ) );
-
-			tp.rows.stripe();
-			tp.reindex();
-		},
-		insert: function( event ) {
-			var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
-				.prop( 'checked', event.shiftKey ).closest( 'tr' );
-
-			if ( 0 === $selected_rows.length ) {
-				alert( tablepress_strings.no_rows_selected );
-				return;
-			}
-
-			$selected_rows.before( tp.rows.create( 1 ) );
-
-			tp.rows.stripe();
-			tp.reindex();
-		},
-		duplicate: function( event ) {
-			var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
-				.prop( 'checked', event.shiftKey ).closest( 'tr' );
-
-			if ( 0 === $selected_rows.length ) {
-				alert( tablepress_strings.no_rows_selected );
-				return;
-			}
-
-			$selected_rows.each( function( idx, row ) {
-				var $row = $( row ),
-					$textareas = $row.find( 'textarea' ),
-					$duplicated_row = $row.clone();
-				$duplicated_row.find( 'textarea' ).removeAttr( 'id' ).each( function( idx, cell ) {
-					$( cell ).val( $textareas.eq( idx ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
-				} );
-				$row.after( $duplicated_row );
-			} );
-
-			tp.rows.stripe();
-			tp.reindex();
-		},
-		hide: function( event ) {
-			var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
-				.prop( 'checked', event.shiftKey ).closest( 'tr' );
-
-			if ( 0 === $selected_rows.length ) {
-				alert( tablepress_strings.no_rows_selected );
-				return;
-			}
-
-			$selected_rows.addClass( 'row-hidden' ).find( '.visibility' ).val( '0' );
-
-			tp.rows.stripe();
-			tp.table.set_table_changed();
-		},
-		unhide: function( event ) {
-			var $selected_rows = $id( 'edit-form-body' ).find( 'input:checked' )
-				.prop( 'checked', event.shiftKey ).closest( 'tr' );
-
-			if ( 0 === $selected_rows.length ) {
-				alert( tablepress_strings.no_rows_selected );
-				return;
-			}
-
-			$selected_rows.removeClass( 'row-hidden' ).find( '.visibility' ).val( '1' );
-
-			tp.rows.stripe();
-			tp.table.set_table_changed();
-		},
-		remove: function( /* event */ ) {
-			var confirm_message,
-				$selected_rows = $id( 'edit-form-body' ).find( 'input:checked' ).closest( 'tr' );
-
-			if ( 0 === $selected_rows.length ) {
-				alert( tablepress_strings.no_rows_selected );
-				return;
-			}
-
-			if ( tp.table.rows === $selected_rows.length ) {
-				alert( tablepress_strings.no_remove_all_rows );
-				return;
-			}
-
-			if ( 1 === $selected_rows.length ) {
-				confirm_message = tablepress_strings.ays_remove_rows_singular;
-			} else {
-				confirm_message = tablepress_strings.ays_remove_rows_plural;
-			}
-			if ( ! confirm( confirm_message ) ) {
-				return;
-			}
-
-			$selected_rows.remove();
-
-			tp.rows.stripe();
-			tp.reindex();
-		},
-		move: {
-			start: function( event, ui ) {
-				$( ui.placeholder ).removeClass( 'row-hidden' ).css( 'visibility', 'visible' )
-					.html( '<td colspan="' + ( tp.table.columns + tp.table.no_data_columns_pre + tp.table.no_data_columns_post ) + '"><div/></td>' );
-				$( ui.helper ).removeClass( 'odd head-row foot-row' );
-			},
-			change: function( event, ui ) {
-				tp.rows.stripe( ui.helper );
-			},
-			stop: function( /* event, ui */ ) {
-				tp.rows.stripe();
-			}
-		},
-		sort: function() {
-			var column_idx = $(this).parent().index(),
-				direction = ( $(this).hasClass( 'sort-asc' ) ) ? 1 : -1,
-				$table_body = $('#edit-form-body'),
-				$head_rows = $table_body.find( '.head-row' ).prevAll().addBack(),
-				$foot_rows = $table_body.find( '.foot-row' ).nextAll().addBack(),
-				rows = $table_body.children().not( $head_rows ).not( $foot_rows ).get(),
-				/*
-				 * Natural Sort algorithm for Javascript - Version 0.8.1 - Released under MIT license
-				 * Author: Jim Palmer (based on chunking idea from Dave Koelle)
-				 * See: https://github.com/overset/javascript-natural-sort and http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
-				 */
-				natural_sort = function( a, b ) {
-					var re = /(^([+\-]?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?(?=\D|\s|$))|^0x[\da-fA-F]+$|\d+)/g,
-						sre = /^\s+|\s+$/g,   // trim pre-post whitespace
-						snre = /\s+/g,        // normalize all whitespace to single ' ' character
-						dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
-						hre = /^0x[0-9a-f]+$/i,
-						ore = /^0/,
-						// strip whitespace
-						x = a.replace(sre, '') || '',
-						y = b.replace(sre, '') || '',
-						// chunk/tokenize
-						xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
-						yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
-						// numeric, hex or date detection
-						xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && Date.parse(x)),
-						yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
-						normChunk = function(s, l) {
-							// normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
-							return (!s.match(ore) || l === 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
-						},
-						oFxNcL, oFyNcL;
-					// first try and sort Hex codes or Dates
-					if (yD) {
-						if (xD < yD) { return -1; }
-						else if (xD > yD) { return 1; }
-					}
-					// natural sorting through split numeric strings and default strings
-					for(var cLoc = 0, xNl = xN.length, yNl = yN.length, numS = Math.max(xNl, yNl); cLoc < numS; cLoc++) {
-						oFxNcL = normChunk(xN[cLoc] || '', xNl);
-						oFyNcL = normChunk(yN[cLoc] || '', yNl);
-						// handle numeric vs string comparison - number < string - (Kyle Adams)
-						if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
-							return isNaN(oFxNcL) ? 1 : -1;
-						}
-						// if unicode use locale comparison
-						if (/[^\x00-\x80]/.test(oFxNcL + oFyNcL) && oFxNcL.localeCompare) {
-							var comp = oFxNcL.localeCompare(oFyNcL);
-							return comp / Math.abs(comp);
-						}
-						if (oFxNcL < oFyNcL) { return -1; }
-						else if (oFxNcL > oFyNcL) { return 1; }
-					}
-				};
-
-			$.each( rows, function( row_idx, row ) {
-				row.sort_key = ( '' + $( row ).children().eq( column_idx ).find( 'textarea' ).val() ).toLowerCase(); // convert to string, and lower case for case insensitive sorting
-			} );
-
-			rows.sort( function( a, b ) {
-				return direction * natural_sort( a.sort_key, b.sort_key );
-			} );
-
-			// might not be necessary:
-			$.each( rows, function( row_idx, row ) {
-				row.sort_key = null;
-			} );
-
-			$table_body.append( $head_rows );
-			$table_body.append( rows );
-			$table_body.append( $foot_rows );
-
-			tp.rows.stripe();
-			tp.reindex();
-		},
-		stripe: function( helper ) {
-			if ( 'undefined' === typeof helper ) {
-				helper = null;
-			}
-			helper = $( helper );
-			var $rows = $id( 'edit-form-body' ).children().removeClass( 'odd head-row foot-row' ).not( helper );
-			$rows.even().addClass( 'odd' );
-			$rows = $rows.not( '.row-hidden' );
-			if ( helper.hasClass( 'row-hidden' ) ) {
-				$rows = $rows.not( '.ui-sortable-placeholder' );
-			}
-			if ( tp.table.head ) {
-				$rows.first().addClass( 'head-row' );
-			}
-			if ( tp.table.foot ) {
-				$rows.last().addClass( 'foot-row' );
-			}
+		// The "Custom Commands" field might be missing, for example, if a user is not allowed to use `unfiltered_html`.
+		const $field = $( `#option-${ option_name }` );
+		if ( ! $field ) {
+			return;
 		}
-	};
 
-	tp.columns = {
-		append: function( /* event */ ) {
-			var i,
-				num_columns = $id( 'columns-append-number' ).val(),
-				new_head_cells = '', new_body_cells = '', new_foot_cells = '';
+		const property = ( $field instanceof HTMLInputElement && 'checkbox' === $field.type ) ? 'checked' : 'value';
+		$field[ property ] = tp.table.options[ option_name ];
+	} );
 
-			if ( ! ( /^[1-9][0-9]{0,4}$/ ).test( num_columns ) ) {
-				alert( tablepress_strings.append_num_columns_invalid );
-				$id( 'columns-append-number' ).trigger( 'focus' ).trigger( 'select' );
-				return;
-			}
+	// Turn off "Use DataTables" if the table has merged cells.
+	if ( tp.table.options.use_datatables && tp.helpers.editor.has_merged_cells() ) {
+		tp.table.options.use_datatables = false;
+		$( '#option-use_datatables' ).checked = false;
+	}
 
-			for ( i = 0; i < num_columns; i++ ) {
-				new_body_cells += tp.table.body_cell;
-				new_head_cells += tp.table.head_cell;
-				new_foot_cells += tp.table.foot_cell;
-			}
+	tp.helpers.options.check_dependencies();
+};
 
-			$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
-				$( row ).children().slice( - tp.table.no_data_columns_post )
-					.before( new_body_cells );
-			} );
-			$id( 'edit-form-head' ).children().slice( - tp.table.no_data_columns_post )
-				.before( new_head_cells );
-			$id( 'edit-form-foot' ).children().slice( - tp.table.no_data_columns_post )
-				.before( new_foot_cells );
+/**
+ * Sets the table option property when the DOM element (form field) is changed.
+ *
+ * @param {Event} event [description]
+ */
+tp.helpers.options.change = function ( event ) {
+	if ( ! event.target ) {
+		return;
+	}
 
-			tp.reindex();
-		},
-		insert: function( event ) {
-			var column_idxs,
-				$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
-					.prop( 'checked', event.shiftKey ).closest( 'th' );
+	const option_name = event.target.id.slice( 7 ); // Remove "option-" (7 characters) at the beginning.
+	const property = ( event.target instanceof HTMLInputElement && 'checkbox' === event.target.type ) ? 'checked' : 'value';
+	tp.table.options[ option_name ] = event.target[ property ];
 
-			if ( 0 === $selected_columns.length ) {
-				alert( tablepress_strings.no_columns_selected );
-				return;
-			}
+	// Save numeric options as numbers.
+	if ( event.target instanceof HTMLInputElement && 'number' === event.target.type ) {
+		tp.table.options[ option_name ] = parseInt( tp.table.options[ option_name ], 10 );
+	}
 
-			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-			$id( 'edit-form-body' ).children().each( function( row_idx, row ) {
-				$( row ).children()
-					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
-					.before( tp.table.body_cell );
-			} );
-			$id( 'edit-form-head' ).children()
-				.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
-				.before( tp.table.head_cell );
-			$selected_columns.before( tp.table.foot_cell );
+	// Turn off "Use DataTables" if the table has merged cells.
+	if ( 'use_datatables' === option_name && tp.table.options.use_datatables && tp.helpers.editor.has_merged_cells() ) {
+		tp.table.options.use_datatables = false;
+		$( '#option-use_datatables' ).checked = false;
+		window.alert( __( 'You can not enable the JavaScript features, because your table contains combined/merged cells.', 'tablepress' ) );
+	}
 
-			tp.reindex();
-		},
-		duplicate: function( event ) {
-			var column_idxs,
-				$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
-					.prop( 'checked', event.shiftKey ).closest( 'th' );
+	do_action( 'tablepress.optionsChange', option_name, property, event );
 
-			if ( 0 === $selected_columns.length ) {
-				alert( tablepress_strings.no_columns_selected );
-				return;
-			}
+	tp.helpers.options.check_dependencies();
+	tp.helpers.unsaved_changes.set();
+	tp.editor.updateTable(); // Redraw table.
+};
 
-			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-			$id( 'edit-form' ).find( 'tr' ).each( function( row_idx, row ) {
-				$( row ).children().each( function( idx, cell ) {
-					if ( -1 !== $.inArray( idx, column_idxs ) ) {
-						var $cell = $( cell ),
-							$duplicated_cell = $cell.clone();
-							$duplicated_cell.find( 'textarea' ).removeAttr( 'id' ).val( $cell.find( 'textarea' ).val() ); // setting val() is necessary, as clone() doesn't copy the current value, see jQuery bugs 5524, 2285, 3016
-						$cell.after( $duplicated_cell );
-					}
-				} );
-			} );
+/**
+ * Checks dependencies of options and sets DOM state ("disabled") appropriately.
+ */
+tp.helpers.options.check_dependencies = function () {
+	$( '#option-use_datatables' ).disabled = ! tp.table.options.table_head;
+	$( '#notice-datatables-head-row' ).style.display = tp.table.options.table_head ? 'none' : 'block';
 
-			tp.reindex();
-		},
-		hide: function( event ) {
-			var column_idxs,
-				$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
-					.prop( 'checked', event.shiftKey ).closest( 'th' );
+	$( '#option-print_name_position' ).disabled = ! tp.table.options.print_name;
+	$( '#option-print_description_position' ).disabled = ! tp.table.options.print_description;
 
-			if ( 0 === $selected_columns.length ) {
-				alert( tablepress_strings.no_columns_selected );
-				return;
-			}
+	const js_features_enabled = ( tp.table.options.use_datatables && tp.table.options.table_head );
+	$( '#tablepress_edit-datatables-features' ).querySelectorAll( 'input:not(#option-use_datatables), textarea' ).forEach( ( $field ) => ( $field.disabled = ! js_features_enabled ) );
 
-			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-			$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
-				$( row ).children()
-					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
-					.addClass( 'column-hidden' );
-			} );
-			$selected_columns.addClass( 'column-hidden' ).find( '.visibility' ).val( '0' );
+	const pagination_enabled = ( js_features_enabled && tp.table.options.datatables_paginate );
+	$( '#option-datatables_lengthchange' ).disabled = ! pagination_enabled;
+	$( '#option-datatables_paginate_entries' ).disabled = ! pagination_enabled;
 
-			tp.table.set_table_changed();
-		},
-		unhide: function( event ) {
-			var column_idxs,
-				$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' )
-					.prop( 'checked', event.shiftKey ).closest( 'th' );
+	do_action( 'tablepress.optionsCheckDependencies' );
+};
 
-			if ( 0 === $selected_columns.length ) {
-				alert( tablepress_strings.no_columns_selected );
-				return;
-			}
+/**
+ * Validate certain form fields, before saving or generating a preview.
+ */
+tp.helpers.options.validate_fields = function () {
+	// The pagination entries value must be a positive number.
+	if ( tp.table.options.datatables_paginate && ( isNaN( tp.table.options.datatables_paginate_entries ) || tp.table.options.datatables_paginate_entries < 1 || tp.table.options.datatables_paginate_entries > 9999 ) ) {
+		window.alert( sprintf( __( 'The entered value in the “%1$s” field is invalid.', 'tablepress' ), __( 'Pagination Entries', 'tablepress' ) ) );
+		const $field = $( '#option-datatables_paginate_entries' );
+		$field.focus();
+		$field.select();
+		return false;
+	}
 
-			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-			$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
-				$( row ).children()
-					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
-					.removeClass( 'column-hidden' );
-			} );
-			$selected_columns.removeClass( 'column-hidden' ).find( '.visibility' ).val( '1' );
+	// The "Extra CSS classes" must not contain invalid characters.
+	if ( ( /[^A-Za-z0-9- _:]/ ).test( tp.table.options.extra_css_classes ) ) {
+		window.alert( sprintf( __( 'The entered value in the “%1$s” field is invalid.', 'tablepress' ), __( 'Extra CSS Classes', 'tablepress' ) ) );
+		const $field = $( '#option-extra_css_classes' );
+		$field.focus();
+		$field.select();
+		return false;
+	}
 
-			tp.table.set_table_changed();
-		},
-		remove: function( /* event */ ) {
-			var column_idxs,
-				confirm_message,
-				$selected_columns = $id( 'edit-form-foot' ).find( 'input:checked' ).closest( 'th' );
+	return apply_filters( 'tablepress.optionsValidateFields', true );
+};
 
-			if ( 0 === $selected_columns.length ) {
-				alert( tablepress_strings.no_columns_selected );
-				return;
-			}
+tp.helpers.visibility = tp.helpers.visibility || {};
 
-			if ( tp.table.columns === $selected_columns.length ) {
-				alert( tablepress_strings.no_remove_all_columns );
-				return;
-			}
+/**
+ * [visibility.load description]
+ */
+tp.helpers.visibility.load = function () {
+	const num_rows = tp.table.visibility.rows.length;
+	const num_columns = tp.table.visibility.columns.length;
+	const meta = {};
+	// Collect meta data for hidden rows.
+	for ( let row_idx = 0; row_idx < num_rows; row_idx++ ) {
+		if ( 1 === tp.table.visibility.rows[ row_idx ] ) {
+			continue;
+		}
+		for ( let col_idx = 0; col_idx < num_columns; col_idx++ ) {
+			const cell_name = jspreadsheet.getColumnNameFromId( [ col_idx, row_idx ] );
+			meta[ cell_name ] = meta[ cell_name ] || {};
+			meta[ cell_name ].row_hidden = true;
+		}
+	}
+	// Collect meta data for hidden columns.
+	for ( let col_idx = 0; col_idx < num_columns; col_idx++ ) {
+		if ( 1 === tp.table.visibility.columns[ col_idx ] ) {
+			continue;
+		}
+		for ( let row_idx = 0; row_idx < num_rows; row_idx++ ) {
+			const cell_name = jspreadsheet.getColumnNameFromId( [ col_idx, row_idx ] );
+			meta[ cell_name ] = meta[ cell_name ] || {};
+			meta[ cell_name ].column_hidden = true;
+		}
+	}
+	return meta;
+};
 
-			if ( 1 === $selected_columns.length ) {
-				confirm_message = tablepress_strings.ays_remove_columns_singular;
-			} else {
-				confirm_message = tablepress_strings.ays_remove_columns_plural;
-			}
-			if ( ! confirm( confirm_message ) ) {
-				return;
-			}
+/**
+ * [visibility.update description]
+ */
+tp.helpers.visibility.update = function () {
+	// Set all rows and columns to visible first.
+	tp.table.visibility.rows = [];
+	for ( let row_idx = 0; row_idx < tp.editor.options.data.length; row_idx++ ) {
+		tp.table.visibility.rows[ row_idx ] = 1;
+	}
+	tp.table.visibility.columns = [];
+	for ( let col_idx = 0; col_idx < tp.editor.options.columns.length; col_idx++ ) {
+		tp.table.visibility.columns[ col_idx ] = 1;
+	}
+	// Get all hidden cells and mark their rows/columns as hidden.
+	Object.keys( tp.editor.options.meta ).forEach( function ( cell_name ) {
+		const cell = jspreadsheet.getIdFromColumnName( cell_name, true ); // Returns [ col_idx, row_idx ].
+		if ( 1 === tp.table.visibility.rows[ cell[1] ] && tp.editor.options.meta[ cell_name ].row_hidden ) {
+			tp.table.visibility.rows[ cell[1] ] = 0;
+		}
+		if ( 1 === tp.table.visibility.columns[ cell[0] ] && tp.editor.options.meta[ cell_name ].column_hidden ) {
+			tp.table.visibility.columns[ cell[0] ] = 0;
+		}
+	} );
+};
 
-			column_idxs = $selected_columns.map( function() { return $(this).index(); } ).get();
-			$id( 'edit-form-body' ).children().add( '#edit-form-head' ).each( function( row_idx, row ) {
-				$( row ).children()
-					.filter( function( idx ) { return ( -1 !== $.inArray( idx, column_idxs ) ); } )
-					.remove();
-			} );
-			$selected_columns.remove();
+/**
+ * Check whether the Hide or Unhide entries in the context menu should be disabled, by comparing
+ * whether any of the selected rows/columns have a different visibility state than what the entry would set.
+ *
+ * @param {string}  type       What to hide or unhide ("rows" or "columns").
+ * @param {boolean} visibility 0 for hidden, 1 for visible.
+ * @return {boolean} True if the entry shall be shown, false if not.
+ */
+tp.helpers.visibility.selection_contains = function ( type, visibility ) {
+	// Show the entry as soon as one of the selected rows/columns does not have the intended visibility state.
+	return tp.helpers.selection[ type ].some( ( roc_idx ) => ( tp.table.visibility[ type ][ roc_idx ] === visibility ) );
+};
 
-			tp.reindex();
-		},
-		move: {
-			source_idx: -1,
-			target_idx: -1,
-			$rows: null,
-			$row_children: null,
-			$cell: null,
-			$cells: null,
-			$placeholder: null,
-			$helper: null,
-			start: function( event, ui ) {
-				var $item = $( ui.item ),
-					column_width;
+/**
+ * For the context menu and button, determine whether moving the rows/columns of the current selection is allowed.
+ *
+ * @param {[type]} type      [description]
+ * @param {[type]} direction [description]
+ * @return {boolean} Whether the move is allowed or not.
+ */
+tp.helpers.move_allowed = function ( type, direction ) {
+	// When moving up or left, test the first row/column of the selected range.
+	let roc_to_test = tp.helpers.selection[ type ][0];
+	let min_max_roc = 0; // First row/column.
+	// When moving down or right, test the last row/column of the selected range.
+	if ( 'down' === direction || 'right' === direction ) {
+		roc_to_test = tp.helpers.selection[ type ][ tp.helpers.selection[ type ].length - 1 ];
+		min_max_roc = ( 'rows' === type ) ? tp.editor.options.data.length - 1 : tp.editor.options.columns.length - 1;
+	}
+	// Moving beyond the first/last row/column is disallowed.
+	if ( min_max_roc === roc_to_test ) {
+		return false;
+	}
+	// Otherwise allow the move.
+	return true;
+};
 
-				tp.columns.move.source_idx = $item.index();
+/**
+ * For the context menu and button, determine whether merging the current selection is allowed.
+ *
+ * @param {string} errors        Whether errors should also be alert()ed.
+ * @param {Object} error_message Call-by-reference object for the error message.
+ * @return {boolean} Whether the merge is allowed or not.
+ */
+tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
+	const alert_on_error = ( 'alert' === errors );
 
-				tp.columns.move.$rows = $id( 'edit-form-body' ).children().add( '#edit-form-foot' );
+	// If the "Table Head Row" and Use DataTables" options are enabled, disable merging cells.
+	if ( tp.table.options.table_head && tp.table.options.use_datatables ) {
+		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Use DataTables', 'tablepress' ), __( 'Features of the DataTables JavaScript library', 'tablepress' ) ) +
+				' ' + __( 'These JavaScript features are not compatible with merged cells.', 'tablepress' );
+		if ( alert_on_error ) {
+			window.alert( error_message.text );
+		}
+		return false;
+	}
 
-				tp.columns.move.$cells = tp.columns.move.$rows
-					.children( ':nth-child(' + ( tp.columns.move.source_idx + 1 ) + ')' )
-					.each( function() {
-						tp.columns.move.$cell = $(this);
-						$( '<td class="move-placeholder"><div/></td>' ).insertBefore( tp.columns.move.$cell );
-						tp.columns.move.$cell.insertAfter( tp.columns.move.$cell.nextAll().last() )
-							.clone().addClass( 'move-hover' ).insertAfter( tp.columns.move.$cell )
-							.find( 'textarea' ).val( tp.columns.move.$cell.find( 'textarea' ).val() );
-							// last line works around problem with clone() of textareas, see jQuery bugs 5524, 2285, 3016
-					} )
-					.hide();
+	const first_selected_row = tp.helpers.selection.rows[0];
+	const last_selected_row = tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ];
 
-				tp.columns.move.$helper = tp.columns.move.$rows.find( '.move-hover' );
-				/* // seems not to be working for rows, so disable it for columns
-					.each( function() {
-						tp.columns.move.$cell = $(this);
-						tp.columns.move.$cell.css( 'top', ( tp.columns.move.$cell.position().top - 3 ) + 'px' );
-					} );
-				*/
+	// If the head row option is enabled, and the first and (at least) second row are selected, disable merging cells.
+	if ( tp.table.options.table_head && 0 === first_selected_row && last_selected_row > 0 ) {
+		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) );
+		if ( alert_on_error ) {
+			window.alert( error_message.text );
+		}
+		return false;
+	}
 
-				column_width = tp.columns.move.$helper.eq(1).width(); // eq(0) is table foot
-				tp.columns.move.$helper.eq(0).width( column_width );
-				tp.columns.move.$placeholder = tp.columns.move.$rows.find( '.move-placeholder' );
-				tp.columns.move.$placeholder.find( 'div' ).width( column_width );
-			},
-			change: function( event, ui ) {
-				tp.columns.move.target_idx = $( ui.placeholder ).index();
+	// If the foot row option is enabled, and the last and (at least) next to last row are selected, disable merging cells.
+	const last_row_idx = tp.editor.options.data.length - 1;
+	if ( tp.table.options.table_foot && last_row_idx === last_selected_row && first_selected_row < last_row_idx ) {
+		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Table Foot Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) );
+		if ( alert_on_error ) {
+			window.alert( error_message.text );
+		}
+		return false;
+	}
 
-				if ( ( tp.columns.move.target_idx - tp.columns.move.source_idx ) === 1 ) {
-					tp.columns.move.target_idx += 1;
-				} else {
-					if ( tp.columns.move.target_idx === tp.columns.move.source_idx ) {
-						tp.columns.move.target_idx -= 1;
-					}
-				}
+	// Otherwise allow the merge.
+	return true;
+};
 
-				tp.columns.move.$placeholder.each( function() {
-					tp.columns.move.$cell = $(this);
-					tp.columns.move.$cell.insertBefore( tp.columns.move.$cell.parent().children().eq( tp.columns.move.target_idx ) );
-				} );
+tp.helpers.editor = tp.helpers.editor || {};
 
-				if ( tp.columns.move.target_idx > tp.columns.move.source_idx ) {
-					tp.columns.move.target_idx -= 1;
-				}
+/**
+ * [editor_reselect description]
+ *
+ * @param {[type]} el  [description]
+ * @param {[type]} obj Jspreadsheet instance, passed e.g. by onblur. If not present, we use tp.editor.
+ */
+tp.helpers.editor.reselect = function ( el, obj ) {
+	if ( 'undefined' === typeof obj ) {
+		obj = tp.editor;
+	}
+	obj.updateSelectionFromCoords(
+		tp.helpers.selection.columns[0],
+		tp.helpers.selection.rows[0],
+		tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ],
+		tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ]
+	);
+};
 
-				tp.columns.move.source_idx = tp.columns.move.target_idx;
-			},
-			sort: function( event, ui ) {
-				tp.columns.move.$helper.css( 'left', ui.position.left );
-			},
-			stop: function( /* event, ui */ ) {
-				tp.columns.move.$helper.remove();
-				tp.columns.move.$cells
-					.each( function() {
-						tp.columns.move.$cell = $(this);
-						tp.columns.move.$cell.insertBefore( tp.columns.move.$cell.parent().find( '.move-placeholder' ) );
-					} )
-					.show();
-				tp.columns.move.$placeholder.remove();
-
-				tp.columns.move.source_idx = tp.columns.move.target_idx = -1;
-				tp.columns.move.$rows = tp.columns.move.$row_children = tp.columns.move.$cell = tp.columns.move.$cells = tp.columns.move.$placeholder = tp.columns.move.$helper = null;
-
-				tp.reindex();
-			}
-		},
-		number_to_letter: function( number ) {
-			var column = '';
-			while ( number > 0 ) {
-				column = String.fromCharCode( 65 + ( ( number-1) % 26 ) ) + column;
-				number = Math.floor( (number-1) / 26 );
-			}
-			return column;
-		}/*,
-		letter_to_number: function( column ) {
-			column = column.toUpperCase();
-			var count = column.length,
-				number = 0,
-				i;
-			for ( i = 0; i < count; i++ ) {
-				number += ( column.charCodeAt( count-1-i ) - 64 ) * Math.pow( 26, i );
-			}
-			return number;
-		}*/
-	};
-
-	tp.cells = {
-		$focus: $( null ),
-		$textarea: null,
-		autogrow: function( /* event */ ) {
-			tp.cells.$focus.removeClass( 'focus' );
-			tp.cells.$focus = $(this).closest( 'tr' ).addClass( 'focus' );
-		},
-		advanced_editor: {
-			prompt_shown: false,
-			keyopen: function( event ) {
-				if ( ! event.shiftKey ) {
-					return;
-				}
-
-				var $advanced_editor = $id( 'advanced-editor-content' );
-				tp.cells.$textarea = $(this).trigger( 'blur' );
-				$advanced_editor.val( tp.cells.$textarea.val() );
-				$id( 'advanced-editor' ).wpdialog( 'open' );
-				$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
-				$advanced_editor.trigger( 'focus' );
-			},
-			buttonopen: function() {
-				if ( ! tp.cells.advanced_editor.prompt_shown ) {
-					if ( ! confirm( tablepress_strings.advanced_editor_open ) ) {
-						return;
-					}
-				}
-
-				tp.cells.advanced_editor.prompt_shown = true;
-				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-					var $advanced_editor = $id( 'advanced-editor-content' );
-					tp.cells.$textarea = $(this).trigger( 'blur' );
-					$advanced_editor.val( tp.cells.$textarea.val() );
-					$id( 'advanced-editor' ).wpdialog( 'open' );
-					$advanced_editor.get(0).selectionStart = $advanced_editor.get(0).selectionEnd = $advanced_editor.val().length;
-					$advanced_editor.trigger( 'focus' );
-				} );
-			},
-			save: function() {
-				var $ve_content = $id( 'advanced-editor-content' ).trigger( 'blur' ).val();
-				if ( tp.cells.$textarea.val() !== $ve_content ) {
-					tp.cells.$textarea.val( $ve_content );
-					// position cursor at the end
-					tp.cells.$textarea.get(0).selectionStart = tp.cells.$textarea.get(0).selectionEnd = tp.cells.$textarea.val().length;
-					tp.table.set_table_changed();
-				}
-				tp.cells.$textarea.trigger( 'focus' );
-				tp.cells.advanced_editor.close();
-			},
-			close: function() {
-				$id( 'advanced-editor' ).wpdialog( 'close' );
-				return false;
-			}
-		},
-		checkboxes: {
-			last_clicked: { '#edit-form-body' : false, '#edit-form-foot' : false },
-			multi_select: function ( event ) {
-				if ( 'undefined' === event.shiftKey ) {
-					return true;
-				}
-
-				if ( event.shiftKey ) {
-					if ( ! tp.cells.checkboxes.last_clicked[ event.data.parent ] ) {
-						return true;
-					}
-
-					var $checkboxes = $( event.data.parent ).find( ':checkbox' ),
-						first_cb = $checkboxes.index( tp.cells.checkboxes.last_clicked[ event.data.parent ] ),
-						last_cb = $checkboxes.index( this );
-					if ( first_cb !== last_cb ) {
-						$checkboxes.slice( Math.min( first_cb, last_cb ), Math.max( first_cb, last_cb ) ).prop( 'checked', $(this).prop( 'checked' ) );
-					}
-				}
-				tp.cells.checkboxes.last_clicked[ event.data.parent ] = this;
+/**
+ * [editor_has_merged_cells description]
+ */
+tp.helpers.editor.has_merged_cells = function () {
+	const num_rows = tp.editor.options.data.length;
+	const num_columns = tp.editor.options.columns.length;
+	for ( let row_idx = 1; row_idx < num_rows; row_idx++ ) {
+		for ( let col_idx = 1; col_idx < num_columns; col_idx++ ) {
+			if ( '#rowspan#' === tp.editor.options.data[ row_idx ][ col_idx ] || '#colspan#' === tp.editor.options.data[ row_idx ][ col_idx ] ) {
 				return true;
 			}
 		}
+	}
+	return false;
+};
+
+/**
+ * Creates the sorting function that is used when sorting the table by a column.
+ *
+ * @param {number} direction Sorting direction. 0 for ascending, 1 for descending.
+ * @return {Function} Sorting function.
+ */
+tp.helpers.editor.sorting = function( direction ) {
+	direction = direction ? -1 : 1;
+	return function( a, b ) {
+		// The actual value is stored in the second array element, the first contains the row index.
+		return direction * naturalSort( a[1], b[1] );
 	};
+};
 
-	tp.content = {
-		link: {
-			prompt_shown: false,
-			add: function( /* event */ ) {
-				if ( ! tp.content.link.prompt_shown ) {
-					if ( ! confirm( tablepress_strings.link_add ) ) {
-						return;
-					}
+tp.callbacks.editor = tp.callbacks.editor || {};
+
+/**
+ * [editor_onselection description]
+ *
+ * @param {[type]} instance [description]
+ * @param {[type]} x1       [description]
+ * @param {[type]} y1       [description]
+ * @param {[type]} x2       [description]
+ * @param {[type]} y2       [description]
+ * @param {[type]} origin   [description]
+ */
+tp.callbacks.editor.onselection = function ( instance, x1, y1, x2, y2 /*, origin */ ) {
+	tp.helpers.selection = {
+		rows: [],
+		columns: [],
+	};
+	for ( let row_idx = y1; row_idx <= y2; row_idx++ ) {
+		tp.helpers.selection.rows.push( row_idx );
+	}
+	for ( let col_idx = x1; col_idx <= x2; col_idx++ ) {
+		tp.helpers.selection.columns.push( col_idx );
+	}
+};
+
+/**
+ * [editor_onupdatetable description]
+ *
+ * @param {[type]} instance  [description]
+ * @param {[type]} cell      [description]
+ * @param {[type]} col_idx   [description]
+ * @param {[type]} row_idx   [description]
+ * @param {[type]} value     [description]
+ * @param {[type]} label     [description]
+ * @param {[type]} cell_name [description]
+ */
+tp.callbacks.editor.onupdatetable = function ( instance, cell, col_idx, row_idx, value, label, cell_name ) {
+	const meta = instance.jspreadsheet.options.meta[ cell_name ];
+
+	// Add class to cells (td) of hidden columns.
+	cell.classList.toggle( 'column-hidden', Boolean( meta?.column_hidden ) );
+
+	// Add classes to row (tr) for hidden rows and head/foot row. Only needs to be done once per row, thus when processing the first column.
+	if ( 0 === col_idx ) {
+		cell.parentNode.classList.toggle( 'row-hidden', Boolean( meta?.row_hidden ) );
+		cell.parentNode.classList.remove( 'head-row', 'foot-row' );
+
+		// After processing the last row, potentially add classes to the head and foot rows.
+		if ( row_idx === instance.jspreadsheet.rows.length - 1 ) {
+			const visible_rows = instance.jspreadsheet.content.querySelectorAll( 'tbody tr:not(.row-hidden)' );
+			// Designating a head and a foot row only makes sense for tables with more than one row. Single-row tables will only have a table body.
+			if ( 1 < visible_rows.length ) {
+				if ( tp.table.options.table_head ) {
+					visible_rows[0].classList.add( 'head-row' );
 				}
-
-				tp.content.link.prompt_shown = true;
-				// mousedown instead of click to allow selection of text
-				// mousedown will set the desired target textarea, and mouseup anywhere will show the link box
-				// other approaches can lead to the wrong textarea being selected
-				$id( 'edit-form-body' ).one( 'mousedown', 'textarea', function() {
-					var editor_id = this.id;
-					$( document ).one( 'mouseup', function() {
-						if ( typeof wpLink !== 'undefined' ) {
-							wpLink.open( editor_id );
-							tp.table.set_table_changed();
-						}
-					} );
-				} );
-			}
-		},
-		image: {
-			prompt_shown: false,
-			add: function( /* event */ ) {
-				if ( ! tp.content.image.prompt_shown ) {
-					if ( ! confirm( tablepress_strings.image_add ) ) {
-						return;
-					}
+				if ( tp.table.options.table_foot ) {
+					visible_rows[ visible_rows.length - 1 ].classList.add( 'foot-row' );
 				}
-
-				tp.content.image.prompt_shown = true;
-				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-					var editor = this.id,
-						options = {
-							frame: 'post',
-							state: 'insert',
-							title: wp.media.view.l10n.addMedia,
-							multiple: true
-						};
-
-					// Move caret to the end, to prevent inserting right between existing text, as that's ugly in small cells (though possible in the Advanced Editor and Insert Link dialog).
-					this.selectionStart = this.selectionEnd = this.value.length;
-
-					// Remove focus from the textarea to prevent Opera from showing the outline of the textarea above the modal.
-					// See: WP Core #22445
-					$(this).trigger( 'blur' );
-
-					wp.media.editor.open( editor, options );
-					tp.table.set_table_changed();
-				} );
-			}
-		},
-		span: {
-			prompt_shown: false,
-			add: function( span ) {
-				var span_add_msg = ( '#rowspan#' === span ) ? tablepress_strings.rowspan_add : tablepress_strings.colspan_add;
-
-				// init object, due to string keys
-				if ( false === tp.content.span.prompt_shown ) {
-					tp.content.span.prompt_shown = {};
-					tp.content.span.prompt_shown['#rowspan#'] = tp.content.span.prompt_shown['#colspan#'] = false;
-				}
-
-				// Automatically deactivate DataTables, if cells are combined
-				if ( $id( 'option-use-datatables' ).prop( 'checked' ) ) {
-					if ( confirm( tablepress_strings.span_add_datatables_warning ) ) {
-						$id( 'option-use-datatables' ).prop( 'checked', false ).trigger( 'change' );
-					} else {
-						return;
-					}
-				}
-
-				if ( ! tp.content.span.prompt_shown[ span ] ) {
-					if ( ! confirm( span_add_msg ) ) {
-						return;
-					}
-				}
-
-				tp.content.span.prompt_shown[ span ] = true;
-				$id( 'edit-form-body' ).one( 'click', 'textarea', function() {
-					var $textarea = $(this),
-						col_idx = $textarea.parent().index(),
-						row_idx = $textarea.closest( 'tr' ).index();
-					if ( '#rowspan#' === span ) {
-						if ( 0 === row_idx ) {
-							alert( tablepress_strings.no_rowspan_first_row );
-							return;
-						}
-						if ( tp.table.head && 1 === row_idx ) {
-							alert( tablepress_strings.no_rowspan_table_head );
-							return;
-						}
-						if ( tp.table.foot && ( tp.table.rows - 1 ) === row_idx ) {
-							alert( tablepress_strings.no_rowspan_table_foot );
-							return;
-						}
-					} else if ( ( '#colspan#' === span ) && ( tp.table.no_data_columns_pre === col_idx ) ) {
-						alert( tablepress_strings.no_colspan_first_col );
-						return;
-					}
-					$textarea.val( span );
-					tp.table.set_table_changed();
-				} );
 			}
 		}
-	};
+	}
+};
 
-	tp.check = {
-		table_id: function( event ) {
-			if ( ( 37 === event.which ) || ( 39 === event.which ) ) {
-				return;
-			}
-			var $input = $(this);
-			$input.val( $input.val().replace( /[^0-9a-zA-Z-_]/g, '' ) );
-		},
-		changes_saved: function() {
-			if ( tp.made_changes ) {
-				return tablepress_strings.unsaved_changes_unload;
-			}
+/**
+ * [editor_oninsertroc description]
+ *
+ * Abbreviations:
+ * roc: row or column
+ * cor: column or row
+ *
+ * @param {[type]} type         [description]
+ * @param {[type]} action       [description]
+ * @param {[type]} el           [description]
+ * @param {[type]} roc_idx      [description]
+ * @param {[type]} num_rocs     [description]
+ * @param {[type]} roc_records  [description]
+ * @param {[type]} insertBefore [description]
+ */
+tp.callbacks.editor.oninsertroc = function ( type, action, el, roc_idx, num_rocs, roc_records, insertBefore ) {
+	const handling_rows = ( 'rows' === type );
+	const property = handling_rows ? 'column_hidden' : 'row_hidden';
+	const duplicating = ( 'duplicate' === action );
+
+	const from_roc_idx = roc_idx + ( insertBefore ? num_rocs : 0 );
+	const num_cors = handling_rows ? tp.editor.options.columns.length : tp.editor.options.data.length;
+
+	// Get data of row/column that is copied.
+	const from_meta = {};
+	for ( let cor_idx = 0; cor_idx < num_cors; cor_idx++ ) {
+		const cell_idx = handling_rows ? [ cor_idx, from_roc_idx ] : [ from_roc_idx, cor_idx ];
+		const meta = tp.editor.options.meta[ jspreadsheet.getColumnNameFromId( cell_idx ) ];
+		if ( ! meta ) {
+			continue;
 		}
-	};
-
-	tp.reindex = function() {
-		var $row,
-			$rows = $id( 'edit-form-body' ).children(),
-			$cell, known_references = {};
-
-		tp.table.rows = $rows.length;
-		if ( tp.table.rows > 0 ) {
-			tp.table.columns = $rows.first().children().length - tp.table.no_data_columns_pre - tp.table.no_data_columns_post;
-		} else {
-			tp.table.columns = 0;
+		// When duplicating, copy full cell meta, otherwise only the necessary property (row visibility for columns, column visibility for rows).
+		if ( duplicating ) {
+			from_meta[ cor_idx ] = meta;
+		} else if ( meta[ property ] ) {
+			from_meta[ cor_idx ] = from_meta[ cor_idx ] || {};
+			from_meta[ cor_idx ][ property ] = true;
 		}
+	}
 
-		$rows
-		.each( function( row_idx, row ) {
-			$row = $( row );
-			$row.find( 'textarea' )
-				.val( function( column_idx, value ) {
-					// If the cell is not a formula, there's nothing to do here.
-					if ( ( '' === value ) || ( '=' !== value.charAt(0) ) ) {
-						return value;
-					}
+	const from_meta_keys = Object.keys( from_meta );
+	// Bail early if there's nothing to copy.
+	if ( ! from_meta_keys.length ) {
+		return;
+	}
 
-					// Support putting formulas in strings, like =Total: {A3+A4}.
-					var expressions = value.match( /{.+?}/g );
-					if ( null === expressions ) {
-						// Fill array so that it has the same structure as if it came from match().
-						expressions = [ value ];
-					}
-
-					// Find the replacement value (with updated cell references) for each expression and replace the old one with it.
-					expressions.forEach( function( expression ) {
-						var new_expression = expression.replace( /([A-Z]+[0-9]+)(?::([A-Z]+[0-9]+))?/g, function( full_match, first_cell, second_cell ) {
-							// first_cell must always exist, while second_cell only exists in ranges like A4:B7
-							// we will use full_match as our result variable, so that we don't need an extra one
-
-							if ( ! known_references.hasOwnProperty( first_cell ) ) {
-								$cell = $id( 'cell-' + first_cell );
-								if ( $cell.length ) {
-									known_references[ first_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
-								} else {
-									known_references[ first_cell ] = first_cell;
-								}
-							}
-							full_match = known_references[ first_cell ];
-
-							if ( ( 'undefined' !== typeof second_cell ) && ( '' !== second_cell ) ) { // Chrome and IE pass an undefined variable, while Firefox passes an empty string
-								if ( ! known_references.hasOwnProperty( second_cell ) ) {
-									$cell = $id( 'cell-' + second_cell );
-									if ( $cell.length ) {
-										known_references[ second_cell ] = tp.columns.number_to_letter( $cell.parent().index() - tp.table.no_data_columns_pre + 1 ) + ( $cell.closest( 'tr' ).index() + 1 );
-									} else {
-										known_references[ second_cell ] = second_cell;
-									}
-								}
-								full_match += ':' + known_references[ second_cell ];
-							}
-
-							return full_match;
-						} );
-						value = value.replace( expression, new_expression );
-					} );
-
-					return value;
-				} )
-				.attr( 'name', function( column_idx /*, old_name */ ) {
-					return 'table[data][' + row_idx + '][' + column_idx + ']';
-				} );
-
-			$row.find( '.move-handle' ).html( row_idx + 1 );
-		} )
-		.each( function( row_idx, row ) { // need a second loop here to not break logic in previous loop, that queries textareas by their old ID
-			$( row ).find( 'textarea' ).attr( 'id', function( column_idx /*, old_id */ ) {
-				return 'cell-' + tp.columns.number_to_letter( column_idx + 1 ) + ( row_idx + 1 );
-			} );
-		});
-		$id( 'edit-form-head' ).find( '.move-handle' )
-			.html( function( idx ) { return tp.columns.number_to_letter( idx + 1 ); } );
-
-		$id( 'number-rows' ).val( tp.table.rows );
-		$id( 'number-columns' ).val( tp.table.columns );
-
-		tp.table.set_table_changed();
-	};
-
-	tp.save_changes = {
-		trigger: function( event ) {
-			// validation checks
-			if ( $id( 'option-datatables-paginate' ).prop( 'checked' ) && ! ( /^[1-9][0-9]{0,4}$/ ).test( $id( 'option-datatables-paginate_entries' ).val() ) ) {
-				alert( tablepress_strings.num_pagination_entries_invalid );
-				$id( 'option-datatables-paginate_entries' ).trigger( 'focus' ).trigger( 'select' );
-				return;
-			}
-			if ( ( /[^A-Za-z0-9- _:]/ ).test( $id( 'option-extra-css-classes' ).val() ) ) {
-				alert( tablepress_strings.extra_css_classes_invalid );
-				$id( 'option-extra-css-classes' ).trigger( 'focus' ).trigger( 'select' );
-				return;
-			}
-
-			if ( event.shiftKey ) {
-				tp.made_changes = false; // to prevent onunload warning
-				$id( 'tablepress-page' ).find( 'form' ).trigger( 'submit' );
-				return;
-			}
-
-			$(this).closest( 'p' ).append( '<span class="animation-saving spinner is-active" title="' + tablepress_strings.saving_changes + '"/>' );
-			$( '.save-changes-button' ).prop( 'disabled', true );
-			$( 'body' ).addClass( 'wait' );
-
-			$.ajax({
-				'type': 'POST',
-				'url': ajaxurl,
-				'data': tp.table.prepare_ajax_request( 'tablepress_save_table', '#nonce-edit-table' ),
-				'success': tp.save_changes.ajax_success,
-				'error': tp.save_changes.ajax_error,
-				'dataType': 'json'
-			} );
-		},
-		ajax_success: function( data, status /*, jqXHR */ ) {
-			if ( ( 'undefined' === typeof status ) || ( 'success' !== status ) ) {
-				tp.save_changes.error( 'AJAX call successful, but unclear status. Try again while holding down the &#8220;Shift&#8221; key.' );
-			} else if ( ( 'undefined' === typeof data ) || ( null === data ) || ( '-1' === data ) || ( 'undefined' === typeof data.success ) ) {
-				tp.save_changes.error( 'AJAX call successful, but unclear data. Try again while holding down the &#8220;Shift&#8221; key.' );
-			} else if ( true !== data.success ) {
-				var debug_html = '';
-				// Print debug information, if we are in debug mode
-				if ( ( 'undefined' !== typeof data.error_details ) && ( tablepress_options.print_debug_output ) ) {
-					debug_html = '</p><p>These errors were encountered:</p><pre>' + data.error_details + '</pre><p>'; // Some HTML magic because this is wrapped in <p> when printed
-				}
-				tp.save_changes.error( 'AJAX call successful, internal saving process failed. Try again while holding down the &#8220;Shift&#8221; key.' + debug_html );
-			} else {
-				tp.save_changes.success( data );
-			}
-		},
-		ajax_error: function( jqXHR, status, error_thrown ) {
-			tp.save_changes.error( 'AJAX call failed: ' + status + ' - ' + error_thrown + '. Try again while holding down the &#8220;Shift&#8221; key.' );
-		},
-		success: function( data ) {
-			// saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurrences
-			if ( tp.table.id !== data.table_id ) {
-				// update URL (for HTML5 browsers only), but only if ID really changed, to not get dummy entries in the browser history
-				if ( ( 'pushState' in window.history ) && null !== window.history.pushState ) {
-					window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, 'table_id=' + data.table_id ) );
-				}
-			}
-			// update CSS class for data field form
-			$id( 'edit-form' ).removeClass( 'tablepress-edit-screen-id-' + tp.table.id ).addClass( 'tablepress-edit-screen-id-' + data.table_id );
-			// update table ID in input fields (type text and hidden)
-			tp.table.id = tp.table.new_id = data.table_id;
-			$id( 'table-id' ).val( tp.table.id );
-			$id( 'table-new-id' ).val( tp.table.new_id );
-			// update the Shortcode text field
-			$( '.table-shortcode' ).val( '[' + tablepress_options.shortcode + ' id=' + tp.table.new_id + ' /]' );
-			// update the nonces
-			$id( 'nonce-edit-table' ).val( data.new_edit_nonce );
-			$id( 'nonce-preview-table' ).val( data.new_preview_nonce );
-			// update URLs in Preview links
-			var $show_preview_buttons = $( '.show-preview-button' );
-			if ( $show_preview_buttons.length ) { // check necessary, because Preview button might not be visible
-				$show_preview_buttons.attr( 'href',
-					$show_preview_buttons.first().attr( 'href' )
-						.replace( /item=[a-zA-Z0-9_-]+/g, 'item=' + data.table_id )
-						.replace( /&_wpnonce=[a-z0-9]+/ig, '&_wpnonce=' + data.new_preview_nonce )
-				);
-			}
-			// update last modified date and user nickname
-			$id( 'last-modified' ).text( data.last_modified );
-			$id( 'last-editor' ).text( data.last_editor );
-			tp.table.unset_table_changed();
-			tp.save_changes.after_saving_dialog( 'success', tablepress_strings[ data.message ] );
-		},
-		error: function( message ) {
-			tp.save_changes.after_saving_dialog( 'error', message );
-		},
-		after_saving_dialog: function( type, message ) {
-			if ( 'undefined' === typeof message ) {
-				message = '';
-			} else {
-				message = ': ' + message;
-			}
-			var delay,
-				div_class = 'save-changes-' + type;
-			if ( 'success' === type ) {
-				div_class += ' notice notice-success';
-				delay = 3000;
-			} else {
-				div_class += ' notice notice-error';
-				delay = 6000;
-			}
-			$( '.animation-saving' ).closest( 'p' )
-				.after( '<div class="ajax-alert ' + div_class + '"><p>' + tablepress_strings['save_changes_' + type] + message + '</p></div>' );
-			$( '.animation-saving' ).remove();
-			$( '.save-changes-' + type ).delay( delay ).fadeOut( 2000, function() { $(this).remove(); } );
-			$( '.save-changes-button' ).prop( 'disabled', false );
-			$( 'body' ).removeClass( 'wait' );
-		}
-	};
-
-	tp.init = function() {
-		var callbacks = {
-			'click': {
-				'#rows-insert':			tp.rows.insert,
-				'#columns-insert':		tp.columns.insert,
-				'#rows-duplicate':		tp.rows.duplicate,
-				'#columns-duplicate':	tp.columns.duplicate,
-				'#rows-remove':			tp.rows.remove,
-				'#columns-remove':		tp.columns.remove,
-				'#rows-hide':			tp.rows.hide,
-				'#columns-hide':		tp.columns.hide,
-				'#rows-unhide':			tp.rows.unhide,
-				'#columns-unhide':		tp.columns.unhide,
-				'#rows-append':			tp.rows.append,
-				'#columns-append':		tp.columns.append,
-				'#link-add':			tp.content.link.add,
-				'#image-add':			tp.content.image.add,
-				'#span-add-rowspan':	function() { tp.content.span.add( '#rowspan#' ); },
-				'#span-add-colspan':	function() { tp.content.span.add( '#colspan#' ); },
-				'.show-preview-button': tp.table.preview.trigger,
-				'.save-changes-button': tp.save_changes.trigger,
-				'.show-help-box':		function() {
-					var helpbox_id = $(this).data( 'help-box' );
-					$( helpbox_id ).wpdialog( {
-						title: $(this).attr( 'title' ),
-						height: 470,
-						width: 320,
-						modal: true,
-						dialogClass: 'wp-dialog',
-						closeOnEscape: true
-					} );
-				}
-			},
-			'keyup': {
-				'#table-new-id':		tp.check.table_id
-			},
-			'change': {
-				'#option-table-head':			tp.table.change_table_head,
-				'#option-table-foot':			tp.table.change_table_foot,
-				'#option-use-datatables':		tp.table.change_datatables,
-				'#option-datatables-paginate':	tp.table.change_datatables_pagination
-			},
-			'blur': {
-				'#table-new-id':		tp.table.change_id	// onchange would not recognize changed values from tp.check.table_id
-			}
-		},
-		$table = $id( 'edit-form-body' );
-
-		$.each( callbacks, function( event, event_callbacks ) {
-			$.each( event_callbacks, function( selector, callback ) {
-				$( selector ).on( event, callback );
-			} );
+	// Construct meta data for target rows/columns.
+	const to_meta = {};
+	if ( ! insertBefore ) {
+		roc_idx++; // When appending (i.e. insert after), we start after the current row or column.
+	}
+	for ( let new_roc = 0; new_roc < num_rocs; new_roc++ ) {
+		const to_roc_idx = roc_idx + new_roc;
+		from_meta_keys.forEach( function ( cor_idx ) {
+			const cell_idx = handling_rows ? [ cor_idx, to_roc_idx ] : [ to_roc_idx, cor_idx ];
+			to_meta[ jspreadsheet.getColumnNameFromId( cell_idx ) ] = from_meta[ cor_idx ];
 		} );
+	}
 
-		$( window ).on( 'beforeunload', tp.check.changes_saved );
+	tp.editor.setMeta( to_meta );
+	tp.editor.updateTable(); // Redraw table.
+};
 
-		// do this before the next lines, to not trigger set_table_changed()
-		$id( 'option-table-head' ).trigger( 'change' ); // init changed/disabled states of DataTables JS features checkboxes
-		$id( 'option-print-name' ).on( 'change', tp.table.change_print_name_description ).trigger( 'change' ); // init dropdowns for name and description position
-		$id( 'option-print-description' ).on( 'change', tp.table.change_print_name_description ).trigger( 'change' );
+/**
+ * [editor_onmove description]
+ *
+ * @param {[type]} el          [description]
+ * @param {[type]} old_roc_idx [description]
+ * @param {[type]} new_roc_idx [description]
+ */
+tp.callbacks.editor.onmove = function (/* el, old_roc_idx, new_roc_idx */) {
+	tp.helpers.editor.reselect();
+	tp.helpers.unsaved_changes.set();
+};
 
-		// just once is enough, will be reset after saving
-		$table.one( 'change', 'textarea', tp.table.set_table_changed );
-		$( '#tablepress_edit-table-information, #tablepress_edit-table-options, #tablepress_edit-datatables-features' ).one( 'change', 'input, textarea, select', tp.table.set_table_changed );
+/**
+ * [editor_onsort description]
+ *
+ * @param {[type]} el     [description]
+ * @param {[type]} column [description]
+ * @param {[type]} order  [description]
+ */
+tp.callbacks.editor.onsort = function (/* el, column, order */) {
+	tp.editor.updateTable(); // Redraw table.
+	tp.helpers.unsaved_changes.set();
+};
 
-		if ( tablepress_options.cells_advanced_editor ) {
-			$table.on( 'click', 'textarea', tp.cells.advanced_editor.keyopen );
-			$id( 'advanced-editor-open' ).on( 'click', tp.cells.advanced_editor.buttonopen );
-			$id( 'advanced-editor-confirm' ).on( 'click', tp.cells.advanced_editor.save );
-			$id( 'advanced-editor-cancel' ).on( 'click', tp.cells.advanced_editor.close );
-			$id( 'advanced-editor' ).wpdialog( {
-				autoOpen: false,
-				title: $id( 'advanced-editor-open' ).val(),
-				width: 600,
-				modal: true,
-				dialogClass: 'wp-dialog',
-				resizable: false,
-				closeOnEscape: true
-			} );
-			// Fix issue with input fields not being usable (they are immediately losing focus without this) in the wpLink dialog when called through the "Advanced Editor"
-			$id( 'wp-link' ).on( 'focus', 'input', function( event ) {
-				event.stopPropagation();
-			} );
-		} else {
-			$id( 'advanced-editor-open' ).hide();
-		}
+/**
+ * Copy the generated link or image HTML code from the helper textarea to the first selected table cell.
+ */
+tp.helpers.editor.insert_from_helper_textarea = function () {
+	tp.editor.setValueFromCoords( tp.helpers.selection.columns[0], tp.helpers.selection.rows[0], this.value );
+};
 
-		// Fix issue with input fields not being usable (they are immediately losing focus without this) in the sidebar of the new Media Manager
-		$( 'body' ).on( 'focus', '.media-modal .media-frame-content input, .media-modal .media-frame-content textarea', function( event ) {
-			event.stopPropagation();
-		} );
+tp.callbacks.insert_link = {};
 
-		if ( tablepress_options.cells_auto_grow ) {
-			$table.on( 'focus', 'textarea', tp.cells.autogrow );
-		}
+/**
+ * Open the wpLink dialog for inserting links.
+ */
+tp.callbacks.insert_link.open_dialog = function () {
+	$( '#textarea-insert-helper' ).value = tp.editor.options.data[ tp.helpers.selection.rows[0] ][ tp.helpers.selection.columns[0] ];
+	const cell_name = jexcel.getColumnNameFromId( [ tp.helpers.selection.columns[0], tp.helpers.selection.rows[0] ] );
+	$( '#link-modal-title' ).textContent = sprintf( __( 'Insert Link into cell %1$s', 'tablepress' ), cell_name );
+	wpLink.open( 'textarea-insert-helper' );
+	jexcel.current = null; // This is necessary to prevent problems with the focus when the "Insert Link" dialog is called from the context menu.
+};
 
-		$id( 'edit-form-body' ).on( 'click', 'input:checkbox', { parent: '#edit-form-body' }, tp.cells.checkboxes.multi_select );
-		$id( 'edit-form-foot' ).on( 'click', 'input:checkbox', { parent: '#edit-form-foot' }, tp.cells.checkboxes.multi_select );
+tp.callbacks.insert_image = {};
 
-		$id( 'edit-form-head' ).on( 'click', '.sort-control', tp.rows.sort );
+/**
+ * Open the WP Media library for inserting images.
+ */
+tp.callbacks.insert_image.open_dialog = function () {
+	$( '#textarea-insert-helper' ).value = tp.editor.options.data[ tp.helpers.selection.rows[0] ][ tp.helpers.selection.columns[0] ];
+	wp.media.editor.open( 'textarea-insert-helper', {
+		frame: 'post',
+		state: 'insert',
+		title: wp.media.view.l10n.addMedia,
+		multiple: true,
+	} );
+	const cell_name = jexcel.getColumnNameFromId( [ tp.helpers.selection.columns[0], tp.helpers.selection.rows[0] ] );
+	document.querySelector( '#media-frame-title h1' ).textContent = sprintf( __( 'Add media to cell %1$s', 'tablepress' ), cell_name );
+	jexcel.current = null; // This is necessary to prevent problems with the focus when the "Insert Link" dialog is called from the context menu.
+};
 
-		// on form submit: Enable disabled fields, so that they are transmitted in the POST request
-		$id( 'tablepress-page' ).find( 'form' ).on( 'submit', function() {
-			$(this).find( '.tablepress-postbox-table' ).find( 'input, select' ).prop( 'disabled', false );
-		} );
+tp.callbacks.advanced_editor = {};
 
-		$table.sortable( {
-			axis: 'y',
-			containment: $id( 'edit-form' ), // to get better behavior when dragging before/after the first/last row
-			forceHelperSize: true, // necessary?
-			handle: '.move-handle',
-			start: tp.rows.move.start,
-			change: tp.rows.move.change,
-			stop: tp.rows.move.stop,
-			update: tp.reindex
-		} ); // disableSelection() prohibits selection of text in textareas via keyboard
+tp.callbacks.advanced_editor.$textarea = $( '#advanced-editor-content' );
 
-		$id( 'edit-form-head' ).sortable( {
-			axis: 'x',
-			items: '.head',
-			containment: 'parent',
-			forceHelperSize: true, // necessary?
-			helper: 'clone',
-			handle: '.move-handle',
-			start: tp.columns.move.start,
-			stop: tp.columns.move.stop,
-			change: tp.columns.move.change,
-			sort: tp.columns.move.sort
-		} ).disableSelection();
+/**
+ * Open the wpdialog for the Advanced Editor.
+ */
+tp.callbacks.advanced_editor.open_dialog = function () {
+	tp.callbacks.advanced_editor.$textarea.value = tp.editor.options.data[ tp.helpers.selection.rows[0] ][ tp.helpers.selection.columns[0] ];
+
+	const cell_name = jexcel.getColumnNameFromId( [ tp.helpers.selection.columns[0], tp.helpers.selection.rows[0] ] );
+	const title = sprintf( __( 'Advanced Editor for cell %1$s', 'tablepress' ), cell_name );
+	$( '#advanced-editor-label' ).textContent = title; // Screen reader label for the "Advanced Editor" textarea.
+	$( '#link-modal-title' ).textContent = sprintf( __( 'Insert Link into cell %1$s', 'tablepress' ), cell_name );
+
+	jQuery( '#advanced-editor' ).wpdialog( {
+		width: 600,
+		modal: true,
+		title,
+		resizable: false, // Height of textarea does not increase when resizing editor height.
+		closeOnEscape: true,
+		buttons: [
+			{
+				text: __( 'Cancel', 'tablepress' ),
+				class: 'button button-cancel',
+				click() {
+					jQuery( this ).wpdialog( 'close' );
+				},
+			},
+			{
+				text: __( 'OK', 'tablepress' ),
+				class: 'button button-primary button-ok',
+				click: tp.callbacks.advanced_editor.confirm_save,
+			},
+		],
+	} );
+
+	jexcel.current = null; // This is necessary to prevent problems with the focus and cells being emptied when the Advanced Editor is called from the context menu.
+	tp.callbacks.advanced_editor.$textarea.focus();
+};
+
+/**
+ * Confirm and save changes of the Advanced Editor.
+ */
+tp.callbacks.advanced_editor.confirm_save = function () {
+	const current_value = tp.editor.options.data[ tp.helpers.selection.rows[0] ][ tp.helpers.selection.columns[0] ];
+	// Only set the cell content if changes were made to not wrongly call tp.helpers.unsaved_changes.set().
+	if ( tp.callbacks.advanced_editor.$textarea.value !== current_value ) {
+		tp.editor.setValueFromCoords( tp.helpers.selection.columns[0], tp.helpers.selection.rows[0], tp.callbacks.advanced_editor.$textarea.value );
+	}
+	jQuery( this ).wpdialog( 'close' );
+};
+
+tp.callbacks.help_box = {};
+
+/**
+ * Open the wpdialog for a help box.
+ *
+ * @param {Event} event [description]
+ */
+tp.callbacks.help_box.open_dialog = function ( event ) {
+	jQuery( event.target.dataset.helpBox ).wpdialog( {
+		height: 460,
+		width: 420,
+		minWidth: 260,
+		modal: true,
+		closeOnEscape: true,
+		buttons: [
+			{
+				text: __( 'OK', 'tablepress' ),
+				class: 'button button-ok',
+				click() {
+					jQuery( this ).wpdialog( 'close' );
+				},
+			},
+		],
+	} );
+};
+
+tp.callbacks.table_preview = {};
+
+/**
+ * Handle showing the table preview.
+ *
+ * @param {Event} event [description]
+ */
+tp.callbacks.table_preview.process = function ( event ) {
+	// Never follow the link of the Preview button, everything is handled with JS.
+	event.preventDefault();
+
+	// Initialize the Table Preview wpdialog.
+	tp.callbacks.table_preview.$dialog = jQuery( '#table-preview' ).wpdialog( {
+		autoOpen: false,
+		width: window.innerWidth - 80,
+		height: window.innerHeight - 80,
+		modal: true,
+		title: sprintf( __( 'Preview of table “%1$s” (ID %2$s)', 'tablepress' ), $( '#table-name' ).value, tp.table.id ),
+		closeOnEscape: true,
+		buttons: [
+			{
+				text: __( 'OK', 'tablepress' ),
+				class: 'button button-ok',
+				click() {
+					jQuery( this ).wpdialog( 'close' );
+				},
+			},
+		],
+	} );
+
+	// For tables without unsaved changes, show an externally rendered table from a URL in an iframe in a wpdialog.
+	if ( ! tp.made_changes ) {
+		const $iframe = $( '#table-preview-iframe' );
+		$iframe.src = event.target.href;
+		$iframe.removeAttribute( 'srcdoc' );
+		tp.callbacks.table_preview.$dialog.wpdialog( 'open' );
+		return;
+	}
+
+	// For tables with unsaved changes, get the table preview HTML code for the iframe via AJAX.
+
+	// Collect information about hidden rows and columns.
+	tp.helpers.visibility.update();
+
+	// Prepare the data for the AJAX request.
+	const request_data = {
+		action: 'tablepress_preview_table',
+		_ajax_nonce: tp.nonces.preview_table,
+		tablepress: {
+			id: tp.table.id,
+			new_id: tp.table.new_id,
+			name: $( '#table-name' ).value,
+			description: $( '#table-description' ).value,
+			data: JSON.stringify( tp.editor.options.data ),
+			options: JSON.stringify( tp.table.options ),
+			visibility: JSON.stringify( tp.table.visibility ),
+			number: {
+				rows: tp.editor.options.data.length,
+				columns: tp.editor.options.columns.length,
+			},
+		},
 	};
 
-	// Run TablePress initialization.
-	tp.init();
+	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-table-preview" class="spinner-table-preview spinner is-active" title="${ __( 'The Table Preview is being loaded …', 'tablepress' ) }"/>` );
+	$( '.button-show-preview' ).forEach( ( button ) => button.classList.add( 'disabled' ) );
 
+	document.body.classList.add( 'wait' );
+
+	// Load the table preview data from the server via an AJAX request.
+	fetch( ajaxurl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			Accept: 'application/json',
+		},
+		body: buildQueryString( request_data ),
+	} )
+	// Check for HTTP connection problems.
+	.then( ( response ) => {
+		if ( ! response.ok ) {
+			throw new Error( `There was a problem with the server, HTTP response code ${ response.status } (${ response.statusText }).` );
+		}
+		return response.json();
+	} )
+	// Check for problems with the transmitted data.
+	.then( ( data ) => {
+		if ( 'undefined' === typeof data || null === data || '-1' === data || 'undefined' === typeof data.success ) {
+			throw new Error( 'The JSON data returned from the server is unclear or incomplete.' );
+		}
+
+		if ( true !== data.success ) {
+			throw new Error( 'The preview could not be loaded.' );
+		}
+
+		tp.callbacks.table_preview.success( data );
+	} )
+	// Handle errors.
+	.catch( ( error ) => tp.callbacks.table_preview.error( error.message ) );
+};
+
+/**
+ * [success description]
+ *
+ * @param {[type]} data [description]
+ */
+tp.callbacks.table_preview.success = function ( data ) {
+	const $iframe = $( '#table-preview-iframe' );
+	$iframe.src = '';
+	$iframe.srcdoc = `<!DOCTYPE html><html><head>${ data.head_html }</head><body>${ data.body_html }</body></html>`;
+
+	$( '#spinner-table-preview' ).remove();
+	$( '.button-show-preview' ).forEach( ( button ) => button.classList.remove( 'disabled' ) );
+	document.body.classList.remove( 'wait' );
+
+	tp.callbacks.table_preview.$dialog.wpdialog( 'open' );
+};
+
+/**
+ * [error description]
+ *
+ * @param {[type]} message [description]
+ */
+tp.callbacks.table_preview.error = function ( message ) {
+	message = __( 'Attention: Unfortunately, an error occurred.', 'tablepress' ) + ' ' + message;
+	const div_id = `show-preview-${ Date.now() }`;
+
+	const $spinner = $( '#spinner-table-preview' );
+	$spinner.parentNode.insertAdjacentHTML( 'afterend', `<div id="${ div_id }" class="ajax-alert notice notice-error"><p>${ message }</p></div>` );
+	$spinner.remove();
+
+	const $notice = $( `#${ div_id }` );
+	void $notice.offsetWidth; // Trick browser layout engine. Necessary to make CSS transition work.
+	$notice.style.opacity = 0;
+	$notice.addEventListener( 'transitionend', () => $notice.remove() );
+
+	$( '.button-show-preview' ).forEach( ( button ) => button.classList.remove( 'disabled' ) );
+	document.body.classList.remove( 'wait' );
+};
+
+tp.callbacks.save_changes = {};
+
+/**
+ * Save Changes to the server.
+ *
+ * @param {Event} event [description]
+ */
+tp.callbacks.save_changes.process = function ( event ) {
+	// Validate input fields.
+	if ( ! tp.helpers.options.validate_fields() ) {
+		return;
+	}
+
+	// Collect information about hidden rows and columns.
+	tp.helpers.visibility.update();
+
+	// Prepare the data for the AJAX request.
+	const request_data = {
+		action: 'tablepress_save_table',
+		_ajax_nonce: tp.nonces.edit_table,
+		tablepress: {
+			id: tp.table.id,
+			new_id: tp.table.new_id,
+			name: $( '#table-name' ).value,
+			description: $( '#table-description' ).value,
+			data: JSON.stringify( tp.editor.options.data ),
+			options: JSON.stringify( tp.table.options ),
+			visibility: JSON.stringify( tp.table.visibility ),
+			number: {
+				rows: tp.editor.options.data.length,
+				columns: tp.editor.options.columns.length,
+			},
+		},
+	};
+
+	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"/>` );
+	$( '.button-save-changes' ).forEach( ( button ) => ( button.disabled = true ) );
+
+	document.body.classList.add( 'wait' );
+
+	// Save the table data to the server via an AJAX request.
+	fetch( ajaxurl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			Accept: 'application/json',
+		},
+		body: buildQueryString( request_data ),
+	} )
+	// Check for HTTP connection problems.
+	.then( ( response ) => {
+		if ( ! response.ok ) {
+			throw new Error( `There was a problem with the server, HTTP response code ${ response.status } (${ response.statusText }).` );
+		}
+		return response.json();
+	} )
+	// Check for problems with the transmitted data.
+	.then( ( data ) => {
+		if ( 'undefined' === typeof data || null === data || '-1' === data || 'undefined' === typeof data.success ) {
+			throw new Error( 'The JSON data returned from the server is unclear or incomplete.' );
+		}
+
+		if ( true !== data.success ) {
+			const debug_html = data.error_details ? `</p><p>These errors were encountered:</p><pre>${ data.error_details }</pre><p>` : '';
+			throw new Error( `The table could not be saved to the database properly.${ debug_html }` );
+		}
+
+		tp.callbacks.save_changes.success( data );
+	} )
+	// Handle errors.
+	.catch( ( error ) => tp.callbacks.save_changes.error( error.message ) );
+};
+
+/**
+ * [success description]
+ *
+ * @param {[type]} data [description]
+ */
+tp.callbacks.save_changes.success = function ( data ) {
+	// Saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurrences.
+	if ( tp.table.id !== data.table_id && window?.history?.pushState ) {
+		// Update URL, but only if the table ID changed, to not get dummy entries in the browser history.
+		window.history.pushState( '', '', window.location.href.replace( /table_id=[0-9a-zA-Z-_]+/gi, `table_id=${ data.table_id }` ) );
+	}
+
+	// Update table ID in input field.
+	tp.table.id = data.table_id;
+	tp.table.new_id = data.table_id;
+	$( '#table-id' ).value = data.table_id;
+
+	// Update the nonces.
+	tp.nonces.edit_table = data.new_edit_nonce;
+	tp.nonces.preview_table = data.new_preview_nonce;
+
+	// Update URLs in Preview links.
+	$( '.button-show-preview' ).forEach( ( button ) => {
+		button.href = button.href
+			.replace( /item=[a-zA-Z0-9_-]+/g, `item=${ data.table_id }` )
+			.replace( /&_wpnonce=[a-z0-9]+/ig, `&_wpnonce=${ data.new_preview_nonce }` );
+	} );
+
+	// Update last-modified date and user nickname.
+	$( '#last-modified' ).textContent = data.last_modified;
+	$( '#last-editor' ).textContent = data.last_editor;
+
+	tp.helpers.unsaved_changes.unset();
+
+	const action_messages = {
+		success_save:                   __( 'The table was saved successfully.', 'tablepress' ),
+		error_save:                     __( 'Attention: Unfortunately, an error occurred.', 'tablepress' ) + ' ' + __( 'The table could not be saved.', 'tablepress' ),
+		success_save_success_id_change: __( 'The table was saved successfully, and the table ID was changed.', 'tablepress' ),
+		success_save_error_id_change:   __( 'The table was saved successfully, but the table ID could not be changed!', 'tablepress' ),
+	};
+	const type = ( data.message.includes( 'error' ) ) ? 'error' : 'success';
+	tp.callbacks.save_changes.after_saving_notice( type, action_messages[ data.message ] );
+};
+
+/**
+ * [error description]
+ *
+ * @param {[type]} message [description]
+ */
+tp.callbacks.save_changes.error = function ( message ) {
+	message = __( 'Attention: Unfortunately, an error occurred.', 'tablepress' ) + ' ' + message;
+	tp.callbacks.save_changes.after_saving_notice( 'error', message );
+};
+
+/**
+ * [after_saving_notice description]
+ *
+ * @param {[type]} type    [description]
+ * @param {[type]} message [description]
+ */
+tp.callbacks.save_changes.after_saving_notice = function ( type, message ) {
+	const div_id = `save-changes-${ Date.now() }`;
+
+	const $spinner = $( '#spinner-save-changes' );
+	$spinner.parentNode.insertAdjacentHTML( 'afterend', `<div id="${ div_id }" class="ajax-alert notice notice-${ type }"><p>${ message }</p></div>` );
+	$spinner.remove();
+
+	const $notice = $( `#${ div_id }` );
+	void $notice.offsetWidth; // Trick browser layout engine. Necessary to make CSS transition work.
+	$notice.style.opacity = 0;
+	$notice.addEventListener( 'transitionend', () => $notice.remove() );
+
+	$( '.button-save-changes' ).forEach( ( button ) => ( button.disabled = false ) );
+
+	document.body.classList.remove( 'wait' );
+};
+
+tp.callbacks.table_id = tp.callbacks.table_id || {};
+
+/**
+ * [sanitize_table_id description]
+ */
+tp.callbacks.table_id.sanitize = function () {
+	this.value = this.value.replace( /[^0-9a-zA-Z-_]/g, '' );
+};
+
+/**
+ * [change_table_id description]
+ */
+tp.callbacks.table_id.change = function () {
+	// The table IDs "" and "0" are not allowed, or in other words, the table ID has to fulfill /[A-Za-z1-9-_]|[A-Za-z0-9-_]{2,}/.
+	if ( '' === this.value || '0' === this.value ) {
+		window.alert( __( 'This table ID is invalid. Please enter a different table ID.', 'tablepress' ) );
+		this.value = tp.table.new_id;
+		this.focus();
+		this.select();
+		return;
+	}
+
+	if ( ! window.confirm( __( 'Do you really want to change the Table ID? All blocks for this table in your pages and posts will have to be adjusted!', 'tablepress' ) ) ) {
+		this.value = tp.table.new_id;
+		return;
+	}
+
+	// Set the new table ID.
+	tp.table.new_id = this.value;
+	tp.helpers.unsaved_changes.set();
+};
+
+/**
+ * Inserts or duplicates rows or columns before each currently selected row/column.
+ *
+ * @param {string} action   The action to perform on the selected rows/columns ("insert" or "duplicate").
+ * @param {string} type     What to insert or duplicate ("rows" or "columns").
+ * @param {string} position Where to insert or duplicate ("before" or "after"). Default "before".
+ */
+tp.callbacks.insert_duplicate = function ( action, type, position = 'before' ) {
+	const handling_rows = ( 'rows' === type );
+	const insert_function = handling_rows ? tp.editor.insertRow : tp.editor.insertColumn;
+	const getData_function = handling_rows ? tp.editor.getRowData : tp.editor.getColumnData;
+	const duplicating = ( 'duplicate' === action );
+	// Dynamically set the event handler, so that we have the action available in it.
+	tp.editor.options[ handling_rows ? 'oninsertrow' : 'oninsertcolumn' ] = tp.callbacks.editor.oninsertroc.bind( null, type, action );
+	tp.helpers.selection[ type ].forEach( function ( roc_idx, array_idx ) {
+		const shifted_roc_idx = roc_idx + array_idx; // Not having to deal with shifted indices is possible by looping through the reversed array, but that's likely slower.
+		const data = duplicating ? getData_function( shifted_roc_idx ) : 1;
+		const position_bool = 'before' === position; // true means "before".
+		insert_function( data, shifted_roc_idx, position_bool );
+	} );
+	tp.helpers.unsaved_changes.set();
+
+	// Select both inserted/duplicated rows/columns if more than one were selected.
+	const num_selected_rocs = tp.helpers.selection[ type ].length;
+	if ( num_selected_rocs > 1 ) {
+		tp.editor.updateSelectionFromCoords(
+			tp.helpers.selection.columns[0],
+			tp.helpers.selection.rows[0],
+			handling_rows ? tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] : tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] + num_selected_rocs,
+			handling_rows ? tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ] + num_selected_rocs : tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ]
+		);
+	}
+};
+
+/**
+ * Removes currently selected rows or columns.
+ *
+ * @param {string} type What to remove ("rows" or "columns").
+ */
+tp.callbacks.remove = function ( type ) {
+	const handling_rows = 'rows' === type;
+	const num_cors = handling_rows ? tp.editor.options.columns.length : tp.editor.options.data.length;
+	const last_roc_idx = handling_rows ? tp.editor.options.data.length - 1 : tp.editor.options.columns.length - 1;
+
+	// Visibility meta information has to be deleted manually, as otherwise the Jspreadsheet meta information can get out of sync.
+	if ( tp.editor.options.meta ) {
+		tp.helpers.selection[ type ].forEach( function ( roc_idx ) {
+			for ( let cor_idx = 0; cor_idx < num_cors; cor_idx++ ) {
+				const cell_idx = handling_rows ? [ cor_idx, roc_idx ] : [ roc_idx, cor_idx ];
+				delete tp.editor.options.meta[ jspreadsheet.getColumnNameFromId( cell_idx ) ];
+			}
+		} );
+	}
+
+	const delete_function = handling_rows ? tp.editor.deleteRow : tp.editor.deleteColumn;
+	delete_function( tp.helpers.selection[ type ][0], tp.helpers.selection[ type ].length );
+	tp.helpers.unsaved_changes.set();
+
+	// Reselect last visible row/column, if last rows/columns were deleted.
+	if ( last_roc_idx === tp.helpers.selection[ type ][ tp.helpers.selection[ type ].length - 1 ] ) {
+		const col_idx = handling_rows ? tp.helpers.selection.columns[0] : tp.helpers.selection.columns[0] - 1;
+		const row_idx = handling_rows ? tp.helpers.selection.rows[0] - 1 : tp.helpers.selection.rows[0];
+		tp.editor.updateSelectionFromCoords( col_idx, row_idx, col_idx, row_idx );
+	}
+};
+
+/**
+ * Appends rows or columns at the bottom or right end of the table.
+ *
+ * @param {string} type     What to append ("rows" or "columns").
+ * @param {number} num_rocs Number of rows or columns to append.
+ */
+tp.callbacks.append = function ( type, num_rocs ) {
+	const handling_rows = ( 'rows' === type );
+	const insert_function = handling_rows ? tp.editor.insertRow : tp.editor.insertColumn;
+	// Dynamically set the event handler, so that we have the action available in it.
+	tp.editor.options[ handling_rows ? 'oninsertrow' : 'oninsertcolumn' ] = tp.callbacks.editor.oninsertroc.bind( null, type, 'append' );
+	insert_function( num_rocs );
+	tp.helpers.unsaved_changes.set();
+};
+
+/**
+ * Moves currently selected rows or columns.
+ *
+ * @param {string} direction Where to move the selected rows or columns (for rows: "up"/"down", for columns: "left"/right").
+ * @param {string} type      What to append ("rows" or "columns").
+ */
+tp.callbacks.move = function ( direction, type ) {
+	const handling_rows = ( 'rows' === type );
+
+	// Default case: up/left
+	let rocs = tp.helpers.selection[ type ]; // When moving up or left, start with the first row/column of the selected range.
+	let position_difference = -1; // New row/column number is one smaller than current row/column number.
+	// Alternate case: down/right
+	if ( 'down' === direction || 'right' === direction ) {
+		rocs = rocs.slice().reverse(); // When moving down or right, reverse the order, to start with the last row/column of the selected range. slice() is needed here to create an array copy.
+		position_difference = 1; // New row/column number is one higher than current row/column number.
+	}
+	// Move the selected rows/columns individually.
+	const move_function = handling_rows ? tp.editor.moveRow : tp.editor.moveColumn;
+	rocs.forEach( ( roc_idx ) => move_function( roc_idx, roc_idx + position_difference ) );
+	tp.helpers.unsaved_changes.set();
+
+	// Reselect moved selection.
+	tp.editor.updateSelectionFromCoords(
+		handling_rows ? tp.helpers.selection.columns[0] : tp.helpers.selection.columns[0] + position_difference,
+		handling_rows ? tp.helpers.selection.rows[0] + position_difference : tp.helpers.selection.rows[0],
+		handling_rows ? tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] : tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] + position_difference,
+		handling_rows ? tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ] + position_difference : tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ]
+	);
+};
+
+/**
+ * Sorts the table data by the first currently selected column.
+ *
+ * @param {string} direction Sort order/direction ("asc" for ascending, "desc" for descending).
+ */
+tp.callbacks.sort = function ( direction ) {
+	tp.editor.orderBy( tp.helpers.selection.columns[0], ( 'desc' === direction ) );
+};
+
+/**
+ * Hides or unhides selected rows or columns.
+ *
+ * @param {string} action The action to perform on the rows/columns ("hide" or "unhide").
+ * @param {string} type   What to hide or unhide ("rows" or "columns").
+ */
+tp.callbacks.hide_unhide = function ( action, type ) {
+	const handling_rows = ( 'rows' === type );
+	const property = handling_rows ? 'row_hidden' : 'column_hidden';
+	const num_cors = handling_rows ? tp.editor.options.columns.length : tp.editor.options.data.length;
+	const cell_hidden = ( 'hide' === action );
+	const meta = {};
+	tp.helpers.selection[ type ].forEach( function ( roc_idx ) {
+		for ( let cor_idx = 0; cor_idx < num_cors; cor_idx++ ) {
+			const cell_idx = handling_rows ? [ cor_idx, roc_idx ] : [ roc_idx, cor_idx ];
+			const cell_name = jspreadsheet.getColumnNameFromId( cell_idx );
+			meta[ cell_name ] = {};
+			meta[ cell_name ][ property ] = cell_hidden;
+		}
+	} );
+	tp.editor.setMeta( meta );
+	tp.helpers.unsaved_changes.set();
+	tp.editor.updateTable(); // Redraw table.
+};
+
+/**
+ * Combines/merges the currently selected cells.
+ */
+tp.callbacks.merge_cells = function () {
+	const current_col_idx = tp.helpers.selection.columns[0];
+	const current_row_idx = tp.helpers.selection.rows[0];
+	const colspan = tp.helpers.selection.columns.length;
+	const rowspan = tp.helpers.selection.rows.length;
+	for ( let row_idx = 1; row_idx < rowspan; row_idx++ ) {
+		tp.editor.setValueFromCoords( current_col_idx, current_row_idx + row_idx, '#rowspan#' );
+	}
+	for ( let col_idx = 1; col_idx < colspan; col_idx++ ) {
+		tp.editor.setValueFromCoords( current_col_idx + col_idx, current_row_idx, '#colspan#' );
+	}
+	for ( let row_idx = 1; row_idx < rowspan; row_idx++ ) {
+		for ( let col_idx = 1; col_idx < colspan; col_idx++ ) {
+			tp.editor.setValueFromCoords( current_col_idx + col_idx, current_row_idx + row_idx, '#span#' );
+		}
+	}
+	tp.helpers.unsaved_changes.set();
+};
+
+/*
+ * Initialize Jspreadsheet.
+ */
+tp.editor = jspreadsheet( $( '#table-editor' ), {
+	data: tp.table.data,
+	meta: tp.helpers.visibility.load(),
+	wordWrap: true,
+	rowDrag: true,
+	rowResize: true,
+	columnSorting: true,
+	columnDrag: true,
+	columnResize: true,
+	defaultColWidth: 170,
+	defaultColAlign: 'left',
+	parseFormulas: false,
+	allowExport: false,
+	allowComments: false,
+	allowManualInsertRow: false, // To prevent addition of new row when Enter is pressed in last row.
+	allowManualInsertColumn: false, // To prevent addition of new column when Tab is pressed in last column.
+	about: false,
+	secureFormulas: false,
+	detachForUpdates: true,
+	onselection: tp.callbacks.editor.onselection,
+	updateTable: tp.callbacks.editor.onupdatetable,
+	contextMenu,
+	sorting: tp.helpers.editor.sorting,
+	// Keep the selection when certain events occur and the table loses focus.
+	onmoverow: tp.callbacks.editor.onmove,
+	onmovecolumn: tp.callbacks.editor.onmove,
+	onblur: tp.helpers.editor.reselect,
+	onload: tp.helpers.editor.reselect, // When the table is loaded, select the top-left cell A1.
+	onchange: tp.helpers.unsaved_changes.set,
+	onsort: tp.callbacks.editor.onsort,
+} );
+
+tp.helpers.options.load();
+
+/*
+ * Register click callback for the "Preview" and "Save Changes" buttons.
+ */
+$( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
+	if ( ! event.target ) {
+		return;
+	}
+
+	if ( event.target.matches( '.button-show-preview' ) ) {
+		tp.callbacks.table_preview.process( event );
+		return;
+	}
+
+	if ( event.target.matches( '.button-save-changes' ) ) {
+		tp.callbacks.save_changes.process( event );
+		return;
+	}
+} );
+
+/*
+ * Register click callbacks for the table manipulation buttons.
+ */
+$( '#tablepress-manipulation-controls' ).addEventListener( 'click', ( event ) => {
+	if ( ! event.target ) {
+		return;
+	}
+
+	/*
+	 * Events that don't require a selection.
+	 */
+
+	if ( event.target.matches( '.button-append' ) ) {
+		const type = event.target.dataset.type;
+		const $input_field = $( `#${ type }-append-number` );
+		const num_rocs = parseInt( $input_field.value, 10 );
+		if ( isNaN( num_rocs ) || num_rocs < 1 || num_rocs > 99999 ) {
+			const message = ( 'rows' === event.target.dataset.type ) ? __( 'The value for the number of rows is invalid!', 'tablepress' ) : __( 'The value for the number of columns is invalid!', 'tablepress' );
+			window.alert( message );
+			$input_field.focus();
+			$input_field.select();
+			return;
+		}
+
+		tp.callbacks.append( type, num_rocs );
+		return;
+	}
+
+	if ( event.target.matches( '.button-show-help-box' ) ) {
+		tp.callbacks.help_box.open_dialog( event );
+		return;
+	}
+
+	/*
+	 * Events that do require a selection.
+	 */
+
+	if ( event.target.matches( '#button-insert-link' ) ) {
+		tp.callbacks.insert_link.open_dialog();
+		return;
+	}
+
+	if ( event.target.matches( '#button-insert-image' ) ) {
+		tp.callbacks.insert_image.open_dialog();
+		return;
+	}
+
+	if ( event.target.matches( '#button-advanced-editor' ) ) {
+		tp.callbacks.advanced_editor.open_dialog();
+		return;
+	}
+
+	if ( event.target.matches( '.button-insert-duplicate' ) ) {
+		tp.callbacks.insert_duplicate( event.target.dataset.action, event.target.dataset.type );
+		return;
+	}
+
+	if ( event.target.matches( '.button-move' ) ) {
+		if ( ! tp.helpers.move_allowed( event.target.dataset.type, event.target.dataset.direction ) ) {
+			window.alert( __( 'You can not do this move, because you reached the border of the table.', 'tablepress' ) );
+			return;
+		}
+		tp.callbacks.move( event.target.dataset.direction, event.target.dataset.type );
+		return;
+	}
+
+	if ( event.target.matches( '.button-remove' ) ) {
+		const handling_rows = ( 'rows' === event.target.dataset.type );
+		const num_rocs = handling_rows ? tp.editor.options.data.length : tp.editor.options.columns.length;
+
+		if ( num_rocs === tp.helpers.selection[ event.target.dataset.type ].length ) {
+			const message = handling_rows ? __( 'You can not delete all table rows!', 'tablepress' ) : __( 'You can not delete all table columns!', 'tablepress' );
+			window.alert( message );
+			return;
+		}
+
+		tp.callbacks.remove( event.target.dataset.type );
+		return;
+	}
+
+	if ( event.target.matches( '.button-merge-unmerge' ) ) {
+		if ( tp.helpers.cell_merge_allowed( 'alert' ) ) {
+			tp.callbacks.merge_cells();
+		}
+		return;
+	}
+
+	if ( event.target.matches( '.button-hide-unhide' ) ) {
+		tp.callbacks.hide_unhide( event.target.dataset.action, event.target.dataset.type );
+		return;
+	}
+} );
+
+// Register callbacks for the table ID text field.
+const $table_id_field = $( '#table-id' );
+$table_id_field.addEventListener( 'input', tp.callbacks.table_id.sanitize );
+$table_id_field.addEventListener( 'change', tp.callbacks.table_id.change );
+
+// Register callback for inserting a link into a cell after it has been constructed in the wpLink dialog.
+jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_helper_textarea ); // This must use jQuery, as wpLink triggers jQuery events, which can not be observer by native JS listeners.
+
+// Register change callbacks for the table name, description, and options.
+[ '#table-name', '#table-description' ].forEach( ( $field_id ) => $( $field_id ).addEventListener( 'change', tp.helpers.unsaved_changes.set ) );
+const options_meta_boxes = apply_filters( 'tablepress.optionsMetaBoxes', [ '#tablepress_edit-table-options', '#tablepress_edit-datatables-features' ] );
+options_meta_boxes.forEach( ( meta_box_id ) => $( meta_box_id ).addEventListener( 'change', tp.helpers.options.change ) );
+
+// This code requires jQuery, and it must run when the DOM is ready. Therefore, move it outside of the main function.
+jQuery( function () {
+	// Fix issue with wpLink input fields not being usable, when called through the "Advanced Editor". They are immediately losing focus without this.
+	jQuery( '#wp-link' ).on( 'focus', 'input', function ( event ) {
+		event.stopPropagation();
+	} );
+
+	// Fix issue with Media Library input fields in the sidebar not being usable, when called through the "Advanced Editor". They are immediately losing focus without this.
+	jQuery( 'body' ).on( 'focus', '.media-modal .media-frame-content input, .media-modal .media-frame-content textarea', function ( event ) {
+		event.stopPropagation();
+	} );
 } );

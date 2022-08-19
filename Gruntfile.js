@@ -1,208 +1,193 @@
 /*
- * TablePress Grunt configuration
+ * TablePress Grunt configuration.
  *
- * Performs syntax checks and minifies CSS and JS files.
- * To run, use "npm install" and "grunt build" in the main plugin folder.
- * Running just "grunt" will run the "watch" task, which will automatically
- * lint and minify all changed CSS or JS files.
+ * Performs syntax checks for CSS, JS, and JSON files.
+ * To run, use "npm install" and "npm run grunt lint" in the main plugin folder.
+ * Running just "npm run grunt" will run the "watch" task, which will automatically
+ * lint all changed CSS, JS, and JSON files.
  */
 
 /* jshint node: true */
 
-module.exports = function( grunt ) {
-	var autoprefixer = require( 'autoprefixer' );
+module.exports = function ( grunt ) {
+	const autoprefixer = require( 'autoprefixer' );
 
-	// Load tasks
+	// Load tasks.
 	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
-	// Task configuration
+	// Task configuration.
 	grunt.initConfig( {
-		pkg: grunt.file.readJSON( 'package.json' ),
-
-		// Syntax validation of JavaScript files
-		jsvalidate: {
-			options: {
-				globals: {},
-				esprimaOptions: {},
-				verbose: false
-			},
-			all: {
-				src: [
-						'**/*.js',
-						'!node_modules/**/*.js',
-						'!vendor/**/*.js'
-				]
-			},
-			changed: {
-				src: []
-			}
-		},
-
-		// JavaScript coding style validation
+		// JavaScript coding style validation.
 		jshint: {
-			options: '<%= pkg.jshintConfig %>',
-			all: {
-				src: [
-					'<%= jsvalidate.all.src %>',
-					'!**/*.min.js'
-				]
-			},
-			changed: {
-				src: []
-			}
-		},
-
-		// JavaScript minification
-		uglify: {
 			options: {
-				ASCIIOnly: true,
-				screwIE8: false
+				boss: true,
+				curly: true,
+				eqeqeq: true,
+				eqnull: true,
+				esversion: 11,
+				expr: true,
+				immed: true,
+				noarg: true,
+				nonbsp: true,
+				onevar: true,
+				quotmark: 'single',
+				trailing: true,
+				undef: true,
+				unused: true,
+				browser: true,
+				globals: {},
 			},
 			all: {
-				expand: true,
-				ext: '.min.js',
-				extDot: 'last',
 				src: [
-					'<%= jshint.all.src %>',
-					'!Gruntfile.js'
-				]
+					'**/*.js',
+					// Exclude files that contain JSX from jshint checking.
+					'!blocks/**/src/edit.js',
+					'!blocks/**/src/save.js',
+					// Exclude built JS files from jshint checking.
+					'!admin/js/build/*.js',
+					'!blocks/**/build/index.js',
+					// Exclude external libraries and scripts from jshint checking.
+					'!node_modules/**/*',
+					'!vendor/**/*',
+					'!/libraries/vendor/**/*',
+					'!/libraries/composer/**/*',
+					'!freemius/**/*',
+					'!js/jquery.datatables.min.js',
+					'!admin/js/jspreadsheet.js',
+					'!admin/js/jsuites.js',
+				],
 			},
 			changed: {
-				expand: true,
-				ext: '.min.js',
-				extDot: 'last',
-				src: []
-			}
+				src: [],
+			},
 		},
 
-		// Validation of JSON files
+		// Validation of JSON files.
 		jsonlint: {
 			all: {
 				src: [
 					'**/*.json',
-					'!node_modules/**/*.json',
-					'!vendor/**/*.json'
-				]
+					// Explicitly add hidden files.
+					'.stylelintrc.json',
+					// Exclude external JSON files from jsonlint checking.
+					'!node_modules/**/*',
+					'!vendor/**/*',
+					'!/libraries/vendor/**/*',
+					'!/libraries/composer/**/*',
+					'!freemius/**/*',
+				],
 			},
 			changed: {
-				src: []
-			}
+				src: [],
+			},
 		},
 
-		// CSS vendor autoprefixing
+		// CSS vendor autoprefixing.
 		postcss: {
 			options: {
 				processors: [
 					autoprefixer( {
-						cascade: false
-					} )
-				]
+						cascade: false,
+					} ),
+				],
 			},
 			all: {
 				src: [
-					'<%= csslint.all.src %>'
-				]
+					'**/*.scss',
+					'**/*.css',
+					'!admin/css/build/*.css',
+					'!css/build/*.css',
+					'!blocks/**/build/*.css',
+					// Exclude .scss files that use features that postcss does not understand.
+					'!blocks/table/src/editor.scss',
+					'!css/_default-datatables.scss',
+					// Exclude external libraries from autoprefixing and csslint checking.
+					'!node_modules/**/*',
+					'!vendor/**/*',
+					'!/libraries/vendor/**/*',
+					'!/libraries/composer/**/*',
+					'!freemius/**/*',
+				],
 			},
 			changed: {
-				src: []
-			}
+				src: [],
+			},
 		},
 
-		// CSS syntax validation
+		// CSS syntax validation.
 		csslint: {
 			options: {
-				'important': false,
-				'ids': false,
-				'regex-selectors': false,
-				'unqualified-attributes': false,
-				'outline-none': false,
+				'adjoining-classes': false,
 				'box-model': false,
 				'display-property-grouping': false,
-				'adjoining-classes': false,
-				'empty-rules': false,
-				'overqualified-elements': false,
+				ids: false,
+				important: false,
 				'known-properties': false,
-				'compatible-vendor-prefixes': false,
 				'order-alphabetical': false,
+				'outline-none': false,
+				'overqualified-elements': false,
 				'universal-selector': false,
+				// These only apply to old versions of IE and are not relevant.
 				'bulletproof-font-face': false,
-				'box-sizing': false
+				'fallback-colors': false,
 			},
 			all: {
 				src: [
-					'**/*.css',
-					'!**/*.min.css',
-					'!node_modules/**/*.css',
-					'!vendor/**/*.css'
-				]
+					'<%= postcss.all.src %>',
+					// Exclude .scss files that use features that csslint does not understand.
+					'!css/default.scss',
+					'!css/default-rtl.scss',
+					'!css/_default-core.scss',
+					'!css/_default-datatables.scss',
+					'!admin/css/codemirror.scss',
+					'!admin/css/import.scss',
+					// Exclude external libraries from csslint checking.
+					'!admin/css/jspreadsheet.css',
+					'!admin/css/jsuites.css',
+				],
 			},
 			changed: {
-				src: []
-			}
+				src: [],
+			},
 		},
 
-		// CSS minification
-		cssmin: {
-			options: {
-				removeEmpty: true
-			},
-			all: {
-				expand: true,
-				ext: '.min.css',
-				extDot: 'last',
-				src: [
-					'<%= csslint.all.src %>'
-				]
-			},
-			changed: {
-				expand: true,
-				ext: '.min.css',
-				extDot: 'last',
-				src: []
-			}
-		},
-
-		// Watch files for changes
+		// Watch files for changes.
 		watch: {
 			options: {
 				event: [ 'changed' ],
-				spawn: false
+				spawn: false,
 			},
 			js: {
 				files: '<%= jshint.all.src %>',
-				tasks: [ 'jshint:changed', 'uglify:changed', 'jsvalidate:changed' ]
+				tasks: [ 'jshint:changed' ],
 			},
 			json: {
 				files: '<%= jsonlint.all.src %>',
-				tasks: [ 'jsonlint:changed' ]
+				tasks: [ 'jsonlint:changed' ],
 			},
 			css: {
 				files: '<%= csslint.all.src %>',
-				tasks: [ 'postcss:changed', 'csslint:changed', 'cssmin:changed' ]
-			}
-		}
+				tasks: [ 'postcss:changed', 'csslint:changed' ],
+			},
+		},
 	} );
 
-	// Register "build" task
-	grunt.registerTask( 'build:js', [ 'jshint:all', 'jsonlint:all', 'uglify:all', 'jsvalidate:all' ] );
-	grunt.registerTask( 'build:css', [ 'postcss:all', 'csslint:all', 'cssmin:all' ] );
-	grunt.registerTask( 'build', [ 'build:js', 'build:css' ] );
+	// Register "lint" task.
+	grunt.registerTask( 'lint:js', [ 'jshint:all', 'jsonlint:all' ] );
+	grunt.registerTask( 'lint:css', [ 'postcss:all', 'csslint:all' ] );
+	grunt.registerTask( 'lint', [ 'lint:js', 'lint:css' ] );
 
-	// Make "watch" the default task
+	// Make "watch" the default task.
 	grunt.registerTask( 'default', [ 'watch' ] );
 
-	// Add a listener to the "watch" task
+	// Add a listener to the "watch" task.
 	//
 	// On "watch", automatically updates the "changed" target for the task configurations,
 	// so that only the changed files are touched by the task.
-	grunt.event.on( 'watch', function( action, filepath /*, target */ ) {
-		grunt.config( [ 'jsvalidate', 'changed', 'src' ], filepath );
+	grunt.event.on( 'watch', function ( action, filepath /*, target */ ) {
 		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'uglify', 'changed', 'src' ], filepath );
 		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
 		grunt.config( [ 'postcss', 'changed', 'src' ], filepath );
 		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'cssmin', 'changed', 'src' ], filepath );
 	} );
-
 };

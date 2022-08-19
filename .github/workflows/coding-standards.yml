@@ -7,7 +7,7 @@ permissions:
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       # Any change to a PHP file should run checks.
       - '**.php'
@@ -19,7 +19,7 @@ on:
       - '.github/workflows/*.yml'
   pull_request:
     branches:
-      - master
+      - main
     paths:
       # Any change to a PHP file should run checks.
       - '**.php'
@@ -46,11 +46,11 @@ jobs:
   # Violations are reported inline with annotations.
   #
   # Performs the following steps:
-  # - Checks out the repository.
   # - Sets up PHP.
   # - Logs debug information.
+  # - Checks out the repository.
   # - Installs Composer dependencies (use cache if possible).
-  # - Make Composer packages available globally.
+  # - Makes Composer packages available globally.
   # - Logs PHP_CodeSniffer debug information.
   # - Runs PHPCS on the full code base without warnings suppressed.
   # - Ensures version-controlled files are not modified or deleted.
@@ -59,25 +59,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@945c34c1751f6d2c8106ec0feba5662fcbc1c943 # v2.21.0
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           coverage: none
           tools: composer, cs2pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Log debug information
         run: |
           php --version
           composer --version
+          git --version
+
+      - name: Checkout TablePress repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
-        with:
-          composer-options: "--no-progress --no-ansi --no-interaction"
+        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6 # v2.1.0
 
       - name: Make Composer packages available globally
         run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
@@ -85,8 +87,12 @@ jobs:
       - name: Log PHPCS debug information
         run: phpcs -i
 
-      - name: Run PHPCS on all files
-        run: phpcs -q --report=checkstyle | cs2pr
+      - name: Check PHP coding standards
+        continue-on-error: true
+        run: phpcs --report-full --report-checkstyle=./phpcs-report.xml
+
+      - name: Show PHPCS results in PR/commit
+        run: cs2pr ./phpcs-report.xml
 
       - name: Ensure version-controlled files are not modified during the tests
         run: git diff --exit-code

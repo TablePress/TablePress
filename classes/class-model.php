@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Base Model class
+ *
  * @package TablePress
  * @subpackage Models
  * @author Tobias Bäthge

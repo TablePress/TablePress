@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Base View class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
@@ -143,6 +144,11 @@ abstract class TablePress_View {
 		$this->action = $action;
 		$this->data = $data;
 
+		// Don't load TablePress assets on the Freemius opt-in/activation screen.
+		if ( tb_tp_fs()->is_activation_mode() && tb_tp_fs()->is_activation_page() ) {
+			return;
+		}
+
 		// Set page title.
 		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' );
 
@@ -153,12 +159,7 @@ abstract class TablePress_View {
 		if ( is_rtl() ) {
 			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
 		}
-		$this->admin_page->enqueue_script( 'common', array( 'jquery', 'postbox' ), array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
-			'common' => array(
-				'ays_delete_single_table'    => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ),
-				'ays_delete_multiple_tables' => _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 2, 'tablepress' ),
-			),
-		) );
+		$this->admin_page->enqueue_script( 'common', array( 'postbox' ) );
 
 		$this->admin_page->add_admin_footer_text();
 
@@ -176,13 +177,13 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $text  Text for the header message.
-	 * @param string $class Optional. Additional CSS class for the header message.
-	 * @param string $title Optional. Text for the header title.
+	 * @param string $text      Text for the header message.
+	 * @param string $css_class Optional. Additional CSS class for the header message.
+	 * @param string $title     Optional. Text for the header title.
 	 */
-	protected function add_header_message( $text, $class = 'notice-success', $title = '' ) {
-		if ( ! stripos( $class, 'not-dismissible' ) ) {
-			$class .= ' is-dismissible';
+	protected function add_header_message( $text, $css_class = 'notice-success', $title = '' ) {
+		if ( ! stripos( $css_class, 'not-dismissible' ) ) {
+			$css_class .= ' is-dismissible';
 		}
 		if ( ! empty( $title ) ) {
 			$title = "<h3>{$title}</h3>";
@@ -190,7 +191,7 @@ abstract class TablePress_View {
 		if ( ! empty( $text ) ) {
 			$text = "<p>{$text}</p>";
 		}
-		$this->header_messages[] = "<div class=\"notice {$class}\">{$title}{$text}</div>\n";
+		$this->header_messages[] = "<div class=\"notice {$css_class}\">{$title}{$text}</div>\n";
 	}
 
 	/**
@@ -449,20 +450,17 @@ abstract class TablePress_View {
 		// Get dismissed pointers.
 		$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 
-		$got_pointers = false;
+		$pointers_on_page = false;
 		foreach ( array_diff( $this->wp_pointers, $dismissed ) as $pointer ) {
 			// Bind pointer print function.
 			add_action( "admin_footer-{$GLOBALS['hook_suffix']}", array( $this, 'wp_pointer_' . $pointer ) );
-			$got_pointers = true;
+			$pointers_on_page = true;
 		}
 
-		if ( ! $got_pointers ) {
-			return;
+		if ( $pointers_on_page ) {
+			wp_enqueue_style( 'wp-pointer' );
+			wp_enqueue_script( 'wp-pointer' );
 		}
-
-		// Add pointers script and style to queue.
-		wp_enqueue_style( 'wp-pointer' );
-		wp_enqueue_script( 'wp-pointer' );
 	}
 
 } // class TablePress_View

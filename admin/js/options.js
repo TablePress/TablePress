@@ -1,5 +1,5 @@
 /**
- * JavaScript code for the "Options" screen, without the CodeMirror handling
+ * JavaScript code for the "Options" screen, without the CodeMirror handling.
  *
  * @package TablePress
  * @subpackage Views JavaScript
@@ -7,41 +7,48 @@
  * @since 1.0.0
  */
 
-/* global confirm, tablepress_strings */
+/* globals confirm */
 
-jQuery( function( $ ) {
+/**
+ * WordPress dependencies.
+ */
+import { __ } from '@wordpress/i18n';
 
-	'use strict';
+/**
+ * Internal dependencies.
+ */
+import { $ } from './_common-functions';
 
-	/**
-	 * Enable/disable the regular textarea according to state of "Load Custom CSS" checkbox.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#option-use-custom-css' ).on( 'change', function() {
-		$( '#option-custom-css' ).prop( 'disabled', ! $(this).prop( 'checked' ) );
-	} ).trigger( 'change' );
+/**
+ * Enable/disable the regular textarea according to state of "Load Custom CSS" checkbox.
+ *
+ * @since 1.0.0
+ */
+const $cb_use_custom_css = $( '#option-use-custom-css' );
+$cb_use_custom_css.addEventListener( 'change', function () {
+	$( '#option-custom-css' ).disabled = ! this.checked;
+} );
+$cb_use_custom_css.dispatchEvent( new Event( 'change' ) );
 
-	/**
-	 * On form submit: Enable disabled fields, so that they are transmitted in the POST request.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).on( 'submit', 'form', function() {
-		$(this).find( 'input, select, textarea' ).prop( 'disabled', false );
-	} );
+/**
+ * On form submit: Enable disabled fields, so that they are sent in the HTTP POST request.
+ *
+ * @since 1.0.0
+ */
+document.querySelector( '#tablepress-page form' ).addEventListener( 'submit', function () {
+	this.querySelectorAll( 'input, select, textarea' ).forEach( ( field ) => ( field.disabled = false ) );
+} );
 
-	/**
-	 * Require double confirmation when wanting to uninstall TablePress.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#uninstall-tablepress' ).on( 'click', function() {
-		if ( confirm( tablepress_strings.uninstall_warning_1 ) ) {
-			return confirm( tablepress_strings.uninstall_warning_2 );
-		}
-
-		return false;
-	} );
-
+/**
+ * Require double confirmation when wanting to uninstall TablePress.
+ *
+ * @since 1.0.0
+ */
+$( '#uninstall-tablepress' ).addEventListener( 'click', ( event ) => {
+	if (
+		! confirm( __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ) ) ||
+		! confirm( __( 'Are you really sure?', 'tablepress' ) ) )
+	{
+		event.preventDefault();
+	}
 } );

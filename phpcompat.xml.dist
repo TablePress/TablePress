@@ -34,5 +34,17 @@
 	<!-- Directories and third party library exclusions. -->
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
-	<exclude-pattern>/libraries/simplexlsx\.class\.php</exclude-pattern>
+	<rule ref="PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection">
+		<exclude-pattern>/freemius/includes/(class-freemius|class-fs-logger|sdk/FreemiusWordPress)\.php</exclude-pattern>
+	</rule>
+	<rule ref="PHPCompatibility.ParameterValues.NewIDNVariantDefault.NotSet">
+		<exclude-pattern>/freemius/includes/class-freemius\.php</exclude-pattern>
+	</rule>
+	<rule ref="PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated">
+		<exclude-pattern>/libraries/simplexlsx\.class\.php</exclude-pattern>
+	</rule>
+	<rule ref="PHPCompatibility.Generators.NewGeneratorReturn.ReturnFound">
+		<exclude-pattern>/libraries/simplexlsx\.class\.php</exclude-pattern>
+	</rule>
+
 </ruleset>

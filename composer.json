@@ -1,7 +1,7 @@
 {
-	"name": "tobiasbg/tablepress",
-	"version": "1.14.0",
+	"name": "tablepress/tablepress",
 	"description": "TablePress plugin for WordPress",
+	"type": "wordpress-plugin",
 	"keywords": ["wordpress", "plugin", "table"],
 	"homepage": "https://tablepress.org/",
 	"license": "GPL-2.0-only",
@@ -12,25 +12,87 @@
 			"homepage": "https://tobias.baethge.com/"
 		}
 	],
-	"type": "wordpress-plugin",
+	"support": {
+		"issues": "https://github.com/TablePress/TablePress/issues",
+		"forum": "https://wordpress.org/support/plugin/tablepress/",
+		"source": "https://github.com/TablePress/TablePress",
+		"docs": "https://tablepress.org/documentation/"
+	},
+	"funding": [
+		{
+			"type": "paypal",
+			"url": "https://www.paypal.me/TobiasBg"
+		},
+		{
+			"type": "patreon",
+			"url": "https://www.patreon.com/TobiasBg"
+		},
+		{
+			"type": "other",
+			"url": "https://tablepress.org/donate/"
+		}
+	],
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/TablePress/PhpSpreadsheet.git"
+		}
+	],
 	"require": {
 		"php": ">=5.6.20"
 	},
-	"support": {
-		"issues": "https://github.com/TobiasBg/TablePress/issues",
-		"source": "https://github.com/TobiasBg/TablePress"
-	},
 	"require-dev": {
-		"dealerdirect/phpcodesniffer-composer-installer": "~0.7.1",
-		"wp-coding-standards/wpcs": "~2.3.0",
-		"phpcompatibility/phpcompatibility-wp": "~2.1.2",
-		"yoast/phpunit-polyfills": "~1.0.1"
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+		"wp-coding-standards/wpcs": "dev-develop",
+		"phpcompatibility/phpcompatibility-wp": "^2.1.3",
+		"php-censor/phpdoc-checker": "^1.0.3 || ^2.1.0 || ^3.1.0",
+		"yoast/phpunit-polyfills": "^1.0.3",
+		"phpcsstandards/phpcsutils": "dev-develop",
+		"phpcsstandards/phpcsextra": "dev-develop"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	},
 	"scripts": {
-		"compat": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
-		"phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source",
+		"compat": "vendor/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
+		"phpcs": "vendor/bin/phpcs --report=summary,source",
 		"phpcs:errors": "@phpcs -n",
-		"phpcs:full": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
-		"fix-phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source"
+		"phpcs:full": "vendor/bin/phpcs",
+		"fix-phpcs": "vendor/bin/phpcbf --report=summary,source",
+		"phpdoc-checker": "vendor/bin/phpdoc-checker --exclude=\"vendor,libraries/vendor,libraries/composer,node_modules,freemius,libraries/autoload.php,libraries/simplexlsx.class.php\"",
+		"build": [
+			"@compat",
+			"@phpcs:full",
+			"@phpdoc-checker"
+		],
+		"release": [
+			"rm -rf ./vendor ./libraries/vendor ./libraries/composer ./libraries/autoload.php",
+			"composer config platform.php 7.2",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 1.24.1\" --no-update",
+			"composer update --no-dev",
+			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart /mozart/bin/mozart compose",
+			"composer dump-autoload --optimize --classmap-authoritative",
+			"mv ./vendor/* ./libraries",
+			"rm -rf ./vendor",
+			"git checkout -- composer.json",
+			"find ./libraries -type d -exec cp index.php {} \\;",
+			"@develop"
+		],
+		"develop": "composer update --with-all-dependencies"
+	},
+	"autoload": {
+		"psr-4": {
+			"TablePress\\": "libraries/vendor/"
+		}
+	},
+	"extra": {
+		"mozart": {
+			"dep_namespace": "TablePress\\",
+			"dep_directory": "/libraries/vendor/",
+			"classmap_directory": "/libraries/vendor/",
+			"classmap_prefix": "TablePress_"
+		}
 	}
 }

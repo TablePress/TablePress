@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       # Any change to a PHP file should run checks.
       - '**.php'
@@ -18,7 +18,7 @@ on:
       - '.github/workflows/*.yml'
   pull_request:
     branches:
-      - master
+      - main
     paths:
       # Any change to a PHP file should run checks.
       - '**.php'
@@ -58,11 +58,13 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '6.0'
           - '5.9'
           - '5.8'
-          - '5.7'
-          - '5.6'
         php:
+          - '8.2'
+          - '8.1'
+          - '8.0'
           - '7.4'
           - '7.3'
           - '7.2'
@@ -70,46 +72,26 @@ jobs:
           - '7.0'
           - '5.6'
         multisite: [ false, true ]
-        include:
-          - wp: trunk
+        exclude:
+          # Testing with PHP 8+ on WP 5.8 fails due to PHPUnit incompatibilities.
+          - wp: '5.8'
             php: '8.2'
-          - wp: trunk
+          - wp: '5.8'
             php: '8.1'
-          - wp: trunk
-            php: '8.0'
-          - wp: '5.9'
-            php: '8.2'
-          - wp: '5.9'
-            php: '8.1'
-          - wp: '5.9'
+          - wp: '5.8'
             php: '8.0'
     env:
-      WP_VERSION: ${{ matrix.wp }}
-      WP_DEVELOP_DIR: /tmp/wordpress
+      PLUGIN_DIR: ./src/wp-content/plugins/tablepress
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@945c34c1751f6d2c8106ec0feba5662fcbc1c943 # v2.21.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: composer
-          extensions: mysql
-
-      - name: Manually install PHPUnit when running WP <= 5.8, depending on the PHP version
-        if: ${{ matrix.wp == '5.6' || matrix.wp == '5.7' || matrix.wp == '5.8' }}
-        run: composer require --dev "phpunit/phpunit:^5.7.21 || ^6.5 || ^7.5" --no-install
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
-        with:
-          composer-options: ${{ ( matrix.php == '8.1' || matrix.php == '8.2' ) && '--ignore-platform-reqs' || '' }}
-
-      - name: Make Composer packages available globally
-        run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Log debug information
         run: |
@@ -117,20 +99,13 @@ jobs:
           composer --version
           git --version
 
-      - name: Clone the WordPress development repository
-        run: git clone --depth=1 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_DEVELOP_DIR
-
-      - name: Setup WordPress unit tests
-        run: |
-          export PLUGIN_SLUG=$(basename $(pwd))
-          export PLUGIN_SLUG_LC=${PLUGIN_SLUG,,}
-          export PLUGIN_DIR="$WP_DEVELOP_DIR/src/wp-content/plugins/$PLUGIN_SLUG_LC"
-          echo "PLUGIN_DIR=$PLUGIN_DIR" >> $GITHUB_ENV
-          cd ..
-          cp -r "$PLUGIN_SLUG" "$PLUGIN_DIR"
+      - name: Checkout specified version of the WordPress development repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          repository: WordPress/WordPress-develop
+          ref: ${{ matrix.wp }}
 
       - name: Set up the WordPress unit tests configuration file
-        working-directory: ${{ env.WP_DEVELOP_DIR }}
         run: |
           cp wp-tests-config-sample.php wp-tests-config.php
           sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
@@ -138,14 +113,35 @@ jobs:
           sed -i "s/yourpasswordhere/root/" wp-tests-config.php
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
+      - name: Checkout TablePress repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          path: ${{ env.PLUGIN_DIR }}
+
+      - name: Manually install PHPUnit when running WP 5.8, depending on the PHP version
+        if: ${{ matrix.wp == '5.8' }}
+        working-directory: ${{ env.PLUGIN_DIR }}
+        run: composer require --dev "phpunit/phpunit:^5.7.21 || ^6.5 || ^7.5" --no-update
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6 # v2.1.0
+        with:
+          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' ) && ' --ignore-platform-reqs' || '' }}"
+
+      - name: Make Composer packages available globally
+        working-directory: ${{ env.PLUGIN_DIR }}
+        run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
+
       - name: Run PHPUnit
         env:
-          WP_TESTS_DIR: ${{ env.WP_DEVELOP_DIR }}/tests/phpunit/
+          WP_TESTS_DIR: ${{ github.workspace }}/tests/phpunit/
+          WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
         continue-on-error: ${{ matrix.php == '8.2' }} # WP still runs into dynamic property deprecations.
-        run: phpunit --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
+        run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
-      # composer.json will have been modified on WP <= 5.8, where PHPUnit is installed.
+      # composer.json will have been modified on WP 5.8, where PHPUnit is installed.
       - name: Ensure version-controlled files are not modified or deleted
-        run: git diff --exit-code${{ ( matrix.wp == '5.6' || matrix.wp == '5.7' || matrix.wp == '5.8' ) && ' -- . ":!composer.json"' || '' }}
+        working-directory: ${{ env.PLUGIN_DIR }}
+        run: git diff --exit-code${{ ( matrix.wp == '5.8' ) && ' -- . ":!composer.json"' || '' }}

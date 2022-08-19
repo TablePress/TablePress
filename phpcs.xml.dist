@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="WordPress Coding Standards">
-    <description>Apply WordPress Coding Standards to all TablePress plugin files.</description>
+	<description>Apply WordPress Coding Standards to all TablePress plugin files.</description>
 
 	<!-- Only scan PHP files. -->
 	<arg name="extensions" value="php"/>
@@ -29,13 +29,34 @@
 	<!-- Load WordPress rules set -->
 	<rule ref="WordPress-Core">
 		<!-- Exclude rules that are not enforced in TablePress. -->
-        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
-        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
-        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
 		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
 		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound"/>
-        <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+	</rule>
+
+	<rule ref="WordPress-Docs">
+		<exclude-pattern>/tests/*</exclude-pattern>
+		<exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore"/>
+		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
+		<exclude name="Squiz.Commenting.FileComment.WrongStyle"/>
+		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="tablepress"/>
+				<element value="default"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Even though it's allowed in PHP, not using reserved keywords as parameter names reduces confusion. -->
+	<rule ref="Universal.NamingConventions.NoReservedKeywordParameterNames">
 	</rule>
 
 	<!-- The file tablepress.php is meant to be readable in a Windows file editor. -->
@@ -43,9 +64,17 @@
 		<exclude-pattern>/tablepress\.php</exclude-pattern>
 	</rule>
 
+	<!-- Auto-generated JS build asset files don't follow all whitespace rules. -->
+	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
+	<exclude-pattern>/admin/js/*\.asset\.php</exclude-pattern>
+
 	<!-- Directories and third party library exclusions. -->
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/libraries/vendor/*</exclude-pattern>
+	<exclude-pattern>/libraries/composer/*</exclude-pattern>
+	<exclude-pattern>/libraries/autoload.php</exclude-pattern>
+	<exclude-pattern>/freemius/*</exclude-pattern>
 	<exclude-pattern>/libraries/simplexlsx\.class\.php</exclude-pattern>
 	<exclude-pattern>/libraries/excel-reader\.class\.php</exclude-pattern>
 	<exclude-pattern>/libraries/csstidy/*\.php</exclude-pattern>

@@ -1,0 +1,59 @@
+First column;Middle column;Description;Last column
+Text;Text;Simple word;Text
+Two words;Two words;Multiple words;Two words
+This is a sentence.;This is a sentence.;Sentence;This is a sentence.
+"""Text""";"""Text""";Quotation marks around word;"""Text"""
+"Text "" Text";"Text "" Text";Quotation mark inside text;"Text "" Text"
+"Text \"" Text";"Text \"" Text";Escaped quotation mark inside text;"Text \"" Text"
+\Text\;\Text\;Backslash around text;\Text\
+Text \ Text;Text \ Text;Backslash inside text;Text \ Text
+Text \\ Text;Text \\ Text;Escaped backslash inside text;Text \\ Text
+Text,Text;Text,Text;Text with a comma;Text,Text
+"Text;Text";"Text;Text";Text with a semicolon;"Text;Text"
+Text	Text;Text	Text;Text with a tabular;Text	Text
+"Two
+words";"Two
+words";Multiple words with line break;"Two
+words"
+"";"";Empty cell;""
+;;Empty cell (unescaped);
+"
+";"
+";Single line break;"
+"
+"   Text   ";"   Text   ";Three spaces before and after text;"   Text   "
+123;123;Integer;123
+1230;1230;Integer with trailing zero;1230
+"0123";"0123";Integer with leading zero;"0123"
+0123;0123;Integer with leading zero (unescaped);0123
+"   123   ";"   123   ";Three spaces before and after an integer;"   123   "
+123.5;123.5;Float;123.5
+0123.5;0123.5;Float with leading zero;0123.5
+123.50;123.50;Float with trailing zero;123.50
+0123.50;0123.50;Float with leading and trailing zero;0123.50
+123,5;123,5;Float with comma;123,5
+0123,5;0123,5;Float with comma with leading zero;0123,5
+123,50;123,50;Float with comma with trailing zero;123,50
+1,234.50;1,234.50;Float with comma as thousands delimiter;1,234.50
+$1,234.50;$1,234.50;Currency value;$1,234.50
+"   123.50   ";"   123.50   ";Three spaces before and after a float;"   123.50   "
+07.06.2012;07.06.2012;Date in dd.mm.yyyy format;07.06.2012
+06/07/2012;06/07/2012;Date in mm/dd/yyyy format;06/07/2012
+<strong>Bold text</strong>;<strong>Bold text</strong>;Simple HTML code;<strong>Bold text</strong>
+This is <strong>bold</strong> text.;This is <strong>bold</strong> text.;Simple HTML code inside text;This is <strong>bold</strong> text.
+This is <strong>bold and <em>italics</em> and <u>underlined</u> text</strong>.;This is <strong>bold and <em>italics</em> and <u>underlined</u> text</strong>.;Nested HTML code;This is <strong>bold and <em>italics</em> and <u>underlined</u> text</strong>.
+"<a href=""https://tablepress.org/"">tablepress.org</a>";"<a href=""https://tablepress.org/"">tablepress.org</a>";HTML link to tablepress.org;"<a href=""https://tablepress.org/"">tablepress.org</a>"
+"<a href=""https://tablepress.org/"" target=""_blank"" rel=""noopener"">tablepress.org</a>";"<a href=""https://tablepress.org/"" target=""_blank"" rel=""noopener"">tablepress.org</a>";HTML link to tablepress.org, with target _blank;"<a href=""https://tablepress.org/"" target=""_blank"" rel=""noopener"">tablepress.org</a>"
+=A17+A18;=A17+A18;Simple formula;=A17+A18
+'=A16+A17;'=A16+A17;Escaped formula (as text);'=A16+A17
+=Result is {A17+A18}.;=Result is {A17+A18}.;Formula in text;=Result is {A17+A18}.
+true;true;Text that resembles a boolean;true
+FALSE;FALSE;Text that resembles a boolean, in uppercase;FALSE
+1;1;Number that resembles a boolean;1
+0;0;Number that resembles a boolean;0
+😀;😀;Emoji;😀
+✓;✓;Checkmark symbol;✓
+"&#10003;";"&#10003;";Entity for checkmark symbol;"&#10003;"
+"";"";"";""
+;;;
+;;Two rows above are empty (escaped and unescaped).;

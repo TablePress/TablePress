@@ -1,0 +1,21 @@
+/**
+ * TablePress Default CSS - Icon font for sorting and pagination arrow icons.
+ *
+ * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
+ * on the "Plugin Options" screen of TablePress.
+ *
+ * @package TablePress
+ * @subpackage Frontend CSS
+ * @author Tobias Bäthge
+ * @since 1.0.0
+ */
+
+@font-face {
+	font-family: TablePress;
+	src:
+		url(data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPUAA0AAAAACZAAAAN+AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GYACCUhEICoQIgnILFgABNgIkAygEIAWGcgeBARv6B8iuBzK53oAhKg2KWDsrezjalSefocfD9/uZ575PSbYEqJHAIdo6tMDGdCprFIHd+F9r+rZE46O2iHBJfoAuxwW0yfgKS8KGVFE4dHX1gPmgVhzwhcJbReQ9RWXcraeutbmNHE7T7B1sex8stfMfnkvv0XsgUZrYO1hirXme9TnUkBvQ22RGX50VAr48H54Cn9b8GD73edAAhjboBpIQ6kKOhCz7GA8V5HfzyeA6h0mnrFTJnPjxC7KCrl9caqIUg0EAYACGDBn6YGCxeIE+EkwANTWJX/brZpNfyE5o/7r9uPZjS4tESbCTExLCjxOEbxGi2dQeNEAXUMMlvADkqSV0IHXtkQXNOnI2ctJpRIPt8+HjNivx3rlQYA8FqGwdCxF2aZrdJluMnaqFvy+yngVKbBcn0fSOd1xTpnW4HTkptV8Gi2kvCeUHC0BD+D0VKMIqXniZPJyPya9D7gT6DvUpwJER6avgKDsOfW9jU+YGc/ng6MhA3VSar3NdtvrD9WHZurKVKYOi0RwlY9500YSuWDE084F+jMinu4sTudD5yBTTozA9Horpmb+M3TwIBHempnzdpu1/raWypX0JND/ki4p71CQQlFqnAvkijABrVFIq5BdNJbFncoBOF03/h3IINPQRBxJCYDoAOnkRIDR0w0BSmYiBzDinAuQ6eROg0DEGY6DUiEUYqKyILwFq2qS9GKhrpFsykdeFLmDjknYG4jKbNeNyQ1zhCoP840pdYiqu8jTW4mp6pMXH1HVJp8wRmHmQKTKiUOBVSMHrlKuBlYidxkMgw6/bMoG5RD6qfs8yO8LVqFCFa8ELrcVLEqTaS7UG5aqVq1GlWi28k3rRgCjbiU+qqOItvDEqXjkvwF/dUF595jB8LSqqgwIWAWsRmcJJ5GsHbYUqVbirBi5IpRMxLso/i2oSA6ZYDoMFCiknI7ZkGacSVYUjlLSXyG8n08nOQcXTeyzU5ozbiGRQZRt0vu/TMoEV8RLI3DiBSiVzMtNKAPgErlwLoqiAY2fJ9UbRMU/0rz38UP5FQtH3i8V3KYSHYJdSYRnwW8XazUAUop3gQY19hkEH98OA2QQ6wg0S+FjtwOwdOvF5J2VXBBLQmo2EAxsIKVJkkUcRZVRRa7NrP+my6Ns8cKszHYJf+fPPLPTq5vFcmYKZNL+fn1CZDgoYecKZHwA=) format("woff2"),
+		url(tablepress.woff) format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}

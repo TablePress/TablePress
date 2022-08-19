@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress CSS Class
+ *
  * @package TablePress
  * @subpackage CSS
  * @author Tobias Bäthge
@@ -60,7 +61,7 @@ class TablePress_CSS {
 		$csstidy->set_cfg( 'css_level', 'CSS3.0' );
 		$csstidy->set_cfg( 'preserve_css', true );
 		$csstidy->set_cfg( 'timestamp', false );
-		$csstidy->set_cfg( 'template', TABLEPRESS__DIR__ . '/libraries/csstidy/tablepress-standard.tpl' );
+		$csstidy->set_cfg( 'template', TABLEPRESS_ABSPATH . 'libraries/csstidy/tablepress-standard.tpl' );
 
 		$csstidy->parse( $css );
 		return $csstidy->print->plain();
@@ -122,10 +123,10 @@ class TablePress_CSS {
 		}
 
 		if ( is_multisite() ) {
-			// Multisite installation: /wp-content/uploads/sites/<ID>/
+			// Multisite installation: Use /wp-content/uploads/sites/<ID>/.
 			$upload_location = wp_upload_dir();
 		} else {
-			// Singlesite installation: /wp-content/
+			// Singlesite installation: Use /wp-content/.
 			$upload_location = array(
 				'basedir' => WP_CONTENT_DIR,
 				'baseurl' => content_url(),
@@ -136,7 +137,7 @@ class TablePress_CSS {
 			case 'url':
 				$url = set_url_scheme( $upload_location['baseurl'] . '/' . $file );
 				/**
-				 * Filter the URL from which the "Custom CSS" file is loaded.
+				 * Filters the URL from which the "Custom CSS" file is loaded.
 				 *
 				 * @since 1.0.0
 				 *
@@ -146,11 +147,11 @@ class TablePress_CSS {
 				 */
 				$url = apply_filters( 'tablepress_custom_css_url', $url, $file, $type );
 				return $url;
-				// break; // unreachable
+				// break; // unreachable.
 			case 'path':
 				$path = $upload_location['basedir'] . '/' . $file;
 				/**
-				 * Filter the file path on the server from which the "Custom CSS" file is loaded.
+				 * Filters the file path on the server from which the "Custom CSS" file is loaded.
 				 *
 				 * @since 1.0.0
 				 *
@@ -160,7 +161,11 @@ class TablePress_CSS {
 				 */
 				$path = apply_filters( 'tablepress_custom_css_file_name', $path, $file, $type );
 				return $path;
-				// break; // unreachable
+				// break; // unreachable.
+			default:
+				// Return an empty string if no valid location was provided.
+				return '';
+				// break; // unreachable.
 		}
 	}
 
@@ -188,14 +193,18 @@ class TablePress_CSS {
 	}
 
 	/**
-	 * Load the contents of the file with the TablePress Default CSS.
+	 * Loads the contents of the file with the TablePress Default CSS,
+	 * either for left-to-right (LTR) or right-to-left (RTL), in minified form.
 	 *
 	 * @since 1.1.0
+	 * @since 2.0.0 Added the `$load_rtl` parameter.
 	 *
+	 * @param bool $load_rtl Optional. Whether to load LTR or RTL version. Default LTR.
 	 * @return string|false TablePress Default CSS on success, false on error.
 	 */
-	public function load_default_css_from_file() {
-		$filename = TABLEPRESS_ABSPATH . 'css/default.min.css';
+	public function load_default_css_from_file( $load_rtl = false ) {
+		$rtl = $load_rtl ? '-rtl' : '';
+		$filename = TABLEPRESS_ABSPATH . "css/build/default{$rtl}.css";
 		// Check if file name is valid (0 means yes).
 		if ( 0 !== validate_file( $filename ) ) {
 			return false;
@@ -220,7 +229,7 @@ class TablePress_CSS {
 	 */
 	public function save_custom_css_to_file( $custom_css_normal, $custom_css_minified ) {
 		/**
-		 * Filter whether the "Custom CSS" code shall be saved to a file on the server.
+		 * Filters whether the "Custom CSS" code shall be saved to a file on the server.
 		 *
 		 * @since 1.1.0
 		 *
@@ -266,7 +275,7 @@ class TablePress_CSS {
 		// Start capturing the output, to get HTML of the credentials form (if needed).
 		ob_start();
 		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
-		// Do we have credentials already? (Otherwise the form will have been rendered already.)
+		// Do we have credentials already? Otherwise the form will have been rendered already.
 		if ( false === $credentials ) {
 			$form_data = ob_get_clean();
 			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data );
@@ -316,23 +325,23 @@ class TablePress_CSS {
 
 		$css_types = array( 'normal', 'minified', 'combined' );
 
-		$default_css = $this->load_default_css_from_file();
-		if ( false === $default_css ) {
-			$default_css = '';
+		$default_css_minified = $this->load_default_css_from_file( false );
+		if ( false === $default_css_minified ) {
+			$default_css_minified = '';
 		} else {
 			// Change relative URLs to web font files to absolute URLs, as combining the CSS files and saving to another directory breaks the relative URLs.
-			$absolute_path = plugins_url( 'css/tablepress.', TABLEPRESS__FILE__ );
+			$absolute_path = plugins_url( 'css/build/tablepress.', TABLEPRESS__FILE__ );
 			// Make the absolute URL protocol-relative to prevent mixed content warnings.
 			$absolute_path = str_replace( array( 'http:', 'https:' ), '', $absolute_path );
-			$default_css = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css );
+			$default_css_minified = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css_minified );
 		}
 		$file_content = array(
 			'normal'   => $custom_css_normal,
 			'minified' => $custom_css_minified,
-			'combined' => $default_css . "\n" . $custom_css_minified,
+			'combined' => $default_css_minified . $custom_css_minified,
 		);
 
-		$total_result = true; // whether all files were saved successfully
+		$total_result = true; // Whether all files were saved successfully.
 		foreach ( $css_types as $css_type ) {
 			$filename = $this->get_custom_css_location( $css_type, 'path' );
 			// Check if filename is valid (0 means yes).
@@ -399,7 +408,7 @@ class TablePress_CSS {
 		$path_difference = str_replace( $wp_filesystem->wp_content_dir(), '', trailingslashit( WP_CONTENT_DIR ) );
 
 		$css_types = array( 'normal', 'minified', 'combined' );
-		$total_result = true; // whether all files were deleted successfully
+		$total_result = true; // Whether all files were deleted successfully.
 		foreach ( $css_types as $css_type ) {
 			$filename = $this->get_custom_css_location( $css_type, 'path' );
 			// Check if filename is valid (0 means yes).
@@ -433,11 +442,11 @@ class TablePress_CSS {
 			return;
 		}
 
-		// W3 Total Cache
+		// W3 Total Cache.
 		if ( function_exists( 'w3tc_minify_flush' ) ) {
 			w3tc_minify_flush();
 		}
-		// WP Fastest Cache
+		// WP Fastest Cache.
 		if ( isset( $GLOBALS['wp_fastest_cache'] ) && method_exists( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
 			$GLOBALS['wp_fastest_cache']->deleteCache( true );
 		}

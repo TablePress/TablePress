@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * About TablePress View class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
@@ -60,9 +61,8 @@ class TablePress_About_View extends TablePress_View {
 		?>
 	<p>
 		<?php _e( 'TablePress allows you to create and manage tables in the admin area of WordPress.', 'tablepress' ); ?>
-		<?php _e( 'Tables may contain text, numbers, and even HTML (e.g. to include images or links).', 'tablepress' ); ?>
-		<?php _e( 'You can then show the tables in your posts, on your pages, or in text widgets by using a Shortcode.', 'tablepress' ); ?>
-		<?php _e( 'If you want to show your tables anywhere else in your theme, you can use a Template Tag function.', 'tablepress' ); ?>
+		<?php _e( 'Tables may contain text, numbers, formulas, and even HTML code (e.g. to include images or links).', 'tablepress' ); ?>
+		<?php _e( 'You can embed the tables into posts, pages, or other site areas using a block in the block editor.', 'tablepress' ); ?>
 	</p>
 		<?php
 	}
@@ -87,9 +87,7 @@ class TablePress_About_View extends TablePress_View {
 		<?php _e( 'Those will ask you for the necessary information and corresponding HTML code will be added to the cell automatically.', 'tablepress' ); ?>
 	</p>
 	<p>
-		<label class="screen-reader-text" for="table-shortcode-inline"><?php esc_html_e( 'Shortcode text for editor', 'tablepress' ); ?></label>
-		<?php printf( __( 'To insert a table into a post or page, copy its Shortcode %s and paste it into a &#8220;Shortcode&#8221; block at the desired place in the block editor.', 'tablepress' ), '<label class="screen-reader-text" for="table-shortcode-inline">' . esc_html__( 'Shortcode text for editor', 'tablepress' ) . '</label>' . '<input type="text" class="table-shortcode table-shortcode-inline" id="table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
-		<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
+		<?php printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) ); ?>
 	</p>
 	<p>
 		<?php _e( 'Tables can be styled by changing and adding CSS commands.', 'tablepress' ); ?>
@@ -130,11 +128,15 @@ class TablePress_About_View extends TablePress_View {
 	<p>
 		<?php printf( __( 'This plugin was written and developed by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'https://tobias.baethge.com/' ); ?>
 		<?php _e( 'It is licensed as Free Software under GNU General Public License 2 (GPL 2).', 'tablepress' ); ?>
-	<br />
-		<?php printf( __( 'If you like the plugin, <a href="%s"><strong>giving a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' ); ?>
+	</p><p>
+		<?php
+		printf( __( 'If you like the plugin, <a href="%s"><strong>giving a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' );
+		?>
 		<?php printf( __( 'Please rate and review the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://wordpress.org/support/view/plugin-reviews/tablepress' ); ?>
-	<br />
-		<?php _e( 'Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!', 'tablepress' ); ?>
+		<?php
+		echo '</p><p>';
+		_e( 'Donations and good ratings encourage me to further develop the plugin and to provide countless hours of support. Any amount is appreciated! Thanks!', 'tablepress' );
+		?>
 	</p>
 		<?php
 	}
@@ -178,10 +180,11 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; TablePress: <?php echo TablePress::version; ?>
 			<br />&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
 			<br />&middot; TablePress table scheme: <?php echo TablePress::table_scheme_version; ?>
+			<br />&middot; Plan: Free
 			<br />&middot; Plugin installed: <?php echo wp_date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
 			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
 			<br />&middot; Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?>
-			<br />&middot; PHP: <?php echo phpversion(); ?>
+			<br />&middot; PHP: <?php echo PHP_VERSION; ?>
 			<br />&middot; mysqli Extension: <?php echo $mysqli ? 'true' : 'false'; ?>
 			<br />&middot; mySQL (Server): <?php echo $mysqli ? mysqli_get_server_info( $GLOBALS['wpdb']->dbh ) : '<em>no mysqli</em>'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info ?>
 			<br />&middot; mySQL (Client): <?php echo $mysqli ? mysqli_get_client_info( $GLOBALS['wpdb']->dbh ) : '<em>no mysqli</em>'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_client_info ?>
@@ -209,14 +212,14 @@ class TablePress_About_View extends TablePress_View {
 			<?php _e( 'Special Thanks go to:', 'tablepress' ); ?>
 			<br />&middot; <?php printf( __( 'Allan Jardine for <a href="%s">DataTables</a>,', 'tablepress' ), 'https://www.datatables.net/' ); ?>
 			<br />&middot; <?php printf( __( 'the translators in the <a href="%s">Plugin Directory</a>,', 'tablepress' ), 'https://translate.wordpress.org/projects/wp-plugins/tablepress/' ); ?>
-			<br />&middot; <?php _e( 'all donors, contributors, supporters, reviewers, and users of the plugin!', 'tablepress' ); ?>
+			<br />&middot; <?php _e( 'all customers, donors, contributors, supporters, reviewers, and users of the plugin!', 'tablepress' ); ?>
 		</p>
 		<hr />
 		<p>
 			<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="<?php echo plugins_url( 'admin/img/wsal-logo.png', TABLEPRESS__FILE__ ); ?>" alt="<?php printf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ); ?>" style="width:100%;height:auto;max-width:320px;display:block;margin:0 auto" /></a>
 			<?php printf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ); ?>
 		</p>
-		<?php
+			<?php
 	}
 
 } // class TablePress_About_View

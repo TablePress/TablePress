@@ -557,8 +557,7 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $array
-	 * @return array
+	 * @param array $array List of selectors. This parameter is modified by reference!
 	 */
 	public function merge_selectors( array &$array ) {
 		$css = $array;
@@ -818,7 +817,7 @@ class TablePress_CSSTidy_optimise {
 					$return['background-origin'] .= $str_value[ $i ][ $j ] . ',';
 				} elseif ( '(' === $str_value[ $i ][ $j ][0] ) {
 					$return['background-size'] .= substr( $str_value[ $i ][ $j ], 1, -1 ) . ',';
-				} elseif ( in_array( $str_value[ $i ][ $j ], $pos, true ) || is_numeric( $str_value[ $i ][ $j ][0] ) || null === $str_value[ $i ][ $j ][0] || '-' === $str_value[ $i ][ $j ][0] || '.' === $str_value[ $i ][ $j ][0] ) {
+				} elseif ( in_array( $str_value[ $i ][ $j ], $pos, true ) || is_numeric( $str_value[ $i ][ $j ][0] ) || is_null( $str_value[ $i ][ $j ][0] ) || '-' === $str_value[ $i ][ $j ][0] || '.' === $str_value[ $i ][ $j ][0] ) {
 					$return['background-position'] .= $str_value[ $i ][ $j ];
 					if ( ! $have['pos'] ) {
 						$return['background-position'] .= ' ';
@@ -981,7 +980,7 @@ class TablePress_CSSTidy_optimise {
 			} elseif ( false === $have['style'] && in_array( $str_value[0][ $j ], $font_style ) ) {
 				$return['font-style'] = $str_value[0][ $j ];
 				$have['style'] = true;
-			} elseif ( false === $have['size'] && ( is_numeric( $str_value[0][ $j ][0] ) || null === $str_value[0][ $j ][0] || '.' === $str_value[0][ $j ][0] ) ) {
+			} elseif ( false === $have['size'] && ( is_numeric( $str_value[0][ $j ][0] ) || is_null( $str_value[0][ $j ][0] ) || '.' === $str_value[0][ $j ][0] ) ) {
 				$size = $this->explode_ws( '/', trim( $str_value[0][ $j ] ) );
 				$return['font-size'] = $size[0];
 				if ( isset( $size[1] ) ) {

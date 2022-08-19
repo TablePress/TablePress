@@ -1,59 +1,42 @@
 {
-  "name": "TablePress",
-  "version": "1.14.0",
-  "description": "TablePress enables you to create and manage tables, without having to write HTML code, and it adds valuable functions for your visitors.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TobiasBg/TablePress"
-  },
-  "author": "Tobias Bäthge",
-  "license": "GPL-2.0-only",
-  "devDependencies": {
-    "autoprefixer": "~9.8.6",
-    "grunt": "~1.4.1",
-    "grunt-contrib-csslint": "~2.0.0",
-    "grunt-contrib-cssmin": "~4.0.0",
-    "grunt-contrib-jshint": "~3.0.0",
-    "grunt-contrib-uglify": "~5.0.1",
-    "grunt-contrib-watch": "~1.1.0",
-    "grunt-jsonlint": "~2.1.2",
-    "grunt-jsvalidate": "~0.2.2",
-    "grunt-postcss": "~0.9.0",
-    "matchdep": "~2.0.0"
-  },
-  "jshintConfig": {
-    "boss": true,
-    "curly": true,
-    "eqeqeq": true,
-    "eqnull": true,
-    "es3": true,
-    "expr": true,
-    "immed": true,
-    "noarg": true,
-    "nonbsp": true,
-    "onevar": true,
-    "quotmark": "single",
-    "trailing": true,
-    "undef": true,
-    "unused": true,
-    "browser": true,
-    "globals": {
-      "jQuery": false
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "ie >= 11",
-    "last 1 Android versions",
-    "last 1 ChromeAndroid versions",
-    "last 2 Chrome versions",
-    "last 2 Firefox versions",
-    "last 2 Safari versions",
-    "last 2 iOS versions",
-    "last 2 Edge versions",
-    "last 2 Opera versions"
-  ],
-  "scripts": {
-    "grunt": "grunt"
-  }
+	"name": "@tablepress/tablepress",
+	"version": "2.0.0-beta1",
+	"description": "Embed beautiful and feature-rich tables into your posts and pages, without having to write code.",
+	"author": "Tobias Bäthge",
+	"license": "GPL-2.0-only",
+	"private": true,
+	"keywords": [
+		"wordpress",
+		"plugin",
+		"table"
+	],
+	"homepage": "https://tablepress.org/",
+	"funding": "https://tablepress.org/donate/",
+	"repository": "github:TablePress/TablePress",
+	"bugs": "https://github.com/TablePress/TablePress/issues",
+	"devDependencies": {
+		"@wordpress/scripts": "^23.5.0",
+		"autoprefixer": "^9.8.8",
+		"grunt": "^1.5.2",
+		"grunt-contrib-csslint": "^2.0.0",
+		"grunt-contrib-jshint": "^3.2.0",
+		"grunt-contrib-watch": "^1.1.0",
+		"grunt-jsonlint": "^2.1.3",
+		"grunt-postcss": "^0.9.0",
+		"matchdep": "^2.0.0",
+		"webpack-remove-empty-scripts": "^0.8.1"
+	},
+	"scripts": {
+		"grunt": "grunt",
+		"prebuild": "grunt lint && wp-scripts lint-js && wp-scripts lint-style",
+		"build": "wp-scripts build",
+		"build:block": "wp-scripts build --config-name tablepress-block",
+		"build:css": "wp-scripts build --config-name tablepress-admin-css && wp-scripts build --config-name tablepress-frontend-css",
+		"build:js": "wp-scripts build --config-name tablepress-admin-js",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"start": "wp-scripts start",
+		"packages-update": "wp-scripts packages-update"
+	}
 }

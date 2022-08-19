@@ -1,7 +1,7 @@
-# This file is for unifying the coding style for different editors and IDEs
-# editorconfig.org
+# This file is for unifying the coding style for different editors and IDEs.
+# https://editorconfig.org/
 
-# TablePress follows the WordPress Coding Standards
+# TablePress follows the WordPress Coding Standards.
 # https://make.wordpress.org/core/handbook/best-practices/coding-standards/
 
 root = true
@@ -13,10 +13,14 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = tab
 
-[{package.json,*.yml}]
+[*.yml]
 indent_style = space
 indent_size = 2
 
-# User-editable files should have Windows line endings
+# User-editable files should have Windows line endings.
 [{tablepress.php,*.txt,i18n/datatables/*.json}]
+end_of_line = crlf
+
+# The CRLF test files for the CSV import unit tests should have Windows line endings.
+[{tests/data/import/phpspreadsheet/test-table-comma-crlf.csv,tests/data/import/legacy/test-table-comma-crlf.csv}]
 end_of_line = crlf

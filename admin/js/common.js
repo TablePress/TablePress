@@ -1,5 +1,5 @@
 /**
- * JavaScript code for all TablePress admin screens
+ * JavaScript code for all TablePress admin screens.
  *
  * @package TablePress
  * @subpackage Views JavaScript
@@ -7,56 +7,40 @@
  * @since 1.0.0
  */
 
-/* global confirm, tp, postboxes, pagenow, tp, tablepress_common */
+/* globals confirm, postboxes, pagenow */
 
-// Ensure the global `tp` object exists.
-window.tp = window.tp || {};
+/**
+ * WordPress dependencies.
+ */
+import { _n } from '@wordpress/i18n';
 
-jQuery( function( $ ) {
+/**
+ * Enable toggle/order functionality for post meta boxes.
+ * For TablePress, pagenow has the form "tablepress_{$action}".
+ *
+ * @since 1.0.0
+ */
+postboxes.add_postbox_toggles( pagenow );
 
-	'use strict';
+document.getElementById( 'tablepress-page' ).addEventListener( 'click', ( event ) => {
+	if ( ! event.target ) {
+		return;
+	}
 
 	/**
-	 * Enable toggle/order functionality for post meta boxes
-	 * For TablePress, pagenow has the form "tablepress_{$action}"
+	 * Show an AYS warning when a "Delete" link is clicked.
 	 *
 	 * @since 1.0.0
 	 */
-	postboxes.add_postbox_toggles( pagenow );
-
-	/**
-	 * Check that numerical fields (e.g. column/row number fields) only contain numbers
-	 *
-	 * Provides this functionality for browsers that don't yet support <input type="number" />.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).on( 'blur', '.numbers-only, .form-field-numbers-only input', function( /* event */ ) {
-		var $input = $(this);
-		$input.val( $input.val().replace( /[^0-9]/g, '' ) );
-	} );
-
-	/**
-	 * Show a AYS warning when a "Delete" link is clicked
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).on( 'click', '.delete-link', function() {
-		if ( ! confirm( tablepress_common.ays_delete_single_table ) ) {
-			return false;
+	if ( event.target.matches( '.delete-link' ) ) {
+		if ( ! confirm( _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ) ) ) {
+			event.preventDefault();
+			return;
 		}
 
-		// Prevent onunload warning.
-		tp.made_changes = false;
-	} );
+		// Prevent onunload warning, by calling unset method from edit.js (if defined).
+		window?.tp?.helpers?.unsaved_changes?.unset?.();
 
-	/**
-	 * Select all text in the Shortcode (readonly) text fields, when clicked
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).on( 'click', '.table-shortcode', function() {
-		$(this).trigger( 'focus' ).trigger( 'select' );
-	} );
-
+		return;
+	}
 } );

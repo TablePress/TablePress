@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "tablepress/table",
+	"version": "2.0.0",
+	"title": "TablePress table",
+	"category": "media",
+	"icon": "list-view",
+	"description": "Embed a TablePress table.",
+	"keywords": [ "table" ],
+	"textdomain": "tablepress",
+	"attributes": {
+		"id": {
+			"type": "string",
+			"default": ""
+		},
+		"parameters": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"align": true,
+		"html": false,
+		"customClassName": false
+	},
+	"editorScript": "file:build/index.js",
+	"editorStyle": "file:build/index.css"
+}

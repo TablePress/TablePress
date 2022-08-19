@@ -7,110 +7,103 @@
  * @since 1.0.0
  */
 
-/* global prompt, confirm, tablepress_common, tablepress_list, tb_show, ajaxurl */
+/* globals confirm, tb_show, ajaxurl */
 
-jQuery( function( $ ) {
+/**
+ * WordPress dependencies.
+ */
+import { __, _n, sprintf } from '@wordpress/i18n';
 
-	'use strict';
+/**
+ * Internal dependencies.
+ */
+import { $ } from './_common-functions';
+
+document.querySelector( '.tablepress-all-tables' ).addEventListener( 'click', ( event ) => {
+	if ( ! event.target ) {
+		return;
+	}
 
 	/**
-	 * Show a popup box with the table's Shortcode
+	 * Load a Thickbox with a table preview.
 	 *
 	 * @since 1.0.0
 	 */
-	$( '.tablepress-all-tables' ).on( 'click', '.shortcode a', function( /* event */ ) {
-		prompt( tablepress_list.shortcode_popup, $(this).attr( 'title' ) );
-		return false;
-	} );
+	if ( event.target.matches( '.table-preview a' ) ) {
+		const width = window.innerWidth - 120;
+		const height = window.innerHeight - 120;
+		tb_show( event.target.title, `${ event.target.href }#TB_iframe=true&height=${ height }&width=${ width }`, false );
+		event.preventDefault();
+		return;
+	}
+} );
 
-	/**
-	 * Load a Thickbox with a table preview
-	 *
-	 * @since 1.0.0
-	 */
-	$( '.tablepress-all-tables' ).on( 'click', '.table-preview a', function( /* event */ ) {
-		var width = $( window ).width() - 120,
-			height = $( window ).height() - 120,
-			$this = $(this);
-		if ( $( '#wpadminbar' ).length ) {
-			height -= parseInt( $( '#wpadminbar' ).css( 'height' ), 10 );
-		}
-		tb_show( $this.text(), $this.attr( 'href' ) + 'TB_iframe=true&height=' + height + '&width=' + width, false );
-		return false;
-	} );
+/**
+ * Process links with an "ajax-link" class with AJAX.
+ *
+ * @since 1.0.0
+ */
+$( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
+	if ( ! event.target ) {
+		return;
+	}
 
-	/**
-	 * Process links with a class "ajax-link" with AJAX
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).on( 'click', '.ajax-link', function( /* event */ ) {
-		var $link = $(this),
-			action = $link.data( 'action' ),
-			item = $link.data( 'item' ),
-			target = $link.data( 'target' );
-		$.get(
-			ajaxurl,
-			this.href.split('?')['1'], /* query string of the link */
-			function( result ) {
-				if ( '1' !== result ) {
-					return;
-				}
+	if ( event.target.matches( '.ajax-link' ) ) {
+		fetch( `${ ajaxurl }?${ event.target.href.split('?')['1'] }` ) // Append original link's query string to AJAX endpoint.
+		.then( ( response ) => response.text() )
+			.then( ( result ) => {
+			if ( '1' !== result ) {
+				return;
+			}
 
-				switch ( action ) {
-					case 'hide_message':
-						/* Donation message links show new message */
-						if ( 'donation_nag' === item && '' !== target ) {
-							$link.closest( 'div' ).after( '<div class="donation-message-after-click-message notice notice-success"><p><strong>' + tablepress_list['donation-message-' + target] + '</strong></p></div>' );
-							$( '.donation-message-after-click-message' ).delay( 10000 ).fadeOut( 2000, function() { $(this).remove(); } );
+			switch ( event.target.dataset.action ) {
+				case 'hide_message':
+					// Show confirmation message with new text for donation nag links.
+					if ( 'donation_nag' === event.target.dataset.item && '' !== event.target.dataset.target ) {
+						let message =  __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' );
+						if ( 'maybe-later' === event.target.dataset.target ) {
+							message = sprintf( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you&#8217;ll always find the &#8220;Donate&#8221; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'https://tablepress.org/' );
 						}
+						event.target.closest( 'div' ).insertAdjacentHTML( 'afterend', `<div class="donation-message-after-click-message notice notice-success"><p><strong>${ message }</strong></p></div>` );
+						const $notice = document.querySelector( '.donation-message-after-click-message' );
+						void $notice.offsetWidth; // Trick browser layout engine. Necessary to make CSS transition work.
+						$notice.style.opacity = 0;
+						$notice.addEventListener( 'transitionend', () => $notice.remove() );
+					}
 
-						/* Remove original message */
-						$link.closest( 'div' ).remove();
-						break;
-				}
+					// Remove original message.
+					event.target.closest( 'div' ).remove();
+					break;
 			}
-		);
-		return false;
-	} );
+		} );
 
-	/**
-	 * Submit Bulk Actions only if an action was selected an a table's checkbox was checked
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#doaction, #doaction2' ).on( 'click', function() {
-		var bulk_action,
-			confirm_message,
-			num_selected = $( '.tablepress-all-tables' ).find( 'tbody' ).find( 'input:checked' ).length;
+		event.preventDefault();
+		return;
+	}
+} );
 
-		// determine location of clicked bulk action controls
-		if ( 'doaction' === this.id ) {
-			bulk_action = 'top';
-		} else {
-			bulk_action = 'bottom';
+/**
+ * Submit Bulk Actions only if an action was selected and at least one table was selected.
+ *
+ * Only the top button and the top bulk selector dropdown have to be evaluated, as WP mirrors them.
+ *
+ * @since 1.0.0
+ */
+$( '#doaction' ).addEventListener( 'click', ( event ) => {
+	const action = $( '#bulk-action-selector-top' ).value;
+	const num_selected = $( '.tablepress-all-tables tbody input:checked' ).length;
+
+	// Do nothing if no action or no tables were selected.
+	if ( '-1' === action || 0 === num_selected ) {
+		event.preventDefault();
+		return;
+	}
+
+	// Show AYS prompt when deleting tables.
+	if ( 'delete' === action ) {
+		if ( ! confirm( _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', num_selected, 'tablepress' ) ) ) {
+			event.preventDefault();
+			return;
 		}
-
-		// check whether an action was selected, and whether tables were selected
-		if ( '-1' === $( '#bulk-action-selector-' + bulk_action ).val() ) {
-			return false;
-		}
-		if ( 0 === num_selected ) {
-			return false;
-		}
-
-		// Show AYS prompt for deletion
-		if ( 'delete' === $( '#bulk-action-selector-' + bulk_action ).val() ) {
-			if ( 1 === num_selected ) {
-				confirm_message = tablepress_common.ays_delete_single_table;
-			} else {
-				confirm_message = tablepress_common.ays_delete_multiple_tables;
-			}
-
-			if ( ! confirm( confirm_message ) ) {
-				return false;
-			}
-		}
-	} );
-
+	}
 } );

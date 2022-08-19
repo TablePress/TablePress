@@ -1,5 +1,5 @@
 /**
- * JavaScript code for the CodeMirror handling on the "Options" screen
+ * JavaScript code for the CodeMirror handling on the "Options" screen.
  *
  * @package TablePress
  * @subpackage Views JavaScript
@@ -7,55 +7,41 @@
  * @since 1.9.0
  */
 
-/* global wp, tablepress_codemirror_settings */
+/* globals wp */
 
-jQuery( function( $ ) {
+/* jshint strict: global */
+'use strict'; // Necessary as this file does not use "import".
 
-	'use strict';
+/**
+ * Invoke CodeMirror on the "Custom CSS" textarea.
+ *
+ * @since 1.9.0
+ */
+const CM_custom_css = wp.codeEditor.initialize( 'option-custom-css', {} ).codemirror;
+const $CM_wrapper = CM_custom_css.getWrapperElement();
 
-	/**
-	 * Invoke CodeMirror on the "Custom CSS" textarea.
-	 *
-	 * @since 1.9.0
-	 */
-	var CM_custom_css = wp.codeEditor.initialize( document.getElementById( 'option-custom-css' ), tablepress_codemirror_settings );
+/**
+ * Let CodeMirror textarea grow on first focus (with mouse click), if it is not disabled.
+ *
+ * @since 1.0.0
+ */
+const CM_wrapper_mousedown_handler = function () {
+	if ( ! this.classList.contains( 'disabled' ) ) {
+		this.classList.add( 'large' );
+		CM_custom_css.refresh();
+		this.removeEventListener( 'mousedown', CM_wrapper_mousedown_handler ); // No need to keep checking for clicks after the textarea height was increased.
+	}
+};
+$CM_wrapper.addEventListener( 'mousedown', CM_wrapper_mousedown_handler );
 
-	/**
-	 * Make the CodeMirror textarea vertically resizable.
-	 *
-	 * @since 1.7.0
-	 */
-	$( CM_custom_css.codemirror.getWrapperElement() ).resizable( {
-		handles: 's',
-		resize: function() {
-			var $this = $(this);
-			CM_custom_css.codemirror.setSize( $this.width(), $this.height() );
-		}
-	} );
-
-	/**
-	 * Let CodeMirror textarea grow on first focus, if it is not disabled.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tablepress-page' ).find( '.CodeMirror' ).on( 'mousedown.codemirror', function() {
-		var $this = $(this);
-		if ( ! $this.hasClass( 'disabled' ) ) {
-			$this.addClass( 'large' );
-			CM_custom_css.codemirror.refresh();
-			$this.off( 'mousedown.codemirror' );
-		}
-	} );
-
-	/**
-	 * Enable/disable CodeMirror according to state of "Load Custom CSS" checkbox.
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#option-use-custom-css' ).on( 'change', function() {
-		var use_custom_css = $(this).prop( 'checked' );
-		CM_custom_css.codemirror.setOption( 'readOnly', ! use_custom_css );
-		$( '#tablepress-page' ).find( '.CodeMirror' ).toggleClass( 'disabled', ! use_custom_css );
-	} ).trigger( 'change' );
-
+/**
+ * Enable/disable CodeMirror according to state of "Load Custom CSS" checkbox.
+ *
+ * @since 1.0.0
+ */
+const $cb_use_custom_css = document.getElementById( 'option-use-custom-css' );
+$cb_use_custom_css.addEventListener( 'change', function () {
+	CM_custom_css.setOption( 'readOnly', ! this.checked );
+	$CM_wrapper.classList.toggle( 'disabled', ! this.checked );
 } );
+$cb_use_custom_css.dispatchEvent( new Event( 'change' ) );

@@ -3,6 +3,7 @@
  * EvalMath - Safely evaluate math expressions.
  *
  * Based on EvalMath by Miles Kaufmann, with modifications by Petr Skoda.
+ *
  * @link https://github.com/moodle/moodle/blob/master/lib/evalmath/evalmath.class.php
  *
  * @package TablePress
@@ -188,9 +189,9 @@ class EvalMath {
 			if ( false === $tmp ) {
 				return false;
 			}
-			// If it could be evaluated, add it to the variable array,
+			// If it could be evaluated, add it to the variable array, ...
 			$this->variables[ $matches[1] ] = $tmp;
-			// and return the resulting value.
+			// ... and return the resulting value.
 			return $tmp;
 
 			// Is the expression a function assignment?
@@ -311,14 +312,14 @@ class EvalMath {
 					$op = '*';
 					$index--;
 				}
-				// Heart of the algorithm:
+				// Heart of the algorithm: .
 				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				while ( $stack->count > 0 && ( $o2 = $stack->last() ) && in_array( $o2, $ops, true ) && ( $ops_r[ $op ] ? $ops_p[ $op ] < $ops_p[ $o2 ] : $ops_p[ $op ] <= $ops_p[ $o2 ] ) ) {
 					// Pop stuff off the stack into the output.
 					$output[] = $stack->pop();
 				}
-				// Many thanks: https://en.wikipedia.org/wiki/Reverse_Polish_notation
-				$stack->push( $op ); // finally put OUR operator onto the stack
+				// Many thanks: https://en.wikipedia.org/wiki/Reverse_Polish_notation .
+				$stack->push( $op ); // Finally put OUR operator onto the stack.
 				$index++;
 				$expecting_operator = false;
 
@@ -495,9 +496,9 @@ class EvalMath {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array|false $tokens    [description]
-	 * @param array       $variables Optional. [description]
-	 * @return mixed [description]
+	 * @param array|false $tokens    [description].
+	 * @param array       $variables Optional. [description].
+	 * @return mixed [description].
 	 */
 	protected function pfx( $tokens, array $variables = array() ) {
 		if ( false === $tokens ) {
@@ -612,7 +613,7 @@ class EvalMath {
 						$stack->push( (int) ( $op1 < $op2 ) );
 						break;
 					case '=':
-						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison,Universal.Operators.StrictComparisons.LooseEqual
 						$stack->push( (int) ( $op1 == $op2 ) ); // Don't use === as the variable type can differ (int/double/bool).
 						break;
 				}
@@ -654,7 +655,6 @@ class EvalMath {
 		$this->last_error = $this->get_error_string( $message, $error_data );
 		return false;
 	}
-
 
 	/**
 	 * Get a translated string for an error message.
@@ -726,10 +726,12 @@ class EvalMath {
 
 /**
  * Stack for the postfix/infix conversion of math expressions.
+ *
  * @package TablePress
  * @subpackage Formulas
  * @since 1.0.0
  */
+// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 class EvalMath_Stack {
 
 	/**
@@ -794,10 +796,12 @@ class EvalMath_Stack {
 
 /**
  * Common math functions, prepared for usage in EvalMath.
+ *
  * @package TablePress
  * @subpackage EvalMath
  * @since 1.0.0
  */
+// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 class EvalMath_Functions {
 
 	/**
@@ -815,13 +819,13 @@ class EvalMath_Functions {
 	 *
 	 * @since  1.0.0
 	 *
-	 * @param double|int $condition Condition.
-	 * @param double|int $then      Return value if the condition is true.
-	 * @param double|int $else      Return value if the condition is false.
+	 * @param double|int $condition   Condition.
+	 * @param double|int $statement   Return value if the condition is true.
+	 * @param double|int $alternative Return value if the condition is false.
 	 * @return double|int Result of the if check.
 	 */
-	public static function func_if( $condition, $then, $else ) {
-		return ( (bool) $condition ? $then : $else );
+	public static function func_if( $condition, $statement, $alternative ) {
+		return ( (bool) $condition ? $statement : $alternative );
 	}
 
 	/**
@@ -845,7 +849,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the conjunction shall be calculated.
+	 * @param double|int ...$args Values for which the conjunction shall be calculated.
 	 * @return int Conjunction of the passed arguments.
 	 */
 	public static function func_and( ...$args ) {
@@ -864,7 +868,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the disjunction shall be calculated.
+	 * @param double|int ...$args Values for which the disjunction shall be calculated.
 	 * @return int Disjunction of the passed arguments.
 	 */
 	public static function func_or( ...$args ) {
@@ -892,7 +896,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the sum shall be calculated.
+	 * @param double|int ...$args Values for which the sum shall be calculated.
 	 * @return double|int Sum of the passed arguments.
 	 */
 	public static function sum( ...$args ) {
@@ -904,7 +908,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.10.0
 	 *
-	 * @param double|int $args Values for which the number of non-empty elements shall be counted.
+	 * @param double|int ...$args Values for which the number of non-empty elements shall be counted.
 	 * @return double|int Counted number of non-empty elements in the passed values.
 	 */
 	public static function counta( ...$args ) {
@@ -916,7 +920,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the product shall be calculated.
+	 * @param double|int ...$args Values for which the product shall be calculated.
 	 * @return double|int Product of the passed arguments.
 	 */
 	public static function product( ...$args ) {
@@ -928,7 +932,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the average shall be calculated.
+	 * @param double|int ...$args Values for which the average shall be calculated.
 	 * @return double|int Average value of the passed arguments.
 	 */
 	public static function average( ...$args ) {
@@ -946,7 +950,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the median shall be calculated.
+	 * @param double|int ...$args Values for which the median shall be calculated.
 	 * @return double|int Median of the passed arguments.
 	 */
 	public static function median( ...$args ) {
@@ -960,7 +964,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the mode shall be calculated.
+	 * @param double|int ...$args Values for which the mode shall be calculated.
 	 * @return double|int Mode of the passed arguments.
 	 */
 	public static function mode( ...$args ) {
@@ -975,7 +979,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the range shall be calculated.
+	 * @param double|int ...$args Values for which the range shall be calculated.
 	 * @return double|int Range of the passed arguments.
 	 */
 	public static function range( ...$args ) {
@@ -988,7 +992,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the maximum value shall be found.
+	 * @param double|int ...$args Values for which the maximum value shall be found.
 	 * @return double|int Maximum value of the passed arguments.
 	 */
 	public static function max( ...$args ) {
@@ -1000,7 +1004,7 @@ class EvalMath_Functions {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param double|int $args Values for which the minimum value shall be found.
+	 * @param double|int ...$args Values for which the minimum value shall be found.
 	 * @return double|int Minimum value of the passed arguments.
 	 */
 	public static function min( ...$args ) {
@@ -1125,9 +1129,8 @@ class EvalMath_Functions {
 	protected static function _get_random_seed() {
 		if ( is_null( self::$random_seed ) ) {
 			return microtime();
-		} else {
-			return self::$random_seed;
 		}
+		return self::$random_seed;
 	}
 
 	/**

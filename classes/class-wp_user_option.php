@@ -18,6 +18,7 @@ TablePress::load_file( 'class-wp_option.php', 'classes' );
 
 /**
  * TablePress WP User Option Wrapper class
+ *
  * @package TablePress
  * @subpackage Classes
  * @author Tobias Bäthge

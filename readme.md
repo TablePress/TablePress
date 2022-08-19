@@ -1,8 +1,8 @@
-# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-Sponsor-ff5441)](https://www.patreon.com/TobiasBg) [![PHPUnit Tests on Travis CI](https://img.shields.io/travis/TobiasBg/TablePress.svg)](https://travis-ci.com/TobiasBg/TablePress) ![PHPUnit Tests](https://github.com/TobiasBg/TablePress/actions/workflows/phpunit-tests.yml/badge.svg) ![Coding Standards](https://github.com/TobiasBg/TablePress/actions/workflows/coding-standards.yml/badge.svg) ![PHP Compatibility](https://github.com/TobiasBg/TablePress/actions/workflows/php-compatibility.yml/badge.svg)
+# [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-Sponsor-ff5441)](https://www.patreon.com/TobiasBg) [![PHPUnit Tests](https://github.com/TablePress/TablePress/actions/workflows/phpunit-tests.yml/badge.svg)](https://github.com/TablePress/TablePress/actions/workflows/phpunit-tests.yml) [![Coding Standards](https://github.com/TablePress/TablePress/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/TablePress/TablePress/actions/workflows/coding-standards.yml) [![PHP Compatibility](https://github.com/TablePress/TablePress/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/TablePress/TablePress/actions/workflows/php-compatibility.yml)
 
 TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
 
-TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or text widgets with a simple Shortcode. Table data can be edited in a spreadsheet-like interface, so no coding is necessary. Tables can contain any type of data, even formulas that will be evaluated. An additional JavaScript library adds features like sorting, pagination, filtering, and more for site visitors. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
+TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, so no coding is necessary. Tables can contain any type of data, even formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
 Please visit the plugin website at [tablepress.org](https://tablepress.org/) for the latest information on this plugin, or [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
@@ -22,14 +22,14 @@ Manual installation works just as for other WordPress plugins:
 1. Move the folder "tablepress" to the "wp-content/plugins/" directory of your WordPress installation, e.g. via FTP.
 1. Activate the plugin "TablePress" on the "Plugins" screen of your WordPress Dashboard.
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
-1. To insert a table into a post or page, copy its Shortcode `[table id=<ID> /]` and paste it into a "Shortcode" block at the desired place in the block editor. Each table has a unique ID that needs to be adjusted in that Shortcode.
+1. To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
 ## Supporting future development
 
 If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress) or support it with your [donation](https://tablepress.org/donate/). Thank you!
 
-[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg) [<img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a patron on Patreon" height="44">](https://www.patreon.com/TobiasBg)
+[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg) [<img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg" alt="Donate with Buy Me A Coffee" height="44">](https://www.buymeacoffee.com/TablePress) [<img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a patron on Patreon" height="44">](https://www.patreon.com/TobiasBg)
 
 ## Frequently Asked Questions
 
@@ -43,7 +43,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 **Requirements?**
 
-In short: WordPress 5.6 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 5.8 or higher, while the latest version of WordPress is always recommended.
 
 **Languages and Localization?**
 
@@ -51,15 +51,11 @@ TablePress uses the ["Translate WordPress" platform](https://translate.wordpress
 
 To make TablePress available in your language, go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress/), log in with a free wordpress.org account and start translating.
 
-**Migration from WP-Table Reloaded**
-
-Several years ago, TablePress has superseded the now discontinued WP-Table Reloaded plugin. If you are still using that, please see the [migration guide](https://tablepress.org/migration-from-wp-table-reloaded/) and switch to TablePress.
-
 ## Usage
 
 After installing the plugin, you can create and manage tables on the "TablePress" screen in the WordPress Dashboard.
 
-To show one of your tables in a post or on a page, embed the Shortcode `[table id=<the-ID> /]` into a "Shortcode" block at the desired place in the block editor. Each table has a unique ID that needs to be adjusted in that Shortcode.
+To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
 
 After that, you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen. Some examples for common styling changes can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 

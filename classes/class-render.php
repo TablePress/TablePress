@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Rendering Class
+ *
  * @package TablePress
  * @subpackage Rendering
  * @author Tobias Bäthge
@@ -37,10 +38,10 @@ class TablePress_Render {
 	protected $render_options = array();
 
 	/**
-	 * Rendered HTML of the table.
+	 * Rendered HTML code of the table or PHP array.
 	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @var string|array
 	 */
 	protected $output;
 
@@ -109,7 +110,7 @@ class TablePress_Render {
 		$this->table = $table;
 		$this->render_options = $render_options;
 		/**
-		 * Filter the table before the render process.
+		 * Filters the table before the render process.
 		 *
 		 * @since 1.0.0
 		 *
@@ -123,16 +124,37 @@ class TablePress_Render {
 	 * Process the table rendering and return the HTML output.
 	 *
 	 * @since 1.0.0
+	 * @since 2.0.0 Add the $format parameter.
 	 *
-	 * @return string HTML of the rendered table (or an error message).
+	 * @param string $format Optional. Output format, 'html' (default) or 'array'.
+	 * @return string|array[] HTML code of the rendered table, or a PHP array, or an error message.
 	 */
-	public function get_output() {
+	public function get_output( $format = 'html' ) {
 		// Evaluate math expressions/formulas.
 		$this->_evaluate_table_data();
 		// Remove hidden rows and columns.
 		$this->_prepare_render_data();
-		// Generate HTML output.
-		$this->_render_table();
+
+		if ( 'html' !== $format ) {
+			add_filter( 'tablepress_cell_content', 'wptexturize' );
+		}
+
+		// Evaluate Shortcodes and escape cell content.
+		$this->_process_render_data();
+
+		if ( 'html' !== $format ) {
+			remove_filter( 'tablepress_cell_content', 'wptexturize' );
+		}
+
+		switch ( $format ) {
+			case 'html':
+				$this->_render_table();
+				break;
+			case 'array':
+				$this->output = $this->table['data'];
+				break;
+		}
+
 		return $this->output;
 	}
 
@@ -147,7 +169,7 @@ class TablePress_Render {
 		$formula_evaluator = TablePress::load_class( 'TablePress_Evaluate', 'class-evaluate.php', 'classes' );
 		$this->table['data'] = $formula_evaluator->evaluate_table_data( $this->table['data'], $this->table['id'] );
 		/**
-		 * Filter the table after evaluating formulas in the table.
+		 * Filters the table after evaluating formulas in the table.
 		 *
 		 * @since 1.0.0
 		 *
@@ -208,7 +230,7 @@ class TablePress_Render {
 				$this->render_options[ "{$action}_{$element}" ] = array_merge( $this->render_options[ "{$action}_{$element}" ], $range_cells );
 				/*
 				 * Parse single letters and change from regular numbering to zero-based numbering,
-				 * as rows/columns are indexed from 0 internally, but from 1 externally
+				 * as rows/columns are indexed from 0 internally, but from 1 externally.
 				 */
 				foreach ( $this->render_options[ "{$action}_{$element}" ] as $key => $value ) {
 					if ( ! is_numeric( $value ) ) {
@@ -247,7 +269,7 @@ class TablePress_Render {
 		}
 
 		/**
-		 * Filter the table after processing the table visibility information.
+		 * Filters the table after processing the table visibility information.
 		 *
 		 * @since 1.0.0
 		 *
@@ -256,6 +278,53 @@ class TablePress_Render {
 		 * @param array $render_options The render options for the table.
 		 */
 		$this->table = apply_filters( 'tablepress_table_render_data', $this->table, $orig_table, $this->render_options );
+	}
+
+	/**
+	 * Generate the data that is to be rendered.
+	 *
+	 * @since 2.0.0
+	 */
+	protected function _process_render_data() {
+		$orig_table = $this->table;
+
+		// Deactivate nl2br() for this render process, if "convert_line_breaks" Shortcode parameter is set to false.
+		if ( ! $this->render_options['convert_line_breaks'] ) {
+			add_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // Priority 9, so that this filter can easily be overwritten at the default priority.
+		}
+
+		foreach ( $this->table['data'] as $row_idx => $row ) {
+			foreach ( $row as $col_idx => $cell_content ) {
+				// Print formulas that are escaped with '= (like in Excel) as text.
+				if ( "'=" === substr( $cell_content, 0, 2 ) ) {
+					$cell_content = substr( $cell_content, 1 );
+				}
+				$cell_content = $this->safe_output( $cell_content );
+				if ( false !== strpos( $cell_content, '[' ) ) {
+					$cell_content = do_shortcode( $cell_content );
+				}
+				/** This filter is documented in classes/class-render.php */
+				$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
+				$this->table['data'][ $row_idx ][ $col_idx ] = $cell_content;
+			}
+		}
+
+		// Re-instate nl2br() behavior after this render process, if "convert_line_breaks" Shortcode parameter is set to false.
+		if ( ! $this->render_options['convert_line_breaks'] ) {
+			remove_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // Priority 9, so that this filter can easily be overwritten at the default priority.
+		}
+
+		/**
+		 * Filters the table after processing the table content handling.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $table          The processed table.
+		 * @param array $orig_table     The unprocessed table.
+		 * @param array $render_options The render options for the table.
+		 */
+		$this->table = apply_filters( 'tablepress_table_content_render_data', $this->table, $orig_table, $this->render_options );
+
 	}
 
 	/**
@@ -278,7 +347,7 @@ class TablePress_Render {
 		$this->colspan = array_fill( 0, $num_rows, 1 );
 
 		/**
-		 * Filter the trigger keywords for "colspan" and "rowspan"
+		 * Filters the trigger keywords for "colspan" and "rowspan"
 		 *
 		 * @since 1.0.0
 		 *
@@ -296,7 +365,7 @@ class TablePress_Render {
 
 		if ( $this->render_options['print_name'] ) {
 			/**
-			 * Filter the HTML tag that wraps the printed table name.
+			 * Filters the HTML tag that wraps the printed table name.
 			 *
 			 * @since 1.0.0
 			 *
@@ -310,7 +379,7 @@ class TablePress_Render {
 				$name_attributes['id'] = "{$this->render_options['html_id']}-name";
 			}
 			/**
-			 * Filter the class attribute for the printed table name.
+			 * Filters the class attribute for the printed table name.
 			 *
 			 * @since 1.0.0
 			 * @deprecated 1.13.0 Use {@see 'tablepress_table_name_tag_attributes'} instead.
@@ -320,7 +389,7 @@ class TablePress_Render {
 			 */
 			$name_attributes['class'] = apply_filters_deprecated( 'tablepress_print_name_css_class', array( "tablepress-table-name tablepress-table-name-id-{$this->table['id']}", $this->table['id'] ), 'TablePress 1.13.0', 'tablepress_table_name_tag_attributes' );
 			/**
-			 * Filter the attributes for the table name (HTML h2 element, by default).
+			 * Filters the attributes for the table name (HTML h2 element, by default).
 			 *
 			 * @since 1.13.0
 			 *
@@ -335,7 +404,7 @@ class TablePress_Render {
 		}
 		if ( $this->render_options['print_description'] ) {
 			/**
-			 * Filter the HTML tag that wraps the printed table description.
+			 * Filters the HTML tag that wraps the printed table description.
 			 *
 			 * @since 1.0.0
 			 *
@@ -349,7 +418,7 @@ class TablePress_Render {
 				$description_attributes['id'] = "{$this->render_options['html_id']}-description";
 			}
 			/**
-			 * Filter the class attribute for the printed table description.
+			 * Filters the class attribute for the printed table description.
 			 *
 			 * @since 1.0.0
 			 * @deprecated 1.13.0 Use {@see 'tablepress_table_description_tag_attributes'} instead.
@@ -359,7 +428,7 @@ class TablePress_Render {
 			 */
 			$description_attributes['class'] = apply_filters_deprecated( 'tablepress_print_description_css_class', array( "tablepress-table-description tablepress-table-description-id-{$this->table['id']}", $this->table['id'] ), 'TablePress 1.13.0', 'tablepress_table_description_tag_attributes' );
 			/**
-			 * Filter the attributes for the table description (HTML span element, by default).
+			 * Filters the attributes for the table description (HTML span element, by default).
 			 *
 			 * @since 1.13.0
 			 *
@@ -378,11 +447,6 @@ class TablePress_Render {
 		}
 		if ( $this->render_options['print_description'] && 'above' === $this->render_options['print_description_position'] ) {
 			$output .= $print_description_html;
-		}
-
-		// Deactivate nl2br() for this render process, if "convert_line_breaks" Shortcode parameter is set to false.
-		if ( ! $this->render_options['convert_line_breaks'] ) {
-			add_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // Priority 9, so that this filter can easily be overwritten at the default priority.
 		}
 
 		$thead = '';
@@ -407,14 +471,9 @@ class TablePress_Render {
 			$tbody[] = $this->_render_row( $row_idx, 'td' );
 		}
 
-		// Re-instate nl2br() behavior after this render process, if "convert_line_breaks" Shortcode parameter is set to false.
-		if ( ! $this->render_options['convert_line_breaks'] ) {
-			remove_filter( 'tablepress_apply_nl2br', '__return_false', 9 ); // Priority 9, so that this filter can easily be overwritten at the default priority.
-		}
-
 		// <caption> tag.
 		/**
-		 * Filter the content for the HTML caption element of the table.
+		 * Filters the content for the HTML caption element of the table.
 		 *
 		 * If the "Edit" link for a table is shown, it is also added to the caption element.
 		 *
@@ -428,7 +487,7 @@ class TablePress_Render {
 		$caption_class = '';
 		if ( ! empty( $caption ) ) {
 			/**
-			 * Filter the class attribute for the HTML caption element of the table.
+			 * Filters the class attribute for the HTML caption element of the table.
 			 *
 			 * @since 1.0.0
 			 *
@@ -453,7 +512,7 @@ class TablePress_Render {
 		// <colgroup> tag.
 		$colgroup = '';
 		/**
-		 * Filter whether the HTML colgroup tag shall be added to the table output.
+		 * Filters whether the HTML colgroup tag shall be added to the table output.
 		 *
 		 * @since 1.0.0
 		 *
@@ -464,7 +523,7 @@ class TablePress_Render {
 			for ( $col_idx = 0; $col_idx < $num_columns; $col_idx++ ) {
 				$attributes = ' class="colgroup-column-' . ( $col_idx + 1 ) . ' "';
 				/**
-				 * Filter the attributes of the HTML col tags in the HTML colgroup tag.
+				 * Filters the attributes of the HTML col tags in the HTML colgroup tag.
 				 *
 				 * @since 1.0.0
 				 *
@@ -503,7 +562,7 @@ class TablePress_Render {
 		// "class" attribute.
 		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
 		/**
-		 * Filter the CSS classes that are given to the HTML table element.
+		 * Filters the CSS classes that are given to the HTML table element.
 		 *
 		 * @since 1.0.0
 		 *
@@ -531,7 +590,7 @@ class TablePress_Render {
 		// "summary" attribute.
 		$summary = '';
 		/**
-		 * Filter the content for the summary attribute of the HTML table element.
+		 * Filters the content for the summary attribute of the HTML table element.
 		 *
 		 * The attribute is only added if it is not empty.
 		 *
@@ -553,7 +612,7 @@ class TablePress_Render {
 		}
 
 		/**
-		 * Filter the attributes for the table (HTML table element).
+		 * Filters the attributes for the table (HTML table element).
 		 *
 		 * @since 1.4.0
 		 *
@@ -577,7 +636,7 @@ class TablePress_Render {
 		}
 
 		/**
-		 * Filter the generated HTML code for table.
+		 * Filters the generated HTML code for table.
 		 *
 		 * @since 1.0.0
 		 *
@@ -603,30 +662,12 @@ class TablePress_Render {
 		for ( $col_idx = $this->last_column_idx; $col_idx >= 0; $col_idx-- ) {
 			$cell_content = $this->table['data'][ $row_idx ][ $col_idx ];
 
-			// Print formulas that are escaped with '= (like in Excel) as text.
-			if ( "'=" === substr( $cell_content, 0, 2 ) ) {
-				$cell_content = substr( $cell_content, 1 );
-			}
-			$cell_content = do_shortcode( $this->safe_output( $cell_content ) );
-			/**
-			 * Filter the content of a single cell.
-			 *
-			 * Filter the content of a single cell, after formulas have been evaluated, the output has been sanitized, and Shortcodes have been evaluated.
-			 *
-			 * @since 1.0.0
-			 *
-			 * @param string $cell_content The cell content.
-			 * @param string $table_id     The current table ID.
-			 * @param int    $row_idx      The row number of the cell.
-			 * @param int    $col_idx      The column number of the cell.
-			 */
-			$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
-
 			if ( $this->span_trigger['rowspan'] === $cell_content ) { // There will be a rowspan.
-				// Check for #rowspan# in first row, which doesn't make sense.
-				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx )
-				|| ( 1 === $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
-				|| ( $this->last_row_idx === $row_idx && ! $this->render_options['table_foot'] ) ) { // No rowspan out of table foot.
+				if ( ! (
+					( 0 === $row_idx ) // No rowspan inside first row.
+					|| ( 1 === $row_idx && $this->render_options['table_head'] ) // No rowspan into table head.
+					|| ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] ) // No rowspan out of table foot.
+				) ) {
 					// Increase counter for rowspan in this column.
 					$this->rowspan[ $col_idx ]++;
 					// Reset counter for colspan in this row, combined col- and rowspan might be happening.
@@ -636,9 +677,10 @@ class TablePress_Render {
 				// Invalid rowspan, so we set cell content from #rowspan# to empty.
 				$cell_content = '';
 			} elseif ( $this->span_trigger['colspan'] === $cell_content ) { // There will be a colspan.
-				// Check for #colspan# in first column, which doesn't make sense.
-				if ( $col_idx > 1
-				|| ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) { // No colspan into first column head.
+				if ( ! (
+					( 0 === $col_idx ) // No colspan inside first column.
+					|| ( 1 === $col_idx && $this->render_options['first_column_th'] ) // No colspan into first column head.
+				) ) {
 					// Increase counter for colspan in this row.
 					$this->colspan[ $row_idx ]++;
 					// Reset counter for rowspan in this column, combined col- and rowspan might be happening.
@@ -648,20 +690,18 @@ class TablePress_Render {
 				// Invalid colspan, so we set cell content from #colspan# to empty.
 				$cell_content = '';
 			} elseif ( $this->span_trigger['span'] === $cell_content ) { // There will be a combined col- and rowspan.
-				// Check for #span# in first column or first or last row, which is not always possible.
-				if ( ( $row_idx > 1 && $row_idx < $this->last_row_idx && $col_idx > 1 )
-				// We are in first, second, or last row or in the first or second column, so more checks are necessary.
-				|| ( ( 1 === $row_idx && ! $this->render_options['table_head'] ) // No rowspan into table head.
-					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) // And no colspan into first column head.
-				|| ( ( $this->last_row_idx === $row_idx && ! $this->render_options['table_foot'] ) // No rowspan out of table foot.
-					&& ( $col_idx > 1 || ( 1 === $col_idx && ! $this->render_options['first_column_th'] ) ) ) ) { // And no colspan into first column head.
+				if ( ! (
+					( 0 === $row_idx ) // No rowspan inside first row.
+					|| ( 1 === $row_idx && $this->render_options['table_head'] ) // No rowspan into table head.
+					|| ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] ) // No rowspan out of table foot.
+				) && ! (
+					( 0 === $col_idx ) // No colspan inside first column.
+					|| ( 1 === $col_idx && $this->render_options['first_column_th'] ) // No colspan into first column head.
+				) ) {
 					continue;
 				}
 				// Invalid span, so we set cell content from #span# to empty.
 				$cell_content = '';
-			} elseif ( '' === $cell_content && 0 === $row_idx && $this->render_options['table_head'] ) {
-				// Make empty cells have a space in the table head, to give sorting arrows the correct position in IE9.
-				$cell_content = '&nbsp;';
 			}
 
 			// Attributes for the table cell (HTML td or th element).
@@ -678,7 +718,7 @@ class TablePress_Render {
 			// "class" attribute.
 			$cell_class = 'column-' . ( $col_idx + 1 );
 			/**
-			 * Filter the CSS classes that are given to a single cell (HTML td element) of a table.
+			 * Filters the CSS classes that are given to a single cell (HTML td element) of a table.
 			 *
 			 * @since 1.0.0
 			 *
@@ -701,7 +741,7 @@ class TablePress_Render {
 			}
 
 			/**
-			 * Filter the attributes for the table cell (HTML td or th element).
+			 * Filters the attributes for the table cell (HTML td or th element).
 			 *
 			 * @since 1.4.0
 			 *
@@ -734,7 +774,7 @@ class TablePress_Render {
 			$row_classes .= ( 1 === ( $row_idx % 2 ) ) ? ' even' : ' odd';
 		}
 		/**
-		 * Filter the CSS classes that are given to a row (HTML tr element) of a table.
+		 * Filters the CSS classes that are given to a row (HTML tr element) of a table.
 		 *
 		 * @since 1.0.0
 		 *
@@ -750,7 +790,7 @@ class TablePress_Render {
 		}
 
 		/**
-		 * Filter the attributes for the table row (HTML tr element).
+		 * Filters the attributes for the table row (HTML tr element).
 		 *
 		 * @since 1.4.0
 		 *
@@ -790,17 +830,17 @@ class TablePress_Render {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to process.
+	 * @param string $text The string to process.
 	 * @return string Processed string for output.
 	 */
-	protected function safe_output( $string ) {
+	protected function safe_output( $text ) {
 		/*
 		 * Replace any & with &amp; that is not already an encoded entity (from function htmlentities2 in WP 2.8).
 		 * A complete htmlentities2() or htmlspecialchars() would encode <HTML> tags, which we don't want.
 		 */
-		$string = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $string );
+		$text = preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,4};)/', '&amp;', $text );
 		/**
-		 * Filter whether line breaks in the cell content shall be replaced with HTML br tags.
+		 * Filters whether line breaks in the cell content shall be replaced with HTML br tags.
 		 *
 		 * @since 1.0.0
 		 *
@@ -808,9 +848,9 @@ class TablePress_Render {
 		 * @param string $table_id The current table ID.
 		 */
 		if ( apply_filters( 'tablepress_apply_nl2br', true, $this->table['id'] ) ) {
-			$string = nl2br( $string );
+			$text = nl2br( $text );
 		}
-		return $string;
+		return $text;
 	}
 
 	/**
@@ -867,86 +907,32 @@ class TablePress_Render {
 	 * @return string CSS for the Preview iframe.
 	 */
 	public function get_preview_css() {
-		if ( is_rtl() ) {
-			$rtl = "\ndirection: rtl;";
-			$rtl_align = 'right';
+		$is_rtl = is_rtl();
+		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
+		$default_css_minified = $tablepress_css->load_default_css_from_file( $is_rtl );
+		if ( false === $default_css_minified ) {
+			$default_css_minified = '';
 		} else {
-			$rtl = '';
-			$rtl_align = 'left';
+			// Change relative URLs to web font files to absolute URLs, as combining the CSS files and saving to another directory breaks the relative URLs.
+			$absolute_path = plugins_url( 'css/build/tablepress.', TABLEPRESS__FILE__ );
+			// Make the absolute URL protocol-relative to prevent mixed content warnings.
+			$absolute_path = str_replace( array( 'http:', 'https:' ), '', $absolute_path );
+			$default_css_minified = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css_minified );
 		}
+
+		$rtl_direction = $is_rtl ? "\ndirection: rtl;" : '';
+
 		return <<<CSS
 <style type="text/css">
 /* iframe */
 body {
 	margin: 10px;
-	font-family: sans-serif;{$rtl}
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;{$rtl_direction}
 }
-/* Inline Shortcodes, in texts */
-.table-shortcode-inline {
-	background: transparent;
-	border: none;
-	color: #333333;
-	width: 110px;
-	margin: 0;
-	padding: 0;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	text-align: center;
-	font-weight: bold;
-	font-size: 100%;
+p {
+	font-size: 13px;
 }
-.table-shortcode {
-	cursor: text;
-}
-/* Default table styling */
-.tablepress {
-	border-collapse: collapse;
-	border-spacing: 0;
-	width: 100%;
-	margin-bottom: 1em;
-	border: none;
-}
-.tablepress td,
-.tablepress th {
-	padding: 8px;
-	border: none;
-	background: none;
-	text-align: {$rtl_align};
-}
-.tablepress tbody td {
-	vertical-align: top;
-}
-.tablepress tbody tr td,
-.tablepress tfoot tr th {
-	border-top: 1px solid #dddddd;
-}
-.tablepress tbody tr:first-child td {
-	border-top: 0;
-}
-.tablepress thead tr th {
-	border-bottom: 1px solid #dddddd;
-}
-.tablepress thead th,
-.tablepress tfoot th {
-	background-color: #d9edf7;
-	font-weight: bold;
-	vertical-align: middle;
-}
-.tablepress tbody tr.odd td {
-	background-color: #f9f9f9;
-}
-.tablepress tbody tr.even td {
-	background-color: #ffffff;
-}
-.tablepress .row-hover tr:hover td {
-	background-color: #f3f3f3;
-}
-.tablepress img {
-	margin: 0;
-	padding: 0;
-	border: none;
-	max-width: none;
-}
+{$default_css_minified}
 </style>
 CSS;
 	}

@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Plugin Options/Save Custom CSS Credentials Form View class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge

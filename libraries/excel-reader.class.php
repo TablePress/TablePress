@@ -131,7 +131,7 @@ class OLERead {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $data [description]
+	 * @param string $data [description]
 	 * @return [type] [description]
 	 */
 	public function read( $data ) {
@@ -369,7 +369,7 @@ define( 'SPREADSHEET_EXCEL_READER_TYPE_DEFCOLWIDTH', 0x55 );
 define( 'SPREADSHEET_EXCEL_READER_TYPE_STANDARDWIDTH', 0x99 );
 define( 'SPREADSHEET_EXCEL_READER_DEF_NUM_FORMAT', '%s' );
 
-/*
+/**
 * Main Class
 */
 class Spreadsheet_Excel_Reader {
@@ -1063,11 +1063,11 @@ class Spreadsheet_Excel_Reader {
 	 *
 	 * @param [type] $row   [description]
 	 * @param [type] $col   [description]
-	 * @param int    $sheet Optional. [description]
-	 * @param [type] $prop  [description]
+	 * @param int    $sheet [description]
+	 * @param string $prop  [description]
 	 * @return [type] [description]
 	 */
-	public function fontProperty( $row, $col, $sheet = 0, $prop ) {
+	public function fontProperty( $row, $col, $sheet, $prop ) {
 		$font = $this->fontRecord( $row, $col, $sheet );
 		if ( null !== $font ) {
 			return $font[ $prop ];
@@ -1671,8 +1671,7 @@ class Spreadsheet_Excel_Reader {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $data [description]
-	 * @return [type] [description]
+	 * @param string $data [description]
 	 */
 	public function read( $data ) {
 		$res = $this->_ole->read( $data );
@@ -2322,8 +2321,8 @@ class Spreadsheet_Excel_Reader {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $ts Optional. [description]
-	 * @return [type] [description]
+	 * @param int $ts Optional. Timestamp. Defaults to current Unix timestamp.
+	 * @return array [description]
 	 */
 	protected function gmgetdate( $ts = null ) {
 		$k = array( 'seconds', 'minutes', 'hours', 'mday', 'wday', 'mon', 'year', 'yday', 'weekday', 'month', 0 );
@@ -2331,7 +2330,7 @@ class Spreadsheet_Excel_Reader {
 	}
 
 	/**
-	 * Get the details for a particular cell
+	 * Gets the details for a particular cell.
 	 *
 	 * @since 1.0.0
 	 *
@@ -2435,7 +2434,7 @@ class Spreadsheet_Excel_Reader {
 	 * @param [type] $row    [description]
 	 * @param [type] $col    [description]
 	 * @param [type] $string [description]
-	 * @param [type] $info   Optional. [description]
+	 * @param array  $info   Optional. [description]
 	 * @return [type] [description]
 	 */
 	protected function addcell( $row, $col, $string, $info = null ) {

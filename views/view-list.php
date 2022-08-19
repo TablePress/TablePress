@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * List Tables View class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
@@ -39,32 +40,21 @@ class TablePress_List_View extends TablePress_View {
 	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
-		add_thickbox();
-		$this->admin_page->enqueue_script( 'list', array( 'jquery' ), array( // phpcs:ignore PEAR.Functions.FunctionCallSignature.MultipleArguments
-			'list' => array(
-				'shortcode_popup'                  => __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ),
-				'donation-message-already-donated' => __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' ),
-				'donation-message-maybe-later'     => sprintf( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you&#8217;ll always find the &#8220;Donate&#8221; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'https://tablepress.org/' ),
-			),
-		) );
+		// Don't load TablePress assets on the Freemius opt-in/activation screen.
+		if ( tb_tp_fs()->is_activation_mode() && tb_tp_fs()->is_activation_page() ) {
+			return;
+		}
+
+		add_thickbox(); // For the table preview.
+		$this->admin_page->enqueue_script( 'list' );
 
 		if ( $data['messages']['first_visit'] ) {
 			$this->add_header_message(
-				__( 'Thank you for using TablePress for the first time!', 'tablepress' ) . ' '
-				. sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p><p>'
+				'<strong>' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>'
+				. '<p>' . sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p><p>'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ),
 				'notice-info not-dismissible',
 				'<em>' . __( 'Welcome!', 'tablepress' ) . '</em>'
-			);
-		}
-
-		if ( $data['messages']['wp_table_reloaded_warning'] ) {
-			$this->add_header_message(
-				'<strong>' . __( 'You have activated the plugin WP-Table Reloaded, which can not be used together with TablePress.', 'tablepress' ) . '</strong><br />'
-				. __( 'It is strongly recommended that you switch from WP-Table Reloaded to TablePress, which not only fixes many problems, but also has more and better features than WP-Table Reloaded.', 'tablepress' ) . '<br />'
-				. sprintf( __( 'Please follow the <a href="%s">migration guide</a> to move your tables and then deactivate WP-Table Reloaded!', 'tablepress' ), 'https://tablepress.org/migration-from-wp-table-reloaded/' ),
-				'notice-error not-dismissible',
-				'<em>' . __( 'Attention!', 'tablepress' ) . '</em>'
 			);
 		}
 
@@ -85,14 +75,15 @@ class TablePress_List_View extends TablePress_View {
 		}
 
 		if ( $data['messages']['plugin_update_message'] ) {
+			$message = sprintf( __( 'Please read the <a href="%s">release announcement</a> for more information.', 'tablepress' ), 'https://tablepress.org/news/' );
+			$message .= ' ' . sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' );
+			$message .= '</p>';
+			$message .= '<div style="margin:20px 0;height:45px"><a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="' . plugins_url( 'admin/img/wsal-mark.png', TABLEPRESS__FILE__ ) . '" alt="' . sprintf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ) . '" style="width:46px;height:45px;float:left;margin-right:10px" /></a>'
+				. '<div style="font-size:14px;font-weight:bold;max-width:530px;padding:5px 0;line-height:normal">' . sprintf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ) . '</div></div>';
+			$message .= '<p>' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) );
+
 			$this->add_header_message(
-				sprintf( __( 'Please read the <a href="%s">release announcement</a> for more information.', 'tablepress' ), 'https://tablepress.org/news/' ) . ' '
-				. sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' )
-				. '</p>'
-				. '<div style="margin:20px 0;height:45px"><a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="' . plugins_url( 'admin/img/wsal-mark.png', TABLEPRESS__FILE__ ) . '" alt="' . sprintf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ) . '" style="width:46px;height:45px;float:left;margin-right:10px" /></a>'
-				. '<div style="font-size:14px;font-weight:bold;max-width:530px;padding:5px 0;line-height:normal">' . sprintf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ) . '</div></div>'
-				. '<p>'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ),
+				$message,
 				'notice-info not-dismissible',
 				'<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>'
 			);
@@ -102,7 +93,6 @@ class TablePress_List_View extends TablePress_View {
 			'success_delete'              => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),
 			'success_delete_plural'       => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
 			'error_delete'                => __( 'Error: The table could not be deleted.', 'tablepress' ),
-			'error_save'                  => __( 'Error: The table could not be saved.', 'tablepress' ),
 			'success_copy'                => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ( ( false !== $data['table_id'] ) ? ' ' . sprintf( __( 'The copied table has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table_id'] ) ) : '' ),
 			'success_copy_plural'         => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
 			'error_copy'                  => __( 'Error: The table could not be copied.', 'tablepress' ),
@@ -118,7 +108,7 @@ class TablePress_List_View extends TablePress_View {
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_text_box( 'tables-list', array( $this, 'textbox_tables_list' ), 'normal' );
 
-		add_screen_option( 'per_page', array( 'label' => __( 'Tables', 'tablepress' ), 'default' => 20 ) ); // Admin_Controller contains function to allow changes to this in the Screen Options to be saved
+		add_screen_option( 'per_page', array( 'label' => __( 'Tables', 'tablepress' ), 'default' => 20 ) ); // Admin_Controller contains function to allow changes to this in the Screen Options to be saved.
 		$this->wp_list_table = new TablePress_All_Tables_List_Table();
 		$this->wp_list_table->set_items( $this->data['table_ids'] );
 		$this->wp_list_table->prepare_items();
@@ -143,7 +133,7 @@ class TablePress_List_View extends TablePress_View {
 		}
 
 		// For this screen, this is done in textbox_tables_list(), to get the fields into the correct <form>:
-		// $this->do_text_boxes( 'header' );
+		// $this->do_text_boxes( 'header' );.
 		?>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
@@ -185,8 +175,7 @@ class TablePress_List_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'This is a list of your tables.', 'tablepress' ); ?>
-			<?php printf( __( 'To insert a table into a post or page, copy its Shortcode %s and paste it into a &#8220;Shortcode&#8221; block at the desired place in the block editor.', 'tablepress' ), '<label class="screen-reader-text" for="table-shortcode-inline">' . esc_html__( 'Shortcode text for editor', 'tablepress' ) . '</label>' . '<input type="text" class="table-shortcode table-shortcode-inline" id="table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . ' id=<ID> /]' ) . '" readonly="readonly" />' ); ?>
-			<?php _e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' ); ?>
+			<?php printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) ); ?>
 		</p>
 		<?php
 	}
@@ -247,12 +236,14 @@ class TablePress_List_View extends TablePress_View {
 
 /**
  * TablePress All Tables List Table Class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
  * @link https://codex.wordpress.org/Class_Reference/WP_List_Table
  * @since 1.0.0
  */
+// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 	/**
@@ -272,8 +263,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$screen = get_current_screen();
 
 		// Hide "Last Modified By" column by default.
-		if ( false === get_user_option( 'manage' . $screen->id . 'columnshidden' ) ) {
-			update_user_option( get_current_user_id(), 'manage' . $screen->id . 'columnshidden', array( 'table_last_modified_by' ), true );
+		if ( false === get_user_option( "manage{$screen->id}columnshidden" ) ) {
+			update_user_option( get_current_user_id(), "manage{$screen->id}columnshidden", array( 'table_last_modified_by' ), true );
 		}
 
 		parent::__construct( array(
@@ -347,7 +338,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		}
 
 		$sortable_columns = array(
-			'table_id'               => array( 'id', true ), // true means its already sorted
+			'table_id'               => array( 'id', true ), // true means its already sorted.
 			'table_name'             => array( 'name', false ),
 			'table_description'      => array( 'description', false ),
 			'table_author'           => array( 'author', false ),
@@ -382,15 +373,15 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $item['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $item['id'] );
 
-		if ( $user_can_copy_table || $user_can_delete_table || $user_can_export_table ) {
-			return sprintf(
-				'<label><span class="screen-reader-text">%1$s</span><input type="checkbox" name="table[]" value="%2$s" /></label>',
-				esc_html__( 'Bulk action selector', 'tablepress' ),
-				esc_attr( $item['id'] )
-			);
-		} else {
+		if ( ! ( $user_can_copy_table || $user_can_delete_table || $user_can_export_table ) ) {
 			return '';
 		}
+
+		return sprintf(
+			'<label><span class="screen-reader-text">%1$s</span><input type="checkbox" name="table[]" value="%2$s" /></label>',
+			esc_html__( 'Bulk action selector', 'tablepress' ),
+			esc_attr( $item['id'] )
+		);
 	}
 
 	/**
@@ -440,7 +431,6 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		if ( $user_can_edit_table ) {
 			$row_actions['edit'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $edit_url, esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Edit', 'tablepress' ) );
 		}
-		$row_actions['shortcode hide-if-no-js'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ), __( 'Show Shortcode', 'tablepress' ) );
 		if ( $user_can_copy_table ) {
 			$row_actions['copy'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, esc_attr( sprintf( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Copy', 'tablepress' ) );
 		}
@@ -451,7 +441,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$row_actions['delete'] = sprintf( '<a href="%1$s" title="%2$s" class="delete-link">%3$s</a>', $delete_url, esc_attr( sprintf( __( 'Delete &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Delete', 'tablepress' ) );
 		}
 		if ( $user_can_preview_table ) {
-			$row_actions['table-preview'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $preview_url, esc_attr( sprintf( __( 'Show a preview of &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Preview', 'tablepress' ) );
+			$row_actions['table-preview'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $preview_url, esc_attr( sprintf( __( 'Preview of table “%1$s” (ID %2$s)', 'tablepress' ), $item['name'], $item['id'] ) ), __( 'Preview', 'tablepress' ) );
 		}
 
 		return $row_text . $this->row_actions( $row_actions );
@@ -779,9 +769,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 		// Register pagination options and calculation results.
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,                     // Total number of records/items
-			'per_page'    => $per_page,                           // Number of items per page
-			'total_pages' => ceil( $total_items / $per_page ), // Total number of pages
+			'total_items' => $total_items, // Total number of records/items.
+			'per_page'    => $per_page, // Number of items per page.
+			'total_pages' => ceil( $total_items / $per_page ), // Total number of pages.
 		) );
 	}
 

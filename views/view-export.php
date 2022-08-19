@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Export Table View class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
@@ -42,7 +43,7 @@ class TablePress_Export_View extends TablePress_View {
 		if ( 0 === $data['tables_count'] ) {
 			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_no_tables' ), 'normal' );
 		} else {
-			$this->admin_page->enqueue_script( 'export', array( 'jquery' ) );
+			$this->admin_page->enqueue_script( 'export' );
 			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_export_form' ), 'normal' );
 			$this->data['submit_button_caption'] = _x( 'Download Export File', 'button', 'tablepress' );
 			$this->add_text_box( 'submit', array( $this, 'textbox_submit_button' ), 'submit' );
@@ -114,12 +115,12 @@ class TablePress_Export_View extends TablePress_View {
 		<td class="column-2">
 			<input type="hidden" name="export[tables_list]" id="tables-export-list" value="" />
 			<?php
-				$select_size = $data['tables_count'] + 1; // to show at least one empty row in the select
+				$select_size = $data['tables_count'] + 1; // Show at least one empty row in the select.
 				$select_size = max( $select_size, 3 );
 				$select_size = min( $select_size, 12 );
 				$size_multiple = ( $data['zip_support_available'] ) ? " size=\"{$select_size}\" multiple=\"multiple\"" : '';
 			?>
-			<select id="tables-export" name="export[tables][]"<?php echo $size_multiple; ?>>
+			<select id="tables-export" name="export[tables][]" autofocus<?php echo $size_multiple; ?>>
 			<?php
 			foreach ( $data['table_ids'] as $table_id ) {
 				// Load table, without table data, options, and visibility settings.
@@ -138,7 +139,8 @@ class TablePress_Export_View extends TablePress_View {
 			</select>
 			<?php
 			if ( $data['zip_support_available'] ) {
-				echo '<br /><span class="description">' . __( 'You can select multiple tables by holding down the &#8220;Ctrl&#8221; key (Windows) or the &#8220;Command&#8221; key (Mac).', 'tablepress' ) . '</span>';
+				// The keyboard shortcuts in this description are for Windows keyboard layouts. The Mac keys (⌘ and shift) are set via JS in export.js.
+				echo '<br /><span id="tables-export-shortcut-description" class="description">' . sprintf( __( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ), _x( 'Ctrl', 'keyboard key', 'tablepress' ), _x( 'Shift', 'keyboard key', 'tablepress' ) ) . '</span>';
 			}
 			?>
 		</td>

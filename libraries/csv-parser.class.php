@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * CSV Parsing class
+ *
  * @package TablePress
  * @subpackage Import
  * @author Tobias Bäthge
@@ -142,10 +143,10 @@ class CSV_Parser {
 				}
 			} elseif ( ! $enclosed ) {
 				// At this point, $curr_char seems to be used as a delimiter, as it is not enclosed.
-				// Count $curr_char if it is not in the $this->non_delimiter_chars list
+				// Count $curr_char if it is not in the $this->non_delimiter_chars list.
 				if ( 0 === preg_match( '#[' . $this->non_delimiter_chars . ']#i', $curr_char ) ) {
 					if ( ! isset( $delimiter_count[ $curr_char ][ $current_line ] ) ) {
-						$delimiter_count[ $curr_char ][ $current_line ] = 0; // Initialize empty
+						$delimiter_count[ $curr_char ][ $current_line ] = 0; // Initialize empty.
 					}
 					$delimiter_count[ $curr_char ][ $current_line ]++;
 				}
@@ -270,7 +271,7 @@ class CSV_Parser {
 				} elseif ( $next_char === $this->enclosure ) {
 					// Enclosure character within enclosed cell (" encoded as "").
 					$cell_content .= $curr_char;
-					$i++; // Skip next character
+					$i++; // Skip next character.
 				} elseif ( $next_char !== $delimiter && "\r" !== $next_char && "\n" !== $next_char ) {
 					// for-loop (instead of while-loop) that skips whitespace.
 					for ( $x = ( $i + 1 ); isset( $data[ $x ] ) && '' === ltrim( $data[ $x ], $white_spaces ); $x++ ) {

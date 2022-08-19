@@ -1,0 +1,34 @@
+/**
+ * CSS code for the CodeMirror editor for the "Custom CSS" on the "Plugin Options" screen.
+ *
+ * @package TablePress
+ * @subpackage Views CSS
+ * @author Tobias Bäthge
+ * @since 1.7.0
+ */
+
+.CodeMirror {
+	height: 100px;
+
+	&.large {
+		height: 500px;
+		resize: both; /* Allow resizing of the enlarged text field only to reduce confusion when resize on click is applied. */
+		z-index: 0; /* Necessary to prevent the resizer from being hidden when height is reduced. */
+	}
+
+	&-scroll {
+		border: 1px solid #ddd;
+		height: calc(100% - 2px);
+		padding-bottom: 0;
+		margin-right: 0;
+
+		.CodeMirror-sizer {
+			border-right-width: 0 !important;
+		}
+	}
+
+	&.disabled .CodeMirror-scroll {
+		background-color: #eeeeee;
+	}
+
+}

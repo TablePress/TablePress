@@ -1,0 +1,67 @@
+/**
+ * CSS for the TablePress table block in the block editor.
+ *
+ * @package TablePress
+ * @subpackage Blocks
+ * @author Tobias Bäthge
+ * @since 2.0.0
+ */
+
+.wp-block-tablepress-table {
+	$parent: &;
+
+	/* Limit size of shown table in the block editor. */
+	.render-wrapper {
+		overflow: scroll;
+		min-height: 64px;
+		max-height: 400px;
+	}
+
+	/* Show an overlay on top of the table, to indicate that it's not fully shown. */
+	@at-root .table-overlay {
+		#{$parent} & {
+			position: absolute;
+			box-sizing: border-box;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			box-shadow: inset 0 0 50px #cccccc;
+			background-color: rgba(255, 255, 255, 0.3);
+			padding: 1em;
+			font-weight: bold;
+
+			/* Hide the table overlay in the block preview. */
+			.block-editor-block-preview__container & {
+				display: none;
+			}
+		}
+
+		/* Hide the table overlay when it's hovered. */
+		#{$parent}:hover & {
+			display: none;
+		}
+	}
+
+	/* Reduce height of the block placeholder (when no table has been selected) from the default 200px. */
+	.components-placeholder {
+		min-height: 160px;
+	}
+
+	/* Fix right margin, as the 1ch unit in the WP CSS does not work with the Dashicon font. */
+	.components-placeholder__label .dashicon {
+		margin-right: 10px;
+	}
+
+	/* Reduce line height of the placeholder instructions when the text is wrapped. */
+	.components-placeholder__instructions {
+		line-height: normal;
+	}
+
+	/* Hide the "Edit" link below the table. */
+	.tablepress caption {
+		display: none;
+	}
+
+	/* Import TablePress default CSS (without DataTables-related code). */
+	@import "../../../css/default-core";
+}

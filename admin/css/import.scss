@@ -1,0 +1,129 @@
+/**
+ * CSS code for the "Import" screen.
+ *
+ * @package TablePress
+ * @subpackage Views CSS
+ * @author Tobias Bäthge
+ * @since 1.0.0
+ */
+
+.file-upload-area {
+	width: 100%;
+	position: relative;
+
+	.dropzone {
+		background-color: #f5f5f5;
+		border: 2px dashed #ddd;
+		border-radius: 4px;
+		font-size: 18px;
+		box-sizing: border-box;
+		padding: 20px;
+		margin-bottom: 10px;
+		transition: background 0.3s ease-in-out;
+		width: 100%;
+		min-height: 180px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+
+		/* Print selected file names in italics. */
+		span ~ span {
+			font-style: italic;
+		}
+	}
+
+	&:hover .dropzone {
+		border: 2px dashed #cccccc;
+		background: #ffffff;
+	}
+
+	.js & #tables-import-file-upload {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		opacity: 0;
+		cursor: pointer;
+
+		&:valid + .dropzone,
+		+ .dropzone.dragover {
+			border-color: rgba(0, 255, 0, 0.4);
+			background-color: rgba(0, 255, 0, 0.1);
+		}
+
+		/* :focus style after :valid style to allow for both. */
+		&:focus + .dropzone {
+			border-color: #2271b1;
+		}
+	}
+
+	.postbox:not(.no-validation-highlighting) & #tables-import-file-upload:invalid + .dropzone {
+		border-color: #cc0000;
+	}
+}
+
+/* Style the artificial dropdown like a WP Core select field. */
+.jdropdown {
+	width: 100%;
+
+	.jdropdown-header {
+		/* stylelint-disable-next-line function-url-quotes */
+		background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E") no-repeat right 5px top 55%;
+		background-size: 16px 16px;
+		padding: 0 24px 0 8px;
+		border-color: #8c8f94;
+		border-radius: 3px;
+
+		&:hover,
+		&:hover::placeholder {
+			color: #2271b1;
+		}
+
+		&:focus {
+			border-color: #2271b1;
+			color: #0a4b78;
+			box-shadow: 0 0 0 1px #2271b1;
+		}
+
+		&:focus::placeholder {
+			color: #0a4b78;
+		}
+
+		&:active {
+			border-color: #8c8f94;
+			box-shadow: none;
+		}
+	}
+
+	/* Prevent overflowing of the expanded list of options. */
+	.jdropdown-container {
+		max-width: 100%;
+	}
+
+	/* Style the disabled state via a class, as the artificial dropdown can not use :disabled. */
+	&.disabled {
+		pointer-events: none;
+
+		.jdropdown-header {
+			color: #a7aaad;
+			border-color: #dcdcde;
+			background-color: #f6f7f7;
+			/* The SVG is arrow-down-alt2 from Dashicons. */
+			/* stylelint-disable-next-line function-url-quotes */
+			background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23a0a5aa%22%2F%3E%3C%2Fsvg%3E");
+			box-shadow: none;
+			text-shadow: 0 1px 0 #ffffff;
+			cursor: default;
+			transform: none;
+
+			&::placeholder {
+				color: #a7aaad;
+			}
+		}
+	}
+}

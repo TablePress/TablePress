@@ -351,7 +351,7 @@ class TablePress_CSSTidy_print {
 					} else {
 						$out = &$output;
 					}
-					$out .= $template[10] . $in_at_out[$indent_level];
+					$out .= $template[10] . $in_at_out[ $indent_level ];
 					if ( AT_END !== $this->_seeknocomment( $key, 1 ) ) {
 						$out .= $template[9];
 					} else {
@@ -433,7 +433,8 @@ class TablePress_CSSTidy_print {
 					$parts_to_open = explode( '{', $medium );
 					foreach ( $parts_to_open as $part ) {
 						$this->parser->_add_token( AT_START, $part, true );
-					}				}
+					}
+				}
 			} elseif ( $default_media ) {
 				$this->parser->_add_token( AT_START, $default_media, true );
 			}
@@ -470,7 +471,7 @@ class TablePress_CSSTidy_print {
 				$this->parser->_add_token( SEL_END, $selector, true );
 			}
 
-			if ( (int) $medium  < DEFAULT_AT ) {
+			if ( (int) $medium < DEFAULT_AT ) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if ( strlen( trim( $medium ) ) ) {
 					$parts_to_close = explode( '{', $medium );

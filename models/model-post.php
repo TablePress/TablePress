@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Post Model class
+ *
  * @package TablePress
  * @subpackage Models
  * @author Tobias Bäthge
@@ -35,7 +36,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->_register_post_type(); // we are on WP "init" hook already
+		$this->_register_post_type(); // We are on WP "init" hook already.
 	}
 
 	/**
@@ -45,7 +46,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	protected function _register_post_type() {
 		/**
-		 * Filter the "Custom Post Type" that TablePress uses for storing tables in the database.
+		 * Filters the "Custom Post Type" that TablePress uses for storing tables in the database.
 		 *
 		 * @since 1.0.0
 		 *
@@ -66,7 +67,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'can_export'      => true,
 		);
 		/**
-		 * Filter the arguments for the registration of the "Custom Post Type" that TablePress uses.
+		 * Filters the arguments for the registration of the "Custom Post Type" that TablePress uses.
 		 *
 		 * @since 1.0.0
 		 *
@@ -86,7 +87,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function insert( array $post ) {
 		$default_post = array(
-			'ID'             => false, // false on new insert, but existing post ID on update
+			'ID'             => false, // false on new insert, but existing post ID on update.
 			'comment_status' => 'closed',
 			'ping_status'    => 'closed',
 			'post_category'  => false,
@@ -133,6 +134,11 @@ class TablePress_Post_Model extends TablePress_Model {
 			wp_init_targeted_link_rel_filters();
 		}
 
+		// In rare cases, `wp_insert_post()` returns 0 as the post ID, when an error happens, so it's converted to a WP_Error here.
+		if ( 0 === $post_id ) {
+			return new WP_Error( 'table_add_post_insert', '', $post_id );
+		}
+
 		return $post_id;
 	}
 
@@ -146,7 +152,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function update( array $post ) {
 		$default_post = array(
-			'ID'             => false, // false on new insert, but existing post ID on update
+			'ID'             => false, // false on new insert, but existing post ID on update.
 			'comment_status' => 'closed',
 			'ping_status'    => 'closed',
 			'post_category'  => false,
@@ -164,7 +170,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		// WP expects everything to be slashed.
 		$post = wp_slash( $post );
 
-		// Remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
+		// Remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML.
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
 		remove_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		/*
@@ -221,7 +227,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return WP_Post|false|null Post data on success, false or null on failure.
 	 */
 	public function delete( $post_id ) {
-		return wp_delete_post( $post_id, true ); // true means force delete, although for CPTs this is automatic in this function
+		return wp_delete_post( $post_id, true ); // true means force delete, although for CPTs this is automatic in this function.
 	}
 
 	/**
@@ -282,7 +288,7 @@ class TablePress_Post_Model extends TablePress_Model {
 					update_meta_cache( 'post', $post_ids );
 				}
 			}
-			$offset += $length; // next array_slice() $offset
+			$offset += $length; // next array_slice() $offset.
 		}
 	}
 
@@ -295,7 +301,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return int Number of posts.
 	 */
 	public function count_posts() {
-		return array_sum( (array) wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
+		return array_sum( (array) wp_count_posts( $this->post_type ) ); // Original return value is object with the counts for each post_status.
 	}
 
 	/**
@@ -311,7 +317,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	public function add_meta_field( $post_id, $field, $value ) {
 		// WP expects a slashed value.
 		$value = wp_slash( $value );
-		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique
+		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique.
 		// Make sure that $success is a boolean, as add_post_meta() returns an ID or false.
 		$success = ( false === $success ) ? false : true;
 		return $success;
@@ -351,7 +357,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return string Value of the meta field.
 	 */
 	public function get_meta_field( $post_id, $field ) {
-		return get_post_meta( $post_id, $field, true ); // true means single value
+		return get_post_meta( $post_id, $field, true ); // true means single value.
 	}
 
 	/**
@@ -365,7 +371,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	public function delete_meta_field( $post_id, $field ) {
-		return delete_post_meta( $post_id, $field, true ); // true means single value
+		return delete_post_meta( $post_id, $field, true ); // true means single value.
 	}
 
 	/**

@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress WP Option Wrapper class
+ *
  * @package TablePress
  * @subpackage Classes
  * @author Tobias Bäthge
@@ -117,7 +118,7 @@ class TablePress_WP_Option {
 		return $this->_delete_option( $this->option_name );
 	}
 
-	/**
+	/*
 	 * Internal functions mapping - This needs to be re-defined by child classes.
 	 */
 

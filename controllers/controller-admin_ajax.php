@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Admin AJAX Controller class, extends Base Controller Class
+ *
  * @package TablePress
  * @subpackage Controllers
  * @author Tobias Bäthge
@@ -262,7 +263,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$_render->set_input( $table, $render_options );
 			$head_html = $_render->get_preview_css();
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
-			if ( ! empty( $custom_css ) ) {
+			$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );
+			if ( $use_custom_css ) {
 				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
 			}
 
@@ -270,7 +272,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
 				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
 				. __( 'The features of the DataTables JavaScript library are also not available or visible in this preview!', 'tablepress' ) . '<br />'
-				. sprintf( __( 'To insert the table into a page, post, or text widget, copy the Shortcode %s and paste it into the editor.', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id={$table['id']} /]" ) . '" readonly="readonly" />' )
+				. sprintf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) )
 				. '</p>' . $_render->get_output() . '</div>';
 		} else {
 			$head_html = '';
@@ -291,34 +293,6 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 		// Send the response.
 		wp_send_json( $response );
-	}
-
-	/**
-	 * Retrieve all information of a WP_Error object as a string.
-	 *
-	 * @since 1.4.0
-	 *
-	 * @param WP_Error $wp_error A WP_Error object.
-	 * @return string All error codes, messages, and data of the WP_Error.
-	 */
-	protected function get_wp_error_string( $wp_error ) {
-		$error_strings = array();
-		$error_codes = $wp_error->get_error_codes();
-		// Reverse order to get latest errors first.
-		$error_codes = array_reverse( $error_codes );
-		foreach ( $error_codes as $error_code ) {
-			$error_strings[ $error_code ] = $error_code;
-			$error_messages = $wp_error->get_error_messages( $error_code );
-			$error_messages = implode( ', ', $error_messages );
-			if ( ! empty( $error_messages ) ) {
-				$error_strings[ $error_code ] .= " ({$error_messages})";
-			}
-			$error_data = $wp_error->get_error_data( $error_code );
-			if ( ! is_null( $error_data ) ) {
-				$error_strings[ $error_code ] .= " [{$error_data}]";
-			}
-		}
-		return implode( ";\n", $error_strings );
 	}
 
 } // class TablePress_Admin_AJAX_Controller

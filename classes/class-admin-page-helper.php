@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Admin Page class
+ *
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
@@ -21,7 +22,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Admin_Page {
 
 	/**
-	 * Enqueue a CSS file.
+	 * Enqueue a CSS file, possibly with dependencies.
 	 *
 	 * @since 1.0.0
 	 *
@@ -29,8 +30,7 @@ class TablePress_Admin_Page {
 	 * @param array  $dependencies Optional. List of names of CSS stylesheets that this stylesheet depends on, and which need to be included before this one.
 	 */
 	public function enqueue_style( $name, array $dependencies = array() ) {
-		$suffix = SCRIPT_DEBUG ? '' : '.min';
-		$css_file = "admin/css/{$name}{$suffix}.css";
+		$css_file = "admin/css/build/{$name}.css";
 		$css_url = plugins_url( $css_file, TABLEPRESS__FILE__ );
 		wp_enqueue_style( "tablepress-{$name}", $css_url, $dependencies, TablePress::version );
 	}
@@ -40,19 +40,49 @@ class TablePress_Admin_Page {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $name            Name of the JS file, without extension.
-	 * @param array  $dependencies    Optional. List of names of JS scripts that this script depends on, and which need to be included before this one.
-	 * @param array  $localize_script Optional. An array with strings that gets transformed into a JS object and is added to the page before the script is included.
-	 * @param bool   $force_minified  Optional. Always load the minified version, regardless of SCRIPT_DEBUG constant value.
+	 * @param string $name         Name of the JS file, without extension.
+	 * @param array  $dependencies Optional. List of names of JS scripts that this script depends on, and which need to be included before this one.
+	 * @param array  $script_data  Optional. JS data that is printed to the page before the script is included. The array key will be used as the name, the value will be JSON encoded.
 	 */
-	public function enqueue_script( $name, array $dependencies = array(), array $localize_script = array(), $force_minified = false ) {
-		$suffix = ( ! $force_minified && SCRIPT_DEBUG ) ? '' : '.min';
-		$js_file = "admin/js/{$name}{$suffix}.js";
+	public function enqueue_script( $name, array $dependencies = array(), array $script_data = array() ) {
+		$js_file = "admin/js/build/{$name}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
-		wp_enqueue_script( "tablepress-{$name}", $js_url, $dependencies, TablePress::version, true );
-		if ( ! empty( $localize_script ) ) {
-			foreach ( $localize_script as $var_name => $var_data ) {
-				wp_localize_script( "tablepress-{$name}", "tablepress_{$var_name}", $var_data );
+
+		$version = TablePress::version;
+
+		// Load dependencies and version from the auto-generated asset PHP file.
+		$script_asset_path = TABLEPRESS_ABSPATH . "admin/js/build/{$name}.asset.php";
+		if ( file_exists( $script_asset_path ) ) {
+			$script_asset = require $script_asset_path;
+			if ( isset( $script_asset['dependencies'] ) ) {
+				$dependencies = array_merge( $dependencies, $script_asset['dependencies'] );
+			}
+			if ( isset( $script_asset['version'] ) ) {
+				$version = $script_asset['version'];
+			}
+		}
+
+		/**
+		 * Filters the dependencies of a TablePress script file.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array  $dependencies List of the dependencies that the $name script relies on.
+		 * @param string $name         Name of the JS script, without extension.
+		 */
+		$dependencies = apply_filters( 'tablepress_admin_page_script_dependencies', $dependencies, $name );
+
+		wp_enqueue_script( "tablepress-{$name}", $js_url, $dependencies, $version, true );
+
+		// Load JavaScript translation files, for all scripts that rely on `wp-i18n`.
+		if ( in_array( 'wp-i18n', $dependencies, true ) ) {
+			wp_set_script_translations( "tablepress-{$name}", 'tablepress' );
+		}
+
+		if ( ! empty( $script_data ) ) {
+			foreach ( $script_data as $var_name => $var_data ) {
+				$var_data = wp_json_encode( $var_data, TABLEPRESS_JSON_OPTIONS );
+				wp_add_inline_script( "tablepress-{$name}", "const tablepress_{$var_name} = {$var_data};", 'before' );
 			}
 		}
 	}
@@ -95,9 +125,9 @@ class TablePress_Admin_Page {
 			return;
 		}
 		?>
-		<script type="text/javascript">
+		<script>
 		( function( $ ) {
-			var options = <?php echo wp_json_encode( $args, TABLEPRESS_JSON_OPTIONS ); ?>, setup;
+			let options = <?php echo wp_json_encode( $args, TABLEPRESS_JSON_OPTIONS ); ?>;
 
 			if ( ! options ) {
 				return;
@@ -112,7 +142,7 @@ class TablePress_Admin_Page {
 				}
 			} );
 
-			setup = function() {
+			const setup = function() {
 				$( '<?php echo $selector; ?>' ).pointer( options ).pointer( 'open' );
 			};
 

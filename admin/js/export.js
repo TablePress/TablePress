@@ -1,5 +1,5 @@
 /**
- * JavaScript code for the "Export" screen
+ * JavaScript code for the "Export" screen.
  *
  * @package TablePress
  * @subpackage Views JavaScript
@@ -7,83 +7,95 @@
  * @since 1.0.0
  */
 
-jQuery( function( $ ) {
+/**
+ * WordPress dependencies.
+ */
+import { __, _x, sprintf } from '@wordpress/i18n';
 
-	'use strict';
+/**
+ * Internal dependencies.
+ */
+import { $ } from './_common-functions';
 
-	/**
-	 * Check, whether inputs are valid
-	 *
-	 * @since 1.0.0
+const $tables_export_dropdown = $( '#tables-export' );
+const $cb_tables_export_zip_file = $( '#tables-export-zip-file' );
+
+/**
+ * Change keyboard keys for multi-table export when the user is using a Mac.
+ *
+ * @since 2.0.0
+ */
+if ( window?.navigator?.platform?.includes( 'Mac' ) ) {
+	const description = $( '#tables-export-shortcut-description' );
+	if ( description ) {
+		description.textContent = sprintf( __( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ), _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ), _x( 'Shift', 'keyboard key', 'tablepress' ) );
+	}
+}
+
+/**
+ * Check, whether inputs are valid.
+ *
+ * @since 1.0.0
+ */
+document.querySelector( '#tablepress-page form' ).addEventListener( 'submit', function ( event ) {
+	const selected_tables = [ ...$tables_export_dropdown.selectedOptions ].map( ( option ) => option.value );
+
+	// Don't submit the form if no table was selected.
+	if ( 0 === selected_tables.length ) {
+		event.preventDefault();
+		return;
+	}
+
+	/*
+	 * Add selected tables as a comma-separated list to a hidden field.
+	 * The import will then prefer that value over the transmitted array values of the dropdown.
 	 */
-	$( '#tablepress-page' ).find( 'form' ).on( 'submit', function( /* event */ ) {
-		var selected_tables = $( '#tables-export' ).val(),
-			num_selected = ( selected_tables ) ? selected_tables.length : 0;
+	$( '#tables-export-list' ).value = selected_tables.join();
 
-		// only submit form, if at least one table was selected
-		if ( 0 === num_selected ) {
-			return false;
-		}
+	// On form submit: Enable disabled fields, so that they are sent in the HTTP POST request.
+	$cb_tables_export_zip_file.disabled = false;
+} );
 
-		// at this point, the form is valid and will be submitted
+/**
+ * Show export delimiter dropdown box only if export format is CSV.
+ *
+ * @since 1.0.0
+ */
+const $tables_export_format_dropdown = $( '#tables-export-format' );
+$tables_export_format_dropdown.addEventListener( 'change', function () {
+	const non_csv_selected = ( 'csv' !== this.value );
+	$( '#tables-export-csv-delimiter' ).disabled = non_csv_selected;
+	$( '#tables-export-csv-delimiter-description' ).style.display = non_csv_selected ? 'inline' : 'none';
+} );
+$tables_export_format_dropdown.dispatchEvent( new Event( 'change' ) );
 
-		// add selected tables as a list to a hidden field
-		$( '#tables-export-list' ).val( selected_tables.join( ',' ) );
+/**
+ * Automatically check and disable the "ZIP file" checkbox whenever more than one table is selected.
+ *
+ * @since 1.0.0
+ */
+let zip_file_manually_checked = false;
+$cb_tables_export_zip_file.addEventListener( 'change', function () {
+	zip_file_manually_checked = this.checked;
+} );
 
-		// on form submit: Enable disabled fields, so that they are transmitted in the POST request
-		$( '#tables-export-zip-file' ).prop( 'disabled', false );
-	} );
+const $cb_tables_export_select_all = $( '#tables-export-select-all' );
+$tables_export_dropdown.addEventListener( 'change', function () {
+	const zip_file_required = ( $tables_export_dropdown.selectedOptions.length > 1 );
+	$cb_tables_export_zip_file.disabled = zip_file_required;
+	$cb_tables_export_zip_file.checked = ( zip_file_required || zip_file_manually_checked );
+	$( '#tables-export-zip-file-description' ).style.display = zip_file_required ? 'inline' : 'none';
+	// Set state of "Select all" checkbox, depending on whether all tables are selected.
+	$cb_tables_export_select_all.checked = ( $tables_export_dropdown.options.length === $tables_export_dropdown.selectedOptions.length );
+} );
+$tables_export_dropdown.dispatchEvent( new Event( 'change' ) );
 
-	/**
-	 * Show export delimiter dropdown box only if export format is CSV
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tables-export-format' ).on( 'change', function() {
-		var non_csv_selected = ( 'csv' !== $(this).val() );
-		$( '#tables-export-csv-delimiter' ).prop( 'disabled', non_csv_selected );
-		$( '#tables-export-csv-delimiter-description' ).toggle( non_csv_selected );
-	} )
-	.trigger( 'change' );
-
-	/**
-	 * Automatically check and disable the "ZIP file" checkbox whenever more than one table is selected
-	 *
-	 * @since 1.0.0
-	 */
-	var zip_file_manually_checked = false;
-	$( '#tables-export-zip-file' ).on( 'change', function() {
-		zip_file_manually_checked = $(this).prop( 'checked' );
-	} );
-	$( '#tables-export' ).on( 'change', function() {
-		var selected_tables = $(this).val(),
-			num_selected = ( selected_tables ) ? selected_tables.length : 0,
-			zip_file_required = ( num_selected > 1 );
-		$( '#tables-export-zip-file' )
-			.prop( 'disabled', zip_file_required )
-			.prop( 'checked', zip_file_required || zip_file_manually_checked );
-		$( '#tables-export-zip-file-description' ).toggle( zip_file_required );
-		// set state of "Select all" checkbox
-		$( '#tables-export-select-all' ).prop( 'checked', 0 === $(this).find( 'option' ).not( ':selected' ).length );
-	} )
-	.trigger( 'change' );
-
-	/**
-	 * Select all entries from the multiple-select dropdown on checkbox change
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tables-export-select-all' ).on( 'change', function() {
-		var $tables = $( '#tables-export' );
-		$tables.find( 'option' ).prop( 'selected', $(this).prop( 'checked' ) );
-		$tables.trigger( 'change' ); // to update ZIP file checkbox
-	} );
-
-	/**
-	 * Automatically focus the tables dropdown
-	 *
-	 * @since 1.0.0
-	 */
-	$( '#tables-export' ).trigger( 'focus' );
-
+/**
+ * (De-)select all entries from the multiple-select tables dropdown when the "Select All" checkbox is toggled.
+ *
+ * @since 1.0.0
+ */
+$cb_tables_export_select_all.addEventListener( 'change', function () {
+	[ ...$tables_export_dropdown.options ].forEach( ( option ) => ( option.selected = this.checked ) );
+	$tables_export_dropdown.dispatchEvent( new Event( 'change' ) ); // Update ZIP file checkbox.
 } );

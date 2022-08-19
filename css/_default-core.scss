@@ -1,0 +1,107 @@
+/**
+ * TablePress Default CSS - Core CSS without DataTables styling.
+ *
+ * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
+ * on the "Plugin Options" screen of TablePress.
+ *
+ * @package TablePress
+ * @subpackage Frontend CSS
+ * @author Tobias Bäthge
+ * @since 1.0.0
+ */
+
+/* Default toggle variable for LTR and RTL CSS. */
+$direction: "ltr" !default;
+
+/* Default variables for the LTR CSS. */
+$align-side: left !default;
+
+/* Variables for the RTL CSS. */
+@if "rtl" == $direction {
+	$align-side: right;
+}
+
+.tablepress {
+	/* Custom properties */
+	--text-color: #111111;
+	--head-text-color: var(--text-color);
+	--head-bg-color: #d9edf7;
+	--odd-text-color: var(--text-color);
+	--odd-bg-color: #f9f9f9;
+	--even-text-color: var(--text-color);
+	--even-bg-color: #ffffff;
+	--hover-text-color: var(--text-color);
+	--hover-bg-color: #f3f3f3;
+	--border-color: #dddddd;
+	--padding: 0.5rem;
+
+	/* General table style */
+	table-layout: auto;
+	width: 100%;
+	margin: 0 auto 1rem;
+	clear: both;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	vertical-align: top;
+
+	/* General table cell style */
+	> :not(caption) > * > * {
+		padding: var(--padding);
+		border: none;
+		background: none;
+		text-align: $align-side;
+		float: none !important; /* Work around themes that set `float` on `.column-1` CSS classes and similar. */
+	}
+
+	/* Vertical alignment */
+	> tbody {
+		vertical-align: inherit; /* inherits top from <table> */
+	}
+	> thead,
+	> tfoot {
+		vertical-align: middle;
+	}
+
+	/* Horizontal borders */
+	> * + tbody > * > *,
+	> tbody > * ~ * > *,
+	> tfoot > * > * {
+		border-top: 1px solid var(--border-color);
+	}
+
+	/* Row background colors. For backwards-compatibility, using :nth-child or :nth-of-type is not feasible. */
+	> :where(thead, tfoot) > * > th {
+		background-color: var(--head-bg-color);
+		color: var(--head-text-color);
+		font-weight: bold;
+	}
+	> :where(tbody) {
+		> .odd > * {
+			background-color: var(--odd-bg-color);
+			color: var(--odd-text-color);
+		}
+		> .even > * {
+			background-color: var(--even-bg-color);
+			color: var(--even-text-color);
+		}
+	}
+	> .row-hover > tr:hover > * {
+		background-color: var(--hover-bg-color);
+		color: var(--hover-text-color);
+	}
+
+	/* Reset image layout in tables */
+	img {
+		margin: 0;
+		padding: 0;
+		border: none;
+		max-width: none;
+	}
+
+	/* Table description */
+	&-table-description {
+		clear: both;
+		display: block;
+	}
+}

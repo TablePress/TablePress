@@ -1,0 +1,20 @@
+/**
+ * TablePress Default CSS
+ *
+ * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
+ * on the "Plugin Options" screen of TablePress.
+ *
+ * @package TablePress
+ * @subpackage Frontend CSS
+ * @author Tobias Bäthge
+ * @since 1.0.0
+ */
+
+/* Import TablePress default CSS (icon font). */
+@import "default-font";
+
+/* Import TablePress default CSS (basic/general styling). */
+@import "default-core";
+
+/* Import TablePress default CSS (DataTables-related code). */
+@import "default-datatables";

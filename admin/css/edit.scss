@@ -1,0 +1,250 @@
+/**
+ * CSS code for the "Edit" screen
+ *
+ * @package TablePress
+ * @subpackage Views CSS
+ * @author Tobias Bäthge
+ * @since 1.0.0
+ */
+
+/* Hour glass cursor, while waiting for AJAX */
+body.wait * {
+	cursor: wait !important;
+}
+
+/* container for Table Preview, Advanced Editor, and Help Box dialogs */
+.hidden-container {
+	display: none;
+}
+
+.help-box {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+/* Allow wide postboxes to scroll sideways. */
+body,
+div#post-body.metabox-holder.columns-1 {
+	overflow: visible !important;
+}
+
+/* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog */
+body #wp-link-backdrop {
+	z-index: 100103;
+}
+
+/* Table Preview (CSS for actual preview is directly in the preview HTML) */
+#table-preview {
+	padding: 0;
+}
+#table-preview-iframe {
+	width: 100%;
+	height: 100%;
+}
+
+/* Styling and positioning of buttons in wpdialogs */
+.ui-dialog .button {
+	box-shadow: none;
+}
+.ui-dialog .ui-dialog-buttonset {
+	width: 100%;
+}
+.ui-dialog .button-cancel,
+.ui-dialog .button-cancel:hover {
+	color: #b32d2e;
+	border-color: transparent;
+	background-color: transparent;
+	text-decoration: underline;
+}
+.ui-dialog .button-ok {
+	float: right;
+}
+
+/* Content of the Advanced Editor wpdialog */
+#advanced-editor {
+	padding: 5px;
+}
+#advanced-editor .wp-editor-container {
+	border: none;
+}
+
+/* Spinner/loading animation that is shown during saving/preview preparation */
+.spinner.spinner-save-changes,
+.spinner.spinner-table-preview {
+	float: none;
+	margin: 0 0 0 6px;
+}
+
+/* Margins for dynamically created (inline) .notice messages */
+#tablepress-page div.ajax-alert {
+	margin: -10px 0 15px;
+	transition: opacity 2s 3s;
+}
+#tablepress-page div.ajax-alert.notice-error {
+	transition-delay: 6s;
+}
+#tablepress-page div.ajax-alert p {
+	font-weight: bold;
+}
+#tablepress-page div.ajax-alert pre {
+	margin: -6px 0 0.5em 2px;
+}
+#tablepress-page div.ajax-alert pre + p {
+	display: none;
+}
+
+#tablepress-page #tablepress_edit-table-data {
+	display: inline-block; /* Stretch to the width of the table. */
+	min-width: 99.9%; /* but use the full width, minus approx. 1px as the box is wider than the others otherwise. */
+}
+
+#tablepress-page #table-new-id {
+	width: 120px;
+}
+
+#tablepress-page .button {
+	vertical-align: baseline;
+}
+
+#tablepress_edit-table-manipulation .column-1 {
+	width: 45%;
+}
+#tablepress_edit-table-manipulation .column-2 {
+	width: 55%;
+}
+
+/* Align with checkbox labels */
+.checkbox-left {
+	padding-left: 24px; /* Checkboxes are 16px wide + 4px margin, with 4px :before */
+}
+
+#table-editor {
+	font-size: 14px;
+}
+
+/* Jspreadsheet CSS * /
+
+/* Minimum row height, using :after to keep resize animation */
+.jexcel > tbody > tr:after {
+	content: "";
+	display: inline-block;
+	min-height: 52px;
+}
+/* auto-grow */
+/*.jexcel > tbody > tr.selected:after {
+	min-height: 78px;
+}*/
+
+
+.jexcel > thead > tr > td {
+	text-align: center !important;
+	z-index: 21; /* Prevent drag corner from floating above fixed header. */
+}
+
+.jexcel > tbody > tr > td {
+	vertical-align: top;
+	word-break: break-word;
+}
+
+/* Fixed header */
+@media screen and (min-width: 601px) {
+	.admin-bar .jexcel > thead > tr > td {
+		top: 46px;
+	}
+}
+@media screen and (min-width: 783px) {
+	.admin-bar .jexcel > thead > tr > td {
+		top: 31px;
+	}
+}
+
+.jexcel tbody tr:nth-child(even) td:not(.jexcel_row) {
+	background-color: #f9f9f9;
+}
+
+.jexcel_container .jexcel tbody tr td.highlight {
+	background-color: rgba(0, 94, 255, 0.05);
+}
+
+.jexcel_container .jexcel tbody tr.head-row td:not(.jexcel_row):not(.column-hidden),
+.jexcel_container .jexcel tbody tr.foot-row td:not(.jexcel_row):not(.column-hidden) {
+	background-color: #d9edf7;
+}
+
+.jexcel_container .jexcel tbody tr.row-hidden td:not(.jexcel_row),
+.jexcel_container .jexcel tbody tr td.column-hidden {
+	background-color: rgba(255, 224, 224, 0.7);
+}
+
+.jexcel > tbody > tr > .highlight-top {
+	padding: 4px;
+	border-top: 1px solid rgb(82, 146, 247);
+}
+
+.jexcel > tbody > tr > .highlight-left {
+	padding: 4px;
+	border-left: 1px solid rgb(82, 146, 247);
+}
+
+.jexcel > tbody > tr > .highlight-right {
+	padding: 4px;
+	border-right: 1px solid rgb(82, 146, 247);
+}
+
+.jexcel > tbody > tr > .highlight-bottom {
+	padding: 4px;
+	border-bottom: 1px solid rgb(82, 146, 247);
+}
+
+.jexcel_corner {
+	background-color: rgb(82, 146, 247);
+}
+
+.jexcel > tbody > tr > .editor {
+	padding: 0;
+}
+
+.jexcel > tbody > tr > td > textarea {
+	font-size: inherit;
+	box-shadow: none;
+	padding: 3px !important;
+	line-height: 1 !important;
+}
+
+/* Fullscreen mode */
+.admin-bar .jexcel_container.fullscreen .jexcel > thead > tr > td {
+	top: 0;
+}
+.jexcel_container.fullscreen {
+	z-index: 99999;
+}
+
+/* Context menu */
+.jcontextmenu {
+	margin: 1px; /* Don't trigger actions by accident */
+	z-index: 99999; /* Hover above WP Admin bar */
+}
+.jcontextmenu > div a {
+	color: #111111;
+	font-size: 14px;
+}
+.jcontextmenu > div {
+	padding: 4px 4px 4px 16px;
+}
+.jcontextmenu > .jcontextmenu-disabled,
+.jcontextmenu > .jcontextmenu-disabled a {
+	color: #999999;
+}
+.jcontextmenu > div.jcontextmenu-disabled:hover {
+	background: transparent;
+}
+
+/* The sorting arrow icon feels wrong, so flip the images for arrow-up and arrow-down. */
+.jexcel > thead > tr > td.arrow-up {
+	/* stylelint-disable-next-line function-url-quotes */
+	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3Cpath d='M7 10l5 5 5-5H7z' fill='gray'/%3E%3C/svg%3E");
+}
+.jexcel > thead > tr > td.arrow-down {
+	/* stylelint-disable-next-line function-url-quotes */
+	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3Cpath d='M7 14l5-5 5 5H7z' fill='gray'/%3E%3C/svg%3E");
+}

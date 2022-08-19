@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * TablePress Table Export Class
+ *
  * @package TablePress
  * @subpackage Export/Import
  * @author Tobias Bäthge
@@ -142,20 +143,20 @@ class TablePress_Export {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string    Content of a cell.
-	 * @param string $delimiter CSV delimiter character.
-	 * @return string Wrapped string for CSV export
+	 * @param string $cell_content Content of a cell.
+	 * @param string $delimiter    CSV delimiter character.
+	 * @return string Wrapped string for CSV export.
 	 */
-	protected function csv_wrap_and_escape( $string, $delimiter ) {
+	protected function csv_wrap_and_escape( $cell_content, $delimiter ) {
 		// Escape CSV delimiter for RegExp (e.g. '|').
 		$delimiter = preg_quote( $delimiter, '#' );
-		if ( 1 === preg_match( '#' . $delimiter . '|"|\n|\r#i', $string ) || ' ' === substr( $string, 0, 1 ) || ' ' === substr( $string, -1 ) ) {
+		if ( 1 === preg_match( '#' . $delimiter . '|"|\n|\r#i', $cell_content ) || ' ' === substr( $cell_content, 0, 1 ) || ' ' === substr( $cell_content, -1 ) ) {
 			// Escape single " as double "".
-			$string = str_replace( '"', '""', $string );
+			$cell_content = str_replace( '"', '""', $cell_content );
 			// Wrap string in "".
-			$string = '"' . $string . '"';
+			$cell_content = '"' . $cell_content . '"';
 		}
-		return $string;
+		return $cell_content;
 	}
 
 	/**

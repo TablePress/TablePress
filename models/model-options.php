@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
  * Options Model class
+ *
  * @package TablePress
  * @subpackage Models
  * @author Tobias Bäthge
@@ -24,6 +25,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Default Plugin Options.
 	 *
 	 * @since 1.0.0
+	 * @since 2.0.0 Added the "modules" option.
 	 * @var array
 	 */
 	protected $default_plugin_options = array(
@@ -39,6 +41,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		'custom_css'                => '',
 		'custom_css_minified'       => '',
 		'custom_css_version'        => 0,
+		'modules'                   => false,
 	);
 
 	/**
@@ -48,7 +51,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @var array
 	 */
 	protected $default_user_options = array(
-		'user_options_db_version' => TablePress::db_version, // to prevent saving on first load
+		'user_options_db_version' => TablePress::db_version, // To prevent saving on first load.
 		'admin_menu_parent_page'  => 'middle',
 		'message_first_visit'     => true,
 	);
@@ -291,7 +294,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @param string $cap     Meta cap that is to be checked/mapped.
 	 * @param int    $user_id User ID for which meta cap is to be checked.
 	 * @param array  $args    Arguments for the check, here e.g. the table ID.
-	 * @return array $caps Modified set of primitive caps.
+	 * @return array Modified set of primitive caps.
 	 */
 	public function map_tablepress_meta_caps( array $caps, $cap, $user_id, array $args ) {
 		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) ) {
@@ -329,7 +332,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		}
 
 		/**
-		 * Filter a user's TablePress capabilities.
+		 * Filters a user's TablePress capabilities.
 		 *
 		 * @since 1.0.0
 		 *

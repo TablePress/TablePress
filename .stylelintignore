@@ -1,0 +1,17 @@
+# Ignore file for the stylelint CSS/SCSS linting of @wordpress/scripts.
+
+# Ignore external libraries.
+/node_modules/
+/vendor/
+/libraries/vendor/
+/libraries/composer/
+/freemius/
+
+# Ignore minified files.
+/admin/css/build/
+/css/build/
+/blocks/**/build/
+
+# Ignore external scripts.
+/admin/css/jspreadsheet.css
+/admin/css/jsuites.css
