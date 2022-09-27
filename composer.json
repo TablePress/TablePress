@@ -77,7 +77,7 @@
 		"release": [
 			"rm -rf ./vendor ./libraries/vendor ./libraries/composer ./libraries/autoload.php",
 			"composer config platform.php 7.2",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 1.24.1\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 1.25.2\" --no-update",
 			"composer update --no-dev",
 			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart /mozart/bin/mozart compose",
 			"composer dump-autoload --optimize --classmap-authoritative",

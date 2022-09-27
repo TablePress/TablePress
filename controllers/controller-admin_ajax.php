@@ -271,7 +271,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$body_html = '<div id="tablepress-page"><p>'
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
 				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
-				. __( 'The features of the DataTables JavaScript library are also not available or visible in this preview!', 'tablepress' ) . '<br />'
+				. __( 'The table features for visitors, like sorting, filtering, and paginatin, are also not available in this preview!', 'tablepress' ) . '<br />'
 				. sprintf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) )
 				. '</p>' . $_render->get_output() . '</div>';
 		} else {

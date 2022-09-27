@@ -89,18 +89,46 @@ jobs:
         run: phpcs -i
 
       - name: Run PHP compatibility tests, excluding PHPSpreadsheet
-        continue-on-error: true
         run: phpcs --standard=phpcompat.xml.dist --report-full --report-checkstyle=./phpcs-report.xml
 
       - name: Show PHPCS results in PR/commit, excluding PHPSpreadsheet
+        if: success() || failure()
         run: cs2pr ./phpcs-report.xml
 
       - name: Run PHP compatibility tests for PHPSpreadsheet
-        continue-on-error: true
         run: phpcs --standard=phpcompat-7.2.xml.dist --report-full --report-checkstyle=./phpcs-report-7.2.xml
 
       - name: Show PHPCS results in PR/commit for PHPSpreadsheet
+        if: success() || failure()
         run: cs2pr ./phpcs-report-7.2.xml
 
       - name: Ensure version-controlled files are not modified during the tests
         run: git diff --exit-code
+
+  failed-workflow:
+    name: Failed workflow tasks
+    permissions:
+      actions: write
+    runs-on: ubuntu-latest
+    needs: [ php-compatibility ]
+    if: |
+      always() &&
+      github.event_name != 'pull_request' &&
+      github.run_attempt < 2 &&
+      (
+        needs.php-compatibility.result == 'cancelled' || needs.php-compatibility.result == 'failure'
+      )
+    steps:
+      - name: Dispatch workflow run
+        uses: actions/github-script@d4560e157075e2d93aa3022b5b51a42a880f1f93 # v6.3.0
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'failed-workflow.yml',
+              ref: '${{ github.ref_name }}',
+              inputs: {
+                run_id: '${{ github.run_id }}'
+              }
+            });

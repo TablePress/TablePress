@@ -16,9 +16,11 @@
 		min-height: 64px;
 		max-height: 400px;
 
-		/* Prevent interaction with elements like links inside tables, similar to the `Disabled` component from Gutenberg. */
 		> .tablepress {
+			/* Prevent interaction with elements like links inside tables, similar to the `Disabled` component from Gutenberg. */
 			pointer-events: none;
+			/* Remove the bottom margin in the block preview. */
+			margin: 0 auto;
 		}
 	}
 
@@ -74,6 +76,16 @@
 	/* Reduce line height of the placeholder instructions when the text is wrapped. */
 	.components-placeholder__instructions {
 		line-height: normal;
+	}
+
+	/* Elements inside the InspectorControls PanelBodys. */
+	&-inspector-panel {
+		/* Make the indeterminate state of a checkbox lighter. */
+		.components-checkbox-control__input[type="checkbox"] {
+			&:indeterminate {
+				opacity: 0.4;
+			}
+		}
 	}
 
 	/* Hide the "Edit" link below the table. */

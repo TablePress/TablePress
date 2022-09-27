@@ -100,7 +100,6 @@ class TablePress_Export_View extends TablePress_View {
 	public function postbox_export_form( array $data, array $box ) {
 		?>
 <table class="tablepress-postbox-table fixed">
-<tbody>
 	<tr>
 		<th class="column-1 top-align" scope="row">
 			<label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label>
@@ -188,7 +187,6 @@ class TablePress_Export_View extends TablePress_View {
 		<td class="column-1"></td>
 		<td class="column-2"><input type="submit" value="<?php echo esc_attr_x( 'Download Export File', 'button', 'tablepress' ); ?>" class="button button-primary button-large" /></td>
 	</tr>
-</tbody>
 </table>
 		<?php
 	}

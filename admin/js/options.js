@@ -25,10 +25,12 @@ import { $ } from './_common-functions';
  * @since 1.0.0
  */
 const $cb_use_custom_css = $( '#option-use-custom-css' );
-$cb_use_custom_css.addEventListener( 'change', function () {
-	$( '#option-custom-css' ).disabled = ! this.checked;
-} );
-$cb_use_custom_css.dispatchEvent( new Event( 'change' ) );
+if ( $cb_use_custom_css ) { // The checkbox field only exists for admins!
+	$cb_use_custom_css.addEventListener( 'change', function () {
+		$( '#option-custom-css' ).disabled = ! this.checked;
+	} );
+	$cb_use_custom_css.dispatchEvent( new Event( 'change' ) );
+}
 
 /**
  * On form submit: Enable disabled fields, so that they are sent in the HTTP POST request.

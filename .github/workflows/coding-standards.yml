@@ -88,11 +88,39 @@ jobs:
         run: phpcs -i
 
       - name: Check PHP coding standards
-        continue-on-error: true
         run: phpcs --report-full --report-checkstyle=./phpcs-report.xml
 
       - name: Show PHPCS results in PR/commit
+        if: success() || failure()
         run: cs2pr ./phpcs-report.xml
 
       - name: Ensure version-controlled files are not modified during the tests
         run: git diff --exit-code
+
+  failed-workflow:
+    name: Failed workflow tasks
+    permissions:
+      actions: write
+    runs-on: ubuntu-latest
+    needs: [ phpcs ]
+    if: |
+      always() &&
+      github.event_name != 'pull_request' &&
+      github.run_attempt < 2 &&
+      (
+        needs.phpcs.result == 'cancelled' || needs.phpcs.result == 'failure'
+      )
+    steps:
+      - name: Dispatch workflow run
+        uses: actions/github-script@d4560e157075e2d93aa3022b5b51a42a880f1f93 # v6.3.0
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'failed-workflow.yml',
+              ref: '${{ github.ref_name }}',
+              inputs: {
+                run_id: '${{ github.run_id }}'
+              }
+            });

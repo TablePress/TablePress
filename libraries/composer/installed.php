@@ -3,7 +3,7 @@
         'name' => 'tablepress/tablepress',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '4f2adaff0e267191e53f793590153fca2ec2973d',
+        'reference' => 'eb829a96b18937e1a2eb0a552990751d4d7e1512',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,11 +31,11 @@
         'phpoffice/phpspreadsheet' => array(
             'pretty_version' => 'dev-tablepress',
             'version' => 'dev-tablepress',
-            'reference' => 'e8cdab96da558f0e1de256ef21b0596090b77033',
+            'reference' => '67435d260ca4291b4ad4a862c093aff3e5fbcc8e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpoffice/phpspreadsheet',
             'aliases' => array(
-                0 => '1.24.1',
+                0 => '1.25.2',
                 1 => '9999999-dev',
             ),
             'dev_requirement' => false,
@@ -79,7 +79,7 @@
         'tablepress/tablepress' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '4f2adaff0e267191e53f793590153fca2ec2973d',
+            'reference' => 'eb829a96b18937e1a2eb0a552990751d4d7e1512',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

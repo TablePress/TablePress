@@ -107,7 +107,9 @@ class TablePress_Admin_Page {
 	 */
 	public function _admin_footer_text( $content ) {
 		$content .= ' &bull; ' . sprintf( __( 'Thank you for using <a href="%s">TablePress</a>.', 'tablepress' ), 'https://tablepress.org/' );
-		$content .= ' ' . sprintf( __( 'Support the plugin with your <a href="%s">donation</a>!', 'tablepress' ), 'https://tablepress.org/donate/' );
+		if ( tb_tp_fs()->is_free_plan() ) {
+			$content .= ' ' . sprintf( __( 'Support the plugin with your <a href="%s">donation</a>!', 'tablepress' ), 'https://tablepress.org/donate/' );
+		}
 		return $content;
 	}
 

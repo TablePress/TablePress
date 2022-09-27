@@ -53,7 +53,7 @@ $import_form.addEventListener( 'change', () => {
 	$import_form.classList.add( 'no-validation-highlighting' );
 	// Reset validation messages after a change to a form field was made.
 	$tables_import_server_field?.setCustomValidity( '' ); // The input field only exists for admins!
-	$import_existing_table_dropdown.previousSibling.querySelector( '.jdropdown-header' ).setCustomValidity( '' ); // Use the jSuites dropdown input field, as the actual <select> is hidden.
+	$import_existing_table_dropdown.previousElementSibling.querySelector( '.jdropdown-header' ).setCustomValidity( '' ); // Use the jSuites dropdown input field, as the actual <select> is hidden.
 
 	// Show the correct input field section depending on the chosen import source. Set the contained form field to required.
 	[ 'file-upload', 'url', 'server', 'form-field' ].forEach( ( source ) => {
@@ -74,7 +74,7 @@ $import_form.addEventListener( 'change', () => {
 		)
 	);
 	$import_existing_table_dropdown.disabled = dropdown_disabled;
-	$import_existing_table_dropdown.previousSibling.classList.toggle( 'disabled', dropdown_disabled ); // Disable the artificial dropdown via a class, as it can not use :disabled.
+	$import_existing_table_dropdown.previousElementSibling.classList.toggle( 'disabled', dropdown_disabled ); // Disable the artificial dropdown via a class, as it can not use :disabled.
 } );
 document.querySelector( '#row-import-source input:checked' ).dispatchEvent( new Event( 'change', { bubbles: true } ) ); // Trigger the change handler on page load to initialize the form fields.
 
@@ -136,7 +136,7 @@ $( '#import-submit-button' ).addEventListener( 'click', () => {
 		) {
 		// The "- Select or type -" entry has an empty string as its value.
 		if ( '' === $import_existing_table_dropdown.value ) {
-			$import_existing_table_dropdown.previousSibling.querySelector( '.jdropdown-header' ).setCustomValidity( __( 'You must select a table.', 'tablepress' ) ); // Use the jSuites dropdown input field, as the actual <select> is hidden.
+			$import_existing_table_dropdown.previousElementSibling.querySelector( '.jdropdown-header' ).setCustomValidity( __( 'You must select a table.', 'tablepress' ) ); // Use the jSuites dropdown input field, as the actual <select> is hidden.
 		}
 	}
 } );

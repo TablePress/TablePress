@@ -44,44 +44,45 @@ class TablePress_List_View extends TablePress_View {
 		$this->admin_page->enqueue_script( 'list' );
 
 		if ( $data['messages']['first_visit'] ) {
-			$this->add_header_message(
-				'<strong>' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>'
-				. '<p>' . sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p><p>'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ),
-				'notice-info not-dismissible',
-				'<em>' . __( 'Welcome!', 'tablepress' ) . '</em>'
-			);
+			$message = '<p><strong style="font-size:14px;">' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>';
+			$message .= '<p>' . sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p>';
+			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
+
+			$title = '<em>' . __( 'Welcome!', 'tablepress' ) . '</em>';
+
+			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
 		}
 
 		if ( $data['messages']['donation_message'] ) {
-			$this->add_header_message(
-				'<img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=110" height="110" width="110" style="float:left;margin:2px 10px 30px 0;" />'
-				. __( 'Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin.', 'tablepress' ) . '</p><p>'
-				. __( 'Thanks for using it! You&#8217;ve installed TablePress over a month ago.', 'tablepress' ) . ' '
+			$message = '<p><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=110" height="110" width="110" style="float:left;margin:2px 10px 30px 0;" />'
+				. __( 'Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin.', 'tablepress' ) . '</p>';
+			$message .= '<p>' . __( 'Thanks for using it! You&#8217;ve installed TablePress over a month ago.', 'tablepress' ) . ' '
 				. sprintf( _n( 'If everything works and you are satisfied with the results of managing your %s table, isn&#8217;t that worth a coffee or two?', 'If everything works and you are satisfied with the results of managing your %s tables, isn&#8217;t that worth a coffee or two?', $data['table_count'], 'tablepress' ), esc_html( $data['table_count'] ) ) . '<br />'
-				. sprintf( __( '<a href="%s">Donations</a> help me to continue user support and development of this <em>free</em> software &mdash; things for which I spend countless hours of my free time! Thank you very much!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p><p>'
-				. __( 'Sincerely, Tobias', 'tablepress' ) . '</p><p style="font-size:14px">'
-				. sprintf( '<a href="%s" class="button" target="_blank" rel="noopener"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
+				. sprintf( __( '<a href="%s">Donations</a> help me to continue development of this open-source software &mdash; things for which I spend countless hours of my time! Thank you very much!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>';
+			$message .= '<p>' . __( 'Sincerely, Tobias', 'tablepress' ) . '</p>';
+			$message .= '<p style="font-size:14px;">' . sprintf( '<a href="%s" class="button" target="_blank" rel="noopener"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'already-donated', 'class' => 'button' ), __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later', 'class' => 'button' ), __( 'No, thanks. Don&#8217;t ask again.', 'tablepress' ) ),
-				'notice-success not-dismissible',
-				'<em>' . __( 'TablePress needs you!', 'tablepress' ) . '</em>'
-			);
+				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later', 'class' => 'button' ), __( 'No, thanks. Don&#8217;t ask again.', 'tablepress' ) ) . '</p>';
+
+			$title = '<em>' . __( 'TablePress needs you!', 'tablepress' ) . '</em>';
+
+			$this->add_header_message( $message, 'notice-success not-dismissible', $title );
 		}
 
 		if ( $data['messages']['plugin_update_message'] ) {
-			$message = sprintf( __( 'Please read the <a href="%s">release announcement</a> for more information.', 'tablepress' ), 'https://tablepress.org/news/' );
-			$message .= ' ' . sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' );
-			$message .= '</p>';
-			$message .= '<div style="margin:20px 0;height:45px"><a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="' . plugins_url( 'admin/img/wsal-mark.png', TABLEPRESS__FILE__ ) . '" alt="' . sprintf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ) . '" style="width:46px;height:45px;float:left;margin-right:10px" /></a>'
-				. '<div style="font-size:14px;font-weight:bold;max-width:530px;padding:5px 0;line-height:normal">' . sprintf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ) . '</div></div>';
-			$message .= '<p>' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) );
+			$message = '<p>' . sprintf( __( 'Please read the <a href="%s">release announcement</a> for more information.', 'tablepress' ), 'https://tablepress.org/news/' ) . '</p>';
 
-			$this->add_header_message(
-				$message,
-				'notice-info not-dismissible',
-				'<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>'
-			);
+			if ( tb_tp_fs()->is_free_plan() ) {
+				$message .= '<p>' . sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>';
+				$message .= '<div style="margin:20px 0;height:45px;"><a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="' . plugins_url( 'admin/img/wsal-mark.png', TABLEPRESS__FILE__ ) . '" alt="' . sprintf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ) . '" style="width:46px;height:45px;float:left;margin-right:10px;" /></a>'
+					. '<div style="font-size:14px;font-weight:bold;max-width:530px;padding:5px 0;line-height:normal;">' . sprintf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ) . '</div></div>';
+			}
+
+			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
+
+			$title = '<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>';
+
+			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
 		}
 
 		$this->process_action_messages( array(

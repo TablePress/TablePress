@@ -8,6 +8,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Collection\Cells;
 
 /**
  * @template TKey
+ *
  * @implements Iterator<TKey, Cell>
  */
 abstract class CellIterator implements Iterator

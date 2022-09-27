@@ -136,6 +136,7 @@ module.exports = function ( grunt ) {
 					'<%= postcss.all.src %>',
 					// Exclude .scss files that use features that csslint does not understand.
 					'!admin/css/codemirror.scss',
+					'!admin/css/common.scss',
 					'!admin/css/edit.scss',
 					'!admin/css/import.scss',
 					'!admin/css/_spinner-alert.scss',

@@ -20,6 +20,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Throwable;
 use XMLReader;
 use ZipArchive;
@@ -759,7 +760,7 @@ class Ods extends BaseReader
                 }
 
                 $cellRange = $columnID . $rowID . ':' . $columnTo . $rowTo;
-                $spreadsheet->getActiveSheet()->mergeCells($cellRange);
+                $spreadsheet->getActiveSheet()->mergeCells($cellRange, Worksheet::MERGE_CELL_CONTENT_HIDE);
             }
         }
     }

@@ -144,8 +144,10 @@ export default function TablePressTableEdit( { attributes, setAttributes } ) {
 							parameters = shortcode.replace(
 								tp.table.shortcode,
 								parameters,
-								( { attrs: { named: { id, ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } } ) => { // eslint-disable-line no-unused-vars
-									return ' ' + shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs ) + ' '; // Add spaces around replacement text to have separation to possibly already existing parameters.
+								( { attrs: shortcodeAttrs } ) => {
+									shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
+									delete shortcodeAttrs.named.id;
+									return ' ' + shortcode_attrs_to_string( shortcodeAttrs ) + ' '; // Add spaces around replacement text to have separation to possibly already existing parameters.
 								}
 							);
 							setAttributes( { parameters } );

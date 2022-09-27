@@ -369,7 +369,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 *
 				 * @param string $command    The JS command for the DataTables JS library.
 				 * @param string $html_id    The ID of the table HTML element.
-				 * @param array  $parameters The parameters for the DataTables JS library.
+				 * @param string $parameters The parameters for the DataTables JS library.
 				 * @param string $table_id   The current table ID.
 				 * @param array  $js_options The options for the JS library.
 				 */

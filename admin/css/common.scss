@@ -12,13 +12,40 @@
 	margin: 10px 0 0;
 }
 
-/* Nav Tab Menu */
-@media screen and (min-width: 783px) and (max-width: 1150px) {
-	/* Push nav bar down on small screens to not have tabs flow in mid-air, due to screen meta pushing */
-	#tablepress-nav {
-		padding-top: 30px;
+#tablepress-page-head {
+	display: flex;
+	margin-bottom: 4px;
+
+	.tablepress-icon {
+		vertical-align: middle;
+		margin: 7px 10px 0 0;
+		height: 32px;
+	}
+
+	.button {
+		height: 26px;
+		margin: 10px 24px 0;
+		font-weight: bold;
+
+		@media screen and (max-width: 500px) {
+			display: none;
+		}
+
+		@media screen and (max-width: 782px) {
+			min-height: 26px;
+			line-height: 2.18181818;
+			padding: 0 8px;
+			font-size: 11px;
+		}
+
+		@media screen and (min-width: 810px) {
+			position: absolute;
+			right: 250px;
+		}
 	}
 }
+
+/* Nav Tab Menu */
 @media screen and (max-width: 700px) {
 	#tablepress-nav {
 		border-bottom: 0;
@@ -27,11 +54,6 @@
 		margin: 0 0 10px 0.5em;
 		border-bottom: 1px solid #ccc;
 	}
-}
-#tablepress-nav .wp-heading-inline {
-	float: left;
-	padding: 5px 0 0;
-	line-height: inherit;
 }
 #tablepress-nav .nav-tab-separator {
 	margin-left: 2em;

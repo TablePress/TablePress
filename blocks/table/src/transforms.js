@@ -25,6 +25,21 @@ import block from '../block.json';
  */
 import { shortcode_attrs_to_string } from './_common-functions';
 
+/**
+ * Converts a textual Shortcode to a TablePress table block.
+ *
+ * @param {string} content The Shortcode as a text string.
+ * @return {Object} TablePress table block.
+ */
+const convertShortcodeTextToBlock = function( content ) {
+	let shortcodeAttrs = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
+	shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
+	const id = shortcodeAttrs.named.id;
+	delete shortcodeAttrs.named.id;
+	const parameters = shortcode_attrs_to_string( shortcodeAttrs );
+	return createBlock( block.name, { id, parameters } );
+};
+
 const transforms = {
 	from: [
 		// Detect table Shortcodes that are pasted into the block editor.
@@ -40,8 +55,10 @@ const transforms = {
 				},
 				parameters: {
 					type: 'string',
-					shortcode: ( { named: { id, ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } ) => { // eslint-disable-line no-unused-vars
-						return shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs );
+					shortcode: ( shortcodeAttrs ) => {
+						shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
+						delete shortcodeAttrs.named.id;
+						return shortcode_attrs_to_string( shortcodeAttrs );
 					},
 				},
 			},
@@ -51,22 +68,14 @@ const transforms = {
 		{
 			type: 'enter',
 			regExp: shortcode.regexp( tp.table.shortcode ),
-			transform: ( { content } ) => {
-				const { named: { id = '', ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
-				const parameters = shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs );
-				return createBlock( block.name, { id, parameters } );
-			},
+			transform: ( { content } ) => convertShortcodeTextToBlock( content ),
 		},
 
 		// Add conversion option from "Shortcode" to "TablePress table" block.
 		{
 			type: 'block',
 			blocks: [ 'core/shortcode' ],
-			transform: ( { text: content } ) => {
-				const { named: { id = '', ...shortcode_named_attrs }, numeric: [ ...shortcode_numeric_attrs ] } = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
-				const parameters = shortcode_attrs_to_string( shortcode_named_attrs, shortcode_numeric_attrs );
-				return createBlock( block.name, { id, parameters } );
-			},
+			transform: ( { text: content } ) => convertShortcodeTextToBlock( content ),
 			isMatch: ( { text } ) => {
 				return ( undefined !== shortcode.next( tp.table.shortcode, text ) );
 			},

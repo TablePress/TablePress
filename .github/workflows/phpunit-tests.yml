@@ -138,10 +138,38 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ matrix.php == '8.2' }} # WP still runs into dynamic property deprecations.
+        continue-on-error: ${{ matrix.php == '8.2' && ( matrix.wp == '5.9' || matrix.wp == '6.0' ) }} # WP 5.9 and WP 6.0 run into dynamic property deprecations.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       # composer.json will have been modified on WP 5.8, where PHPUnit is installed.
       - name: Ensure version-controlled files are not modified or deleted
         working-directory: ${{ env.PLUGIN_DIR }}
         run: git diff --exit-code${{ ( matrix.wp == '5.8' ) && ' -- . ":!composer.json"' || '' }}
+
+  failed-workflow:
+    name: Failed workflow tasks
+    permissions:
+      actions: write
+    runs-on: ubuntu-latest
+    needs: [ phpunit ]
+    if: |
+      always() &&
+      github.event_name != 'pull_request' &&
+      github.run_attempt < 2 &&
+      (
+        needs.phpunit.result == 'cancelled' || needs.phpunit.result == 'failure'
+      )
+    steps:
+      - name: Dispatch workflow run
+        uses: actions/github-script@d4560e157075e2d93aa3022b5b51a42a880f1f93 # v6.3.0
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'failed-workflow.yml',
+              ref: '${{ github.ref_name }}',
+              inputs: {
+                run_id: '${{ github.run_id }}'
+              }
+            });

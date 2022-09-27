@@ -82,17 +82,35 @@ tp.helpers.options.load = function () {
 			return;
 		}
 
-		// The "Custom Commands" field might be missing, for example, if a user is not allowed to use `unfiltered_html`.
-		const $field = $( `#option-${ option_name }` );
-		if ( ! $field ) {
+		// Allow skipping options, e.g. when custom loading is used.
+		option_name = apply_filters( 'tablepress.optionsLoad', option_name );
+		if ( '' === option_name ) {
 			return;
 		}
 
-		const property = ( $field instanceof HTMLInputElement && 'checkbox' === $field.type ) ? 'checked' : 'value';
-		$field[ property ] = tp.table.options[ option_name ];
+		let $field = $( `#option-${ option_name }` );
+		if ( ! $field ) {
+			// If no field with just that option_name is found, it could be a radio button, which have IDs based on option_name and value.
+			$field = $( `#option-${ option_name }-${ tp.table.options[ option_name ] }` );
+		}
+		if ( ! $field ) {
+			// If there's still no field, the field might be missing. For example, the "Custom Commands" only exists if a user is allowed to use `unfiltered_html`.
+			return;
+		}
+
+		if ( $field instanceof HTMLInputElement && 'checkbox' === $field.type ) {
+			// For checkboxes, the `checked` state is based on the value (true/false).
+			$field.checked = tp.table.options[ option_name ];
+		} else if ( $field instanceof HTMLInputElement && 'radio' === $field.type ) {
+			// For checkboxes, the `checked` state is true, as only the field corresponding to the value is selected.
+			$field.checked = true;
+		} else {
+			// For all other fields, the form field value is set according to the option value.
+			$field.value = tp.table.options[ option_name ];
+		}
 	} );
 
-	// Turn off "Use DataTables" if the table has merged cells.
+	// Turn off "Enable Visitor Features" if the table has merged cells.
 	if ( tp.table.options.use_datatables && tp.helpers.editor.has_merged_cells() ) {
 		tp.table.options.use_datatables = false;
 		$( '#option-use_datatables' ).checked = false;
@@ -111,7 +129,13 @@ tp.helpers.options.change = function ( event ) {
 		return;
 	}
 
-	const option_name = event.target.id.slice( 7 ); // Remove "option-" (7 characters) at the beginning.
+	const option_name = event.target.name || '';
+
+	// Skip input fields that don't have a valid `name` attribute, as these don't directly reflect table options.
+	if ( '' === option_name ) {
+		return;
+	}
+
 	const property = ( event.target instanceof HTMLInputElement && 'checkbox' === event.target.type ) ? 'checked' : 'value';
 	tp.table.options[ option_name ] = event.target[ property ];
 
@@ -120,7 +144,7 @@ tp.helpers.options.change = function ( event ) {
 		tp.table.options[ option_name ] = parseInt( tp.table.options[ option_name ], 10 );
 	}
 
-	// Turn off "Use DataTables" if the table has merged cells.
+	// Turn off "Enable Visitor Features" if the table has merged cells.
 	if ( 'use_datatables' === option_name && tp.table.options.use_datatables && tp.helpers.editor.has_merged_cells() ) {
 		tp.table.options.use_datatables = false;
 		$( '#option-use_datatables' ).checked = false;
@@ -285,9 +309,9 @@ tp.helpers.move_allowed = function ( type, direction ) {
 tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 	const alert_on_error = ( 'alert' === errors );
 
-	// If the "Table Head Row" and Use DataTables" options are enabled, disable merging cells.
+	// If the "Table Head Row" and Enable Visitor Features" options are enabled, disable merging cells.
 	if ( tp.table.options.table_head && tp.table.options.use_datatables ) {
-		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Use DataTables', 'tablepress' ), __( 'Features of the DataTables JavaScript library', 'tablepress' ) ) +
+		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Enable Visitor Features', 'tablepress' ), __( 'Table Features for Visitors', 'tablepress' ) ) +
 				' ' + __( 'These JavaScript features are not compatible with merged cells.', 'tablepress' );
 		if ( alert_on_error ) {
 			window.alert( error_message.text );
@@ -620,9 +644,10 @@ tp.callbacks.help_box = {};
  * @param {Event} event [description]
  */
 tp.callbacks.help_box.open_dialog = function ( event ) {
-	jQuery( event.target.dataset.helpBox ).wpdialog( {
-		height: 460,
-		width: 420,
+	const $helpbox = $( event.target.dataset.helpBox );
+	jQuery( $helpbox ).wpdialog( {
+		height: $helpbox.dataset.height,
+		width: $helpbox.dataset.width,
 		minWidth: 260,
 		modal: true,
 		closeOnEscape: true,

@@ -24,7 +24,7 @@ class TablePress_Import_View extends TablePress_View {
 	/**
 	 * List of WP feature pointers for this view.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 * @var array
 	 */
 	protected $wp_pointers = array( 'tp20_import_drag_drop_detect_format' );
@@ -93,7 +93,6 @@ class TablePress_Import_View extends TablePress_View {
 	public function postbox_import_form( array $data, array $box ) {
 		?>
 <table class="tablepress-postbox-table fixed">
-<tbody>
 	<tr id="row-import-source">
 		<th class="column-1" scope="row" id="import-source-header"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
 		<td class="column-2">
@@ -185,7 +184,6 @@ class TablePress_Import_View extends TablePress_View {
 		<td class="column-1"></td>
 		<td class="column-2"><input type="hidden" name="import[legacy_import]" value="<?php echo ( 'true' === $data['legacy_import'] ) ? 'true' : 'false'; ?>" /><input type="submit" value="<?php echo esc_attr_x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" id="import-submit-button" /></td>
 	</tr>
-</tbody>
 </table>
 		<?php
 	}
@@ -193,7 +191,7 @@ class TablePress_Import_View extends TablePress_View {
 	/**
 	 * Sets the content for the WP feature pointer about the drag and drop import and format detection on the "Import" screen.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	public function wp_pointer_tp20_import_drag_drop_detect_format() {
 		$content  = '<h3>' . __( 'TablePress feature: Drag and Drop Import with Format Detection', 'tablepress' ) . '</h3>';

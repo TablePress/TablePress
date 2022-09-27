@@ -60,6 +60,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 				}
 			}
 		}
+		unset( $row, $cell_content ); // Unset use-by-reference parameters of foreach loops.
 
 		// No need to use the PHPSpreadsheet Calculation engine if the table does not contain formulas.
 		if ( ! $table_has_formulas ) {

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite91e32192042d28fa8c601fa49b507a3
+class ComposerStaticInitfa051c2a4796cc8b2edc2bc66e5e3713
 {
     public static $prefixLengthsPsr4 = array (
         'T' => 
@@ -280,7 +280,8 @@ class ComposerStaticInite91e32192042d28fa8c601fa49b507a3
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Chart\\TrendLine' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Chart/TrendLine.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\Cells' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/Cells.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\CellsFactory' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/CellsFactory.php',
-        'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\Memory' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/Memory.php',
+        'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\Memory\\SimpleCache1' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/Memory/SimpleCache1.php',
+        'TablePress\\PhpOffice\\PhpSpreadsheet\\Collection\\Memory\\SimpleCache3' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Collection/Memory/SimpleCache3.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Comment' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Comment.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\DefinedName' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/DefinedName.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Document\\Properties' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Document/Properties.php',
@@ -291,6 +292,7 @@ class ComposerStaticInite91e32192042d28fa8c601fa49b507a3
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Helper\\Html' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Helper/Html.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Helper\\Sample' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Helper/Sample.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\Helper\\Size' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Helper/Size.php',
+        'TablePress\\PhpOffice\\PhpSpreadsheet\\Helper\\TextGrid' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Helper/TextGrid.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\IComparable' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/IComparable.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\IOFactory' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/IOFactory.php',
         'TablePress\\PhpOffice\\PhpSpreadsheet\\NamedFormula' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/NamedFormula.php',
@@ -490,9 +492,9 @@ class ComposerStaticInite91e32192042d28fa8c601fa49b507a3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite91e32192042d28fa8c601fa49b507a3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite91e32192042d28fa8c601fa49b507a3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInite91e32192042d28fa8c601fa49b507a3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfa051c2a4796cc8b2edc2bc66e5e3713::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfa051c2a4796cc8b2edc2bc66e5e3713::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfa051c2a4796cc8b2edc2bc66e5e3713::$classMap;
 
         }, null, ClassLoader::class);
     }

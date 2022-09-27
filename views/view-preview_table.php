@@ -57,7 +57,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 <body>
 <div id="tablepress-page">
 <p>
-		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The features of the DataTables JavaScript library are also not available or visible in this preview!', 'tablepress' ); ?><br />
+		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The table features for visitors, like sorting, filtering, and paginatin, are also not available in this preview!', 'tablepress' ); ?><br />
 		<?php printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) ); ?>
 </p>
 		<?php echo $this->data['body_html']; ?>

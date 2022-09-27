@@ -4,7 +4,10 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class BaseParserClass
 {
-    protected static function boolean($value)
+    /**
+     * @param mixed $value
+     */
+    protected static function boolean($value): bool
     {
         if (is_object($value)) {
             $value = (string) $value;

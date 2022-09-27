@@ -8,6 +8,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Collection\Memory;
 use TablePress\Psr\Http\Client\ClientInterface;
 use TablePress\Psr\Http\Message\RequestFactoryInterface;
 use TablePress\Psr\SimpleCache\CacheInterface;
+use ReflectionClass;
 
 class Settings
 {
@@ -173,10 +174,17 @@ class Settings
     public static function getCache(): CacheInterface
     {
         if (!self::$cache) {
-            self::$cache = new Memory();
+            self::$cache = self::useSimpleCacheVersion3() ? new Memory\SimpleCache3() : new Memory\SimpleCache1();
         }
 
         return self::$cache;
+    }
+
+    public static function useSimpleCacheVersion3(): bool
+    {
+        return
+            PHP_MAJOR_VERSION === 8 &&
+            (new ReflectionClass(CacheInterface::class))->getMethod('get')->getReturnType() !== null;
     }
 
     /**
