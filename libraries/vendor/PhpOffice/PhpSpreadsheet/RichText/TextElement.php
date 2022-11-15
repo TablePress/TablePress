@@ -4,68 +4,68 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\RichText;
 
 class TextElement implements ITextElement
 {
-    /**
-     * Text.
-     *
-     * @var string
-     */
-    private $text;
+	/**
+	 * Text.
+	 *
+	 * @var string
+	 */
+	private $text;
 
-    /**
-     * Create a new TextElement instance.
-     *
-     * @param string $text Text
-     */
-    public function __construct($text = '')
-    {
-        // Initialise variables
-        $this->text = $text;
-    }
+	/**
+	 * Create a new TextElement instance.
+	 *
+	 * @param string $text Text
+	 */
+	public function __construct($text = '')
+	{
+		// Initialise variables
+		$this->text = $text;
+	}
 
-    /**
-     * Get text.
-     *
-     * @return string Text
-     */
-    public function getText()
-    {
-        return $this->text;
-    }
+	/**
+	 * Get text.
+	 *
+	 * @return string Text
+	 */
+	public function getText()
+	{
+		return $this->text;
+	}
 
-    /**
-     * Set text.
-     *
-     * @param string $text Text
-     *
-     * @return $this
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
+	/**
+	 * Set text.
+	 *
+	 * @param string $text Text
+	 *
+	 * @return $this
+	 */
+	public function setText($text)
+	{
+		$this->text = $text;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get font.
-     *
-     * @return null|\TablePress\PhpOffice\PhpSpreadsheet\Style\Font
-     */
-    public function getFont()
-    {
-        return null;
-    }
+	/**
+	 * Get font.
+	 *
+	 * @return null|\TablePress\PhpOffice\PhpSpreadsheet\Style\Font
+	 */
+	public function getFont()
+	{
+		return null;
+	}
 
-    /**
-     * Get hash code.
-     *
-     * @return string Hash code
-     */
-    public function getHashCode()
-    {
-        return md5(
-            $this->text .
-            __CLASS__
-        );
-    }
+	/**
+	 * Get hash code.
+	 *
+	 * @return string Hash code
+	 */
+	public function getHashCode()
+	{
+		return md5(
+			$this->text .
+			__CLASS__
+		);
+	}
 }

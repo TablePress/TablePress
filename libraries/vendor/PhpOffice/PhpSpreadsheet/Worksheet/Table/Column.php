@@ -6,198 +6,198 @@ use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table;
 
 class Column
 {
-    /**
-     * Table Column Index.
-     *
-     * @var string
-     */
-    private $columnIndex = '';
+	/**
+	 * Table Column Index.
+	 *
+	 * @var string
+	 */
+	private $columnIndex = '';
 
-    /**
-     * Show Filter Button.
-     *
-     * @var bool
-     */
-    private $showFilterButton = true;
+	/**
+	 * Show Filter Button.
+	 *
+	 * @var bool
+	 */
+	private $showFilterButton = true;
 
-    /**
-     * Total Row Label.
-     *
-     * @var string
-     */
-    private $totalsRowLabel;
+	/**
+	 * Total Row Label.
+	 *
+	 * @var string
+	 */
+	private $totalsRowLabel;
 
-    /**
-     * Total Row Function.
-     *
-     * @var string
-     */
-    private $totalsRowFunction;
+	/**
+	 * Total Row Function.
+	 *
+	 * @var string
+	 */
+	private $totalsRowFunction;
 
-    /**
-     * Total Row Formula.
-     *
-     * @var string
-     */
-    private $totalsRowFormula;
+	/**
+	 * Total Row Formula.
+	 *
+	 * @var string
+	 */
+	private $totalsRowFormula;
 
-    /**
-     * Column Formula.
-     *
-     * @var string
-     */
-    private $columnFormula;
+	/**
+	 * Column Formula.
+	 *
+	 * @var string
+	 */
+	private $columnFormula;
 
-    /**
-     * Table.
-     *
-     * @var null|Table
-     */
-    private $table;
+	/**
+	 * Table.
+	 *
+	 * @var null|Table
+	 */
+	private $table;
 
-    /**
-     * Create a new Column.
-     *
-     * @param string $column Column (e.g. A)
-     * @param Table $table Table for this column
-     */
-    public function __construct($column, ?Table $table = null)
-    {
-        $this->columnIndex = $column;
-        $this->table = $table;
-    }
+	/**
+	 * Create a new Column.
+	 *
+	 * @param string $column Column (e.g. A)
+	 * @param Table $table Table for this column
+	 */
+	public function __construct($column, ?Table $table = null)
+	{
+		$this->columnIndex = $column;
+		$this->table = $table;
+	}
 
-    /**
-     * Get Table column index as string eg: 'A'.
-     */
-    public function getColumnIndex(): string
-    {
-        return $this->columnIndex;
-    }
+	/**
+	 * Get Table column index as string eg: 'A'.
+	 */
+	public function getColumnIndex(): string
+	{
+		return $this->columnIndex;
+	}
 
-    /**
-     * Set Table column index as string eg: 'A'.
-     *
-     * @param string $column Column (e.g. A)
-     */
-    public function setColumnIndex($column): self
-    {
-        // Uppercase coordinate
-        $column = strtoupper($column);
-        if ($this->table !== null) {
-            $this->table->isColumnInRange($column);
-        }
+	/**
+	 * Set Table column index as string eg: 'A'.
+	 *
+	 * @param string $column Column (e.g. A)
+	 */
+	public function setColumnIndex($column): self
+	{
+		// Uppercase coordinate
+		$column = strtoupper($column);
+		if ($this->table !== null) {
+			$this->table->isColumnInRange($column);
+		}
 
-        $this->columnIndex = $column;
+		$this->columnIndex = $column;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get show Filter Button.
-     */
-    public function getShowFilterButton(): bool
-    {
-        return $this->showFilterButton;
-    }
+	/**
+	 * Get show Filter Button.
+	 */
+	public function getShowFilterButton(): bool
+	{
+		return $this->showFilterButton;
+	}
 
-    /**
-     * Set show Filter Button.
-     */
-    public function setShowFilterButton(bool $showFilterButton): self
-    {
-        $this->showFilterButton = $showFilterButton;
+	/**
+	 * Set show Filter Button.
+	 */
+	public function setShowFilterButton(bool $showFilterButton): self
+	{
+		$this->showFilterButton = $showFilterButton;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get total Row Label.
-     */
-    public function getTotalsRowLabel(): ?string
-    {
-        return $this->totalsRowLabel;
-    }
+	/**
+	 * Get total Row Label.
+	 */
+	public function getTotalsRowLabel(): ?string
+	{
+		return $this->totalsRowLabel;
+	}
 
-    /**
-     * Set total Row Label.
-     */
-    public function setTotalsRowLabel(string $totalsRowLabel): self
-    {
-        $this->totalsRowLabel = $totalsRowLabel;
+	/**
+	 * Set total Row Label.
+	 */
+	public function setTotalsRowLabel(string $totalsRowLabel): self
+	{
+		$this->totalsRowLabel = $totalsRowLabel;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get total Row Function.
-     */
-    public function getTotalsRowFunction(): ?string
-    {
-        return $this->totalsRowFunction;
-    }
+	/**
+	 * Get total Row Function.
+	 */
+	public function getTotalsRowFunction(): ?string
+	{
+		return $this->totalsRowFunction;
+	}
 
-    /**
-     * Set total Row Function.
-     */
-    public function setTotalsRowFunction(string $totalsRowFunction): self
-    {
-        $this->totalsRowFunction = $totalsRowFunction;
+	/**
+	 * Set total Row Function.
+	 */
+	public function setTotalsRowFunction(string $totalsRowFunction): self
+	{
+		$this->totalsRowFunction = $totalsRowFunction;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get total Row Formula.
-     */
-    public function getTotalsRowFormula(): ?string
-    {
-        return $this->totalsRowFormula;
-    }
+	/**
+	 * Get total Row Formula.
+	 */
+	public function getTotalsRowFormula(): ?string
+	{
+		return $this->totalsRowFormula;
+	}
 
-    /**
-     * Set total Row Formula.
-     */
-    public function setTotalsRowFormula(string $totalsRowFormula): self
-    {
-        $this->totalsRowFormula = $totalsRowFormula;
+	/**
+	 * Set total Row Formula.
+	 */
+	public function setTotalsRowFormula(string $totalsRowFormula): self
+	{
+		$this->totalsRowFormula = $totalsRowFormula;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get column Formula.
-     */
-    public function getColumnFormula(): ?string
-    {
-        return $this->columnFormula;
-    }
+	/**
+	 * Get column Formula.
+	 */
+	public function getColumnFormula(): ?string
+	{
+		return $this->columnFormula;
+	}
 
-    /**
-     * Set column Formula.
-     */
-    public function setColumnFormula(string $columnFormula): self
-    {
-        $this->columnFormula = $columnFormula;
+	/**
+	 * Set column Formula.
+	 */
+	public function setColumnFormula(string $columnFormula): self
+	{
+		$this->columnFormula = $columnFormula;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get this Column's Table.
-     */
-    public function getTable(): ?Table
-    {
-        return $this->table;
-    }
+	/**
+	 * Get this Column's Table.
+	 */
+	public function getTable(): ?Table
+	{
+		return $this->table;
+	}
 
-    /**
-     * Set this Column's Table.
-     */
-    public function setTable(?Table $table = null): self
-    {
-        $this->table = $table;
+	/**
+	 * Set this Column's Table.
+	 */
+	public function setTable(?Table $table = null): self
+	{
+		$this->table = $table;
 
-        return $this;
-    }
+		return $this;
+	}
 }

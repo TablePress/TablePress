@@ -4,90 +4,90 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting;
 
 class ConditionalDataBar
 {
-    /** <dataBar> attribute  */
+	/** <dataBar> attribute  */
 
-    /** @var null|bool */
-    private $showValue;
+	/** @var null|bool */
+	private $showValue;
 
-    /** <dataBar> children */
+	/** <dataBar> children */
 
-    /** @var ?ConditionalFormatValueObject */
-    private $minimumConditionalFormatValueObject;
+	/** @var ?ConditionalFormatValueObject */
+	private $minimumConditionalFormatValueObject;
 
-    /** @var ?ConditionalFormatValueObject */
-    private $maximumConditionalFormatValueObject;
+	/** @var ?ConditionalFormatValueObject */
+	private $maximumConditionalFormatValueObject;
 
-    /** @var string */
-    private $color;
+	/** @var string */
+	private $color;
 
-    /** <extLst> */
+	/** <extLst> */
 
-    /** @var ?ConditionalFormattingRuleExtension */
-    private $conditionalFormattingRuleExt;
+	/** @var ?ConditionalFormattingRuleExtension */
+	private $conditionalFormattingRuleExt;
 
-    /**
-     * @return null|bool
-     */
-    public function getShowValue()
-    {
-        return $this->showValue;
-    }
+	/**
+	 * @return null|bool
+	 */
+	public function getShowValue()
+	{
+		return $this->showValue;
+	}
 
-    /**
-     * @param bool $showValue
-     */
-    public function setShowValue($showValue)
-    {
-        $this->showValue = $showValue;
+	/**
+	 * @param bool $showValue
+	 */
+	public function setShowValue($showValue)
+	{
+		$this->showValue = $showValue;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getMinimumConditionalFormatValueObject(): ?ConditionalFormatValueObject
-    {
-        return $this->minimumConditionalFormatValueObject;
-    }
+	public function getMinimumConditionalFormatValueObject(): ?ConditionalFormatValueObject
+	{
+		return $this->minimumConditionalFormatValueObject;
+	}
 
-    public function setMinimumConditionalFormatValueObject(ConditionalFormatValueObject $minimumConditionalFormatValueObject)
-    {
-        $this->minimumConditionalFormatValueObject = $minimumConditionalFormatValueObject;
+	public function setMinimumConditionalFormatValueObject(ConditionalFormatValueObject $minimumConditionalFormatValueObject)
+	{
+		$this->minimumConditionalFormatValueObject = $minimumConditionalFormatValueObject;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getMaximumConditionalFormatValueObject(): ?ConditionalFormatValueObject
-    {
-        return $this->maximumConditionalFormatValueObject;
-    }
+	public function getMaximumConditionalFormatValueObject(): ?ConditionalFormatValueObject
+	{
+		return $this->maximumConditionalFormatValueObject;
+	}
 
-    public function setMaximumConditionalFormatValueObject(ConditionalFormatValueObject $maximumConditionalFormatValueObject)
-    {
-        $this->maximumConditionalFormatValueObject = $maximumConditionalFormatValueObject;
+	public function setMaximumConditionalFormatValueObject(ConditionalFormatValueObject $maximumConditionalFormatValueObject)
+	{
+		$this->maximumConditionalFormatValueObject = $maximumConditionalFormatValueObject;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getColor(): string
-    {
-        return $this->color;
-    }
+	public function getColor(): string
+	{
+		return $this->color;
+	}
 
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
+	public function setColor(string $color): self
+	{
+		$this->color = $color;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getConditionalFormattingRuleExt(): ?ConditionalFormattingRuleExtension
-    {
-        return $this->conditionalFormattingRuleExt;
-    }
+	public function getConditionalFormattingRuleExt(): ?ConditionalFormattingRuleExtension
+	{
+		return $this->conditionalFormattingRuleExt;
+	}
 
-    public function setConditionalFormattingRuleExt(ConditionalFormattingRuleExtension $conditionalFormattingRuleExt)
-    {
-        $this->conditionalFormattingRuleExt = $conditionalFormattingRuleExt;
+	public function setConditionalFormattingRuleExt(ConditionalFormattingRuleExtension $conditionalFormattingRuleExt)
+	{
+		$this->conditionalFormattingRuleExt = $conditionalFormattingRuleExt;
 
-        return $this;
-    }
+		return $this;
+	}
 }

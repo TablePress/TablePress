@@ -99,7 +99,12 @@ class TablePress_Evaluate_PHPSpreadsheet {
 						$cell_reference = \TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex( $column_idx + 1 ) . ( $row_idx + 1 );
 						if ( $cell_collection->has( $cell_reference ) ) {
 							$cell = $cell_collection->get( $cell_reference );
-							$cell_content = (string) $cell->getCalculatedValue();
+							try {
+								$cell_content = (string) $cell->getCalculatedValue();
+							} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception $exception ) {
+								$message = str_replace( 'Worksheet!', '', $exception->getMessage() );
+								$cell_content = "!ERROR! {$message}";
+							}
 						}
 					}
 				}

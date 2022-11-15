@@ -49,11 +49,11 @@ module.exports = function ( grunt ) {
 					// Exclude external libraries and scripts from jshint checking.
 					'!admin/js/jspreadsheet.js',
 					'!admin/js/jsuites.js',
-					'!freemius/**/*',
 					'!js/jquery.datatables.min.js',
-					'!node_modules/**/*',
 					'!libraries/composer/**/*',
+					'!libraries/freemius/**/*',
 					'!libraries/vendor/**/*',
+					'!node_modules/**/*',
 					'!vendor/**/*',
 				],
 			},
@@ -70,8 +70,8 @@ module.exports = function ( grunt ) {
 					// Explicitly add hidden files.
 					'.stylelintrc.json',
 					// Exclude external JSON files from jsonlint checking.
-					'!freemius/**/*',
 					'!libraries/composer/**/*',
+					'!libraries/freemius/**/*',
 					'!libraries/vendor/**/*',
 					'!node_modules/**/*',
 					'!vendor/**/*',
@@ -102,8 +102,8 @@ module.exports = function ( grunt ) {
 					'!blocks/table/src/editor.scss',
 					'!css/_default-datatables.scss',
 					// Exclude external libraries from autoprefixing and csslint checking.
-					'!freemius/**/*',
 					'!libraries/composer/**/*',
+					'!libraries/freemius/**/*',
 					'!libraries/vendor/**/*',
 					'!node_modules/**/*',
 					'!vendor/**/*',
@@ -137,6 +137,7 @@ module.exports = function ( grunt ) {
 					// Exclude .scss files that use features that csslint does not understand.
 					'!admin/css/codemirror.scss',
 					'!admin/css/common.scss',
+					'!admin/css/common-rtl.scss',
 					'!admin/css/edit.scss',
 					'!admin/css/import.scss',
 					'!admin/css/_spinner-alert.scss',

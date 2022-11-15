@@ -59,7 +59,10 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php
-		$this->print_nav_tab_menu();
+			$this->print_nav_tab_menu();
+		?>
+		<div id="tablepress-body">
+		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
 			echo $message;
@@ -91,6 +94,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 				</div>
 				<br class="clear" />
 			</div>
+		</div>
 		</div>
 		<?php
 	}

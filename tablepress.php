@@ -4,13 +4,13 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 2.0-RC1
+ * @version 2.0-RC2
  *
  *
  * Plugin Name: TablePress
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
- * Version: 2.0-RC1
+ * Version: 2.0-RC2
  * Requires at least: 5.8
  * Requires PHP: 5.6.20
  * Author: Tobias Bäthge
@@ -60,7 +60,7 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 				}
 
 				// Include Freemius SDK.
-				require_once trailingslashit( __DIR__ ) . 'freemius/start.php';
+				require_once __DIR__ . '/libraries/freemius/start.php';
 
 				$tb_tp_fs = fs_dynamic_init( array(
 					'id'             => '10340',
@@ -91,12 +91,15 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 		tb_tp_fs()->add_filter(
 			'plugin_icon',
 			function() {
-				return trailingslashit( __DIR__ ) . '/admin/img/tablepress.png';
+				return __DIR__ . '/admin/img/tablepress.png';
 			}
 		);
 
 		// Hide the tabs navigation on Freemius screens.
 		tb_tp_fs()->add_filter( 'hide_account_tabs', '__return_true' );
+
+		// Hide the Powered by Freemius tab from generated pages, like "Upgrade" or "Pricing".
+		tb_tp_fs()->add_filter( 'hide_freemius_powered_by', '__return_true' );
 
 		// Signal that SDK was initiated.
 		do_action( 'tb_tp_fs_loaded' );

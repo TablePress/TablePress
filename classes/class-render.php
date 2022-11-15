@@ -166,8 +166,11 @@ class TablePress_Render {
 	protected function _evaluate_table_data() {
 		$orig_table = $this->table;
 
-		$formula_evaluator = TablePress::load_class( 'TablePress_Evaluate', 'class-evaluate.php', 'classes' );
-		$this->table['data'] = $formula_evaluator->evaluate_table_data( $this->table['data'], $this->table['id'] );
+		if ( $this->render_options['evaluate_formulas'] ) {
+			$formula_evaluator = TablePress::load_class( 'TablePress_Evaluate', 'class-evaluate.php', 'classes' );
+			$this->table['data'] = $formula_evaluator->evaluate_table_data( $this->table['data'], $this->table['id'] );
+		}
+
 		/**
 		 * Filters the table after evaluating formulas in the table.
 		 *
@@ -325,7 +328,6 @@ class TablePress_Render {
 		 * @param array $render_options The render options for the table.
 		 */
 		$this->table = apply_filters( 'tablepress_table_content_render_data', $this->table, $orig_table, $this->render_options );
-
 	}
 
 	/**
@@ -864,39 +866,40 @@ class TablePress_Render {
 	public function get_default_render_options() {
 		// Attention: Array keys have to be lowercase, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP.
 		return array(
-			'id'                          => '',
-			'column_widths'               => '',
 			'alternating_row_colors'      => null,
-			'row_hover'                   => null,
-			'table_head'                  => null,
-			'table_foot'                  => null,
-			'first_column_th'             => false,
-			'print_name'                  => null,
-			'print_name_position'         => null,
-			'print_description'           => null,
-			'print_description_position'  => null,
+			'border'                      => false,
 			'cache_table_output'          => true,
+			'cellpadding'                 => false,
+			'cellspacing'                 => false,
+			'column_widths'               => '',
 			'convert_line_breaks'         => true,
-			'extra_css_classes'           => null,
-			'use_datatables'              => null,
-			'datatables_sort'             => null,
-			'datatables_paginate'         => null,
-			'datatables_paginate_entries' => null,
-			'datatables_lengthchange'     => null,
+			'datatables_custom_commands'  => null,
 			'datatables_filter'           => null,
 			'datatables_info'             => null,
+			'datatables_lengthchange'     => null,
+			'datatables_locale'           => get_locale(),
+			'datatables_paginate'         => null,
+			'datatables_paginate_entries' => null,
 			'datatables_scrollx'          => null,
 			'datatables_scrolly'          => false,
-			'datatables_custom_commands'  => null,
-			'datatables_locale'           => get_locale(),
-			'show_rows'                   => '',
-			'show_columns'                => '',
-			'hide_rows'                   => '',
+			'datatables_sort'             => null,
+			'evaluate_formulas'           => true,
+			'extra_css_classes'           => null,
+			'first_column_th'             => false,
 			'hide_columns'                => '',
-			'cellspacing'                 => false,
-			'cellpadding'                 => false,
-			'border'                      => false,
+			'hide_rows'                   => '',
+			'id'                          => '',
+			'print_description'           => null,
+			'print_description_position'  => null,
+			'print_name'                  => null,
+			'print_name_position'         => null,
+			'row_hover'                   => null,
 			'shortcode_debug'             => false,
+			'show_columns'                => '',
+			'show_rows'                   => '',
+			'table_foot'                  => null,
+			'table_head'                  => null,
+			'use_datatables'              => null,
 		);
 	}
 

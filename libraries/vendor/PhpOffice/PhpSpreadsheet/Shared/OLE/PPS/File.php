@@ -30,35 +30,35 @@ use TablePress\PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
  */
 class File extends PPS
 {
-    /**
-     * The constructor.
-     *
-     * @param string $name The name of the file (in Unicode)
-     *
-     * @see OLE::ascToUcs()
-     */
-    public function __construct($name)
-    {
-        parent::__construct(null, $name, OLE::OLE_PPS_TYPE_FILE, null, null, null, null, null, '', []);
-    }
+	/**
+	 * The constructor.
+	 *
+	 * @param string $name The name of the file (in Unicode)
+	 *
+	 * @see OLE::ascToUcs()
+	 */
+	public function __construct($name)
+	{
+		parent::__construct(null, $name, OLE::OLE_PPS_TYPE_FILE, null, null, null, null, null, '', []);
+	}
 
-    /**
-     * Initialization method. Has to be called right after OLE_PPS_File().
-     *
-     * @return mixed true on success
-     */
-    public function init()
-    {
-        return true;
-    }
+	/**
+	 * Initialization method. Has to be called right after OLE_PPS_File().
+	 *
+	 * @return mixed true on success
+	 */
+	public function init()
+	{
+		return true;
+	}
 
-    /**
-     * Append data to PPS.
-     *
-     * @param string $data The data to append
-     */
-    public function append($data): void
-    {
-        $this->_data .= $data;
-    }
+	/**
+	 * Append data to PPS.
+	 *
+	 * @param string $data The data to append
+	 */
+	public function append($data): void
+	{
+		$this->_data .= $data;
+	}
 }

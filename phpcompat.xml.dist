@@ -33,15 +33,12 @@
 
 	<!-- Directories and third party library exclusions. -->
 
-	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
-	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
 	<!-- PHPSpreadsheet and its dependencies are tested separately with PHP 7.2+. -->
 	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
-	<rule ref="PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection">
-		<exclude-pattern>/freemius/includes/(class-freemius|class-fs-logger|sdk/FreemiusWordPress)\.php</exclude-pattern>
-	</rule>
+	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
+	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
 	<rule ref="PHPCompatibility.ParameterValues.NewIDNVariantDefault.NotSet">
-		<exclude-pattern>/freemius/includes/class-freemius\.php</exclude-pattern>
+		<exclude-pattern>/libraries/freemius/includes/class-freemius\.php</exclude-pattern>
 	</rule>
 	<rule ref="PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated">
 		<exclude-pattern>/libraries/simplexlsx\.class\.php</exclude-pattern>

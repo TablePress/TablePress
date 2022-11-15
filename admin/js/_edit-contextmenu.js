@@ -47,7 +47,6 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 			shortcut: sprintf( __( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), key ),
 			onclick: obj.undo,
 			disabled: ( -1 === obj.historyIndex ),
-			tooltip: ( -1 === obj.historyIndex ),
 		},
 		{
 			title: __( 'Redo', 'tablepress' ),

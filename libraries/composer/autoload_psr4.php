@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'TablePress\\' => array($baseDir . '/libraries/vendor'),
+	'TablePress\\' => array($baseDir . '/libraries/vendor'),
 );

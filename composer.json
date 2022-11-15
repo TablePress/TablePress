@@ -68,14 +68,15 @@
 		"phpcs:errors": "@phpcs -n",
 		"phpcs:full": "vendor/bin/phpcs",
 		"fix-phpcs": "vendor/bin/phpcbf --report=summary,source",
-		"phpdoc-checker": "vendor/bin/phpdoc-checker --exclude=\"vendor,libraries/vendor,libraries/composer,node_modules,freemius,libraries/autoload.php,libraries/simplexlsx.class.php\"",
+		"phpdoc-checker": "vendor/bin/phpdoc-checker --exclude=\"libraries/composer,libraries/freemius,libraries/vendor,libraries/autoload.php,libraries/simplexlsx.class.php,node_modules,vendor\"",
 		"build": [
 			"@compat",
 			"@phpcs:full",
 			"@phpdoc-checker"
 		],
+		"spaces-to-tabs": "find . -type f -not -path './node_modules/*' -not -path './vendor/*' \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
 		"release": [
-			"rm -rf ./vendor ./libraries/vendor ./libraries/composer ./libraries/autoload.php",
+			"rm -rf ./composer.lock ./libraries/composer ./libraries/vendor ./libraries/autoload.php ./vendor",
 			"composer config platform.php 7.2",
 			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 1.25.2\" --no-update",
 			"composer update --no-dev",
@@ -84,7 +85,8 @@
 			"mv ./vendor/* ./libraries",
 			"rm -rf ./vendor",
 			"git checkout -- composer.json",
-			"find ./libraries -type d -exec cp index.php {} \\;",
+			"find ./libraries -type d -exec cp -n index.php {} \\;",
+			"find ./libraries -type f \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
 			"@develop"
 		],
 		"develop": "composer update --with-all-dependencies"

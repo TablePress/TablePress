@@ -21,169 +21,169 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\Wizard;
  */
 class CellValue extends WizardAbstract implements WizardInterface
 {
-    protected const MAGIC_OPERATIONS = [
-        'equals' => Conditional::OPERATOR_EQUAL,
-        'notEquals' => Conditional::OPERATOR_NOTEQUAL,
-        'greaterThan' => Conditional::OPERATOR_GREATERTHAN,
-        'greaterThanOrEqual' => Conditional::OPERATOR_GREATERTHANOREQUAL,
-        'lessThan' => Conditional::OPERATOR_LESSTHAN,
-        'lessThanOrEqual' => Conditional::OPERATOR_LESSTHANOREQUAL,
-        'between' => Conditional::OPERATOR_BETWEEN,
-        'notBetween' => Conditional::OPERATOR_NOTBETWEEN,
-    ];
+	protected const MAGIC_OPERATIONS = [
+		'equals' => Conditional::OPERATOR_EQUAL,
+		'notEquals' => Conditional::OPERATOR_NOTEQUAL,
+		'greaterThan' => Conditional::OPERATOR_GREATERTHAN,
+		'greaterThanOrEqual' => Conditional::OPERATOR_GREATERTHANOREQUAL,
+		'lessThan' => Conditional::OPERATOR_LESSTHAN,
+		'lessThanOrEqual' => Conditional::OPERATOR_LESSTHANOREQUAL,
+		'between' => Conditional::OPERATOR_BETWEEN,
+		'notBetween' => Conditional::OPERATOR_NOTBETWEEN,
+	];
 
-    protected const SINGLE_OPERATORS = CellMatcher::COMPARISON_OPERATORS;
+	protected const SINGLE_OPERATORS = CellMatcher::COMPARISON_OPERATORS;
 
-    protected const RANGE_OPERATORS = CellMatcher::COMPARISON_RANGE_OPERATORS;
+	protected const RANGE_OPERATORS = CellMatcher::COMPARISON_RANGE_OPERATORS;
 
-    /** @var string */
-    protected $operator = Conditional::OPERATOR_EQUAL;
+	/** @var string */
+	protected $operator = Conditional::OPERATOR_EQUAL;
 
-    /** @var array */
-    protected $operand = [0];
+	/** @var array */
+	protected $operand = [0];
 
-    /**
-     * @var string[]
-     */
-    protected $operandValueType = [];
+	/**
+	 * @var string[]
+	 */
+	protected $operandValueType = [];
 
-    public function __construct(string $cellRange)
-    {
-        parent::__construct($cellRange);
-    }
+	public function __construct(string $cellRange)
+	{
+		parent::__construct($cellRange);
+	}
 
-    protected function operator(string $operator): void
-    {
-        if ((!isset(self::SINGLE_OPERATORS[$operator])) && (!isset(self::RANGE_OPERATORS[$operator]))) {
-            throw new Exception('Invalid Operator for Cell Value CF Rule Wizard');
-        }
+	protected function operator(string $operator): void
+	{
+		if ((!isset(self::SINGLE_OPERATORS[$operator])) && (!isset(self::RANGE_OPERATORS[$operator]))) {
+			throw new Exception('Invalid Operator for Cell Value CF Rule Wizard');
+		}
 
-        $this->operator = $operator;
-    }
+		$this->operator = $operator;
+	}
 
-    /**
-     * @param mixed $operand
-     */
-    protected function operand(int $index, $operand, string $operandValueType = Wizard::VALUE_TYPE_LITERAL): void
-    {
-        if (is_string($operand)) {
-            $operand = $this->validateOperand($operand, $operandValueType);
-        }
+	/**
+	 * @param mixed $operand
+	 */
+	protected function operand(int $index, $operand, string $operandValueType = Wizard::VALUE_TYPE_LITERAL): void
+	{
+		if (is_string($operand)) {
+			$operand = $this->validateOperand($operand, $operandValueType);
+		}
 
-        $this->operand[$index] = $operand;
-        $this->operandValueType[$index] = $operandValueType;
-    }
+		$this->operand[$index] = $operand;
+		$this->operandValueType[$index] = $operandValueType;
+	}
 
-    /**
-     * @param mixed $value
-     *
-     * @return float|int|string
-     */
-    protected function wrapValue($value, string $operandValueType)
-    {
-        if (!is_numeric($value) && !is_bool($value) && null !== $value) {
-            if ($operandValueType === Wizard::VALUE_TYPE_LITERAL) {
-                return '"' . str_replace('"', '""', $value) . '"';
-            }
+	/**
+	 * @param mixed $value
+	 *
+	 * @return float|int|string
+	 */
+	protected function wrapValue($value, string $operandValueType)
+	{
+		if (!is_numeric($value) && !is_bool($value) && null !== $value) {
+			if ($operandValueType === Wizard::VALUE_TYPE_LITERAL) {
+				return '"' . str_replace('"', '""', $value) . '"';
+			}
 
-            return $this->cellConditionCheck($value);
-        }
+			return $this->cellConditionCheck($value);
+		}
 
-        if (null === $value) {
-            $value = 'NULL';
-        } elseif (is_bool($value)) {
-            $value = $value ? 'TRUE' : 'FALSE';
-        }
+		if (null === $value) {
+			$value = 'NULL';
+		} elseif (is_bool($value)) {
+			$value = $value ? 'TRUE' : 'FALSE';
+		}
 
-        return $value;
-    }
+		return $value;
+	}
 
-    public function getConditional(): Conditional
-    {
-        if (!isset(self::RANGE_OPERATORS[$this->operator])) {
-            unset($this->operand[1], $this->operandValueType[1]);
-        }
-        $values = array_map([$this, 'wrapValue'], $this->operand, $this->operandValueType);
+	public function getConditional(): Conditional
+	{
+		if (!isset(self::RANGE_OPERATORS[$this->operator])) {
+			unset($this->operand[1], $this->operandValueType[1]);
+		}
+		$values = array_map([$this, 'wrapValue'], $this->operand, $this->operandValueType);
 
-        $conditional = new Conditional();
-        $conditional->setConditionType(Conditional::CONDITION_CELLIS);
-        $conditional->setOperatorType($this->operator);
-        $conditional->setConditions($values);
-        $conditional->setStyle($this->getStyle());
-        $conditional->setStopIfTrue($this->getStopIfTrue());
+		$conditional = new Conditional();
+		$conditional->setConditionType(Conditional::CONDITION_CELLIS);
+		$conditional->setOperatorType($this->operator);
+		$conditional->setConditions($values);
+		$conditional->setStyle($this->getStyle());
+		$conditional->setStopIfTrue($this->getStopIfTrue());
 
-        return $conditional;
-    }
+		return $conditional;
+	}
 
-    protected static function unwrapString(string $condition): string
-    {
-        if ((strpos($condition, '"') === 0) && (strpos(strrev($condition), '"') === 0)) {
-            $condition = substr($condition, 1, -1);
-        }
+	protected static function unwrapString(string $condition): string
+	{
+		if ((strpos($condition, '"') === 0) && (strpos(strrev($condition), '"') === 0)) {
+			$condition = substr($condition, 1, -1);
+		}
 
-        return str_replace('""', '"', $condition);
-    }
+		return str_replace('""', '"', $condition);
+	}
 
-    public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
-    {
-        if ($conditional->getConditionType() !== Conditional::CONDITION_CELLIS) {
-            throw new Exception('Conditional is not a Cell Value CF Rule conditional');
-        }
+	public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
+	{
+		if ($conditional->getConditionType() !== Conditional::CONDITION_CELLIS) {
+			throw new Exception('Conditional is not a Cell Value CF Rule conditional');
+		}
 
-        $wizard = new self($cellRange);
-        $wizard->style = $conditional->getStyle();
-        $wizard->stopIfTrue = $conditional->getStopIfTrue();
+		$wizard = new self($cellRange);
+		$wizard->style = $conditional->getStyle();
+		$wizard->stopIfTrue = $conditional->getStopIfTrue();
 
-        $wizard->operator = $conditional->getOperatorType();
-        $conditions = $conditional->getConditions();
-        foreach ($conditions as $index => $condition) {
-            // Best-guess to try and identify if the text is a string literal, a cell reference or a formula?
-            $operandValueType = Wizard::VALUE_TYPE_LITERAL;
-            if (is_string($condition)) {
-                if (array_key_exists($condition, Calculation::$excelConstants)) {
-                    $condition = Calculation::$excelConstants[$condition];
-                } elseif (preg_match('/^' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '$/i', $condition)) {
-                    $operandValueType = Wizard::VALUE_TYPE_CELL;
-                    $condition = self::reverseAdjustCellRef($condition, $cellRange);
-                } elseif (
-                    preg_match('/\(\)/', $condition) ||
-                    preg_match('/' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '/i', $condition)
-                ) {
-                    $operandValueType = Wizard::VALUE_TYPE_FORMULA;
-                    $condition = self::reverseAdjustCellRef($condition, $cellRange);
-                } else {
-                    $condition = self::unwrapString($condition);
-                }
-            }
-            $wizard->operand($index, $condition, $operandValueType);
-        }
+		$wizard->operator = $conditional->getOperatorType();
+		$conditions = $conditional->getConditions();
+		foreach ($conditions as $index => $condition) {
+			// Best-guess to try and identify if the text is a string literal, a cell reference or a formula?
+			$operandValueType = Wizard::VALUE_TYPE_LITERAL;
+			if (is_string($condition)) {
+				if (Calculation::keyInExcelConstants($condition)) {
+					$condition = Calculation::getExcelConstants($condition);
+				} elseif (preg_match('/^' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '$/i', $condition)) {
+					$operandValueType = Wizard::VALUE_TYPE_CELL;
+					$condition = self::reverseAdjustCellRef($condition, $cellRange);
+				} elseif (
+					preg_match('/\(\)/', $condition) ||
+					preg_match('/' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '/i', $condition)
+				) {
+					$operandValueType = Wizard::VALUE_TYPE_FORMULA;
+					$condition = self::reverseAdjustCellRef($condition, $cellRange);
+				} else {
+					$condition = self::unwrapString($condition);
+				}
+			}
+			$wizard->operand($index, $condition, $operandValueType);
+		}
 
-        return $wizard;
-    }
+		return $wizard;
+	}
 
-    /**
-     * @param string $methodName
-     * @param mixed[] $arguments
-     */
-    public function __call($methodName, $arguments): self
-    {
-        if (!isset(self::MAGIC_OPERATIONS[$methodName]) && $methodName !== 'and') {
-            throw new Exception('Invalid Operator for Cell Value CF Rule Wizard');
-        }
+	/**
+	 * @param string $methodName
+	 * @param mixed[] $arguments
+	 */
+	public function __call($methodName, $arguments): self
+	{
+		if (!isset(self::MAGIC_OPERATIONS[$methodName]) && $methodName !== 'and') {
+			throw new Exception('Invalid Operator for Cell Value CF Rule Wizard');
+		}
 
-        if ($methodName === 'and') {
-            if (!isset(self::RANGE_OPERATORS[$this->operator])) {
-                throw new Exception('AND Value is only appropriate for range operators');
-            }
+		if ($methodName === 'and') {
+			if (!isset(self::RANGE_OPERATORS[$this->operator])) {
+				throw new Exception('AND Value is only appropriate for range operators');
+			}
 
-            $this->operand(1, ...$arguments);
+			$this->operand(1, ...$arguments);
 
-            return $this;
-        }
+			return $this;
+		}
 
-        $this->operator(self::MAGIC_OPERATIONS[$methodName]);
-        $this->operand(0, ...$arguments);
+		$this->operator(self::MAGIC_OPERATIONS[$methodName]);
+		$this->operand(0, ...$arguments);
 
-        return $this;
-    }
+		return $this;
+	}
 }

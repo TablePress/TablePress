@@ -7,56 +7,123 @@
  * @since 1.0.0
  */
 
-/* Margins for messages on screens */
-#tablepress-page div.notice {
-	margin: 10px 0 0;
+/* Move down the header when the Screen Options or Help tabs are opened. */
+#screen-meta[style$="block;"] ~ #tablepress-page {
+	margin-top: 40px;
 }
 
-#tablepress-page-head {
-	display: flex;
-	margin-bottom: 4px;
-
-	.tablepress-icon {
-		vertical-align: middle;
-		margin: 7px 10px 0 0;
-		height: 32px;
-	}
-
-	.button {
-		height: 26px;
-		margin: 10px 24px 0;
-		font-weight: bold;
-
-		@media screen and (max-width: 500px) {
-			display: none;
-		}
-
-		@media screen and (max-width: 782px) {
-			min-height: 26px;
-			line-height: 2.18181818;
-			padding: 0 8px;
-			font-size: 11px;
-		}
-
-		@media screen and (min-width: 810px) {
-			position: absolute;
-			right: 250px;
-		}
-	}
+/* Move the Screen Options and Help link to their original position. Needed due to the full-width header. */
+#screen-meta-links {
+	position: absolute;
+	right: 0;
 }
 
-/* Nav Tab Menu */
-@media screen and (max-width: 700px) {
+#tablepress-page {
+	margin: 0 0 0 -20px;
+
+	#tablepress-body {
+		padding: 0 20px;
+	}
+
+	.header {
+		background: #ffffff;
+		border-bottom: 1px solid #dedae6;
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		padding-right: 260px; /* Space for hte screen meta links. */
+
+		.name {
+			border-right: 1px solid #dedae6;
+			padding: 12px 24px 6px;
+
+			img {
+				vertical-align: middle;
+				margin: 0 12px 6px 0;
+				height: 32px;
+			}
+		}
+
+		.buttons {
+			padding: 0 12px;
+
+			.tablepress-button {
+				cursor: pointer;
+				border: 1px solid #ffffff;
+				border-radius: 3px;
+				align-items: center;
+				margin: 10px 12px;
+				padding: 6px 4px 6px 12px;
+				font-size: 14px;
+				line-height: 1;
+				text-decoration: none;
+				transition: color 0.1s, background-color 0.1s, border-color 0.1s;
+				display: inline-flex;
+				color: #ffffff;
+				background-color: #8ab547;
+				border-color: #8ab547;
+
+				&:hover,
+				&:active,
+				&:focus {
+					color: #fff;
+					background-color: #69b547;
+					border-color: #69b547;
+				}
+
+				.dashicons {
+					margin: 0 6px 0 4px;
+				}
+			}
+		}
+	}
+
 	#tablepress-nav {
-		border-bottom: 0;
+		background: #ffffff;
+		padding: 0 0 0 20px;
 	}
-	#tablepress-nav .nav-tab {
-		margin: 0 0 10px 0.5em;
-		border-bottom: 1px solid #ccc;
+
+	.nav-menu {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		list-style-image: none;
+		display: flex;
+		flex-wrap: wrap;
+
+		.nav-item {
+			margin-bottom: 0;
+		}
+
+		li:hover > a,
+		li > a:focus {
+			border-bottom-color: #049cdb;
+			background-color: #f9f9f9;
+		}
 	}
-}
-#tablepress-nav .nav-tab-separator {
-	margin-left: 2em;
+
+	.nav-link {
+		white-space: nowrap;
+		border-bottom: 5px solid #ffffff;
+		padding: 18px 18px 12px;
+		font-size: 14px;
+		display: inline-block;
+		text-decoration: none;
+		color: #1e1e1e;
+
+		&.active {
+			border-bottom-color: #049cdb;
+		}
+
+		&.separator {
+			margin-right: 20px;
+		}
+	}
+
+	/* Margins for messages on screens */
+	div.notice {
+		margin: 20px 0 0;
+	}
 }
 
 /* Add New Table form */
@@ -73,10 +140,6 @@
 	margin-right: 20px;
 }
 
-/* Donation message on the "All Tables" screen */
-.donation-message-after-click-message {
-	transition: opacity 2s 10s;
-}
 /* Width of the columns on the "All Tables" list */
 .tablepress-all-tables thead .column-table_id {
 	width: 50px;

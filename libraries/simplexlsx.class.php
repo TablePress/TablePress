@@ -801,17 +801,28 @@ class SimpleXLSX {
 
 		// slow method
 		$maxC = $maxR = 0;
+		$iR = -1;
 		foreach ($ws->sheetData->row as $row) {
+			$iR++;
+			$iC = -1;
 			foreach ($row->c as $c) {
+				$iC++;
 				$idx = $this->getIndex((string)$c['r']);
 				$x = $idx[0];
 				$y = $idx[1];
-				if ($x > 0) {
+				if ($x > -1) {
 					if ($x > $maxC) {
 						$maxC = $x;
 					}
 					if ($y > $maxR) {
 						$maxR = $y;
+					}
+				} else {
+					if ($iC > $maxC) {
+						$maxC = $iC;
+					}
+					if ($iR > $maxR) {
+						$maxR = $iR;
 					}
 				}
 			}
@@ -1072,11 +1083,11 @@ class SimpleXLSX {
 		return iterator_to_array($this->readRowsEx($worksheetIndex, $limit), false);
 	}
 	// https://github.com/shuchkin/simplexlsx#gets-extend-cell-info-by--rowsex
-	 /**
+	/**
 	 * @param $worksheetIndex
 	 * @param $limit
 	 * @return \Generator|null
-	  */
+	 */
 	public function readRowsEx($worksheetIndex = 0, $limit = 0)
 	{
 		if (!$this->rowsExReader) {

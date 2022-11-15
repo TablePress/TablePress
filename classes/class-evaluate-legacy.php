@@ -69,7 +69,13 @@ class TablePress_Evaluate_Legacy {
 	 */
 	public function evaluate_table_data( array $table_data, $table_id ) {
 		$this->table_data = $table_data;
+
 		$num_rows = count( $this->table_data );
+		// Exit early if there's no actual table data (e.g. after using the Row Filter module).
+		if ( 0 === $num_rows ) {
+			return $this->table_data;
+		}
+
 		$num_columns = count( $this->table_data[0] );
 
 		// Make fixed table data available as variables in formulas.

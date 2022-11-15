@@ -4,19 +4,19 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class BaseParserClass
 {
-    /**
-     * @param mixed $value
-     */
-    protected static function boolean($value): bool
-    {
-        if (is_object($value)) {
-            $value = (string) $value;
-        }
+	/**
+	 * @param mixed $value
+	 */
+	protected static function boolean($value): bool
+	{
+		if (is_object($value)) {
+			$value = (string) $value;
+		}
 
-        if (is_numeric($value)) {
-            return (bool) $value;
-        }
+		if (is_numeric($value)) {
+			return (bool) $value;
+		}
 
-        return $value === strtolower('true');
-    }
+		return $value === strtolower('true');
+	}
 }

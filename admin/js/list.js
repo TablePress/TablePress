@@ -7,12 +7,12 @@
  * @since 1.0.0
  */
 
-/* globals confirm, tb_show, ajaxurl */
+/* globals confirm, prompt, tb_show, ajaxurl */
 
 /**
  * WordPress dependencies.
  */
-import { __, _n, sprintf } from '@wordpress/i18n';
+import { __, _n } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -21,6 +21,17 @@ import { $ } from './_common-functions';
 
 document.querySelector( '.tablepress-all-tables' ).addEventListener( 'click', ( event ) => {
 	if ( ! event.target ) {
+		return;
+	}
+
+	/**
+	 * Show a popup box with the table's Shortcode.
+	 *
+	 * @since 1.0.0
+	 */
+	if ( event.target.matches( '.shortcode a' ) ) {
+		prompt( __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ), event.target.title );
+		event.preventDefault();
 		return;
 	}
 
@@ -56,24 +67,9 @@ $( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
 				return;
 			}
 
-			switch ( event.target.dataset.action ) {
-				case 'hide_message':
-					// Show confirmation message with new text for donation nag links.
-					if ( 'donation_nag' === event.target.dataset.item && '' !== event.target.dataset.target ) {
-						let message =  __( 'Thank you very much! Your donation is highly appreciated. You just contributed to the further development of TablePress!', 'tablepress' );
-						if ( 'maybe-later' === event.target.dataset.target ) {
-							message = sprintf( __( 'No problem! I still hope you enjoy the benefits that TablePress adds to your site. If you should change your mind, you&#8217;ll always find the &#8220;Donate&#8221; button on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'https://tablepress.org/' );
-						}
-						event.target.closest( 'div' ).insertAdjacentHTML( 'afterend', `<div class="donation-message-after-click-message notice notice-success"><p><strong>${ message }</strong></p></div>` );
-						const $notice = document.querySelector( '.donation-message-after-click-message' );
-						void $notice.offsetWidth; // Trick browser layout engine. Necessary to make CSS transition work.
-						$notice.style.opacity = 0;
-						$notice.addEventListener( 'transitionend', () => $notice.remove() );
-					}
-
-					// Remove original message.
-					event.target.closest( 'div' ).remove();
-					break;
+			if ( 'hide_message' === event.target.dataset.action ) {
+				// Remove original message.
+				event.target.closest( 'div' ).remove();
 			}
 		} );
 

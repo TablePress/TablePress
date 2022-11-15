@@ -17,54 +17,54 @@ namespace TablePress\Matrix;
  */
 class Builder
 {
-    /**
-     * Create a new matrix of specified dimensions, and filled with a specified value
-     * If the column argument isn't provided, then a square matrix will be created
-     *
-     * @param mixed $fillValue
-     * @param int $rows
-     * @param int|null $columns
-     * @return TablePress\Matrix
-     * @throws Exception
-     */
-    public static function createFilledMatrix($fillValue, $rows, $columns = null)
-    {
-        if ($columns === null) {
-            $columns = $rows;
-        }
+	/**
+	 * Create a new matrix of specified dimensions, and filled with a specified value
+	 * If the column argument isn't provided, then a square matrix will be created
+	 *
+	 * @param mixed $fillValue
+	 * @param int $rows
+	 * @param int|null $columns
+	 * @return TablePress\Matrix
+	 * @throws Exception
+	 */
+	public static function createFilledMatrix($fillValue, $rows, $columns = null)
+	{
+		if ($columns === null) {
+			$columns = $rows;
+		}
 
-        $rows = Matrix::validateRow($rows);
-        $columns = Matrix::validateColumn($columns);
+		$rows = Matrix::validateRow($rows);
+		$columns = Matrix::validateColumn($columns);
 
-        return new Matrix(
-            array_fill(
-                0,
-                $rows,
-                array_fill(
-                    0,
-                    $columns,
-                    $fillValue
-                )
-            )
-        );
-    }
+		return new Matrix(
+			array_fill(
+				0,
+				$rows,
+				array_fill(
+					0,
+					$columns,
+					$fillValue
+				)
+			)
+		);
+	}
 
-    /**
-     * Create a new identity matrix of specified dimensions
-     * This will always be a square matrix, with the number of rows and columns matching the provided dimension
-     *
-     * @param int $dimensions
-     * @return TablePress\Matrix
-     * @throws Exception
-     */
-    public static function createIdentityMatrix($dimensions, $fillValue = null)
-    {
-        $grid = static::createFilledMatrix($fillValue, $dimensions)->toArray();
+	/**
+	 * Create a new identity matrix of specified dimensions
+	 * This will always be a square matrix, with the number of rows and columns matching the provided dimension
+	 *
+	 * @param int $dimensions
+	 * @return TablePress\Matrix
+	 * @throws Exception
+	 */
+	public static function createIdentityMatrix($dimensions, $fillValue = null)
+	{
+		$grid = static::createFilledMatrix($fillValue, $dimensions)->toArray();
 
-        for ($x = 0; $x < $dimensions; ++$x) {
-            $grid[$x][$x] = 1;
-        }
+		for ($x = 0; $x < $dimensions; ++$x) {
+			$grid[$x][$x] = 1;
+		}
 
-        return new Matrix($grid);
-    }
+		return new Matrix($grid);
+	}
 }

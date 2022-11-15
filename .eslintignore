@@ -1,17 +1,17 @@
 # Ignore file for the eslint JS linting/formatting of @wordpress/scripts.
 
 # Ignore external libraries.
+/libraries/composer/
+/libraries/freemius/
+/libraries/vendor/
 /node_modules/
 /vendor/
-/libraries/vendor/
-/libraries/composer/
-/freemius/
 
 # Ignore minified files.
 /admin/js/build/
 /blocks/**/build/
 
 # Ignore external scripts.
-/js/jquery.datatables.min.js
 /admin/js/jspreadsheet.js
 /admin/js/jsuites.js
+/js/jquery.datatables.min.js

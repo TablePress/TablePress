@@ -65,426 +65,426 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
  */
 class HeaderFooter
 {
-    // Header/footer image location
-    const IMAGE_HEADER_LEFT = 'LH';
-    const IMAGE_HEADER_CENTER = 'CH';
-    const IMAGE_HEADER_RIGHT = 'RH';
-    const IMAGE_FOOTER_LEFT = 'LF';
-    const IMAGE_FOOTER_CENTER = 'CF';
-    const IMAGE_FOOTER_RIGHT = 'RF';
+	// Header/footer image location
+	const IMAGE_HEADER_LEFT = 'LH';
+	const IMAGE_HEADER_CENTER = 'CH';
+	const IMAGE_HEADER_RIGHT = 'RH';
+	const IMAGE_FOOTER_LEFT = 'LF';
+	const IMAGE_FOOTER_CENTER = 'CF';
+	const IMAGE_FOOTER_RIGHT = 'RF';
 
-    /**
-     * OddHeader.
-     *
-     * @var string
-     */
-    private $oddHeader = '';
+	/**
+	 * OddHeader.
+	 *
+	 * @var string
+	 */
+	private $oddHeader = '';
 
-    /**
-     * OddFooter.
-     *
-     * @var string
-     */
-    private $oddFooter = '';
+	/**
+	 * OddFooter.
+	 *
+	 * @var string
+	 */
+	private $oddFooter = '';
 
-    /**
-     * EvenHeader.
-     *
-     * @var string
-     */
-    private $evenHeader = '';
+	/**
+	 * EvenHeader.
+	 *
+	 * @var string
+	 */
+	private $evenHeader = '';
 
-    /**
-     * EvenFooter.
-     *
-     * @var string
-     */
-    private $evenFooter = '';
+	/**
+	 * EvenFooter.
+	 *
+	 * @var string
+	 */
+	private $evenFooter = '';
 
-    /**
-     * FirstHeader.
-     *
-     * @var string
-     */
-    private $firstHeader = '';
+	/**
+	 * FirstHeader.
+	 *
+	 * @var string
+	 */
+	private $firstHeader = '';
 
-    /**
-     * FirstFooter.
-     *
-     * @var string
-     */
-    private $firstFooter = '';
+	/**
+	 * FirstFooter.
+	 *
+	 * @var string
+	 */
+	private $firstFooter = '';
 
-    /**
-     * Different header for Odd/Even, defaults to false.
-     *
-     * @var bool
-     */
-    private $differentOddEven = false;
+	/**
+	 * Different header for Odd/Even, defaults to false.
+	 *
+	 * @var bool
+	 */
+	private $differentOddEven = false;
 
-    /**
-     * Different header for first page, defaults to false.
-     *
-     * @var bool
-     */
-    private $differentFirst = false;
+	/**
+	 * Different header for first page, defaults to false.
+	 *
+	 * @var bool
+	 */
+	private $differentFirst = false;
 
-    /**
-     * Scale with document, defaults to true.
-     *
-     * @var bool
-     */
-    private $scaleWithDocument = true;
+	/**
+	 * Scale with document, defaults to true.
+	 *
+	 * @var bool
+	 */
+	private $scaleWithDocument = true;
 
-    /**
-     * Align with margins, defaults to true.
-     *
-     * @var bool
-     */
-    private $alignWithMargins = true;
+	/**
+	 * Align with margins, defaults to true.
+	 *
+	 * @var bool
+	 */
+	private $alignWithMargins = true;
 
-    /**
-     * Header/footer images.
-     *
-     * @var HeaderFooterDrawing[]
-     */
-    private $headerFooterImages = [];
+	/**
+	 * Header/footer images.
+	 *
+	 * @var HeaderFooterDrawing[]
+	 */
+	private $headerFooterImages = [];
 
-    /**
-     * Create a new HeaderFooter.
-     */
-    public function __construct()
-    {
-    }
+	/**
+	 * Create a new HeaderFooter.
+	 */
+	public function __construct()
+	{
+	}
 
-    /**
-     * Get OddHeader.
-     *
-     * @return string
-     */
-    public function getOddHeader()
-    {
-        return $this->oddHeader;
-    }
+	/**
+	 * Get OddHeader.
+	 *
+	 * @return string
+	 */
+	public function getOddHeader()
+	{
+		return $this->oddHeader;
+	}
 
-    /**
-     * Set OddHeader.
-     *
-     * @param string $oddHeader
-     *
-     * @return $this
-     */
-    public function setOddHeader($oddHeader)
-    {
-        $this->oddHeader = $oddHeader;
+	/**
+	 * Set OddHeader.
+	 *
+	 * @param string $oddHeader
+	 *
+	 * @return $this
+	 */
+	public function setOddHeader($oddHeader)
+	{
+		$this->oddHeader = $oddHeader;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get OddFooter.
-     *
-     * @return string
-     */
-    public function getOddFooter()
-    {
-        return $this->oddFooter;
-    }
+	/**
+	 * Get OddFooter.
+	 *
+	 * @return string
+	 */
+	public function getOddFooter()
+	{
+		return $this->oddFooter;
+	}
 
-    /**
-     * Set OddFooter.
-     *
-     * @param string $oddFooter
-     *
-     * @return $this
-     */
-    public function setOddFooter($oddFooter)
-    {
-        $this->oddFooter = $oddFooter;
+	/**
+	 * Set OddFooter.
+	 *
+	 * @param string $oddFooter
+	 *
+	 * @return $this
+	 */
+	public function setOddFooter($oddFooter)
+	{
+		$this->oddFooter = $oddFooter;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get EvenHeader.
-     *
-     * @return string
-     */
-    public function getEvenHeader()
-    {
-        return $this->evenHeader;
-    }
+	/**
+	 * Get EvenHeader.
+	 *
+	 * @return string
+	 */
+	public function getEvenHeader()
+	{
+		return $this->evenHeader;
+	}
 
-    /**
-     * Set EvenHeader.
-     *
-     * @param string $eventHeader
-     *
-     * @return $this
-     */
-    public function setEvenHeader($eventHeader)
-    {
-        $this->evenHeader = $eventHeader;
+	/**
+	 * Set EvenHeader.
+	 *
+	 * @param string $eventHeader
+	 *
+	 * @return $this
+	 */
+	public function setEvenHeader($eventHeader)
+	{
+		$this->evenHeader = $eventHeader;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get EvenFooter.
-     *
-     * @return string
-     */
-    public function getEvenFooter()
-    {
-        return $this->evenFooter;
-    }
+	/**
+	 * Get EvenFooter.
+	 *
+	 * @return string
+	 */
+	public function getEvenFooter()
+	{
+		return $this->evenFooter;
+	}
 
-    /**
-     * Set EvenFooter.
-     *
-     * @param string $evenFooter
-     *
-     * @return $this
-     */
-    public function setEvenFooter($evenFooter)
-    {
-        $this->evenFooter = $evenFooter;
+	/**
+	 * Set EvenFooter.
+	 *
+	 * @param string $evenFooter
+	 *
+	 * @return $this
+	 */
+	public function setEvenFooter($evenFooter)
+	{
+		$this->evenFooter = $evenFooter;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get FirstHeader.
-     *
-     * @return string
-     */
-    public function getFirstHeader()
-    {
-        return $this->firstHeader;
-    }
+	/**
+	 * Get FirstHeader.
+	 *
+	 * @return string
+	 */
+	public function getFirstHeader()
+	{
+		return $this->firstHeader;
+	}
 
-    /**
-     * Set FirstHeader.
-     *
-     * @param string $firstHeader
-     *
-     * @return $this
-     */
-    public function setFirstHeader($firstHeader)
-    {
-        $this->firstHeader = $firstHeader;
+	/**
+	 * Set FirstHeader.
+	 *
+	 * @param string $firstHeader
+	 *
+	 * @return $this
+	 */
+	public function setFirstHeader($firstHeader)
+	{
+		$this->firstHeader = $firstHeader;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get FirstFooter.
-     *
-     * @return string
-     */
-    public function getFirstFooter()
-    {
-        return $this->firstFooter;
-    }
+	/**
+	 * Get FirstFooter.
+	 *
+	 * @return string
+	 */
+	public function getFirstFooter()
+	{
+		return $this->firstFooter;
+	}
 
-    /**
-     * Set FirstFooter.
-     *
-     * @param string $firstFooter
-     *
-     * @return $this
-     */
-    public function setFirstFooter($firstFooter)
-    {
-        $this->firstFooter = $firstFooter;
+	/**
+	 * Set FirstFooter.
+	 *
+	 * @param string $firstFooter
+	 *
+	 * @return $this
+	 */
+	public function setFirstFooter($firstFooter)
+	{
+		$this->firstFooter = $firstFooter;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get DifferentOddEven.
-     *
-     * @return bool
-     */
-    public function getDifferentOddEven()
-    {
-        return $this->differentOddEven;
-    }
+	/**
+	 * Get DifferentOddEven.
+	 *
+	 * @return bool
+	 */
+	public function getDifferentOddEven()
+	{
+		return $this->differentOddEven;
+	}
 
-    /**
-     * Set DifferentOddEven.
-     *
-     * @param bool $differentOddEvent
-     *
-     * @return $this
-     */
-    public function setDifferentOddEven($differentOddEvent)
-    {
-        $this->differentOddEven = $differentOddEvent;
+	/**
+	 * Set DifferentOddEven.
+	 *
+	 * @param bool $differentOddEvent
+	 *
+	 * @return $this
+	 */
+	public function setDifferentOddEven($differentOddEvent)
+	{
+		$this->differentOddEven = $differentOddEvent;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get DifferentFirst.
-     *
-     * @return bool
-     */
-    public function getDifferentFirst()
-    {
-        return $this->differentFirst;
-    }
+	/**
+	 * Get DifferentFirst.
+	 *
+	 * @return bool
+	 */
+	public function getDifferentFirst()
+	{
+		return $this->differentFirst;
+	}
 
-    /**
-     * Set DifferentFirst.
-     *
-     * @param bool $differentFirst
-     *
-     * @return $this
-     */
-    public function setDifferentFirst($differentFirst)
-    {
-        $this->differentFirst = $differentFirst;
+	/**
+	 * Set DifferentFirst.
+	 *
+	 * @param bool $differentFirst
+	 *
+	 * @return $this
+	 */
+	public function setDifferentFirst($differentFirst)
+	{
+		$this->differentFirst = $differentFirst;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get ScaleWithDocument.
-     *
-     * @return bool
-     */
-    public function getScaleWithDocument()
-    {
-        return $this->scaleWithDocument;
-    }
+	/**
+	 * Get ScaleWithDocument.
+	 *
+	 * @return bool
+	 */
+	public function getScaleWithDocument()
+	{
+		return $this->scaleWithDocument;
+	}
 
-    /**
-     * Set ScaleWithDocument.
-     *
-     * @param bool $scaleWithDocument
-     *
-     * @return $this
-     */
-    public function setScaleWithDocument($scaleWithDocument)
-    {
-        $this->scaleWithDocument = $scaleWithDocument;
+	/**
+	 * Set ScaleWithDocument.
+	 *
+	 * @param bool $scaleWithDocument
+	 *
+	 * @return $this
+	 */
+	public function setScaleWithDocument($scaleWithDocument)
+	{
+		$this->scaleWithDocument = $scaleWithDocument;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get AlignWithMargins.
-     *
-     * @return bool
-     */
-    public function getAlignWithMargins()
-    {
-        return $this->alignWithMargins;
-    }
+	/**
+	 * Get AlignWithMargins.
+	 *
+	 * @return bool
+	 */
+	public function getAlignWithMargins()
+	{
+		return $this->alignWithMargins;
+	}
 
-    /**
-     * Set AlignWithMargins.
-     *
-     * @param bool $alignWithMargins
-     *
-     * @return $this
-     */
-    public function setAlignWithMargins($alignWithMargins)
-    {
-        $this->alignWithMargins = $alignWithMargins;
+	/**
+	 * Set AlignWithMargins.
+	 *
+	 * @param bool $alignWithMargins
+	 *
+	 * @return $this
+	 */
+	public function setAlignWithMargins($alignWithMargins)
+	{
+		$this->alignWithMargins = $alignWithMargins;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Add header/footer image.
-     *
-     * @param string $location
-     *
-     * @return $this
-     */
-    public function addImage(HeaderFooterDrawing $image, $location = self::IMAGE_HEADER_LEFT)
-    {
-        $this->headerFooterImages[$location] = $image;
+	/**
+	 * Add header/footer image.
+	 *
+	 * @param string $location
+	 *
+	 * @return $this
+	 */
+	public function addImage(HeaderFooterDrawing $image, $location = self::IMAGE_HEADER_LEFT)
+	{
+		$this->headerFooterImages[$location] = $image;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Remove header/footer image.
-     *
-     * @param string $location
-     *
-     * @return $this
-     */
-    public function removeImage($location = self::IMAGE_HEADER_LEFT)
-    {
-        if (isset($this->headerFooterImages[$location])) {
-            unset($this->headerFooterImages[$location]);
-        }
+	/**
+	 * Remove header/footer image.
+	 *
+	 * @param string $location
+	 *
+	 * @return $this
+	 */
+	public function removeImage($location = self::IMAGE_HEADER_LEFT)
+	{
+		if (isset($this->headerFooterImages[$location])) {
+			unset($this->headerFooterImages[$location]);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Set header/footer images.
-     *
-     * @param HeaderFooterDrawing[] $images
-     *
-     * @return $this
-     */
-    public function setImages(array $images)
-    {
-        $this->headerFooterImages = $images;
+	/**
+	 * Set header/footer images.
+	 *
+	 * @param HeaderFooterDrawing[] $images
+	 *
+	 * @return $this
+	 */
+	public function setImages(array $images)
+	{
+		$this->headerFooterImages = $images;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get header/footer images.
-     *
-     * @return HeaderFooterDrawing[]
-     */
-    public function getImages()
-    {
-        // Sort array
-        $images = [];
-        if (isset($this->headerFooterImages[self::IMAGE_HEADER_LEFT])) {
-            $images[self::IMAGE_HEADER_LEFT] = $this->headerFooterImages[self::IMAGE_HEADER_LEFT];
-        }
-        if (isset($this->headerFooterImages[self::IMAGE_HEADER_CENTER])) {
-            $images[self::IMAGE_HEADER_CENTER] = $this->headerFooterImages[self::IMAGE_HEADER_CENTER];
-        }
-        if (isset($this->headerFooterImages[self::IMAGE_HEADER_RIGHT])) {
-            $images[self::IMAGE_HEADER_RIGHT] = $this->headerFooterImages[self::IMAGE_HEADER_RIGHT];
-        }
-        if (isset($this->headerFooterImages[self::IMAGE_FOOTER_LEFT])) {
-            $images[self::IMAGE_FOOTER_LEFT] = $this->headerFooterImages[self::IMAGE_FOOTER_LEFT];
-        }
-        if (isset($this->headerFooterImages[self::IMAGE_FOOTER_CENTER])) {
-            $images[self::IMAGE_FOOTER_CENTER] = $this->headerFooterImages[self::IMAGE_FOOTER_CENTER];
-        }
-        if (isset($this->headerFooterImages[self::IMAGE_FOOTER_RIGHT])) {
-            $images[self::IMAGE_FOOTER_RIGHT] = $this->headerFooterImages[self::IMAGE_FOOTER_RIGHT];
-        }
-        $this->headerFooterImages = $images;
+	/**
+	 * Get header/footer images.
+	 *
+	 * @return HeaderFooterDrawing[]
+	 */
+	public function getImages()
+	{
+		// Sort array
+		$images = [];
+		if (isset($this->headerFooterImages[self::IMAGE_HEADER_LEFT])) {
+			$images[self::IMAGE_HEADER_LEFT] = $this->headerFooterImages[self::IMAGE_HEADER_LEFT];
+		}
+		if (isset($this->headerFooterImages[self::IMAGE_HEADER_CENTER])) {
+			$images[self::IMAGE_HEADER_CENTER] = $this->headerFooterImages[self::IMAGE_HEADER_CENTER];
+		}
+		if (isset($this->headerFooterImages[self::IMAGE_HEADER_RIGHT])) {
+			$images[self::IMAGE_HEADER_RIGHT] = $this->headerFooterImages[self::IMAGE_HEADER_RIGHT];
+		}
+		if (isset($this->headerFooterImages[self::IMAGE_FOOTER_LEFT])) {
+			$images[self::IMAGE_FOOTER_LEFT] = $this->headerFooterImages[self::IMAGE_FOOTER_LEFT];
+		}
+		if (isset($this->headerFooterImages[self::IMAGE_FOOTER_CENTER])) {
+			$images[self::IMAGE_FOOTER_CENTER] = $this->headerFooterImages[self::IMAGE_FOOTER_CENTER];
+		}
+		if (isset($this->headerFooterImages[self::IMAGE_FOOTER_RIGHT])) {
+			$images[self::IMAGE_FOOTER_RIGHT] = $this->headerFooterImages[self::IMAGE_FOOTER_RIGHT];
+		}
+		$this->headerFooterImages = $images;
 
-        return $this->headerFooterImages;
-    }
+		return $this->headerFooterImages;
+	}
 
-    /**
-     * Implement PHP __clone to create a deep clone, not just a shallow copy.
-     */
-    public function __clone()
-    {
-        $vars = get_object_vars($this);
-        foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
-        }
-    }
+	/**
+	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
+	 */
+	public function __clone()
+	{
+		$vars = get_object_vars($this);
+		foreach ($vars as $key => $value) {
+			if (is_object($value)) {
+				$this->$key = clone $value;
+			} else {
+				$this->$key = $value;
+			}
+		}
+	}
 }

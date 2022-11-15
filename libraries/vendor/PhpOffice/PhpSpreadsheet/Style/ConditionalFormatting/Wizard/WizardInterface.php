@@ -7,19 +7,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 
 interface WizardInterface
 {
-    public function getCellRange(): string;
+	public function getCellRange(): string;
 
-    public function setCellRange(string $cellRange): void;
+	public function setCellRange(string $cellRange): void;
 
-    public function getStyle(): Style;
+	public function getStyle(): Style;
 
-    public function setStyle(Style $style): void;
+	public function setStyle(Style $style): void;
 
-    public function getStopIfTrue(): bool;
+	public function getStopIfTrue(): bool;
 
-    public function setStopIfTrue(bool $stopIfTrue): void;
+	public function setStopIfTrue(bool $stopIfTrue): void;
 
-    public function getConditional(): Conditional;
+	public function getConditional(): Conditional;
 
-    public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): self;
+	public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): self;
 }

@@ -90,6 +90,7 @@ div[data-before]:before {
 	cursor: pointer;
 	box-sizing: border-box;
 	width: 100%;
+	max-width: 100%;
 	max-height: 100%;
 	min-height: 180px;
 }
@@ -133,6 +134,7 @@ div[data-before]:before {
 	color: #eee;
 	width: 100%;
 	height: 100%;
+	text-align: center;
 }
 
 .jremove {
@@ -168,12 +170,12 @@ div[data-before]:before {
 }
 
 @keyframes fadeIn {
-	 0% {
-		  opacity: 0;
-	 }
-	 100% {
-		  opacity: 1;
-	 }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 /** Animations **/
@@ -385,18 +387,26 @@ div[data-before]:before {
 	padding: 14px;
 }
 
+.jcalendar-table {
+	padding: 10px;
+}
+
 .jcalendar-table > table {
 	width:100%;
 	background-color:#fff;
 }
 
 .jcalendar-table > table > thead {
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .jcalendar-table thead td {
-	padding:10px;
-	height:40px;
+	padding: 10px;
+	height: 40px;
+}
+
+.jcalendar-table > table > tbody > tr {
+	height: 34px;
 }
 
 .jcalendar-table > table > tbody td {
@@ -405,7 +415,6 @@ div[data-before]:before {
 	padding:9px;
 	font-size:0.9em;
 }
-
 
 .jcalendar-table tfoot td {
 	padding:10px;
@@ -475,7 +484,7 @@ div[data-before]:before {
 	font-weight:bold;
 }
 
-.jcalendar-fullsize  {
+.jcalendar-fullsize {
 	position:fixed;
 	width:100%;
 	top:0px;
@@ -503,6 +512,14 @@ div[data-before]:before {
 
 .jcalendar-time {
 	display:flex;
+}
+
+.jcalendar_warning {
+	color: red;
+}
+
+.jcalendar-hide-controls .jcalendar-controls {
+	display: none;
 }
 
 
@@ -614,10 +631,9 @@ div[data-before]:before {
 	z-index: 8000;
 	display: none;
 
-  -webkit-touch-callout: none; /* iOS Safari */
+	-webkit-touch-callout: none; /* iOS Safari */
 	-webkit-user-select: none; /* Safari */ /* Konqueror HTML */ /* Firefox */ /* Internet Explorer/Edge */
-			user-select: none; /* Non-prefixed version, currently
-								  supported by Chrome and Opera */
+	user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
 .jcolor-content .jtabs-content {
@@ -797,6 +813,7 @@ div[data-before]:before {
 	font-size: 15px;
 	position: absolute;
 	left: 9px;
+	line-height: 24px;
 }
 
 .jcontextmenu.symbols > div::before {
@@ -811,6 +828,7 @@ div[data-before]:before {
 	color: #555;
 	text-decoration: none;
 	flex: 1;
+	cursor: pointer;
 }
 
 .jcontextmenu > div span {
@@ -818,6 +836,10 @@ div[data-before]:before {
 }
 
 .jcontextmenu .jcontextmenu-disabled a {
+	color: #ccc;
+}
+
+.jcontextmenu .jcontextmenu-disabled::before {
 	color: #ccc;
 }
 
@@ -1436,29 +1458,31 @@ div[data-before]:before {
 	box-sizing: border-box;
 }
 
-.jeditor-dragging {
-	 border:1px dashed #000;
+.jeditor-container.with-margin {
+	background-color: #f2f2f2;
+	max-width: 1200px;
 }
 
-.jeditor-container.jeditor-padding {
-	padding:10px;
+.jeditor-dragging {
+	border:1px dashed #000;
 }
 
 .jeditor {
 	outline:none;
 	word-break: break-word;
+}
 
+.jeditor-container.with-margin .jeditor {
+	background-color: #fff;
+	margin: 80px;
+	min-height: 800px;
+	padding: 80px;
+	max-width: 800px;
 }
 
 .jeditor[data-placeholder]:empty:before {
 	content: attr(data-placeholder);
 	color: lightgray;
-}
-
-.jeditor-container.jeditor-padding .jeditor {
-	min-height:100px;
-	margin-bottom:10px;
-	padding:10px;
 }
 
 /** Snippet **/
@@ -1543,7 +1567,7 @@ div[data-before]:before {
 }
 
 .jeditor img:focus {
-	border:2px solid #0096FD;
+	border: 2px solid #0096FD;
 	outline: #0096FD;
 }
 
@@ -1560,6 +1584,59 @@ div[data-before]:before {
 	width: fit-content;
 	max-width: 100%;
 	box-sizing: border-box;
+	margin: 10px;
+}
+
+.toolbar-on-top .jeditor-toolbar {
+	width: initial;
+	margin: 0px;
+	box-shadow: 1px 1px 2px rgb(0 0 0 / 10%);
+	display: block;
+}
+
+.toolbar-on-top .jeditor {
+	padding: 15px;
+}
+
+.toolbar-on-top .jtoolbar .material-icons {
+	font-size: 24px;
+	transform: initial;
+	margin: 4px;
+}
+
+.toolbar-on-top .jtoolbar .jpicker-header {
+	font-size: 1em;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.jeditor table {
+	border-collapse: collapse;
+}
+
+.jeditor table td {
+	border: 1px solid #bbb;
+	height: 2em;
+}
+
+.jeditor table td:focus {
+	border: 1px solid blue;
+}
+
+.jeditor .line-break {
+	border-top: 1px dashed #ccc;
+	display: flex;
+	justify-content: center;
+	pointer-events: none;
+}
+
+.jeditor .line-break:before {
+	content: 'New page';
+	background-color: #fff;
+	color: #ccc;
+	margin: -1em;
+	padding: 6px;
+	position: absolute;
 }
 
 .jloading {
@@ -1724,7 +1801,7 @@ div[data-before]:before {
 }
 
 .jpicker-header:hover {
-	background-color: #eee;
+	background-color: #f2f2f2;
 }
 
 .jpicker-content {
@@ -1782,6 +1859,9 @@ div[data-before]:before {
 	flex-wrap: wrap;
 }
 
+.jpicker-focus .jpicker-content.jpicker-grid {
+	display: inline-grid;
+}
 
 .jrating {
 	display:flex;
@@ -1922,7 +2002,7 @@ div[data-before]:before {
 	background-color: #fff;
 }
 
-.jtabs.jtabs-modern .jtabs-headers > .jtabs-selected  {
+.jtabs.jtabs-modern .jtabs-headers > .jtabs-selected {
 	color: #000;
 }
 
@@ -1961,13 +2041,9 @@ div[data-before]:before {
 	font-size: 13px;
 }
 
-.jtoolbar-readonly {
+.jtoolbar-disabled {
 	pointer-events: none;
-}
-
-.jtoolbar-readonly div,
-.jtoolbar-readonly .jtoolbar-item i {
-	color: gray;
+	opacity: 0.4;
 }
 
 .jtoolbar-mobile {

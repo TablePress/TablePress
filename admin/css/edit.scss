@@ -20,6 +20,17 @@
 	padding-bottom: 0;
 }
 
+/* Positioning of the "Help" button in the header section of a postbox. */
+.postbox-header .handle-actions .button-module-help {
+	margin-right: 10px;
+}
+@media screen and (min-width: 783px) {
+	.postbox-header .handle-actions .button-module-help {
+		position: relative;
+		top: -5px;
+	}
+}
+
 /* Allow wide postboxes to scroll sideways. */
 body,
 div#post-body.metabox-holder.columns-1 {
@@ -75,6 +86,16 @@ body #wp-link-backdrop {
 	vertical-align: baseline;
 }
 
+#table-id-shortcode-wrapper {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	width: 99%;
+}
+#table-information-shortcode {
+	margin: 0 -1px 0 1px;
+}
+
 #tablepress_edit-table-manipulation .column-1 {
 	width: 45%;
 }
@@ -84,7 +105,9 @@ body #wp-link-backdrop {
 
 /* Align with checkbox labels */
 .checkbox-left {
-	padding-left: 24px; /* Checkboxes are 16px wide + 4px margin, with 4px :before */
+	display: inline-block;
+	padding-left: 1.25rem; /* Checkboxes are 1rem wide + 0.25rem margin. */
+	padding-top: 8px;
 }
 
 #table-editor {
@@ -107,7 +130,7 @@ body #wp-link-backdrop {
 
 .jexcel > thead > tr > td {
 	text-align: center !important;
-	z-index: 21; /* Prevent drag corner from floating above fixed header. */
+	z-index: 22; /* Prevent drag corner from floating above fixed header. */
 }
 
 .jexcel > tbody > tr > td {
@@ -124,6 +147,26 @@ body #wp-link-backdrop {
 @media screen and (min-width: 783px) {
 	.admin-bar .jexcel > thead > tr > td {
 		top: 31px;
+	}
+}
+
+/* Fixed left column, taking into account the width of the admin bar */
+body .jexcel > tbody > tr > .jexcel_row {
+	position: sticky;
+	z-index: 21; /* Prevent drag corner from floating above fixed left column. */
+	left: 160px;
+}
+body.folded .jexcel > tbody > tr > .jexcel_row {
+	left: 36px;
+}
+@media only screen and (max-width: 960px) {
+	body.auto-fold .jexcel > tbody > tr > .jexcel_row {
+		left: 36px;
+	}
+}
+@media screen and (max-width: 782px) {
+	body.auto-fold .jexcel > tbody > tr > .jexcel_row {
+		left: 0;
 	}
 }
 
@@ -192,6 +235,9 @@ body #wp-link-backdrop {
 .jcontextmenu {
 	margin: 1px; /* Don't trigger actions by accident */
 	z-index: 99999; /* Hover above WP Admin bar */
+}
+.jcontextmenu > div.header {
+	display: none !important;
 }
 .jcontextmenu > div a {
 	color: #111111;

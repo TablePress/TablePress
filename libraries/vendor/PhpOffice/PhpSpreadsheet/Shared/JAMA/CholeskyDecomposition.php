@@ -21,127 +21,127 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationExce
  */
 class CholeskyDecomposition
 {
-    /**
-     * Decomposition storage.
-     *
-     * @var array
-     */
-    private $L = [];
+	/**
+	 * Decomposition storage.
+	 *
+	 * @var array
+	 */
+	private $L = [];
 
-    /**
-     * TablePress\Matrix row and column dimension.
-     *
-     * @var int
-     */
-    private $m;
+	/**
+	 * TablePress\Matrix row and column dimension.
+	 *
+	 * @var int
+	 */
+	private $m;
 
-    /**
-     * Symmetric positive definite flag.
-     *
-     * @var bool
-     */
-    private $isspd = true;
+	/**
+	 * Symmetric positive definite flag.
+	 *
+	 * @var bool
+	 */
+	private $isspd = true;
 
-    /**
-     * CholeskyDecomposition.
-     *
-     *    Class constructor - decomposes symmetric positive definite matrix
-     *
-     * @param TablePress\Matrix $A TablePress\Matrix square symmetric positive definite matrix
-     */
-    public function __construct(TablePress\Matrix $A)
-    {
-        $this->L = $A->getArray();
-        $this->m = $A->getRowDimension();
+	/**
+	 * CholeskyDecomposition.
+	 *
+	 *    Class constructor - decomposes symmetric positive definite matrix
+	 *
+	 * @param TablePress\Matrix $A TablePress\Matrix square symmetric positive definite matrix
+	 */
+	public function __construct(TablePress\Matrix $A)
+	{
+		$this->L = $A->getArray();
+		$this->m = $A->getRowDimension();
 
-        for ($i = 0; $i < $this->m; ++$i) {
-            for ($j = $i; $j < $this->m; ++$j) {
-                for ($sum = $this->L[$i][$j], $k = $i - 1; $k >= 0; --$k) {
-                    $sum -= $this->L[$i][$k] * $this->L[$j][$k];
-                }
-                if ($i == $j) {
-                    if ($sum >= 0) {
-                        $this->L[$i][$i] = sqrt($sum);
-                    } else {
-                        $this->isspd = false;
-                    }
-                } else {
-                    if ($this->L[$i][$i] != 0) {
-                        $this->L[$j][$i] = $sum / $this->L[$i][$i];
-                    }
-                }
-            }
+		for ($i = 0; $i < $this->m; ++$i) {
+			for ($j = $i; $j < $this->m; ++$j) {
+				for ($sum = $this->L[$i][$j], $k = $i - 1; $k >= 0; --$k) {
+					$sum -= $this->L[$i][$k] * $this->L[$j][$k];
+				}
+				if ($i == $j) {
+					if ($sum >= 0) {
+						$this->L[$i][$i] = sqrt($sum);
+					} else {
+						$this->isspd = false;
+					}
+				} else {
+					if ($this->L[$i][$i] != 0) {
+						$this->L[$j][$i] = $sum / $this->L[$i][$i];
+					}
+				}
+			}
 
-            for ($k = $i + 1; $k < $this->m; ++$k) {
-                $this->L[$i][$k] = 0.0;
-            }
-        }
-    }
+			for ($k = $i + 1; $k < $this->m; ++$k) {
+				$this->L[$i][$k] = 0.0;
+			}
+		}
+	}
 
-    /**
-     *    Is the matrix symmetric and positive definite?
-     *
-     * @return bool
-     */
-    public function isSPD()
-    {
-        return $this->isspd;
-    }
+	/**
+	 *    Is the matrix symmetric and positive definite?
+	 *
+	 * @return bool
+	 */
+	public function isSPD()
+	{
+		return $this->isspd;
+	}
 
-    /**
-     * getL.
-     *
-     * Return triangular factor.
-     *
-     * @return TablePress\Matrix Lower triangular matrix
-     */
-    public function getL()
-    {
-        return new Matrix($this->L);
-    }
+	/**
+	 * getL.
+	 *
+	 * Return triangular factor.
+	 *
+	 * @return TablePress\Matrix Lower triangular matrix
+	 */
+	public function getL()
+	{
+		return new Matrix($this->L);
+	}
 
-    /**
-     * Solve A*X = B.
-     *
-     * @param TablePress\Matrix $B Row-equal matrix
-     *
-     * @return TablePress\Matrix L * L' * X = B
-     */
-    public function solve(TablePress\Matrix $B)
-    {
-        if ($B->getRowDimension() == $this->m) {
-            if ($this->isspd) {
-                $X = $B->getArray();
-                $nx = $B->getColumnDimension();
+	/**
+	 * Solve A*X = B.
+	 *
+	 * @param TablePress\Matrix $B Row-equal matrix
+	 *
+	 * @return TablePress\Matrix L * L' * X = B
+	 */
+	public function solve(TablePress\Matrix $B)
+	{
+		if ($B->getRowDimension() == $this->m) {
+			if ($this->isspd) {
+				$X = $B->getArray();
+				$nx = $B->getColumnDimension();
 
-                for ($k = 0; $k < $this->m; ++$k) {
-                    for ($i = $k + 1; $i < $this->m; ++$i) {
-                        for ($j = 0; $j < $nx; ++$j) {
-                            $X[$i][$j] -= $X[$k][$j] * $this->L[$i][$k];
-                        }
-                    }
-                    for ($j = 0; $j < $nx; ++$j) {
-                        $X[$k][$j] /= $this->L[$k][$k];
-                    }
-                }
+				for ($k = 0; $k < $this->m; ++$k) {
+					for ($i = $k + 1; $i < $this->m; ++$i) {
+						for ($j = 0; $j < $nx; ++$j) {
+							$X[$i][$j] -= $X[$k][$j] * $this->L[$i][$k];
+						}
+					}
+					for ($j = 0; $j < $nx; ++$j) {
+						$X[$k][$j] /= $this->L[$k][$k];
+					}
+				}
 
-                for ($k = $this->m - 1; $k >= 0; --$k) {
-                    for ($j = 0; $j < $nx; ++$j) {
-                        $X[$k][$j] /= $this->L[$k][$k];
-                    }
-                    for ($i = 0; $i < $k; ++$i) {
-                        for ($j = 0; $j < $nx; ++$j) {
-                            $X[$i][$j] -= $X[$k][$j] * $this->L[$k][$i];
-                        }
-                    }
-                }
+				for ($k = $this->m - 1; $k >= 0; --$k) {
+					for ($j = 0; $j < $nx; ++$j) {
+						$X[$k][$j] /= $this->L[$k][$k];
+					}
+					for ($i = 0; $i < $k; ++$i) {
+						for ($j = 0; $j < $nx; ++$j) {
+							$X[$i][$j] -= $X[$k][$j] * $this->L[$k][$i];
+						}
+					}
+				}
 
-                return new Matrix($X, $this->m, $nx);
-            }
+				return new Matrix($X, $this->m, $nx);
+			}
 
-            throw new CalculationException(Matrix::MATRIX_SPD_EXCEPTION);
-        }
+			throw new CalculationException(Matrix::MATRIX_SPD_EXCEPTION);
+		}
 
-        throw new CalculationException(Matrix::MATRIX_DIMENSION_EXCEPTION);
-    }
+		throw new CalculationException(Matrix::MATRIX_DIMENSION_EXCEPTION);
+	}
 }

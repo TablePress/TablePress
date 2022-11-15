@@ -329,7 +329,7 @@ class TablePress_CSSTidy_optimise {
 		}
 
 		// Complex gradient expressions
-		if ( false !== strpos( $color, '(' ) && 0 !== strncmp( $color, 'rgb(', 4 ) ) {
+		if ( false !== strpos( $color, '(' ) && 0 !== strncasecmp( $color, 'rgb(', 4 ) ) {
 			// Don't touch properties within MSIE filters, those are to sensitive.
 			if ( false !== stripos( $color, 'progid:' ) ) {
 				return $color;

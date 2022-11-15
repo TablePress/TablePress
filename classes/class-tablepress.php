@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	const version = '2.0-RC1'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	const version = '2.0-RC2'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	const db_version = 46; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	const db_version = 47; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -110,7 +110,7 @@ abstract class TablePress {
 		do_action( 'tablepress_run' );
 
 		// Check if minimum requirements are fulfilled, currently WordPress 5.8.
-		include( ABSPATH . WPINC . '/version.php' ); // Include an unmodified $wp_version.
+		include ABSPATH . WPINC . '/version.php'; // Include an unmodified $wp_version.
 		if ( version_compare( str_replace( '-src', '', $wp_version ), '5.8', '<' ) ) {
 			// Show error notice to admins, if WP is not installed in the minimum required version, in which case TablePress will not work.
 			if ( current_user_can( 'update_plugins' ) ) {

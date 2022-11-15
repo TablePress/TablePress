@@ -349,8 +349,9 @@ JS;
 
 		// Pre-define some view data.
 		$data = array(
-			'view_actions' => $this->view_actions,
-			'message'      => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
+			'view_actions'     => $this->view_actions,
+			'message'          => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
+			'use_block_editor' => use_block_editor_for_post_type( 'post' ),
 		);
 
 		// Depending on the action, load more necessary data for the corresponding view.
@@ -1161,9 +1162,10 @@ JS;
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
-			'table_id'  => $table_id,
-			'head_html' => $_render->get_preview_css(),
-			'body_html' => $_render->get_output(),
+			'table_id'         => $table_id,
+			'head_html'        => $_render->get_preview_css(),
+			'body_html'        => $_render->get_output(),
+			'use_block_editor' => use_block_editor_for_post_type( 'post' ),
 		);
 
 		$custom_css = TablePress::$model_options->get( 'custom_css' );

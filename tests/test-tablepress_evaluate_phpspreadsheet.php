@@ -224,7 +224,9 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 			array( '=SUM(A2:C2)', '2', '=A2+B2' ),
 		);
 		$expected_table = array(
-			array( '!ERROR! C2 -> A3 -> C2 -> Cyclic Reference in Formula' ),
+			array( 'foo', 'bar', 'baz' ),
+			array( '1', '4', '!ERROR! C2 -> A3 -> C2 -> Cyclic Reference in Formula' ),
+			array( '!ERROR! A3 -> C2 -> A3 -> Cyclic Reference in Formula', '2', '5' ),
 		);
 		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );

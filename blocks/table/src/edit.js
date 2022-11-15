@@ -88,7 +88,7 @@ export default function TablePressTableEdit( { attributes, setAttributes } ) {
 					instructions={
 						<>
 							{ /* Show an error message if a table could not be found (e.g. after a table was deleted).
-							     The tp.tables.hasOwnProperty( attributes.id ) check happens above.*/ }
+							     The tp.tables.hasOwnProperty( attributes.id ) check happens above. */ }
 							{ attributes.id && sprintf( __( 'There is a problem: The TablePress table with the ID “%1$s” could not be found.', 'tablepress' ), attributes.id ) + ' ' }
 
 							{ 0 < ComboboxControl_options.length ? __( 'Select the TablePress table that you want to embed in the Settings sidebar.', 'tablepress' ) : __( 'There are no TablePress tables on this site yet.', 'tablepress' ) }

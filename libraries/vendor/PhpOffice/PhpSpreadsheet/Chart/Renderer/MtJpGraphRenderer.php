@@ -12,25 +12,25 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Chart\Renderer;
  */
 class MtJpGraphRenderer extends JpGraphRendererBase
 {
-    protected static function init(): void
-    {
-        static $loaded = false;
-        if ($loaded) {
-            return;
-        }
+	protected static function init(): void
+	{
+		static $loaded = false;
+		if ($loaded) {
+			return;
+		}
 
-        \mitoteam\jpgraph\MtJpGraph::load([
-            'bar',
-            'contour',
-            'line',
-            'pie',
-            'pie3d',
-            'radar',
-            'regstat',
-            'scatter',
-            'stock',
-        ]);
+		\mitoteam\jpgraph\MtJpGraph::load([
+			'bar',
+			'contour',
+			'line',
+			'pie',
+			'pie3d',
+			'radar',
+			'regstat',
+			'scatter',
+			'stock',
+		]);
 
-        $loaded = true;
-    }
+		$loaded = true;
+	}
 }

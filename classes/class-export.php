@@ -148,14 +148,44 @@ class TablePress_Export {
 	 * @return string Wrapped string for CSV export.
 	 */
 	protected function csv_wrap_and_escape( $cell_content, $delimiter ) {
+		// Return early if the cell is empty. No escaping or wrapping is needed then.
+		if ( '' === $cell_content ) {
+			return $cell_content;
+		}
+
+		// Escape potentially dangerous functions that could be used for CSV injection attacks in external spreadsheet software.
+		$active_content_triggers = array( '=', '+', '-', '@' );
+		if ( in_array( $cell_content[0], $active_content_triggers, true ) ) {
+			$functions_to_escape = array(
+				'cmd|',
+				'rundll32',
+				'DDE(',
+				'IMPORTXML(',
+				'IMPORTFEED(',
+				'IMPORTHTML(',
+				'IMPORTRANGE(',
+				'IMPORTDATA(',
+				'IMAGE(',
+				'HYPERLINK(',
+				'WEBSERVICE(',
+			);
+			foreach ( $functions_to_escape as $function ) {
+				if ( false !== stripos( $cell_content, $function ) ) {
+					$cell_content = "'" . $cell_content; // Prepend a ' to indicate that the cell format is a text string.
+					break;
+				}
+			}
+		}
+
 		// Escape CSV delimiter for RegExp (e.g. '|').
 		$delimiter = preg_quote( $delimiter, '#' );
-		if ( 1 === preg_match( '#' . $delimiter . '|"|\n|\r#i', $cell_content ) || ' ' === substr( $cell_content, 0, 1 ) || ' ' === substr( $cell_content, -1 ) ) {
+		if ( 1 === preg_match( '#' . $delimiter . '|"|\n|\r#i', $cell_content ) || ' ' === $cell_content[0] || ' ' === substr( $cell_content, -1 ) ) {
 			// Escape single " as double "".
 			$cell_content = str_replace( '"', '""', $cell_content );
 			// Wrap string in "".
 			$cell_content = '"' . $cell_content . '"';
 		}
+
 		return $cell_content;
 	}
 

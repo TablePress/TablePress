@@ -58,6 +58,7 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '6.1'
           - '6.0'
           - '5.9'
           - '5.8'
@@ -85,7 +86,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@e04e1d97f0c0481c6e1ba40f8a538454fe5d7709 # v2.21.2
+        uses: shivammathur/setup-php@1a18b2267f80291a81ca1d33e7c851fe09e7dfc4 # v2.22.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -100,7 +101,7 @@ jobs:
           git --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -114,7 +115,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
         with:
           path: ${{ env.PLUGIN_DIR }}
 
@@ -124,7 +125,7 @@ jobs:
         run: composer require --dev "phpunit/phpunit:^5.7.21 || ^6.5 || ^7.5" --no-update
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6 # v2.1.0
+        uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6 # v2.2.0
         with:
           composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' ) && ' --ignore-platform-reqs' || '' }}"
 
@@ -161,14 +162,14 @@ jobs:
       )
     steps:
       - name: Dispatch workflow run
-        uses: actions/github-script@d4560e157075e2d93aa3022b5b51a42a880f1f93 # v6.3.0
+        uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0 # v6.3.3
         with:
           script: |
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'failed-workflow.yml',
-              ref: '${{ github.ref_name }}',
+              ref: 'main',
               inputs: {
                 run_id: '${{ github.run_id }}'
               }

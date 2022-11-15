@@ -660,6 +660,9 @@ tp.callbacks.help_box.open_dialog = function ( event ) {
 				},
 			},
 		],
+		open( /* event, ui */ ) {
+			jQuery( this ).next().find( '.button-ok' ).trigger( 'focus' );
+		},
 	} );
 };
 
@@ -891,6 +894,10 @@ tp.callbacks.save_changes.success = function ( data ) {
 	tp.table.id = data.table_id;
 	tp.table.new_id = data.table_id;
 	$( '#table-id' ).value = data.table_id;
+	const $shortcode_field = $( '#table-information-shortcode' );
+	if ( $shortcode_field ) {
+		$shortcode_field.value = `[${ tp.table.shortcode } id=${ data.table_id } /]`;
+	}
 
 	// Update the nonces.
 	tp.nonces.edit_table = data.new_edit_nonce;
@@ -974,13 +981,19 @@ tp.callbacks.table_id.change = function () {
 		return;
 	}
 
-	if ( ! window.confirm( __( 'Do you really want to change the Table ID? All blocks for this table in your pages and posts will have to be adjusted!', 'tablepress' ) ) ) {
+	if ( ! window.confirm( __( 'Do you really want to change the Table ID? All blocks and Shortcodes for this table in your posts and pages will have to be adjusted!', 'tablepress' ) ) ) {
 		this.value = tp.table.new_id;
 		return;
 	}
 
 	// Set the new table ID.
 	tp.table.new_id = this.value;
+	const $shortcode_field = $( '#table-information-shortcode' );
+	if ( $shortcode_field ) {
+		$shortcode_field.value = `[${ tp.table.shortcode } id=${ tp.table.new_id } /]`;
+		$shortcode_field.focus();
+		$shortcode_field.select();
+	}
 	tp.helpers.unsaved_changes.set();
 };
 
@@ -1206,6 +1219,11 @@ $( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
 		tp.callbacks.save_changes.process( event );
 		return;
 	}
+
+	if ( event.target.matches( '.button-show-help-box' ) ) {
+		tp.callbacks.help_box.open_dialog( event );
+		return;
+	}
 } );
 
 /*
@@ -1233,11 +1251,6 @@ $( '#tablepress-manipulation-controls' ).addEventListener( 'click', ( event ) =>
 		}
 
 		tp.callbacks.append( type, num_rocs );
-		return;
-	}
-
-	if ( event.target.matches( '.button-show-help-box' ) ) {
-		tp.callbacks.help_box.open_dialog( event );
 		return;
 	}
 
@@ -1306,6 +1319,14 @@ const $table_id_field = $( '#table-id' );
 $table_id_field.addEventListener( 'input', tp.callbacks.table_id.sanitize );
 $table_id_field.addEventListener( 'change', tp.callbacks.table_id.change );
 
+// Select Shortcode input field content when it's focussed.
+const $table_information_shortcode = $( '#table-information-shortcode' );
+if ( $table_information_shortcode ) {
+	$table_information_shortcode.addEventListener( 'focus', function() {
+		this.select();
+	} );
+}
+
 // Register callback for inserting a link into a cell after it has been constructed in the wpLink dialog.
 jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_helper_textarea ); // This must use jQuery, as wpLink triggers jQuery events, which can not be observed by native JS listeners.
 
@@ -1313,6 +1334,9 @@ jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_
 [ '#table-name', '#table-description' ].forEach( ( $field_id ) => $( $field_id ).addEventListener( 'change', tp.helpers.unsaved_changes.set ) );
 const options_meta_boxes = apply_filters( 'tablepress.optionsMetaBoxes', [ '#tablepress_edit-table-options', '#tablepress_edit-datatables-features' ] );
 options_meta_boxes.forEach( ( meta_box_id ) => $( meta_box_id ).addEventListener( 'change', tp.helpers.options.change ) );
+
+// Move all "Help" buttons inside the postbox header.
+document.querySelectorAll( '#tablepress-body .button-module-help' ).forEach( ( $button ) => ( $button.closest( '.postbox' ).querySelector( '.handle-actions' ).prepend( $button ) ) );
 
 // This code requires jQuery, and it must run when the DOM is ready. Therefore, move it outside of the main function.
 jQuery( function () {

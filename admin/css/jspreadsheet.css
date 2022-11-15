@@ -58,7 +58,7 @@
 }
 
 .jexcel_content::-webkit-scrollbar-thumb {
-  background: #666;
+	background: #666;
 }
 
 .jexcel {
@@ -424,14 +424,14 @@
 
 .jexcel, .jexcel td, .jexcel_corner
 {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-drag: none;
 }
 
 .jexcel_textarea

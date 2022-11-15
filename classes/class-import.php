@@ -361,7 +361,7 @@ class TablePress_Import {
 	 *
 	 * @return array List of table names and IDs.
 	 */
-	function _get_list_of_table_names() {
+	protected function _get_list_of_table_names() {
 		$existing_tables = array();
 		// Load all table IDs and names for a comparison with the file name.
 		$table_ids = TablePress::$model_table->load_all( false );

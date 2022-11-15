@@ -104,11 +104,16 @@ class TablePress_Edit_View extends TablePress_View {
 		<div id="tablepress-page" class="wrap">
 		<form>
 		<?php
-		$this->print_nav_tab_menu();
+			$this->print_nav_tab_menu();
+		?>
+		<div id="tablepress-body">
+		<hr class="wp-header-end" />
+		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
 			echo $message;
 		}
+
 		$this->do_text_boxes( 'header' );
 		?>
 		<div id="poststuff" class="hide-if-no-js">
@@ -128,6 +133,7 @@ class TablePress_Edit_View extends TablePress_View {
 			<br class="clear" />
 		</div>
 		</form>
+		</div>
 		</div>
 		<?php
 	}
@@ -158,7 +164,16 @@ class TablePress_Edit_View extends TablePress_View {
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
+			<div id="table-id-shortcode-wrapper">
 			<input type="text" id="table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php esc_attr_e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z1-9-_]|[A-Za-z0-9-_]{2,}" required <?php echo ( ! current_user_can( 'tablepress_edit_table_id', $data['table']['id'] ) ) ? 'readonly ' : ''; ?>/>
+			<?php
+			if ( ! $data['use_block_editor'] ) {
+				?>
+					<div><label for="table-information-shortcode"><?php _e( 'Shortcode', 'tablepress' ); ?>:</label> <input type="text" id="table-information-shortcode" value="<?php echo esc_attr( '[' . TablePress::$shortcode . " id={$data['table']['id']} /]" ); ?>" readonly /></div>
+				<?php
+			}
+			?>
+			</div>
 		</td>
 	</tr>
 	<tr class="top-border">
@@ -198,6 +213,7 @@ JS;
 		echo "\n";
 
 		echo "tp.table = {};\n";
+		echo "tp.table.shortcode = '" . esc_js( TablePress::$shortcode ) . "';\n";
 		echo "tp.table.id = '{$data['table']['id']}';\n";
 		echo "tp.table.new_id = '{$data['table']['id']}';\n";
 		// JSON-encode array items separately to save some PHP memory.
@@ -435,7 +451,7 @@ JS;
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Extra CSS Classes', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-extra_css_classes"><input type="text" id="option-extra_css_classes" name="extra_css_classes" class="large-text" title="<?php esc_attr_e( 'This field can only contain letters, numbers, spaces, hyphens (-), underscores (_), and colons (:).', 'tablepress' ); ?>" pattern="[A-Za-z0-9- _:]*" /><p class="description"><?php echo __( 'Additional CSS classes for styling purposes can be entered here.', 'tablepress' ) . ' ' . sprintf( __( 'This is NOT the place to enter <a href="%s">Custom CSS</a> code!', 'tablepress' ), TablePress::url( array( 'action' => 'options' ) ) ); ?></p></label></td>
+		<td class="column-2"><label for="option-extra_css_classes"><input type="text" id="option-extra_css_classes" name="extra_css_classes" class="large-text code" title="<?php esc_attr_e( 'This field can only contain letters, numbers, spaces, hyphens (-), underscores (_), and colons (:).', 'tablepress' ); ?>" pattern="[A-Za-z0-9- _:]*" /><p class="description"><?php echo __( 'Additional CSS classes for styling purposes can be entered here.', 'tablepress' ) . ' ' . sprintf( __( 'This is NOT the place to enter <a href="%s">Custom CSS</a> code!', 'tablepress' ), TablePress::url( array( 'action' => 'options' ) ) ); ?></p></label></td>
 	</tr>
 </table>
 		<?php
@@ -468,7 +484,7 @@ JS;
 	<tr>
 		<th class="column-1" scope="row" style="vertical-align: top;"><?php _e( 'Pagination', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables_paginate"><input type="checkbox" id="option-datatables_paginate" name="datatables_paginate" /> <?php _e( 'Enable pagination of the table (viewing only a certain number of rows at a time) by the visitor.', 'tablepress' ); ?></label><br />
-		<label for="option-datatables_paginate_entries" class="checkbox-left"><?php printf( __( 'Show %s rows per page.', 'tablepress' ), '<input type="number" id="option-datatables_paginate_entries" name="datatables_paginate_entries" min="1" max="99999" required />' ); ?></label></td>
+		<label for="option-datatables_paginate_entries" class="checkbox-left">&nbsp;<?php printf( __( 'Show %s rows per page.', 'tablepress' ), '<input type="number" id="option-datatables_paginate_entries" class="small-text" name="datatables_paginate_entries" min="1" max="99999" required />' ); ?></label></td>
 	</tr>
 	<tr>
 		<th class="column-1" scope="row"><?php _e( 'Pagination Length Change', 'tablepress' ); ?>:</th>
@@ -488,7 +504,7 @@ JS;
 			?>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Custom Commands', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-datatables_custom_commands"><textarea id="option-datatables_custom_commands" name="datatables_custom_commands" class="large-text" rows="1"></textarea><p class="description"><?php echo sprintf( __( 'Additional parameters from the <a href="%s">DataTables documentation</a> to be added to the JS call.', 'tablepress' ), 'https://www.datatables.net/' ) . ' ' . __( 'For advanced use only.', 'tablepress' ); ?></p></label></td>
+		<td class="column-2"><label for="option-datatables_custom_commands"><textarea id="option-datatables_custom_commands" name="datatables_custom_commands" class="large-text code" rows="1"></textarea><p class="description"><?php echo sprintf( __( 'Additional parameters from the <a href="%s">DataTables documentation</a> to be added to the JS call.', 'tablepress' ), 'https://www.datatables.net/' ) . ' ' . __( 'For advanced use only.', 'tablepress' ); ?></p></label></td>
 	</tr>
 			<?php
 		} // if
@@ -569,7 +585,12 @@ JS;
 		echo '<p>';
 		_e( 'To edit the content or modify the structure of this table, use the input fields and buttons below.', 'tablepress' );
 		echo ' ';
-		printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		// Show the instructions string depending on whether the Block Editor is used on the site or not.
+		if ( $data['use_block_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} else {
+			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
+		}
 		echo '</p>';
 	}
 

@@ -8,38 +8,38 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 
 class CellStyleAssessor
 {
-    /**
-     * @var CellMatcher
-     */
-    protected $cellMatcher;
+	/**
+	 * @var CellMatcher
+	 */
+	protected $cellMatcher;
 
-    /**
-     * @var StyleMerger
-     */
-    protected $styleMerger;
+	/**
+	 * @var StyleMerger
+	 */
+	protected $styleMerger;
 
-    public function __construct(Cell $cell, string $conditionalRange)
-    {
-        $this->cellMatcher = new CellMatcher($cell, $conditionalRange);
-        $this->styleMerger = new StyleMerger($cell->getStyle());
-    }
+	public function __construct(Cell $cell, string $conditionalRange)
+	{
+		$this->cellMatcher = new CellMatcher($cell, $conditionalRange);
+		$this->styleMerger = new StyleMerger($cell->getStyle());
+	}
 
-    /**
-     * @param Conditional[] $conditionalStyles
-     */
-    public function matchConditions(array $conditionalStyles = []): Style
-    {
-        foreach ($conditionalStyles as $conditional) {
-            /** @var Conditional $conditional */
-            if ($this->cellMatcher->evaluateConditional($conditional) === true) {
-                // Merging the conditional style into the base style goes in here
-                $this->styleMerger->mergeStyle($conditional->getStyle());
-                if ($conditional->getStopIfTrue() === true) {
-                    break;
-                }
-            }
-        }
+	/**
+	 * @param Conditional[] $conditionalStyles
+	 */
+	public function matchConditions(array $conditionalStyles = []): Style
+	{
+		foreach ($conditionalStyles as $conditional) {
+			/** @var Conditional $conditional */
+			if ($this->cellMatcher->evaluateConditional($conditional) === true) {
+				// Merging the conditional style into the base style goes in here
+				$this->styleMerger->mergeStyle($conditional->getStyle());
+				if ($conditional->getStopIfTrue() === true) {
+					break;
+				}
+			}
+		}
 
-        return $this->styleMerger->getStyle();
-    }
+		return $this->styleMerger->getStyle();
+	}
 }

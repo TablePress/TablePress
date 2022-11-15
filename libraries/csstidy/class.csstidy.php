@@ -358,29 +358,6 @@ class TablePress_CSSTidy {
 	}
 
 	/**
-	 * Load a template.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $template Template used by set_cfg to load a template via a configuration setting.
-	 */
-	protected function _load_template( $template ) {
-		switch ( $template ) {
-			case 'default':
-				$this->load_template( 'default' );
-				break;
-			case 'highest':
-			case 'high':
-			case 'low':
-				$this->load_template( $template . '_compression' );
-				break;
-			default:
-				$this->load_template( $template );
-				break;
-		}
-	}
-
-	/**
 	 * Set the value of a setting.
 	 *
 	 * @since 1.0.0
@@ -393,7 +370,7 @@ class TablePress_CSSTidy {
 		if ( isset( $this->settings[ $setting ] ) && '' !== $value ) {
 			$this->settings[ $setting ] = $value;
 			if ( 'template' === $setting ) {
-				$this->_load_template( $this->settings['template'] );
+				$this->load_template( $this->settings['template'] );
 			}
 			return true;
 		}
@@ -543,27 +520,22 @@ class TablePress_CSSTidy {
 	 *
 	 * @link http://csstidy.sourceforge.net/templates.php
 	 *
-	 * @param string $content   Either file name (if $from_file is true), content of a template file, "high_compression", "highest_compression", "low_compression", or "default".
+	 * @param string $content   Either file name (if $from_file is true), content of a template file, "default", "low", high", or "highest".
 	 * @param bool   $from_file Optional. Uses $content as filename if true.
 	 */
 	protected function load_template( $content, $from_file = true ) {
-		$predefined_templates = &$this->data['csstidy']['predefined_templates'];
-		if ( in_array( $content, array( 'default', 'low_compression', 'high_compression', 'highest_compression' ), true ) ) {
-			$this->template = $predefined_templates[ $content ];
+		if ( in_array( $content, array( 'default', 'low', 'high', 'highest' ), true ) ) {
+			$this->template = $this->data['csstidy']['predefined_templates'][ $content ];
 			return;
 		}
 
 		if ( $from_file ) {
 			$content = strip_tags( file_get_contents( $content ), '<span>' );
 		}
+
 		// Unify newlines (because the output also only uses \n).
 		$content = str_replace( "\r\n", "\n", $content );
-		$template = explode( '|', $content );
-
-		$template_count = count( $template );
-		for ( $i = 0; $i < $template_count; $i++ ) {
-			$this->template[ $i ] = $template[ $i ];
-		}
+		$this->template = explode( '|', $content );
 	}
 
 	/**

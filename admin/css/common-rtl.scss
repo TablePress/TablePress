@@ -9,22 +9,56 @@
  * @since 1.1.0
  */
 
+#screen-meta-links {
+	right: auto;
+	left: 0;
+}
+
+#tablepress-page {
+	margin: 0 -20px 0 0;
+
+	.header {
+		padding-right: 0;
+		padding-left: 260px;
+
+		.name {
+			border-right: none;
+			border-left: 1px solid #dedae6;
+
+			img {
+				margin: 0 0 6px 12px;
+			}
+		}
+	}
+
+	#tablepress-nav {
+		padding: 0 20px 0 0;
+	}
+}
+
+.tablepress-postbox-table th {
+	text-align: right;
+}
+
 #row-import-source td.column-2,
 #row-import-type td.column-2 {
 	direction: ltr;
 	text-align: right;
 }
-#tablepress-nav .wp-heading-inline,
-#tablepress_add-add-table .form-field-small,
-#table-id {
+
+#tablepress_add-add-table .form-field-small {
 	float: right;
 }
-@media screen and (max-width: 700px) {
-	#tablepress-nav .nav-tab {
-		margin: 0 0.5em 10px 0;
+
+.rtl { /* Use .rtl body class for higher CSS specificity of these selectors. */
+	#table-information-shortcode {
+		margin: 0 1px 0 -1px;
+		direction: ltr;
 	}
-}
-#tablepress-nav .nav-tab-separator {
-	margin-left: 0;
-	margin-right: 2em;
+
+	.input-field-box > input.control-input,
+	.module-box > input[type="checkbox"] {
+		left: auto;
+		right: -9999px;
+	}
 }

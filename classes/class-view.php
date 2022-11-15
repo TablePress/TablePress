@@ -346,7 +346,11 @@ abstract class TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php
-		$this->print_nav_tab_menu();
+			$this->print_nav_tab_menu();
+		?>
+		<div id="tablepress-body">
+		<hr class="wp-header-end" />
+		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
 			echo $message;
@@ -356,7 +360,7 @@ abstract class TablePress_View {
 		?>
 		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?>>
 			<?php
-			$this->do_text_boxes( 'header' );
+				$this->do_text_boxes( 'header' );
 			?>
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder columns-<?php echo ( isset( $GLOBALS['screen_layout_columns'] ) && ( 2 === $GLOBALS['screen_layout_columns'] ) ) ? '2' : '1'; ?>">
@@ -384,6 +388,7 @@ abstract class TablePress_View {
 			</div>
 		</form>
 		</div>
+		</div>
 		<?php
 	}
 
@@ -394,10 +399,11 @@ abstract class TablePress_View {
 	 */
 	protected function print_nav_tab_menu() {
 		?>
-		<div id="tablepress-page-head">
-			<img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>" />
-			<h1><?php _e( 'TablePress', 'tablepress' ); ?></h1>
-		</div><div id="tablepress-nav" class="nav-tab-wrapper">
+		<div id="tablepress-header" class="header">
+			<h1 class="name"><img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>" /><?php _e( 'TablePress', 'tablepress' ); ?><?php echo tb_tp_fs()->is_plan_or_trial( 'pro', true ) ? ' Pro' : ( tb_tp_fs()->is_plan_or_trial( 'max', true ) ? ' Max' : '' ); ?></h1>
+		</div>
+		<nav id="tablepress-nav">
+			<ul class="nav-menu">
 			<?php
 			foreach ( $this->data['view_actions'] as $action => $entry ) {
 				if ( '' === $entry['nav_tab_title'] ) {
@@ -408,12 +414,13 @@ abstract class TablePress_View {
 				}
 
 				$url = esc_url( TablePress::url( array( 'action' => $action ) ) );
-				$active = ( $action === $this->action ) ? ' nav-tab-active' : '';
-				$separator = ( 'options' === $action ) ? ' nav-tab-separator' : ''; // Make the "Plugin Options" entry a separator, for some spacing.
-				echo "<a id=\"tablepress-nav-tab-{$action}\" class=\"nav-tab{$active}{$separator}\" href=\"{$url}\">{$entry['nav_tab_title']}</a>";
+				$active = ( $action === $this->action ) ? ' active' : '';
+				$separator = ( 'export' === $action ) ? ' separator' : ''; // Make the "Export" entry a separator, for some spacing.
+				echo "<li class=\"nav-item\"><a id=\"tablepress-nav-item-{$action}\" class=\"nav-link{$active}{$separator}\" href=\"{$url}\">{$entry['nav_tab_title']}</a></li>";
 			}
 			?>
-		</div><hr class="wp-header-end" />
+			</ul>
+		</nav>
 		<?php
 	}
 

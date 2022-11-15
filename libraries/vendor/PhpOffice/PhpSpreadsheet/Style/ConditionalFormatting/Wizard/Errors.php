@@ -12,84 +12,84 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\Wizard;
  */
 class Errors extends WizardAbstract implements WizardInterface
 {
-    protected const OPERATORS = [
-        'notError' => false,
-        'isError' => true,
-    ];
+	protected const OPERATORS = [
+		'notError' => false,
+		'isError' => true,
+	];
 
-    protected const EXPRESSIONS = [
-        Wizard::NOT_ERRORS => 'NOT(ISERROR(%s))',
-        Wizard::ERRORS => 'ISERROR(%s)',
-    ];
+	protected const EXPRESSIONS = [
+		Wizard::NOT_ERRORS => 'NOT(ISERROR(%s))',
+		Wizard::ERRORS => 'ISERROR(%s)',
+	];
 
-    /**
-     * @var bool
-     */
-    protected $inverse;
+	/**
+	 * @var bool
+	 */
+	protected $inverse;
 
-    public function __construct(string $cellRange, bool $inverse = false)
-    {
-        parent::__construct($cellRange);
-        $this->inverse = $inverse;
-    }
+	public function __construct(string $cellRange, bool $inverse = false)
+	{
+		parent::__construct($cellRange);
+		$this->inverse = $inverse;
+	}
 
-    protected function inverse(bool $inverse): void
-    {
-        $this->inverse = $inverse;
-    }
+	protected function inverse(bool $inverse): void
+	{
+		$this->inverse = $inverse;
+	}
 
-    protected function getExpression(): void
-    {
-        $this->expression = sprintf(
-            self::EXPRESSIONS[$this->inverse ? Wizard::ERRORS : Wizard::NOT_ERRORS],
-            $this->referenceCell
-        );
-    }
+	protected function getExpression(): void
+	{
+		$this->expression = sprintf(
+			self::EXPRESSIONS[$this->inverse ? Wizard::ERRORS : Wizard::NOT_ERRORS],
+			$this->referenceCell
+		);
+	}
 
-    public function getConditional(): Conditional
-    {
-        $this->getExpression();
+	public function getConditional(): Conditional
+	{
+		$this->getExpression();
 
-        $conditional = new Conditional();
-        $conditional->setConditionType(
-            $this->inverse ? Conditional::CONDITION_CONTAINSERRORS : Conditional::CONDITION_NOTCONTAINSERRORS
-        );
-        $conditional->setConditions([$this->expression]);
-        $conditional->setStyle($this->getStyle());
-        $conditional->setStopIfTrue($this->getStopIfTrue());
+		$conditional = new Conditional();
+		$conditional->setConditionType(
+			$this->inverse ? Conditional::CONDITION_CONTAINSERRORS : Conditional::CONDITION_NOTCONTAINSERRORS
+		);
+		$conditional->setConditions([$this->expression]);
+		$conditional->setStyle($this->getStyle());
+		$conditional->setStopIfTrue($this->getStopIfTrue());
 
-        return $conditional;
-    }
+		return $conditional;
+	}
 
-    public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
-    {
-        if (
-            $conditional->getConditionType() !== Conditional::CONDITION_CONTAINSERRORS &&
-            $conditional->getConditionType() !== Conditional::CONDITION_NOTCONTAINSERRORS
-        ) {
-            throw new Exception('Conditional is not an Errors CF Rule conditional');
-        }
+	public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
+	{
+		if (
+			$conditional->getConditionType() !== Conditional::CONDITION_CONTAINSERRORS &&
+			$conditional->getConditionType() !== Conditional::CONDITION_NOTCONTAINSERRORS
+		) {
+			throw new Exception('Conditional is not an Errors CF Rule conditional');
+		}
 
-        $wizard = new self($cellRange);
-        $wizard->style = $conditional->getStyle();
-        $wizard->stopIfTrue = $conditional->getStopIfTrue();
-        $wizard->inverse = $conditional->getConditionType() === Conditional::CONDITION_CONTAINSERRORS;
+		$wizard = new self($cellRange);
+		$wizard->style = $conditional->getStyle();
+		$wizard->stopIfTrue = $conditional->getStopIfTrue();
+		$wizard->inverse = $conditional->getConditionType() === Conditional::CONDITION_CONTAINSERRORS;
 
-        return $wizard;
-    }
+		return $wizard;
+	}
 
-    /**
-     * @param string $methodName
-     * @param mixed[] $arguments
-     */
-    public function __call($methodName, $arguments): self
-    {
-        if (!array_key_exists($methodName, self::OPERATORS)) {
-            throw new Exception('Invalid Operation for Errors CF Rule Wizard');
-        }
+	/**
+	 * @param string $methodName
+	 * @param mixed[] $arguments
+	 */
+	public function __call($methodName, $arguments): self
+	{
+		if (!array_key_exists($methodName, self::OPERATORS)) {
+			throw new Exception('Invalid Operation for Errors CF Rule Wizard');
+		}
 
-        $this->inverse(self::OPERATORS[$methodName]);
+		$this->inverse(self::OPERATORS[$methodName]);
 
-        return $this;
-    }
+		return $this;
+	}
 }

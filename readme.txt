@@ -13,7 +13,7 @@ Embed beautiful and feature-rich tables into your posts and pages, without havin
 
 == Description ==
 
-TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, so no coding is necessary. Tables can contain any type of data, even formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
+TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
 = More information =
 Please visit the plugin website at [tablepress.org](https://tablepress.org/) for more information or a [demo](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
@@ -34,7 +34,13 @@ If you like TablePress, please rate and review it here in the WordPress Plugin D
 
 == Installation ==
 
-The easiest way to install TablePress is via your WordPress Dashboard. Go to the "Plugins" screen, click "Add New", and search for "TablePress" in the WordPress Plugin Directory. Then, click "Install Now" and wait a moment. Finally, click "Activate" and start using the plugin!
+The easiest way to install TablePress is via your WordPress Dashboard:
+
+1. Go to the "Plugins" screen, click "Add New", and search for "TablePress" in the WordPress Plugin Directory.
+1. Click "Install Now" and after that's complete, click "Activate".
+1. Create and manage tables by going to the "TablePress" screen in the admin menu.
+1. To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
+1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
 
 Manual installation works just as for other WordPress plugins:
 
@@ -65,7 +71,7 @@ To make TablePress available in your language, go to the [TablePress translation
 You can follow the development of TablePress more closely in its official [GitHub repository](https://github.com/TablePress/TablePress).
 
 = Where can I get more information? =
-Please visit the [official plugin website](https://tablepress.org/) for the latest information on this plugin, or [follow @TablePress](https://twitter.com/TablePress) on Twitter.
+Visit the plugin website at [tablepress.org](https://tablepress.org/) for the latest information on TablePress or [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
 == Usage ==
 
@@ -73,7 +79,7 @@ After installing the plugin, you can create and manage tables on the "TablePress
 
 To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
 
-After that, you might want to change the styling of the table. You can do this by entering CSS commands into the "Custom CSS" textarea on the "Plugin Options" screen. Some examples for common styling changes can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
+Examples for common styling changes via "Custom CSS" code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table's "Edit" screen.
 
 == Acknowledgements ==
@@ -84,8 +90,7 @@ Thanks to every donor, supporter, and bug reporter!
 
 == License ==
 
-This plugin is Free Software, released and licensed under the GPL, version 2 (https://www.gnu.org/licenses/gpl-2.0.html).
-You may use it free of charge for any purpose.
+This plugin is Free Software, released and licensed under the [GPL, version 2](https://www.gnu.org/licenses/gpl-2.0.html). You may use it free of charge for any purpose.
 
 == Changelog ==
 
@@ -93,34 +98,41 @@ Recent changes are shown below. For earlier changes, please see the [changelog h
 
 = Version 2.0 =
 
-**Completely new “Edit” screen for tables:**
+Besides a fresh and modern look of the TablePress screens, here are the highlights:
 
-* TablePress now has an even more spreadsheet-like user interface that can much better cope with large tables.
+**Completely new “Edit” screen for tables**
+
+* TablePress now has an even more spreadsheet-like user interface that makes working with large tables a breeze.
 * Editing will be much faster: A right-click context menu allows for quick access to the table manipulation tools.
 
-**Block editor support instead of having to deal with Shortcodes:**
+**Block editor support instead of having to deal with Shortcodes**
 
 * The new “TablePress table” block will give you a preview of the table when inserting it into a post or page, for a more intuitive embedding of tables. You won’t even have to remember the table ID, as a table search is included.
 * And if you want, converting existing Shortcodes is just a few clicks away.
 
-**Importing tables is easier and more powerful than ever:**
+**Easier styling of tables with CSS variables**
 
-* Simply drag&drop files, even multiple files at once, even of different formats!
-* No more need to choose the import file format: The auto detection will know if it’s importing a CSV, Excel, HTML, or JSON file.
+* You can now use CSS variables instead of complex CSS selectors for quicker and easier styling changes, in particular of table colors.
+* The CSS selectors in the default CSS have been simplified for higher compatibility with more themes.
+
+**Importing tables is easier and more powerful than ever**
+
+* Simply drag&drop files to import them -- even multiple files at once, even of different formats!
+* No more need to choose the import file format: The auto detection will know if it’s a CSV, Excel, HTML, or JSON file.
 * In addition, more file formats are recognized, like the LibreOffice ODS format.
 * The Excel import is much more powerful: For example, clickable links and simple styling will be recognized and imported!
-* The Replace/Append select box also has a live-search with autocomplete now, which makes finding the right table much faster.
+* The Replace/Append select box also has a live-search with autocomplete now, making finding the right table much faster.
 
-**New formula calculation engine:**
+**New formula calculation engine**
 
-* TablePress now understands many more formulas, just as you know them from Excel.
+* TablePress now understands many more formulas, just as you know them from Excel!
 * The formulas even support text strings now, which enables many new ways of automatically creating table content.
 
-**Behind the scenes:**
+**Behind the scenes**
 
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
-* Automated code compatibility checks and build tools simplify simple chores for easier development.
+* Automated code compatibility checks and build tools simplify chores for easier development.
 * Support for PHP 8.1.
 * TablePress 2.0 requires WordPress 5.8.
 

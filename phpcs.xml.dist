@@ -30,11 +30,11 @@
 	<rule ref="WordPress-Core">
 		<!-- Exclude rules that are not enforced in TablePress. -->
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound"/>
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
-		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
-		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
-		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound"/>
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
 	</rule>
 
@@ -65,17 +65,17 @@
 	</rule>
 
 	<!-- Auto-generated JS build asset files don't follow all whitespace rules. -->
-	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
 	<exclude-pattern>/admin/js/*\.asset\.php</exclude-pattern>
+	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
 
 	<!-- Directories and third party library exclusions. -->
+	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/csstidy/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/freemius/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/autoload\.php</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php</exclude-pattern>
 	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
 	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/autoload.php</exclude-pattern>
-	<exclude-pattern type="relative">^freemius/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/csstidy/*\.php</exclude-pattern>
 </ruleset>

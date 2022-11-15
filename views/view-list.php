@@ -70,12 +70,10 @@ class TablePress_List_View extends TablePress_View {
 		}
 
 		if ( $data['messages']['plugin_update_message'] ) {
-			$message = '<p>' . sprintf( __( 'Please read the <a href="%s">release announcement</a> for more information.', 'tablepress' ), 'https://tablepress.org/news/' ) . '</p>';
+			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/' ) . '</p>';
 
 			if ( tb_tp_fs()->is_free_plan() ) {
 				$message .= '<p>' . sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>';
-				$message .= '<div style="margin:20px 0;height:45px;"><a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener"><img src="' . plugins_url( 'admin/img/wsal-mark.png', TABLEPRESS__FILE__ ) . '" alt="' . sprintf( esc_attr_x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), 'WP Activity Log' ) . '" style="width:46px;height:45px;float:left;margin-right:10px;" /></a>'
-					. '<div style="font-size:14px;font-weight:bold;max-width:530px;padding:5px 0;line-height:normal;">' . sprintf( _x( 'This release of TablePress is supported by %s, the most comprehensive WordPress activity logs plugin.', 'WP Activity Log', 'tablepress' ), '<a href="https://wpactivitylog.com/?utm_source=tablepress&utm_medium=referral&utm_campaign=WSAL" target="_blank" rel="noopener">WP Activity Log</a>' ) . '</div></div>';
 			}
 
 			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
@@ -122,7 +120,11 @@ class TablePress_List_View extends TablePress_View {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<?php
-		$this->print_nav_tab_menu();
+			$this->print_nav_tab_menu();
+		?>
+		<div id="tablepress-body">
+		<hr class="wp-header-end" />
+		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
 			echo $message;
@@ -156,6 +158,7 @@ class TablePress_List_View extends TablePress_View {
 				<br class="clear" />
 			</div>
 		</div>
+		</div>
 		<?php
 	}
 
@@ -168,12 +171,18 @@ class TablePress_List_View extends TablePress_View {
 	 * @param array $box  Information about the text box.
 	 */
 	public function textbox_head( array $data, array $box ) {
-		?>
-		<p>
-			<?php _e( 'This is a list of your tables.', 'tablepress' ); ?>
-			<?php printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) ); ?>
-		</p>
-		<?php
+		echo '<p>';
+		_e( 'This is a list of your tables.', 'tablepress' );
+		echo ' ';
+		// Show the instructions string depending on whether the Block Editor is used on the site or not.
+		if ( $data['use_block_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} else {
+			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
+			echo ' ';
+			_e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' );
+		}
+		echo '</p>';
 	}
 
 	/**
@@ -426,6 +435,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$row_actions = array();
 		if ( $user_can_edit_table ) {
 			$row_actions['edit'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $edit_url, esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Edit', 'tablepress' ) );
+		}
+		if ( ! use_block_editor_for_post_type( 'post' ) ) {
+			$row_actions['shortcode hide-if-no-js'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', '#', esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ), __( 'Show Shortcode', 'tablepress' ) );
 		}
 		if ( $user_can_copy_table ) {
 			$row_actions['copy'] = sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', $copy_url, esc_attr( sprintf( __( 'Copy &#8220;%s&#8221;', 'tablepress' ), $item['name'] ) ), __( 'Copy', 'tablepress' ) );

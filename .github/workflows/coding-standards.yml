@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@e04e1d97f0c0481c6e1ba40f8a538454fe5d7709 # v2.21.2
+        uses: shivammathur/setup-php@1a18b2267f80291a81ca1d33e7c851fe09e7dfc4 # v2.22.0
         with:
           php-version: '8.1'
           coverage: none
@@ -75,11 +75,11 @@ jobs:
           git --version
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
 
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6 # v2.1.0
+        uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6 # v2.2.0
 
       - name: Make Composer packages available globally
         run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
@@ -88,10 +88,11 @@ jobs:
         run: phpcs -i
 
       - name: Check PHP coding standards
+        id: phpcs
         run: phpcs --report-full --report-checkstyle=./phpcs-report.xml
 
       - name: Show PHPCS results in PR/commit
-        if: success() || failure()
+        if: ${{ always() && steps.phpcs.outcome == 'failure' }}
         run: cs2pr ./phpcs-report.xml
 
       - name: Ensure version-controlled files are not modified during the tests
@@ -112,14 +113,14 @@ jobs:
       )
     steps:
       - name: Dispatch workflow run
-        uses: actions/github-script@d4560e157075e2d93aa3022b5b51a42a880f1f93 # v6.3.0
+        uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0 # v6.3.3
         with:
           script: |
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'failed-workflow.yml',
-              ref: '${{ github.ref_name }}',
+              ref: 'main',
               inputs: {
                 run_id: '${{ github.run_id }}'
               }

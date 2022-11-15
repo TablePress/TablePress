@@ -271,9 +271,15 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$body_html = '<div id="tablepress-page"><p>'
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
 				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
-				. __( 'The table features for visitors, like sorting, filtering, and paginatin, are also not available in this preview!', 'tablepress' ) . '<br />'
-				. sprintf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) )
-				. '</p>' . $_render->get_output() . '</div>';
+				. __( 'The table features for visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ) . '<br />';
+			// Show the instructions string depending on whether the Block Editor is used on the site or not.
+			if ( $data['use_block_editor'] ) {
+				$body_html .= sprintf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+			} else {
+				$body_html .= __( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' ) . ' '
+					. __( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' );
+			}
+			$body_html .= '</p>' . $_render->get_output() . '</div>';
 		} else {
 			$head_html = '';
 			$body_html = __( 'The preview could not be loaded.', 'tablepress' );

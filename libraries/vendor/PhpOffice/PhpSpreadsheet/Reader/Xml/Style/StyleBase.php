@@ -6,27 +6,27 @@ use SimpleXMLElement;
 
 abstract class StyleBase
 {
-    protected static function identifyFixedStyleValue(array $styleList, string &$styleAttributeValue): bool
-    {
-        $returnValue = false;
+	protected static function identifyFixedStyleValue(array $styleList, string &$styleAttributeValue): bool
+	{
+		$returnValue = false;
 
-        $styleAttributeValue = strtolower($styleAttributeValue);
-        foreach ($styleList as $style) {
-            if ($styleAttributeValue == strtolower($style)) {
-                $styleAttributeValue = $style;
-                $returnValue = true;
+		$styleAttributeValue = strtolower($styleAttributeValue);
+		foreach ($styleList as $style) {
+			if ($styleAttributeValue == strtolower($style)) {
+				$styleAttributeValue = $style;
+				$returnValue = true;
 
-                break;
-            }
-        }
+				break;
+			}
+		}
 
-        return $returnValue;
-    }
+		return $returnValue;
+	}
 
-    protected static function getAttributes(?SimpleXMLElement $simple, string $node): SimpleXMLElement
-    {
-        return ($simple === null)
-            ? new SimpleXMLElement('<xml></xml>')
-            : ($simple->attributes($node) ?? new SimpleXMLElement('<xml></xml>'));
-    }
+	protected static function getAttributes(?SimpleXMLElement $simple, string $node): SimpleXMLElement
+	{
+		return ($simple === null)
+			? new SimpleXMLElement('<xml></xml>')
+			: ($simple->attributes($node) ?? new SimpleXMLElement('<xml></xml>'));
+	}
 }

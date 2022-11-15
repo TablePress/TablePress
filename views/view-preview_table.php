@@ -57,8 +57,17 @@ class TablePress_Preview_Table_View extends TablePress_View {
 <body>
 <div id="tablepress-page">
 <p>
-		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The table features for visitors, like sorting, filtering, and paginatin, are also not available in this preview!', 'tablepress' ); ?><br />
-		<?php printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) ); ?>
+		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The table features for visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ); ?><br />
+		<?php
+		// Show the instructions string depending on whether the Block Editor is used on the site or not.
+		if ( $this->data['use_block_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} else {
+			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
+			echo ' ';
+			_e( 'Each table has a unique ID that needs to be adjusted in that Shortcode.', 'tablepress' );
+		}
+		?>
 </p>
 		<?php echo $this->data['body_html']; ?>
 </div>

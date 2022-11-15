@@ -11,68 +11,68 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Conditional;
  */
 class Duplicates extends WizardAbstract implements WizardInterface
 {
-    protected const OPERATORS = [
-        'duplicates' => false,
-        'unique' => true,
-    ];
+	protected const OPERATORS = [
+		'duplicates' => false,
+		'unique' => true,
+	];
 
-    /**
-     * @var bool
-     */
-    protected $inverse;
+	/**
+	 * @var bool
+	 */
+	protected $inverse;
 
-    public function __construct(string $cellRange, bool $inverse = false)
-    {
-        parent::__construct($cellRange);
-        $this->inverse = $inverse;
-    }
+	public function __construct(string $cellRange, bool $inverse = false)
+	{
+		parent::__construct($cellRange);
+		$this->inverse = $inverse;
+	}
 
-    protected function inverse(bool $inverse): void
-    {
-        $this->inverse = $inverse;
-    }
+	protected function inverse(bool $inverse): void
+	{
+		$this->inverse = $inverse;
+	}
 
-    public function getConditional(): Conditional
-    {
-        $conditional = new Conditional();
-        $conditional->setConditionType(
-            $this->inverse ? Conditional::CONDITION_UNIQUE : Conditional::CONDITION_DUPLICATES
-        );
-        $conditional->setStyle($this->getStyle());
-        $conditional->setStopIfTrue($this->getStopIfTrue());
+	public function getConditional(): Conditional
+	{
+		$conditional = new Conditional();
+		$conditional->setConditionType(
+			$this->inverse ? Conditional::CONDITION_UNIQUE : Conditional::CONDITION_DUPLICATES
+		);
+		$conditional->setStyle($this->getStyle());
+		$conditional->setStopIfTrue($this->getStopIfTrue());
 
-        return $conditional;
-    }
+		return $conditional;
+	}
 
-    public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
-    {
-        if (
-            $conditional->getConditionType() !== Conditional::CONDITION_DUPLICATES &&
-            $conditional->getConditionType() !== Conditional::CONDITION_UNIQUE
-        ) {
-            throw new Exception('Conditional is not a Duplicates CF Rule conditional');
-        }
+	public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
+	{
+		if (
+			$conditional->getConditionType() !== Conditional::CONDITION_DUPLICATES &&
+			$conditional->getConditionType() !== Conditional::CONDITION_UNIQUE
+		) {
+			throw new Exception('Conditional is not a Duplicates CF Rule conditional');
+		}
 
-        $wizard = new self($cellRange);
-        $wizard->style = $conditional->getStyle();
-        $wizard->stopIfTrue = $conditional->getStopIfTrue();
-        $wizard->inverse = $conditional->getConditionType() === Conditional::CONDITION_UNIQUE;
+		$wizard = new self($cellRange);
+		$wizard->style = $conditional->getStyle();
+		$wizard->stopIfTrue = $conditional->getStopIfTrue();
+		$wizard->inverse = $conditional->getConditionType() === Conditional::CONDITION_UNIQUE;
 
-        return $wizard;
-    }
+		return $wizard;
+	}
 
-    /**
-     * @param string $methodName
-     * @param mixed[] $arguments
-     */
-    public function __call($methodName, $arguments): self
-    {
-        if (!array_key_exists($methodName, self::OPERATORS)) {
-            throw new Exception('Invalid Operation for Errors CF Rule Wizard');
-        }
+	/**
+	 * @param string $methodName
+	 * @param mixed[] $arguments
+	 */
+	public function __call($methodName, $arguments): self
+	{
+		if (!array_key_exists($methodName, self::OPERATORS)) {
+			throw new Exception('Invalid Operation for Errors CF Rule Wizard');
+		}
 
-        $this->inverse(self::OPERATORS[$methodName]);
+		$this->inverse(self::OPERATORS[$methodName]);
 
-        return $this;
-    }
+		return $this;
+	}
 }
