@@ -44,13 +44,13 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		// Undo/Redo.
 		{
 			title: __( 'Undo', 'tablepress' ),
-			shortcut: sprintf( __( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), key ),
 			onclick: obj.undo,
 			disabled: ( -1 === obj.historyIndex ),
 		},
 		{
 			title: __( 'Redo', 'tablepress' ),
-			shortcut: sprintf( __( '%1$sY', 'keyboard shortcut for Redo', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sY', 'keyboard shortcut for Redo', 'tablepress' ), key ),
 			onclick: obj.redo,
 			disabled: ( obj.historyIndex === obj.history.length - 1 ),
 		},
@@ -61,7 +61,7 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		},
 		{
 			title: __( 'Cut', 'tablepress' ),
-			shortcut: sprintf( __( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), key ),
 			onclick() {
 				obj.copy( true ); // Copy highlighted cells.
 				obj.setValue( obj.highlighted, '' );
@@ -69,14 +69,14 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		},
 		{
 			title: __( 'Copy', 'tablepress' ),
-			shortcut: sprintf( __( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), key ),
 			onclick() {
 				obj.copy( true ); // Copy highlighted cells.
 			},
 		},
 		{
 			title: __( 'Paste', 'tablepress' ),
-			shortcut: sprintf( __( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), key ),
 			onclick() {
 				if ( obj.selectedCell ) {
 					window.navigator.clipboard.readText().then( ( text ) => {

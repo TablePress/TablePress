@@ -3,8 +3,6 @@
  *
  * Performs syntax checks for CSS, JS, and JSON files.
  * To run, use "npm install" and "npm run grunt lint" in the main plugin folder.
- * Running just "npm run grunt" will run the "watch" task, which will automatically
- * lint all changed CSS, JS, and JSON files.
  */
 
 /* jshint node: true */
@@ -57,9 +55,6 @@ module.exports = function ( grunt ) {
 					'!vendor/**/*',
 				],
 			},
-			changed: {
-				src: [],
-			},
 		},
 
 		// Validation of JSON files.
@@ -76,9 +71,6 @@ module.exports = function ( grunt ) {
 					'!node_modules/**/*',
 					'!vendor/**/*',
 				],
-			},
-			changed: {
-				src: [],
 			},
 		},
 
@@ -108,9 +100,6 @@ module.exports = function ( grunt ) {
 					'!node_modules/**/*',
 					'!vendor/**/*',
 				],
-			},
-			changed: {
-				src: [],
 			},
 		},
 
@@ -150,29 +139,6 @@ module.exports = function ( grunt ) {
 					'!admin/css/jsuites.css',
 				],
 			},
-			changed: {
-				src: [],
-			},
-		},
-
-		// Watch files for changes.
-		watch: {
-			options: {
-				event: [ 'changed' ],
-				spawn: false,
-			},
-			js: {
-				files: '<%= jshint.all.src %>',
-				tasks: [ 'jshint:changed' ],
-			},
-			json: {
-				files: '<%= jsonlint.all.src %>',
-				tasks: [ 'jsonlint:changed' ],
-			},
-			css: {
-				files: '<%= csslint.all.src %>',
-				tasks: [ 'postcss:changed', 'csslint:changed' ],
-			},
 		},
 	} );
 
@@ -181,17 +147,6 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'lint:css', [ 'postcss:all', 'csslint:all' ] );
 	grunt.registerTask( 'lint', [ 'lint:js', 'lint:css' ] );
 
-	// Make "watch" the default task.
-	grunt.registerTask( 'default', [ 'watch' ] );
-
-	// Add a listener to the "watch" task.
-	//
-	// On "watch", automatically updates the "changed" target for the task configurations,
-	// so that only the changed files are touched by the task.
-	grunt.event.on( 'watch', function ( action, filepath /*, target */ ) {
-		grunt.config( [ 'jshint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'jsonlint', 'changed', 'src' ], filepath );
-		grunt.config( [ 'postcss', 'changed', 'src' ], filepath );
-		grunt.config( [ 'csslint', 'changed', 'src' ], filepath );
-	} );
+	// Make "lint" the default task.
+	grunt.registerTask( 'default', [ 'lint' ] );
 };

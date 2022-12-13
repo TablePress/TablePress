@@ -41,6 +41,19 @@ concurrency:
 
 jobs:
   # Runs the PHPUnit tests for TablePress.
+  #
+  # Performs the following steps:
+  # - Sets up PHP.
+  # - Logs debug information.
+  # - Checks out the WordPress develop repository.
+  # - Checks out the repository.
+  # - Sets up the WordPress unit tests configuration.
+  # - Installs PHPUnit for WP 5.8, if needed.
+  # - Installs Composer dependencies.
+  # - Makes Composer packages available globally.
+  # - Runs the PHPUnit tests.
+  # - Ensures version-controlled files are not modified or deleted.
+
   phpunit:
     name: WP ${{ matrix.wp }}${{ matrix.multisite && ' multisite' || '' }}, PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
@@ -90,18 +103,15 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          tools: composer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Log debug information
         run: |
-          php --version
           composer --version
-          git --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -115,7 +125,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
           path: ${{ env.PLUGIN_DIR }}
 

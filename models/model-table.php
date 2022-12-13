@@ -783,7 +783,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$tables = $this->tables->get();
 		// Need to check new ID candidate in a loop, because a higher ID might already be in use, if a table ID was changed manually.
 		do {
-			$tables['last_id']++;
+			++$tables['last_id'];
 			$last_id_string = (string) $tables['last_id'];
 		} while ( $this->table_exists( $last_id_string ) );
 		$this->tables->update( $tables );

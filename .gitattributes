@@ -43,12 +43,6 @@
 *.yml text
 *.xml.dist text
 
-# Explicitly set CRLF for tablepress.php, *.txt files, and DataTables *.json files
-# to make them easily readable and editable for Windows users.
-/tablepress.php text eol=crlf
-*.txt text eol=crlf
-/i18n/datatables/*.json text eol=crlf
-
 # Explicitly set CRLF for the CRLF test files for the CSV import unit tests.
 /tests/data/import/phpspreadsheet/test-table-comma-crlf.csv text eol=crlf
 /tests/data/import/legacy/test-table-comma-crlf.csv text eol=crlf

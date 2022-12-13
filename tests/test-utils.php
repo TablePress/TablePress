@@ -1,7 +1,15 @@
 <?php
+/**
+ * Tests for basic TablePress utility functions.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
+ */
 
 /**
  * Tests for basic TablePress utility functions.
+ *
  * @package TablePress
  * @subpackage Unit Tests
  * @since 1.1.0

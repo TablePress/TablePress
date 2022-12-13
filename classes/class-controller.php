@@ -140,32 +140,4 @@ abstract class TablePress_Controller {
 		}
 	}
 
-	/**
-	 * Retrieve all information of a WP_Error object as a string.
-	 *
-	 * @since 1.4.0
-	 *
-	 * @param WP_Error $wp_error A WP_Error object.
-	 * @return string All error codes, messages, and data of the WP_Error.
-	 */
-	protected function get_wp_error_string( $wp_error ) {
-		$error_strings = array();
-		$error_codes = $wp_error->get_error_codes();
-		// Reverse order to get latest errors first.
-		$error_codes = array_reverse( $error_codes );
-		foreach ( $error_codes as $error_code ) {
-			$error_strings[ $error_code ] = $error_code;
-			$error_messages = $wp_error->get_error_messages( $error_code );
-			$error_messages = implode( ', ', $error_messages );
-			if ( ! empty( $error_messages ) ) {
-				$error_strings[ $error_code ] .= " ({$error_messages})";
-			}
-			$error_data = $wp_error->get_error_data( $error_code );
-			if ( ! is_null( $error_data ) ) {
-				$error_strings[ $error_code ] .= " [{$error_data}]";
-			}
-		}
-		return implode( ";\n", $error_strings );
-	}
-
 } // class TablePress_Controller

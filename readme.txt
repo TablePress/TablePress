@@ -13,13 +13,12 @@ Embed beautiful and feature-rich tables into your posts and pages, without havin
 
 == Description ==
 
-TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
+TablePress is the most popular and highest rated WordPress table plugin. It allows you to easily create and manage beautiful tables on your website. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
 = More information =
-Please visit the plugin website at [tablepress.org](https://tablepress.org/) for more information or a [demo](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
-= Supporting future development =
-If you like TablePress, please rate and review it here in the WordPress Plugin Directory or support it with your [donation](https://tablepress.org/donate/). Thank you!
+= More information =
+Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
 == Screenshots ==
 
@@ -108,7 +107,7 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 **Block editor support instead of having to deal with Shortcodes**
 
 * The new “TablePress table” block will give you a preview of the table when inserting it into a post or page, for a more intuitive embedding of tables. You won’t even have to remember the table ID, as a table search is included.
-* And if you want, converting existing Shortcodes is just a few clicks away.
+* And if you want, converting existing Shortcodes is just two clicks away.
 
 **Easier styling of tables with CSS variables**
 
@@ -127,13 +126,14 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 
 * TablePress now understands many more formulas, just as you know them from Excel!
 * The formulas even support text strings now, which enables many new ways of automatically creating table content.
+* When exporting tables, potentially dangerous formulas will be escaped, to increase protection against CSV injection attacks.
 
 **Behind the scenes**
 
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
 * Automated code compatibility checks and build tools simplify chores for easier development.
-* Support for PHP 8.1.
+* Support for PHP 8.1 and PHP 8.2.
 * TablePress 2.0 requires WordPress 5.8.
 
 = Version 1.14 =

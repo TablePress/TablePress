@@ -17,10 +17,6 @@ indent_style = tab
 indent_style = space
 indent_size = 2
 
-# User-editable files should have Windows line endings.
-[{tablepress.php,*.txt,i18n/datatables/*.json}]
-end_of_line = crlf
-
 # The CRLF test files for the CSV import unit tests should have Windows line endings.
 [{tests/data/import/phpspreadsheet/test-table-comma-crlf.csv,tests/data/import/legacy/test-table-comma-crlf.csv}]
 end_of_line = crlf

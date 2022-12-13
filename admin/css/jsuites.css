@@ -78,7 +78,6 @@ div[data-before]:before {
 .jupload[data-multiple] img {
 	height: 70px;
 	width: 100px;
-	-o-object-fit: cover;
 	object-fit: cover;
 	margin-right: 5px;
 	margin-bottom: 5px;

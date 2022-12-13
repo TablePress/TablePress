@@ -231,6 +231,7 @@ class TablePress_Render {
 					}
 				}
 				$this->render_options[ "{$action}_{$element}" ] = array_merge( $this->render_options[ "{$action}_{$element}" ], $range_cells );
+
 				/*
 				 * Parse single letters and change from regular numbering to zero-based numbering,
 				 * as rows/columns are indexed from 0 internally, but from 1 externally.
@@ -672,7 +673,7 @@ class TablePress_Render {
 					|| ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] ) // No rowspan out of table foot.
 				) ) {
 					// Increase counter for rowspan in this column.
-					$this->rowspan[ $col_idx ]++;
+					++$this->rowspan[ $col_idx ];
 					// Reset counter for colspan in this row, combined col- and rowspan might be happening.
 					$this->colspan[ $row_idx ] = 1;
 					continue;
@@ -685,7 +686,7 @@ class TablePress_Render {
 					|| ( 1 === $col_idx && $this->render_options['first_column_th'] ) // No colspan into first column head.
 				) ) {
 					// Increase counter for colspan in this row.
-					$this->colspan[ $row_idx ]++;
+					++$this->colspan[ $row_idx ];
 					// Reset counter for rowspan in this column, combined col- and rowspan might be happening.
 					$this->rowspan[ $col_idx ] = 1;
 					continue;

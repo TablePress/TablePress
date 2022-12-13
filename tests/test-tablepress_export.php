@@ -1,7 +1,15 @@
 <?php
+/**
+ * Tests for the TablePress_Export class.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 2.0.0
+ */
 
 /**
  * Tests for the TablePress_Export class.
+ *
  * @package TablePress
  * @subpackage Unit Tests
  * @since 2.0.0
@@ -206,7 +214,10 @@ DATA;
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $file File name to import and compare to the expected table data.
+	 * @param array  $table         Table to export.
+	 * @param string $export_format Export format (CSV, HTML, JSON).
+	 * @param string $csv_delimiter CSV delimiter (semicolon, comma, tab).
+	 * @param string $expected_data Expected exported data.
 	 */
 	public function test_table_export( $table, $export_format, $csv_delimiter, $expected_data ) {
 		$exported_table_data = $this->exporter->export_table( $table, $export_format, $csv_delimiter );

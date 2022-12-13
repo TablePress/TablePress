@@ -216,7 +216,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 * @param string $js_file Path and file name of the DataTables JS library file.
 		 */
 		$js_url = apply_filters( 'tablepress_datatables_js_url', $js_url, $js_file );
-		wp_enqueue_script( 'tablepress-datatables', $js_url, array( 'jquery' ), TablePress::version, true );
+		wp_enqueue_script( 'tablepress-datatables', $js_url, array( 'jquery-core' ), TablePress::version, true );
 	}
 
 	/**
@@ -236,8 +236,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			return;
 		}
 
-		// Storage for the DataTables languages.
-		$datatables_languages = array();
+		// Storage for the DataTables language strings.
+		$datatables_language = array();
 		// Generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters.
 		$commands = array();
 
@@ -245,18 +245,22 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			if ( empty( $table_store['instances'] ) ) {
 				continue;
 			}
+
 			foreach ( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
 
 				// Settle dependencies/conflicts between certain features.
-				if ( false !== $js_options['datatables_scrolly'] ) { // not necessarily a boolean!
+				if ( false !== $js_options['datatables_scrolly'] ) { // datatables_scrolly can be a string, so that the explicit `false` check is needed.
 					// Vertical scrolling and pagination don't work together.
 					$js_options['datatables_paginate'] = false;
 				}
 				// Sanitize, as it may come from a Shortcode attribute.
 				$js_options['datatables_paginate_entries'] = (int) $js_options['datatables_paginate_entries'];
 
-				// DataTables language/translation handling.
+				/*
+				 * DataTables language/translation handling.
+				 */
+
 				/**
 				 * Filters the locale/language for the DataTables JavaScript library.
 				 *
@@ -266,29 +270,66 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 * @param string $table_id The current table ID.
 				 */
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
-				// Only do the expensive language file checks if they haven't been done yet.
-				if ( ! isset( $datatables_languages[ $datatables_locale ] ) ) {
-					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.json";
+
+				// Only load each locale's language file once.
+				if ( ! isset( $datatables_language[ $datatables_locale ] ) ) {
+					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.php";
+
 					/**
-					 * Filters the language file for the DataTables JavaScript library.
+					 * Filters the language file path for the DataTables JavaScript library.
+					 *
+					 * PHP files that return an array and JSON files are supported.
+					 * The JSON file method is deprecated and should no longer be used.
 					 *
 					 * @since 1.0.0
 					 *
-					 * @param string $orig_language_file Language file for the DataTables JS library.
+					 * @param string $orig_language_file Language file path for the DataTables JS library.
 					 * @param string $datatables_locale  Current locale/language for the DataTables JS library.
-					 * @param string $path               Path of the language file.
+					 * @param string $tablepress_abspath Base path of the TablePress plugin.
 					 */
-					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH ); // Make sure to check file_exists( $new_file ) when using this filter!
-					// Load translation if it's not "en_US" (included as the default in DataTables) and the language file exists, or if the filter was used to change the language file.
-					if ( ( 'en_US' !== $datatables_locale && file_exists( $language_file ) )
-						|| ( $orig_language_file !== $language_file ) ) {
-						$datatables_languages[ $datatables_locale ] = $language_file;
+					$language_file = apply_filters( 'tablepress_datatables_language_file', $orig_language_file, $datatables_locale, TABLEPRESS_ABSPATH );
+
+					/*
+					 * Load translation file if it's not "en_US" (included as the default in DataTables)
+					 * or if the filter was used to change the language file, and the language file exists.
+					 * Otherwise, use an empty en_US placeholder, so that the strings are filterable later.
+					 */
+					if ( ( 'en_US' !== $datatables_locale || $orig_language_file !== $language_file ) && file_exists( $language_file ) ) {
+						if ( 0 === substr_compare( $language_file, '.php', -4, 4, false ) ) {
+							$datatables_strings = require $language_file;
+							if ( ! is_array( $datatables_strings ) ) {
+								$datatables_strings = array();
+							}
+						} elseif ( 0 === substr_compare( $language_file, '.json', -5, 5, false ) ) {
+							$datatables_strings = file_get_contents( $language_file );
+							$datatables_strings = json_decode( $datatables_strings, true );
+							// Check if JSON could be decoded.
+							if ( is_null( $datatables_strings ) ) {
+								$datatables_strings = array();
+							}
+							$datatables_strings = (array) $datatables_strings;
+						} else {
+							// The filtered language file exists, but is not a .php or .json file, so don't use it.
+							$datatables_strings = array();
+						}
+					} else {
+						// If no translation file for the defined locale exists or is needed, use "en_US", as that's built-in.
+						$datatables_locale = 'en_US';
+						$datatables_strings = array();
 					}
+
+					/**
+					 * Filters the language strings for the DataTables JavaScript library's features.
+					 *
+					 * @since 2.0.0
+					 *
+					 * @param array  $datatables_strings The language strings for DataTables.
+					 * @param string $datatables_locale  Current locale/language for the DataTables JS library.
+					 */
+					$datatables_language[ $datatables_locale ] = apply_filters( 'tablepress_datatables_language_strings', $datatables_strings, $datatables_locale );
 				}
-				// If translation is registered to have its strings added to the JS, add corresponding parameter to DataTables call.
-				if ( isset( $datatables_languages[ $datatables_locale ] ) ) {
-					$parameters['language'] = '"language":DataTables_language["' . $datatables_locale . '"]';
-				}
+				$parameters['language'] = '"language":DT_language["' . $datatables_locale . '"]';
+
 				// These parameters need to be added for performance gain or to overwrite unwanted default behavior.
 				if ( $js_options['datatables_sort'] ) {
 					// No initial sort.
@@ -296,8 +337,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					// Don't add additional classes, to speed up sorting.
 					$parameters['orderClasses'] = '"orderClasses":false';
 				}
+
 				// Alternating row colors is default, so remove them if not wanted with [].
 				$parameters['stripeClasses'] = '"stripeClasses":' . ( ( $js_options['alternating_row_colors'] ) ? '["even","odd"]' : '[]' );
+
 				// The following options are activated by default, so we only need to "false" them if we don't want them, but don't need to "true" them if we do.
 				if ( ! $js_options['datatables_sort'] ) {
 					$parameters['ordering'] = '"ordering":false';
@@ -377,7 +420,13 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				if ( ! empty( $command ) ) {
 					$commands[] = $command;
 				}
-			}
+			} // foreach table instance
+		} // foreach table ID
+
+		// DataTables language/translation handling.
+		if ( ! empty( $datatables_language ) ) {
+			$datatables_language = wp_json_encode( $datatables_language, JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT );
+			$datatables_language = "var DT_language={$datatables_language};\n";
 		}
 
 		$commands = implode( "\n", $commands );
@@ -391,18 +440,6 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		$commands = apply_filters( 'tablepress_all_datatables_commands', $commands );
 		if ( empty( $commands ) ) {
 			return;
-		}
-
-		// DataTables language/translation handling.
-		$datatables_strings = '';
-		foreach ( $datatables_languages as $locale => $language_file ) {
-			$strings = file_get_contents( $language_file );
-			// Remove unnecessary white space.
-			$strings = str_replace( array( "\n", "\r", "\t" ), '', $strings );
-			$datatables_strings .= "DataTables_language[\"{$locale}\"]={$strings};\n";
-		}
-		if ( ! empty( $datatables_strings ) ) {
-			$datatables_strings = "var DataTables_language={};\n" . $datatables_strings;
 		}
 
 		$script_type_attr = current_theme_supports( 'html5', 'script' ) ? '' : ' type="text/javascript"';
@@ -422,7 +459,7 @@ JS;
 		 * @param string $js_wrapper Default script/jQuery wrapper code for the DataTables commands calls.
 		 */
 		$js_wrapper = apply_filters( 'tablepress_all_datatables_commands_wrapper', $js_wrapper );
-		printf( $js_wrapper, $datatables_strings, $commands, $script_type_attr );
+		printf( $js_wrapper, $datatables_language, $commands, $script_type_attr );
 
 		// Prevent repeated execution (which would lead to DataTables error messages) via a static variable.
 		$datatables_calls_printed = true;
@@ -544,7 +581,7 @@ JS;
 				'instances' => array(),
 			);
 		}
-		$this->shown_tables[ $table_id ]['count']++;
+		++$this->shown_tables[ $table_id ]['count'];
 		$count = $this->shown_tables[ $table_id ]['count'];
 		$render_options['html_id'] = "tablepress-{$table_id}";
 		if ( $count > 1 ) {

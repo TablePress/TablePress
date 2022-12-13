@@ -1,5 +1,0 @@
-TablePress uses the "Translate WordPress" platform at https://translate.wordpress.org/.
-Just go to https://translate.wordpress.org/projects/wp-plugins/tablepress, log in
-with a free wordpress.org account and start translating TablePress into your language.
-
-Thank you!

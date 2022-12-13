@@ -45,8 +45,10 @@ class TablePress_WP_Option {
 	 * @since 1.0.0
 	 *
 	 * @param array $params {
+	 *     An array of Option parameters.
+	 *
 	 *     @type string $option_name   Name of the Option.
-	 *     @type array  $default_value Default values for the Option.
+	 *     @type array  $default_value Default values for the Option, as an array.
 	 * }
 	 */
 	public function __construct( array $params ) {

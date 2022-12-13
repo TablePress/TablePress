@@ -272,7 +272,7 @@ class EvalMath {
 	 */
 	protected function nfx( $expression ) {
 		$index = 0;
-		$stack = new EvalMath_Stack;
+		$stack = new EvalMath_Stack();
 		$output = array(); // postfix form of expression, to be passed to pfx().
 		$expression = trim( strtolower( $expression ) );
 
@@ -299,7 +299,7 @@ class EvalMath {
 			if ( '-' === $op && ! $expecting_operator ) {
 				// Put a negation on the stack.
 				$stack->push( '_' );
-				$index++;
+				++$index;
 			} elseif ( '_' === $op ) {
 				// We have to explicitly deny underscores (as they mean negation), because they are legal on the stack.
 				return $this->raise_error( 'illegal_character_underscore' );
@@ -310,7 +310,7 @@ class EvalMath {
 				if ( $ex ) {
 					// It's an implicit multiplication.
 					$op = '*';
-					$index--;
+					--$index;
 				}
 				// Heart of the algorithm: .
 				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
@@ -320,7 +320,7 @@ class EvalMath {
 				}
 				// Many thanks: https://en.wikipedia.org/wiki/Reverse_Polish_notation .
 				$stack->push( $op ); // Finally put OUR operator onto the stack.
-				$index++;
+				++$index;
 				$expecting_operator = false;
 
 				// Ready to close a parenthesis?
@@ -371,7 +371,7 @@ class EvalMath {
 						return $this->raise_error( 'internal_error' );
 					}
 				}
-				$index++;
+				++$index;
 
 				// Did we just finish a function argument?
 			} elseif ( ',' === $op && $expecting_operator ) {
@@ -393,12 +393,12 @@ class EvalMath {
 				$stack->push( $stack->pop() + 1 );
 				// Put the ( back on, we'll need to pop back to it again.
 				$stack->push( '(' );
-				$index++;
+				++$index;
 				$expecting_operator = false;
 
 			} elseif ( '(' === $op && ! $expecting_operator ) {
 				$stack->push( '(' ); // That was easy.
-				$index++;
+				++$index;
 
 				// Do we now have a function/variable/number?
 			} elseif ( $ex && ! $expecting_operator ) {
@@ -448,7 +448,7 @@ class EvalMath {
 					}
 					// Send function to output.
 					$output[] = array( 'function_name' => $function_name, 'arg_count' => 0 );
-					$index++;
+					++$index;
 					$expecting_operator = true;
 				} else {
 					return $this->raise_error( 'unexpected_closing_bracket' );
@@ -474,7 +474,7 @@ class EvalMath {
 
 			// Step the index past whitespace (pretty much turns whitespace into implicit multiplication if no operator is there).
 			while ( ' ' === substr( $expression, $index, 1 ) ) {
-				$index++;
+				++$index;
 			}
 		} // while ( true )
 
@@ -505,7 +505,7 @@ class EvalMath {
 			return false;
 		}
 
-		$stack = new EvalMath_Stack;
+		$stack = new EvalMath_Stack();
 
 		foreach ( $tokens as $token ) {
 			// If the token is a function, pop arguments off the stack, hand them to the function, and push the result back on.
@@ -731,8 +731,7 @@ class EvalMath {
  * @subpackage Formulas
  * @since 1.0.0
  */
-// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
-class EvalMath_Stack {
+class EvalMath_Stack { // phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound,Generic.Classes.OpeningBraceSameLine.ContentAfterBrace
 
 	/**
 	 * The stack.
@@ -759,7 +758,7 @@ class EvalMath_Stack {
 	 */
 	public function push( $value ) {
 		$this->stack[ $this->count ] = $value;
-		$this->count++;
+		++$this->count;
 	}
 
 	/**
@@ -771,7 +770,7 @@ class EvalMath_Stack {
 	 */
 	public function pop() {
 		if ( $this->count > 0 ) {
-			$this->count--;
+			--$this->count;
 			return $this->stack[ $this->count ];
 		}
 		return null;
@@ -801,8 +800,7 @@ class EvalMath_Stack {
  * @subpackage EvalMath
  * @since 1.0.0
  */
-// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
-class EvalMath_Functions {
+class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound,Generic.Classes.OpeningBraceSameLine.ContentAfterBrace
 
 	/**
 	 * Seed for the generation of random numbers.

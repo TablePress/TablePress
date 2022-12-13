@@ -13,7 +13,7 @@
 /**
  * WordPress dependencies.
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _x, sprintf } from '@wordpress/i18n';
 import { doAction as do_action, applyFilters as apply_filters } from '@wordpress/hooks';
 import { buildQueryString } from '@wordpress/url';
 
@@ -311,7 +311,7 @@ tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 
 	// If the "Table Head Row" and Enable Visitor Features" options are enabled, disable merging cells.
 	if ( tp.table.options.table_head && tp.table.options.use_datatables ) {
-		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Enable Visitor Features', 'tablepress' ), __( 'Table Features for Visitors', 'tablepress' ) ) +
+		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Enable Visitor Features', 'tablepress' ), __( 'Table Features for Site Visitors', 'tablepress' ) ) +
 				' ' + __( 'These JavaScript features are not compatible with merged cells.', 'tablepress' );
 		if ( alert_on_error ) {
 			window.alert( error_message.text );
@@ -677,13 +677,18 @@ tp.callbacks.table_preview.process = function ( event ) {
 	// Never follow the link of the Preview button, everything is handled with JS.
 	event.preventDefault();
 
+	let table_name = $( '#table-name' ).value;
+	if ( '' === table_name.trim() ) {
+		table_name = __( '(no name)', 'tablepress' );
+	}
+
 	// Initialize the Table Preview wpdialog.
 	tp.callbacks.table_preview.$dialog = jQuery( '#table-preview' ).wpdialog( {
 		autoOpen: false,
 		width: window.innerWidth - 80,
 		height: window.innerHeight - 80,
 		modal: true,
-		title: sprintf( __( 'Preview of table “%1$s” (ID %2$s)', 'tablepress' ), $( '#table-name' ).value, tp.table.id ),
+		title: sprintf( __( 'Preview of table “%1$s” (ID %2$s)', 'tablepress' ), table_name, tp.table.id ),
 		closeOnEscape: true,
 		buttons: [
 			{
@@ -1165,6 +1170,36 @@ tp.callbacks.merge_cells = function () {
 	tp.helpers.unsaved_changes.set();
 };
 
+/**
+ * Registers keyboard events and triggers corresponding actions by emulating button clicks.
+ *
+ * @param {Event} event Keyboard event.
+ */
+tp.callbacks.keyboard_shortcuts = function ( event ) {
+	// Do nothing if the event was already processed.
+	if ( event.defaultPrevented ) {
+		return;
+	}
+
+	let action = '';
+
+	if ( event.ctrlKey || event.metaKey ) {
+		if ( 80 === event.keyCode ) {
+			// Preview: Ctrl/Cmd + Alt/Option + P.
+			action = 'show-preview';
+		} else if ( 83 === event.keyCode ) {
+			// Save Changes: Ctrl/Cmd + Alt/Option + S.
+			action = 'save-changes';
+		}
+	}
+
+	if ( '' !== action ) {
+		jexcel.current?.edition?.[0].children?.[0].blur();
+		document.querySelector( `#tablepress_edit-buttons-2-submit .button-${ action }` ).click();
+		event.preventDefault();
+	}
+};
+
 /*
  * Initialize Jspreadsheet.
  */
@@ -1337,6 +1372,18 @@ options_meta_boxes.forEach( ( meta_box_id ) => $( meta_box_id ).addEventListener
 
 // Move all "Help" buttons inside the postbox header.
 document.querySelectorAll( '#tablepress-body .button-module-help' ).forEach( ( $button ) => ( $button.closest( '.postbox' ).querySelector( '.handle-actions' ).prepend( $button ) ) );
+
+// Register keyboard shortcut handler.
+window.addEventListener( 'keydown', tp.callbacks.keyboard_shortcuts, true );
+
+// Add keyboard shortcuts as title attributes to "Preview" and "Save Changes" buttons, with correct modifier key for Mac/non-Mac.
+const modifier_key = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
+	_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
+	_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
+document.querySelectorAll( 'p.submit .button' ).forEach( ( $button ) => {
+	const shortcut = sprintf( $button.dataset.shortcut, modifier_key ); // eslint-disable-line @wordpress/valid-sprintf
+	$button.title = sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), shortcut );
+} );
 
 // This code requires jQuery, and it must run when the DOM is ready. Therefore, move it outside of the main function.
 jQuery( function () {

@@ -27,7 +27,9 @@ require_once $wp_tests_dir . 'includes/functions.php';
 
 define( 'TABLEPRESS_TESTS_DATA_DIR', dirname( __DIR__ ) . '/tests/data/' );
 
-// Activates TablePress in WordPress so it can be tested.
+/**
+ * Activates TablePress in WordPress so it can be tested.
+ */
 function tablepress_tests_init() {
 	require dirname( __DIR__ ) . '/tablepress.php';
 }
@@ -37,6 +39,7 @@ require $wp_tests_dir . 'includes/bootstrap.php';
 
 /**
  * TablePress Unit Testing Testcase class.
+ *
  * @package TablePress
  * @subpackage Unit Tests
  * @since 1.1.0

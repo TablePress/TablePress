@@ -70,8 +70,9 @@ $position: "after" !default;
 	float: $align-side-opposite;
 	white-space: nowrap;
 
-	input {
+	label input {
 		margin-#{$align-side}: 0.5em;
+		margin-#{$align-side-opposite}: 0;
 	}
 }
 

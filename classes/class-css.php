@@ -34,7 +34,7 @@ class TablePress_CSS {
 
 		// Sanitization and not just tidying for users without enough privileges.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			$csstidy->optimise = new TablePress_CSSTidy_custom_sanitize( $csstidy );
+			$csstidy->optimise = new TablePress_CSSTidy_optimise( $csstidy );
 
 			// Let "arrows" survive, otherwise this might be recognized as the beginning of an HTML tag and removed with other stuff behind it.
 			$css = str_replace( '<=', '&lt;=', $css );
@@ -77,7 +77,7 @@ class TablePress_CSS {
 	 */
 	public function minify_css( $css ) {
 		$csstidy = TablePress::load_class( 'TablePress_CSSTidy', 'class.csstidy.php', 'libraries/csstidy' );
-		$csstidy->optimise = new TablePress_CSSTidy_custom_sanitize( $csstidy );
+		$csstidy->optimise = new TablePress_CSSTidy_optimise( $csstidy );
 		$csstidy->set_cfg( 'remove_bslash', false );
 		$csstidy->set_cfg( 'compress_colors', true );
 		$csstidy->set_cfg( 'compress_font-weight', true );
@@ -242,6 +242,7 @@ class TablePress_CSS {
 		// Start capturing the output, to later prevent it.
 		ob_start();
 		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
+
 		/*
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
@@ -372,6 +373,7 @@ class TablePress_CSS {
 		// Start capturing the output, to later prevent it.
 		ob_start();
 		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
+
 		/*
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?

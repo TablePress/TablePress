@@ -121,7 +121,7 @@ abstract class HTML_Parser {
 			// If all cells in a row should be merged with the cells in the row above, add the trigger word to each of them (should be very rare).
 			while ( isset( $rowspans[ $row_idx ] ) && count( $rowspans[ $row_idx ] ) === count( $rows[ $row_idx - 1 ] ) ) {
 				$rows[] = $rowspans[ $row_idx ];
-				$row_idx++;
+				++$row_idx;
 			}
 
 			$new_row = array();
@@ -130,7 +130,7 @@ abstract class HTML_Parser {
 				// If a cell in a row should be merged with the cell above it, add the trigger word to it.
 				while ( isset( $rowspans[ $row_idx ][ $column_idx ] ) ) {
 					$new_row[] = $rowspans[ $row_idx ][ $column_idx ];
-					$column_idx++;
+					++$column_idx;
 				}
 
 				$cell_xml = $cell->asXml();
@@ -173,23 +173,23 @@ abstract class HTML_Parser {
 					$new_row[] = '';
 				}
 
-				$column_idx++;
+				++$column_idx;
 			}
 
 			// After the last cell in a row: If a cell in a row should be merged with the cell above it, add the trigger word to it.
 			while ( isset( $rowspans[ $row_idx ][ $column_idx ] ) ) {
 				$new_row[] = $rowspans[ $row_idx ][ $column_idx ];
-				$column_idx++;
+				++$column_idx;
 			}
 
 			$rows[] = $new_row;
-			$row_idx++;
+			++$row_idx;
 		}
 
 		// After the last data row: If all cells in a row should be merged with the cells in the row above, add the trigger word to each of them (should be very rare).
 		while ( isset( $rowspans[ $row_idx ] ) && count( $rowspans[ $row_idx ] ) === count( $rows[ $row_idx - 1 ] ) ) {
 			$rows[] = $rowspans[ $row_idx ];
-			$row_idx++;
+			++$row_idx;
 		}
 
 		return $rows;

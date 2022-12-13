@@ -209,8 +209,13 @@ abstract class TablePress_View {
 	 */
 	protected function process_action_messages( array $action_messages ) {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
-			$class = ( 'error' === substr( $this->data['message'], 0, 5 ) ) ? 'notice-error' : 'notice-success';
-			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>", $class );
+			$class = ( 0 === strpos( $this->data['message'], 'error' ) ) ? 'notice-error' : 'notice-success';
+
+			if ( '' !== $this->data['error_details'] ) {
+				$this->data['error_details'] = '</p><p>' . sprintf( __( 'Error code: %s', 'tablepress' ), '<code>' . esc_html( $this->data['error_details'] ) . '</code>' );
+			}
+
+			$this->add_header_message( "<strong>{$action_messages[ $this->data['message'] ]}</strong>{$this->data['error_details']}", $class );
 		}
 	}
 

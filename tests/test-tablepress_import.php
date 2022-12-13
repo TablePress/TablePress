@@ -1,7 +1,15 @@
 <?php
+/**
+ * Tests for the TablePress_Import class.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 2.0.0
+ */
 
 /**
  * Tests for the TablePress_Import class.
+ *
  * @package TablePress
  * @subpackage Unit Tests
  * @since 2.0.0

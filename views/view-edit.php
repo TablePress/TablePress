@@ -65,7 +65,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_style( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites' ) );
 		$this->admin_page->enqueue_script( 'jspreadsheet' );
 		$this->admin_page->enqueue_script( 'jsuites', array( 'tablepress-jspreadsheet' ) );
-		$this->admin_page->enqueue_script( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites', 'jquery' ) );
+		$this->admin_page->enqueue_script( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites', 'jquery-core' ) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_text_box( 'buttons-1', array( $this, 'textbox_buttons' ), 'normal' );
@@ -73,7 +73,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( $this, 'postbox_table_data' ), 'normal' );
 		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( $this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( $this, 'postbox_table_options' ), 'normal' );
-		$this->add_meta_box( 'datatables-features', __( 'Table Features for Visitors', 'tablepress' ), array( $this, 'postbox_datatables_features' ), 'normal' );
+		$this->add_meta_box( 'datatables-features', __( 'Table Features for Site Visitors', 'tablepress' ), array( $this, 'postbox_datatables_features' ), 'normal' );
 		$this->add_text_box( 'hidden-containers', array( $this, 'textbox_hidden_containers' ), 'additional' );
 		$this->add_text_box( 'buttons-2', array( $this, 'textbox_buttons' ), 'additional' );
 		$this->add_text_box( 'other-actions', array( $this, 'textbox_other_actions' ), 'submit' );
@@ -315,12 +315,12 @@ JS;
 	public function textbox_buttons( array $data, array $box ) {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 
-		echo '<p class="submit">';
+		echo '<p id="' . $box['id'] . '-submit" class="submit">';
 		if ( current_user_can( 'tablepress_preview_table', $data['table']['id'] ) ) {
-			echo '<a href="' . $preview_url . '" class="button button-large button-show-preview" target="_blank">' . __( 'Preview', 'tablepress' ) . '</a>';
+			echo '<a href="' . $preview_url . '" class="button button-large button-show-preview" target="_blank" data-shortcut="' . esc_attr( _x( '%1$sP', 'keyboard shortcut for Preview', 'tablepress' ) ) . '">' . __( 'Preview', 'tablepress' ) . '</a>';
 		}
 		?>
-			<input type="button" class="button button-primary button-large button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" />
+			<input type="button" class="button button-primary button-large button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sS', 'keyboard shortcut for Save Changes', 'tablepress' ) ); ?>" />
 		<?php
 		echo '</p>';
 	}
@@ -396,7 +396,7 @@ JS;
 		. ' ' . __( 'Combining consecutive cells within the same column is called &#8220;rowspanning&#8221;.', 'tablepress' ) . '</p>';
 		echo '<p>' . sprintf( __( 'To combine adjacent cells, select the desired cells and click the “%s” button or use the context menu.', 'tablepress' ), __( 'Combine/Merge', 'tablepress' ) )
 		. ' ' . __( 'The corresponding keywords, <code>#colspan#</code> and <code>#rowspan#</code>, will then be added for you.', 'tablepress' ) . '</p>';
-		echo '<p><strong>' . __( 'Be aware that the table features for visitors, like sorting, filtering, and pagination, will not work on tables which have combined cells.', 'tablepress' ) . '</strong></p>';
+		echo '<p><strong>' . __( 'Be aware that the Table Features for Site Visitors, like sorting, filtering, and pagination, will not work on tables which have combined cells.', 'tablepress' ) . '</strong></p>';
 		?>
 </div>
 		<?php
@@ -458,7 +458,7 @@ JS;
 	}
 
 	/**
-	 * Print the content of the "Table Features for Visitors" post meta box.
+	 * Print the content of the "Table Features for Site Visitors" post meta box.
 	 *
 	 * @since 1.0.0
 	 *
@@ -471,7 +471,7 @@ JS;
 <table class="tablepress-postbox-table fixed">
 	<tr class="bottom-border">
 		<th class="column-1" scope="row"><?php _e( 'Enable Visitor Features', 'tablepress' ); ?>:</th>
-		<td class="column-2"><label for="option-use_datatables"><input type="checkbox" id="option-use_datatables" name="use_datatables" /> <?php _e( 'Use the following functions for visitors with this table:', 'tablepress' ); ?></label></td>
+		<td class="column-2"><label for="option-use_datatables"><input type="checkbox" id="option-use_datatables" name="use_datatables" /> <?php _e( 'Offer the following functions for site visitors with this table:', 'tablepress' ); ?></label></td>
 	</tr>
 	<tr class="top-border">
 		<th class="column-1" scope="row"><?php _e( 'Sorting', 'tablepress' ); ?>:</th>

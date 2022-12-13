@@ -1,7 +1,15 @@
 <?php
+/**
+ * Tests for the EvalMath class.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.5.0
+ */
 
 /**
  * Tests for the EvalMath class.
+ *
  * @package TablePress
  * @subpackage Unit Tests
  * @since 1.5.0

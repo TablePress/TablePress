@@ -133,11 +133,11 @@ class CSV_Parser {
 				if ( ! $enclosed || $next_char !== $this->enclosure ) {
 					$enclosed = ! $enclosed; // Flip bool.
 				} elseif ( $enclosed ) {
-					$i++; // Skip next character.
+					++$i; // Skip next character.
 				}
 			} elseif ( ( "\n" === $curr_char && "\r" !== $prev_char || "\r" === $curr_char ) && ! $enclosed ) {
 				// Reached end of a line.
-				$current_line++;
+				++$current_line;
 				if ( $current_line >= $this->delimiter_search_max_lines ) {
 					break;
 				}
@@ -148,7 +148,7 @@ class CSV_Parser {
 					if ( ! isset( $delimiter_count[ $curr_char ][ $current_line ] ) ) {
 						$delimiter_count[ $curr_char ][ $current_line ] = 0; // Initialize empty.
 					}
-					$delimiter_count[ $curr_char ][ $current_line ]++;
+					++$delimiter_count[ $curr_char ][ $current_line ];
 				}
 			}
 		}
@@ -271,7 +271,7 @@ class CSV_Parser {
 				} elseif ( $next_char === $this->enclosure ) {
 					// Enclosure character within enclosed cell (" encoded as "").
 					$cell_content .= $curr_char;
-					$i++; // Skip next character.
+					++$i; // Skip next character.
 				} elseif ( $next_char !== $delimiter && "\r" !== $next_char && "\n" !== $next_char ) {
 					// for-loop (instead of while-loop) that skips whitespace.
 					for ( $x = ( $i + 1 ); isset( $data[ $x ] ) && '' === ltrim( $data[ $x ], $white_spaces ); $x++ ) {
@@ -307,7 +307,7 @@ class CSV_Parser {
 				$row[ $column ] = ( $was_enclosed ) ? $cell_content : trim( $cell_content );
 				$cell_content = '';
 				$was_enclosed = false;
-				$column++;
+				++$column;
 
 				// End of line.
 				if ( "\n" === $curr_char || "\r" === $curr_char ) {
@@ -317,7 +317,7 @@ class CSV_Parser {
 					$column = 0;
 					if ( "\r" === $curr_char && "\n" === $next_char ) {
 						// Skip next character in \r\n line breaks.
-						$i++;
+						++$i;
 					}
 				}
 			} else {

@@ -47,6 +47,7 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->process_action_messages( array(
 			'error_import' => __( 'Error: The import failed.', 'tablepress' ),
+
 			/*
 			// These are currently unused.
 			'error_no_zip_import'         => __( 'Error: Import of ZIP files is not available on this server.', 'tablepress' ),

@@ -1,7 +1,15 @@
 <?php
+/**
+ * Tests to test that the testing framework is working properly.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 1.1.0
+ */
 
 /**
  * Tests to test that the testing framework is working properly.
+ *
  * @package TablePress
  * @subpackage Unit Tests
  * @since 1.1.0

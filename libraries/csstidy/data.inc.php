@@ -107,6 +107,12 @@ $data['csstidy']['unit_values'] = array(
 	'margin-right',
 	'margin-bottom',
 	'margin-left',
+	'margin-block',
+	'margin-block-start',
+	'margin-block-end',
+	'margin-inline',
+	'margin-inline-start',
+	'margin-inline-end',
 	'max-height',
 	'max-width',
 	'min-height',
@@ -309,6 +315,8 @@ $data['csstidy']['shorthands']['border-color'] = array( 'border-top-color', 'bor
 $data['csstidy']['shorthands']['border-style'] = array( 'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style' );
 $data['csstidy']['shorthands']['border-width'] = array( 'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width' );
 $data['csstidy']['shorthands']['margin'] = array( 'margin-top', 'margin-right', 'margin-bottom', 'margin-left' );
+$data['csstidy']['shorthands']['margin-block'] = array( 'margin-block-start', 'margin-block-end' );
+$data['csstidy']['shorthands']['margin-inline'] = array( 'margin-inline-start', 'margin-inline-end' );
 $data['csstidy']['shorthands']['padding'] = array( 'padding-top', 'padding-right', 'padding-bottom', 'padding-left' );
 
 /**
@@ -503,6 +511,12 @@ $data['csstidy']['all_properties']['margin-bottom'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3
 $data['csstidy']['all_properties']['margin-left'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['margin-right'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['margin-top'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['margin-block'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['margin-block-start'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['margin-block-end'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['margin-inline'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['margin-inline-start'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['margin-inline-end'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['marker-offset'] = 'CSS2.0,CSS3.0';
 $data['csstidy']['all_properties']['marks'] = 'CSS2.0,CSS3.0';
 $data['csstidy']['all_properties']['marquee-direction'] = 'CSS3.0';
@@ -820,5 +834,6 @@ $data['csstidy']['all_properties']['font-variant-numeric'] = 'CSS3.0';
 $data['csstidy']['all_properties']['font-variant-position'] = 'CSS3.0';
 $data['csstidy']['all_properties']['font-variation-settings'] = 'CSS3.0';
 $data['csstidy']['all_properties']['line-height-step'] = 'CSS3.0';
+$data['csstidy']['all_properties']['-webkit-text-fill-color'] = 'CSS3.0';
 
 return $data;

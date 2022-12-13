@@ -10,7 +10,7 @@
 /*
  * Natural Sort algorithm for Javascript - Version 0.8.1 - Released under MIT license
  * Author: Jim Palmer (based on chunking idea from Dave Koelle)
- * See: https://github.com/overset/javascript-natural-sort and http://www.overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
+ * See: https://github.com/overset/javascript-natural-sort and https://overset.com/2008/09/01/javascript-natural-sort-algorithm-with-unicode-support/
  */
 export default function naturalSort( a, b ) {
 	const re = /(^([+\-]?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?(?=\D|\s|$))|^0x[\da-fA-F]+$|\d+)/g,

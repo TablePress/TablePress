@@ -91,7 +91,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 				// Add an error code to the existing WP_Error.
 				$existing_table->add( 'ajax_save_table_load', '', $edit_table['id'] );
-				$error_details = $this->get_wp_error_string( $existing_table );
+				$error_details = TablePress::get_wp_error_string( $existing_table );
 				break;
 			}
 
@@ -101,7 +101,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			|| empty( $edit_table['visibility'] ) ) {
 				// Create a new WP_Error.
 				$empty_data_error = new WP_Error( 'ajax_save_table_data_empty', '', $edit_table['id'] );
-				$error_details = $this->get_wp_error_string( $empty_data_error );
+				$error_details = TablePress::get_wp_error_string( $empty_data_error );
 				break;
 			}
 			$edit_table['data'] = (array) json_decode( $edit_table['data'], true );
@@ -113,7 +113,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			if ( is_wp_error( $table ) ) {
 				// Add an error code to the existing WP_Error.
 				$table->add( 'ajax_save_table_prepare', '', $edit_table['id'] );
-				$error_details = $this->get_wp_error_string( $table );
+				$error_details = TablePress::get_wp_error_string( $table );
 				break;
 			}
 
@@ -127,7 +127,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			if ( is_wp_error( $saved ) ) {
 				// Add an error code to the existing WP_Error.
 				$saved->add( 'ajax_save_table_save', '', $table['id'] );
-				$error_details = $this->get_wp_error_string( $saved );
+				$error_details = TablePress::get_wp_error_string( $saved );
 				break;
 			}
 
@@ -151,7 +151,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 					$message = 'success_save_error_id_change';
 					// Add an error code to the existing WP_Error.
 					$id_changed->add( 'ajax_save_table_id_change', '', $table['new_id'] );
-					$error_details = $this->get_wp_error_string( $id_changed );
+					$error_details = TablePress::get_wp_error_string( $id_changed );
 				}
 			} else {
 				$message = 'success_save_error_id_change';
@@ -271,7 +271,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$body_html = '<div id="tablepress-page"><p>'
 				. __( 'This is a preview of your table.', 'tablepress' ) . ' '
 				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
-				. __( 'The table features for visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ) . '<br />';
+				. __( 'The Table Features for Site Visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ) . '<br />';
 			// Show the instructions string depending on whether the Block Editor is used on the site or not.
 			if ( $data['use_block_editor'] ) {
 				$body_html .= sprintf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );

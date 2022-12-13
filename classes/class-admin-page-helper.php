@@ -81,7 +81,7 @@ class TablePress_Admin_Page {
 
 		if ( ! empty( $script_data ) ) {
 			foreach ( $script_data as $var_name => $var_data ) {
-				$var_data = wp_json_encode( $var_data, TABLEPRESS_JSON_OPTIONS );
+				$var_data = wp_json_encode( $var_data, JSON_FORCE_OBJECT );
 				wp_add_inline_script( "tablepress-{$name}", "const tablepress_{$var_name} = {$var_data};", 'before' );
 			}
 		}

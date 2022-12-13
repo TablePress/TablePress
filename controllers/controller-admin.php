@@ -339,6 +339,7 @@ JS;
 
 		// Changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling.
 		set_current_screen( "tablepress_{$action}" );
+
 		/*
 		 * Set the `$typenow` global to the current CPT ourselves, as `WP_Screen::get()` does not determine the CPT correctly.
 		 * This is necessary as the WP Admin Menu can otherwise highlight wrong entries, see https://github.com/TablePress/TablePress/issues/24.
@@ -351,6 +352,7 @@ JS;
 		$data = array(
 			'view_actions'     => $this->view_actions,
 			'message'          => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
+			'error_details'    => ( ! empty( $_GET['error_details'] ) ) ? $_GET['error_details'] : '',
 			'use_block_editor' => use_block_editor_for_post_type( 'post' ),
 		);
 
@@ -1001,7 +1003,7 @@ JS;
 				$redirect_parameters[ "import_{$import_config['source']}" ] = $import_config[ $import_config['source'] ];
 			}
 			if ( is_wp_error( $import ) ) {
-				$redirect_parameters['error'] = $this->get_wp_error_string( $import );
+				$redirect_parameters['error_details'] = TablePress::get_wp_error_string( $import );
 			}
 			TablePress::redirect( $redirect_parameters );
 		}

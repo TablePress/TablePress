@@ -1,8 +1,8 @@
 # [TablePress](https://tablepress.org/) [![Current TablePress version](https://img.shields.io/wordpress/plugin/v/tablepress.svg)](https://wordpress.org/plugins/tablepress/) [![Number of downloads](https://img.shields.io/wordpress/plugin/dt/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![Number of active installs](https://img.shields.io/wordpress/plugin/installs/tablepress.svg)](https://wordpress.org/plugins/tablepress/advanced/) [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/tablepress.svg)](https://wordpress.org/plugins/tablepress/#reviews) [![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-yellow.svg)](https://www.paypal.me/TobiasBg) [![Become a patron on Patreon](https://img.shields.io/badge/patreon-Sponsor-ff5441)](https://www.patreon.com/TobiasBg) [![PHPUnit Tests](https://github.com/TablePress/TablePress/actions/workflows/phpunit-tests.yml/badge.svg)](https://github.com/TablePress/TablePress/actions/workflows/phpunit-tests.yml) [![Coding Standards](https://github.com/TablePress/TablePress/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/TablePress/TablePress/actions/workflows/coding-standards.yml) [![PHP Compatibility](https://github.com/TablePress/TablePress/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/TablePress/TablePress/actions/workflows/php-compatibility.yml)
 
-TablePress is a plugin for the [WordPress](https://wordpress.org/) publishing platform.
+TablePress is the most popular and highest rated [WordPress](https://wordpress.org/) table plugin.
 
-TablePress allows you to easily create and manage beautiful tables. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
+It allows you to easily create and manage beautiful tables on your website. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
 Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
@@ -30,12 +30,6 @@ Manual installation works just as for other WordPress plugins:
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
 1. To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
 1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
-
-## Supporting future development
-
-If you like the TablePress plugin, please rate and review it in the [WordPress Plugin Directory](https://wordpress.org/support/view/plugin-reviews/tablepress) or support it with your [donation](https://tablepress.org/donate/). Thank you!
-
-[![Donate with PayPal](https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif)](https://www.paypal.me/TobiasBg) [<img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg" alt="Donate with Buy Me A Coffee" height="44">](https://www.buymeacoffee.com/TablePress) [<img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a patron on Patreon" height="44">](https://www.patreon.com/TobiasBg)
 
 ## Frequently Asked Questions
 

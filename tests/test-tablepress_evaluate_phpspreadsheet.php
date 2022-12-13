@@ -1,10 +1,18 @@
 <?php
+/**
+ * Tests for the TablePress_Evaluate_PHPSpreadsheet class.
+ *
+ * @package TablePress
+ * @subpackage Unit Tests
+ * @since 2.0.0
+ */
 
 /**
  * Tests for the TablePress_Evaluate_PHPSpreadsheet class.
+ *
  * @package TablePress
  * @subpackage Unit Tests
- * @since 1.5.0
+ * @since 2.0.0
  *
  * These tests require PHP 7.2 as that's a PHPSpreadsheet requirement.
  *
@@ -15,7 +23,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Instance of the TablePress_Evaluate_PHPSpreadsheet class.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 * @var TablePress_Evaluate_PHPSpreadsheet
 	 */
 	protected $evaluate;
@@ -23,7 +31,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Load the TablePress_Evaluate_PHPSpreadsheet class PHP file once for all tests.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public static function set_up_before_class() {
 		TablePress_TestCase::set_up_before_class();
@@ -33,7 +41,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Set up an instance of the TablePress_Evaluate_PHPSpreadsheet class before every test.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function set_up() {
 		parent::set_up();
@@ -43,7 +51,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Test an empty one-cell table.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function test_empty_one_cell_table() {
 		$table_id = '123';
@@ -56,7 +64,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Test a table without a formula.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function test_table_without_formulas() {
 		$table_id = '123';
@@ -80,7 +88,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Test a table with basic formulas, but no references.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function test_table_with_basic_formulas() {
 		$table_id = '123';
@@ -166,7 +174,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Test a table with formulas and single cell references.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function test_table_with_formulas_and_references() {
 		$table_id = '123';
@@ -193,7 +201,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Test a table with formulas and multiple cell references/ranges.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function test_table_with_formulas_and_reference_ranges() {
 		$table_id = '123';
@@ -214,7 +222,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	/**
 	 * Test error handling for a circle reference.
 	 *
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function test_table_with_formulas_and_circle_reference_error() {
 		$table_id = '123';

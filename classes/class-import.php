@@ -251,7 +251,7 @@ class TablePress_Import {
 		// Actually remove files that are marked as removed (null).
 		$import_files = array_filter(
 			$import_files,
-			function( $file ) {
+			static function( $file ) {
 				return ! is_null( $file );
 			}
 		);
@@ -446,7 +446,7 @@ class TablePress_Import {
 			$valid_import_files = 0;
 			foreach ( $import_files as $file ) {
 				if ( ! isset( $file['error'] ) || ! is_wp_error( $file['error'] ) ) {
-					$valid_import_files++;
+					++$valid_import_files;
 					if ( $valid_import_files > 1 ) {
 						$this->import_config['existing_table'] = '';
 						break;
