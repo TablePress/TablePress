@@ -61,8 +61,8 @@
 	},
 	"scripts": {
 		"compat": [
-			"vendor/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source",
-			"vendor/bin/phpcs --standard=phpcompat-7.2.xml.dist --report=summary,source"
+			"vendor/bin/phpcs --standard=phpcompat.xml.dist",
+			"vendor/bin/phpcs --standard=phpcompat-7.2.xml.dist"
 		],
 		"phpcs": "vendor/bin/phpcs --report=summary,source",
 		"phpcs:errors": "@phpcs -n",

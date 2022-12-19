@@ -21,6 +21,9 @@ export const shortcode_attrs_to_string = ( shortcodeAttrs ) => {
 	let shortcode_attrs_string = Object.entries( shortcodeAttrs.named ).map( ( [ attribute, value ] ) => {
 		let enclose = ''; // Don't enclose values by default.
 
+		// Remove curly quotation marks around a value.
+		value = value.replace( /“([^”]*)”/g, '$1' );
+
 		// Use " as delimiter if value contains whitespace or is empty.
 		if ( /\s/.test( value ) || '' === value ) {
 			enclose = '"';

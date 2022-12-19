@@ -150,6 +150,11 @@ export default function TablePressTableEdit( { attributes, setAttributes } ) {
 									return ' ' + shortcode_attrs_to_string( shortcodeAttrs ) + ' '; // Add spaces around replacement text to have separation to possibly already existing parameters.
 								}
 							);
+							parameters = parameters.replace( /=“([^”]*)”/g, '="$1"' ); // Replace curly quotation marks around a value with normal ones.
+							setAttributes( { parameters } );
+						} }
+						onBlur={ ( event ) => {
+							const parameters = event.target.value.trim(); // Remove leading and trailing whitespace from the parameter string.
 							setAttributes( { parameters } );
 						} }
 					/>

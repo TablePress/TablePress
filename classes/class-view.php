@@ -105,7 +105,7 @@ abstract class TablePress_View {
 		if ( tb_tp_fs()->is_free_plan() ) {
 			$common_content .= '<p>' . sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/tags/tablepress' ) . ' '
 						. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'https://tablepress.org/faq/' ) . '</p>';
-			$common_content .= '<p>' . sprintf( __( 'If you like the plugin, <a href="%1$s"><strong>a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>';
+			$common_content .= '<p><strong>' . sprintf( __( 'More great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. <a href="%s">Go check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/' ) . '</strong></p>';
 		}
 
 		$screen->add_help_tab( array(
@@ -406,6 +406,14 @@ abstract class TablePress_View {
 		?>
 		<div id="tablepress-header" class="header">
 			<h1 class="name"><img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>" /><?php _e( 'TablePress', 'tablepress' ); ?><?php echo tb_tp_fs()->is_plan_or_trial( 'pro', true ) ? ' Pro' : ( tb_tp_fs()->is_plan_or_trial( 'max', true ) ? ' Max' : '' ); ?></h1>
+			<?php if ( tb_tp_fs()->is_free_plan() ) : ?>
+				<div class="buttons">
+					<a href="<?php echo 'https://tablepress.org/premium/'; ?>" class="tablepress-button">
+						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
+						<span class="dashicons dashicons-arrow-right-alt"></span>
+					</a>
+				</div>
+			<?php endif; ?>
 		</div>
 		<nav id="tablepress-nav">
 			<ul class="nav-menu">

@@ -36,7 +36,8 @@ const convertShortcodeTextToBlock = function( content ) {
 	shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
 	const id = shortcodeAttrs.named.id;
 	delete shortcodeAttrs.named.id;
-	const parameters = shortcode_attrs_to_string( shortcodeAttrs );
+	let parameters = shortcode_attrs_to_string( shortcodeAttrs );
+	parameters = parameters.replace( /=“([^”]*)”/g, '="$1"' ); // Replace curly quotation marks around a value with normal ones.
 	return createBlock( block.name, { id, parameters } );
 };
 

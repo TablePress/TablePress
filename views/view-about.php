@@ -156,16 +156,12 @@ class TablePress_About_View extends TablePress_View {
 		<?php _e( 'It is licensed as Free Software under GNU General Public License 2 (GPL 2).', 'tablepress' ); ?>
 	</p>
 	<p>
-		<?php
-		if ( tb_tp_fs()->is_free_plan() ) {
-			printf( __( 'If you like the plugin, <a href="%s"><strong>giving a donation</strong></a> is recommended.', 'tablepress' ), 'https://tablepress.org/donate/' );
-		}
-		?>
 		<?php printf( __( 'Please rate and review the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://wordpress.org/support/view/plugin-reviews/tablepress' ); ?>
 	</p>
 		<?php
 		if ( tb_tp_fs()->is_free_plan() ) {
-			echo '<p>' . __( 'Donations and good ratings allow me to further develop the plugin. Any amount is appreciated! Thanks!', 'tablepress' ) . '</p>';
+			echo '<p><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/' ) . ' '
+			. __( 'The available Pro and Max plans offer user support and many exciting and helpful features for your tables.', 'tablepress' ) . '</strong></p>';
 		}
 		?>
 		<?php
@@ -182,6 +178,12 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_help_support( array $data, array $box ) {
 		if ( tb_tp_fs()->is_free_plan() ) {
 			?>
+		<h4><?php _e( 'Premium Support', 'tablepress' ); ?></h4>
+		<p>
+			<?php _e( 'Users with a valid TablePress Premium license plan are eligible for Priority Email Support, directly from the plugin developer!', 'tablepress' ); ?>
+			<strong><?php printf( __( '<a href="%s">Find out more!</a>', 'tablepress' ), 'https://tablepress.org/premium/' ); ?></strong>
+		</p>
+		<h4><?php _e( 'Community Support for users of the Free version', 'tablepress' ); ?></h4>
 		<p>
 			<?php printf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/support/plugin/tablepress' ); ?>
 			<?php printf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'https://tablepress.org/faq/' ); ?>
@@ -210,7 +212,7 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; TablePress: <?php echo TablePress::version; ?>
 			<br />&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
 			<br />&middot; TablePress table scheme: <?php echo TablePress::table_scheme_version; ?>
-			<br />&middot; Plan: Free
+			<br />&middot; Plan: <?php echo tb_tp_fs()->is_plan_or_trial( 'pro', true ) ? 'Pro' : ( tb_tp_fs()->is_plan_or_trial( 'max', true ) ? 'Max' : 'Free' ); ?>
 			<br />&middot; Plugin installed: <?php echo wp_date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
 			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
 			<br />&middot; Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?>

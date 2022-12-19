@@ -208,7 +208,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 					if ( $value instanceof \TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText ) {
 						$cell_data = $this->parse_rich_text( $value );
 					} else {
-						$cell_data = $value;
+						$cell_data = (string) $value;
 					}
 
 					// Apply data type formatting.
@@ -219,9 +219,15 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 						array( $this, 'format_color' )
 					);
 
-					// Prepend a ' to quoted/escaped formulas (so that they are shown as text). This is currently not supported (at least) for the XLS format.
-					if ( $style->getQuotePrefix() && strlen( $cell_data ) > 1 && '=' === $cell_data[0] ) {
-						$cell_data = "'{$cell_data}";
+					if ( strlen( $cell_data ) > 1 && '=' === $cell_data[0] ) {
+						if ( $style->getQuotePrefix() ) {
+							// Prepend a ' to quoted/escaped formulas (so that they are shown as text). This is currently not supported (at least) for the XLS format.
+							$cell_data = "'{$cell_data}";
+						} else {
+							// Bail early, to not add inline HTML styling around formulas, as they won't work anymore then.
+							$row_data[] = $cell_data;
+							continue;
+						}
 					}
 
 					$cell_has_hyperlink = $worksheet->hyperlinkExists( $cell_reference ) && ! $worksheet->getHyperlink( $cell_reference )->isInternal();

@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.1
-Stable tag: 1.14
+Stable tag: 2.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,10 +15,10 @@ Embed beautiful and feature-rich tables into your posts and pages, without havin
 
 TablePress is the most popular and highest rated WordPress table plugin. It allows you to easily create and manage beautiful tables on your website. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
-= More information =
+**Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)**
 
 = More information =
-Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
+Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/#try). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
 == Screenshots ==
 
@@ -29,7 +29,8 @@ Visit the plugin website at [tablepress.org](https://tablepress.org/) for more i
 5. "Export" screen
 6. "Plugin Options" screen
 7. "About" screen
-8. An example table (as it can be seen on the [TablePress website](https://tablepress.org/demo/))
+8. The “TablePress table” block in the block editor
+9. An example table (as it can be seen on the [TablePress website](https://tablepress.org/demo/))
 
 == Installation ==
 
@@ -56,7 +57,14 @@ Manual installation works just as for other WordPress plugins:
 Many questions, regarding different features or styling, have been answered on the [FAQ page](https://tablepress.org/faq/) on the plugin website.
 
 = Support? =
-For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress#new-post) if you don't find an existing answer. Thank you!
+
+**Premium Support**
+
+Users with a valid TablePress Premium license plan are eligible for Priority Email Support, directly from the plugin developer! [Find out more!](https://tablepress.org/premium/)
+
+**Community Support for users of the Free version**
+
+For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don't find an existing answer. Thank you!
 
 = Requirements? =
 In short: WordPress 5.8 or higher, while the latest version of WordPress is always recommended.
@@ -81,11 +89,7 @@ To insert a table into a post or page, add a "TablePress table" block in the blo
 Examples for common styling changes via "Custom CSS" code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table's "Edit" screen.
 
-== Acknowledgements ==
-
-Special thanks go to [Allan Jardine](https://www.sprymedia.co.uk/) for the [DataTables JavaScript library](https://www.datatables.net/).
-Thanks to all language file translators!
-Thanks to every donor, supporter, and bug reporter!
+**Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)**
 
 == License ==
 
@@ -103,6 +107,7 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 
 * TablePress now has an even more spreadsheet-like user interface that makes working with large tables a breeze.
 * Editing will be much faster: A right-click context menu allows for quick access to the table manipulation tools.
+* A keyboard shortcut for saving changes will save a lot of scrolling.
 
 **Block editor support instead of having to deal with Shortcodes**
 
@@ -127,6 +132,10 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 * TablePress now understands many more formulas, just as you know them from Excel!
 * The formulas even support text strings now, which enables many new ways of automatically creating table content.
 * When exporting tables, potentially dangerous formulas will be escaped, to increase protection against CSV injection attacks.
+
+**Premium versions**
+
+* Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)
 
 **Behind the scenes**
 

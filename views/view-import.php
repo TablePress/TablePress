@@ -47,16 +47,6 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->process_action_messages( array(
 			'error_import' => __( 'Error: The import failed.', 'tablepress' ),
-
-			/*
-			// These are currently unused.
-			'error_no_zip_import'         => __( 'Error: Import of ZIP files is not available on this server.', 'tablepress' ),
-			'error_import_zip_open'       => __( 'Error: The ZIP file could not be opened.', 'tablepress' ),
-			'error_import_zip_content'    => __( 'Error: The data in the ZIP file is invalid.', 'tablepress' ),
-			'error_import_no_existing_id' => __( 'Error: You selected to replace or append to an existing table, but did not select a table.', 'tablepress' ),
-			'error_import_source_invalid' => __( 'Error: The source for the import is invalid or could not be accessed.', 'tablepress' ),
-			'error_import_data'           => __( 'Error: The data for the import is invalid.', 'tablepress' ),
-			*/
 		) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );

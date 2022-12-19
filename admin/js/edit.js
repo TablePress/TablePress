@@ -148,7 +148,7 @@ tp.helpers.options.change = function ( event ) {
 	if ( 'use_datatables' === option_name && tp.table.options.use_datatables && tp.helpers.editor.has_merged_cells() ) {
 		tp.table.options.use_datatables = false;
 		$( '#option-use_datatables' ).checked = false;
-		window.alert( __( 'You can not enable the JavaScript features, because your table contains combined/merged cells.', 'tablepress' ) );
+		window.alert( __( 'You can not enable the Table Features for Site Visitors, because your table contains combined/merged cells.', 'tablepress' ) );
 	}
 
 	do_action( 'tablepress.optionsChange', option_name, property, event );
@@ -312,7 +312,7 @@ tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 	// If the "Table Head Row" and Enable Visitor Features" options are enabled, disable merging cells.
 	if ( tp.table.options.table_head && tp.table.options.use_datatables ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Enable Visitor Features', 'tablepress' ), __( 'Table Features for Site Visitors', 'tablepress' ) ) +
-				' ' + __( 'These JavaScript features are not compatible with merged cells.', 'tablepress' );
+				' ' + __( 'The Table Features for Site Visitors are not compatible with merged cells.', 'tablepress' );
 		if ( alert_on_error ) {
 			window.alert( error_message.text );
 		}
@@ -1194,8 +1194,16 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 	}
 
 	if ( '' !== action ) {
-		jexcel.current?.edition?.[0].children?.[0].blur();
+		// Blur the focussed element to make sure that all change events were triggered.
+		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
+
+		/*
+		 * Emulate a click on the button corresponding to the action.
+		 * This way, things like notices will be shown, compared to directly calling the buttons' callbacks.
+		 */
 		document.querySelector( `#tablepress_edit-buttons-2-submit .button-${ action }` ).click();
+
+		// Prevent the browser's native handling of the shortcut, i.e. showing the Save or Print dialogs.
 		event.preventDefault();
 	}
 };

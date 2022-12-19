@@ -178,6 +178,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 			array( "Cell comment<div class=\"comment\">Microsoft Office User:\nComment text</div>", 'CO<span style="color:#000000;"><strong><sub>2</sub></strong></span><span style="color:#000000;"> subscript bold</span>', 'center aligned', '' ),
 			array( '<span style="color:#FF0000;">red text <span style="color:#FFFF00;">yellow text</span></span>', 'H<span style="color:#000000;"><sub>2</sub></span><span style="color:#000000;">O</span>', 'left aligned', '' ),
 			array( '', 'H<span style="color:#000000;"><sub>2</sub></span><span style="color:#000000;">O </span><span style="color:#00FA00;">green</span>', '<span style="color:#0432FF;">H<span style="color:#0432FF;"><sub>2</sub></span><span style="color:#0432FF;">O </span><span style="color:#FF2600;">gr</span><span style="color:#000000;">e</span><span style="color:#FF2600;">en</span></span>', '' ),
+			array( '1', '2', 'Styled formula does not get inline HTML after import', '=A61+B61' ),
 		);
 
 		$this->assertSame( $expected_table_data, $imported_table_data );

@@ -46,6 +46,11 @@ class TablePress_List_View extends TablePress_View {
 		if ( $data['messages']['first_visit'] ) {
 			$message = '<p><strong style="font-size:14px;">' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>';
 			$message .= '<p>' . sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p>';
+
+			if ( tb_tp_fs()->is_free_plan() ) {
+				$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'More great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. <a href="%s">Go check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/' ) . '</strong></p>';
+			}
+
 			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
 			$title = '<em>' . __( 'Welcome!', 'tablepress' ) . '</em>';
@@ -54,17 +59,22 @@ class TablePress_List_View extends TablePress_View {
 		}
 
 		if ( $data['messages']['donation_message'] ) {
-			$message = '<p><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=110" height="110" width="110" style="float:left;margin:2px 10px 30px 0;" />'
+			$message = '<p><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=125" height="125" width="125" style="float:left;margin:2px 10px 30px 0;" />'
 				. __( 'Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin.', 'tablepress' ) . '</p>';
-			$message .= '<p>' . __( 'Thanks for using it! You&#8217;ve installed TablePress over a month ago.', 'tablepress' ) . ' '
-				. sprintf( _n( 'If everything works and you are satisfied with the results of managing your %s table, isn&#8217;t that worth a coffee or two?', 'If everything works and you are satisfied with the results of managing your %s tables, isn&#8217;t that worth a coffee or two?', $data['table_count'], 'tablepress' ), esc_html( $data['table_count'] ) ) . '<br />'
-				. sprintf( __( '<a href="%s">Donations</a> help me to continue development of this open-source software &mdash; things for which I spend countless hours of my time! Thank you very much!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>';
+			$message .= '<p>' . __( 'Thank you for using it!', 'tablepress' ) . ' ';
+			if ( $data['table_count'] > 0 ) {
+				$message .= sprintf( _n( 'I hope that everything works and that you are satisfied with the results of managing your %s table.', 'I hope that everything works and that you are satisfied with the results of managing your %s tables.', $data['table_count'], 'tablepress' ), $data['table_count'] );
+			} else {
+				$message .= sprintf( __( 'It looks like you haven’t added a table yet. If you need help to get started, please find more information in the FAQ and Documentation on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'https://tablepress.org/' );
+			}
+			$message .= '</p>';
+			$message .= '<p><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/' ) . ' '
+				. __( 'The available Pro and Max plans offer user support and many exciting and helpful features for your tables.', 'tablepress' ) . '</strong></p>';
 			$message .= '<p>' . __( 'Sincerely, Tobias', 'tablepress' ) . '</p>';
-			$message .= '<p style="font-size:14px;">' . sprintf( '<a href="%s" class="button" target="_blank" rel="noopener"><strong>%s</strong></a>', 'https://tablepress.org/donate/', __( 'Sure, I&#8217;ll buy you a coffee and support TablePress!', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'already-donated', 'class' => 'button' ), __( 'I already donated.', 'tablepress' ) ) . '&nbsp;&nbsp;&nbsp;'
-				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list', 'target' => 'maybe-later', 'class' => 'button' ), __( 'No, thanks. Don&#8217;t ask again.', 'tablepress' ) ) . '</p>';
+			$message .= '<p>' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:1em"><strong>%s</strong><span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/premium/', __( 'Tell me more about the Premium features', 'tablepress' ) )
+				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
-			$title = '<em>' . __( 'TablePress needs you!', 'tablepress' ) . '</em>';
+			$title = '<em>' . __( 'TablePress has more to offer!', 'tablepress' ) . '</em>';
 
 			$this->add_header_message( $message, 'notice-success not-dismissible', $title );
 		}
@@ -73,7 +83,7 @@ class TablePress_List_View extends TablePress_View {
 			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/' ) . '</p>';
 
 			if ( tb_tp_fs()->is_free_plan() ) {
-				$message .= '<p>' . sprintf( __( 'If you like the new features and enhancements, <a href="%s">giving a donation</a> towards the further support and development of TablePress is recommended. Thank you!', 'tablepress' ), 'https://tablepress.org/donate/' ) . '</p>';
+				$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'More great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. <a href="%s">Go check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/' ) . '</strong></p>';
 			}
 
 			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
@@ -235,32 +245,6 @@ class TablePress_List_View extends TablePress_View {
 		$item = esc_attr( $params['item'] );
 		$target = isset( $params['target'] ) ? esc_attr( $params['target'] ) : '';
 		return "<a class=\"{$class}\" href=\"{$url}\" data-action=\"{$action}\" data-item=\"{$item}\" data-target=\"{$target}\">{$text}</a>";
-	}
-
-	/**
-	 * Sets the content for the WP feature pointer that pointer to the "Modules" nav tab (visible for premium users only).
-	 *
-	 * @since 2.0.0
-	 */
-	public function wp_pointer_tp20_modules_nav_tab__premium_only() {
-		$plan = tb_tp_fs()->is_plan_or_trial( 'pro', true ) ? 'Pro' : ( tb_tp_fs()->is_plan_or_trial( 'max', true ) ? 'Max' : '' );
-
-		if ( '' !== $plan ) {
-			$content  = '<h3>' . sprintf( __( 'Welcome to TablePress %s!', 'tablepress' ), $plan ) . '</h3>';
-			$content .= '<p>' . __( 'Thank you for upgrading!', 'tablepress' ) . ' ' . sprintf( __( 'To activate the desired premium feature modules, please go to the “%s” screen.', 'tablepress' ), __( 'Modules', 'tablepress' ) ) . '</p>';
-		} else {
-			$content  = '<h3>' . sprintf( __( 'Welcome to TablePress!', 'tablepress' ), $plan ) . '</h3>';
-			$content .= '<p>' . __( 'TablePress has more to offer!', 'tablepress' ) . ' ' . sprintf( __( 'To see the available premium feature modules, please go to the “%s” screen.', 'tablepress' ), __( 'Modules', 'tablepress' ) ) . '</p>';
-		}
-
-		$this->admin_page->print_wp_pointer_js(
-			'tp20_modules_nav_tab__premium_only',
-			'#tablepress-nav-item-modules',
-			array(
-				'content'  => $content,
-				'position' => array( 'edge' => 'top', 'align' => 'left' ),
-			)
-		);
 	}
 
 } // class TablePress_List_View

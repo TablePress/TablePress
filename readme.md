@@ -4,7 +4,9 @@ TablePress is the most popular and highest rated [WordPress](https://wordpress.o
 
 It allows you to easily create and manage beautiful tables on your website. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
 
-Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
+**Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)**
+
+Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/#try). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
 
 ## Screenshots and Demo
 
@@ -39,7 +41,13 @@ Many questions, regarding different features or styling, have been answered on t
 
 **Support?**
 
-For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress#new-post) if you don't find an existing answer. Thank you!
+*Premium Support*
+
+Users with a valid TablePress Premium license plan are eligible for Priority Email Support, directly from the plugin developer! [Find out more!](https://tablepress.org/premium/)
+
+*Community Support for users of the Free version*
+
+For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don't find an existing answer. Thank you!
 
 **Requirements?**
 
@@ -60,11 +68,7 @@ To insert a table into a post or page, add a "TablePress table" block in the blo
 Examples for common styling changes via "Custom CSS" code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table's "Edit" screen.
 
-## Acknowledgements
-
-Special thanks go to [Allan Jardine](https://www.sprymedia.co.uk/) for the [DataTables JavaScript library](https://www.datatables.net/).
-
-Thanks to all language file translators! Thanks to every donor, supporter, and bug reporter!
+**Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)**
 
 ## License
 
