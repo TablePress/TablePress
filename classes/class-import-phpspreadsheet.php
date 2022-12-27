@@ -312,7 +312,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 			return $table;
 		} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception $exception ) {
-			return new WP_Error( 'table_import_phpspreadsheet_failed', '', array( 'exception' => $exception->getMessage() ) );
+			return new WP_Error( 'table_import_phpspreadsheet_failed', '', 'Exception: ' . $exception->getMessage() );
 		}
 	}
 

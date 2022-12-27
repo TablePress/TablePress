@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	const version = '2.0'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	const version = '2.0.1'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	const db_version = 49; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	const db_version = 50; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -531,6 +531,35 @@ abstract class TablePress {
 			'<strong>Attention:</strong> ' .
 			'The installed version of WordPress is too old for the TablePress plugin! TablePress requires an up-to-date version! <strong>Please <a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">update your WordPress installation</a></strong>!' .
 			"</p></div>\n";
+	}
+
+	/**
+	 * Determines whether the site uses the block editor, so that certain text and input fields referring to Shortcodes can be displayed or not.
+	 *
+	 * @since 2.0.1
+	 *
+	 * @return bool True if the site uses the block editor, false otherwise.
+	 */
+	public static function site_uses_block_editor() {
+		$site_uses_block_editor = use_block_editor_for_post_type( 'post' )
+			&& ! is_plugin_active( 'beaver-builder-lite-version/fl-builder.php' )
+			&& ! is_plugin_active( 'classic-editor/classic-editor.php' )
+			&& ! is_plugin_active( 'classic-editor-addon/classic-editor-addon.php' )
+			&& ! is_plugin_active( 'elementor/elementor.php' )
+			&& ! is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' );
+
+		/**
+		 * Filters the outcome of the check whether the site uses the block editor.
+		 *
+		 * This can be used when certain conditions (e.g. new site builders) are not (yet) accounted for.
+		 *
+		 * @since 2.0.1
+		 *
+		 * @param bool $site_uses_block_editor True if the site uses the block editor, false otherwise.
+		 */
+		$site_uses_block_editor = apply_filters( 'tablepress_site_uses_block_editor', $site_uses_block_editor );
+
+		return $site_uses_block_editor;
 	}
 
 } // class TablePress

@@ -350,10 +350,10 @@ JS;
 
 		// Pre-define some view data.
 		$data = array(
-			'view_actions'     => $this->view_actions,
-			'message'          => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
-			'error_details'    => ( ! empty( $_GET['error_details'] ) ) ? $_GET['error_details'] : '',
-			'use_block_editor' => use_block_editor_for_post_type( 'post' ),
+			'view_actions'           => $this->view_actions,
+			'message'                => ( ! empty( $_GET['message'] ) ) ? $_GET['message'] : false,
+			'error_details'          => ( ! empty( $_GET['error_details'] ) ) ? $_GET['error_details'] : '',
+			'site_uses_block_editor' => TablePress::site_uses_block_editor(),
 		);
 
 		// Depending on the action, load more necessary data for the corresponding view.
@@ -1005,6 +1005,12 @@ JS;
 			}
 			if ( is_wp_error( $import ) ) {
 				$redirect_parameters['error_details'] = TablePress::get_wp_error_string( $import );
+			} elseif ( 0 < count( $import['errors'] ) ) {
+				$wp_error_strings = array();
+				foreach ( $import['errors'] as $file ) {
+					$wp_error_strings[] = TablePress::get_wp_error_string( $file['error'] );
+				}
+				$redirect_parameters['error_details'] = implode( ', ', $wp_error_strings );
 			}
 			TablePress::redirect( $redirect_parameters );
 		}
@@ -1165,10 +1171,10 @@ JS;
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
-			'table_id'         => $table_id,
-			'head_html'        => $_render->get_preview_css(),
-			'body_html'        => $_render->get_output(),
-			'use_block_editor' => use_block_editor_for_post_type( 'post' ),
+			'table_id'               => $table_id,
+			'head_html'              => $_render->get_preview_css(),
+			'body_html'              => $_render->get_output(),
+			'site_uses_block_editor' => TablePress::site_uses_block_editor(),
 		);
 
 		$custom_css = TablePress::$model_options->get( 'custom_css' );

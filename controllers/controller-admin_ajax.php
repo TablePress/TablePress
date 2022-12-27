@@ -273,7 +273,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				. __( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ) . ' '
 				. __( 'The Table Features for Site Visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ) . '<br />';
 			// Show the instructions string depending on whether the Block Editor is used on the site or not.
-			if ( use_block_editor_for_post_type( 'post' ) ) {
+			if ( TablePress::site_uses_block_editor() ) {
 				$body_html .= sprintf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
 			} else {
 				$body_html .= __( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' ) . ' '

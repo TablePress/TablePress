@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.1
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,9 +99,21 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.0 =
+= Version 2.0.1 =
 
-Besides a fresh and modern look of the TablePress screens, here are the highlights:
+TablePress 2.0.1 fixes a few bugs in TablePress 2.0. For more information on the great changes in TablePress 2.0, please see below.
+
+* TablePress will again work correctly when it's “network activated” on WordPress Multisite installations.
+* Issues that some users had with saving changes on the “Edit” screen are fixed.
+* The misalignment between head and body rows when using “Horizontal Scrolling” is fixed.
+* The vertical alignment of elements in table cells is back to its old behavior, due to issues in some themes.
+* No errors should be thrown anymore when the “Table Features for Site Visitors” are active for tables that have combined cells or no head row.
+* The “Shortcode” text field, often used for copy and paste, on the “Edit” is back!
+* More valuable information about errors is given when a table import fails.
+* An issue with the sorting arrow icons showing as weird characters is fixed.
+* No errors should be thrown anymore when required PHP extensions are missing on a server when evaluating math formulas.
+
+Besides a fresh and modern look of the TablePress screens, here are the highlights of TablePress 2.0:
 
 **Completely new “Edit” screen for tables**
 
@@ -159,6 +171,9 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 * Some internal changes for better stability, translations, and documentation.
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.0 =
 This update is a major feature update that brings many cool and new things. Updating is highly recommended.

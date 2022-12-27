@@ -185,7 +185,7 @@ class TablePress_List_View extends TablePress_View {
 		_e( 'This is a list of your tables.', 'tablepress' );
 		echo ' ';
 		// Show the instructions string depending on whether the Block Editor is used on the site or not.
-		if ( $data['use_block_editor'] ) {
+		if ( $data['site_uses_block_editor'] ) {
 			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
 		} else {
 			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );

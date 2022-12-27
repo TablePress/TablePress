@@ -43,7 +43,8 @@ class TablePress_Evaluate {
 		}
 
 		// Use the legacy evaluate class, if the requirements for PHPSpreadsheet Calculations are not fulfilled.
-		$phpspreadsheet_requirements_fulfilled = PHP_VERSION_ID >= 70200;
+		$phpspreadsheet_requirements_fulfilled = PHP_VERSION_ID >= 70200
+			&& extension_loaded( 'mbstring' );
 		if ( ! $phpspreadsheet_requirements_fulfilled ) {
 			return true;
 		}

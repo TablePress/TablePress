@@ -626,43 +626,6 @@ JS;
 		 */
 		$render_options = apply_filters( 'tablepress_table_render_options', $render_options, $table );
 
-		// Eventually add this table to list of tables which have a JS library enabled and thus are to be included in the script's call in the footer.
-		if ( $render_options['use_datatables'] && $render_options['table_head'] && count( $table['data'] ) > 1 ) {
-			// Get options for the DataTables JavaScript library from the table's render options.
-			$js_options = array();
-			foreach ( array(
-				'alternating_row_colors',
-				'datatables_sort',
-				'datatables_paginate',
-				'datatables_paginate',
-				'datatables_paginate_entries',
-				'datatables_lengthchange',
-				'datatables_filter',
-				'datatables_info',
-				'datatables_scrollx',
-				'datatables_scrolly',
-				'datatables_locale',
-				'datatables_custom_commands',
-			) as $option ) {
-				$js_options[ $option ] = $render_options[ $option ];
-			}
-			/**
-			 * Filters the JavaScript options for the table.
-			 *
-			 * The JavaScript options are determined from the settings on a table's "Edit" screen and the Shortcode parameters.
-			 * They are part of the render options and can be overwritten with Shortcode parameters.
-			 *
-			 * @since 1.0.0
-			 *
-			 * @param array  $js_options     The JavaScript options for the table.
-			 * @param string $table_id       The current table ID.
-			 * @param array  $render_options The render options for the table.
-			 */
-			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options );
-			$this->shown_tables[ $table_id ]['instances'][ $render_options['html_id'] ] = $js_options;
-			$this->_enqueue_datatables();
-		}
-
 		// Check if table output shall and can be loaded from the transient cache, otherwise generate the output.
 		if ( $render_options['cache_table_output'] && ! is_user_logged_in() ) {
 			// Hash the Render Options array to get a unique cache identifier.
@@ -701,6 +664,48 @@ JS;
 			// Render/generate the table HTML, as no cache is to be used.
 			$_render->set_input( $table, $render_options );
 			$output = $_render->get_output();
+		}
+
+		// If DataTables is to be and can be used with this instance of a table, process its parameters and register the call for inclusion in the footer.
+		if ( $render_options['use_datatables']
+			&& $render_options['table_head']
+			&& false !== strpos( $output, '<thead' ) // A `<thead>` tag is required.
+			&& false === strpos( $output, ' colspan="' ) // `colspan` attributes are forbidden.
+			&& false === strpos( $output, ' rowspan="' ) // `rowspan` attributes are forbidden.
+			) {
+			// Get options for the DataTables JavaScript library from the table's render options.
+			$js_options = array();
+			foreach ( array(
+				'alternating_row_colors',
+				'datatables_sort',
+				'datatables_paginate',
+				'datatables_paginate',
+				'datatables_paginate_entries',
+				'datatables_lengthchange',
+				'datatables_filter',
+				'datatables_info',
+				'datatables_scrollx',
+				'datatables_scrolly',
+				'datatables_locale',
+				'datatables_custom_commands',
+			) as $option ) {
+				$js_options[ $option ] = $render_options[ $option ];
+			}
+			/**
+			 * Filters the JavaScript options for the table.
+			 *
+			 * The JavaScript options are determined from the settings on a table's "Edit" screen and the Shortcode parameters.
+			 * They are part of the render options and can be overwritten with Shortcode parameters.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param array  $js_options     The JavaScript options for the table.
+			 * @param string $table_id       The current table ID.
+			 * @param array  $render_options The render options for the table.
+			 */
+			$js_options = apply_filters( 'tablepress_table_js_options', $js_options, $table_id, $render_options );
+			$this->shown_tables[ $table_id ]['instances'][ $render_options['html_id'] ] = $js_options;
+			$this->_enqueue_datatables();
 		}
 
 		// Maybe print a list of used render options.

@@ -4,13 +4,13 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 2.0
+ * @version 2.0.1
  *
  *
  * Plugin Name: TablePress
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
- * Version: 2.0
+ * Version: 2.0.1
  * Requires at least: 5.8
  * Requires PHP: 5.6.20
  * Author: Tobias Bäthge
@@ -53,11 +53,6 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 			global $tb_tp_fs;
 
 			if ( ! isset( $tb_tp_fs ) ) {
-				// Activate multisite network integration.
-				if ( ! defined( 'WP_FS__PRODUCT_10340_MULTISITE' ) ) {
-					define( 'WP_FS__PRODUCT_10340_MULTISITE', true );
-				}
-
 				// Include Freemius SDK.
 				require_once __DIR__ . '/libraries/freemius/start.php';
 

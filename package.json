@@ -1,6 +1,6 @@
 {
 	"name": "@tablepress/tablepress",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Embed beautiful and feature-rich tables into your posts and pages, without having to write code.",
 	"author": "Tobias Bäthge",
 	"license": "GPL-2.0-only",
@@ -29,6 +29,7 @@
 		"grunt": "grunt",
 		"prebuild": "grunt lint && wp-scripts lint-js && wp-scripts lint-style",
 		"build": "wp-scripts build",
+		"postbuild": "find ./admin/css/build/ ./css/build/ -type f -name \"*.css\" -exec sed -i '' 's||\\\\f053|g;s||\\\\f054|g;s||\\\\f0dc|g;s||\\\\f0d8|g;s||\\\\f0d7|g;s|●|\\\\25cf|g;s|✓|\\\\2713|g' {} +",
 		"build:block": "wp-scripts build --config-name tablepress-block",
 		"build:css": "wp-scripts build --config-name tablepress-admin-css && wp-scripts build --config-name tablepress-frontend-css",
 		"build:js": "wp-scripts build --config-name tablepress-admin-js",

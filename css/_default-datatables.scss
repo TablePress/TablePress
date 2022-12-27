@@ -175,6 +175,11 @@ $position: "after" !default;
 /* Scrolling */
 .dataTables_scroll {
 	clear: both;
+
+	/* Fix for wrong alignment and width. */
+	.tablepress {
+		width: 100% !important;
+	}
 }
 .dataTables_scrollBody {
 	-webkit-overflow-scrolling: touch;

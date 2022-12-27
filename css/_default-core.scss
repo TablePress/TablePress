@@ -43,7 +43,6 @@ $align-side: left !default;
 	border-collapse: collapse;
 	border-spacing: 0;
 	border: none;
-	vertical-align: top;
 
 	/* General table cell style */
 	> :not(caption) > * > * {
@@ -51,16 +50,8 @@ $align-side: left !default;
 		border: none;
 		background: none;
 		text-align: $align-side;
+		vertical-align: top;
 		float: none !important; /* Work around themes that set `float` on `.column-1` CSS classes and similar. */
-	}
-
-	/* Vertical alignment */
-	> tbody {
-		vertical-align: inherit; /* inherits top from <table> */
-	}
-	> thead,
-	> tfoot {
-		vertical-align: middle;
 	}
 
 	/* Horizontal borders */
@@ -76,6 +67,7 @@ $align-side: left !default;
 		color: var(--head-text-color);
 		font-weight: bold;
 		word-break: normal;
+		vertical-align: middle;
 	}
 	> :where(tbody) {
 		> .odd > * {
