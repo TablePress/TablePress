@@ -95,14 +95,17 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		},
 		{
 			title: __( 'Insert Link', 'tablepress' ),
+			shortcut: sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), key ),
 			onclick: tp.callbacks.insert_link.open_dialog,
 		},
 		{
 			title: __( 'Insert Image', 'tablepress' ),
+			shortcut: sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), key ),
 			onclick: tp.callbacks.insert_image.open_dialog,
 		},
 		{
 			title: __( 'Advanced Editor', 'tablepress' ),
+			shortcut: sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), key ),
 			onclick: tp.callbacks.advanced_editor.open_dialog,
 		},
 
@@ -184,21 +187,25 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 			submenu: [
 				{
 					title: _n( 'Move row up', 'Move rows up', num_selected_rows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), key ),
 					onclick: tp.callbacks.move.bind( null, 'up', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'up' ),
 				},
 				{
 					title: _n( 'Move row down', 'Move rows down', num_selected_rows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), key ),
 					onclick: tp.callbacks.move.bind( null, 'down', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'down' ),
 				},
 				{
 					title: _n( 'Move column left', 'Move columns left', num_selected_columns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ), key ),
 					onclick: tp.callbacks.move.bind( null, 'left', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'left' ),
 				},
 				{
 					title: _n( 'Move column right', 'Move columns right', num_selected_columns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ), key ),
 					onclick: tp.callbacks.move.bind( null, 'right', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'right' ),
 				},

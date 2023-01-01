@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.1
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,9 +99,17 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.0.1 =
+= Version 2.0.2 =
 
-TablePress 2.0.1 fixes a few bugs in TablePress 2.0. For more information on the great changes in TablePress 2.0, please see below.
+TablePress 2.0.2 fixes a few bugs in TablePress 2.0.1 and TablePress 2.0. For more information on the great changes in TablePress 2.0, please see below.
+
+* The “Edit” screen now supports Ctrl/Cmd + L/I/E keyboard shortcuts for the “Insert Link”, “Insert Image”, and “Advanced Editor” buttons, respectively.
+* The “Edit” screen now supports Ctrl/Cmd + Shift + ↑/↓/←/→ keyboard shortcuts for moving the currently selected rows up or down, or the currently selected columns left or right.
+* An error where tables could not be saved was fixed. (TablePress Pro and Max only.)
+* The Fixed Columns module now properly shows multiple fixed columns. (TablePress Pro and Max only.)
+* The integration of the Automatic Periodic Table Import module was fixed. (TablePress Max only.)
+
+TablePress 2.0.1 contains these changes:
 
 * TablePress will again work correctly when it's “network activated” on WordPress Multisite installations.
 * Issues that some users had with saving changes on the “Edit” screen are fixed.
@@ -157,26 +165,13 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 * Support for PHP 8.1 and PHP 8.2.
 * TablePress 2.0 requires WordPress 5.8.
 
-= Version 1.14 =
-* Full compatibility with WordPress 5.8.
-* Enhancement: Make behavior of bulk action selectors on the "All tables" screen more user-friendly.
-* Enhancement: Apply and enforce more granular coding standards for better code maintainability.
-* Enhancement: Allow import files with an .xlsm file extension, in addition to .xlsx files.
-* Enhancement: Add more options (filter and action hooks) for external integration of custom code.
-* Bugfix: Fix handling of the help box on the "Edit" screen when it's opened again after closing it.
-* Bugfix: Properly return modified table data when external code integrates into TablePress.
-* Bugfix: Correctly localize dates in files names of downloaded export files.
-* Bugfix: Fix typos in the code for math formula parsing that could lead to error messages in rare cases.
-* Updated external libraries (DataTables, SimpleXLSX, Build tools).
-* Some internal changes for better stability, translations, and documentation.
-
 == Upgrade Notice ==
+
+= 2.0.2 =
+This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.0.1 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.0 =
 This update is a major feature update that brings many cool and new things. Updating is highly recommended.
-
-= 1.14 =
-This update is a stability, maintenance, and compatibility release. Updating is recommended.

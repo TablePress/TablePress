@@ -1182,18 +1182,49 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 	}
 
 	let action = '';
+	let move_direction = '';
+	let move_type = '';
 
 	if ( event.ctrlKey || event.metaKey ) {
 		if ( 80 === event.keyCode ) {
-			// Preview: Ctrl/Cmd + Alt/Option + P.
+			// Preview: Ctrl/Cmd + P.
 			action = 'show-preview';
 		} else if ( 83 === event.keyCode ) {
-			// Save Changes: Ctrl/Cmd + Alt/Option + S.
+			// Save Changes: Ctrl/Cmd + S.
 			action = 'save-changes';
+		} else if ( 76 === event.keyCode ) {
+			// Insert Link: Ctrl/Cmd + L.
+			action = 'insert_link';
+		} else if ( 73 === event.keyCode ) {
+			// Insert Image: Ctrl/Cmd + I.
+			action = 'insert_image';
+		} else if ( 69 === event.keyCode ) {
+			// Advanced Editor: Ctrl/Cmd + E.
+			action = 'advanced_editor';
+		} else if ( event.shiftKey && 38 === event.keyCode ) {
+			// Move up: Ctrl/Cmd + Shift + ↑.
+			action = 'move';
+			move_direction = 'up';
+			move_type = 'rows';
+		} else if ( event.shiftKey && 40 === event.keyCode ) {
+			// Move down: Ctrl/Cmd + Shift + ↓.
+			action = 'move';
+			move_direction = 'down';
+			move_type = 'rows';
+		} else if ( event.shiftKey && 37 === event.keyCode ) {
+			// Move left: Ctrl/Cmd + Shift + ←.
+			action = 'move';
+			move_direction = 'left';
+			move_type = 'columns';
+		} else if ( event.shiftKey && 39 === event.keyCode ) {
+			// Move r: Ctrl/Cmd + Shift + →.
+			action = 'move';
+			move_direction = 'right';
+			move_type = 'columns';
 		}
 	}
 
-	if ( '' !== action ) {
+	if ( 'save-changes' === action || 'show-preview' === action ) {
 		// Blur the focussed element to make sure that all change events were triggered.
 		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
 
@@ -1205,6 +1236,26 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 
 		// Prevent the browser's native handling of the shortcut, i.e. showing the Save or Print dialogs.
 		event.preventDefault();
+	} else if ( 'insert_link' === action || 'insert_image' === action || 'advanced_editor' === action ) {
+		// Only open the dialogs if the table editor is focussed, to e.g. prevent multiple dialogs to be opened.
+		if ( document.activeElement.matches( '#table-editor' ) ) { // eslint-disable-line @wordpress/no-global-active-element
+			// Open the "Insert Link", "Insert Image", or Advanced Editor" dialog.
+			tp.callbacks[ action ].open_dialog();
+		}
+
+		// Prevent the browser's native handling of the shortcut.
+		event.preventDefault();
+	} else if ( 'move' === action ) {
+		// Only move rows or columns if the editor is focussed.
+		if ( document.activeElement.matches('#table-editor') ) { // eslint-disable-line @wordpress/no-global-active-element
+			// Move the selected rows or columns.
+			if ( tp.helpers.move_allowed( move_type, move_direction ) ) {
+				tp.callbacks.move( move_direction, move_type );
+			}
+		}
+
+		// Stop the event propagation so that Jspreadsheet doesn't understand the arrow key as movement of the cursor, and prevent the browser's native handling of the shortcut.
+		event.stopImmediatePropagation();
 	}
 };
 
@@ -1388,7 +1439,7 @@ window.addEventListener( 'keydown', tp.callbacks.keyboard_shortcuts, true );
 const modifier_key = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
 	_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
 	_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
-document.querySelectorAll( 'p.submit .button' ).forEach( ( $button ) => {
+document.querySelectorAll( '.button[data-shortcut]' ).forEach( ( $button ) => {
 	const shortcut = sprintf( $button.dataset.shortcut, modifier_key ); // eslint-disable-line @wordpress/valid-sprintf
 	$button.title = sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), shortcut );
 } );

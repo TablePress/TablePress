@@ -236,9 +236,9 @@ JS;
 	<tr class="bottom-border">
 		<td class="column-1">
 			<?php _e( 'Selected cells', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button" id="button-insert-link" value="<?php esc_attr_e( 'Insert Link', 'tablepress' ); ?>" />
-			<input type="button" class="button" id="button-insert-image" value="<?php esc_attr_e( 'Insert Image', 'tablepress' ); ?>" />
-			<input type="button" class="button" id="button-advanced-editor" value="<?php esc_attr_e( 'Advanced Editor', 'tablepress' ); ?>" />
+			<input type="button" class="button" id="button-insert-link" value="<?php esc_attr_e( 'Insert Link', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ) ); ?>" />
+			<input type="button" class="button" id="button-insert-image" value="<?php esc_attr_e( 'Insert Image', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ) ); ?>" />
+			<input type="button" class="button" id="button-advanced-editor" value="<?php esc_attr_e( 'Advanced Editor', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ) ); ?>" />
 		</td>
 		<td class="column-2">
 			<?php _e( 'Selected cells', 'tablepress' ); ?>:&nbsp;
@@ -263,13 +263,13 @@ JS;
 	<tr>
 		<td class="column-1">
 			<?php _e( 'Selected rows', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button button-move" data-type="rows" data-direction="up" value="<?php esc_attr_e( 'Move up', 'tablepress' ); ?>" />
-			<input type="button" class="button button-move" data-type="rows" data-direction="down" value="<?php esc_attr_e( 'Move down', 'tablepress' ); ?>" />
+			<input type="button" class="button button-move" data-type="rows" data-direction="up" value="<?php esc_attr_e( 'Move up', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ) ); ?>" />
+			<input type="button" class="button button-move" data-type="rows" data-direction="down" value="<?php esc_attr_e( 'Move down', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ) ); ?>" />
 		</td>
 		<td class="column-2">
 			<?php _e( 'Selected columns', 'tablepress' ); ?>:&nbsp;
-			<input type="button" class="button button-move" data-type="columns" data-direction="left" value="<?php esc_attr_e( 'Move left', 'tablepress' ); ?>" />
-			<input type="button" class="button button-move" data-type="columns" data-direction="right" value="<?php esc_attr_e( 'Move right', 'tablepress' ); ?>" />
+			<input type="button" class="button button-move" data-type="columns" data-direction="left" value="<?php esc_attr_e( 'Move left', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ) ); ?>" />
+			<input type="button" class="button button-move" data-type="columns" data-direction="right" value="<?php esc_attr_e( 'Move right', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ) ); ?>" />
 		</td>
 	</tr>
 	<tr class="bottom-border">

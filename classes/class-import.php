@@ -641,8 +641,8 @@ class TablePress_Import {
 		// Full JSON format table can contain a table ID, try to keep that, by later changing the imported table ID to this.
 		$table_id_in_import = isset( $imported_table['id'] ) ? $imported_table['id'] : '';
 
-		// To be able to replace or append to a table, editing that table must be allowed.
-		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! current_user_can( 'tablepress_edit_table', $existing_table_id ) ) {
+		// To be able to replace or append to a table, the user must be able to edit the table, or it must be a Cron request (e.g. via the Automatic Periodic Table Import module).
+		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! ( current_user_can( 'tablepress_edit_table', $existing_table_id ) || wp_doing_cron() ) ) {
 			return new WP_Error( 'table_import_replace_append_capability_check_failed', '', $existing_table_id );
 		}
 
