@@ -134,7 +134,7 @@ abstract class TablePress_Controller {
 		 * Update User Options, if necessary.
 		 * User Options are not saved in DB until first change occurs.
 		 */
-		if ( is_user_logged_in() && ( TablePress::$model_options->get( 'user_options_db_version' ) < TablePress::db_version ) ) {
+		if ( is_user_logged_in() && TablePress::$model_options->get( 'user_options_db_version' ) < TablePress::db_version ) {
 			// Reset the postboxes on the "Edit" screen when updating from a TablePress version older than 2.0.1.
 			if ( TablePress::$model_options->get( 'user_options_db_version' ) < 50 ) {
 				$user_id = get_current_user_id();

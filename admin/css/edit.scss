@@ -96,11 +96,9 @@ body #wp-link-backdrop {
 	margin: 0 -1px 0 1px;
 }
 
-#tablepress_edit-table-manipulation .column-1 {
-	width: 45%;
-}
+#tablepress_edit-table-manipulation .column-1,
 #tablepress_edit-table-manipulation .column-2 {
-	width: 55%;
+	width: 50%;
 }
 
 /* Align with checkbox labels */
@@ -120,7 +118,7 @@ body #wp-link-backdrop {
 .jexcel > tbody > tr:after {
 	content: "";
 	display: inline-block;
-	min-height: 52px;
+	min-height: 34px;
 }
 /* auto-grow */
 /*.jexcel > tbody > tr.selected:after {

@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.1
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,9 +99,21 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.0.2 =
+= Version 2.0.3 =
 
-TablePress 2.0.2 fixes a few bugs in TablePress 2.0.1 and TablePress 2.0. For more information on the great changes in TablePress 2.0, please see below.
+TablePress 2.0.3 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.x, please see below.
+
+* The “Edit” screen now has context menu entries and supports Ctrl/Cmd + Alt/option + Shift + ↑/↓/←/→ keyboard shortcuts for moving the currently selected rows to the top or bottom, or the currently selected columns to the left or right edge.
+* On the “Edit” screen, it's now easier to drag and drop rows and columns with the mouse, as the clickable regions are now bigger.
+* On the “Edit” screen, the cell height was reduced, so that more content fits on the screen.
+* The “Edit” screen now properly supports copying and pasting of content that contains quotation marks.
+* The “Show Shortcode” link on the “All tables” screen, often used for copy and paste, is back!
+* The automatic format detection of the file import is more robust, especially when importing CSV files.
+* TablePress better protects itself against conflicts caused by other plugins that use outdated versions of the Composer tool.
+* An error where tables could not be saved was fixed. (TablePress Pro and Max only.)
+* The Column Filter Dropdowns module now properly deals with & characters and HTML code in cells, and applies better sorting to the selectable options. (TablePress Pro and Max only.)
+
+TablePress 2.0.2 contains these changes:
 
 * The “Edit” screen now supports Ctrl/Cmd + L/I/E keyboard shortcuts for the “Insert Link”, “Insert Image”, and “Advanced Editor” buttons, respectively.
 * The “Edit” screen now supports Ctrl/Cmd + Shift + ↑/↓/←/→ keyboard shortcuts for moving the currently selected rows up or down, or the currently selected columns left or right.
@@ -116,7 +128,7 @@ TablePress 2.0.1 contains these changes:
 * The misalignment between head and body rows when using “Horizontal Scrolling” is fixed.
 * The vertical alignment of elements in table cells is back to its old behavior, due to issues in some themes.
 * No errors should be thrown anymore when the “Table Features for Site Visitors” are active for tables that have combined cells or no head row.
-* The “Shortcode” text field, often used for copy and paste, on the “Edit” is back!
+* The “Shortcode” text field, often used for copy and paste, on the “Edit” screen is back!
 * More valuable information about errors is given when a table import fails.
 * An issue with the sorting arrow icons showing as weird characters is fixed.
 * No errors should be thrown anymore when required PHP extensions are missing on a server when evaluating math formulas.
@@ -167,10 +179,7 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 
 == Upgrade Notice ==
 
-= 2.0.2 =
-This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
-
-= 2.0.1 =
+= 2.0.3 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.0 =

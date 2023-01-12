@@ -6354,8 +6354,17 @@ if (! jSuites && typeof(require) === 'function') {
 						}
 						// Values
 						var value = obj.options.data[j][i];
+						// TablePress: Only escape quotation marks in cells if the cell has to be CSV escaped due to other characters, and make finding such characters more robust.
+						/*
 						if (value.match && (value.match(div) || value.match(/,/g) || value.match(/\n/) || value.match(/\"/))) {
 							value = value.replace(new RegExp('"', 'g'), '""');
+							value = '"' + value + '"';
+						}
+						*/
+						if ( value.match && ( value.match( div ) || value.includes( delimiter ) || value.includes( "\n" ) ) ) {
+							if ( value.includes( '"' ) ) {
+								value = value.replace(new RegExp('"', 'g'), '""');
+							}
 							value = '"' + value + '"';
 						}
 						col.push(value);
@@ -6910,6 +6919,7 @@ if (! jSuites && typeof(require) === 'function') {
 		/**
 		 * From stack overflow contributions
 		 */
+		/** // TablePress: Replaced with more reliable parseCSV function below.
 		obj.parseCSV = function(str, delimiter) {
 			// Remove last line break
 			str = str.replace(/\r?\n$|\r$|\n$/g, "");
@@ -6948,6 +6958,90 @@ if (! jSuites && typeof(require) === 'function') {
 				arr[row][col] += cc;
 			}
 			return arr;
+		}
+		*/
+		// TablePress: This new function replaces the original parseCSV function above, which has problems with quotation marks.
+		// This implementation was ported from the PHP implementation in /libraries/csv-parser.class.php to JS.
+		obj.parseCSV = function(str, delimiter) {
+			// Ensure that the string has a line break at the end, by first removing all line breaks, and then adding one.
+			str = str.replace( /\r?\n$|\r$|\n$/g, '' );
+			str += "\n";
+
+			// Use user-supplied delimiter or use a comma as the default.
+			delimiter = delimiter || ',';
+
+			const white_spaces = new RegExp( '^' + " \t\x0B\0".replace( delimiter, '' ) + '*' );
+
+			let rows = []; // Complete rows.
+			let row = []; // Row that is currently built.
+			let column = 0; // Current column index.
+			let cell_content = ''; // Content of the currently processed cell.
+			let enclosed = false;
+			let was_enclosed = false; // To determine if the cell content will be trimmed of whitespace (only for enclosed cells).
+
+			// Walk through each character in the CSV string.
+			const data_length = str.length;
+			for ( let i = 0; i < data_length; i++ ) {
+				let curr_char = str[ i ];
+				let next_char = ( i + 1 < data_length ) ? str[ i + 1 ] : '';
+
+				if ( curr_char === '"' ) {
+					// Open/close quotes, and inline quotes.
+					if ( ! enclosed ) {
+						if ( '' === cell_content.replace( white_spaces, '' ) ) {
+							enclosed = true;
+							was_enclosed = true;
+						} else {
+							// Technically, there's a CSV syntax here now, but we ignore it.
+							cell_content += curr_char;
+						}
+					} else if ( next_char === '"' ) {
+						// Enclosure character within enclosed cell (" encoded as "").
+						cell_content += curr_char;
+						++i; // Skip next character.
+					} else if ( next_char !== delimiter && "\r" !== next_char && "\n" !== next_char ) {
+						// for-loop (instead of while-loop) that skips whitespace.
+						let x = i + 1;
+						for ( ; undefined !== str[ x ] && '' === str[ x ].replace( white_spaces, '' ); x++ ) {
+							// Action is in iterator check.
+						}
+						if ( str[ x ] === delimiter ) {
+							enclosed = false;
+							i = x;
+						} else {
+							// Technically, there's a CSV syntax here now, but we ignore it.
+							cell_content += curr_char;
+							enclosed = false;
+						}
+					} else {
+						// The " was the closing one for the cell.
+						enclosed = false;
+					}
+				} else if ( ( curr_char === delimiter || "\n" === curr_char || "\r" === curr_char ) && ! enclosed ) {
+					// End of cell (by delimiter), or end of line (by line break, and not enclosed!).
+					row[ column ] = was_enclosed ? cell_content : cell_content.trim();
+					cell_content = '';
+					was_enclosed = false;
+					++column;
+
+					// End of line.
+					if ( "\n" === curr_char || "\r" === curr_char ) {
+						// Append completed row.
+						rows.push( row );
+						row = [];
+						column = 0;
+						if ( "\r" === curr_char && "\n" === next_char ) {
+							// Skip next character in \r\n line breaks.
+							++i;
+						}
+					}
+				} else {
+					// Append character to current cell.
+					cell_content += curr_char;
+				}
+			}
+
+			return rows;
 		}
 
 		obj.hash = function(str) {
@@ -7698,7 +7792,7 @@ if (! jSuites && typeof(require) === 'function') {
 					if (columnId) {
 						// Update cursor
 						var info = e.target.getBoundingClientRect();
-						if (jexcel.current.options.columnResize == true && info.width - e.offsetX < 6) {
+						if (jexcel.current.options.columnResize == true && info.width - e.offsetX < 12) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
 							// Resize helper
 							jexcel.current.resizing = {
 								mousePosition: e.pageX,
@@ -7713,7 +7807,7 @@ if (! jSuites && typeof(require) === 'function') {
 									jexcel.current.records[j][columnId].classList.add('resizing');
 								}
 							}
-						} else if (jexcel.current.options.columnDrag == true && info.height - e.offsetY < 6) {
+						} else if (jexcel.current.options.columnDrag == true && info.height - e.offsetY < 12) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
 							if (jexcel.current.isColMerged(columnId).length) {
 								console.error('Jspreadsheet: This column is part of a merged cell.');
 							} else {
@@ -7779,7 +7873,7 @@ if (! jSuites && typeof(require) === 'function') {
 
 					if (e.target.classList.contains('jexcel_row')) {
 						var info = e.target.getBoundingClientRect();
-						if (jexcel.current.options.rowResize == true && info.height - e.offsetY < 6) {
+						if (jexcel.current.options.rowResize == true && info.height - e.offsetY < 12) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
 							// Resize helper
 							jexcel.current.resizing = {
 								element: e.target.parentNode,
@@ -7789,7 +7883,7 @@ if (! jSuites && typeof(require) === 'function') {
 							};
 							// Border indication
 							e.target.parentNode.classList.add('resizing');
-						} else if (jexcel.current.options.rowDrag == true && info.width - e.offsetX < 6) {
+						} else if (jexcel.current.options.rowDrag == true && info.width - e.offsetX < 18) { // TablePress: Changed from 6 to 18 pixels to increase draggable mouse region.
 							if (jexcel.current.isRowMerged(rowId).length) {
 								console.error('Jspreadsheet: This row is part of a merged cell');
 							} else if (jexcel.current.options.search == true && jexcel.current.results) {
@@ -8096,20 +8190,20 @@ if (! jSuites && typeof(require) === 'function') {
 
 				if (e.target.parentNode.parentNode && e.target.parentNode.parentNode.className) {
 					if (e.target.parentNode.parentNode.classList.contains('resizable')) {
-						if (e.target && x && ! y && (rect.width - (e.clientX - rect.left) < 6)) {
+						if (e.target && x && ! y && (rect.width - (e.clientX - rect.left) < 12)) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
 							jexcel.current.cursor = e.target;
 							jexcel.current.cursor.style.cursor = 'col-resize';
-						} else if (e.target && ! x && y && (rect.height - (e.clientY - rect.top) < 6)) {
+						} else if (e.target && ! x && y && (rect.height - (e.clientY - rect.top) < 12)) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
 							jexcel.current.cursor = e.target;
 							jexcel.current.cursor.style.cursor = 'row-resize';
 						}
 					}
 
 					if (e.target.parentNode.parentNode.classList.contains('draggable')) {
-						if (e.target && ! x && y && (rect.width - (e.clientX - rect.left) < 6)) {
+						if (e.target && ! x && y && (rect.width - (e.clientX - rect.left) < 18)) { // TablePress: Changed from 6 to 18 pixels to increase draggable mouse region.
 							jexcel.current.cursor = e.target;
 							jexcel.current.cursor.style.cursor = 'move';
-						} else if (e.target && x && ! y && (rect.height - (e.clientY - rect.top) < 6)) {
+						} else if (e.target && x && ! y && (rect.height - (e.clientY - rect.top) < 12)) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
 							jexcel.current.cursor = e.target;
 							jexcel.current.cursor.style.cursor = 'move';
 						}

@@ -4,6 +4,8 @@
 
 namespace Composer\Autoload;
 
+use Composer\AutoloadTablePress\ClassLoader as ClassLoaderTablePress;
+
 class ComposerStaticInit52642f55db3d786d0497624deacbe17e
 {
 	public static $prefixLengthsPsr4 = array (
@@ -491,13 +493,13 @@ class ComposerStaticInit52642f55db3d786d0497624deacbe17e
 		'TablePress\\Psr\\SimpleCache\\InvalidArgumentException' => __DIR__ . '/../..' . '/libraries/vendor/Psr/SimpleCache/InvalidArgumentException.php',
 	);
 
-	public static function getInitializer(ClassLoader $loader)
+	public static function getInitializer(ClassLoaderTablePress $loader)
 	{
 		return \Closure::bind(function () use ($loader) {
 			$loader->prefixLengthsPsr4 = ComposerStaticInit52642f55db3d786d0497624deacbe17e::$prefixLengthsPsr4;
 			$loader->prefixDirsPsr4 = ComposerStaticInit52642f55db3d786d0497624deacbe17e::$prefixDirsPsr4;
 			$loader->classMap = ComposerStaticInit52642f55db3d786d0497624deacbe17e::$classMap;
 
-		}, null, ClassLoader::class);
+		}, null, ClassLoaderTablePress::class);
 	}
 }

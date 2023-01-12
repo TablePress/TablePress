@@ -283,15 +283,15 @@ tp.helpers.visibility.selection_contains = function ( type, visibility ) {
  * @return {boolean} Whether the move is allowed or not.
  */
 tp.helpers.move_allowed = function ( type, direction ) {
-	// When moving up or left, test the first row/column of the selected range.
+	// When moving up or left, or to top or first, test the first row/column of the selected range.
 	let roc_to_test = tp.helpers.selection[ type ][0];
 	let min_max_roc = 0; // First row/column.
-	// When moving down or right, test the last row/column of the selected range.
-	if ( 'down' === direction || 'right' === direction ) {
+	// When moving down or right, or bottom or last, test the last row/column of the selected range.
+	if ( 'down' === direction || 'right' === direction || 'bottom' === direction || 'last' === direction ) {
 		roc_to_test = tp.helpers.selection[ type ][ tp.helpers.selection[ type ].length - 1 ];
 		min_max_roc = ( 'rows' === type ) ? tp.editor.options.data.length - 1 : tp.editor.options.columns.length - 1;
 	}
-	// Moving beyond the first/last row/column is disallowed.
+	// Moving is disallowed if the first/last row/column is already at the target edge.
 	if ( min_max_roc === roc_to_test ) {
 		return false;
 	}
@@ -1086,8 +1086,8 @@ tp.callbacks.append = function ( type, num_rocs ) {
 /**
  * Moves currently selected rows or columns.
  *
- * @param {string} direction Where to move the selected rows or columns (for rows: "up"/"down", for columns: "left"/right").
- * @param {string} type      What to append ("rows" or "columns").
+ * @param {string} direction Where to move the selected rows or columns (for rows: "up"/"down"/"top"/"bottom", for columns: "left"/right"/"first"/"last").
+ * @param {string} type      What to move ("rows" or "columns").
  */
 tp.callbacks.move = function ( direction, type ) {
 	const handling_rows = ( 'rows' === type );
@@ -1099,7 +1099,19 @@ tp.callbacks.move = function ( direction, type ) {
 	if ( 'down' === direction || 'right' === direction ) {
 		rocs = rocs.slice().reverse(); // When moving down or right, reverse the order, to start with the last row/column of the selected range. slice() is needed here to create an array copy.
 		position_difference = 1; // New row/column number is one higher than current row/column number.
+	} else if ( 'top' === direction || 'first' === direction ) {
+		position_difference = -rocs[0];
+	} else if ( 'bottom' === direction || 'last' === direction ) {
+		rocs = rocs.slice().reverse(); // When moving down or right, reverse the order, to start with the last row/column of the selected range. slice() is needed here to create an array copy.
+		const min_max_roc = ( 'rows' === type ) ? tp.editor.options.data.length - 1 : tp.editor.options.columns.length - 1;
+		position_difference = min_max_roc - rocs[0];
 	}
+
+	// Bail early if there is nothing to do (e.g. when the selected range is already at the target edge).
+	if ( 0 === position_difference ) {
+		return;
+	}
+
 	// Move the selected rows/columns individually.
 	const move_function = handling_rows ? tp.editor.moveRow : tp.editor.moveColumn;
 	rocs.forEach( ( roc_idx ) => move_function( roc_idx, roc_idx + position_difference ) );
@@ -1201,6 +1213,26 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 		} else if ( 69 === event.keyCode ) {
 			// Advanced Editor: Ctrl/Cmd + E.
 			action = 'advanced_editor';
+		} else if ( event.shiftKey && event.altKey && 38 === event.keyCode ) {
+			// Move up: Ctrl/Cmd + Alt/Option + Shift + ↑.
+			action = 'move';
+			move_direction = 'top';
+			move_type = 'rows';
+		} else if ( event.shiftKey && event.altKey && 40 === event.keyCode ) {
+			// Move down: Ctrl/Cmd + Alt/Option + Shift + ↓.
+			action = 'move';
+			move_direction = 'bottom';
+			move_type = 'rows';
+		} else if ( event.shiftKey && event.altKey && 37 === event.keyCode ) {
+			// Move left: Ctrl/Cmd + Alt/Option + Shift + ←.
+			action = 'move';
+			move_direction = 'first';
+			move_type = 'columns';
+		} else if ( event.shiftKey && event.altKey && 39 === event.keyCode ) {
+			// Move r: Ctrl/Cmd + Alt/Option + Shift + →.
+			action = 'move';
+			move_direction = 'last';
+			move_type = 'columns';
 		} else if ( event.shiftKey && 38 === event.keyCode ) {
 			// Move up: Ctrl/Cmd + Shift + ↑.
 			action = 'move';

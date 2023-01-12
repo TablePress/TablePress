@@ -10,12 +10,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Composer\Autoload;
+namespace Composer\AutoloadTablePress;
 
 /**
  * ClassLoader implements a PSR-0, PSR-4 and classmap class loader.
  *
- *     $loader = new \Composer\Autoload\ClassLoader();
+ *     $loader = new \Composer\AutoloadTablePress\ClassLoader();
  *
  *     // register classes with namespaces
  *     $loader->add('Symfony\Component', __DIR__.'/component');

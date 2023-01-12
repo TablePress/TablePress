@@ -8,13 +8,13 @@ class ComposerAutoloaderInit52642f55db3d786d0497624deacbe17e
 
 	public static function loadClassLoader($class)
 	{
-		if ('Composer\Autoload\ClassLoader' === $class) {
+		if ('Composer\AutoloadTablePress\ClassLoader' === $class) {
 			require __DIR__ . '/ClassLoader.php';
 		}
 	}
 
 	/**
-	 * @return \Composer\Autoload\ClassLoader
+	 * @return \Composer\AutoloadTablePress\ClassLoader
 	 */
 	public static function getLoader()
 	{
@@ -25,7 +25,7 @@ class ComposerAutoloaderInit52642f55db3d786d0497624deacbe17e
 		require __DIR__ . '/platform_check.php';
 
 		spl_autoload_register(array('ComposerAutoloaderInit52642f55db3d786d0497624deacbe17e', 'loadClassLoader'), true, true);
-		self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(__DIR__));
+		self::$loader = $loader = new \Composer\AutoloadTablePress\ClassLoader(\dirname(__DIR__));
 		spl_autoload_unregister(array('ComposerAutoloaderInit52642f55db3d786d0497624deacbe17e', 'loadClassLoader'));
 
 		require __DIR__ . '/autoload_static.php';

@@ -62,7 +62,7 @@ $( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
 	if ( event.target.matches( '.ajax-link' ) ) {
 		fetch( `${ ajaxurl }?${ event.target.href.split('?')['1'] }` ) // Append original link's query string to AJAX endpoint.
 		.then( ( response ) => response.text() )
-			.then( ( result ) => {
+		.then( ( result ) => {
 			if ( '1' !== result ) {
 				return;
 			}

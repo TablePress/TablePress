@@ -29,9 +29,13 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 	const num_columns = tp.editor.options.columns.length;
 	const num_selected_rows = tp.helpers.selection.rows.length;
 	const num_selected_columns = tp.helpers.selection.columns.length;
-	const key = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
+	const is_mac = window?.navigator?.platform?.includes( 'Mac' );
+	const meta_key = is_mac ?
 		_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
 		_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
+	const option_key = is_mac ?
+		_x( '⌥', 'keyboard shortcut option key on a Mac keyboard', 'tablepress' ) :
+		_x( 'Alt+', 'keyboard shortcut Alt key on a non-Mac keyboard', 'tablepress' );
 
 	// Call-by-reference object for the cell_merge_allowed() call.
 	const error_message = {
@@ -44,13 +48,13 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		// Undo/Redo.
 		{
 			title: __( 'Undo', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), meta_key ),
 			onclick: obj.undo,
 			disabled: ( -1 === obj.historyIndex ),
 		},
 		{
 			title: __( 'Redo', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sY', 'keyboard shortcut for Redo', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sY', 'keyboard shortcut for Redo', 'tablepress' ), meta_key ),
 			onclick: obj.redo,
 			disabled: ( obj.historyIndex === obj.history.length - 1 ),
 		},
@@ -61,7 +65,7 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		},
 		{
 			title: __( 'Cut', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), meta_key ),
 			onclick() {
 				obj.copy( true ); // Copy highlighted cells.
 				obj.setValue( obj.highlighted, '' );
@@ -69,14 +73,14 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		},
 		{
 			title: __( 'Copy', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), meta_key ),
 			onclick() {
 				obj.copy( true ); // Copy highlighted cells.
 			},
 		},
 		{
 			title: __( 'Paste', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), meta_key ),
 			onclick() {
 				if ( obj.selectedCell ) {
 					window.navigator.clipboard.readText().then( ( text ) => {
@@ -95,17 +99,17 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		},
 		{
 			title: __( 'Insert Link', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), meta_key ),
 			onclick: tp.callbacks.insert_link.open_dialog,
 		},
 		{
 			title: __( 'Insert Image', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), meta_key ),
 			onclick: tp.callbacks.insert_image.open_dialog,
 		},
 		{
 			title: __( 'Advanced Editor', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), key ),
+			shortcut: sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), meta_key ),
 			onclick: tp.callbacks.advanced_editor.open_dialog,
 		},
 
@@ -187,27 +191,54 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 			submenu: [
 				{
 					title: _n( 'Move row up', 'Move rows up', num_selected_rows, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), key ),
+					shortcut: sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), meta_key ),
 					onclick: tp.callbacks.move.bind( null, 'up', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'up' ),
 				},
 				{
 					title: _n( 'Move row down', 'Move rows down', num_selected_rows, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), key ),
+					shortcut: sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), meta_key ),
 					onclick: tp.callbacks.move.bind( null, 'down', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'down' ),
 				},
 				{
 					title: _n( 'Move column left', 'Move columns left', num_selected_columns, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ), key ),
+					shortcut: sprintf( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ), meta_key ),
 					onclick: tp.callbacks.move.bind( null, 'left', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'left' ),
 				},
 				{
 					title: _n( 'Move column right', 'Move columns right', num_selected_columns, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ), key ),
+					shortcut: sprintf( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ), meta_key ),
 					onclick: tp.callbacks.move.bind( null, 'right', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'right' ),
+				},
+				{
+					type: 'divisor',
+				},
+				{
+					title: _n( 'Move row to the top', 'Move rows to the top', num_selected_rows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧↑', 'keyboard shortcut for Move to the top', 'tablepress' ), meta_key, option_key ),
+					onclick: tp.callbacks.move.bind( null, 'top', 'rows' ),
+					disabled: ! tp.helpers.move_allowed( 'rows', 'top' ),
+				},
+				{
+					title: _n( 'Move row to the bottom', 'Move rows to the bottom', num_selected_rows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧↓', 'keyboard shortcut for Move to the bottom', 'tablepress' ), meta_key, option_key ),
+					onclick: tp.callbacks.move.bind( null, 'bottom', 'rows' ),
+					disabled: ! tp.helpers.move_allowed( 'rows', 'bottom' ),
+				},
+				{
+					title: _n( 'Move column to first', 'Move columns to first', num_selected_columns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧←', 'keyboard shortcut for Move to first', 'tablepress' ), meta_key, option_key ),
+					onclick: tp.callbacks.move.bind( null, 'first', 'columns' ),
+					disabled: ! tp.helpers.move_allowed( 'columns', 'first' ),
+				},
+				{
+					title: _n( 'Move column to last', 'Move columns to last', num_selected_columns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧→', 'keyboard shortcut for Move to last', 'tablepress' ), meta_key, option_key ),
+					onclick: tp.callbacks.move.bind( null, 'last', 'columns' ),
+					disabled: ! tp.helpers.move_allowed( 'columns', 'last' ),
 				},
 			],
 		},

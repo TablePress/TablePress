@@ -44,6 +44,13 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 		if ( false === $data ) {
 			return new WP_Error( 'table_import_phpspreadsheet_data_read', '', $file['location'] );
 		}
+
+		// Remove a possible UTF-8 Byte-Order Mark (BOM).
+		$bom = pack( 'CCC', 0xef, 0xbb, 0xbf );
+		if ( 0 === strncmp( $data, $bom, 3 ) ) {
+			$data = substr( $data, 3 );
+		}
+
 		if ( '' === $data ) {
 			return new WP_Error( 'table_import_phpspreadsheet_data_empty', '', $file['location'] );
 		}
@@ -149,7 +156,20 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			\TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \TablePress\PhpOffice\PhpSpreadsheet\Cell\StringValueBinder() );
 			\TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell::getValueBinder()->setFormulaConversion( false );
 
-			$reader = \TablePress\PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile( $file['location'] );
+			/*
+			 * Try to detect a reader from the file extension and MIME type.
+			 * Fall back to CSV if no reader could be determined.
+			 */
+			try {
+				$reader = \TablePress\PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile( $file['location'] );
+			} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception $exception ) {
+				$reader = \TablePress\PhpOffice\PhpSpreadsheet\IOFactory::createReader( 'Csv' );
+				// Append .csv to the file name, so that \TablePress\PhpOffice\PhpSpreadsheet\Reader\Csv::canRead() returns true.
+				$new_location = $file['location'] . '.csv';
+				if ( rename( $file['location'], $new_location ) ) {
+					$file['location'] = $new_location;
+				}
+			}
 
 			$class_name = get_class( $reader );
 			$class_type = explode( '\\', $class_name );
