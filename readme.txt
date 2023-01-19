@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.1
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,9 +99,20 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.0.3 =
+= Version 2.0.4 =
 
-TablePress 2.0.3 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.x, please see below.
+TablePress 2.0.4 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.x, please see below.
+
+* The “Table” button for users that don’t use the WordPress block editor is back!
+* Issues that some users had with saving changes on the “Edit” screen are fixed.
+* No errors should be thrown anymore when required PHP extensions are missing on a server when importing files.
+* Visual glitches in the Horizontal Scrolling, caused by themes adding conflicting CSS, are reduced.
+* The “Automatic Filtering” feature now allows retrieving the filter term from a URL parameter. (TablePress Pro and Max only.)
+* A backwards compatibility improvement was added to the “Individual Column Filtering” feature. (TablePress Pro and Max only.)
+* The “Server-side Processing” feature now uses much shorter request URL which improves performance and prevents possible server errors. (TablePress Max only.)
+* Some internal documentation and build tools were updated.
+
+TablePress 2.0.3 contains these changes:
 
 * The “Edit” screen now has context menu entries and supports Ctrl/Cmd + Alt/option + Shift + ↑/↓/←/→ keyboard shortcuts for moving the currently selected rows to the top or bottom, or the currently selected columns to the left or right edge.
 * On the “Edit” screen, it's now easier to drag and drop rows and columns with the mouse, as the clickable regions are now bigger.
@@ -179,7 +190,7 @@ Besides a fresh and modern look of the TablePress screens, here are the highligh
 
 == Upgrade Notice ==
 
-= 2.0.3 =
+= 2.0.4 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.0 =

@@ -93,9 +93,9 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Render the current view.
+	 * Renders the current view.
 	 *
-	 * In comparison to the parent class method, this contains handling for the no-js case and removes unnecessary HTML elements.
+	 * In comparison to the parent class method, this contains handling for the no-js case and adjusts the HTML code structure.
 	 *
 	 * @since 2.0.0
 	 */
@@ -127,6 +127,9 @@ class TablePress_Edit_View extends TablePress_View {
 					$this->do_meta_boxes( 'additional' );
 
 					$this->do_text_boxes( 'submit' );
+
+					$this->do_text_boxes( 'side' );
+					$this->do_meta_boxes( 'side' );
 					?>
 				</div>
 			</div>

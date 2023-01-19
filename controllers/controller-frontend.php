@@ -196,7 +196,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		}
 		/** This filter is documented in controllers/controller-frontend.php */
 		$custom_css = apply_filters( 'tablepress_custom_css', $custom_css );
-		echo "<style type='text/css'>\n{$custom_css}\n</style>\n";
+		echo "<style>\n{$custom_css}\n</style>\n";
 	}
 
 	/**

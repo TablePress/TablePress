@@ -187,7 +187,7 @@ class TablePress_CSSTidy_print {
 		$output .= "\n<head>\n\t<title>{$title}</title>";
 
 		if ( $externalcss ) {
-			$output .= "\n\t<style type=\"text/css\">\n";
+			$output .= "\n\t<style>\n";
 			$output .= file_get_contents( 'cssparsed.css' ); // Adds an invisible BOM or something, but not in css_optimised.php
 			$output .= "\n</style>";
 		} else {

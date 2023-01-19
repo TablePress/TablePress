@@ -406,6 +406,7 @@ class TablePress_Import {
 
 		// Use the legacy import class, if the requirements for PHPSpreadsheet are not fulfilled.
 		$phpspreadsheet_requirements_fulfilled = PHP_VERSION_ID >= 70200
+			&& extension_loaded( 'mbstring' )
 			&& class_exists( 'ZipArchive', false )
 			&& class_exists( 'DOMDocument', false )
 			&& function_exists( 'simplexml_load_string' )

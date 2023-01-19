@@ -167,11 +167,6 @@ $position: "after" !default;
 	}
 }
 
-/* Processing indicator */
-.dataTables_processing {
-	display: none; /* always hidden, we don't use it */
-}
-
 /* Scrolling */
 .dataTables_scroll {
 	clear: both;
@@ -180,6 +175,10 @@ $position: "after" !default;
 	.tablepress {
 		width: 100% !important;
 	}
+}
+/* Ensure that the table head row doesn't get a margin from some themes. */
+.dataTables_scrollHead table.tablepress {
+	margin: 0;
 }
 .dataTables_scrollBody {
 	-webkit-overflow-scrolling: touch;

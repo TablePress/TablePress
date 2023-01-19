@@ -265,7 +265,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
 			$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );
 			if ( $use_custom_css ) {
-				$head_html .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
+				$head_html .= "<style>\n{$custom_css}\n</style>\n";
 			}
 
 			$body_html = '<div id="tablepress-page"><p>'

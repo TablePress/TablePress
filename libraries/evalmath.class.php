@@ -313,7 +313,7 @@ class EvalMath {
 					--$index;
 				}
 				// Heart of the algorithm: .
-				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+				// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				while ( $stack->count > 0 && ( $o2 = $stack->last() ) && in_array( $o2, $ops, true ) && ( $ops_r[ $op ] ? $ops_p[ $op ] < $ops_p[ $o2 ] : $ops_p[ $op ] <= $ops_p[ $o2 ] ) ) {
 					// Pop stuff off the stack into the output.
 					$output[] = $stack->pop();
@@ -326,7 +326,7 @@ class EvalMath {
 				// Ready to close a parenthesis?
 			} elseif ( ')' === $op && $expecting_operator ) {
 				// Pop off the stack back to the last (.
-				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+				// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				while ( '(' !== ( $o2 = $stack->pop() ) ) {
 					if ( is_null( $o2 ) ) {
 						return $this->raise_error( 'unexpected_closing_bracket' );
@@ -375,7 +375,7 @@ class EvalMath {
 
 				// Did we just finish a function argument?
 			} elseif ( ',' === $op && $expecting_operator ) {
-				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+				// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				while ( '(' !== ( $o2 = $stack->pop() ) ) {
 					if ( is_null( $o2 ) ) {
 						// Oops, never had a (.
@@ -479,7 +479,7 @@ class EvalMath {
 		} // while ( true )
 
 		// Pop everything off the stack and push onto output.
-		// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 		while ( ! is_null( $op = $stack->pop() ) ) {
 			if ( '(' === $op ) {
 				// If there are (s on the stack, ()s were unbalanced.

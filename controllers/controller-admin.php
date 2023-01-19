@@ -135,7 +135,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function add_admin_actions() {
 		// Register the callbacks for processing action requests.
 		$post_actions = array( 'list', 'add', 'options', 'export', 'import' );
-		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'uninstall_tablepress' );
+		$get_actions = array( 'hide_message', 'delete_table', 'copy_table', 'preview_table', 'editor_button_thickbox', 'uninstall_tablepress' );
 		foreach ( $post_actions as $action ) {
 			add_action( "admin_post_tablepress_{$action}", array( $this, "handle_post_action_{$action}" ) );
 		}
@@ -146,6 +146,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		// Register callbacks to trigger load behavior for admin pages.
 		foreach ( $this->page_hooks as $page_hook ) {
 			add_action( "load-{$page_hook}", array( $this, 'load_admin_page' ) );
+		}
+
+		$pages_with_editor_button = array( 'post.php', 'post-new.php' );
+		foreach ( $pages_with_editor_button as $editor_page ) {
+			add_action( "load-{$editor_page}", array( $this, 'add_editor_buttons' ) );
 		}
 
 		if ( ! is_network_admin() && ! is_user_admin() ) {
@@ -237,6 +242,69 @@ tp.table.shortcode = '{$shortcode}';
 tp.table.template = JSON.parse( '{$template}' );
 tp.tables = JSON.parse( '{$tables}' );
 JS;
+	}
+
+	/**
+	 * Register actions to add "Table" button to "HTML editor" and "Visual editor" toolbars.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_editor_buttons() {
+		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
+			return;
+		}
+
+		// Only load the toolbar integration if the Block Editor is not used.
+		if ( TablePress::site_uses_block_editor() ) {
+			return;
+		}
+
+		add_thickbox(); // The files are usually already loaded by media upload functions.
+		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
+		$admin_page->enqueue_script(
+			'quicktags-button',
+			array( 'quicktags', 'media-upload' ),
+			array(
+				'editor_button' => array(
+					'caption'        => __( 'Table', 'tablepress' ),
+					'title'          => __( 'Insert a TablePress table', 'tablepress' ),
+					'thickbox_title' => __( 'Insert a TablePress table', 'tablepress' ),
+					'thickbox_url'   => TablePress::url( array( 'action' => 'editor_button_thickbox' ), true, 'admin-post.php' ),
+				),
+			)
+		);
+
+		// TinyMCE integration.
+		if ( user_can_richedit() ) {
+			add_filter( 'mce_external_plugins', array( $this, 'add_tinymce_plugin' ) );
+			add_filter( 'mce_buttons', array( $this, 'add_tinymce_button' ) );
+		}
+	}
+
+	/**
+	 * Adds the "Table" button to the TinyMCE toolbar.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $buttons Current set of buttons in the TinyMCE toolbar.
+	 * @return array Extended set of buttons in the TinyMCE toolbar, including the "Table" button.
+	 */
+	public function add_tinymce_button( array $buttons ) {
+		$buttons[] = 'tablepress_insert_table';
+		return $buttons;
+	}
+
+	/**
+	 * Registers the "Table" button plugin for the TinyMCE editor.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $plugins Current set of registered TinyMCE plugins.
+	 * @return array Extended set of registered TinyMCE plugins, including the "Table" button plugin.
+	 */
+	public function add_tinymce_plugin( array $plugins ) {
+		$plugins['tablepress_tinymce'] = plugins_url( 'admin/js/build/tinymce-button.js', TABLEPRESS__FILE__ );
+		return $plugins;
 	}
 
 	/**
@@ -1180,11 +1248,35 @@ JS;
 		$custom_css = TablePress::$model_options->get( 'custom_css' );
 		$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );
 		if ( $use_custom_css ) {
-			$view_data['head_html'] .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
+			$view_data['head_html'] .= "<style>\n{$custom_css}\n</style>\n";
 		}
 
 		// Prepare, initialize, and render the view.
 		$this->view = TablePress::load_view( 'preview_table', $view_data );
+		$this->view->render();
+	}
+
+	/**
+	 * Shows a list of tables in the Editor toolbar Thickbox (opened by TinyMCE or Quicktags button).
+	 *
+	 * @since 1.0.0
+	 */
+	public function handle_get_action_editor_button_thickbox() {
+		TablePress::check_nonce( 'editor_button_thickbox' );
+
+		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
+			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
+		}
+
+		$view_data = array(
+			// Load all table IDs without priming the post meta cache, as table options/visibility are not needed.
+			'table_ids' => TablePress::$model_table->load_all( false ),
+		);
+
+		set_current_screen( 'tablepress_editor_button_thickbox' );
+
+		// Prepare, initialize, and render the view.
+		$this->view = TablePress::load_view( 'editor_button_thickbox', $view_data );
 		$this->view->render();
 	}
 

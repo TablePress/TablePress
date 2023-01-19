@@ -135,15 +135,6 @@ abstract class TablePress_Controller {
 		 * User Options are not saved in DB until first change occurs.
 		 */
 		if ( is_user_logged_in() && TablePress::$model_options->get( 'user_options_db_version' ) < TablePress::db_version ) {
-			// Reset the postboxes on the "Edit" screen when updating from a TablePress version older than 2.0.1.
-			if ( TablePress::$model_options->get( 'user_options_db_version' ) < 50 ) {
-				$user_id = get_current_user_id();
-				delete_user_option( $user_id, 'meta-box-order_tablepress_edit', true );
-				delete_user_option( $user_id, 'screen_layout_tablepress_edit', true );
-				delete_user_option( $user_id, 'closedpostboxes_tablepress_edit', true );
-				delete_user_option( $user_id, 'metaboxhidden_tablepress_edit', true );
-			}
-
 			TablePress::$model_options->merge_user_options_defaults();
 			TablePress::$model_options->update( 'user_options_db_version', TablePress::db_version );
 		}

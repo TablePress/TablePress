@@ -928,7 +928,7 @@ class TablePress_Render {
 		$rtl_direction = $is_rtl ? "\ndirection: rtl;" : '';
 
 		return <<<CSS
-<style type="text/css">
+<style>
 /* iframe */
 body {
 	margin: 10px;

@@ -17,7 +17,6 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * @package TablePress
  * @subpackage Views
  * @author Tobias Bäthge
- * @link https://codex.wordpress.org/Class_Reference/WP_List_Table
  * @since 1.0.0
  */
 class TablePress_All_Tables_List_Table extends WP_List_Table {
@@ -432,7 +431,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 		add_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
 		$this->pagination( $which );
-		add_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
+		remove_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
 		?>
 
 		<br class="clear" />
@@ -576,7 +575,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		}
 
 		// Number of records to show per page.
-		$per_page = $this->get_items_per_page( 'tablepress_list_per_page', 20 ); // hard-coded, as in filter in Admin_Controller
+		$per_page = $this->get_items_per_page( 'tablepress_list_per_page', 20 ); // Hard-coded, as in filter in Admin_Controller.
 		// Page number the user is currently viewing.
 		$current_page = $this->get_pagenum();
 		// Number of records in the array.
