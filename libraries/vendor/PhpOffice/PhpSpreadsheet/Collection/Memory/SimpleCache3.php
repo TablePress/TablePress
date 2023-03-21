@@ -50,8 +50,9 @@ class SimpleCache3 implements CacheInterface
 	/**
 	 * @param string $key
 	 * @param mixed  $default
+	 * @return mixed
 	 */
-	public function get($key, $default = null): mixed
+	public function get($key, $default = null)
 	{
 		if ($this->has($key)) {
 			return $this->cache[$key];

@@ -128,6 +128,7 @@ module.exports = function ( grunt ) {
 					'!admin/css/common.scss',
 					'!admin/css/common-rtl.scss',
 					'!admin/css/edit.scss',
+					'!admin/css/edit-features.scss',
 					'!admin/css/import.scss',
 					'!admin/css/_spinner-alert.scss',
 					'!css/default.scss',

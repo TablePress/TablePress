@@ -34,6 +34,9 @@
 	<!-- Directories and third party library exclusions. -->
 
 	<!-- PHPSpreadsheet and its dependencies are tested separately with PHP 7.2+. -->
+	<exclude-pattern>/rector\.php</exclude-pattern>
+	<exclude-pattern>/libraries/autoload\.php</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
 	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
 	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
 	<exclude-pattern type="relative">^vendor/*</exclude-pattern>

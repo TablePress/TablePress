@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Statistical\Variances;
 
 class DVar extends DatabaseAbstract
@@ -30,13 +31,13 @@ class DVar extends DatabaseAbstract
 	 *                                        the column label in which you specify a condition for the
 	 *                                        column.
 	 *
-	 * @return null|float|string (string if result is an error)
+	 * @return float|string (string if result is an error)
 	 */
 	public static function evaluate($database, $field, $criteria)
 	{
 		$field = self::fieldExtract($database, $field);
 		if ($field === null) {
-			return null;
+			return ExcelError::VALUE();
 		}
 
 		return Variances::VAR(

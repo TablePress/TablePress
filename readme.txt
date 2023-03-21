@@ -4,8 +4,8 @@ Donate link: https://tablepress.org/donate/
 Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
-Tested up to: 6.1
-Stable tag: 2.0.4
+Tested up to: 6.2
+Stable tag: 2.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,101 +97,40 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 == Changelog ==
 
-Recent changes are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
+Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.0.4 =
+= Version 2.1 =
 
-TablePress 2.0.4 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.x, please see below.
+**New features, enhancements, and bug fixes**
 
-* The “Table” button for users that don’t use the WordPress block editor is back!
-* Issues that some users had with saving changes on the “Edit” screen are fixed.
-* No errors should be thrown anymore when required PHP extensions are missing on a server when importing files.
-* Visual glitches in the Horizontal Scrolling, caused by themes adding conflicting CSS, are reduced.
-* The “Automatic Filtering” feature now allows retrieving the filter term from a URL parameter. (TablePress Pro and Max only.)
-* A backwards compatibility improvement was added to the “Individual Column Filtering” feature. (TablePress Pro and Max only.)
-* The “Server-side Processing” feature now uses much shorter request URL which improves performance and prevents possible server errors. (TablePress Max only.)
-* Some internal documentation and build tools were updated.
-
-TablePress 2.0.3 contains these changes:
-
-* The “Edit” screen now has context menu entries and supports Ctrl/Cmd + Alt/option + Shift + ↑/↓/←/→ keyboard shortcuts for moving the currently selected rows to the top or bottom, or the currently selected columns to the left or right edge.
-* On the “Edit” screen, it's now easier to drag and drop rows and columns with the mouse, as the clickable regions are now bigger.
-* On the “Edit” screen, the cell height was reduced, so that more content fits on the screen.
-* The “Edit” screen now properly supports copying and pasting of content that contains quotation marks.
-* The “Show Shortcode” link on the “All tables” screen, often used for copy and paste, is back!
-* The automatic format detection of the file import is more robust, especially when importing CSV files.
-* TablePress better protects itself against conflicts caused by other plugins that use outdated versions of the Composer tool.
-* An error where tables could not be saved was fixed. (TablePress Pro and Max only.)
-* The Column Filter Dropdowns module now properly deals with & characters and HTML code in cells, and applies better sorting to the selectable options. (TablePress Pro and Max only.)
-
-TablePress 2.0.2 contains these changes:
-
-* The “Edit” screen now supports Ctrl/Cmd + L/I/E keyboard shortcuts for the “Insert Link”, “Insert Image”, and “Advanced Editor” buttons, respectively.
-* The “Edit” screen now supports Ctrl/Cmd + Shift + ↑/↓/←/→ keyboard shortcuts for moving the currently selected rows up or down, or the currently selected columns left or right.
-* An error where tables could not be saved was fixed. (TablePress Pro and Max only.)
-* The Fixed Columns module now properly shows multiple fixed columns. (TablePress Pro and Max only.)
-* The integration of the Automatic Periodic Table Import module was fixed. (TablePress Max only.)
-
-TablePress 2.0.1 contains these changes:
-
-* TablePress will again work correctly when it's “network activated” on WordPress Multisite installations.
-* Issues that some users had with saving changes on the “Edit” screen are fixed.
-* The misalignment between head and body rows when using “Horizontal Scrolling” is fixed.
-* The vertical alignment of elements in table cells is back to its old behavior, due to issues in some themes.
-* No errors should be thrown anymore when the “Table Features for Site Visitors” are active for tables that have combined cells or no head row.
-* The “Shortcode” text field, often used for copy and paste, on the “Edit” screen is back!
-* More valuable information about errors is given when a table import fails.
-* An issue with the sorting arrow icons showing as weird characters is fixed.
-* No errors should be thrown anymore when required PHP extensions are missing on a server when evaluating math formulas.
-
-Besides a fresh and modern look of the TablePress screens, here are the highlights of TablePress 2.0:
-
-**Completely new “Edit” screen for tables**
-
-* TablePress now has an even more spreadsheet-like user interface that makes working with large tables a breeze.
-* Editing will be much faster: A right-click context menu allows for quick access to the table manipulation tools.
-* A keyboard shortcut for saving changes will save a lot of scrolling.
-
-**Block editor support instead of having to deal with Shortcodes**
-
-* The new “TablePress table” block will give you a preview of the table when inserting it into a post or page, for a more intuitive embedding of tables. You won’t even have to remember the table ID, as a table search is included.
-* And if you want, converting existing Shortcodes is just two clicks away.
-
-**Easier styling of tables with CSS variables**
-
-* You can now use CSS variables instead of complex CSS selectors for quicker and easier styling changes, in particular of table colors.
-* The CSS selectors in the default CSS have been simplified for higher compatibility with more themes.
-
-**Importing tables is easier and more powerful than ever**
-
-* Simply drag&drop files to import them -- even multiple files at once, even of different formats!
-* No more need to choose the import file format: The auto detection will know if it’s a CSV, Excel, HTML, or JSON file.
-* In addition, more file formats are recognized, like the LibreOffice ODS format.
-* The Excel import is much more powerful: For example, clickable links and simple styling will be recognized and imported!
-* The Replace/Append select box also has a live-search with autocomplete now, making finding the right table much faster.
-
-**New formula calculation engine**
-
-* TablePress now understands many more formulas, just as you know them from Excel!
-* The formulas even support text strings now, which enables many new ways of automatically creating table content.
-* When exporting tables, potentially dangerous formulas will be escaped, to increase protection against CSV injection attacks.
+* Full compatibility with WordPress 6.2.
+* On the “Edit” screen, you can now set the desired default cell size via the “Screen Options” tab, for maximum flexibility when editing large tables.
+* The table editor’s context menu now also works when editing a cell.
+* The table editor’s context menu and keyboard shortcuts now allow inserting images and links at the current cursor position and as well as turning existing text into a link.
+* On the “Edit” screen, potential confusion is reduced by adjusting how individual sections can be collapsed.
+* Tables that use scrolling are less likely to have misplaced header cells.
+* The “Export” screen now has a button to quickly reverse a long list of tables, which can save time if you want to export a table from the end of the list.
+* The “Last Editor” of a table is again determined correctly.
+* More detailed error messages are shown on the “Edit” and “Import” screens.
+* A few styling glitches on the different TablePress admin screens have been fixed.
+* The “Edit” screen shows other available features, to make users aware of them (TablePress Free only.)
+* The “Fixed Header” module now works more reliably with themes that use floating elements as well. (TablePress Pro and Max only.)
+* The “Alphabet Filtering” module has more options, like choosing a filtering column and alphabet, and is more robust on small screens. (TablePress Pro and Max only.)
+* The “Automatic Filtering” module also allows using commas in filter values now. (TablePress Pro and Max only.)
+* The “Column Filter Dropdowns” module now only disables selections if none can be made. (TablePress Pro and Max only.)
+* The “REST API” module now allows public and unauthenticaed requests, if desired. (TablePress Max only.)
+* The “Server-side Processing” module is more robust when dealing with large tables that use many settings. (TablePress Max only.)
+* Cleaned up, improved, and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
 
 **Premium versions**
 
 * Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)
 
-**Behind the scenes**
-
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Automated code compatibility checks and build tools simplify chores for easier development.
-* Support for PHP 8.1 and PHP 8.2.
-* TablePress 2.0 requires WordPress 5.8.
-
 == Upgrade Notice ==
+
+= 2.1 =
+This update is a feature and enhancement release. Updating is highly recommended.
 
 = 2.0.4 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
-
-= 2.0 =
-This update is a major feature update that brings many cool and new things. Updating is highly recommended.

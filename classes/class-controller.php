@@ -67,8 +67,9 @@ abstract class TablePress_Controller {
 		$current_plugin_options_db_version = TablePress::$model_options->get( 'plugin_options_db_version' );
 		if ( $current_plugin_options_db_version < TablePress::db_version ) {
 			// Allow more PHP execution time for update process.
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@set_time_limit( 300 );
+			if ( function_exists( 'set_time_limit' ) ) {
+				@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			}
 
 			// Add TablePress capabilities to the WP_Roles objects, for new installations and all versions below 12.
 			if ( $current_plugin_options_db_version < 12 ) {

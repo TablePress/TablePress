@@ -105,7 +105,13 @@ class TablePress_Export_View extends TablePress_View {
 			<label for="tables-export"><?php _e( 'Tables to Export', 'tablepress' ); ?>:</label>
 			<?php
 			if ( $data['zip_support_available'] ) {
+				// Show a "Select all" checkbox to select all entries in the export tables dropdown.
 				echo '<br /><br /><label for="tables-export-select-all"><input type="checkbox" id="tables-export-select-all"> ' . __( 'Select all', 'tablepress' ) . '</label>';
+
+				// Show a "Reverse List" checkbox if more tables are shown than what the height of the export tables dropdown holds.
+				if ( $data['tables_count'] > 12 ) {
+					echo '<br /><br /><label for="tables-export-reverse-list"><input type="checkbox" id="tables-export-reverse-list"> ' . __( 'Reverse list', 'tablepress' ) . '</label>';
+				}
 			}
 			?>
 		</th>

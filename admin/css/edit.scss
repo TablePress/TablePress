@@ -37,6 +37,11 @@ div#post-body.metabox-holder.columns-1 {
 	overflow: visible !important;
 }
 
+/* Add space between the screen options fieldsets. */
+#tablepress-screen-options {
+	margin-top: 20px;
+}
+
 /* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog */
 body #wp-link-backdrop {
 	z-index: 100103;
@@ -91,6 +96,7 @@ body #wp-link-backdrop {
 	justify-content: space-between;
 	flex-wrap: wrap;
 	width: 99%;
+	gap: 5px 0;
 }
 #table-information-shortcode {
 	margin: 0 -1px 0 1px;
@@ -118,13 +124,8 @@ body #wp-link-backdrop {
 .jexcel > tbody > tr:after {
 	content: "";
 	display: inline-block;
-	min-height: 34px;
+	min-height: 22px;
 }
-/* auto-grow */
-/*.jexcel > tbody > tr.selected:after {
-	min-height: 78px;
-}*/
-
 
 .jexcel > thead > tr > td {
 	text-align: center !important;
@@ -134,6 +135,23 @@ body #wp-link-backdrop {
 .jexcel > tbody > tr > td {
 	vertical-align: top;
 	word-break: break-word;
+	padding: 0;
+}
+.jexcel > tbody > tr > td:first-child {
+	padding: 4px;
+}
+
+/* Show all lines of text in an edited cell. */
+.jexcel > tbody > tr > td.editing {
+	--table-editor-line-clamp-editing: 0;
+}
+
+.jexcel > tbody > tr > td > div {
+	display: -webkit-box;
+	-webkit-line-clamp: var(--table-editor-line-clamp-editing, var(--table-editor-line-clamp));
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	padding: 4px;
 }
 
 /* Fixed header */
@@ -187,31 +205,23 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 }
 
 .jexcel > tbody > tr > .highlight-top {
-	padding: 4px;
 	border-top: 1px solid rgb(82, 146, 247);
 }
 
 .jexcel > tbody > tr > .highlight-left {
-	padding: 4px;
 	border-left: 1px solid rgb(82, 146, 247);
 }
 
 .jexcel > tbody > tr > .highlight-right {
-	padding: 4px;
 	border-right: 1px solid rgb(82, 146, 247);
 }
 
 .jexcel > tbody > tr > .highlight-bottom {
-	padding: 4px;
 	border-bottom: 1px solid rgb(82, 146, 247);
 }
 
 .jexcel_corner {
 	background-color: rgb(82, 146, 247);
-}
-
-.jexcel > tbody > tr > .editor {
-	padding: 0;
 }
 
 .jexcel > tbody > tr > td > textarea {
@@ -247,6 +257,7 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 .jcontextmenu > .jcontextmenu-disabled,
 .jcontextmenu > .jcontextmenu-disabled a {
 	color: #999999;
+	cursor: default;
 }
 .jcontextmenu > div.jcontextmenu-disabled:hover {
 	background: transparent;
@@ -260,4 +271,9 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 .jexcel > thead > tr > td.arrow-down {
 	/* stylelint-disable-next-line function-url-quotes */
 	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3Cpath d='M7 14l5-5 5 5H7z' fill='gray'/%3E%3C/svg%3E");
+}
+
+/* WP Feature Pointers */
+.pointer-tp21_edit_screen_options .wp-pointer-arrow {
+	left: 225px;
 }

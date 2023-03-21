@@ -91,11 +91,22 @@ $tables_export_dropdown.addEventListener( 'change', function () {
 $tables_export_dropdown.dispatchEvent( new Event( 'change' ) );
 
 /**
- * (De-)select all entries from the multiple-select tables dropdown when the "Select All" checkbox is toggled.
+ * (De-)selects all entries from the multiple-select tables dropdown when the "Select All" checkbox is toggled.
  *
  * @since 1.0.0
  */
 $cb_tables_export_select_all.addEventListener( 'change', function () {
 	[ ...$tables_export_dropdown.options ].forEach( ( option ) => ( option.selected = this.checked ) );
 	$tables_export_dropdown.dispatchEvent( new Event( 'change' ) ); // Update ZIP file checkbox.
+} );
+
+/**
+ * Reverses all entries of the multiple-select tables dropdown when the "Reverse list" checkbox is toggled.
+ *
+ * @since 2.1.0
+ */
+$( '#tables-export-reverse-list' ).addEventListener( 'change', function () {
+	[ ...$tables_export_dropdown.children ].forEach( ( option ) => {
+		$tables_export_dropdown.prepend( option );
+	} );
 } );

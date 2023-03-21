@@ -90,7 +90,9 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 					} );
 				}
 			},
-			disabled: ! window?.navigator?.clipboard,
+			// Firefox does not offer the readText() method, so "Paste" needs to be disabled.
+			disabled: ! window?.navigator?.clipboard?.readText,
+			tooltip: ! window?.navigator?.clipboard?.readText ? __( 'Your browser does not allow pasting via the context menu. Use the keyboard shortcut instead.', 'tablepress' ) : '',
 		},
 
 		// Insert Link, Insert Image, Open Advanced Editor.
@@ -100,17 +102,17 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 		{
 			title: __( 'Insert Link', 'tablepress' ),
 			shortcut: sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), meta_key ),
-			onclick: tp.callbacks.insert_link.open_dialog,
+			onclick: tp.callbacks.insert_link.open_dialog.bind( null, ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null ), // eslint-disable-line @wordpress/no-global-active-element
 		},
 		{
 			title: __( 'Insert Image', 'tablepress' ),
 			shortcut: sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), meta_key ),
-			onclick: tp.callbacks.insert_image.open_dialog,
+			onclick: tp.callbacks.insert_image.open_dialog.bind( null, ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null ), // eslint-disable-line @wordpress/no-global-active-element
 		},
 		{
 			title: __( 'Advanced Editor', 'tablepress' ),
 			shortcut: sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), meta_key ),
-			onclick: tp.callbacks.advanced_editor.open_dialog,
+			onclick: tp.callbacks.advanced_editor.open_dialog.bind( null, ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null ), // eslint-disable-line @wordpress/no-global-active-element
 		},
 
 		// Duplicate/Insert/Append/Delete.

@@ -164,7 +164,7 @@ abstract class TablePress_View {
 		if ( is_rtl() ) {
 			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
 		}
-		$this->admin_page->enqueue_script( 'common', array( 'postbox' ) );
+		$this->admin_page->enqueue_script( 'common', array( 'jquery-core', 'postbox' ) );
 
 		$this->admin_page->add_admin_footer_text();
 

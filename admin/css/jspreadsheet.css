@@ -743,3 +743,9 @@
 	-webkit-box-shadow: 2px 4px 4px 0.1px #ccc !important;
 	-moz-box-shadow: 2px 4px 4px 0.1px #ccc !important;
 }
+
+.jexcel > tbody > tr > td.readonly > input[type=checkbox],
+.jexcel > tbody > tr > td.readonly > input[type=radio] {
+	pointer-events: none;
+	opacity: 0.5;
+}

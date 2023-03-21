@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 	/**
-	 * Initiate Admin AJAX functionality.
+	 * Initiates the Admin AJAX functionality.
 	 *
 	 * @since 1.0.0
 	 */
@@ -32,14 +32,14 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 		parent::__construct();
 
-		$ajax_actions = array( 'hide_message', 'save_table', 'preview_table' );
+		$ajax_actions = array( 'hide_message', 'save_table', 'preview_table', 'save_screen_options' );
 		foreach ( $ajax_actions as $action ) {
 			add_action( "wp_ajax_tablepress_{$action}", array( $this, "ajax_action_{$action}" ) );
 		}
 	}
 
 	/**
-	 * Hide a header message on an admin screen.
+	 * Hides a header message on an admin screen.
 	 *
 	 * @since 1.0.0
 	 */
@@ -62,7 +62,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Save the table after the "Save Changes" button on the "Edit" screen has been clicked.
+	 * Saves the table after the "Save Changes" button on the "Edit" screen has been clicked.
 	 *
 	 * @since 1.0.0
 	 */
@@ -187,7 +187,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Return the live preview data of table that has non-saved changes.
+	 * Returns the live preview data of table that has non-saved changes.
 	 *
 	 * @since 1.0.0
 	 */
@@ -260,6 +260,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$render_options = shortcode_atts( $default_render_options, $table['options'] );
 			/** This filter is documented in controllers/controller-frontend.php */
 			$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
+			$render_options['html_id'] = "tablepress-{$table['id']}";
 			$_render->set_input( $table, $render_options );
 			$head_html = $_render->get_preview_css();
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
@@ -291,6 +292,54 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			'head_html' => $head_html,
 			'body_html' => $body_html,
 		);
+		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid.
+		$output_buffer = ob_get_clean();
+		if ( ! empty( $output_buffer ) ) {
+			$response['output_buffer'] = $output_buffer;
+		}
+
+		// Send the response.
+		wp_send_json( $response );
+	}
+
+	/**
+	 * Saves the screen options on the "Edit" screen when they are changed.
+	 *
+	 * @since 2.1.0
+	 */
+	public function ajax_action_save_screen_options() {
+		// Check if the submitted nonce matches the generated nonce we created earlier, dies -1 on failure.
+		TablePress::check_nonce( 'screen_options', false, '_ajax_nonce', true );
+
+		if ( empty( $_POST['tablepress'] ) ) {
+			wp_die( '-1' );
+		}
+		$screen_options = wp_unslash( $_POST['tablepress'] );
+
+		// Sanitize and limit values to a minimum and a maximum.
+		$new_screen_options = array();
+
+		if ( isset( $screen_options['table_editor_column_width'] ) ) {
+			$new_screen_options['table_editor_column_width'] = absint( $screen_options['table_editor_column_width'] );
+			$new_screen_options['table_editor_column_width'] = max( $new_screen_options['table_editor_column_width'], 30 ); // Minimum width: 30 pixels.
+			$new_screen_options['table_editor_column_width'] = min( $new_screen_options['table_editor_column_width'], 9999 ); // Maximum width: 9999 pixels.
+		}
+
+		if ( isset( $screen_options['table_editor_line_clamp'] ) ) {
+			$new_screen_options['table_editor_line_clamp'] = absint( $screen_options['table_editor_line_clamp'] );
+			$new_screen_options['table_editor_line_clamp'] = min( $new_screen_options['table_editor_line_clamp'], 999 ); // Maximum lines: 999. Minimum of 0 (for all lines) is ensured by absint().
+		}
+
+		if ( empty( $new_screen_options ) ) {
+			wp_die( '-1' );
+		}
+		TablePress::$model_options->update( $new_screen_options );
+
+		// Generate the response.
+		$response = array(
+			'success' => true,
+		);
+
 		// Buffer all outputs, to prevent errors/warnings being printed that make the JSON invalid.
 		$output_buffer = ob_get_clean();
 		if ( ! empty( $output_buffer ) ) {

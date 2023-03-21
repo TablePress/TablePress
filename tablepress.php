@@ -4,13 +4,13 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 2.0.4
+ * @version 2.1
  *
  *
  * Plugin Name: TablePress
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and feature-rich tables into your posts and pages, without having to write code.
- * Version: 2.0.4
+ * Version: 2.1
  * Requires at least: 5.8
  * Requires PHP: 5.6.20
  * Author: Tobias Bäthge
@@ -57,21 +57,26 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 				require_once __DIR__ . '/libraries/freemius/start.php';
 
 				$tb_tp_fs = fs_dynamic_init( array(
-					'id'             => '10340',
-					'slug'           => 'tablepress',
-					'type'           => 'plugin',
-					'public_key'     => 'pk_b215ca1bb4041cf43ed137ae7665b',
-					'is_premium'     => false,
-					'has_addons'     => false,
-					'has_paid_plans' => true,
-					'menu'           => array(
+					'id'                => '10340',
+					'slug'              => 'tablepress',
+					'type'              => 'plugin',
+					'public_key'        => 'pk_b215ca1bb4041cf43ed137ae7665b',
+					'is_premium'        => false,
+					'has_addons'        => false,
+					'has_paid_plans'    => true,
+					'menu'              => array(
 						'slug'    => 'tablepress',
 						'contact' => false,
 						'support' => false,
 						'account' => false,
 						'pricing' => false,
 					),
-					'is_live'        => true,
+					'opt_in_moderation' => array(
+						'new'       => true,
+						'updates'   => false,
+						'localhost' => false,
+					),
+					'is_live'           => true,
 				) );
 			}
 

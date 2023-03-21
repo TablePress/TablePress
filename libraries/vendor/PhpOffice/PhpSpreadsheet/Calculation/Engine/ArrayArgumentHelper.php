@@ -153,7 +153,7 @@ class ArrayArgumentHelper
 	{
 		return array_map(
 			function ($argument) {
-				return is_countable($argument) ? count($argument) : 1;
+				return is_array($argument) || $argument instanceof \Countable ? count($argument) : 1;
 			},
 			$arguments
 		);

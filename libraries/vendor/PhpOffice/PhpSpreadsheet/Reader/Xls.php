@@ -14,6 +14,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\CodePage;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\OLE;
@@ -161,14 +162,14 @@ class Xls extends BaseReader
 	/**
 	 * Summary Information stream data.
 	 *
-	 * @var string
+	 * @var ?string
 	 */
 	private $summaryInformation;
 
 	/**
 	 * Extended Summary Information stream data.
 	 *
-	 * @var string
+	 * @var ?string
 	 */
 	private $documentSummaryInformation;
 
@@ -387,7 +388,7 @@ class Xls extends BaseReader
 	/**
 	 * The current RC4 decryption object.
 	 *
-	 * @var Xls\RC4
+	 * @var ?Xls\RC4
 	 */
 	private $rc4Key;
 
@@ -400,10 +401,11 @@ class Xls extends BaseReader
 
 	/**
 	 * The current MD5 context state.
+	 * It is never set in the program, so code which uses it is suspect.
 	 *
 	 * @var string
 	 */
-	private $md5Ctxt;
+	private $md5Ctxt; // @phpstan-ignore-line
 
 	/**
 	 * @var int
@@ -1088,7 +1090,8 @@ class Xls extends BaseReader
 				$escherWorksheet = $reader->load($this->drawingData);
 
 				// get all spContainers in one long array, so they can be mapped to OBJ records
-				$allSpContainers = $escherWorksheet->getDgContainer()->getSpgrContainer()->getAllSpContainers();
+				/** @var SpContainer[] */
+				$allSpContainers = method_exists($escherWorksheet, 'getDgContainer') ? $escherWorksheet->getDgContainer()->getSpgrContainer()->getAllSpContainers() : [];
 			}
 
 			// treat OBJ records
@@ -1103,7 +1106,9 @@ class Xls extends BaseReader
 					}
 
 					// calculate the width and height of the shape
+					/** @var int $startRow */
 					[$startColumn, $startRow] = Coordinate::coordinateFromString($spContainer->getStartCoordinates());
+					/** @var int $endRow */
 					[$endColumn, $endRow] = Coordinate::coordinateFromString($spContainer->getEndCoordinates());
 
 					$startOffsetX = $spContainer->getStartOffsetX();
@@ -1145,7 +1150,7 @@ class Xls extends BaseReader
 							}
 
 							if ($escherWorkbook) {
-								$BSECollection = $escherWorkbook->getDggContainer()->getBstoreContainer()->getBSECollection();
+								$BSECollection = method_exists($escherWorkbook, 'getDggContainer') ? $escherWorkbook->getDggContainer()->getBstoreContainer()->getBSECollection() : [];
 								$BSE = $BSECollection[$BSEindex - 1];
 								$blipType = $BSE->getBlipType();
 
@@ -1195,6 +1200,7 @@ class Xls extends BaseReader
 			// treat SHAREDFMLA records
 			if ($this->version == self::XLS_BIFF8) {
 				foreach ($this->sharedFormulaParts as $cell => $baseCell) {
+					/** @var int $row */
 					[$column, $row] = Coordinate::coordinateFromString($cell);
 					if (($this->getReadFilter() !== null) && $this->getReadFilter()->readCell($column, $row, $this->phpSheet->getTitle())) {
 						$formula = $this->getFormulaFromStructure($this->sharedFormulas[$baseCell], $cell);
@@ -1335,8 +1341,8 @@ class Xls extends BaseReader
 		$recordData = '';
 		if ($this->encryption == self::MS_BIFF_CRYPTO_RC4) {
 			$oldBlock = floor($this->rc4Pos / self::REKEY_BLOCK);
-			$block = floor($pos / self::REKEY_BLOCK);
-			$endBlock = floor(($pos + $len) / self::REKEY_BLOCK);
+			$block = (int) floor($pos / self::REKEY_BLOCK);
+			$endBlock = (int) floor(($pos + $len) / self::REKEY_BLOCK);
 
 			// Spin an RC4 decryptor to the right spot. If we have a decryptor sitting
 			// at a point earlier in the current block, re-use it as we can save some time.
@@ -1382,7 +1388,7 @@ class Xls extends BaseReader
 		// get excel data,
 		$ole->read($filename);
 		// Get workbook data: workbook stream + sheet streams
-		$this->data = $ole->getStream($ole->wrkbook);
+		$this->data = $ole->getStream($ole->wrkbook); // @phpstan-ignore-line
 		// Get summary information data
 		$this->summaryInformation = $ole->getStream($ole->summaryInformation);
 		// Get additional document summary information data
@@ -1723,7 +1729,7 @@ class Xls extends BaseReader
 				$cellAddress = array_pop($arrayKeys);
 			}
 
-			$cellAddress = str_replace('$', '', $cellAddress);
+			$cellAddress = str_replace('$', '', (string) $cellAddress);
 			$noteLength = self::getUInt2d($recordData, 4);
 			$noteText = trim(substr($recordData, 6));
 
@@ -3154,11 +3160,11 @@ class Xls extends BaseReader
 
 		// bit: 6; mask: 0x0040; 0 = outline buttons above outline group
 		$isSummaryBelow = (0x0040 & self::getUInt2d($recordData, 0)) >> 6;
-		$this->phpSheet->setShowSummaryBelow($isSummaryBelow);
+		$this->phpSheet->setShowSummaryBelow((bool) $isSummaryBelow);
 
 		// bit: 7; mask: 0x0080; 0 = outline buttons left of outline group
 		$isSummaryRight = (0x0080 & self::getUInt2d($recordData, 0)) >> 7;
-		$this->phpSheet->setShowSummaryRight($isSummaryRight);
+		$this->phpSheet->setShowSummaryRight((bool) $isSummaryRight);
 
 		// bit: 8; mask: 0x100; 0 = scale printout in percent, 1 = fit printout to number of pages
 		// this corresponds to radio button setting in page setup dialog in Excel
@@ -3187,7 +3193,7 @@ class Xls extends BaseReader
 				$cl = self::getUInt2d($recordData, 2 + 6 * $i + 4);
 
 				// not sure why two column indexes are necessary?
-				$this->phpSheet->setBreakByColumnAndRow($cf + 1, $r, Worksheet::BREAK_ROW);
+				$this->phpSheet->setBreak([$cf + 1, $r], Worksheet::BREAK_ROW);
 			}
 		}
 	}
@@ -3211,10 +3217,10 @@ class Xls extends BaseReader
 			for ($i = 0; $i < $nm; ++$i) {
 				$c = self::getUInt2d($recordData, 2 + 6 * $i);
 				$rf = self::getUInt2d($recordData, 2 + 6 * $i + 2);
-				$rl = self::getUInt2d($recordData, 2 + 6 * $i + 4);
+				//$rl = self::getUInt2d($recordData, 2 + 6 * $i + 4);
 
 				// not sure why two row indexes are necessary?
-				$this->phpSheet->setBreakByColumnAndRow($c + 1, $rf, Worksheet::BREAK_COLUMN);
+				$this->phpSheet->setBreak([$c + 1, ($rf > 0) ? $rf : 1], Worksheet::BREAK_COLUMN);
 			}
 		}
 	}
@@ -4540,7 +4546,7 @@ class Xls extends BaseReader
 		}
 	}
 
-	private function includeCellRangeFiltered($cellRangeAddress)
+	private function includeCellRangeFiltered(string $cellRangeAddress): bool
 	{
 		$includeCellRange = true;
 		if ($this->getReadFilter() !== null) {
@@ -4947,8 +4953,6 @@ class Xls extends BaseReader
 				case 0x28:
 					// TODO: Investigate structure for .xls SHEETLAYOUT record as saved by MS Office Excel 2007
 					return;
-
-					break;
 			}
 		}
 	}
@@ -4989,12 +4993,14 @@ class Xls extends BaseReader
 		$options = self::getUInt2d($recordData, 19);
 
 		// bit: 0; mask 0x0001; 1 = user may edit objects, 0 = users must not edit objects
+		// Note - do not negate $bool
 		$bool = (0x0001 & $options) >> 0;
-		$this->phpSheet->getProtection()->setObjects(!$bool);
+		$this->phpSheet->getProtection()->setObjects((bool) $bool);
 
 		// bit: 1; mask 0x0002; edit scenarios
+		// Note - do not negate $bool
 		$bool = (0x0002 & $options) >> 1;
-		$this->phpSheet->getProtection()->setScenarios(!$bool);
+		$this->phpSheet->getProtection()->setScenarios((bool) $bool);
 
 		// bit: 2; mask 0x0004; format cells
 		$bool = (0x0004 & $options) >> 2;
@@ -5029,8 +5035,9 @@ class Xls extends BaseReader
 		$this->phpSheet->getProtection()->setDeleteRows(!$bool);
 
 		// bit: 10; mask 0x0400; select locked cells
+		// Note that this is opposite of most of above.
 		$bool = (0x0400 & $options) >> 10;
-		$this->phpSheet->getProtection()->setSelectLockedCells(!$bool);
+		$this->phpSheet->getProtection()->setSelectLockedCells((bool) $bool);
 
 		// bit: 11; mask 0x0800; sort cell range
 		$bool = (0x0800 & $options) >> 11;
@@ -5045,8 +5052,9 @@ class Xls extends BaseReader
 		$this->phpSheet->getProtection()->setPivotTables(!$bool);
 
 		// bit: 14; mask 0x4000; select unlocked cells
+		// Note that this is opposite of most of above.
 		$bool = (0x4000 & $options) >> 14;
-		$this->phpSheet->getProtection()->setSelectUnlockedCells(!$bool);
+		$this->phpSheet->getProtection()->setSelectUnlockedCells((bool) $bool);
 
 		// offset: 21; size: 2; not used
 	}
@@ -5635,8 +5643,6 @@ class Xls extends BaseReader
 								break;
 							default:
 								throw new Exception('Unrecognized space type in tAttrSpace token');
-
-								break;
 						}
 						// offset: 3; size: 1; number of inserted spaces/carriage returns
 						$spacecount = ord($formulaData[3]);
@@ -5646,8 +5652,6 @@ class Xls extends BaseReader
 						break;
 					default:
 						throw new Exception('Unrecognized attribute flag in tAttr token');
-
-						break;
 				}
 
 				break;
@@ -6498,8 +6502,6 @@ class Xls extends BaseReader
 						break;
 					default:
 						throw new Exception('Unrecognized function in formula');
-
-						break;
 				}
 				$data = ['function' => $function, 'args' => $args];
 
@@ -6868,8 +6870,6 @@ class Xls extends BaseReader
 						break;
 					default:
 						throw new Exception('Unrecognized function in formula');
-
-						break;
 				}
 				$data = ['function' => $function, 'args' => $args];
 
@@ -7002,8 +7002,6 @@ class Xls extends BaseReader
 				// Unknown cases    // don't know how to deal with
 			default:
 				throw new Exception('Unrecognized token ' . sprintf('%02X', $id) . ' in formula');
-
-				break;
 		}
 
 		return [
@@ -7411,13 +7409,9 @@ class Xls extends BaseReader
 					}
 
 					return $sheetRange;
-
-					break;
 				default:
 					// TODO: external sheet support
 					throw new Exception('Xls reader only supports internal sheets in formulas');
-
-					break;
 			}
 		}
 
@@ -7819,7 +7813,7 @@ class Xls extends BaseReader
 	 */
 	public static function getInt2d($data, $pos)
 	{
-		return unpack('s', $data[$pos] . $data[$pos + 1])[1];
+		return unpack('s', $data[$pos] . $data[$pos + 1])[1]; // @phpstan-ignore-line
 	}
 
 	/**
@@ -7846,7 +7840,7 @@ class Xls extends BaseReader
 		return ord($data[$pos]) | (ord($data[$pos + 1]) << 8) | (ord($data[$pos + 2]) << 16) | $_ord_24;
 	}
 
-	private function parseRichText($is)
+	private function parseRichText(string $is): RichText
 	{
 		$value = new RichText();
 		$value->createText($is);
@@ -7927,7 +7921,7 @@ class Xls extends BaseReader
 		// offset: 6; size: 4; Options
 		$options = self::getInt4d($recordData, 6);
 
-		$style = new Style();
+		$style = new Style(false, true); // non-supervisor, conditional
 		$this->getCFStyleOptions($options, $style);
 
 		$hasFontRecord = (bool) ((0x04000000 & $options) >> 26);
@@ -8088,7 +8082,6 @@ class Xls extends BaseReader
 			$conditionalStyles = $this->phpSheet->getStyle($cellRange)->getConditionalStyles();
 			$conditionalStyles[] = $conditional;
 
-			$this->phpSheet->getStyle($cellRange)->setConditionalStyles($conditionalStyles);
 			$this->phpSheet->getStyle($cellRange)->setConditionalStyles($conditionalStyles);
 		}
 	}

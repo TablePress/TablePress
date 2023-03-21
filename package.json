@@ -1,6 +1,6 @@
 {
 	"name": "@tablepress/tablepress",
-	"version": "2.0.4",
+	"version": "2.1.0",
 	"description": "Embed beautiful and feature-rich tables into your posts and pages, without having to write code.",
 	"author": "Tobias Bäthge",
 	"license": "GPL-2.0-only",
@@ -15,9 +15,9 @@
 	"repository": "github:TablePress/TablePress",
 	"bugs": "https://github.com/TablePress/TablePress/issues",
 	"devDependencies": {
-		"@wordpress/scripts": "^25.2.0",
+		"@wordpress/scripts": "^26.0.0",
 		"autoprefixer": "^9.8.8",
-		"grunt": "^1.5.3",
+		"grunt": "^1.6.1",
 		"grunt-contrib-csslint": "^2.0.0",
 		"grunt-contrib-jshint": "^3.2.0",
 		"grunt-jsonlint": "^2.1.3",

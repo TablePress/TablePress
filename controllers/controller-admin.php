@@ -148,9 +148,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			add_action( "load-{$page_hook}", array( $this, 'load_admin_page' ) );
 		}
 
-		$pages_with_editor_button = array( 'post.php', 'post-new.php' );
-		foreach ( $pages_with_editor_button as $editor_page ) {
-			add_action( "load-{$editor_page}", array( $this, 'add_editor_buttons' ) );
+		/**
+		 * Filters whether the legacy editor button should be loaded on the post editing screen.
+		 *
+		 * @since 2.1.0
+		 *
+		 * @param bool $load_button Whether to load the legacy editor button. Default true.
+		 */
+		if ( apply_filters( 'tablepress_add_legacy_editor_button', true ) ) {
+			$pages_with_editor_button = array( 'post.php', 'post-new.php' );
+			foreach ( $pages_with_editor_button as $editor_page ) {
+				add_action( "load-{$editor_page}", array( $this, 'add_editor_buttons' ) );
+			}
 		}
 
 		if ( ! is_network_admin() && ! is_user_admin() ) {
@@ -938,9 +947,10 @@ JS;
 			$download_data = $export_data;
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully.
-			/** This filter is documented in the WordPress file wp-admin/admin.php */
-			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			wp_raise_memory_limit( 'admin' );
+			if ( function_exists( 'set_time_limit' ) ) {
+				@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			}
 
 			$zip_file = new ZipArchive();
 			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', wp_date( 'Y-m-d-H-i-s' ), $export['format'] );
@@ -1237,6 +1247,7 @@ JS;
 		$render_options = shortcode_atts( $default_render_options, $table['options'] );
 		/** This filter is documented in controllers/controller-frontend.php */
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
+		$render_options['html_id'] = "tablepress-{$table['id']}";
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
 			'table_id'               => $table_id,

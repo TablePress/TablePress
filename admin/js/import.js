@@ -37,7 +37,7 @@ const $import_existing_table_dropdown = $( '#tables-import-existing-table' );
  */
 jSuites.dropdown( $import_existing_table_dropdown, {
 	autocomplete: true,
-	placeholder: $import_existing_table_dropdown.options[0].innerText,
+	placeholder: $import_existing_table_dropdown.options[0].textContent,
 } );
 
 /**

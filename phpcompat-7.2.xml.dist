@@ -29,6 +29,12 @@
 	<arg value="ps"/>
 
 	<!-- Scan the folders of PHPSpreadsheet and its dependencies. -->
+	<file>./rector.php</file>
+	<file>./libraries/autoload.php</file>
 	<file>./libraries/vendor</file>
+	<file>./libraries/composer</file>
+	<rule ref="PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__serializeFound">
+		<exclude-pattern>libraries/vendor/PhpOffice/PhpSpreadsheet/Spreadsheet\.php</exclude-pattern>
+	</rule>
 
 </ruleset>

@@ -25,7 +25,7 @@ import { RawHTML } from '@wordpress/element';
  */
 export default function save( { attributes: { id = '', parameters = '' } } ) {
 	if ( '' === id ) {
-		return;
+		return '';
 	}
 
 	parameters = parameters.trim();

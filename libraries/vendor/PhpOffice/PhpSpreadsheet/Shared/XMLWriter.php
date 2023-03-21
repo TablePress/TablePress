@@ -2,6 +2,8 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Shared;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
+
 class XMLWriter extends \XMLWriter
 {
 	/** @var bool */
@@ -60,6 +62,13 @@ class XMLWriter extends \XMLWriter
 			/** @scrutinizer ignore-unhandled */
 			@unlink($this->tempFileName);
 		}
+	}
+
+	public function __wakeup(): void
+	{
+		$this->tempFileName = '';
+
+		throw new SpreadsheetException('Unserialize not permitted');
 	}
 
 	/**

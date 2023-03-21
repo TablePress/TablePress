@@ -6,6 +6,8 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 
 class Exception extends PhpSpreadsheetException
 {
+	public const CALCULATION_ENGINE_PUSH_TO_STACK = 1;
+
 	/**
 	 * Error handler callback.
 	 *

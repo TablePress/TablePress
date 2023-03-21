@@ -52,6 +52,7 @@ $align-side: left !default;
 		text-align: $align-side;
 		vertical-align: top;
 		float: none !important; /* Work around themes that set `float` on `.column-1` CSS classes and similar. */
+		box-sizing: content-box;
 	}
 
 	/* Horizontal borders */

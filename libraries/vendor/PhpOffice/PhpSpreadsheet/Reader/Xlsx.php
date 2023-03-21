@@ -122,11 +122,14 @@ class Xlsx extends BaseReader
 		return is_array($value) ? $value : [];
 	}
 
-	private function loadZip(string $filename, string $ns = ''): SimpleXMLElement
+	private function loadZip(string $filename, string $ns = '', bool $replaceUnclosedBr = false): SimpleXMLElement
 	{
 		$contents = $this->getFromZipArchive($this->zip, $filename);
+		if ($replaceUnclosedBr) {
+			$contents = str_replace('<br>', '<br/>', $contents);
+		}
 		$rels = simplexml_load_string(
-			$this->securityScanner->scan($contents),
+			$this->getSecurityScannerOrThrow()->scan($contents),
 			'SimpleXMLElement',
 			Settings::getLibXmlLoaderOptions(),
 			$ns
@@ -141,7 +144,7 @@ class Xlsx extends BaseReader
 	{
 		$contents = $this->getFromZipArchive($this->zip, $filename);
 		$rels = simplexml_load_string(
-			$this->securityScanner->scan($contents),
+			$this->getSecurityScannerOrThrow()->scan($contents),
 			'SimpleXMLElement',
 			Settings::getLibXmlLoaderOptions(),
 			($ns === '' ? $ns : '')
@@ -258,7 +261,7 @@ class Xlsx extends BaseReader
 
 						$xml = new XMLReader();
 						$xml->xml(
-							$this->securityScanner->scanFile(
+							$this->getSecurityScannerOrThrow()->scanFile(
 								'zip://' . File::realpath($filename) . '#' . $fileWorksheetPath
 							),
 							null,
@@ -469,7 +472,7 @@ class Xlsx extends BaseReader
 
 		$rels = $this->loadZip(self::INITIAL_FILE, Namespaces::RELATIONSHIPS);
 
-		$propertyReader = new PropertyReader($this->securityScanner, $excel->getProperties());
+		$propertyReader = new PropertyReader($this->getSecurityScannerOrThrow(), $excel->getProperties());
 		$chartDetails = [];
 		foreach ($rels->Relationship as $relx) {
 			$rel = self::getAttributes($relx);
@@ -760,7 +763,7 @@ class Xlsx extends BaseReader
 									$sheetViews->load();
 								}
 
-								$sheetViewOptions = new SheetViewOptions($docSheet, $xmlSheet);
+								$sheetViewOptions = new SheetViewOptions($docSheet, $xmlSheetNS);
 								$sheetViewOptions->load($this->getReadDataOnly(), $this->styleReader);
 
 								(new ColumnAndRowAttributes($docSheet, $xmlSheetNS))
@@ -896,11 +899,11 @@ class Xlsx extends BaseReader
 								}
 							}
 
-							$aKeys = ['sheet', 'objects', 'scenarios', 'formatCells', 'formatColumns', 'formatRows', 'insertColumns', 'insertRows', 'insertHyperlinks', 'deleteColumns', 'deleteRows', 'selectLockedCells', 'sort', 'autoFilter', 'pivotTables', 'selectUnlockedCells'];
-							if (!$this->readDataOnly && $xmlSheet && $xmlSheet->sheetProtection) {
-								foreach ($aKeys as $key) {
+							if (!$this->readDataOnly && $xmlSheetNS && $xmlSheetNS->sheetProtection) {
+								$protAttr = $xmlSheetNS->sheetProtection->attributes() ?? [];
+								foreach ($protAttr as $key => $value) {
 									$method = 'set' . ucfirst($key);
-									$docSheet->getProtection()->$method(self::boolean((string) $xmlSheet->sheetProtection[$key]));
+									$docSheet->getProtection()->$method(self::boolean((string) $value));
 								}
 							}
 
@@ -1029,6 +1032,7 @@ class Xlsx extends BaseReader
 
 								// later we will remove from it real vmlComments
 								$unparsedVmlDrawings = $vmlComments;
+								$vmlDrawingContents = [];
 
 								// Loop through VML comments
 								foreach ($vmlComments as $relName => $relPath) {
@@ -1037,7 +1041,7 @@ class Xlsx extends BaseReader
 
 									try {
 										// no namespace okay - processed with Xpath
-										$vmlCommentsFile = $this->loadZip($relPath, '');
+										$vmlCommentsFile = $this->loadZip($relPath, '', true);
 										$vmlCommentsFile->registerXPathNamespace('v', Namespaces::URN_VML);
 									} catch (Throwable $ex) {
 										//Ignore unparsable vmlDrawings. Later they will be moved from $unparsedVmlDrawings to $unparsedLoadedData
@@ -1047,6 +1051,7 @@ class Xlsx extends BaseReader
 									// Locate VML drawings image relations
 									$drowingImages = [];
 									$VMLDrawingsRelations = dirname($relPath) . '/_rels/' . basename($relPath) . '.rels';
+									$vmlDrawingContents[$relName] = $this->getSecurityScannerOrThrow()->scan($this->getFromZipArchive($zip, $relPath));
 									if ($zip->locateName($VMLDrawingsRelations)) {
 										$relsVMLDrawing = $this->loadZip($VMLDrawingsRelations, Namespaces::RELATIONSHIPS);
 										foreach ($relsVMLDrawing->Relationship as $elex) {
@@ -1106,7 +1111,7 @@ class Xlsx extends BaseReader
 
 											if (($column !== null) && ($row !== null)) {
 												// Set comment properties
-												$comment = $docSheet->getCommentByColumnAndRow($column + 1, $row + 1);
+												$comment = $docSheet->getComment([$column + 1, $row + 1]);
 												$comment->getFillColor()->setRGB($fillColor);
 												if (isset($drowingImages[$fillImageRelId])) {
 													$objDrawing = new \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -1156,7 +1161,7 @@ class Xlsx extends BaseReader
 										$unparsedVmlDrawing[$rId] = [];
 										$unparsedVmlDrawing[$rId]['filePath'] = self::dirAdd("$dir/$fileWorksheet", $relPath);
 										$unparsedVmlDrawing[$rId]['relFilePath'] = $relPath;
-										$unparsedVmlDrawing[$rId]['content'] = $this->securityScanner->scan($this->getFromZipArchive($zip, $unparsedVmlDrawing[$rId]['filePath']));
+										$unparsedVmlDrawing[$rId]['content'] = $this->getSecurityScannerOrThrow()->scan($this->getFromZipArchive($zip, $unparsedVmlDrawing[$rId]['filePath']));
 										unset($unparsedVmlDrawing);
 									}
 								}
@@ -1519,6 +1524,14 @@ class Xlsx extends BaseReader
 											}
 										}
 									}
+									if ($xmlSheet->legacyDrawing && !$this->readDataOnly) {
+										foreach ($xmlSheet->legacyDrawing as $drawing) {
+											$drawingRelId = (string) self::getArrayItem(self::getAttributes($drawing, $xmlNamespaceBase), 'id');
+											if (isset($vmlDrawingContents[$drawingRelId])) {
+												$unparsedLoadedData['sheets'][$docSheet->getCodeName()]['legacyDrawing'] = $vmlDrawingContents[$drawingRelId];
+											}
+										}
+									}
 
 									// unparsed drawing AlternateContent
 									$xmlAltDrawing = $this->loadZip((string) $fileDrawing, Namespaces::COMPATIBILITY);
@@ -1757,7 +1770,7 @@ class Xlsx extends BaseReader
 
 		if (isset($is->t)) {
 			$value->createText(StringHelper::controlCharacterOOXML2PHP((string) $is->t));
-		} else {
+		} elseif ($is !== null) {
 			if (is_object($is->r)) {
 				/** @var SimpleXMLElement $run */
 				foreach ($is->r as $run) {
@@ -1851,7 +1864,7 @@ class Xlsx extends BaseReader
 		if ($dataRels) {
 			// exists and not empty if the ribbon have some pictures (other than internal MSO)
 			$UIRels = simplexml_load_string(
-				$this->securityScanner->scan($dataRels),
+				$this->getSecurityScannerOrThrow()->scan($dataRels),
 				'SimpleXMLElement',
 				Settings::getLibXmlLoaderOptions()
 			);
@@ -1938,14 +1951,8 @@ class Xlsx extends BaseReader
 		return trim(str_replace(["\r", "\n", ' '], '', $string), ';');
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	private static function boolean($value): bool
+	private static function boolean(string $value): bool
 	{
-		if (is_object($value)) {
-			$value = (string) $value;
-		}
 		if (is_numeric($value)) {
 			return (bool) $value;
 		}
@@ -2031,7 +2038,7 @@ class Xlsx extends BaseReader
 			$unparsedCtrlProps[$rId] = [];
 			$unparsedCtrlProps[$rId]['filePath'] = self::dirAdd("$dir/$fileWorksheet", $ctrlProp['Target']);
 			$unparsedCtrlProps[$rId]['relFilePath'] = (string) $ctrlProp['Target'];
-			$unparsedCtrlProps[$rId]['content'] = $this->securityScanner->scan($this->getFromZipArchive($zip, $unparsedCtrlProps[$rId]['filePath']));
+			$unparsedCtrlProps[$rId]['content'] = $this->getSecurityScannerOrThrow()->scan($this->getFromZipArchive($zip, $unparsedCtrlProps[$rId]['filePath']));
 		}
 		unset($unparsedCtrlProps);
 	}
@@ -2061,7 +2068,7 @@ class Xlsx extends BaseReader
 			$unparsedPrinterSettings[$rId] = [];
 			$unparsedPrinterSettings[$rId]['filePath'] = self::dirAdd("$dir/$fileWorksheet", $printerSettings['Target']);
 			$unparsedPrinterSettings[$rId]['relFilePath'] = (string) $printerSettings['Target'];
-			$unparsedPrinterSettings[$rId]['content'] = $this->securityScanner->scan($this->getFromZipArchive($zip, $unparsedPrinterSettings[$rId]['filePath']));
+			$unparsedPrinterSettings[$rId]['content'] = $this->getSecurityScannerOrThrow()->scan($this->getFromZipArchive($zip, $unparsedPrinterSettings[$rId]['filePath']));
 		}
 		unset($unparsedPrinterSettings);
 	}

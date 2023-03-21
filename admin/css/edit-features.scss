@@ -1,0 +1,75 @@
+/**
+ * CSS code for the Premium features display on the "Edit" screen
+ *
+ * @package TablePress
+ * @subpackage Views CSS
+ * @author Tobias Bäthge
+ * @since 2.1.0
+ */
+
+#tablepress-page .premium-features {
+	display: none;
+
+	$feature-box-width: 400px;
+
+	@media screen and (min-width: 783px) {
+		@at-root #tablepress_edit-table-information {
+			width: calc(100% - $feature-box-width);
+		}
+
+		display: block;
+		position: absolute;
+		right: -$feature-box-width;
+		width: calc($feature-box-width - 24px);
+		height: calc(100% + 42px);
+		bottom: 0;
+		margin: 0;
+
+		.rtl & {
+			left: -$feature-box-width;
+			right: auto;
+		}
+
+		> div {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			justify-content: space-between;
+			text-align: center;
+		}
+
+		.postbox-header {
+			border-bottom: none;
+		}
+
+		h2 {
+			color: transparent;
+			background-image: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 75%);
+			-webkit-background-clip: text;
+			background-clip: text;
+			font-weight: 700;
+			font-size: 19px;
+			width: 100%;
+			padding-top: 14px;
+
+			.dashicons {
+				width: 26px;
+				font-size: 26px;
+			}
+		}
+
+		h3 a {
+			color: #000000;
+			text-decoration: none;
+		}
+
+		.inside {
+			font-size: 14px;
+			padding-bottom: 0;
+		}
+
+		.buttons {
+			margin-bottom: 10px;
+		}
+	}
+}

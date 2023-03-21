@@ -3,20 +3,24 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class FormattedNumber
 {
 	/**    Constants                */
 	/**    Regular Expressions        */
-	//    Fraction
 	private const STRING_REGEXP_FRACTION = '~^\s*(-?)((\d*)\s+)?(\d+\/\d+)\s*$~';
 
 	private const STRING_REGEXP_PERCENT = '~^(?:(?: *(?<PrefixedSign>[-+])? *\% *(?<PrefixedSign2>[-+])? *(?<PrefixedValue>[0-9]+\.?[0-9*]*(?:E[-+]?[0-9]*)?) *)|(?: *(?<PostfixedSign>[-+])? *(?<PostfixedValue>[0-9]+\.?[0-9]*(?:E[-+]?[0-9]*)?) *\% *))$~i';
+
+	// preg_quoted string for major currency symbols, with a %s for locale currency
+	private const CURRENCY_CONVERSION_LIST = '\$€£¥%s';
 
 	private const STRING_CONVERSION_LIST = [
 		[self::class, 'convertToNumberIfNumeric'],
 		[self::class, 'convertToNumberIfFraction'],
 		[self::class, 'convertToNumberIfPercent'],
+		[self::class, 'convertToNumberIfCurrency'],
 	];
 
 	/**
@@ -44,8 +48,13 @@ class FormattedNumber
 	 */
 	public static function convertToNumberIfNumeric(string &$operand): bool
 	{
-		if (is_numeric($operand)) {
-			$operand = (float) $operand;
+		$thousandsSeparator = preg_quote(StringHelper::getThousandsSeparator());
+		$value = preg_replace(['/(\d)' . $thousandsSeparator . '(\d)/u', '/([+-])\s+(\d)/u'], ['$1$2', '$1$2'], trim($operand));
+		$decimalSeparator = preg_quote(StringHelper::getDecimalSeparator());
+		$value = preg_replace(['/(\d)' . $decimalSeparator . '(\d)/u', '/([+-])\s+(\d)/u'], ['$1.$2', '$1$2'], $value ?? '');
+
+		if (is_numeric($value)) {
+			$operand = (float) $value;
 
 			return true;
 		}
@@ -81,8 +90,13 @@ class FormattedNumber
 	 */
 	public static function convertToNumberIfPercent(string &$operand): bool
 	{
+		$thousandsSeparator = preg_quote(StringHelper::getThousandsSeparator());
+		$value = preg_replace('/(\d)' . $thousandsSeparator . '(\d)/u', '$1$2', trim($operand));
+		$decimalSeparator = preg_quote(StringHelper::getDecimalSeparator());
+		$value = preg_replace(['/(\d)' . $decimalSeparator . '(\d)/u', '/([+-])\s+(\d)/u'], ['$1.$2', '$1$2'], $value ?? '');
+
 		$match = [];
-		if (preg_match(self::STRING_REGEXP_PERCENT, $operand, $match, PREG_UNMATCHED_AS_NULL)) {
+		if ($value !== null && preg_match(self::STRING_REGEXP_PERCENT, $value, $match, PREG_UNMATCHED_AS_NULL)) {
 			//Calculate the percentage
 			$sign = ($match['PrefixedSign'] ?? $match['PrefixedSign2'] ?? $match['PostfixedSign']) ?? '';
 			$operand = (float) ($sign . ($match['PostfixedValue'] ?? $match['PrefixedValue'])) / 100;
@@ -91,5 +105,38 @@ class FormattedNumber
 		}
 
 		return false;
+	}
+
+	/**
+	 * Identify whether a string contains a currency value, and if so,
+	 * convert it to a numeric.
+	 *
+	 * @param string $operand string value to test
+	 */
+	public static function convertToNumberIfCurrency(string &$operand): bool
+	{
+		$currencyRegexp = self::currencyMatcherRegexp();
+		$thousandsSeparator = preg_quote(StringHelper::getThousandsSeparator());
+		$value = preg_replace('/(\d)' . $thousandsSeparator . '(\d)/u', '$1$2', $operand);
+
+		$match = [];
+		if ($value !== null && preg_match($currencyRegexp, $value, $match, PREG_UNMATCHED_AS_NULL)) {
+			//Determine the sign
+			$sign = ($match['PrefixedSign'] ?? $match['PrefixedSign2'] ?? $match['PostfixedSign']) ?? '';
+			//Cast to a float
+			$operand = (float) ($sign . ($match['PostfixedValue'] ?? $match['PrefixedValue']));
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static function currencyMatcherRegexp(): string
+	{
+		$currencyCodes = sprintf(self::CURRENCY_CONVERSION_LIST, preg_quote(StringHelper::getCurrencyCode()));
+		$decimalSeparator = preg_quote(StringHelper::getDecimalSeparator());
+
+		return '~^(?:(?: *(?<PrefixedSign>[-+])? *(?<PrefixedCurrency>[' . $currencyCodes . ']) *(?<PrefixedSign2>[-+])? *(?<PrefixedValue>[0-9]+[' . $decimalSeparator . ']?[0-9*]*(?:E[-+]?[0-9]*)?) *)|(?: *(?<PostfixedSign>[-+])? *(?<PostfixedValue>[0-9]+' . $decimalSeparator . '?[0-9]*(?:E[-+]?[0-9]*)?) *(?<PostfixedCurrency>[' . $currencyCodes . ']) *))$~ui';
 	}
 }

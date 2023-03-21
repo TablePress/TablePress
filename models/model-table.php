@@ -911,10 +911,6 @@ class TablePress_Table_Model extends TablePress_Model {
 				$cell_content = (string) $cell_content;
 			}
 		);
-		// $table['author'] = get_current_user_id(); // We don't want this, as it would override the original author.
-		// $table['created'] = wp_date( 'Y-m-d H:i:s' ); // We don't want this, as it would override the original datetime.
-		$table['last_modified'] = wp_date( 'Y-m-d H:i:s' );
-		$table['options']['last_editor'] = get_current_user_id();
 		// Table Options.
 		if ( isset( $new_table['options'] ) ) { // Options are for example not set for newly added tables.
 			// Specials check for certain options.
@@ -939,6 +935,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Table Visibility.
 		$table['visibility']['rows'] = $new_table['visibility']['rows'];
 		$table['visibility']['columns'] = $new_table['visibility']['columns'];
+
+		// $table['author'] = get_current_user_id(); // We don't want this, as it would override the original author.
+		// $table['created'] = wp_date( 'Y-m-d H:i:s' ); // We don't want this, as it would override the original datetime.
+		$table['last_modified'] = wp_date( 'Y-m-d H:i:s' );
+		$table['options']['last_editor'] = get_current_user_id();
 
 		return $table;
 	}

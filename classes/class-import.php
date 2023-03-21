@@ -74,10 +74,11 @@ class TablePress_Import {
 	 * @return array|WP_Error List of imported tables on success, WP_Error on failure.
 	 */
 	public function run( array $import_config ) {
-		// Unzip can use a lot of memory and execution time, but not this much hopefully.
-		/** This filter is documented in the WordPress file wp-admin/admin.php */
+		// Unziping can use a lot of memory and execution time, but not this much hopefully.
 		wp_raise_memory_limit( 'admin' );
-		set_time_limit( 300 );
+		if ( function_exists( 'set_time_limit' ) ) {
+			@set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
 
 		$this->import_config = $import_config;
 
@@ -142,7 +143,9 @@ class TablePress_Import {
 				// Download URL to local file.
 				$location = download_url( $this->import_config['url'] );
 				if ( is_wp_error( $location ) ) {
-					return new WP_Error( 'table_import_url_download_failed', '', $this->import_config['url'] );
+					// Add an error code to the existing WP_Error.
+					$location->add( 'table_import_url_download_failed', '', $this->import_config['url'] );
+					return $location;
 				}
 
 				$import_files[] = array(

@@ -102,7 +102,17 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			$table = array( 'data' => array() );
 			foreach ( $json_table as $row ) {
 				// Turn row into indexed arrays with numeric keys.
-				$table['data'][] = array_values( (array) $row );
+				$row = array_values( (array) $row );
+
+				// Remove entries of multi-dimensional arrays.
+				foreach ( $row as &$cell ) {
+					if ( is_array( $cell ) ) {
+						$cell = '';
+					}
+				}
+				unset( $cell ); // Unset use-by-reference parameter of foreach loop.
+
+				$table['data'][] = $row;
 			}
 		}
 

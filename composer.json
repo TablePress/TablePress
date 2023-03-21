@@ -52,7 +52,9 @@
 		"php-censor/phpdoc-checker": "^1.0.3 || ^2.1.0 || ^3.1.0",
 		"yoast/phpunit-polyfills": "^1.0.4",
 		"phpcsstandards/phpcsutils": "dev-develop",
-		"phpcsstandards/phpcsextra": "dev-develop"
+		"phpcsstandards/phpcsextra": "dev-develop",
+		"php-parallel-lint/php-parallel-lint": "^1.3",
+		"php-parallel-lint/php-console-highlighter": "^1.0"
 	},
 	"config": {
 		"allow-plugins": {
@@ -71,31 +73,47 @@
 		"phpcs:full": "vendor/bin/phpcs",
 		"fix-phpcs": "vendor/bin/phpcbf --report=summary,source",
 		"phpdoc-checker": "vendor/bin/phpdoc-checker --exclude=\"libraries/composer,libraries/freemius,libraries/vendor,libraries/autoload.php,libraries/simplexlsx.class.php,node_modules,vendor\"",
+		"php-parallel-lint": "vendor/bin/parallel-lint --exclude .git --exclude node_modules --exclude vendor --show-deprecated .",
 		"build": [
 			"@compat",
 			"@phpcs:full",
-			"@phpdoc-checker"
+			"@phpdoc-checker",
+			"@php-parallel-lint"
 		],
 		"spaces-to-tabs": "find . -type f -not -path './node_modules/*' -not -path './vendor/*' \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
-		"release": [
+		"update-phpspreadsheet": [
 			"rm -rf ./composer.lock ./libraries/composer ./libraries/vendor ./libraries/autoload.php ./vendor",
 			"composer clear-cache",
+			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
 			"composer config platform.php 7.2",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 1.25.2\" --no-update",
-			"composer require \"dangoodman/composer-for-wordpress:^2.0.2\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 1.28.0\" --no-update",
 			"composer update --no-dev",
 			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart /mozart/bin/mozart compose",
-			"composer dump-autoload --optimize --classmap-authoritative",
+			"composer remove phpoffice/phpspreadsheet --no-update",
+			"composer require dangoodman/composer-for-wordpress --dev --no-update",
+			"composer update",
+			"composer dump-autoload --optimize --classmap-authoritative --no-dev",
+			"rm -rf ./vendor/dangoodman ./vendor/composer/installed.*",
 			"mv ./vendor/* ./libraries",
 			"rm -rf ./vendor",
-			"git checkout -- composer.json",
 			"find ./libraries -type f -exec chmod 644 {} \\;",
 			"find ./libraries -type d -exec chmod 755 {} \\;",
 			"find ./libraries -type d -exec cp -n index.php {} \\;",
 			"find ./libraries -type f \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
-			"@develop"
+			"composer require rector/rector --dev",
+			"vendor/bin/rector",
+			"git checkout -- composer.json",
+			"composer update --with-all-dependencies"
 		],
-		"develop": "composer update --with-all-dependencies"
+		"i18n-prepare": [
+			"wp i18n make-pot . ./modules/i18n/tablepress.pot --slug=tablepress --domain=tablepress --include=classes,controllers,libraries/html-parser.class.php,models,modules/admin/js/build,modules/classes,modules/controllers,modules/views,views --skip-audit",
+			"wp i18n update-po ./modules/i18n/tablepress.pot"
+		],
+		"i18n-compile": [
+			"rm -rf ./modules/i18n/*.json ./modules/i18n/*.mo",
+			"wp i18n make-json ./modules/i18n/ --purge --update-mo-files",
+			"git checkout -- ./modules/i18n/*.po"
+		]
 	},
 	"autoload": {
 		"psr-4": {

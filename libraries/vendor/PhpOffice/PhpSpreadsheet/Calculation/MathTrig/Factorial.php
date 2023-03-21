@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\MathTrig;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Statistical;
 
 class Factorial
@@ -120,6 +121,6 @@ class Factorial
 
 		$summer = self::fact($summer);
 
-		return $summer / $divisor;
+		return is_numeric($summer) ? ($summer / $divisor) : ExcelError::VALUE();
 	}
 }

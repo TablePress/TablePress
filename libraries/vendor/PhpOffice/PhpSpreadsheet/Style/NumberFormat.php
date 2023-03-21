@@ -79,10 +79,14 @@ class NumberFormat extends Supervisor
 		self::FORMAT_DATE_TIME8,
 	];
 
-	const FORMAT_CURRENCY_USD_SIMPLE = '"$"#,##0.00_-';
-	const FORMAT_CURRENCY_USD = '$#,##0_-';
-	const FORMAT_CURRENCY_EUR_SIMPLE = '#,##0.00_-"€"';
-	const FORMAT_CURRENCY_EUR = '#,##0_-"€"';
+	/** @deprecated 1.28 use FORMAT_CURRENCY_USD_INTEGER instead */
+	const FORMAT_CURRENCY_USD_SIMPLE = '"$"#,##0_-';
+	const FORMAT_CURRENCY_USD_INTEGER = '$#,##0_-';
+	const FORMAT_CURRENCY_USD = '$#,##0.00_-';
+	/** @deprecated 1.28 use FORMAT_CURRENCY_EUR_INTEGER instead */
+	const FORMAT_CURRENCY_EUR_SIMPLE = '#,##0_-"€"';
+	const FORMAT_CURRENCY_EUR_INTEGER = '#,##0_-[$€]';
+	const FORMAT_CURRENCY_EUR = '#,##0.00_-[$€]';
 	const FORMAT_ACCOUNTING_USD = '_("$"* #,##0.00_);_("$"* \(#,##0.00\);_("$"* "-"??_);_(@_)';
 	const FORMAT_ACCOUNTING_EUR = '_("€"* #,##0.00_);_("€"* \(#,##0.00\);_("€"* "-"??_);_(@_)';
 
@@ -213,7 +217,7 @@ class NumberFormat extends Supervisor
 	 *
 	 * @return $this
 	 */
-	public function setFormatCode($formatCode)
+	public function setFormatCode(string $formatCode)
 	{
 		if ($formatCode == '') {
 			$formatCode = self::FORMAT_GENERAL;
@@ -240,17 +244,18 @@ class NumberFormat extends Supervisor
 			return $this->getSharedComponent()->getBuiltInFormatCode();
 		}
 
+		// Scrutinizer says this could return true. It is wrong.
 		return $this->builtInFormatCode;
 	}
 
 	/**
 	 * Set Built-In Format Code.
 	 *
-	 * @param int $formatCodeIndex
+	 * @param int $formatCodeIndex Id of the built-in format code to use
 	 *
 	 * @return $this
 	 */
-	public function setBuiltInFormatCode($formatCodeIndex)
+	public function setBuiltInFormatCode(int $formatCodeIndex)
 	{
 		if ($this->isSupervisor) {
 			$styleArray = $this->getStyleArray(['formatCode' => self::builtInFormatCode($formatCodeIndex)]);
@@ -291,7 +296,7 @@ class NumberFormat extends Supervisor
 		//      KOR fmt 55: "yyyy/mm/dd"
 
 		// Built-in format codes
-		if (self::$builtInFormats === null) {
+		if (empty(self::$builtInFormats)) {
 			self::$builtInFormats = [];
 
 			// General
@@ -431,7 +436,8 @@ class NumberFormat extends Supervisor
 	 * Convert a value in a pre-defined format to a PHP string.
 	 *
 	 * @param mixed $value Value to format
-	 * @param string $format Format code, see = self::FORMAT_*
+	 * @param string $format Format code: see = self::FORMAT_* for predefined values;
+	 *                          or can be any valid MS Excel custom format string
 	 * @param array $callBack Callback function for additional formatting of string
 	 *
 	 * @return string Formatted string
