@@ -1388,8 +1388,8 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 		// Prevent the browser's native handling of the shortcut.
 		event.preventDefault();
 	} else if ( 'move' === action ) {
-		// Only move rows or columns if an element in the table editor is focussed.
-		if ( $( '#table-editor' ).contains( document.activeElement ) ) { // eslint-disable-line @wordpress/no-global-active-element
+		// Only move rows or columns if an element in the table editor is focussed, but not if the cell is being edited (to not prevent the browser's original shortcuts).
+		if ( $( '#table-editor' ).contains( document.activeElement ) && 'TEXTAREA' !== document.activeElement.tagName ) { // eslint-disable-line @wordpress/no-global-active-element
 			// Move the selected rows or columns.
 			if ( tp.helpers.move_allowed( move_type, move_direction ) ) {
 				tp.callbacks.move( move_direction, move_type );

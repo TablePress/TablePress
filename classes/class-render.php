@@ -308,7 +308,16 @@ class TablePress_Render {
 				if ( false !== strpos( $cell_content, '[' ) ) {
 					$cell_content = do_shortcode( $cell_content );
 				}
-				/** This filter is documented in classes/class-render.php */
+				/**
+				 * Filters the content of a single cell, after formulas have been evaluated, the output has been sanitized, and Shortcodes have been evaluated.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $cell_content The cell content.
+				 * @param string $table_id     The current table ID.
+				 * @param int    $row_idx      The row number of the cell.
+				 * @param int    $col_idx      The column number of the cell.
+				 */
 				$cell_content = apply_filters( 'tablepress_cell_content', $cell_content, $this->table['id'], $row_idx + 1, $col_idx + 1 );
 				$this->table['data'][ $row_idx ][ $col_idx ] = $cell_content;
 			}

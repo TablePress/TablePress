@@ -112,7 +112,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -126,7 +126,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
         with:
           path: ${{ env.PLUGIN_DIR }}
 

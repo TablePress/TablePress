@@ -109,7 +109,7 @@ class TablePress_Edit_View extends TablePress_View {
 	public function add_screen_options_output( $screen_settings, $screen ) {
 		$screen_settings = '<fieldset id="tablepress-screen-options" class="screen-options">';
 		$screen_settings .= '<legend>' . __( 'Table editor settings', 'tablepress' ) . '</legend>';
-		$screen_settings .= '<p>' . __( 'Adjust the default size of the table cells in the table editor below.', 'tablepress' ) . ' ' . __( 'Cell with many lines of text will expand to their full height when they are edited.', 'tablepress' ) . '</p>';
+		$screen_settings .= '<p>' . __( 'Adjust the default size of the table cells in the table editor below.', 'tablepress' ) . ' ' . __( 'Cells with many lines of text will expand to their full height when they are edited.', 'tablepress' ) . '</p>';
 		$screen_settings .= '<p><em>' . __( 'Please note: These settings only influence the table editor view on this screen, but not the table that the site visitor sees!', 'tablepress' ) . '</em></p>';
 		$screen_settings .= '<div>';
 		$screen_settings .= '<label for="table_editor_column_width">' . __( 'Default column width:', 'tablepress' ) . '</label> ';
@@ -117,7 +117,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$screen_settings .= sprintf( __( '%s pixels', 'tablepress' ), $input );
 		$screen_settings .= '</div>';
 		$screen_settings .= '<div style="margin-top: 6px;">';
-		$screen_settings .= '<label for="table_editor_line_clamp">' . __( 'Maximum visible lines of text: ', 'tablepress' ) . '</label> ';
+		$screen_settings .= '<label for="table_editor_line_clamp">' . __( 'Maximum visible lines of text:', 'tablepress' ) . '</label> ';
 		$input = '<input type="number" id="table_editor_line_clamp" class="tiny-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_line_clamp' ) ) . '" min="0" max="999" />';
 		$screen_settings .= sprintf( __( '%s lines', 'tablepress' ), $input );
 		$screen_settings .= '</div>';
@@ -263,11 +263,8 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $box  Information about the meta box.
 	 */
 	public function postbox_table_data( array $data, array $box ) {
-		echo <<<JS
-<script>
-// Ensure the global `tp` object exists.
-window.tp = window.tp || {};\n\n
-JS;
+		echo "<script>\n";
+		echo "window.tp = window.tp || {};\n";
 
 		echo "tp.nonces = {};\n";
 		echo "tp.nonces.edit_table = '" . wp_create_nonce( TablePress::nonce( $this->action, $data['table']['id'] ) ) . "';\n";
@@ -281,10 +278,8 @@ JS;
 		echo "tp.table.new_id = '{$data['table']['id']}';\n";
 		// JSON-encode array items separately to save some PHP memory.
 		foreach ( array( 'data', 'options', 'visibility' ) as $item ) {
-			$json = wp_json_encode( $data['table'][ $item ], TABLEPRESS_JSON_OPTIONS );
-			// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
-			$json = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $json );
-			printf( 'tp.table.%1$s = JSON.parse( \'%2$s\' );' . "\n", $item, $json );
+			$json = $this->admin_page->convert_to_json_parse_output( $data['table'][ $item ] );
+			printf( 'tp.table.%1$s = %2$s;' . "\n", $item, $json );
 		}
 
 		echo "tp.screen_options = {};\n";
@@ -578,31 +573,6 @@ JS;
 		} // if
 		?>
 </table>
-		<?php
-	}
-
-	/**
-	 * Print a notification about JavaScript not being activated in the browser.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
-	 */
-	public function textbox_no_javascript( array $data, array $box ) {
-		?>
-		<div class="notice notice-error notice-alt notice-large hide-if-js">
-			<h3><em>
-				<?php _e( 'Attention: Unfortunately, there is a problem!', 'tablepress' ); ?>
-			</em></h3>
-			<p style="font-size:14px">
-				<strong><?php _e( 'The table editor requires JavaScript. Please enable JavaScript in your browser settings.', 'tablepress' ); ?></strong><br />
-				<?php _e( 'For help, please follow <a href="https://www.enable-javascript.com/">the instructions on how to enable JavaScript in your browser</a>.', 'tablepress' ); ?>
-			</p>
-			<p>
-				<?php echo '<a href="' . TablePress::url( array( 'action' => 'list' ) ) . '">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
-			</p>
-		</div>
 		<?php
 	}
 

@@ -22,8 +22,11 @@ body.wait * {
 #tablepress-page {
 	/* Margins for dynamically created (inline) .notice messages */
 	div.ajax-alert {
-		margin: -10px 0 15px;
 		transition: opacity 2s 3s;
+
+		&:not(.tablepress-postbox-table .ajax-alert) {
+			margin: -10px 0 15px;
+		}
 
 		&.notice-error {
 			transition-delay: 6s;

@@ -162,4 +162,19 @@ class TablePress_Admin_Page {
 		<?php
 	}
 
+	/**
+	 * Returns a safe JSON representation of a variable for printing inside of JavaScript code.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param mixed $data Variable to convert to JSON.
+	 * @return string Safe JSON representation of a variable for printing inside of JavaScript code.
+	 */
+	public function convert_to_json_parse_output( $data ) {
+		$json = wp_json_encode( $data, TABLEPRESS_JSON_OPTIONS );
+		// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
+		$json = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $json );
+		return "JSON.parse( '{$json}' )";
+	}
+
 } // class TablePress_Admin_Page

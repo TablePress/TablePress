@@ -42,6 +42,37 @@ document.querySelector( '#tablepress-page form' ).addEventListener( 'submit', fu
 } );
 
 /**
+ * Registers keyboard events and triggers corresponding actions by emulating button clicks.
+ *
+ * @since 2.1.1
+ *
+ * @param {Event} event Keyboard event.
+ */
+const keyboard_shortcuts = function ( event ) {
+	let action = '';
+
+	if ( event.ctrlKey || event.metaKey ) {
+		if ( 83 === event.keyCode ) {
+			// Save Changes: Ctrl/Cmd + S.
+			action = 'save-changes';
+		}
+	}
+
+	if ( 'save-changes' === action ) {
+		// Blur the focussed element to make sure that all change events were triggered.
+		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
+
+		// Emulate a click on the button corresponding to the action.
+		document.querySelector( `.submit input.button` ).click();
+
+		// Prevent the browser's native handling of the shortcut, i.e. showing the Save or Print dialogs.
+		event.preventDefault();
+	}
+};
+// Register keyboard shortcut handler.
+window.addEventListener( 'keydown', keyboard_shortcuts, true );
+
+/**
  * Require double confirmation when wanting to uninstall TablePress.
  *
  * @since 1.0.0

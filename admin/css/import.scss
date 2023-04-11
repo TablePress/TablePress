@@ -7,6 +7,17 @@
  * @since 1.0.0
  */
 
+/* Red border for form fields that have invalid values */
+#tablepress-page form .postbox:not(.no-validation-highlighting) :invalid {
+	border-color: #cc0000 !important;
+	box-shadow: 0 0 0 1px #cc0000;
+}
+
+/* Adjust positioning of labels in relation to checkboxes/radio buttons */
+#tablepress_import-import-form .column-2 label {
+	margin-right: 24px; /* some margin on radio buttons */
+}
+
 .file-upload-area {
 	width: 100%;
 	position: relative;
@@ -49,6 +60,8 @@
 		bottom: 0;
 		opacity: 0;
 		cursor: pointer;
+		border: 1px solid transparent;
+		border-radius: 4px;
 
 		&:valid + .dropzone,
 		+ .dropzone.dragover {

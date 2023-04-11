@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.2
-Stable tag: 2.1
+Stable tag: 2.1.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,7 +99,18 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.1 =
+= Version 2.1.1 =
+
+TablePress 2.1.1 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
+
+* The “Plugin Options” screen now supports the Ctrl/Cmd + S keyboard shortcut for saving changes on the screen.
+* Keyboard shortcuts for moving cells no longer erroneously trigger when navigiting inside an edited cell.
+* A few typos in translatable strings were corrected.
+* Some instances of invalid HTML code were fixed.
+* Cleaned up, improved, and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
+TablePress 2.1 contains these changes:
 
 **New features, enhancements, and bug fixes**
 
@@ -113,7 +124,7 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 * The “Last Editor” of a table is again determined correctly.
 * More detailed error messages are shown on the “Edit” and “Import” screens.
 * A few styling glitches on the different TablePress admin screens have been fixed.
-* The “Edit” screen shows other available features, to make users aware of them (TablePress Free only.)
+* The “Edit” screen shows other available features, to make users aware of them. (TablePress Free only.)
 * The “Fixed Header” module now works more reliably with themes that use floating elements as well. (TablePress Pro and Max only.)
 * The “Alphabet Filtering” module has more options, like choosing a filtering column and alphabet, and is more robust on small screens. (TablePress Pro and Max only.)
 * The “Automatic Filtering” module also allows using commas in filter values now. (TablePress Pro and Max only.)
@@ -129,8 +140,8 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
+= 2.1.1 =
+This update is a stability and maintenance release. Updating is highly recommended.
+
 = 2.1 =
 This update is a feature and enhancement release. Updating is highly recommended.
-
-= 2.0.4 =
-This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
