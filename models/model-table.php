@@ -601,7 +601,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Flush the caches of the plugins W3 Total Cache, WP Super Cache, Cachify, and Quick Cache.
+	 * Flush the caches of common caching plugins.
 	 *
 	 * @since 1.0.0
 	 */

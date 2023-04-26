@@ -434,7 +434,7 @@ class TablePress_CSS {
 	}
 
 	/**
-	 * Flush the CSS minification cache of W3 Total Cache.
+	 * Flush the CSS minification caches of common caching plugins.
 	 *
 	 * @since 1.4.0
 	 */

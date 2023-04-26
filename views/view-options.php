@@ -164,6 +164,22 @@ class TablePress_Options_View extends TablePress_View {
 	}
 
 	/**
+	 * Prints "Save Changes" button.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array $data Data for this screen.
+	 * @param array $box  Information about the text box.
+	 */
+	public function textbox_submit_button( array $data, array $box ) {
+		?>
+			<p class="submit">
+				<input type="submit" id="tablepress-options-save-changes" class="button button-primary button-large button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sS', 'keyboard shortcut for Save Changes', 'tablepress' ) ); ?>" />
+			</p>
+		<?php
+	}
+
+	/**
 	 * Print the content of the "Admin Options" post meta box.
 	 *
 	 * @since 1.0.0

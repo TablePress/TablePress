@@ -12,7 +12,7 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
+import { __, _x, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -38,8 +38,16 @@ if ( $cb_use_custom_css ) { // The checkbox field only exists for admins!
  * @since 1.0.0
  */
 document.querySelector( '#tablepress-page form' ).addEventListener( 'submit', function () {
-	this.querySelectorAll( 'input, select, textarea' ).forEach( ( field ) => ( field.disabled = false ) );
+	this.querySelectorAll( ':scope input, :scope select, :scope textarea' ).forEach( ( field ) => ( field.disabled = false ) );
 } );
+
+// Add keyboard shortcut as title attribute to the "Save Changes" button, with correct modifier key for Mac/non-Mac.
+const modifier_key = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
+	_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
+	_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
+const $save_changes_button = $( '#tablepress-options-save-changes' );
+const shortcut = sprintf( $save_changes_button.dataset.shortcut, modifier_key ); // eslint-disable-line @wordpress/valid-sprintf
+$save_changes_button.title = sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), shortcut );
 
 /**
  * Registers keyboard events and triggers corresponding actions by emulating button clicks.
@@ -63,7 +71,7 @@ const keyboard_shortcuts = function ( event ) {
 		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
 
 		// Emulate a click on the button corresponding to the action.
-		document.querySelector( `.submit input.button` ).click();
+		$save_changes_button.click();
 
 		// Prevent the browser's native handling of the shortcut, i.e. showing the Save or Print dialogs.
 		event.preventDefault();
