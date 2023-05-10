@@ -8421,7 +8421,7 @@ if (! jSuites && typeof(require) === 'function') {
 		}
 
 		if (jexcel.current) {
-			// TablePress: Don't prevent shwoing the context menu when editing a focussed cell.
+			// TablePress: Don't prevent showing the context menu when editing a focussed cell.
 			//if (jexcel.current.edition) {
 				//e.preventDefault();
 			//} else

@@ -341,9 +341,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
 		if ( is_wp_error( $new_post_id ) ) {
-			// Add an error code to the existing WP_Error.
-			$new_post_id->add( 'table_save_post_update', '', $post_id );
-			return $new_post_id;
+			$error = new WP_Error( 'table_save_post_update', '', $post_id );
+			$error->merge_from( $new_post_id );
+			return $error;
 		}
 		if ( $post_id !== $new_post_id ) {
 			return new WP_Error( 'table_save_new_post_id_does_not_match', '', $new_post_id );
@@ -392,9 +392,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
 		if ( is_wp_error( $new_post_id ) ) {
-			// Add an error code to the existing WP_Error.
-			$new_post_id->add( 'table_add_post_insert', '' );
-			return $new_post_id;
+			$error = new WP_Error( 'table_add_post_insert', '' );
+			$error->merge_from( $new_post_id );
+			return $error;
 		}
 
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
@@ -436,9 +436,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
-			// Add an error code to the existing WP_Error.
-			$table->add( 'table_copy_table_load', '', $table_id );
-			return $table;
+			$error = new WP_Error( 'table_copy_table_load', '', $table_id );
+			$error->merge_from( $table );
+			return $error;
 		}
 
 		// Adjust name of copied table.
@@ -450,17 +450,17 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Merge this data into an empty table template.
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
 		if ( is_wp_error( $table ) ) {
-			// Add an error code to the existing WP_Error.
-			$table->add( 'table_copy_table_prepare', '', $table_id );
-			return $table;
+			$error = new WP_Error( 'table_copy_table_prepare', '', $table_id );
+			$error->merge_from( $table );
+			return $error;
 		}
 
 		// Add the copied table.
 		$new_table_id = $this->add( $table, 'copy' );
 		if ( is_wp_error( $new_table_id ) ) {
-			// Add an error code to the existing WP_Error.
-			$new_table_id->add( 'table_copy_table_add', '', $table_id );
-			return $new_table_id;
+			$error = new WP_Error( 'table_copy_table_add', '', $table_id );
+			$error->merge_from( $new_table_id );
+			return $error;
 		}
 
 		/**

@@ -143,9 +143,9 @@ class TablePress_Import {
 				// Download URL to local file.
 				$location = download_url( $this->import_config['url'] );
 				if ( is_wp_error( $location ) ) {
-					// Add an error code to the existing WP_Error.
-					$location->add( 'table_import_url_download_failed', '', $this->import_config['url'] );
-					return $location;
+					$error = new WP_Error( 'table_import_url_download_failed', '', $this->import_config['url'] );
+					$error->merge_from( $location );
+					return $error;
 				}
 
 				$import_files[] = array(
@@ -667,9 +667,9 @@ class TablePress_Import {
 				// Load table, without table data, but with options and visibility settings.
 				$existing_table = TablePress::$model_table->load( $existing_table_id, false, true );
 				if ( is_wp_error( $existing_table ) ) {
-					// Add an error code to the existing WP_Error.
-					$existing_table->add( 'table_import_replace_table_load', '', $existing_table_id );
-					return $existing_table;
+					$error = new WP_Error( 'table_import_replace_table_load', '', $existing_table_id );
+					$error->merge_from( $existing_table );
+					return $error;
 				}
 				// Don't change name and description when a table is replaced.
 				$imported_table['name'] = $existing_table['name'];
@@ -683,9 +683,9 @@ class TablePress_Import {
 				// Load table, with table data, options, and visibility settings.
 				$existing_table = TablePress::$model_table->load( $existing_table_id, true, true );
 				if ( is_wp_error( $existing_table ) ) {
-					// Add an error code to the existing WP_Error.
-					$existing_table->add( 'table_import_append_table_load', '', $existing_table_id );
-					return $existing_table;
+					$error = new WP_Error( 'table_import_append_table_load', '', $existing_table_id );
+					$error->merge_from( $existing_table );
+					return $error;
 				}
 				if ( isset( $existing_table['is_corrupted'] ) && $existing_table['is_corrupted'] ) {
 					return new WP_Error( 'table_import_append_table_load_corrupted', '', $existing_table_id );
@@ -720,9 +720,9 @@ class TablePress_Import {
 		// Check if the new table data is valid and consistent.
 		$table = TablePress::$model_table->prepare_table( $existing_table, $imported_table, false );
 		if ( is_wp_error( $table ) ) {
-			// Add an error code to the existing WP_Error.
-			$table->add( 'table_import_table_prepare', '', $imported_table['id'] );
-			return $table;
+			$error = new WP_Error( 'table_import_table_prepare', '', $imported_table['id'] );
+			$error->merge_from( $table );
+			return $error;
 		}
 
 		// DataTables Custom Commands can only be edit by trusted users.
@@ -740,9 +740,9 @@ class TablePress_Import {
 		}
 
 		if ( is_wp_error( $table_id ) ) {
-			// Add an error code to the existing WP_Error.
-			$table_id->add( 'table_import_table_save_or_add', '', $table['id'] );
-			return $table_id;
+			$error = new WP_Error( 'table_import_table_save_or_add', '', $table['id'] );
+			$error->merge_from( $table_id );
+			return $error;
 		}
 
 		// Try to use ID from imported file (e.g. in full JSON format table).

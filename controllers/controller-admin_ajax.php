@@ -89,9 +89,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Load table, without table data, but with options and visibility settings.
 			$existing_table = TablePress::$model_table->load( $edit_table['id'], false, true );
 			if ( is_wp_error( $existing_table ) ) { // maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
-				// Add an error code to the existing WP_Error.
-				$existing_table->add( 'ajax_save_table_load', '', $edit_table['id'] );
-				$error_details = TablePress::get_wp_error_string( $existing_table );
+				$error = new WP_Error( 'ajax_save_table_load', '', $edit_table['id'] );
+				$error->merge_from( $existing_table );
+				$error_details = TablePress::get_wp_error_string( $error );
 				break;
 			}
 
@@ -99,9 +99,8 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			if ( empty( $edit_table['data'] )
 			|| empty( $edit_table['options'] )
 			|| empty( $edit_table['visibility'] ) ) {
-				// Create a new WP_Error.
-				$empty_data_error = new WP_Error( 'ajax_save_table_data_empty', '', $edit_table['id'] );
-				$error_details = TablePress::get_wp_error_string( $empty_data_error );
+				$error = new WP_Error( 'ajax_save_table_data_empty', '', $edit_table['id'] );
+				$error_details = TablePress::get_wp_error_string( $error );
 				break;
 			}
 			$edit_table['data'] = (array) json_decode( $edit_table['data'], true );
@@ -111,9 +110,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Check consistency of new table, and then merge with existing table.
 			$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table, true );
 			if ( is_wp_error( $table ) ) {
-				// Add an error code to the existing WP_Error.
-				$table->add( 'ajax_save_table_prepare', '', $edit_table['id'] );
-				$error_details = TablePress::get_wp_error_string( $table );
+				$error = new WP_Error( 'ajax_save_table_prepare', '', $edit_table['id'] );
+				$error->merge_from( $table );
+				$error_details = TablePress::get_wp_error_string( $error );
 				break;
 			}
 
@@ -125,9 +124,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			// Save updated table.
 			$saved = TablePress::$model_table->save( $table );
 			if ( is_wp_error( $saved ) ) {
-				// Add an error code to the existing WP_Error.
-				$saved->add( 'ajax_save_table_save', '', $table['id'] );
-				$error_details = TablePress::get_wp_error_string( $saved );
+				$error = new WP_Error( 'ajax_save_table_save', '', $table['id'] );
+				$error->merge_from( $saved );
+				$error_details = TablePress::get_wp_error_string( $error );
 				break;
 			}
 
@@ -149,9 +148,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 					$table['id'] = $table['new_id'];
 				} else {
 					$message = 'success_save_error_id_change';
-					// Add an error code to the existing WP_Error.
-					$id_changed->add( 'ajax_save_table_id_change', '', $table['new_id'] );
-					$error_details = TablePress::get_wp_error_string( $id_changed );
+					$error = new WP_Error( 'ajax_save_table_id_change', '', $table['new_id'] );
+					$error->merge_from( $id_changed );
+					$error_details = TablePress::get_wp_error_string( $error );
 				}
 			} else {
 				$message = 'success_save_error_id_change';

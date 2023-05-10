@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.2
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,18 @@ This plugin is Free Software, released and licensed under the [GPL, version 2](h
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.1.3 =
+
+TablePress 2.1.3 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
+
+* Pasting text into table cells via the right-click context menu on the “Edit” screen now works as expected.
+* The list of allowed CSS properties in “Custom CSS” has been extended to include new properties.
+* The Server-side Processing feature now shows a loading animation while data is retrieved from the server. (TablePress Max only.)
+* The TablePress REST API now only returns the “_links” field upon request, for improved performance. (TablePress Max only.)
+* The TablePress REST API now caches the generated JSON schema, for improved performance. (TablePress Max only.)
+* Cleaned up, improved, and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 2.1.2 =
 
 TablePress 2.1.2 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
@@ -148,7 +160,7 @@ TablePress 2.1 contains these changes:
 
 == Upgrade Notice ==
 
-= 2.1.2 =
+= 2.1.3 =
 This update is a stability and maintenance release. Updating is highly recommended.
 
 = 2.1 =

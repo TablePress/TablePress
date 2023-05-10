@@ -67,28 +67,51 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 			title: __( 'Cut', 'tablepress' ),
 			shortcut: sprintf( _x( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), meta_key ),
 			onclick() {
-				obj.copy( true ); // Copy highlighted cells.
-				obj.setValue( obj.highlighted, '' );
+				/* eslint-disable @wordpress/no-global-active-element */
+				if ( 'TEXTAREA' === document.activeElement.tagName && document.activeElement.selectionStart !== document.activeElement.selectionEnd ) {
+					document.execCommand( 'copy' ); // If text is selected in the actively edited cell, only copy that.
+					const cursorPosition = document.activeElement.selectionStart;
+					document.activeElement.value = document.activeElement.value.slice( 0, document.activeElement.selectionStart ) + document.activeElement.value.slice( document.activeElement.selectionEnd ); // Cut the selected content.
+					document.activeElement.selectionEnd = cursorPosition;
+				} else {
+					obj.copy( true ); // Otherwise, copy highlighted cells.
+					obj.setValue( obj.highlighted, '' ); // Make cell content empty.
+				}
+				/* eslint-enable @wordpress/no-global-active-element */
 			},
 		},
 		{
 			title: __( 'Copy', 'tablepress' ),
 			shortcut: sprintf( _x( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), meta_key ),
 			onclick() {
-				obj.copy( true ); // Copy highlighted cells.
+				if ( 'TEXTAREA' === document.activeElement.tagName && document.activeElement.selectionStart !== document.activeElement.selectionEnd ) { // eslint-disable-line @wordpress/no-global-active-element
+					document.execCommand( 'copy' ); // If text is selected in the actively edited cell, only copy that.
+				} else {
+					obj.copy( true ); // Otherwise, copy highlighted cells.
+				}
 			},
 		},
 		{
 			title: __( 'Paste', 'tablepress' ),
 			shortcut: sprintf( _x( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), meta_key ),
 			onclick() {
-				if ( obj.selectedCell ) {
+				/* eslint-disable @wordpress/no-global-active-element */
+				if ( 'TEXTAREA' === document.activeElement.tagName ) {
+					window.navigator.clipboard.readText().then( ( text ) => {
+						if ( text ) {
+							const cursorPosition = document.activeElement.selectionStart + text.length;
+							document.activeElement.value = document.activeElement.value.slice( 0, document.activeElement.selectionStart ) + text + document.activeElement.value.slice( document.activeElement.selectionEnd ); // Paste at the selection.
+							document.activeElement.selectionEnd = cursorPosition;
+						}
+					} );
+				} else if ( obj.selectedCell ) {
 					window.navigator.clipboard.readText().then( ( text ) => {
 						if ( text ) {
 							obj.paste( obj.selectedCell[0], obj.selectedCell[1], text );
 						}
 					} );
 				}
+				/* eslint-enable @wordpress/no-global-active-element */
 			},
 			// Firefox does not offer the readText() method, so "Paste" needs to be disabled.
 			disabled: ! window?.navigator?.clipboard?.readText,
