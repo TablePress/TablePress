@@ -2,11 +2,16 @@
 
 TablePress is the most popular and highest rated [WordPress](https://wordpress.org/) table plugin.
 
-It allows you to easily create and manage beautiful tables on your website. You can embed the tables into posts, pages, or other site areas using a block in the block editor. Table data can be edited in a spreadsheet-like interface, without any coding. Tables can contain any type of data, even math formulas that will be evaluated. Additional features like sorting, pagination, and filtering make it easy for site visitors to interact with the table data. Tables can be imported and exported from/to Excel, CSV, HTML, and JSON files.
+* Easily add, edit, and manage **small and large data tables**, without any coding!
+* Use any type of data, insert **images**, **links**, and even **math formulas**!
+* Add live **sorting**, **pagination**, **searching**, and more for your site’s visitors!
+* **Import** and **export** tables from/to Excel, CSV, HTML, and JSON files.
+* Embed tables into posts, pages, or other site areas using the block editor or Shortcodes.
+* All with **no coding knowledge needed**!
 
-**Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)**
+Even **more great features** for you and your site’s visitors and **priority email support** are **available** with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)
 
-Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/#try). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter.
+Visit the plugin website at [tablepress.org](https://tablepress.org/) for more information, take a look at [example tables](https://tablepress.org/demo/), or [check out TablePress on a free test site](https://tablepress.org/demo/#try). For latest news, [follow @TablePress](https://twitter.com/TablePress) on Twitter or subscribe to the [TablePress Newsletter](https://tablepress.org/#newsletter).
 
 ## Screenshots and Demo
 
@@ -18,20 +23,18 @@ A demo of the frontend functionality is available at https://tablepress.org/demo
 
 The easiest way to install TablePress is via your WordPress Dashboard:
 
-1. Go to the "Plugins" screen, click "Add New", and search for "TablePress" in the WordPress Plugin Directory.
-1. Click "Install Now" and after that's complete, click "Activate".
-1. Create and manage tables by going to the "TablePress" screen in the admin menu.
-1. To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
-1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
+1. Go to the “Plugins” screen, click “Add New”, and search for “TablePress” in the WordPress Plugin Directory.
+1. Click “Install Now” and after that’s complete, click “Activate”.
+1. Create and manage tables by going to the “TablePress” screen in the admin menu.
+1. To insert a table into a post or page, add a “TablePress table” block in the block editor and select the desired table.
 
 Manual installation works just as for other WordPress plugins:
 
 1. [Download](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip) and extract the ZIP file.
-1. Move the folder "tablepress" to the "wp-content/plugins/" directory of your WordPress installation, e.g. via FTP.
-1. Activate the plugin "TablePress" on the "Plugins" screen of your WordPress Dashboard.
-1. Create and manage tables by going to the "TablePress" screen in the admin menu.
-1. To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
-1. You can change the table styling by using CSS code, which can be entered into the "Custom CSS" textarea on the "Plugin Options" screen.
+1. Move the folder “tablepress” to the “wp-content/plugins/” directory of your WordPress installation, e.g. via FTP.
+1. Activate the plugin “TablePress” on the “Plugins” screen of your WordPress Dashboard.
+1. Create and manage tables by going to the “TablePress” screen in the admin menu.
+1. To insert a table into a post or page, add a “TablePress table” block in the block editor and select the desired table.
 
 ## Frequently Asked Questions
 
@@ -47,7 +50,7 @@ Users with a valid TablePress Premium license plan are eligible for Priority Ema
 
 *Community Support for users of the Free version*
 
-For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don't find an existing answer. Thank you!
+For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don’t find an existing answer. Thank you!
 
 **Requirements?**
 
@@ -55,24 +58,20 @@ In short: WordPress 5.8 or higher, while the latest version of WordPress is alwa
 
 **Languages and Localization?**
 
-TablePress uses the ["Translate WordPress" platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
+TablePress uses the [“Translate WordPress” platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
 
 To make TablePress available in your language, go to the [TablePress translations page](https://translate.wordpress.org/projects/wp-plugins/tablepress/), log in with a free wordpress.org account and start translating.
 
-## Usage
+## How to use TablePress
 
-After installing the plugin, you can create and manage tables on the "TablePress" screen in the WordPress Dashboard.
+After installing the plugin, you can create and manage tables on the “TablePress” screen in the WordPress Dashboard.
 
-To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table.
+To insert a table into a post or page, add a “TablePress table” block in the block editor and select the desired table.
 
-Examples for common styling changes via "Custom CSS" code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
-You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table's "Edit" screen.
+Examples for common styling changes via “Custom CSS” code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
+You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table’s “Edit” screen.
 
 **Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/)**
-
-## License
-
-This plugin is Free Software, released and licensed under the [GPL, version 2](https://www.gnu.org/licenses/gpl-2.0.html). You may use it free of charge for any purpose.
 
 ## Changelog
 

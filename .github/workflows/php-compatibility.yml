@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054 # v2.25.1
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d # v2.25.2
         with:
           php-version: '8.2'
           coverage: none

@@ -202,7 +202,7 @@ class TablePress_Edit_View extends TablePress_View {
 		<th class="column-1" scope="row"><label for="table-id"><?php _e( 'Table ID', 'tablepress' ); ?>:</label></th>
 		<td class="column-2">
 			<div id="table-id-shortcode-wrapper">
-				<input type="text" id="table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php esc_attr_e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z1-9-_]|[A-Za-z0-9-_]{2,}" required <?php echo ( ! current_user_can( 'tablepress_edit_table_id', $data['table']['id'] ) ) ? 'readonly ' : ''; ?>/>
+				<input type="text" id="table-id" value="<?php echo esc_attr( $data['table']['id'] ); ?>" title="<?php esc_attr_e( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ); ?>" pattern="[A-Za-z1-9_-]|[A-Za-z0-9_-]{2,}" required <?php echo ( ! current_user_can( 'tablepress_edit_table_id', $data['table']['id'] ) ) ? 'readonly ' : ''; ?>/>
 				<div><label for="table-information-shortcode"><?php _e( 'Shortcode', 'tablepress' ); ?>:</label> <input type="text" id="table-information-shortcode" value="<?php echo esc_attr( '[' . TablePress::$shortcode . " id={$data['table']['id']} /]" ); ?>" readonly /></div>
 			</div>
 		</td>

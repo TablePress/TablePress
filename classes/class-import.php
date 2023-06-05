@@ -350,14 +350,14 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Deletes a file unless the `keep_file` property is set to false.
+	 * Deletes a file unless the `keep_file` property is set to `true`.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param array $file File that should maybe be deleted.
 	 */
 	protected function _maybe_unlink_file( array $file ) {
-		if ( ! isset( $file['keep_file'] ) || ! $file['keep_file'] ) {
+		if ( ! ( isset( $file['keep_file'] ) && $file['keep_file'] ) && file_exists( $file['location'] ) ) {
 			@unlink( $file['location'] );
 		}
 	}

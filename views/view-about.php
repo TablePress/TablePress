@@ -219,7 +219,7 @@ class TablePress_About_View extends TablePress_View {
 			<br />&middot; PHP: <?php echo PHP_VERSION; ?>
 			<br />&middot; mysqli Extension: <?php echo $mysqli ? 'true' : 'false'; ?>
 			<br />&middot; mySQL (Server): <?php echo $mysqli ? mysqli_get_server_info( $GLOBALS['wpdb']->dbh ) : '<em>no mysqli</em>'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info ?>
-			<br />&middot; mySQL (Client): <?php echo $mysqli ? mysqli_get_client_info( $GLOBALS['wpdb']->dbh ) : '<em>no mysqli</em>'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_client_info ?>
+			<br />&middot; mySQL (Client): <?php echo $mysqli ? mysqli_get_client_info() : '<em>no mysqli</em>'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_client_info ?>
 			<br />&middot; ZIP support: <?php echo $data['zip_support_available'] ? 'yes' : 'no'; ?>
 			<br />&middot; UTF-8 conversion: <?php echo ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) ? 'yes' : 'no'; ?>
 			<br />&middot; WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?>
