@@ -4,8 +4,8 @@ Donate link: https://tablepress.org/donate/
 Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
-Tested up to: 6.2
-Stable tag: 2.1.4
+Tested up to: 6.3
+Stable tag: 2.1.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,15 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.1.5 =
+
+TablePress 2.1.5 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
+
+* Early improvements for the upcoming WordPress 6.3 were added.
+* The header cells on the “Edit” screen now show sorting arrow icons again, to indicate that columns can be sorted by a double-click.
+* Cleaned up, improved, and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 2.1.4 =
 
 TablePress 2.1.4 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
@@ -171,7 +180,7 @@ TablePress 2.1 contains these changes:
 
 == Upgrade Notice ==
 
-= 2.1.3 =
+= 2.1.5 =
 This update is a stability and maintenance release. Updating is highly recommended.
 
 = 2.1 =

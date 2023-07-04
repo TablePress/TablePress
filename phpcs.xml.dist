@@ -32,6 +32,7 @@
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
 		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
 		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound"/>
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>

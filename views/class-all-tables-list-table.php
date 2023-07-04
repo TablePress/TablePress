@@ -152,9 +152,13 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			return '';
 		}
 
+		if ( '' === trim( $item['name'] ) ) {
+			$item['name'] = __( '(no name)', 'tablepress' );
+		}
+
 		return sprintf(
-			'<label><span class="screen-reader-text">%1$s</span><input type="checkbox" name="table[]" value="%2$s" /></label>',
-			esc_html__( 'Bulk action selector', 'tablepress' ),
+			'<label class="label-covers-full-cell" for="cb-select-%2$s"><span class="screen-reader-text">%1$s</span></label><input type="checkbox" id="cb-select-%2$s" name="table[]" value="%2$s" />',
+			esc_html( sprintf( __( 'Select table “%s”', 'tablepress' ), $item['name'] ) ),
 			esc_attr( $item['id'] )
 		);
 	}
@@ -588,7 +592,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		$this->set_pagination_args( array(
 			'total_items' => $total_items, // Total number of records/items.
 			'per_page'    => $per_page, // Number of items per page.
-			'total_pages' => ceil( $total_items / $per_page ), // Total number of pages.
+			'total_pages' => (int) ceil( $total_items / $per_page ), // Total number of pages.
 		) );
 	}
 

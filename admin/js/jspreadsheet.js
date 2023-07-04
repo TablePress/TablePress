@@ -8230,7 +8230,7 @@ if (! jSuites && typeof(require) === 'function') {
 						if (e.target && ! x && y && (rect.width - (e.clientX - rect.left) < 18)) { // TablePress: Changed from 6 to 18 pixels to increase draggable mouse region.
 							jexcel.current.cursor = e.target;
 							jexcel.current.cursor.style.cursor = 'move';
-						} else if (e.target && x && ! y && (rect.height - (e.clientY - rect.top) < 12)) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region.
+						} else if (e.target && x && ! y && (rect.height - (e.clientY - rect.top) < 12) && (e.clientX - rect.left < rect.width - 24)) { // TablePress: Changed from 6 to 12 pixels to increase draggable mouse region, and extended to not span full width.
 							jexcel.current.cursor = e.target;
 							jexcel.current.cursor.style.cursor = 'move';
 						}

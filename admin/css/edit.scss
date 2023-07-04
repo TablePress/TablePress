@@ -130,6 +130,29 @@ body #wp-link-backdrop {
 .jexcel > thead > tr > td {
 	text-align: center !important;
 	z-index: 22; /* Prevent drag corner from floating above fixed header. */
+
+	/* Use custom sorting arrow icons. */
+	&:not(:first-child,.dragging,.dragging-left,.dragging-right) {
+		/* stylelint-disable-next-line function-url-quotes */
+		background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 1792 1792' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23999' d='M1408 1088q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45zm0-384q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z'/%3E%3C/svg%3E");
+		background-position: center right 10px;
+		background-repeat: no-repeat;
+	}
+	&.arrow-up:not(.dragging,.dragging-left,.dragging-right) {
+		/* stylelint-disable-next-line function-url-quotes */
+		background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 1792 1792' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1408 1088q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z'/%3E%3C/svg%3E");
+	}
+	&.arrow-down:not(.dragging,.dragging-left,.dragging-right) {
+		/* stylelint-disable-next-line function-url-quotes */
+		background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 1792 1792' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1408 704q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z'/%3E%3C/svg%3E");
+	}
+}
+
+/* Override default opacity, to not have text shine through when the header row/column is fixed to the top/left of the screen. */
+.jexcel > thead > tr > td.dragging,
+.jexcel > tbody > tr.dragging > td {
+	background-color: #ffffff;
+	opacity: 1;
 }
 
 .jexcel > tbody > tr > td {
@@ -261,16 +284,6 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 }
 .jcontextmenu > div.jcontextmenu-disabled:hover {
 	background: transparent;
-}
-
-/* The sorting arrow icon feels wrong, so flip the images for arrow-up and arrow-down. */
-.jexcel > thead > tr > td.arrow-up {
-	/* stylelint-disable-next-line function-url-quotes */
-	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3Cpath d='M7 10l5 5 5-5H7z' fill='gray'/%3E%3C/svg%3E");
-}
-.jexcel > thead > tr > td.arrow-down {
-	/* stylelint-disable-next-line function-url-quotes */
-	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3Cpath d='M7 14l5-5 5 5H7z' fill='gray'/%3E%3C/svg%3E");
 }
 
 /* WP Feature Pointers */

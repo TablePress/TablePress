@@ -108,6 +108,7 @@
 	background-color:#dcdcdc;
 }
 
+/* TablePress: Commented out to prevent conflict with styling when dragging columns left/right.
 .jexcel > thead > tr > td.arrow-up
 {
 	background-repeat:no-repeat;
@@ -123,6 +124,7 @@
 	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0V0z'/%3E%3Cpath d='M7 10l5 5 5-5H7z' fill='gray'/%3E%3C/svg%3E");
 	text-decoration:underline;
 }
+*/
 
 .jexcel > tbody > tr > td:first-child
 {
