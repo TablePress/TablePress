@@ -82,6 +82,10 @@ To make TablePress available in your language, go to the [TablePress translation
 = Development =
 You can follow the development of TablePress more closely in its official [GitHub repository](https://github.com/TablePress/TablePress).
 
+= Where do I report security issues? =
+Please report security issues and bugs found in the source code of TablePress through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/tablepress).
+The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 = Where can I get more information? =
 Visit the plugin website at [tablepress.org](https://tablepress.org/) for the latest information on TablePress, [follow @TablePress](https://twitter.com/TablePress) on Twitter, or subscribe to the [TablePress Newsletter](https://tablepress.org/#newsletter).
 
