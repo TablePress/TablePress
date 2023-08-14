@@ -58,7 +58,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @return array Test data.
 	 */
 	public function data_letter_to_number() {
-		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine
+		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine, Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return array(
 			array(    '',     0 ),
 			array(   'a',     1 ),
@@ -99,7 +99,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @return array Test data.
 	 */
 	public function data_number_to_letter() {
-		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine
+		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine, Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return array(
 			array(    -1,    '' ),
 			array(     0,    '' ),

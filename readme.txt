@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.3
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,20 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.1.6 =
+
+TablePress 2.1.6 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
+
+* Some improvements for enhanced compatibility with WordPress 6.3 were added.
+* A bug with the loading of the frontend features for site visitors in the context of the block editor was fixed.
+* Formula evaluation: The HYPERLINK() function from Excel is now supported for creating clickable links.
+* The Stack mode of the Responsive Tables feature now works better when column widths have been changed. (TablePress Pro and Max only.)
+* The Counter Column feature no longer requires sorting or filtering to be activated. (TablePress Pro and Max only.)
+* The Counter Column feature now takes into account pagination when Server-side Processing is used. (TablePress Pro and Max only.)
+* The Server-side Processing feature now handles edge cases with conflicting settings better. (TablePress Max only.)
+* Cleaned up, improved, and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 2.1.5 =
 
 TablePress 2.1.5 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
@@ -184,7 +198,7 @@ TablePress 2.1 contains these changes:
 
 == Upgrade Notice ==
 
-= 2.1.5 =
+= 2.1.6 =
 This update is a stability and maintenance release. Updating is highly recommended.
 
 = 2.1 =

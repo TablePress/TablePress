@@ -291,7 +291,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 					// Convert Hyperlinks to HTML code.
 					if ( $cell_has_hyperlink ) {
-						$url = esc_url( $worksheet->getHyperlink( $cell_reference )->getUrl() );
+						$url = $worksheet->getHyperlink( $cell_reference )->getUrl();
 						if ( '' !== $url ) {
 							$title = $worksheet->getHyperlink( $cell_reference )->getTooltip();
 							if ( '' !== $title ) {

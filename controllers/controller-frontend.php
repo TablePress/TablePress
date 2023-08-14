@@ -236,6 +236,14 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			return;
 		}
 
+		/*
+		 * Don't add the DataTables function calls in the scope of the block editor.
+		 * Otherwise, this causes a script error in the block editor iframe.
+		 */
+		if ( function_exists( 'get_current_screen' ) && get_current_screen()->is_block_editor() ) {
+			return;
+		}
+
 		// Storage for the DataTables language strings.
 		$datatables_language = array();
 		// Generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters.

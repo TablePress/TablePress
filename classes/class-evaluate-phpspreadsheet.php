@@ -101,6 +101,16 @@ class TablePress_Evaluate_PHPSpreadsheet {
 							$cell = $cell_collection->get( $cell_reference );
 							try {
 								$cell_content = (string) $cell->getCalculatedValue();
+
+								// Convert hyperlinks, e.g. generated via `=HYPERLINK()` to HTML code.
+								$cell_has_hyperlink = $worksheet->hyperlinkExists( $cell_reference ) && ! $worksheet->getHyperlink( $cell_reference )->isInternal();
+								if ( $cell_has_hyperlink ) {
+									$url = $worksheet->getHyperlink( $cell_reference )->getUrl();
+									if ( '' !== $url ) {
+										$url = esc_url( $url );
+										$cell_content = "<a href=\"{$url}\">{$cell_content}</a>";
+									}
+								}
 							} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception $exception ) {
 								$message = str_replace( 'Worksheet!', '', $exception->getMessage() );
 								$cell_content = "!ERROR! {$message}";
