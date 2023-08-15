@@ -240,8 +240,11 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 * Don't add the DataTables function calls in the scope of the block editor.
 		 * Otherwise, this causes a script error in the block editor iframe.
 		 */
-		if ( function_exists( 'get_current_screen' ) && get_current_screen()->is_block_editor() ) {
-			return;
+		if ( function_exists( 'get_current_screen' ) ) {
+			$current_screen = get_current_screen();
+			if ( ( $current_screen instanceof WP_Screen ) && $current_screen->is_block_editor() ) {
+				return;
+			}
 		}
 
 		// Storage for the DataTables language strings.
