@@ -54,7 +54,7 @@ For support questions, bug reports, or feature requests, please use the [WordPre
 
 **Requirements?**
 
-In short: WordPress 5.8 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 5.8 or higher, while the latest version of WordPress is always recommended. The upcoming TablePress 2.2 will require WordPress 6.0 and PHP 7.2 or higher.
 
 **Languages and Localization?**
 

@@ -837,5 +837,7 @@ $data['csstidy']['all_properties']['line-height-step'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-text-fill-color'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-backdrop-filter'] = 'CSS3.0';
 $data['csstidy']['all_properties']['backdrop-filter'] = 'CSS3.0';
+$data['csstidy']['all_properties']['-webkit-box-orient'] = 'CSS3.0';
+$data['csstidy']['all_properties']['-webkit-line-clamp'] = 'CSS3.0';
 
 return $data;

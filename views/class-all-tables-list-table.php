@@ -30,6 +30,17 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	protected $items_count = 0;
 
 	/**
+	 * Cached bulk actions.
+	 *
+	 * This property has to be declared here, as it's `private` in the parent class
+	 * and thus can't be inherited.
+	 *
+	 * @since 1.0.0
+	 * @var array|null
+	 */
+	protected $_actions;
+
+	/**
 	 * Initialize the List Table.
 	 *
 	 * @since 1.0.0
@@ -157,9 +168,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		}
 
 		return sprintf(
-			'<label class="label-covers-full-cell" for="cb-select-%2$s"><span class="screen-reader-text">%1$s</span></label><input type="checkbox" id="cb-select-%2$s" name="table[]" value="%2$s" />',
-			esc_html( sprintf( __( 'Select table “%s”', 'tablepress' ), $item['name'] ) ),
-			esc_attr( $item['id'] )
+			// The `label-covers-full-cell` class on the <label> is kept for (some) backwards compatibility with WordPress 6.3, and can be removed once TablePress requires WordPress 6.4.
+			'<input type="checkbox" id="cb-select-%1$s" name="table[]" value="%1$s" /><label class="label-covers-full-cell" for="cb-select-%1$s"><span class="screen-reader-text">%2$s</span></label>',
+			esc_attr( $item['id'] ),
+			esc_html( sprintf( __( 'Select table “%s”', 'tablepress' ), $item['name'] ) )
 		);
 	}
 

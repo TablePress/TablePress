@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 5.8
 Requires PHP: 5.6.20
 Tested up to: 6.3
-Stable tag: 2.1.7
+Stable tag: 2.1.8
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,7 +72,7 @@ Users with a valid TablePress Premium license plan are eligible for Priority Ema
 For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don't find an existing answer. Thank you!
 
 = Requirements? =
-In short: WordPress 5.8 or higher, while the latest version of WordPress is always recommended.
+In short: WordPress 5.8 or higher, while the latest version of WordPress is always recommended. The upcoming TablePress 2.2 will require WordPress 6.0 and PHP 7.2 or higher.
 
 = Languages and Localization? =
 TablePress uses the ["Translate WordPress" platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
@@ -103,6 +103,17 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 == Changelog ==
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
+
+= Version 2.1.8 =
+
+TablePress 2.1.8 fixes a few bugs and brings some nice enhancements. For more information on changes and new features in TablePress 2.1, please see below.
+
+* Improvements and code corrections for enhanced compatibility with the upcoming WordPress 6.4 were added.
+* An issue with flushing the caches of other plugins after updating a table was fixed.
+* The list of allowed CSS properties in “Custom CSS” has been extended to include new properties.
+* The “Advanced Loading” module now properly supports evaluated formulas. (TablePress Max only.)
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* Please note: The upcoming TablePress 2.2 will require WordPress 6.0 and PHP 7.2 or higher.
 
 = Version 2.1.7 =
 
@@ -202,7 +213,7 @@ TablePress 2.1 contains these changes:
 
 == Upgrade Notice ==
 
-= 2.1.7 =
+= 2.1.8 =
 This update is a stability and maintenance release. Updating is highly recommended.
 
 = 2.1 =

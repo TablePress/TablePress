@@ -679,8 +679,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			}
 		}
 		// WP Fastest Cache.
-		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) {
-			$GLOBALS['wp_fastest_cache']->deleteCache();
+		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( array( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) ) {
+			$GLOBALS['wp_fastest_cache']->deleteCache( true );
 		}
 		// WP-Optimize.
 		if ( function_exists( 'WP_Optimize' ) ) {

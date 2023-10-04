@@ -82,6 +82,15 @@ class TablePress_List_View extends TablePress_View {
 		if ( $data['messages']['plugin_update_message'] ) {
 			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/' ) . '</p>';
 
+			if ( PHP_VERSION_ID < 70200 ) {
+				$message .= '<p style="font-size:14px;color:#d63638;"><strong>' . sprintf( __( 'In the next release, TablePress will require PHP 7.2 or newer, which your server is not yet using. <a href="%s">Please update PHP!</a>', 'tablepress' ), 'https://wordpress.org/support/update-php/' ) . '</strong></p>';
+			}
+
+			require ABSPATH . WPINC . '/version.php'; // Include an unmodified $wp_version.
+			if ( version_compare( str_replace( '-src', '', $wp_version ), '6.0', '<' ) ) {
+				$message .= '<p style="font-size:14px;color:#d63638;"><strong>' . sprintf( __( 'In the next release, TablePress will require WordPress 6.0 or newer, which your site is not yet using. <a href="%s">Please update WordPress!</a>', 'tablepress' ), esc_url( admin_url( 'update-core.php' ) ) ) . '</strong></p>';
+			}
+
 			if ( tb_tp_fs()->is_free_plan() ) {
 				$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'More great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. <a href="%s">Go check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/' ) . '</strong></p>';
 			}

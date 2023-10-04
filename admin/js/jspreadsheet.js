@@ -1,5 +1,5 @@
 /**
- * Jspreadsheet v4.11.1
+ * Jspreadsheet v4.13.3
  *
  * Website: https://bossanova.uk/jspreadsheet/
  * Description: Create amazing web based spreadsheets.
@@ -8,12 +8,6 @@
  */
 
 // TablePress: var formula = ... removed.
-
-/* // TablePress: jSuites is loaded directly from a file.
-if (! jSuites && typeof(require) === 'function') {
-	var jSuites = require('jsuites');
-}
-*/
 
 ;(function (global, factory) {
 	// TablePress: Comment out next to lines to force creation of a global jspreadsheet object.
@@ -29,7 +23,7 @@ if (! jSuites && typeof(require) === 'function') {
 		// Information
 		var info = {
 			title: 'Jspreadsheet',
-			version: '4.11.3',
+			version: '4.13.3',
 			type: 'CE',
 			host: 'https://bossanova.uk/jspreadsheet',
 			license: 'MIT',
@@ -1009,9 +1003,9 @@ if (! jSuites && typeof(require) === 'function') {
 				if (px > 0) {
 					py++;
 				}
-		   }
+			}
 
-		   return dataset;
+			return dataset;
 		}
 
 		/**
@@ -1067,9 +1061,9 @@ if (! jSuites && typeof(require) === 'function') {
 				if (row != null) {
 					data.push(row);
 				}
-		   }
+			}
 
-		   return data;
+			return data;
 		}
 
 		/**
@@ -1480,6 +1474,9 @@ if (! jSuites && typeof(require) === 'function') {
 				if (! nestedInformation[i].title) {
 					nestedInformation[i].title = '';
 				}
+				if (! nestedInformation[i].id) {
+					nestedInformation[i].id = '';
+				}
 
 				// Number of columns
 				var numberOfColumns = nestedInformation[i].colspan;
@@ -1500,6 +1497,7 @@ if (! jSuites && typeof(require) === 'function') {
 				td.setAttribute('data-column', column.join(','));
 				td.setAttribute('colspan', nestedInformation[i].colspan);
 				td.setAttribute('align', nestedInformation[i].align);
+				td.setAttribute('id', nestedInformation[i].id);
 				td.textContent = nestedInformation[i].title;
 				tr.appendChild(td);
 			}
@@ -1548,30 +1546,38 @@ if (! jSuites && typeof(require) === 'function') {
 					toolbarItem.textContent = toolbar[i].content;
 					obj.toolbar.appendChild(toolbarItem);
 				} else if (toolbar[i].type == 'select') {
-				   var toolbarItem = document.createElement('select');
-				   toolbarItem.classList.add('jexcel_toolbar_item');
-				   toolbarItem.setAttribute('data-k', toolbar[i].k);
-				   // Tooltip
-				   if (toolbar[i].tooltip) {
-					   toolbarItem.setAttribute('title', toolbar[i].tooltip);
-				   }
-				   // Handle onchange
-				   if (toolbar[i].onchange && typeof(toolbar[i].onchange)) {
-					   toolbarItem.onchange = toolbar[i].onchange;
-				   } else {
-					   toolbarItem.onchange = function() {
-						   var k = this.getAttribute('data-k');
-						   obj.setStyle(obj.highlighted, k, this.value);
-					   }
-				   }
-				   // Add options to the dropdown
-				   for(var j = 0; j < toolbar[i].v.length; j++) {
+					var toolbarItem = document.createElement('select');
+					var raiseInitialOnChange = false;
+					toolbarItem.classList.add('jexcel_toolbar_item');
+					toolbarItem.setAttribute('data-k', toolbar[i].k);
+					// Tooltip
+					if (toolbar[i].tooltip) {
+						toolbarItem.setAttribute('title', toolbar[i].tooltip);
+					}
+					// Handle onchange
+					if (toolbar[i].onchange && typeof(toolbar[i].onchange)) {
+						toolbarItem.onchange = toolbar[i].onchange;
+						raiseInitialOnChange = true;
+					} else {
+						toolbarItem.onchange = function() {
+							var k = this.getAttribute('data-k');
+							obj.setStyle(obj.highlighted, k, this.value);
+						}
+					}
+					// Add options to the dropdown
+					for(var j = 0; j < toolbar[i].v.length; j++) {
 						var toolbarDropdownOption = document.createElement('option');
 						toolbarDropdownOption.value = toolbar[i].v[j];
 						toolbarDropdownOption.textContent = toolbar[i].v[j];
+						if (toolbar[i].selectedValue && toolbarDropdownOption.value === toolbar[i].selectedValue) {
+							toolbarDropdownOption.selected = true;
+						}
 						toolbarItem.appendChild(toolbarDropdownOption);
-				   }
-				   obj.toolbar.appendChild(toolbarItem);
+					}
+					if (raiseInitialOnChange) {
+						toolbarItem.dispatchEvent(new Event('change'));
+					}
+					obj.toolbar.appendChild(toolbarItem);
 				} else if (toolbar[i].type == 'color') {
 					 var toolbarItem = document.createElement('i');
 					 toolbarItem.classList.add('jexcel_toolbar_item');
@@ -2601,9 +2607,13 @@ if (! jSuites && typeof(require) === 'function') {
 					oldValue: obj.options.data[y][x],
 				}
 
-				if (obj.options.columns[x].editor) {
+				let editor = obj.options.columns[x].editor;
+				if (editor) {
 					// Update data and cell
 					obj.options.data[y][x] = value;
+					if (typeof(editor.setValue) === 'function') {
+						editor.setValue(obj.records[y][x], value);
+					}
 				} else {
 					// Native functions
 					if (obj.options.columns[x].type == 'checkbox' || obj.options.columns[x].type == 'radio') {
@@ -3337,7 +3347,7 @@ if (! jSuites && typeof(require) === 'function') {
 			} else {
 				// In case the column is an object
 				if (typeof(column) == 'object') {
-					column = $(column).getAttribute('data-x');
+					column = column.getAttribute('data-x');
 				}
 
 				data = obj.colgroup[column].getAttribute('width')
@@ -3686,7 +3696,7 @@ if (! jSuites && typeof(require) === 'function') {
 					}
 				}
 
-			   return data;
+				return data;
 			} else {
 				cell = jexcel.getIdFromColumnName(cell, true);
 
@@ -4670,9 +4680,9 @@ if (! jSuites && typeof(require) === 'function') {
 					}
 
 					// onbeforedeletecolumn
-				   if (obj.dispatch('onbeforedeletecolumn', el, columnNumber, numOfColumns) === false) {
-					  return false;
-				   }
+					if (obj.dispatch('onbeforedeletecolumn', el, columnNumber, numOfColumns) === false) {
+						return false;
+					}
 
 					// Can't remove the last column
 					if (parseInt(columnNumber) > -1) {
@@ -5356,7 +5366,7 @@ if (! jSuites && typeof(require) === 'function') {
 								}
 								// Get column data
 								if ((''+value).substr(0,1) == '=') {
-									if (formulaResults[tokens[i]]) {
+									if (typeof formulaResults[tokens[i]] !== 'undefined') {
 										value = formulaResults[tokens[i]];
 									} else {
 										value = execute(value, position[0], position[1]);
@@ -5968,11 +5978,6 @@ if (! jSuites && typeof(require) === 'function') {
 		 * Search
 		 */
 		obj.search = function(query) {
-			// Query
-			if (query) {
-				var query = query.toLowerCase();
-			}
-
 			// Reset any filter
 			if (obj.options.filters) {
 				obj.resetFilters();
@@ -6004,9 +6009,12 @@ if (! jSuites && typeof(require) === 'function') {
 					}
 				}
 
+				var parsedQuery = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+				parsedQuery = new RegExp(parsedQuery, "i");
+
 				// Filter
-				var data = obj.options.data.filter(function(v, k) {
-					if (search(v, query, k)) {
+				obj.options.data.forEach(function(v, k) {
+					if (search(v, parsedQuery, k)) {
 						// Merged rows found
 						var rows = obj.isRowMerged(k);
 						if (rows.length) {
@@ -6020,9 +6028,6 @@ if (! jSuites && typeof(require) === 'function') {
 							// Normal row found
 							addToResult(k);
 						}
-						return true;
-					} else {
-						return false;
 					}
 				});
 			} else {
@@ -7725,12 +7730,12 @@ if (! jSuites && typeof(require) === 'function') {
 									if (e.keyCode == 32) {
 										// Space
 										e.preventDefault()
-										if (jspreadsheet.current.options.columns[columnId].type == 'checkbox' ||
-											jspreadsheet.current.options.columns[columnId].type == 'radio') {
-											jspreadsheet.current.setCheckRadioValue();
+										if (jexcel.current.options.columns[columnId].type == 'checkbox' ||
+											jexcel.current.options.columns[columnId].type == 'radio') {
+											jexcel.current.setCheckRadioValue();
 										} else {
 											// Start edition
-											jspreadsheet.current.openEditor(jspreadsheet.current.records[rowId][columnId], true);
+											jexcel.current.openEditor(jexcel.current.records[rowId][columnId], true);
 										}
 									} else if (e.keyCode == 113) {
 										// Start edition with current content F2
@@ -8878,6 +8883,9 @@ if (! jSuites && typeof(require) === 'function') {
 				}
 				if (info = header.getAttribute('id')) {
 					options.columns[i].id = info;
+				}
+				if (info = header.getAttribute('data-mask')) {
+					options.columns[i].mask = info;
 				}
 			}
 

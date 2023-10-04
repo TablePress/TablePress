@@ -26,7 +26,7 @@ return /******/ (function() { // webpackBootstrap
  */
 
 ;(function (global, factory) {
-	 true ? module.exports = factory() :
+		true ? module.exports = factory() :
 	0;
 }(this, (function () {
 
@@ -367,7 +367,7 @@ var __webpack_exports__ = {};
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": function() { return /* binding */ jsuites; }
+	"default": function() { return /* binding */ jsuites; }
 });
 
 ;// CONCATENATED MODULE: ./src/utils/helpers.js
@@ -710,11 +710,11 @@ function Tracking(component, state) {
 }
 
 ;// CONCATENATED MODULE: ./src/utils/path.js
-function Path(str, val) {
+function Path(str, val, remove) {
 	str = str.split('.');
 	if (str.length) {
-		var o = this;
-		var p = null;
+		let o = this;
+		let p = null;
 		while (str.length > 1) {
 			// Get the property
 			p = str.shift();
@@ -723,7 +723,7 @@ function Path(str, val) {
 				o = o[p];
 			} else {
 				// Property does not exists
-				if (val === undefined) {
+				if (typeof(val) === 'undefined') {
 					return undefined;
 				} else {
 					// Create the property
@@ -736,8 +736,12 @@ function Path(str, val) {
 		// Get the property
 		p = str.shift();
 		// Set or get the value
-		if (val !== undefined) {
-			o[p] = val;
+		if (typeof(val) !== 'undefined') {
+			if (remove === true) {
+				delete o[p];
+			} else {
+				o[p] = val;
+			}
 			// Success
 			return true;
 		} else {
@@ -1069,16 +1073,16 @@ function Ajax() {
 		}
 
 		// Headers
-		if (options.method == 'POST') {
+		if (options.method === 'POST') {
 			httpRequest.setRequestHeader('Accept', 'application/json');
 		} else {
-			if (options.dataType == 'blob') {
+			if (options.dataType === 'blob') {
 				httpRequest.responseType = "blob";
 			} else {
 				if (! options.contentType) {
-					if (options.dataType == 'json') {
+					if (options.dataType === 'json') {
 						httpRequest.setRequestHeader('Content-Type', 'text/json');
-					} else if (options.dataType == 'html') {
+					} else if (options.dataType === 'html') {
 						httpRequest.setRequestHeader('Content-Type', 'text/html');
 					}
 				}
@@ -1086,13 +1090,13 @@ function Ajax() {
 		}
 
 		// No cache
-		if (options.cache != true) {
+		if (options.cache !== true) {
 			httpRequest.setRequestHeader('pragma', 'no-cache');
 			httpRequest.setRequestHeader('cache-control', 'no-cache');
 		}
 
 		// Authentication
-		if (options.withCredentials == true) {
+		if (options.withCredentials === true) {
 			httpRequest.withCredentials = true
 		}
 
@@ -1111,8 +1115,8 @@ function Ajax() {
 		}
 
 		httpRequest.onload = function() {
-			if (httpRequest.status === 200) {
-				if (options.dataType == 'json') {
+			if (httpRequest.status >= 200 && httpRequest.status < 300) {
+				if (options.dataType === 'json') {
 					try {
 						var result = JSON.parse(httpRequest.responseText);
 
@@ -1125,7 +1129,7 @@ function Ajax() {
 						}
 					}
 				} else {
-					if (options.dataType == 'blob') {
+					if (options.dataType === 'blob') {
 						var result = httpRequest.response;
 					} else {
 						var result = httpRequest.responseText;
@@ -1152,7 +1156,7 @@ function Ajax() {
 				var index = Component.requests.indexOf(httpRequest);
 				// Remove from the ajax requests container
 				Component.requests.splice(index, 1);
-				// Deprected: Last one?
+				// Deprecated: Last one?
 				if (! Component.requests.length) {
 					// Object event
 					if (options.complete && typeof(options.complete) == 'function') {
@@ -1190,7 +1194,7 @@ function Ajax() {
 		httpRequest.data = data;
 
 		// Queue
-		if (options.queue == true && Component.requests.length > 0) {
+		if (options.queue === true && Component.requests.length > 0) {
 			Component.queue.push(httpRequest);
 		} else {
 			Component.send(httpRequest)
@@ -1245,7 +1249,7 @@ function Ajax() {
 /* harmony default export */ var ajax = (Ajax());
 ;// CONCATENATED MODULE: ./src/plugins/animation.js
 function Animation() {
-	var Component = {
+	const Component = {
 		loading: {}
 	}
 
@@ -1259,7 +1263,7 @@ function Animation() {
 		// Max timeout in seconds
 		if (timeout > 0) {
 			setTimeout(function() {
-				obj.hide();
+				Component.loading.hide();
 			}, timeout * 1000)
 		}
 	}
@@ -1291,7 +1295,7 @@ function Animation() {
 	}
 
 	Component.slideRight = function (element, direction, done) {
-		if (direction == true) {
+		if (direction === true) {
 			element.classList.add('slide-right-in');
 			setTimeout(function () {
 				element.classList.remove('slide-right-in');
@@ -1311,7 +1315,7 @@ function Animation() {
 	}
 
 	Component.slideTop = function (element, direction, done) {
-		if (direction == true) {
+		if (direction === true) {
 			element.classList.add('slide-top-in');
 			setTimeout(function () {
 				element.classList.remove('slide-top-in');
@@ -1331,7 +1335,7 @@ function Animation() {
 	}
 
 	Component.slideBottom = function (element, direction, done) {
-		if (direction == true) {
+		if (direction === true) {
 			element.classList.add('slide-bottom-in');
 			setTimeout(function () {
 				element.classList.remove('slide-bottom-in');
@@ -1392,7 +1396,7 @@ function Mask() {
 		// Number
 		numeric: [ '0{1}(.{1}0+)?' ],
 		// Data tokens
-		datetime: [ 'YYYY', 'YYY', 'YY', 'MMMMM', 'MMMM', 'MMM', 'MM', 'DDDDD', 'DDDD', 'DDD', 'DD', 'DY', 'DAY', 'WD', 'D', 'Q', 'MONTH', 'MON', 'HH24', 'HH12', 'HH', '\\[H\\]', 'H', 'AM/PM', 'PM', 'AM', 'MI', 'SS', 'MS', 'Y', 'M' ],
+		datetime: [ 'YYYY', 'YYY', 'YY', 'MMMMM', 'MMMM', 'MMM', 'MM', 'DDDDD', 'DDDD', 'DDD', 'DD', 'DY', 'DAY', 'WD', 'D', 'Q', 'MONTH', 'MON', 'HH24', 'HH12', 'HH', '\\[H\\]', 'H', 'AM/PM', 'MI', 'SS', 'MS', 'Y', 'M' ],
 		// Other
 		general: [ 'A', '0', '[0-9a-zA-Z\$]+', '.']
 	}
@@ -1427,10 +1431,18 @@ function Mask() {
 			if (this.mask.toLowerCase().indexOf('[h]') !== -1) {
 				v = parseInt(this.date[3]);
 			} else {
-				v = parseInt(this.date[3]) % 24;
+				let h = parseInt(this.date[3]);
+				if (h < 13 && this.values.indexOf('PM') !== -1) {
+					v = (h+12) % 24;
+				} else {
+					v = h % 24;
+				}
 			}
 			if (this.date[4]) {
 				v += parseFloat(this.date[4] / 60);
+			}
+			if (this.date[5]) {
+				v += parseFloat(this.date[5] / 3600);
 			}
 			v /= 24;
 		} else if (this.date[0] || this.date[1] || this.date[2] || this.date[3] || this.date[4] || this.date[5]) {
@@ -1456,12 +1468,14 @@ function Mask() {
 	}
 
 	var isFormula = function(value) {
-		return (''+value).chartAt(0) == '=';
+		var v = (''+value)[0];
+		return v == '=' ? true : false;
 	}
 
 	var isNumeric = function(t) {
 		return t === 'currency' || t === 'percentage' || t === 'numeric' ? true : false;
 	}
+
 	/**
 	 * Get the decimal defined in the mask configuration
 	 */
@@ -1561,7 +1575,7 @@ function Mask() {
 	}
 
 	var FormatValue = function(v, event) {
-		if (v == '') {
+		if (v === '') {
 			return '';
 		}
 		// Get decimal
@@ -1570,25 +1584,33 @@ function Mask() {
 		var o = this.options;
 		// Parse value
 		v = ParseValue.call(this, v);
-		if (v == '') {
+		if (v === '') {
 			return '';
 		}
+		var t = null;
 		// Temporary value
 		if (v[0]) {
-			var t = parseFloat(v[0] + '.1');
-			if (o.style == 'percent') {
-				t /= 100;
+			if (o.style === 'percent') {
+				t = parseFloat(v[0]) / 100;
+			} else {
+				t = parseFloat(v[0] + '.1');
 			}
-		} else {
-			var t = null;
 		}
 
-		if ((v[0] == '-' || v[0] == '-00') && ! v[1] && (event && event.inputType == "deleteContentBackward")) {
+		if ((v[0] === '-' || v[0] === '-00') && ! v[1] && (event && event.inputType == "deleteContentBackward")) {
 			return '';
 		}
 
 		var n = new Intl.NumberFormat(this.locale, o).format(t);
 		n = n.split(d);
+
+		if (o.style === 'percent') {
+			if (n[0].indexOf('%') !== -1) {
+				n[0] = n[0].replace('%', '');
+				n[2] = '%';
+			}
+		}
+
 		if (typeof(n[1]) !== 'undefined') {
 			var s = n[1].replace(/[0-9]*/g, '');
 			if (s) {
@@ -1612,7 +1634,6 @@ function Mask() {
 		}
 
 		// Get decimal
-		var d = getDecimal.call(this);
 		var n = FormatValue.call(this, v, event);
 		var t = (n.length) - v.length;
 		var index = Caret.call(e) + t;
@@ -1662,7 +1683,7 @@ function Mask() {
 			if (adjustNumeric) {
 				var p = null;
 				for (var i = 0; i < n.length; i++) {
-					if (n[i].match(/[\-0-9]/g) || n[i] == '.' || n[i] == ',') {
+					if (n[i].match(/[\-0-9]/g) || n[i] === '.' || n[i] === ',') {
 						p = i;
 					}
 				}
@@ -1883,7 +1904,7 @@ function Mask() {
 			if (test == true) {
 				var t = parseInt(this.values[this.index]);
 				if (t > 0 && t < 12) {
-					this.date[2] = this.values[this.index];
+					this.date[1] = this.values[this.index];
 					this.index++;
 					// Repeat the character
 					this.position--;
@@ -1983,7 +2004,6 @@ function Mask() {
 			}
 		},
 		'HH24': function(v, two) {
-			var test = false;
 			if (parseInt(v) >= 0 && parseInt(v) < 10) {
 				if (this.values[this.index] == null || this.values[this.index] == '') {
 					if (parseInt(v) > 2 && parseInt(v) < 10) {
@@ -1997,9 +2017,15 @@ function Mask() {
 					}
 				} else {
 					if (this.values[this.index] == 2 && parseInt(v) < 4) {
+						if (! two && this.values[this.index] === '0') {
+							this.values[this.index] = '';
+						}
 						this.date[3] = this.values[this.index] += v;
 						this.index++;
 					} else if (this.values[this.index] < 2 && parseInt(v) < 10) {
+						if (! two && this.values[this.index] === '0') {
+							this.values[this.index] = '';
+						}
 						this.date[3] = this.values[this.index] += v;
 						this.index++;
 					}
@@ -2039,7 +2065,7 @@ function Mask() {
 				if (parseInt(v) < 10) {
 					this.date[i] = this.values[this.index] += v;
 					this.index++;
-				 }
+					}
 			}
 		},
 		'MI': function(v) {
@@ -2049,15 +2075,20 @@ function Mask() {
 			parser.N60.call(this, v, 5);
 		},
 		'AM/PM': function(v) {
-			this.values[this.index] = '';
-			if (v) {
-				if (this.date[3] > 12) {
-					this.values[this.index] = 'PM';
-				} else {
-					this.values[this.index] = 'AM';
-				}
+			if (typeof(this.values[this.index]) === 'undefined') {
+				this.values[this.index] = '';
 			}
-			this.index++;
+
+			if (this.values[this.index] === '') {
+				if (v.match(/a/i) && this.date[3] < 13) {
+					this.values[this.index] += 'A';
+				} else if (v.match(/p/i)) {
+					this.values[this.index] += 'P';
+				}
+			} else if (this.values[this.index] === 'A' || this.values[this.index] === 'P') {
+				this.values[this.index] += 'M';
+				this.index++;
+			}
 		},
 		'WD': function(v) {
 			if (typeof(this.values[this.index]) === 'undefined') {
@@ -2066,7 +2097,7 @@ function Mask() {
 			if (parseInt(v) >= 0 && parseInt(v) < 7) {
 				this.values[this.index] = v;
 			}
-			if (this.value[this.index].length == 1) {
+			if (this.values[this.index].length == 1) {
 				this.index++;
 			}
 		},
@@ -2337,18 +2368,13 @@ function Mask() {
 		}
 	}
 
-	var isFormula = function(value) {
-		var v = (''+value)[0];
-		return v == '=' ? true : false;
-	}
-
 	var toPlainString = function(num) {
 		return (''+ +num).replace(/(-?)(\d*)\.?(\d*)e([+-]\d+)/,
-		  function(a,b,c,d,e) {
+			function(a,b,c,d,e) {
 			return e < 0
-			  ? b + '0.' + Array(1-e-c.length).join(0) + c + d
-			  : b + c + d + Array(e-d.length+1).join(0);
-		  });
+				? b + '0.' + Array(1-e-c.length).join(0) + c + d
+				: b + c + d + Array(e-d.length+1).join(0);
+			});
 	}
 
 	/**
@@ -2471,8 +2497,12 @@ function Mask() {
 				if (o.mask.indexOf('##') !== -1) {
 					var d = o.mask.split(';');
 					if (d[0]) {
+						if (typeof(e) == 'object') {
+							d[0] = d[0].replace(new RegExp(/_\)/g), '');
+							d[0] = d[0].replace(new RegExp(/_\(/g), '');
+						}
 						d[0] = d[0].replace('*', '\t');
-						d[0] = d[0].replace(new RegExp(/_-/g), ' ');
+						d[0] = d[0].replace(new RegExp(/_-/g), '');
 						d[0] = d[0].replace(new RegExp(/_/g), '');
 						d[0] = d[0].replace('##0.###','##0.000');
 						d[0] = d[0].replace('##0.##','##0.00');
@@ -2481,6 +2511,12 @@ function Mask() {
 						d[0] = d[0].replace('##0,##','##0,00');
 						d[0] = d[0].replace('##0,#','##0,0');
 					}
+					o.mask = d[0];
+				}
+				// Remove back slashes
+				if (o.mask.indexOf('\\') !== -1) {
+					var d = o.mask.split(';');
+					d[0] = d[0].replace(new RegExp(/\\/g), '');
 					o.mask = d[0];
 				}
 				// Get type
@@ -2550,10 +2586,11 @@ function Mask() {
 			if (o.input) {
 				var label = null;
 				if (isNumeric(o.type)) {
+					let v = Value.call(o.input);
 					// Extract the number
-					o.number = Extract.call(o, Value.call(o.input));
+					o.number = Extract.call(o, v);
 					// Keep the raw data as a property of the tag
-					if (o.type == 'percentage') {
+					if (o.type == 'percentage' && v.indexOf('%') !== -1) {
 						label = o.number / 100;
 					} else {
 						label = o.number;
@@ -2674,7 +2711,7 @@ function Mask() {
 		} else {
 			value = Extract.call(options, v);
 			// Percentage
-			if (type == 'percentage') {
+			if (type === 'percentage' && v.indexOf('%') !== -1) {
 				value /= 100;
 			}
 			var o = options;
@@ -2720,6 +2757,10 @@ function Mask() {
 		if (options.mask) {
 			if (options.mask.indexOf(';') !== -1) {
 				var t = options.mask.split(';');
+				if (! fullMask) {
+					t[0] = t[0].replace(new RegExp(/_\)/g), '');
+					t[0] = t[0].replace(new RegExp(/_\(/g), '');
+				}
 				options.mask = t[0];
 			}
 			options.mask = options.mask.replace(new RegExp(/\[h]/),'|h|');
@@ -3022,11 +3063,15 @@ function Mask() {
 					} else if (s === 'DD') {
 						v = helpers.two(this.data[2]);
 					} else if (s === 'D') {
-						v = this.data[2];
+						v = parseInt(this.data[2]);
 					} else if (s === 'Q') {
 						v = Math.floor((calendar.getMonth() + 3) / 3);
 					} else if (s === 'HH24' || s === 'HH') {
-						v = helpers.two(this.data[3]);
+						v = this.data[3];
+						if (v > 12 && this.tokens.indexOf('am/pm') !== -1) {
+							v -= 12;
+						}
+						v = helpers.two(v);
 					} else if (s === 'HH12') {
 						if (this.data[3] > 12) {
 							v = helpers.two(this.data[3] - 12);
@@ -3035,6 +3080,10 @@ function Mask() {
 						}
 					} else if (s === 'H') {
 						v = this.data[3];
+						if (v > 12 && this.tokens.indexOf('am/pm') !== -1) {
+							v -= 12;
+							v = helpers.two(v);
+						}
 					} else if (s === 'MI') {
 						v = helpers.two(this.data[4]);
 					} else if (s === 'SS') {
@@ -3069,14 +3118,6 @@ function Mask() {
 		}
 
 		return value;
-	}
-
-	if (typeof document !== 'undefined') {
-		document.addEventListener('input', function(e) {
-			if (e.target.getAttribute('data-mask') || e.target.mask) {
-				obj(e);
-			}
-		});
 	}
 
 	return obj;
@@ -3154,6 +3195,8 @@ function Calendar() {
 				dataType: null,
 				// Controls
 				controls: true,
+				// Auto select
+				autoSelect: true,
 			}
 
 			// Loop through our object
@@ -3293,6 +3336,9 @@ function Calendar() {
 		}
 
 		obj.close = function (ignoreEvents, update) {
+			if (obj.options.autoSelect !== true && typeof(update) === 'undefined') {
+				update = false;
+			}
 			if (calendar.classList.contains('jcalendar-focus')) {
 				if (update !== false) {
 					var element = calendar.querySelector('.jcalendar-selected');
@@ -3306,6 +3352,12 @@ function Calendar() {
 					}
 
 					obj.setValue(value);
+				} else {
+					if (obj.options.value) {
+						let value = obj.options.value;
+						obj.options.value = '';
+						obj.setValue(value)
+					}
 				}
 
 				// Events
@@ -3506,7 +3558,7 @@ function Calendar() {
 				}
 
 				if (!obj.options.time) {
-					obj.close();
+					obj.close(null, true);
 				} else {
 					obj.date[3] = calendarSelectHour.value;
 					obj.date[4] = calendarSelectMin.value;
@@ -3834,7 +3886,7 @@ function Calendar() {
 						obj.getDays();
 					}
 				} else if (action == 'jcalendar-confirm' || action == 'jcalendar-update' || action == 'jcalendar-close') {
-					obj.close();
+					obj.close(null, true);
 				} else if (action == 'jcalendar-backdrop') {
 					obj.close(false, false);
 				} else if (action == 'jcalendar-reset') {
@@ -3843,7 +3895,7 @@ function Calendar() {
 					obj.update(e.target);
 				}
 			} else {
-				obj.close();
+				obj.close(false, false);
 			}
 		}
 
@@ -4156,6 +4208,10 @@ function Calendar() {
 			}
 		}
 
+		if (d.indexOf('GMT') === -1 && d.indexOf('Z') === -1) {
+			d += ' GMT';
+		}
+
 		var d1 = new Date();
 		var d2 = new Date(d);
 		var total = parseInt((d1 - d2) / 1000 / 60);
@@ -4325,23 +4381,21 @@ function Tabs(el, options) {
 	// Helpers
 	var setBorder = function(index) {
 		if (obj.options.animation) {
-			setTimeout(function() {
-				var rect = obj.headers.children[index].getBoundingClientRect();
+			var rect = obj.headers.children[index].getBoundingClientRect();
 
-				if (obj.options.palette == 'modern') {
-					border.style.width = rect.width - 4 + 'px';
-					border.style.left = obj.headers.children[index].offsetLeft + 2 + 'px';
-				} else {
-					border.style.width = rect.width + 'px';
-					border.style.left = obj.headers.children[index].offsetLeft + 'px';
-				}
+			if (obj.options.palette === 'modern') {
+				border.style.width = rect.width - 4 + 'px';
+				border.style.left = obj.headers.children[index].offsetLeft + 2 + 'px';
+			} else {
+				border.style.width = rect.width + 'px';
+				border.style.left = obj.headers.children[index].offsetLeft + 'px';
+			}
 
-				if (obj.options.position == 'bottom') {
-					border.style.top = '0px';
-				} else {
-					border.style.bottom = '0px';
-				}
-			}, 150);
+			if (obj.options.position === 'bottom') {
+				border.style.top = '0px';
+			} else {
+				border.style.bottom = '0px';
+			}
 		}
 	}
 
@@ -5981,6 +6035,8 @@ function Dropdown() {
 				onblur: null,
 				oninsert: null,
 				onbeforeinsert: null,
+				onsearch: null,
+				onbeforesearch: null,
 				sortResults: false,
 				autofocus: false,
 			}
@@ -6791,11 +6847,13 @@ function Dropdown() {
 				// Reset results
 				obj.results = null;
 				// URL
-				var url = obj.options.url + (obj.options.url.indexOf('?') > 0 ? '&' : '?') + 'q=' + str;
-				// Remote search
-				ajax({
+				var url = obj.options.url;
+
+				// Ajax call
+				let o = {
 					url: url,
 					method: 'GET',
+					data: { q: str },
 					dataType: 'json',
 					success: function (result) {
 						// Reset items
@@ -6822,8 +6880,24 @@ function Dropdown() {
 						} else {
 							content.style.display = '';
 						}
+
+						if (typeof(obj.options.onsearch) === 'function') {
+							obj.options.onsearch(obj, result);
+						}
 					}
-				});
+				}
+
+				if (typeof(obj.options.onbeforesearch) === 'function') {
+					let ret = obj.options.onbeforesearch(obj, o);
+					if (ret === false) {
+						return;
+					} else if (typeof(ret) === 'object') {
+						o = ret;
+					}
+				}
+
+				// Remote search
+				ajax(o);
 			} else {
 				// Search terms
 				str = new RegExp(str, 'gi');
@@ -8031,6 +8105,11 @@ function Toolbar(el, options) {
 						closed: true
 					});
 				}
+
+				// Render
+				if (typeof(items[i].render) === 'function') {
+					items[i].render(toolbarItem, items[i]);
+				}
 			}
 
 			if (items[i].onclick) {
@@ -8693,68 +8772,68 @@ function Editor() {
 		var validStyle = ['color', 'font-weight', 'font-size', 'background', 'background-color', 'margin'];
 
 		var parse = function(element) {
-		   // Remove attributes
-		   if (element.attributes && element.attributes.length) {
-			   var image = null;
-			   var style = null;
-			   // Process style attribute
-			   var elementStyle = element.getAttribute('style');
-			   if (elementStyle) {
-				   style = [];
-				   var t = elementStyle.split(';');
-				   for (var j = 0; j < t.length; j++) {
-					   var v = t[j].trim().split(':');
-					   if (validStyle.indexOf(v[0].trim()) >= 0) {
-						   var k = v.shift();
-						   var v = v.join(':');
-						   style.push(k + ':' + v);
-					   }
-				   }
-			   }
-			   // Process image
-			   if (element.tagName.toUpperCase() == 'IMG') {
-				   if (! obj.options.acceptImages || ! element.src) {
-					   element.parentNode.removeChild(element);
-				   } else {
-					   // Check if is data
-					   element.setAttribute('tabindex', '900');
-					   // Check attributes for persistence
-					   obj.addImage(element.src);
-				   }
-			   }
-			   // Remove attributes
-			   var attr = [];
-			   for (var i = 0; i < element.attributes.length; i++) {
-				   attr.push(element.attributes[i].name);
-			   }
-			   if (attr.length) {
-				   attr.forEach(function(v) {
-					   if (validProperty.indexOf(v) == -1) {
-						   element.removeAttribute(v);
-					   } else {
-						   // Protection XSS
-						   if (element.attributes[i].value.indexOf('<') !== -1) {
-							   element.attributes[i].value.replace('<', '&#60;');
-						   }
-					   }
-				   });
-			   }
-			   element.style = '';
-			   // Add valid style
-			   if (style && style.length) {
-				   element.setAttribute('style', style.join(';'));
-			   }
-		   }
-		   // Parse children
-		   if (element.children.length) {
-			   for (var i = 0; i < element.children.length; i++) {
-				   parse(element.children[i]);
-			   }
-		   }
+			// Remove attributes
+			if (element.attributes && element.attributes.length) {
+				var image = null;
+				var style = null;
+				// Process style attribute
+				var elementStyle = element.getAttribute('style');
+				if (elementStyle) {
+					style = [];
+					var t = elementStyle.split(';');
+					for (var j = 0; j < t.length; j++) {
+						var v = t[j].trim().split(':');
+						if (validStyle.indexOf(v[0].trim()) >= 0) {
+							var k = v.shift();
+							var v = v.join(':');
+							style.push(k + ':' + v);
+						}
+					}
+				}
+				// Process image
+				if (element.tagName.toUpperCase() == 'IMG') {
+					if (! obj.options.acceptImages || ! element.src) {
+						element.parentNode.removeChild(element);
+					} else {
+						// Check if is data
+						element.setAttribute('tabindex', '900');
+						// Check attributes for persistence
+						obj.addImage(element.src);
+					}
+				}
+				// Remove attributes
+				var attr = [];
+				for (var i = 0; i < element.attributes.length; i++) {
+					attr.push(element.attributes[i].name);
+				}
+				if (attr.length) {
+					attr.forEach(function(v) {
+						if (validProperty.indexOf(v) == -1) {
+							element.removeAttribute(v);
+						} else {
+							// Protection XSS
+							if (element.attributes[i].value.indexOf('<') !== -1) {
+								element.attributes[i].value.replace('<', '&#60;');
+							}
+						}
+					});
+				}
+				element.style = '';
+				// Add valid style
+				if (style && style.length) {
+					element.setAttribute('style', style.join(';'));
+				}
+			}
+			// Parse children
+			if (element.children.length) {
+				for (var i = 0; i < element.children.length; i++) {
+					parse(element.children[i]);
+				}
+			}
 
-		   if (remove.indexOf(element.constructor) >= 0) {
-			   element.remove();
-		   }
+			if (remove.indexOf(element.constructor) >= 0) {
+				element.remove();
+			}
 		}
 
 		var select = function(e) {
@@ -9623,6 +9702,8 @@ function Floating() {
 
 /* harmony default export */ var floating = (Floating());
 ;// CONCATENATED MODULE: ./src/plugins/validations.js
+
+
 function Validations() {
 	/**
 	 * Options: Object,
@@ -9632,11 +9713,11 @@ function Validations() {
 	 * Value
 	 */
 
-	var isNumeric = function(num) {
+	const isNumeric = function(num) {
 		return !isNaN(num) && num !== null && num !== '';
 	}
 
-	var numberCriterias = {
+	const numberCriterias = {
 		'between': function(value, range) {
 			return value >= range[0] && value <= range[1];
 		},
@@ -9663,12 +9744,15 @@ function Validations() {
 		},
 	}
 
-	var dateCriterias = {
+	const dateCriterias = {
 		'valid date': function() {
 			return true;
 		},
 		'=': function(value, range) {
 			return value === range[0];
+		},
+		'!=': function(value, range) {
+			return value !== range[0];
 		},
 		'<': function(value, range) {
 			return value < range[0];
@@ -9690,7 +9774,7 @@ function Validations() {
 		},
 	}
 
-	var textCriterias = {
+	const textCriterias = {
 		'contains': function(value, range) {
 			return value.includes(range[0]);
 		},
@@ -9706,6 +9790,9 @@ function Validations() {
 		'=': function(value, range) {
 			return value === range[0];
 		},
+		'!=': function(value, range) {
+			return value !== range[0];
+		},
 		'valid email': function(value) {
 			var pattern = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
@@ -9719,12 +9806,11 @@ function Validations() {
 	}
 
 	// Component router
-	var component = function(value, options) {
+	const component = function(value, options) {
 		if (typeof(component[options.type]) === 'function') {
 			if (options.allowBlank && value === '') {
 				return true;
 			}
-
 			return component[options.type](value, options);
 		}
 		return null;
@@ -9745,65 +9831,119 @@ function Validations() {
 	}
 
 	component.exist = function(data, options) {
-		return !!data.toString();
+		return !!data.toString().trim();
 	}
 
 	component['not exist'] = function(data, options) {
-		return !data.toString();
+		return !data.toString().trim();
 	}
 
 	component.empty = function(data) {
-		return !data.toString();
+		return !data.toString().trim();
 	}
 
 	component.notEmpty = function(data) {
-		return !!data.toString();
+		return !!data.toString().trim();
 	}
 
 	component.number = function(data, options) {
-	   if (! isNumeric(data)) {
-		   return false;
-	   }
+		if (! isNumeric(data)) {
+			return false;
+		}
 
-	   if (!options || !options.criteria) {
-		   return true;
-	   }
+		if (!options || !options.criteria) {
+			return true;
+		}
 
-	   if (!numberCriterias[options.criteria]) {
-		   return false;
-	   }
+		if (!numberCriterias[options.criteria]) {
+			return false;
+		}
 
-	   var values = options.value.map(function(num) {
-		  return parseFloat(num);
-	   })
+		let values = options.value.map(function(num) {
+			return parseFloat(num);
+		})
 
-	   return numberCriterias[options.criteria](data, values);
-   };
+		return numberCriterias[options.criteria](data, values);
+	};
 
 	component.login = function(data) {
-		var pattern = new RegExp(/^[a-zA-Z0-9\_\-\.\s+]+$/);
+		let pattern = new RegExp(/^[a-zA-Z0-9._-]+$/);
 		return data && pattern.test(data) ? true : false;
 	}
 
 	component.list = function(data, options) {
-		var dataType = typeof data;
+		let dataType = typeof data;
 		if (dataType !== 'string' && dataType !== 'number') {
 			return false;
 		}
+		let list;
 		if (typeof(options.value[0]) === 'string') {
-			var list = options.value[0].split(',');
+			list = options.value[0].split(',');
 		} else {
-			var list = options.value[0];
+			list = options.value[0];
 		}
 
-		var validOption = list.findIndex(function name(item) {
-			return item == data;
-		});
+		if (! Array.isArray(list)) {
+			return false;
+		} else {
+			let validOption = list.findIndex(function (item) {
+				return item == data;
+			});
 
-		return validOption > -1;
+			return validOption > -1;
+		}
 	}
 
+	const getCurrentDateWithoutTime = function() {
+		let date = new Date();
+		date.setHours(0, 0, 0, 0);
+		return date;
+	}
+
+	const relativeDates = {
+		'one year ago': function() {
+			let date = getCurrentDateWithoutTime();
+
+			date.setFullYear(date.getFullYear() - 1);
+
+			return date;
+		},
+		'one month ago': function() {
+			let date = getCurrentDateWithoutTime();
+
+			date.setMonth(date.getMonth() - 1);
+
+			return date;
+		},
+		'one week ago': function() {
+			let date = getCurrentDateWithoutTime();
+
+			date.setDate(date.getDate() - 7);
+
+			return date;
+		},
+		yesterday: function() {
+			let date = getCurrentDateWithoutTime();
+
+			date.setDate(date.getDate() - 1);
+
+			return date;
+		},
+		today: getCurrentDateWithoutTime,
+		tomorrow: function() {
+			let date = getCurrentDateWithoutTime();
+
+			date.setDate(date.getDate() + 1);
+
+			return date;
+		},
+	};
+
 	component.date = function(data, options) {
+		if (isNumeric(data) && data > 0 && data < 1000000) {
+			data = helpers_date.numToDate(data);
+		}
+
 		if (new Date(data) == 'Invalid Date') {
 			return false;
 		}
@@ -9816,7 +9956,11 @@ function Validations() {
 			return false;
 		}
 
-		var values = options.value.map(function(date) {
+		let values = options.value.map(function(date) {
+			if (typeof date === 'string' && relativeDates[date]) {
+				return relativeDates[date]().getTime();
+			}
+
 			return new Date(date).getTime();
 		});
 
@@ -10114,9 +10258,9 @@ function Form() {
 				return hash;
 			} else {
 				for (i = 0; i < str.length; i++) {
-				  chr = str.charCodeAt(i);
-				  hash = ((hash << 5) - hash) + chr;
-				  hash |= 0;
+					chr = str.charCodeAt(i);
+					hash = ((hash << 5) - hash) + chr;
+					hash |= 0;
 				}
 			}
 
@@ -10291,7 +10435,8 @@ function Modal() {
 		}
 
 		var mouseUp = function (e) {
-			var item = helpers.findElement(e.target, 'jmodal');
+			let element = e.composedPath();
+			var item = helpers.findElement(element[0], 'jmodal');
 			if (item) {
 				// Get target info
 				var rect = item.getBoundingClientRect();
@@ -10316,7 +10461,8 @@ function Modal() {
 		}
 
 		var mouseDown = function (e) {
-			var item = helpers.findElement(e.target, 'jmodal');
+			let element = e.composedPath();
+			var item = helpers.findElement(element[0], 'jmodal');
 			if (item) {
 				// Get target info
 				var rect = item.getBoundingClientRect();
@@ -12317,7 +12463,7 @@ function Upload(el, options) {
 		var lastContentLength = null;
 		var content = canvas.toDataURL(type, compression);
 		while (obj.options.maxJpegSizeBytes && type === 'image/jpeg' &&
-			   content.length > obj.options.maxJpegSizeBytes && content.length !== lastContentLength) {
+				content.length > obj.options.maxJpegSizeBytes && content.length !== lastContentLength) {
 			// Apply the compression
 			compression *= 0.9;
 			lastContentLength = content.length;
@@ -12506,8 +12652,11 @@ var sha512_default = /*#__PURE__*/__webpack_require__.n(sha512);
 
 
 var jSuites = {
+	// Helpers
+	...dictionary,
+	...helpers,
 	/** Current version */
-	version: '5.0.1',
+	version: '5.0.24',
 	/** Bind new extensions to Jsuites */
 	setExtensions: function(o) {
 		if (typeof(o) == 'object') {
@@ -12517,10 +12666,7 @@ var jSuites = {
 			}
 		}
 	},
-	// Helpers
 	tracking: Tracking,
-	...dictionary,
-	...helpers,
 	path: Path,
 	sorting: Sorting,
 	lazyLoading: LazyLoading,
@@ -12568,11 +12714,11 @@ jSuites.sha512 = (sha512_default());
 
 
 /** Core events */
-var Events = function() {
+const Events = function() {
 
 	document.jsuitesComponents = [];
 
-	var find = function(DOMElement, component) {
+	const find = function(DOMElement, component) {
 		if (DOMElement[component.type] && DOMElement[component.type] == component) {
 			return true;
 		}
@@ -12585,7 +12731,7 @@ var Events = function() {
 		return false;
 	}
 
-	var isOpened = function(e) {
+	const isOpened = function(e) {
 		if (document.jsuitesComponents && document.jsuitesComponents.length > 0) {
 			for (var i = 0; i < document.jsuitesComponents.length; i++) {
 				if (document.jsuitesComponents[i] && ! find(e, document.jsuitesComponents[i])) {
@@ -12596,26 +12742,26 @@ var Events = function() {
 	}
 
 	// Width of the border
-	var cornerSize = 15;
+	let cornerSize = 15;
 
 	// Current element
-	var element = null;
+	let element = null;
 
 	// Controllers
-	var editorAction = false;
+	let editorAction = false;
 
 	// Event state
-	var state = {
+	let state = {
 		x: null,
 		y: null,
 	}
 
 	// Tooltip element
-	var tooltip = document.createElement('div')
+	let tooltip = document.createElement('div')
 	tooltip.classList.add('jtooltip');
 
 	// Events
-	var mouseDown = function(e) {
+	const mouseDown = function(e) {
 		// Check if this is the floating
 		var item = jSuites.findElement(e.target, 'jpanel');
 		// Jfloating found
@@ -12688,7 +12834,7 @@ var Events = function() {
 		isOpened(element);
 	}
 
-	var mouseUp = function(e) {
+	const mouseUp = function(e) {
 		if (editorAction && editorAction.e) {
 			if (typeof(editorAction.e.refresh) == 'function' && state.actioned) {
 				editorAction.e.refresh();
@@ -12705,7 +12851,7 @@ var Events = function() {
 		editorAction = false;
 	}
 
-	var mouseMove = function(e) {
+	const mouseMove = function(e) {
 		if (editorAction) {
 			var x = e.clientX || e.pageX;
 			var y = e.clientY || e.pageY;
@@ -12803,7 +12949,7 @@ var Events = function() {
 		}
 	}
 
-	var mouseOver = function(e) {
+	const mouseOver = function(e) {
 		var message = e.target.getAttribute('data-tooltip');
 		if (message) {
 			// Instructions
@@ -12827,7 +12973,7 @@ var Events = function() {
 		}
 	}
 
-	var dblClick = function(e) {
+	const dblClick = function(e) {
 		var item = jSuites.findElement(e.target, 'jpanel');
 		if (item && typeof(item.dblclick) == 'function') {
 			// Create edition
@@ -12835,7 +12981,7 @@ var Events = function() {
 		}
 	}
 
-	var contextMenu = function(e) {
+	const contextMenu = function(e) {
 		var item = document.activeElement;
 		if (item && typeof(item.contextmenu) == 'function') {
 			// Create edition
@@ -12862,10 +13008,10 @@ var Events = function() {
 		}
 	}
 
-	var keyDown = function(e) {
-		var item = document.activeElement;
+	const keyDown = function(e) {
+		let item = document.activeElement;
 		if (item) {
-			if (e.key == "Delete" && typeof(item.delete) == 'function') {
+			if (e.key === "Delete" && typeof(item.delete) == 'function') {
 				item.delete();
 				e.preventDefault();
 				e.stopImmediatePropagation();
@@ -12873,8 +13019,9 @@ var Events = function() {
 		}
 
 		if (document.jsuitesComponents && document.jsuitesComponents.length) {
-			if (item = document.jsuitesComponents[document.jsuitesComponents.length - 1]) {
-				if (e.key == "Escape" && typeof(item.isOpened) == 'function' && typeof(item.close) == 'function') {
+			item = document.jsuitesComponents[document.jsuitesComponents.length - 1]
+			if (item) {
+				if (e.key === "Escape" && typeof(item.isOpened) == 'function' && typeof(item.close) == 'function') {
 					if (item.isOpened()) {
 						item.close();
 						e.preventDefault();
@@ -12885,6 +13032,12 @@ var Events = function() {
 		}
 	}
 
+	const input = function(e) {
+		if (e.target.getAttribute('data-mask') || e.target.mask) {
+			jSuites.mask(e);
+		}
+	}
+
 	document.addEventListener('mouseup', mouseUp);
 	document.addEventListener("mousedown", mouseDown);
 	document.addEventListener('mousemove', mouseMove);
@@ -12892,6 +13045,7 @@ var Events = function() {
 	document.addEventListener('dblclick', dblClick);
 	document.addEventListener('keydown', keyDown);
 	document.addEventListener('contextmenu', contextMenu);
+	document.addEventListener('input', input);
 }
 
 if (typeof(document) !== "undefined" && ! document.jsuitesComponents) {
