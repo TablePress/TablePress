@@ -30,13 +30,14 @@ define( 'TABLEPRESS_TESTS_DATA_DIR', dirname( __DIR__ ) . '/tests/data/' );
 /**
  * Activates TablePress in WordPress so it can be tested.
  */
-function tablepress_tests_init() {
+function tablepress_tests_init(): void {
 	require dirname( __DIR__ ) . '/tablepress.php';
 }
 tests_add_filter( 'plugins_loaded', 'tablepress_tests_init' );
 
 require $wp_tests_dir . 'includes/bootstrap.php';
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
 /**
  * TablePress Unit Testing Testcase class.
  *
@@ -47,3 +48,4 @@ require $wp_tests_dir . 'includes/bootstrap.php';
 class TablePress_TestCase extends WP_UnitTestCase {
 	// Intentionally left blank.
 } // class TablePress_TestCase
+// phpcs:enable

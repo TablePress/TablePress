@@ -36,11 +36,11 @@ class TablePress_Evaluate_PHPSpreadsheet {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array  $table_data Table data in which formulas shall be evaluated.
-	 * @param string $table_id   ID of the passed table.
-	 * @return array Table data with evaluated formulas.
+	 * @param array<int, array<int, string>> $table_data Table data in which formulas shall be evaluated.
+	 * @param string                         $table_id   ID of the passed table.
+	 * @return array<int, array<int, string>> Table data with evaluated formulas.
 	 */
-	public function evaluate_table_data( array $table_data, $table_id ) {
+	public function evaluate_table_data( array $table_data, string $table_id ): array {
 		$table_has_formulas = false;
 
 		// Loop through all cells to check for formulas and convert notations.
@@ -54,7 +54,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 
 				// Convert legacy "formulas in text" notation to standard Excel notation (`=Text {A3+B3} Text` => `="Text "&A3+B3&" Text"`).
 				$count = 0;
-				$cell_content = preg_replace( '#{(.+?)}#', '"&$1&"', $cell_content, -1, $count );
+				$cell_content = (string) preg_replace( '#{(.+?)}#', '"&$1&"', $cell_content, -1, $count );
 				if ( $count > 0 ) {
 					$cell_content = '="' . substr( $cell_content, 1 ) . '"';
 				}

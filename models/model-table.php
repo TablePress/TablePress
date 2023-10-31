@@ -49,9 +49,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Default set of tables.
 	 *
 	 * @since 1.0.0
-	 * @var array $args {
-	 *     @type int   $last_id    Last table ID that was given to a new table.
-	 *     @type array $table_post Connections between table ID and post ID (key: table ID, value: post ID).
+	 * @var array{last_id: int, table_post: array<string, int>} {
+	 *     @type int                $last_id    Last table ID that was given to a new table.
+	 *     @type array<string, int> $table_post Connections between table ID and post ID (key: table ID, value: post ID).
 	 * }
 	 */
 	protected $default_tables = array(
@@ -88,9 +88,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Current set of tables.
+	 * @return mixed[] Current set of tables.
 	 */
-	public function _debug_get_tables() {
+	public function _debug_get_tables(): array {
 		return $this->tables->get();
 	}
 
@@ -99,9 +99,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $tables New set of tables.
+	 * @param mixed[] $tables New set of tables.
 	 */
-	public function _debug_update_tables( array $tables ) {
+	public function _debug_update_tables( array $tables ): void {
 		$this->tables->update( $tables );
 	}
 
@@ -110,11 +110,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table   Table.
-	 * @param int   $post_id Post ID of an existing table, or -1 for a new table.
-	 * @return array Post.
+	 * @param array<string, mixed> $table   Table.
+	 * @param int                  $post_id Post ID of an existing table, or -1 for a new table.
+	 * @return array<string, mixed> Post.
 	 */
-	protected function _table_to_post( array $table, $post_id ) {
+	protected function _table_to_post( array $table, int $post_id ): array {
 		// Run filters on content in each cell and other fields.
 		$table = $this->filter_content( $table );
 
@@ -147,9 +147,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param WP_Post $post      Post.
 	 * @param string  $table_id  Table ID.
 	 * @param bool    $load_data Whether the table data shall be loaded.
-	 * @return array Table.
+	 * @return array<string, mixed> Table.
 	 */
-	protected function _post_to_table( $post, $table_id, $load_data ) {
+	protected function _post_to_table( WP_Post $post, string $table_id, bool $load_data ): array {
 		$table = array(
 			'id'            => $table_id,
 			'name'          => $post->post_title,
@@ -187,9 +187,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $table_id                Table ID.
 	 * @param bool   $load_data               Whether the table data shall be loaded.
 	 * @param bool   $load_options_visibility Whether the table options and table visibility shall be loaded.
-	 * @return array|WP_Error Table as an array on success, WP_Error on error.
+	 * @return array<string, mixed>|WP_Error Table as an array on success, WP_Error on error.
 	 */
-	public function load( $table_id, $load_data = true, $load_options_visibility = true ) {
+	public function load( string $table_id, bool $load_data = true, bool $load_options_visibility = true ) /* : array|WP_Post */ {
 		if ( empty( $table_id ) ) {
 			return new WP_Error( 'table_load_empty_table_id' );
 		}
@@ -219,9 +219,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param bool $prime_meta_cache Optional. Whether the prime the post meta cache when loading the posts.
 	 * @param bool $run_filter       Optional. Whether to run a filter on the list of table IDs.
-	 * @return array Array of table IDs.
+	 * @return string[] Array of table IDs.
 	 */
-	public function load_all( $prime_meta_cache = true, $run_filter = true ) {
+	public function load_all( bool $prime_meta_cache = true, bool $run_filter = true ): array {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( empty( $table_post ) ) {
 			return array();
@@ -248,7 +248,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			 *
 			 * @since 1.4.0
 			 *
-			 * @param array $table_ids The table IDs that are loaded.
+			 * @param string[] $table_ids The table IDs that are loaded.
 			 */
 			$table_ids = apply_filters( 'tablepress_load_all_tables', $table_ids );
 		}
@@ -261,10 +261,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.8.0
 	 *
-	 * @param array $table Table.
-	 * @return array Sanitized table.
+	 * @param array<string, mixed> $table Table.
+	 * @return array<string, mixed> Sanitized table.
 	 */
-	public function sanitize( array $table ) {
+	public function sanitize( array $table ): array {
 		// Sanitize the table name and description.
 		$fields = array( 'name', 'description' );
 		foreach ( $fields as $field ) {
@@ -290,10 +290,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.10.0
 	 *
-	 * @param array $table Table.
-	 * @return array Filtered/modified table.
+	 * @param array<string, mixed> $table Table.
+	 * @return array<string, mixed> Filtered/modified table.
 	 */
-	public function filter_content( array $table ) {
+	public function filter_content( array $table ): array {
 		/**
 		 * Filters whether the contents of table cells and fields should be filtered/modified.
 		 *
@@ -325,10 +325,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table Table (needs to have $table['id']!).
+	 * @param array<string, mixed> $table Table (needs to have $table['id']!).
 	 * @return string|WP_Error WP_Error on error, string table ID on success.
 	 */
-	public function save( array $table ) {
+	public function save( array $table ) /* : string|WP_Error */ {
 		if ( empty( $table['id'] ) ) {
 			return new WP_Error( 'table_save_empty_table_id' );
 		}
@@ -383,11 +383,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array  $table       Table ($table['id'] is not necessary).
-	 * @param string $copy_or_add Optional. 'copy' if the table is copied, 'add' if it is a new table. Default 'add'.
+	 * @param array<string, mixed> $table       Table ($table['id'] is not necessary).
+	 * @param string               $copy_or_add Optional. 'copy' if the table is copied, 'add' if it is a new table. Default 'add'.
 	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success.
 	 */
-	public function add( array $table, $copy_or_add = 'add' ) {
+	public function add( array $table, string $copy_or_add = 'add' ) /* : string|WP_Error */ {
 		$post_id = -1; // To insert table.
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
@@ -433,7 +433,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $table_id ID of the table to be copied.
 	 * @return string|WP_Error WP_Error on error, string table ID of the new table on success.
 	 */
-	public function copy( $table_id ) {
+	public function copy( string $table_id ) /* : string|WP_Error */ {
 		$table = $this->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
 			$error = new WP_Error( 'table_copy_table_load', '', $table_id );
@@ -484,13 +484,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $table_id ID of the table to be deleted.
 	 * @return bool|WP_Error WP_Error on error, true on success.
 	 */
-	public function delete( $table_id ) {
+	public function delete( string $table_id ) /* : true|WP_Error */ {
 		if ( ! $this->table_exists( $table_id ) ) {
 			return new WP_Error( 'table_delete_table_does_not_exist', '', $table_id );
 		}
 
 		$post_id = $this->_get_post_id( $table_id ); // No ! false check necessary, as this is covered by table_exists() check above.
-		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function.
+		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function. // @phpstan-ignore-line .
 		if ( false === $deleted ) {
 			return new WP_Error( 'table_delete_post_could_not_be_deleted', '', $post_id );
 		}
@@ -520,7 +520,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	public function delete_all() {
+	public function delete_all(): void {
 		$tables = $this->tables->get();
 		if ( empty( $tables['table_post'] ) ) {
 			return;
@@ -554,7 +554,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $table_id Table ID.
 	 * @return bool Whether the table ID exists.
 	 */
-	public function table_exists( $table_id ) {
+	public function table_exists( string $table_id ): bool {
 		$table_post = $this->tables->get( 'table_post' );
 		return isset( $table_post[ $table_id ] );
 	}
@@ -565,9 +565,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param bool $single_value Optional. Whether to return just the number of tables from the list, or also count in the database.
-	 * @return int|array Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value).
+	 * @return int|array{list: int, db: int} Number of Tables (if $single_value), or array of Numbers from list/DB (if ! $single_value).
 	 */
-	public function count_tables( $single_value = true ) {
+	public function count_tables( bool $single_value = true ) /* : int|array */ {
 		$count_list = count( $this->tables->get( 'table_post' ) );
 		if ( $single_value ) {
 			return $count_list;
@@ -588,7 +588,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param string $table_id Table ID.
 	 */
-	public function invalidate_table_output_cache( $table_id ) {
+	public function invalidate_table_output_cache( string $table_id ): void {
 		$caches_list_transient_name = 'tablepress_c_' . md5( $table_id );
 		$caches_list = get_transient( $caches_list_transient_name );
 		if ( false !== $caches_list ) {
@@ -605,7 +605,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	public function _flush_caching_plugins_caches() {
+	public function _flush_caching_plugins_caches(): void {
 		/**
 		 * Filters whether the caches of common caching plugins shall be flushed.
 		 *
@@ -651,11 +651,11 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// Kinsta.
 		if ( isset( $GLOBALS['kinsta_cache'] ) && ! empty( $GLOBALS['kinsta_cache']->kinsta_cache_purge ) && is_callable( array( $GLOBALS['kinsta_cache']->kinsta_cache_purge, 'purge_complete_caches' ) ) ) {
-			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches();
+			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches(); // @phpstan-ignore-line
 		}
 		// LiteSpeed Cache.
 		if ( is_callable( array( 'LiteSpeed_Cache_Tags', 'add_purge_tag' ) ) ) {
-			LiteSpeed_Cache_Tags::add_purge_tag( '*' );
+			LiteSpeed_Cache_Tags::add_purge_tag( '*' ); // @phpstan-ignore-line
 		}
 		// Pagely.
 		if ( class_exists( 'PagelyCachePurge' ) ) {
@@ -666,21 +666,21 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 		// Pressidum.
 		if ( is_callable( array( 'Ninukis_Plugin', 'get_instance' ) ) ) {
-			$_pressidum = Ninukis_Plugin::get_instance();
+			$_pressidum = Ninukis_Plugin::get_instance(); // @phpstan-ignore-line
 			if ( is_callable( array( $_pressidum, 'purgeAllCaches' ) ) ) {
-				$_pressidum->purgeAllCaches();
+				$_pressidum->purgeAllCaches(); // @phpstan-ignore-line
 			}
 		}
 		// Savvii.
 		if ( defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' ) ) {
-			$_savvii = new \Savvii\CacheFlusherPlugin();
+			$_savvii = new \Savvii\CacheFlusherPlugin(); // @phpstan-ignore-line
 			if ( is_callable( array( $_savvii, 'domainflush' ) ) ) {
-				$_savvii->domainflush();
+				$_savvii->domainflush(); // @phpstan-ignore-line
 			}
 		}
 		// WP Fastest Cache.
 		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( array( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) ) {
-			$GLOBALS['wp_fastest_cache']->deleteCache( true );
+			$GLOBALS['wp_fastest_cache']->deleteCache( true ); // @phpstan-ignore-line
 		}
 		// WP-Optimize.
 		if ( function_exists( 'WP_Optimize' ) ) {
@@ -696,7 +696,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $table_id Table ID.
 	 * @return int|false Post ID on success, false on error.
 	 */
-	protected function _get_post_id( $table_id ) {
+	protected function _get_post_id( string $table_id ) /* : int|false */ {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( ! isset( $table_post[ $table_id ] ) ) {
 			return false;
@@ -712,7 +712,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $table_id Table ID.
 	 * @param int    $post_id Post ID.
 	 */
-	protected function _update_post_id( $table_id, $post_id ) {
+	protected function _update_post_id( string $table_id, int $post_id ): void {
 		$tables = $this->tables->get();
 		$tables['table_post'][ $table_id ] = $post_id;
 		uksort( $tables['table_post'], 'strnatcasecmp' );
@@ -726,7 +726,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param string $table_id Table ID.
 	 */
-	protected function _remove_post_id( $table_id ) {
+	protected function _remove_post_id( string $table_id ): void {
 		$tables = $this->tables->get();
 		unset( $tables['table_post'][ $table_id ] );
 		$this->tables->update( $tables );
@@ -741,7 +741,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param string $new_id New table ID.
 	 * @return bool|WP_Error True on success, WP_Error on error.
 	 */
-	public function change_table_id( $old_id, $new_id ) {
+	public function change_table_id( string $old_id, string $new_id ) /* : true|WP_Error */ {
 		$post_id = $this->_get_post_id( $old_id );
 		if ( false === $post_id ) {
 			return new WP_Error( 'table_change_id_no_post_id_for_table_id', '', $old_id );
@@ -779,7 +779,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @return string Unused table ID (e.g. for a new table).
 	 */
-	protected function _get_new_table_id() {
+	protected function _get_new_table_id(): string {
 		$tables = $this->tables->get();
 		// Need to check new ID candidate in a loop, because a higher ID might already be in use, if a table ID was changed manually.
 		do {
@@ -797,9 +797,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Empty table.
+	 * @return array<string, mixed> Empty table.
 	 */
-	public function get_table_template() {
+	public function get_table_template(): array {
 		// Attention: Array keys have to be lowercase, to make it possible to match them with Shortcode attributes!
 		$table = array(
 			'id'            => false,
@@ -840,7 +840,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param array $table Default template/structure of an empty table.
+		 * @param array<string, mixed> $table Default template/structure of an empty table.
 		 */
 		return apply_filters( 'tablepress_table_template', $table );
 	}
@@ -852,12 +852,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $table                     Table to merge into.
-	 * @param array $new_table                 Table to merge.
-	 * @param bool  $table_size_check          Optional. Whether to check the number of rows and columns (e.g. not necessary for added or copied tables).
-	 * @return array|WP_Error Merged table on success, WP_Error on error.
+	 * @param array<string, mixed> $table            Table to merge into.
+	 * @param array<string, mixed> $new_table        Table to merge.
+	 * @param bool                 $table_size_check Optional. Whether to check the number of rows and columns (e.g. not necessary for added or copied tables).
+	 * @return array<string, mixed>|WP_Error Merged table on success, WP_Error on error.
 	 */
-	public function prepare_table( array $table, array $new_table, $table_size_check = true ) {
+	public function prepare_table( array $table, array $new_table, bool $table_size_check = true ) /* : array|WP_Error */ {
 		// Table ID must be the same (if there was an ID already).
 		if ( false !== $table['id'] && $table['id'] !== $new_table['id'] ) {
 			return new WP_Error( 'table_prepare_no_id_match', '', $new_table['id'] );
@@ -900,14 +900,14 @@ class TablePress_Table_Model extends TablePress_Model {
 		// All checks were successful, replace original values with new ones.
 
 		// $table['id'] is either false (and remains false) or already equal to $new_table['id'].
-		$table['new_id'] = isset( $new_table['new_id'] ) ? $new_table['new_id'] : $table['id'];
+		$table['new_id'] = $new_table['new_id'] ?? $table['id'];
 		$table['name'] = $new_table['name'];
 		$table['description'] = $new_table['description'];
 		$table['data'] = $new_table['data'];
 		// Make sure that cells are stored as strings.
 		array_walk_recursive(
 			$table['data'],
-			static function( &$cell_content, $col_idx ) {
+			static function ( /* string|int|float|bool|null */ &$cell_content, int $col_idx ): void {
 				$cell_content = (string) $cell_content;
 			}
 		);
@@ -949,13 +949,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $post_id Post ID.
-	 * @param array $options Table options.
+	 * @param int                  $post_id Post ID.
+	 * @param array<string, mixed> $options Table options.
 	 * @return bool True on success, false on error.
 	 */
-	protected function _add_table_options( $post_id, array $options ) {
+	protected function _add_table_options( int $post_id, array $options ): bool {
 		$options = wp_json_encode( $options, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
+		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -963,13 +963,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $post_id Post ID.
-	 * @param array $options Table options.
+	 * @param int                  $post_id Post ID.
+	 * @param array<string, mixed> $options Table options.
 	 * @return bool True on success, false on error.
 	 */
-	protected function _update_table_options( $post_id, array $options ) {
+	protected function _update_table_options( int $post_id, array $options ): bool {
 		$options = wp_json_encode( $options, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options );
+		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -978,9 +978,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return array Table options on success, empty array on error.
+	 * @return array<string, mixed> Table options on success, empty array on error.
 	 */
-	protected function _get_table_options( $post_id ) {
+	protected function _get_table_options( int $post_id ): array {
 		$options = $this->model_post->get_meta_field( $post_id, $this->table_options_field_name );
 		if ( empty( $options ) ) {
 			return array();
@@ -993,13 +993,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $post_id    Post ID.
-	 * @param array $visibility Table visibility.
+	 * @param int                                               $post_id    Post ID.
+	 * @param array<string, array{rows: int[], columns: int[]}> $visibility Table visibility.
 	 * @return bool True on success, false on error.
 	 */
-	protected function _add_table_visibility( $post_id, array $visibility ) {
+	protected function _add_table_visibility( int $post_id, array $visibility ): bool {
 		$visibility = wp_json_encode( $visibility, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
+		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -1007,13 +1007,13 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $post_id    Post ID.
-	 * @param array $visibility Table visibility.
+	 * @param int                                               $post_id    Post ID.
+	 * @param array<string, array{rows: int[], columns: int[]}> $visibility Table visibility.
 	 * @return bool True on success, false on error.
 	 */
-	protected function _update_table_visibility( $post_id, array $visibility ) {
+	protected function _update_table_visibility( int $post_id, array $visibility ): bool {
 		$visibility = wp_json_encode( $visibility, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
+		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -1022,9 +1022,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return array Table visibility on success, empty array on error.
+	 * @return array<string, array{rows: int[], columns: int[]}> Table visibility on success, empty array on error.
 	 */
-	protected function _get_table_visibility( $post_id ) {
+	protected function _get_table_visibility( int $post_id ): array {
 		$visibility = $this->model_post->get_meta_field( $post_id, $this->table_visibility_field_name );
 		if ( empty( $visibility ) ) {
 			return array();
@@ -1042,7 +1042,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param bool $remove_old_options Optional. Whether old table options should be removed from the database. Default true.
 	 */
-	public function merge_table_options_defaults( $remove_old_options = true ) {
+	public function merge_table_options_defaults( bool $remove_old_options = true ): void {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( empty( $table_post ) ) {
 			return;
@@ -1072,7 +1072,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 */
-	public function invalidate_table_output_caches() {
+	public function invalidate_table_output_caches(): void {
 		$table_post = $this->tables->get( 'table_post' );
 		if ( empty( $table_post ) ) {
 			return;
@@ -1091,9 +1091,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @global wpdb $wpdb WordPress database abstraction object.
 	 */
-	public function add_mime_type_to_posts() {
+	public function add_mime_type_to_posts(): void {
 		global $wpdb;
-		$wpdb->update( $wpdb->posts, array( 'post_mime_type' => 'application/json' ), array( 'post_type' => $this->model_post->get_post_type() ) );
+		$wpdb->update( $wpdb->posts, array( 'post_mime_type' => 'application/json' ), array( 'post_type' => $this->model_post->get_post_type() ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**
@@ -1101,12 +1101,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @param int|WP_Error $post_id          Post ID of the imported post on success. 0 or WP_Error on failure.
-	 * @param int          $original_post_id Original post ID that the post had on the site where it was exported from.
-	 * @param array        $postdata         Post data that was imported into the database.
-	 * @param array        $post             Original post data as it was exported.
+	 * @param int|WP_Error         $post_id          Post ID of the imported post on success. 0 or WP_Error on failure.
+	 * @param int                  $original_post_id Original post ID that the post had on the site where it was exported from.
+	 * @param array<string, mixed> $postdata         Post data that was imported into the database.
+	 * @param array<string, mixed> $post             Original post data as it was exported.
 	 */
-	public function add_table_id_on_wp_import( $post_id, $original_post_id, array $postdata, array $post ) {
+	public function add_table_id_on_wp_import( /* int|WP_Error */ $post_id, int $original_post_id, array $postdata, array $post ): void {
 		// Bail if the post could not be imported or if the post is not a TablePress table.
 		if ( is_wp_error( $post_id ) || $this->model_post->get_post_type() !== $postdata['post_type'] ) {
 			return;
@@ -1127,7 +1127,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Save the post ID for each of the table IDs.
 		$post_id_saved = false;
 		foreach ( $table_ids as $table_id ) {
-			$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $table_id );
+			$table_id = (string) preg_replace( '/[^a-zA-Z0-9_-]/', '', $table_id );
 			if ( '' === $table_id || $this->table_exists( $table_id ) ) {
 				continue;
 			}
@@ -1147,12 +1147,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @param array $postmeta Post meta fields for the post.
-	 * @param int   $post_id  Post ID.
-	 * @param array $post     Post.
-	 * @return array Modified post meta fields.
+	 * @param array<string, mixed> $postmeta Post meta fields for the post.
+	 * @param int                  $post_id  Post ID.
+	 * @param array<string, mixed> $post     Post.
+	 * @return array<string, mixed> Modified post meta fields.
 	 */
-	public function prevent_table_id_post_meta_import_on_wp_import( array $postmeta, $post_id, array $post ) {
+	public function prevent_table_id_post_meta_import_on_wp_import( array $postmeta, int $post_id, array $post ): array {
 		// Bail if the post is not a TablePress table.
 		if ( $this->model_post->get_post_type() !== $post['post_type'] ) {
 			return $postmeta;
@@ -1179,8 +1179,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param bool     $skip     Whether to skip the current post meta. Default false.
 	 * @param string   $meta_key Current meta key.
 	 * @param stdClass $meta     Current meta object.
+	 * @return bool Whether to skip the current post meta (unchanged $skip parameter).
 	 */
-	public function add_table_id_to_wp_export( $skip, $meta_key, $meta ) {
+	public function add_table_id_to_wp_export( bool $skip, string $meta_key, stdClass $meta ): bool {
 		// Bail if the exporter doesn't process a TablePress table right now.
 		if ( $this->table_options_field_name !== $meta_key ) {
 			return $skip;
@@ -1197,15 +1198,17 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// Pretend that there is a `_tablepress_export_table_id` post meta field with the list of table IDs.
 		$key = '_tablepress_export_table_id';
-		$value = wxr_cdata( implode( ',', $table_ids ) );
+		$value = wxr_cdata( implode( ',', $table_ids ) ); // @phpstan-ignore-line
 
 		// Hijack the filter and print extra XML code for our faked post meta field.
+		// phpcs:disable WordPress.Security.EscapeOutput.HeredocOutputNotEscaped
 		echo <<<WXR
 		<wp:postmeta>
 			<wp:meta_key>{$key}</wp:meta_key>
 			<wp:meta_value>{$value}</wp:meta_value>
 		</wp:postmeta>\n
 WXR;
+		// phpcs:enable
 
 		return $skip;
 	}
@@ -1215,7 +1218,7 @@ WXR;
 	 *
 	 * @since 1.0.0
 	 */
-	public function destroy() {
+	public function destroy(): void {
 		$this->tables->delete();
 	}
 

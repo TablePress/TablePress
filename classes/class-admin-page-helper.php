@@ -26,10 +26,10 @@ class TablePress_Admin_Page {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $name         Name of the CSS file, without extension.
-	 * @param array  $dependencies Optional. List of names of CSS stylesheets that this stylesheet depends on, and which need to be included before this one.
+	 * @param string   $name         Name of the CSS file, without extension.
+	 * @param string[] $dependencies Optional. List of names of CSS stylesheets that this stylesheet depends on, and which need to be included before this one.
 	 */
-	public function enqueue_style( $name, array $dependencies = array() ) {
+	public function enqueue_style( string $name, array $dependencies = array() ): void {
 		$css_file = "admin/css/build/{$name}.css";
 		$css_url = plugins_url( $css_file, TABLEPRESS__FILE__ );
 		wp_enqueue_style( "tablepress-{$name}", $css_url, $dependencies, TablePress::version );
@@ -40,11 +40,11 @@ class TablePress_Admin_Page {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $name         Name of the JS file, without extension.
-	 * @param array  $dependencies Optional. List of names of JS scripts that this script depends on, and which need to be included before this one.
-	 * @param array  $script_data  Optional. JS data that is printed to the page before the script is included. The array key will be used as the name, the value will be JSON encoded.
+	 * @param string               $name         Name of the JS file, without extension.
+	 * @param string[]             $dependencies Optional. List of names of JS scripts that this script depends on, and which need to be included before this one.
+	 * @param array<string, mixed> $script_data  Optional. JS data that is printed to the page before the script is included. The array key will be used as the name, the value will be JSON encoded.
 	 */
-	public function enqueue_script( $name, array $dependencies = array(), array $script_data = array() ) {
+	public function enqueue_script( string $name, array $dependencies = array(), array $script_data = array() ): void {
 		$js_file = "admin/js/build/{$name}.js";
 		$js_url = plugins_url( $js_file, TABLEPRESS__FILE__ );
 
@@ -67,8 +67,8 @@ class TablePress_Admin_Page {
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param array  $dependencies List of the dependencies that the $name script relies on.
-		 * @param string $name         Name of the JS script, without extension.
+		 * @param string[] $dependencies List of the dependencies that the $name script relies on.
+		 * @param string   $name         Name of the JS script, without extension.
 		 */
 		$dependencies = apply_filters( 'tablepress_admin_page_script_dependencies', $dependencies, $name );
 
@@ -92,7 +92,7 @@ class TablePress_Admin_Page {
 	 *
 	 * @since 1.0.0
 	 */
-	public function add_admin_footer_text() {
+	public function add_admin_footer_text(): void {
 		// Show admin footer message (only on TablePress admin screens).
 		add_filter( 'admin_footer_text', array( $this, '_admin_footer_text' ) );
 	}
@@ -105,10 +105,10 @@ class TablePress_Admin_Page {
 	 * @param string $content Current admin footer content.
 	 * @return string New admin footer content.
 	 */
-	public function _admin_footer_text( $content ) {
+	public function _admin_footer_text( string $content ): string {
 		$content .= ' &bull; ' . sprintf( __( 'Thank you for using <a href="%s">TablePress</a>.', 'tablepress' ), 'https://tablepress.org/' );
 		if ( tb_tp_fs()->is_free_plan() ) {
-			$content .= ' ' . sprintf( __( 'Take a look at the <a href="%s">Premium features</a>!', 'tablepress' ), 'https://tablepress.org/premium/' );
+			$content .= ' ' . sprintf( __( 'Take a look at the <a href="%s">Premium features</a>!', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=admin-footer' );
 		}
 		return $content;
 	}
@@ -118,11 +118,11 @@ class TablePress_Admin_Page {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $pointer_id The pointer ID.
-	 * @param string $selector   The HTML elements, on which the pointer should be attached.
-	 * @param array  $args       Arguments to be passed to the pointer JS (see wp-pointer.js).
+	 * @param string               $pointer_id The pointer ID.
+	 * @param string               $selector   The HTML elements, on which the pointer should be attached.
+	 * @param array<string, mixed> $args       Arguments to be passed to the pointer JS (see wp-pointer.js).
 	 */
-	public function print_wp_pointer_js( $pointer_id, $selector, array $args ) {
+	public function print_wp_pointer_js( string $pointer_id, string $selector, array $args ): void {
 		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args['content'] ) ) {
 			return;
 		}
@@ -170,8 +170,12 @@ class TablePress_Admin_Page {
 	 * @param mixed $data Variable to convert to JSON.
 	 * @return string Safe JSON representation of a variable for printing inside of JavaScript code.
 	 */
-	public function convert_to_json_parse_output( $data ) {
+	public function convert_to_json_parse_output( /* string|array|bool|int|float|null */ $data ): string {
 		$json = wp_json_encode( $data, TABLEPRESS_JSON_OPTIONS );
+		if ( false === $json ) {
+			// JSON encoding failed, return an error object. Use a prefixed "_error" key to avoid conflicts with intentionally added "error" keys.
+			$json = '{ "_error": "The data could not be encoded to JSON!" }';
+		}
 		// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
 		$json = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $json );
 		return "JSON.parse( '{$json}' )";

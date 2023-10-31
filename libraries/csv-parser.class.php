@@ -79,7 +79,7 @@ class CSV_Parser {
 	 * Detailed error information.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var array<string, array<string, int|string>>
 	 */
 	public $error_info = array();
 
@@ -99,9 +99,9 @@ class CSV_Parser {
 	 *
 	 * @param string $data Data to be parsed.
 	 */
-	public function load_data( $data ) {
+	public function load_data( string $data ): void {
 		// Check for mandatory trailing line break.
-		if ( "\n" !== substr( $data, -1 ) ) {
+		if ( ! str_ends_with( $data, "\n" ) ) {
 			$data .= "\n";
 		}
 		$this->import_data = $data;
@@ -114,7 +114,7 @@ class CSV_Parser {
 	 *
 	 * @return string Most probable delimiter character.
 	 */
-	public function find_delimiter() {
+	public function find_delimiter(): string {
 		$data = &$this->import_data;
 
 		$delimiter_count = array();
@@ -171,7 +171,7 @@ class CSV_Parser {
 		}
 
 		// Return first array element, as that has the highest count.
-		return array_shift( $potential_delimiters );
+		return array_shift( $potential_delimiters ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -180,11 +180,11 @@ class CSV_Parser {
 	 * @since 1.0.0
 	 *
 	 * @param string $char         Character to check.
-	 * @param array  $line_counts  Counts for the characters in the lines.
+	 * @param int[]  $line_counts  Counts for the characters in the lines.
 	 * @param int    $number_lines Number of lines.
 	 * @return bool|string False if delimiter is not possible, string to be used as a sort key if character could be a delimiter.
 	 */
-	protected function _check_delimiter_count( $char, array $line_counts, $number_lines ) {
+	protected function _check_delimiter_count( string $char, array $line_counts, int $number_lines ) /* : bool|string */ {
 		// Was the potential delimiter found in every line?
 		if ( count( $line_counts ) !== $number_lines ) {
 			return false;
@@ -227,9 +227,9 @@ class CSV_Parser {
 	 * @since 1.0.0
 	 *
 	 * @param string $delimiter Delimiter character for the CSV parsing.
-	 * @return array Two-dimensional array with the data from the CSV string.
+	 * @return array<int, array<int, string>> Two-dimensional array with the data from the CSV string.
 	 */
-	public function parse( $delimiter ) {
+	public function parse( string $delimiter ): array {
 		$data = &$this->import_data;
 
 		// Filter delimiter from the list, if it is a whitespace character.
@@ -274,7 +274,7 @@ class CSV_Parser {
 					++$i; // Skip next character.
 				} elseif ( $next_char !== $delimiter && "\r" !== $next_char && "\n" !== $next_char ) {
 					// for-loop (instead of while-loop) that skips whitespace.
-					for ( $x = ( $i + 1 ); isset( $data[ $x ] ) && '' === ltrim( $data[ $x ], $white_spaces ); $x++ ) {
+					for ( $x = ( $i + 1 ); isset( $data[ $x ] ) && '' === ltrim( $data[ $x ], $white_spaces ); $x++ ) { // phpcs:ignore Generic.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed,Generic.CodeAnalysis.EmptyStatement.DetectedFor
 						// Action is in iterator check.
 					}
 					if ( $data[ $x ] === $delimiter ) {

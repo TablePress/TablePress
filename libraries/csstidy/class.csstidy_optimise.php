@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * @package CSSTidy
  * @version 1.0
  */
-class TablePress_CSSTidy_optimise {
+class TablePress_CSSTidy_Optimise {
 
 	/**
 	 * TablePress_CSSTidy instance.
@@ -82,16 +82,16 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param TablePress_CSSTidy $css Instance of the TablePress_CSSTidy class.
+	 * @param TablePress_CSSTidy $csstidy Instance of the TablePress_CSSTidy class.
 	 */
-	public function __construct( $css ) {
-		$this->parser = $css;
-		$this->css = &$css->css;
-		$this->sub_value = &$css->sub_value;
-		$this->at = &$css->at;
-		$this->selector = &$css->selector;
-		$this->property = &$css->property;
-		$this->value = &$css->value;
+	public function __construct( $csstidy ) {
+		$this->parser = $csstidy;
+		$this->css = &$csstidy->css;
+		$this->sub_value = &$csstidy->sub_value;
+		$this->at = &$csstidy->at;
+		$this->selector = &$csstidy->selector;
+		$this->property = &$csstidy->property;
+		$this->value = &$csstidy->value;
 	}
 
 	/**
@@ -99,7 +99,7 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 */
-	public function postparse() {
+	public function postparse(): void {
 		if ( $this->parser->get_cfg( 'preserve_css' ) ) {
 			return;
 		}
@@ -151,19 +151,19 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 */
-	public function value() {
+	public function value(): void {
 		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
 		// Optimise shorthand properties.
 		if ( isset( $shorthands[ $this->property ] ) && $this->parser->get_cfg( 'optimise_shorthands' ) > 0 ) {
-			$temp = $this->shorthand( $this->value ); // FIXME - move
+			$temp = $this->shorthand( $this->value ); // FIXME - move.
 			if ( $temp !== $this->value ) {
 				$this->parser->log( 'Optimised shorthand notation (' . $this->property . '): Changed "' . $this->value . '" to "' . $temp . '"', 'Information' );
 			}
 			$this->value = $temp;
 		}
 
-		// Remove whitespace at !important
+		// Remove whitespace at !important.
 		if ( $this->value !== $this->compress_important( $this->value ) ) {
 			$this->parser->log( 'Optimised !important', 'Information' );
 		}
@@ -174,7 +174,7 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 */
-	public function shorthands() {
+	public function shorthands(): void {
 		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
 		if ( ! $this->parser->get_cfg( 'optimise_shorthands' ) || $this->parser->get_cfg( 'preserve_css' ) ) {
@@ -202,11 +202,11 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 */
-	public function subvalue() {
+	public function subvalue(): void {
 		$replace_colors = &$this->parser->data['csstidy']['replace_colors'];
 
 		$this->sub_value = trim( $this->sub_value );
-		if ( '' === $this->sub_value ) { // caution : '0'
+		if ( '' === $this->sub_value ) { // caution : '0'.
 			return;
 		}
 
@@ -260,7 +260,7 @@ class TablePress_CSSTidy_optimise {
 	 * @param string $value Shorthand value.
 	 * @return string Compressed value.
 	 */
-	public function shorthand( $value ) {
+	public function shorthand( string $value ): string {
 		$important = '';
 		if ( $this->parser->is_important( $value ) ) {
 			$values = $this->parser->gvw_important( $value );
@@ -302,14 +302,14 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string String.
+	 * @param string $a_string String.
 	 * @return string Cleaned string.
 	 */
-	public function compress_important( &$string ) {
-		if ( $this->parser->is_important( $string ) ) {
-			$string = $this->parser->gvw_important( $string ) . ' !important';
+	public function compress_important( string &$a_string ): string {
+		if ( $this->parser->is_important( $a_string ) ) {
+			$a_string = $this->parser->gvw_important( $a_string ) . ' !important';
 		}
-		return $string;
+		return $a_string;
 	}
 
 	/**
@@ -320,21 +320,21 @@ class TablePress_CSSTidy_optimise {
 	 * @param string $color Color value.
 	 * @return string Compressed color.
 	 */
-	public function cut_color( $color ) {
+	public function cut_color( string $color ): string {
 		$replace_colors = &$this->parser->data['csstidy']['replace_colors'];
 
-		// If it's a string, don't touch!
-		if ( 0 === strncmp( $color, "'", 1 ) || 0 === strncmp( $color, '"', 1 ) ) {
+		// If it's a string, don't touch it!
+		if ( str_starts_with( $color, "'" ) || str_starts_with( $color, '"' ) ) {
 			return $color;
 		}
 
-		// Complex gradient expressions
-		if ( false !== strpos( $color, '(' ) && 0 !== strncasecmp( $color, 'rgb(', 4 ) ) {
-			// Don't touch properties within MSIE filters, those are to sensitive.
+		// Complex gradient expressions.
+		if ( str_contains( $color, '(' ) && 0 !== strncasecmp( $color, 'rgb(', 4 ) && 0 !== strncasecmp( $color, 'rgba(', 5 ) ) {
+			// Don't touch properties within MSIE filters, those are too sensitive.
 			if ( false !== stripos( $color, 'progid:' ) ) {
 				return $color;
 			}
-			preg_match_all( ',rgb\([^)]+\),i', $color, $matches, PREG_SET_ORDER );
+			preg_match_all( ',rgba?\([^)]+\),i', $color, $matches, PREG_SET_ORDER );
 			if ( count( $matches ) ) {
 				foreach ( $matches as $m ) {
 					$color = str_replace( $m[0], $this->cut_color( $m[0] ), $color );
@@ -349,26 +349,48 @@ class TablePress_CSSTidy_optimise {
 			return $color;
 		}
 
-		// rgb(0,0,0) -> #000000 (or #000 in this case later)
-		if ( 0 === strncasecmp( $color, 'rgb(', 4 ) ) {
-			$color_tmp = substr( $color, 4, strlen( $color ) - 5 );
-			$color_tmp = explode( ',', $color_tmp );
-			$color_tmp_count = count( $color_tmp );
-			for ( $i = 0; $i < $color_tmp_count; $i++ ) {
-				$color_tmp[ $i ] = trim( $color_tmp[ $i ] );
-				if ( '%' === substr( $color_tmp[ $i ], -1 ) ) {
-					$color_tmp[ $i ] = round( ( 255 * $color_tmp[ $i ] ) / 100 );
+		// rgb(0,0,0) -> #000000 (or #000 in this case later).
+		if (
+			// Be sure to not corrupt a rgb with calc() value.
+			( 0 === strncasecmp( $color, 'rgb(', 4 ) && false === strpos( $color, '(', 4 ) ) || ( 0 === strncasecmp( $color, 'rgba(', 5 ) && false === strpos( $color, '(', 5 ) )
+		) {
+			$color_tmp = explode( '(', $color, 2 );
+			$color_tmp = rtrim( end( $color_tmp ), ')' );
+			if ( str_contains( $color_tmp, '/' ) ) {
+				$color_tmp = explode( '/', $color_tmp, 2 );
+				$color_parts = explode( ' ', trim( reset( $color_tmp ) ), 3 );
+				while ( count( $color_parts ) < 3 ) { // phpcs:ignore Squiz.PHP.DisallowSizeFunctionsInLoops.Found
+					$color_parts[] = 0;
 				}
-				if ( $color_tmp[ $i ] > 255 ) {
-					$color_tmp[ $i ] = 255;
+				$color_parts[] = end( $color_tmp );
+			} else {
+				$color_parts = explode( ',', $color_tmp, 4 );
+			}
+			$color_parts_count = count( $color_parts );
+			for ( $i = 0; $i < $color_parts_count; $i++ ) {
+				$color_parts[ $i ] = trim( $color_parts[ $i ] );
+				if ( str_ends_with( $color_parts[ $i ], '%' ) ) {
+					$color_parts[ $i ] = round( ( 255 * intval( $color_parts[ $i ] ) ) / 100 );
+				} elseif ( $i > 2 ) {
+					// 4th argument is alpha layer between 0 and 1 (if not %).
+					$color_parts[ $i ] = round( 255 * floatval( $color_parts[ $i ] ) );
+				}
+				$color_parts[ $i ] = intval( $color_parts[ $i ] );
+				if ( $color_parts[ $i ] > 255 ) {
+					$color_parts[ $i ] = 255;
 				}
 			}
 			$color = '#';
-			for ( $i = 0; $i < 3; $i++ ) {
-				if ( $color_tmp[ $i ] < 16 ) {
-					$color .= '0' . dechex( $color_tmp[ $i ] );
+			// 3 or 4 parts depending on alpha layer.
+			$nb = min( max( count( $color_parts ), 3 ), 4 );
+			for ( $i = 0; $i < $nb; $i++ ) {
+				if ( ! isset( $color_parts[ $i ] ) ) {
+					$color_parts[ $i ] = 0;
+				}
+				if ( $color_parts[ $i ] < 16 ) {
+					$color .= '0' . dechex( $color_parts[ $i ] );
 				} else {
-					$color .= dechex( $color_tmp[ $i ] );
+					$color .= dechex( $color_parts[ $i ] );
 				}
 			}
 		}
@@ -378,11 +400,17 @@ class TablePress_CSSTidy_optimise {
 			$color = $replace_colors[ strtolower( $color ) ];
 		}
 
-		// #aabbcc -> #abc
 		if ( 7 === strlen( $color ) ) {
+			// #aabbcc -> #abc
 			$color_temp = strtolower( $color );
 			if ( '#' === $color_temp[0] && $color_temp[1] === $color_temp[2] && $color_temp[3] === $color_temp[4] && $color_temp[5] === $color_temp[6] ) {
 				$color = '#' . $color[1] . $color[3] . $color[5];
+			}
+		} elseif ( 9 === strlen( $color ) ) {
+			// #aabbccdd -> #abcd
+			$color_temp = strtolower( $color );
+			if ( '#' === $color_temp[0] && $color_temp[1] === $color_temp[2] && $color_temp[3] === $color_temp[4] && $color_temp[5] === $color_temp[6] && $color_temp[7] === $color_temp[8] ) {
+				$color = '#' . $color[1] . $color[3] . $color[5] . $color[7];
 			}
 		}
 
@@ -431,11 +459,11 @@ class TablePress_CSSTidy_optimise {
 	 * @param string $subvalue Value.
 	 * @return string Compressed value.
 	 */
-	public function compress_numbers( $subvalue ) {
+	public function compress_numbers( string $subvalue ): string {
 		$unit_values = &$this->parser->data['csstidy']['unit_values'];
 		$color_values = &$this->parser->data['csstidy']['color_values'];
 
-		// for font:1em/1em sans-serif...;
+		// for font:1em/1em sans-serif...;.
 		if ( 'font' === $this->property ) {
 			$temp = explode( '/', $subvalue );
 		} else {
@@ -445,13 +473,13 @@ class TablePress_CSSTidy_optimise {
 		$temp_count = count( $temp );
 		for ( $l = 0; $l < $temp_count; $l++ ) {
 			// If we are not dealing with a number at this point, do not optimize anything.
-			$number = $this->AnalyseCssNumber( $temp[ $l ] );
+			$number = $this->analyse_css_number( $temp[ $l ] );
 			if ( false === $number ) {
 				return $subvalue;
 			}
 
 			// Fix bad colors.
-			if ( in_array( $this->property, $color_values ) ) {
+			if ( in_array( $this->property, $color_values, true ) ) {
 				if ( 3 === strlen( $temp[ $l ] ) || 6 === strlen( $temp[ $l ] ) ) {
 					$temp[ $l ] = '#' . $temp[ $l ];
 				} else {
@@ -479,19 +507,19 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string String.
-	 * @return array|false ('unit' if unit is found or '' if no unit exists, number value) or false if no number.
+	 * @param string $a_string String.
+	 * @return array{int|string, string}|false ('unit' if unit is found or '' if no unit exists, number value) or false if no number.
 	 */
-	public function analyseCssNumber( $string ) {
-		// most simple checks first
-		if ( 0 === strlen( $string ) || ctype_alpha( $string[0] ) ) {
+	public function analyse_css_number( string $a_string ) /* : array|false */ {
+		// Most simple checks first.
+		if ( 0 === strlen( $a_string ) || ctype_alpha( $a_string[0] ) ) {
 			return false;
 		}
 
 		$units = &$this->parser->data['csstidy']['units'];
 		$return = array( 0, '' );
 
-		$return[0] = (float) $string;
+		$return[0] = (float) $a_string;
 		if ( abs( $return[0] ) > 0 && abs( $return[0] ) < 1 ) {
 			if ( $return[0] < 0 ) {
 				$return[0] = '-' . ltrim( substr( $return[0], 1 ), '0' );
@@ -500,20 +528,20 @@ class TablePress_CSSTidy_optimise {
 			}
 		}
 
-		// Look for unit and split from value if exists
+		// Look for unit and split from value if exists.
 		foreach ( $units as $unit ) {
-			$expectUnitAt = strlen( $string ) - strlen( $unit );
-			if ( ! ( $unitInString = stristr( $string, $unit ) ) ) { // mb_strpos() fails with "false"
+			$expect_unit_at = strlen( $a_string ) - strlen( $unit );
+			if ( ! ( $unit_in_string = stristr( $a_string, $unit ) ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.Found,Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
 				continue;
 			}
-			$actualPosition = strpos( $string, $unitInString );
-			if ( $expectUnitAt === $actualPosition ) {
+			$actual_position = strpos( $a_string, $unit_in_string );
+			if ( $expect_unit_at === $actual_position ) {
 				$return[1] = $unit;
-				$string = substr( $string, 0, - strlen( $unit ) );
+				$a_string = substr( $a_string, 0, - strlen( $unit ) );
 				break;
 			}
 		}
-		if ( ! is_numeric( $string ) ) {
+		if ( ! is_numeric( $a_string ) ) {
 			return false;
 		}
 		return $return;
@@ -525,10 +553,10 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $array List of selectors. This parameter is modified by reference!
+	 * @param array<string, mixed> $an_array List of selectors. This parameter is modified by reference.
 	 */
-	public function merge_selectors( array &$array ) {
-		$css = $array;
+	public function merge_selectors( array &$an_array ): void {
+		$css = $an_array;
 		foreach ( $css as $key => $value ) {
 			if ( ! isset( $css[ $key ] ) ) {
 				continue;
@@ -536,7 +564,7 @@ class TablePress_CSSTidy_optimise {
 
 			// Check if properties also exist in another selector.
 			$keys = array();
-			// PHP bug (?) without $css = $array; here
+			// PHP bug (?) without $css = $an_array; here.
 			foreach ( $css as $selector => $vali ) {
 				if ( $selector === $key ) {
 					continue;
@@ -557,7 +585,7 @@ class TablePress_CSSTidy_optimise {
 				$css[ $newsel ] = $value;
 			}
 		}
-		$array = $css;
+		$an_array = $css;
 	}
 
 	/**
@@ -568,10 +596,10 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $array [description]
+	 * @param array<string, mixed> $an_array [description].
 	 */
-	public function discard_invalid_selectors( &$array ) {
-		foreach ( $array as $selector => $decls ) {
+	public function discard_invalid_selectors( array &$an_array ): void {
+		foreach ( $an_array as $selector => $decls ) {
 			$ok = true;
 			$selectors = array_map( 'trim', explode( ',', $selector ) );
 			foreach ( $selectors as $s ) {
@@ -580,12 +608,11 @@ class TablePress_CSSTidy_optimise {
 					if ( '' === $ss ) {
 						$ok = false;
 					}
-					// could also check $ss for internal structure,
-					// but that probably would be too slow
+					// Could also check $ss for internal structure, but that probably would be too slow.
 				}
 			}
 			if ( ! $ok ) {
-				unset( $array[ $selector ] );
+				unset( $an_array[ $selector ] );
 			}
 		}
 	}
@@ -595,12 +622,11 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $property [description]
-	 * @param string $value    [description]
-	 *
-	 * @return [type] [description]
+	 * @param string $property [description].
+	 * @param string $value    [description].
+	 * @return array [description]
 	 */
-	public function dissolve_4value_shorthands( $property, $value ) {
+	public function dissolve_4value_shorthands( string $property, string $value ): array {
 		$return = array();
 
 		$shorthands = &$this->parser->data['csstidy']['shorthands'];
@@ -643,35 +669,35 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string  $sep    Separator.
-	 * @param string  $string String.
-	 * @return array
+	 * @param string $sep      Separator.
+	 * @param string $a_string String.
+	 * @return array [description]
 	 */
-	public function explode_ws( $sep, $string ) {
+	public function explode_ws( string $sep, string $a_string ): array {
 		$status = 'st';
 		$to = '';
 
 		$output = array();
 		$num = 0;
-		for ( $i = 0, $len = strlen( $string ); $i < $len; $i++ ) {
+		for ( $i = 0, $len = strlen( $a_string ); $i < $len; $i++ ) {
 			switch ( $status ) {
 				case 'st':
-					if ( $string[ $i ] === $sep && ! $this->parser->escaped( $string, $i ) ) {
+					if ( $a_string[ $i ] === $sep && ! $this->parser->escaped( $a_string, $i ) ) {
 						++$num;
-					} elseif ( '"' === $string[ $i ] || "'" === $string[ $i ] || '(' === $string[ $i ] && ! $this->parser->escaped( $string, $i ) ) {
+					} elseif ( '"' === $a_string[ $i ] || "'" === $a_string[ $i ] || '(' === $a_string[ $i ] && ! $this->parser->escaped( $a_string, $i ) ) {
 						$status = 'str';
-						$to = ( '(' === $string[ $i ] ) ? ')' : $string[ $i ];
-						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
+						$to = ( '(' === $a_string[ $i ] ) ? ')' : $a_string[ $i ];
+						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $a_string[ $i ] : $output[ $num ] = $a_string[ $i ];
 					} else {
-						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
+						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $a_string[ $i ] : $output[ $num ] = $a_string[ $i ];
 					}
 					break;
 
 				case 'str':
-					if ( $string[ $i ] === $to && ! $this->parser->escaped( $string, $i ) ) {
+					if ( $a_string[ $i ] === $to && ! $this->parser->escaped( $a_string, $i ) ) {
 						$status = 'st';
 					}
-					( isset( $output[ $num ] ) ) ? $output[ $num ] .= $string[ $i ] : $output[ $num ] = $string[ $i ];
+					( isset( $output[ $num ] ) ) ? $output[ $num ] .= $a_string[ $i ] : $output[ $num ] = $a_string[ $i ];
 					break;
 			}
 		}
@@ -688,20 +714,20 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $array [description]
-	 * @return [type] [description]
+	 * @param array<string, mixed> $an_array [description].
+	 * @return array<string, mixed> [description]
 	 */
-	public function merge_4value_shorthands( $array ) {
-		$return = $array;
+	public function merge_4value_shorthands( array $an_array ): array {
+		$return = $an_array;
 		$shorthands = &$this->parser->data['csstidy']['shorthands'];
 
 		foreach ( $shorthands as $key => $value ) {
-			if ( 0 !== $value && isset( $array[ $value[0] ], $array[ $value[1] ], $array[ $value[2] ], $array[ $value[3] ] ) ) {
+			if ( 0 !== $value && isset( $an_array[ $value[0] ], $an_array[ $value[1] ], $an_array[ $value[2] ], $an_array[ $value[3] ] ) ) {
 				$return[ $key ] = '';
 
 				$important = '';
 				for ( $i = 0; $i < 4; $i++ ) {
-					$val = $array[ $value[ $i ] ];
+					$val = $an_array[ $value[ $i ] ];
 					if ( $this->parser->is_important( $val ) ) {
 						$important = ' !important';
 						$return[ $key ] .= $this->parser->gvw_important( $val ) . ' ';
@@ -724,9 +750,9 @@ class TablePress_CSSTidy_optimise {
 	 * @since 1.0.0
 	 *
 	 * @param string $str_value String value.
-	 * @return array Array.
+	 * @return array<string, string|null> Array.
 	 */
-	public function dissolve_short_bg( $str_value ) {
+	public function dissolve_short_bg( string $str_value ): array {
 		// Don't try to explode background gradient!
 		if ( false !== stripos( $str_value, 'gradient(' ) ) {
 			return array( 'background' => $str_value );
@@ -771,7 +797,7 @@ class TablePress_CSSTidy_optimise {
 
 			$str_value_i_count = count( $str_value[ $i ] );
 			for ( $j = 0; $j < $str_value_i_count; $j++ ) {
-				if ( false === $have['bg'] && ( 'url(' === substr( $str_value[ $i ][ $j ], 0, 4 ) || 'none' === $str_value[ $i ][ $j ] ) ) {
+				if ( false === $have['bg'] && ( str_starts_with( $str_value[ $i ][ $j ], 'url(' ) || 'none' === $str_value[ $i ][ $j ] ) ) {
 					$return['background-image'] .= $str_value[ $i ][ $j ] . ',';
 					$have['bg'] = true;
 				} elseif ( in_array( $str_value[ $i ][ $j ], $repeat, true ) ) {
@@ -817,15 +843,15 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $input_css CSS.
-	 * @return array Array.
+	 * @param array<string, mixed> $input_css CSS.
+	 * @return array<string, mixed> Array.
 	 */
-	public function merge_bg( array $input_css ) {
+	public function merge_bg( array $input_css ): array {
 		$background_prop_default = &$this->parser->data['csstidy']['background_prop_default'];
 		// Max number of background images. CSS3 not yet fully implemented.
-		$number_of_values = @max( count( $this->explode_ws( ',', $input_css['background-image'] ) ), count( $this->explode_ws( ',', $input_css['background-color'] ) ), 1 );
+		$number_of_values = @max( count( $this->explode_ws( ',', $input_css['background-image'] ) ), count( $this->explode_ws( ',', $input_css['background-color'] ) ), 1 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		// Array with background images to check if BG image exists.
-		$bg_img_array = @$this->explode_ws( ',', $this->parser->gvw_important( $input_css['background-image'] ) );
+		$bg_img_array = @$this->explode_ws( ',', $this->parser->gvw_important( $input_css['background-image'] ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$new_bg_value = '';
 		$important = '';
 
@@ -901,10 +927,10 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $str_value [description]
-	 * @return [type] [description]
+	 * @param string $str_value [description].
+	 * @return array<string, string|null> [description]
 	 */
-	public function dissolve_short_font( $str_value ) {
+	public function dissolve_short_font( string $str_value ): array {
 		$font_prop_default = &$this->parser->data['csstidy']['font_prop_default'];
 		$font_weight = array( 'normal', 'bold', 'bolder', 'lighter', 100, 200, 300, 400, 500, 600, 700, 800, 900 );
 		$font_variant = array( 'normal', 'small-caps' );
@@ -939,13 +965,13 @@ class TablePress_CSSTidy_optimise {
 
 		$str_value_0_count = count( $str_value[0] );
 		for ( $j = 0; $j < $str_value_0_count; $j++ ) {
-			if ( false === $have['weight'] && in_array( $str_value[0][ $j ], $font_weight ) ) {
+			if ( false === $have['weight'] && in_array( $str_value[0][ $j ], $font_weight, false ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.FoundNonStrictFalse
 				$return['font-weight'] = $str_value[0][ $j ];
 				$have['weight'] = true;
-			} elseif ( false === $have['variant'] && in_array( $str_value[0][ $j ], $font_variant ) ) {
+			} elseif ( false === $have['variant'] && in_array( $str_value[0][ $j ], $font_variant, true ) ) {
 				$return['font-variant'] = $str_value[0][ $j ];
 				$have['variant'] = true;
-			} elseif ( false === $have['style'] && in_array( $str_value[0][ $j ], $font_style ) ) {
+			} elseif ( false === $have['style'] && in_array( $str_value[0][ $j ], $font_style, true ) ) {
 				$return['font-style'] = $str_value[0][ $j ];
 				$have['style'] = true;
 			} elseif ( false === $have['size'] && ( is_numeric( $str_value[0][ $j ][0] ) || is_null( $str_value[0][ $j ][0] ) || '.' === $str_value[0][ $j ][0] ) ) {
@@ -957,7 +983,7 @@ class TablePress_CSSTidy_optimise {
 					$return['line-height'] = ''; // Don't add 'normal'!
 				}
 				$have['size'] = true;
-			} else {
+			} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
 				if ( isset( $return['font-family'] ) ) {
 					$return['font-family'] .= ' ' . $str_value[0][ $j ];
 					$multiwords = true;
@@ -973,7 +999,7 @@ class TablePress_CSSTidy_optimise {
 		$i = 1;
 		while ( isset( $str_value[ $i ] ) ) {
 			$return['font-family'] .= ',' . trim( $str_value[ $i ] );
-			$i++;
+			++$i;
 		}
 
 		// Fix for font-size 100 and higher.
@@ -997,31 +1023,29 @@ class TablePress_CSSTidy_optimise {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param [type] $input_css [description]
-	 * @return [type] [description]
+	 * @param array<string, string> $input_css [description].
+	 * @return array<string, string> [description]
 	 */
-	public function merge_font( $input_css ) {
+	public function merge_font( array $input_css ): array {
 		$font_prop_default = &$this->parser->data['csstidy']['font_prop_default'];
 		$new_font_value = '';
 		$important = '';
 		// Skip if no font-family and font-size set.
 		if ( isset( $input_css['font-family'], $input_css['font-size'] ) && 'inherit' !== $input_css['font-family'] ) {
 			// Fix several words in font-family - add quotes.
-			if ( isset( $input_css['font-family'] ) ) {
-				$families = explode( ',', $input_css['font-family'] );
-				$result_families = array();
-				foreach ( $families as $family ) {
-					$family = trim( $family );
-					$len = strlen( $family );
-					if ( strpos( $family, ' ' ) &&
-						! ( ( '"' === $family[0] && '"' === $family[ $len - 1 ] ) ||
-						( "'" === $family[0] && "'" === $family[ $len - 1 ] ) ) ) {
-						$family = '"' . $family . '"';
-					}
-					$result_families[] = $family;
+			$families = explode( ',', $input_css['font-family'] );
+			$result_families = array();
+			foreach ( $families as $family ) {
+				$family = trim( $family );
+				$len = strlen( $family );
+				if ( str_contains( $family, ' ' ) &&
+					! ( ( '"' === $family[0] && '"' === $family[ $len - 1 ] ) ||
+					( "'" === $family[0] && "'" === $family[ $len - 1 ] ) ) ) {
+					$family = '"' . $family . '"';
 				}
-				$input_css['font-family'] = implode( ',', $result_families );
+				$result_families[] = $family;
 			}
+			$input_css['font-family'] = implode( ',', $result_families );
 			foreach ( $font_prop_default as $font_property => $default_value ) {
 				// Skip if property does not exist.
 				if ( ! isset( $input_css[ $font_property ] ) ) {
@@ -1064,4 +1088,4 @@ class TablePress_CSSTidy_optimise {
 		return $input_css;
 	}
 
-} // class TablePress_CSSTidy_optimise
+} // class TablePress_CSSTidy_Optimise

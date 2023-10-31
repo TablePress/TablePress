@@ -23,7 +23,7 @@ import block from '../block.json';
 /**
  * Internal dependencies.
  */
-import { shortcode_attrs_to_string } from './_common-functions';
+import { shortcode_attrs_to_string } from './common/functions';
 
 /**
  * Converts a textual Shortcode to a TablePress table block.

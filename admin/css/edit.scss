@@ -10,7 +10,7 @@
 /* Import spinner and alert box styling. */
 @import "spinner-alert";
 
-/* container for Table Preview, Advanced Editor, and Help Box dialogs */
+/* Container for Table Preview, Advanced Editor, and Help Box dialogs. */
 .hidden-container {
 	display: none;
 }
@@ -23,9 +23,8 @@
 /* Positioning of the "Help" button in the header section of a postbox. */
 .postbox-header .handle-actions .button-module-help {
 	margin-right: 10px;
-}
-@media screen and (min-width: 783px) {
-	.postbox-header .handle-actions .button-module-help {
+
+	@media screen and (min-width: 783px) {
 		position: relative;
 		top: -5px;
 	}
@@ -42,44 +41,48 @@ div#post-body.metabox-holder.columns-1 {
 	margin-top: 20px;
 }
 
-/* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog */
+/* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog. */
 body #wp-link-backdrop {
 	z-index: 100103;
 }
 
-/* Table Preview (CSS for actual preview is directly in the preview HTML) */
+/* Table Preview (CSS for actual preview is directly in the preview HTML). */
 #table-preview {
 	padding: 0;
-}
-#table-preview-iframe {
-	width: 100%;
-	height: 100%;
+
+	&-iframe {
+		width: 100%;
+		height: 100%;
+	}
 }
 
-/* Styling and positioning of buttons in wpdialogs */
-.ui-dialog .button {
-	box-shadow: none;
-}
-.ui-dialog .ui-dialog-buttonset {
-	width: 100%;
-}
-.ui-dialog .button-cancel,
-.ui-dialog .button-cancel:hover {
-	color: #b32d2e;
-	border-color: transparent;
-	background-color: transparent;
-	text-decoration: underline;
-}
-.ui-dialog .button-ok {
-	float: right;
+/* Styling and positioning of buttons in wpdialogs. */
+.ui-dialog {
+	.button {
+		box-shadow: none;
+	}
+	.ui-dialog-buttonset {
+		width: 100%;
+	}
+	.button-cancel,
+	.button-cancel:hover {
+		color: #b32d2e;
+		border-color: transparent;
+		background-color: transparent;
+		text-decoration: underline;
+	}
+	.button-ok {
+		float: right;
+	}
 }
 
 /* Content of the Advanced Editor wpdialog */
 #advanced-editor {
 	padding: 5px;
-}
-#advanced-editor .wp-editor-container {
-	border: none;
+
+	.wp-editor-container {
+		border: none;
+	}
 }
 
 #tablepress-page #tablepress_edit-table-data {
@@ -159,53 +162,49 @@ body #wp-link-backdrop {
 	vertical-align: top;
 	word-break: break-word;
 	padding: 0;
-}
-.jexcel > tbody > tr > td:first-child {
-	padding: 4px;
+
+	&:first-child {
+		padding: 4px;
+	}
+
+	/* Show all lines of text in an edited cell. */
+	&.editing {
+		--table-editor-line-clamp-editing: 0;
+	}
+
+	> div {
+		display: -webkit-box;
+		-webkit-line-clamp: var(--table-editor-line-clamp-editing, var(--table-editor-line-clamp));
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		padding: 4px;
+	}
 }
 
-/* Show all lines of text in an edited cell. */
-.jexcel > tbody > tr > td.editing {
-	--table-editor-line-clamp-editing: 0;
-}
-
-.jexcel > tbody > tr > td > div {
-	display: -webkit-box;
-	-webkit-line-clamp: var(--table-editor-line-clamp-editing, var(--table-editor-line-clamp));
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	padding: 4px;
-}
-
-/* Fixed header */
+/* Fixed header. */
 @media screen and (min-width: 601px) {
 	.admin-bar .jexcel > thead > tr > td {
-		top: 46px;
-	}
-}
-@media screen and (min-width: 783px) {
-	.admin-bar .jexcel > thead > tr > td {
-		top: 31px;
+		top: calc(var(--wp-admin--admin-bar--height) - 1px) /* 1px offset to remove top cell border. */;
 	}
 }
 
-/* Fixed left column, taking into account the width of the admin bar */
-body .jexcel > tbody > tr > .jexcel_row {
-	position: sticky;
-	z-index: 21; /* Prevent drag corner from floating above fixed left column. */
-	left: 160px;
-}
-body.folded .jexcel > tbody > tr > .jexcel_row {
-	left: 36px;
-}
-@media only screen and (max-width: 960px) {
-	body.auto-fold .jexcel > tbody > tr > .jexcel_row {
+/* Fixed left column, taking into account the width of the admin bar. */
+.jexcel > tbody > tr > .jexcel_row {
+	body & {
+		position: sticky;
+		z-index: 21; /* Prevent drag corner from floating above fixed left column. */
+		left: 160px;
+	}
+	body.folded & {
 		left: 36px;
 	}
-}
-@media screen and (max-width: 782px) {
-	body.auto-fold .jexcel > tbody > tr > .jexcel_row {
-		left: 0;
+	body.auto-fold & {
+		@media only screen and (max-width: 960px) {
+			left: 36px;
+		}
+		@media screen and (max-width: 782px) {
+			left: 0;
+		}
 	}
 }
 
@@ -227,20 +226,19 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 	background-color: rgba(255, 224, 224, 0.7);
 }
 
-.jexcel > tbody > tr > .highlight-top {
-	border-top: 1px solid rgb(82, 146, 247);
-}
-
-.jexcel > tbody > tr > .highlight-left {
-	border-left: 1px solid rgb(82, 146, 247);
-}
-
-.jexcel > tbody > tr > .highlight-right {
-	border-right: 1px solid rgb(82, 146, 247);
-}
-
-.jexcel > tbody > tr > .highlight-bottom {
-	border-bottom: 1px solid rgb(82, 146, 247);
+.jexcel > tbody > tr > .highlight {
+	&-top {
+		border-top: 1px solid rgb(82, 146, 247);
+	}
+	&-left {
+		border-left: 1px solid rgb(82, 146, 247);
+	}
+	&-right {
+		border-right: 1px solid rgb(82, 146, 247);
+	}
+	&-bottom {
+		border-bottom: 1px solid rgb(82, 146, 247);
+	}
 }
 
 .jexcel_corner {
@@ -254,7 +252,7 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 	line-height: 1 !important;
 }
 
-/* Fullscreen mode */
+/* Fullscreen mode. */
 .admin-bar .jexcel_container.fullscreen .jexcel > thead > tr > td {
 	top: 0;
 }
@@ -262,30 +260,30 @@ body.folded .jexcel > tbody > tr > .jexcel_row {
 	z-index: 99999;
 }
 
-/* Context menu */
+/* Context menu. */
 .jcontextmenu {
 	margin: 1px; /* Don't trigger actions by accident */
 	z-index: 99999; /* Hover above WP Admin bar */
-}
-.jcontextmenu > div.header {
-	display: none !important;
-}
-.jcontextmenu > div a {
-	color: #111111;
-	font-size: 14px;
-}
-.jcontextmenu > div {
-	padding: 4px 4px 4px 16px;
-}
-.jcontextmenu > .jcontextmenu-disabled,
-.jcontextmenu > .jcontextmenu-disabled a {
-	color: #999999;
-	cursor: default;
-}
-.jcontextmenu > div.jcontextmenu-disabled:hover {
-	background: transparent;
-}
 
+	> div.header {
+		display: none !important;
+	}
+	> div a {
+		color: #111111;
+		font-size: 14px;
+	}
+	> div {
+		padding: 4px 4px 4px 16px;
+	}
+	> .jcontextmenu-disabled,
+	> .jcontextmenu-disabled a {
+		color: #999999;
+		cursor: default;
+	}
+	> div.jcontextmenu-disabled:hover {
+		background: transparent;
+	}
+}
 /* WP Feature Pointers */
 .pointer-tp21_edit_screen_options .wp-pointer-arrow {
 	left: 225px;

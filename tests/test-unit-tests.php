@@ -21,7 +21,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	 *
 	 * @since 1.1.0
 	 */
-	public function test_true_is_true() {
+	public function test_true_is_true(): void {
 		$this->assertTrue( true );
 	}
 
@@ -31,7 +31,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	 *
 	 * @since 1.4.0
 	 */
-	public function test_wp_version() {
+	public function test_wp_version(): void {
 		if ( ! getenv( 'CI' ) ) {
 			$this->markTestSkipped( "Test skipped as it's not running in a CI environment." );
 		}
@@ -67,7 +67,7 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	 *
 	 * @since 1.4.0
 	 */
-	public function test_plugin_is_activated() {
+	public function test_plugin_is_activated(): void {
 		$this->assertTrue( is_plugin_active( 'tablepress/tablepress.php' ) );
 	}
 

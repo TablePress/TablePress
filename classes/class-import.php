@@ -33,7 +33,7 @@ class TablePress_Import {
 	 * Import configuration (mainly the data from the Import form).
 	 *
 	 * @since 2.0.0
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected $import_config = array();
 
@@ -49,7 +49,7 @@ class TablePress_Import {
 	 * List of table names/IDs for use when replacing/appending existing tables (except for the JSON format).
 	 *
 	 * @since 2.0.0
-	 * @var array
+	 * @var array<string, string[]>
 	 */
 	protected $table_names_ids = array();
 
@@ -70,10 +70,10 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $import_config Import configuration.
-	 * @return array|WP_Error List of imported tables on success, WP_Error on failure.
+	 * @param array<string, mixed> $import_config Import configuration.
+	 * @return array{tables: array<int, array<string, mixed>>, errors: array<int, array<string, mixed>>}|WP_Error List of imported tables on success, WP_Error on failure.
 	 */
-	public function run( array $import_config ) {
+	public function run( array $import_config ) /* : array|WP_Error */ {
 		// Unziping can use a lot of memory and execution time, but not this much hopefully.
 		wp_raise_memory_limit( 'admin' );
 		if ( function_exists( 'set_time_limit' ) ) {
@@ -101,9 +101,9 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array|WP_Error Files that shall be imported or WP_Error on failure.
+	 * @return array<int, array<string, string|bool>>|WP_Error Files that shall be imported or WP_Error on failure.
 	 */
-	protected function _get_import_files() {
+	protected function _get_import_files() /* : array|WP_Error */ {
 		$import_files = array();
 
 		switch ( $this->import_config['source'] ) {
@@ -114,7 +114,7 @@ class TablePress_Import {
 						'name'     => $this->import_config['file-upload']['name'][ $key ],
 					);
 					if ( UPLOAD_ERR_OK !== $error ) {
-						@unlink( $this->import_config['file-upload']['tmp_name'][ $key ] );
+						@unlink( $this->import_config['file-upload']['tmp_name'][ $key ] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 						$file['error'] = new WP_Error( 'table_import_file-upload_error', '', $error );
 					}
 					$import_files[] = $file;
@@ -172,7 +172,7 @@ class TablePress_Import {
 				$location = wp_tempnam();
 				$num_written_bytes = file_put_contents( $location, $this->import_config['form-field'] );
 				if ( false === $num_written_bytes || 0 === $num_written_bytes ) {
-					@unlink( $location );
+					@unlink( $location ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					return new WP_Error( 'table_import_form-field_temp_file_not_written' );
 				}
 
@@ -195,19 +195,12 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $import_files Files that shall be imported, including ZIP archives.
-	 * @return array Files that shall be imported, with all ZIP archives recursively replaced by their contents.
+	 * @param array<int, array<string, mixed>> $import_files Files that shall be imported, including ZIP archives.
+	 * @return array<int, array<string, mixed>> Files that shall be imported, with all ZIP archives recursively replaced by their contents.
 	 */
-	protected function _convert_zip_files( array $import_files ) {
-		/*
-		 * Here, a for loop is used over a foreach loop, as the array is modified while being iterated over.
-		 * The foreach approach works in PHP 7+ (via https://www.php.net/manual/en/migration70.incompatible.php#migration70.incompatible.foreach.by-ref), but not in PHP 5.6.
-		 * Once PHP 7.x is required, this can be adjusted again.
-		 */
-		$num_files = count( $import_files ); // This number is growing inside the loop, if files are extracted from a ZIP file and appended to the list.
-		for ( $key = 0; $key < $num_files; $key++ ) {
-			$file = $import_files[ $key ];
-
+	protected function _convert_zip_files( array $import_files ): array {
+		foreach ( $import_files as $key => &$file ) {
+			// $file has to be used by reference, so that $key points to the correct element, due to array modification with `unset()` and `array_push()`.
 			if ( isset( $file['error'] ) && is_wp_error( $file['error'] ) ) {
 				continue;
 			}
@@ -244,25 +237,14 @@ class TablePress_Import {
 					continue;
 				}
 
-				$this->_maybe_unlink_file( $file );
-
-				// Mark the ZIP file as removed from the list (null), append its contents to the end, and increase the number of files counter.
-				$file = null;
+				// Remove the ZIP file from the list and instead append its contents.
+				unset( $import_files[ $key ] );
 				array_push( $import_files, ...$extracted_files );
-				$num_files += count( $extracted_files );
 
+				$this->_maybe_unlink_file( $file );
 			}
-
-			$import_files[ $key ] = $file;
 		}
-
-		// Actually remove files that are marked as removed (null).
-		$import_files = array_filter(
-			$import_files,
-			static function( $file ) {
-				return ! is_null( $file );
-			}
-		);
+		unset( $file ); // Unset use-by-reference parameter of foreach loop.
 
 		$import_files = array_merge( $import_files ); // Re-index.
 
@@ -274,10 +256,10 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $zip_file File data of a ZIP file (likely in a temporary folder).
-	 * @return array|WP_Error List of files (name and location where they were extracted to) of the ZIP file or WP_Error on failure.
+	 * @param array<string, mixed> $zip_file File data of a ZIP file (likely in a temporary folder).
+	 * @return array<int, array<string, mixed>>|WP_Error List of files (name and location where they were extracted to) of the ZIP file or WP_Error on failure.
 	 */
-	protected function _extract_zip_file( array $zip_file ) {
+	protected function _extract_zip_file( array $zip_file ) /* : array|WP_Error */ {
 		$zip = new ZipArchive();
 		$zip_opened = $zip->open( $zip_file['location'], ZIPARCHIVE::CHECKCONS );
 
@@ -307,12 +289,12 @@ class TablePress_Import {
 			}
 
 			// Skip directories.
-			if ( '/' === substr( $file_name, -1 ) ) {
+			if ( str_ends_with( $file_name, '/' ) ) {
 				continue;
 			}
 
 			// Skip the __MACOSX directory that macOS adds to archives.
-			if ( '__MACOSX/' === substr( $file_name, 0, 9 ) ) {
+			if ( str_starts_with( $file_name, '__MACOSX/' ) ) {
 				continue;
 			}
 
@@ -329,7 +311,7 @@ class TablePress_Import {
 			$location = wp_tempnam();
 			$num_written_bytes = file_put_contents( $location, $file_data );
 			if ( false === $num_written_bytes || 0 === $num_written_bytes ) {
-				@unlink( $location );
+				@unlink( $location ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				$files[] = array(
 					'location' => '',
 					'name'     => $file_name,
@@ -354,11 +336,12 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $file File that should maybe be deleted.
+	 * @param array<string, string|WP_Error> $file File that should maybe be deleted.
 	 */
-	protected function _maybe_unlink_file( array $file ) {
-		if ( ! ( isset( $file['keep_file'] ) && $file['keep_file'] ) && file_exists( $file['location'] ) ) {
-			@unlink( $file['location'] );
+	protected function _maybe_unlink_file( array $file ): void {
+		if ( ! ( isset( $file['keep_file'] ) && $file['keep_file'] ) && file_exists( $file['location'] ) ) { // @phpstan-ignore-line
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@unlink( $file['location'] ); // @phpstan-ignore-line
 		}
 	}
 
@@ -367,9 +350,9 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array List of table names and IDs.
+	 * @return array<string, string[]> List of table names and IDs.
 	 */
-	protected function _get_list_of_table_names() {
+	protected function _get_list_of_table_names(): array {
 		$existing_tables = array();
 		// Load all table IDs and names for a comparison with the file name.
 		$table_ids = TablePress::$model_table->load_all( false );
@@ -380,7 +363,7 @@ class TablePress_Import {
 				$existing_tables[ $table['name'] ][] = $table['id']; // Attention: The table name is not unique!
 			}
 		}
-		return $existing_tables;
+		return $existing_tables; // @phpstan-ignore-line
 	}
 
 	/**
@@ -390,7 +373,7 @@ class TablePress_Import {
 	 *
 	 * @return bool Whether the legacy import class should be used.
 	 */
-	protected function _should_use_legacy_import_class() {
+	protected function _should_use_legacy_import_class(): bool {
 		// Allow overriding in the import config (coming e.g. from the import form UI).
 		if ( $this->import_config['legacy_import'] ) {
 			return true;
@@ -401,15 +384,14 @@ class TablePress_Import {
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param bool Whether to use the legacy table import class. Default false.
+		 * @param bool $use_legacy_class Whether to use the legacy table import class. Default false.
 		 */
 		if ( apply_filters( 'tablepress_use_legacy_table_import_class', false ) ) {
 			return true;
 		}
 
 		// Use the legacy import class, if the requirements for PHPSpreadsheet are not fulfilled.
-		$phpspreadsheet_requirements_fulfilled = PHP_VERSION_ID >= 70200
-			&& extension_loaded( 'mbstring' )
+		$phpspreadsheet_requirements_fulfilled = extension_loaded( 'mbstring' )
 			&& class_exists( 'ZipArchive', false )
 			&& class_exists( 'DOMDocument', false )
 			&& function_exists( 'simplexml_load_string' )
@@ -431,10 +413,10 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $import_files Files that shall be imported.
-	 * @return array Import tables and import errors.
+	 * @param array<int, array<string, mixed>> $import_files Files that shall be imported.
+	 * @return array{tables: array<int, array<string, mixed>>, errors: array<int, array<string, mixed>>} Import tables and import errors.
 	 */
-	protected function _import_files( array $import_files ) {
+	protected function _import_files( array $import_files ): array {
 		$tables = array();
 		$errors = array();
 
@@ -507,10 +489,10 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $file File with the table data.
-	 * @return array|WP_Error Loaded table on success (either with all properties or just 'data'), WP_Error on failure.
+	 * @param array<string, string|WP_Error> $file File with the table data.
+	 * @return array<string, mixed>|WP_Error Loaded table on success (either with all properties or just 'data'), WP_Error on failure.
 	 */
-	protected function _load_table_from_file_legacy( array $file ) {
+	protected function _load_table_from_file_legacy( array $file ) /* : array|WP_Error */ {
 		// Guess the import format from the file extension.
 		switch ( $file['extension'] ) {
 			case 'xlsx': // Excel (OfficeOpenXML) Spreadsheet.
@@ -535,11 +517,11 @@ class TablePress_Import {
 				$format = 'json';
 				break;
 			default:
-				// If no format was found, pass the extension (which will likely result in an error).
-				$format = $file['extension'];
+				// If no format was found, try finding the format from the first character below.
+				$format = '';
 		}
 
-		$data = file_get_contents( $file['location'] );
+		$data = file_get_contents( $file['location'] ); // @phpstan-ignore-line
 		if ( false === $data ) {
 			return new WP_Error( 'table_import_legacy_data_read', '', $file['location'] );
 		}
@@ -580,17 +562,11 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $file File with the table data.
-	 * @return array|WP_Error Loaded table on success (either with all properties or just 'data'), WP_Error on failure.
+	 * @param array<string, string|WP_Error> $file File with the table data.
+	 * @return array<string, mixed>|WP_Error Loaded table on success (either with all properties or just 'data'), WP_Error on failure.
 	 */
-	protected function _load_table_from_file_phpspreadsheet( array $file ) {
-		$table = $this->importer->import_table( $file );
-
-		if ( is_wp_error( $table ) ) {
-			return $table;
-		}
-
-		return $table;
+	protected function _load_table_from_file_phpspreadsheet( array $file ) /* : array|WP_Error */ {
+		return $this->importer->import_table( $file ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -598,11 +574,11 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $table         The table to be imported, either with properties or just the $table['data'] property set.
-	 * @param array $file          File with the table data.
-	 * @return array|WP_Error Imported table on success, WP_Error on failure.
+	 * @param array<string, mixed>           $table The table to be imported, either with properties or just the $table['data'] property set.
+	 * @param array<string, string|WP_Error> $file  File with the table data.
+	 * @return array<string, mixed>|WP_Error Imported table on success, WP_Error on failure.
 	 */
-	protected function _import_table( array $table, array $file ) {
+	protected function _import_table( array $table, array $file ) /* : array|WP_Error */ {
 		// If name and description are imported from a new table, use those.
 		if ( ! isset( $table['name'] ) ) {
 			$table['name'] = $file['name'];
@@ -619,9 +595,9 @@ class TablePress_Import {
 			if ( isset( $table['id'] ) ) {
 				// If the table already contained a table ID (e.g. for the JSON format), use that.
 				$existing_table_id = $table['id'];
-			} elseif ( isset( $this->table_names_ids[ $file['name'] ] ) && 1 === count( $this->table_names_ids[ $file['name'] ] ) ) {
+			} elseif ( isset( $this->table_names_ids[ $file['name'] ] ) && 1 === count( $this->table_names_ids[ $file['name'] ] ) ) { // @phpstan-ignore-line
 				// Use the replace/append ID of tables where the table name matches the file name, but only if there was exactly one file name match.
-				$existing_table_id = $this->table_names_ids[ $file['name'] ][0];
+				$existing_table_id = $this->table_names_ids[ $file['name'] ][0]; // @phpstan-ignore-line
 			}
 		}
 
@@ -641,14 +617,14 @@ class TablePress_Import {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array  $imported_table    The table to be imported, either with properties or just the `name`, `description`, and `data` property set.
-	 * @param string $import_type       What to do with the imported data: "add", "replace", "append".
-	 * @param string $existing_table_id Empty string if table shall be added as a new table, ID of the table to be replaced or appended to otherwise.
-	 * @return array|WP_Error Table on success, WP_Error on error.
+	 * @param array<string, mixed> $imported_table    The table to be imported, either with properties or just the `name`, `description`, and `data` property set.
+	 * @param string               $import_type       What to do with the imported data: "add", "replace", "append".
+	 * @param string               $existing_table_id Empty string if table shall be added as a new table, ID of the table to be replaced or appended to otherwise.
+	 * @return array<string, mixed>|WP_Error Table on success, WP_Error on error.
 	 */
-	protected function _import_tablepress_table( array $imported_table, $import_type, $existing_table_id ) {
+	protected function _import_tablepress_table( array $imported_table, string $import_type, string $existing_table_id ) /* : array|WP_Error */ {
 		// Full JSON format table can contain a table ID, try to keep that, by later changing the imported table ID to this.
-		$table_id_in_import = isset( $imported_table['id'] ) ? $imported_table['id'] : '';
+		$table_id_in_import = $imported_table['id'] ?? '';
 
 		// To be able to replace or append to a table, the user must be able to edit the table, or it must be a Cron request (e.g. via the Automatic Periodic Table Import module).
 		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! ( current_user_can( 'tablepress_edit_table', $existing_table_id ) || wp_doing_cron() ) ) {
@@ -768,9 +744,9 @@ class TablePress_Import {
 	 *
 	 * @param string $format Import format.
 	 * @param string $data   Data to import.
-	 * @return array|false Table array on success, false on error.
+	 * @return array<string, mixed>|WP_Error|false Table array on success, WP_Error or false on error.
 	 */
-	public function import_table( $format, $data ) {
+	public function import_table( string $format, string $data ) /* : array|false */ {
 		TablePress::load_file( 'class-import-base.php', 'classes' );
 		$importer = TablePress::load_class( 'TablePress_Import_Legacy', 'class-import-legacy.php', 'classes' );
 		return $importer->import_table( $format, $data );

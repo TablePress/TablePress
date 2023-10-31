@@ -17,7 +17,7 @@ import { __, _n } from '@wordpress/i18n';
 /**
  * Internal dependencies.
  */
-import { $ } from './_common-functions';
+import { $ } from './common/functions';
 
 document.querySelector( '.tablepress-all-tables' ).addEventListener( 'click', ( event ) => {
 	if ( ! event.target ) {

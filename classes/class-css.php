@@ -29,13 +29,11 @@ class TablePress_CSS {
 	 * @param string $css CSS code.
 	 * @return string Sanitized and tidied CSS code.
 	 */
-	public function sanitize_css( $css ) {
+	public function sanitize_css( string $css ): string {
 		$csstidy = TablePress::load_class( 'TablePress_CSSTidy', 'class.csstidy.php', 'libraries/csstidy' );
 
 		// Sanitization and not just tidying for users without enough privileges.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
-			$csstidy->optimise = new TablePress_CSSTidy_optimise( $csstidy );
-
 			// Let "arrows" survive, otherwise this might be recognized as the beginning of an HTML tag and removed with other stuff behind it.
 			$css = str_replace( '<=', '&lt;=', $css );
 			// Remove all HTML tags.
@@ -75,9 +73,8 @@ class TablePress_CSS {
 	 * @param string $css CSS code.
 	 * @return string Minified CSS code.
 	 */
-	public function minify_css( $css ) {
+	public function minify_css( string $css ): string {
 		$csstidy = TablePress::load_class( 'TablePress_CSSTidy', 'class.csstidy.php', 'libraries/csstidy' );
-		$csstidy->optimise = new TablePress_CSSTidy_optimise( $csstidy );
 		$csstidy->set_cfg( 'remove_bslash', false );
 		$csstidy->set_cfg( 'compress_colors', true );
 		$csstidy->set_cfg( 'compress_font-weight', true );
@@ -108,7 +105,7 @@ class TablePress_CSS {
 	 * @param string $location "path" or "url", for file path or URL.
 	 * @return string Full file path or full URL for the "Custom CSS" file.
 	 */
-	public function get_custom_css_location( $type, $location ) {
+	public function get_custom_css_location( string $type, string $location ): string {
 		switch ( $type ) {
 			case 'combined':
 				$file = 'tablepress-combined.min.css';
@@ -177,16 +174,16 @@ class TablePress_CSS {
 	 * @param string $type Optional. Whether to load "normal" version or "minified" version. Default "normal".
 	 * @return string|false Custom CSS on success, false on error.
 	 */
-	public function load_custom_css_from_file( $type = 'normal' ) {
+	public function load_custom_css_from_file( string $type = 'normal' ) /* : string|false */ {
 		$filename = $this->get_custom_css_location( $type, 'path' );
 		// Check if file name is valid (0 means yes).
 		if ( 0 !== validate_file( $filename ) ) {
 			return false;
 		}
-		if ( ! @is_file( $filename ) ) {
+		if ( ! @is_file( $filename ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			return false;
 		}
-		if ( ! @is_readable( $filename ) ) {
+		if ( ! @is_readable( $filename ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			return false;
 		}
 		return file_get_contents( $filename );
@@ -202,17 +199,17 @@ class TablePress_CSS {
 	 * @param bool $load_rtl Optional. Whether to load LTR or RTL version. Default LTR.
 	 * @return string|false TablePress Default CSS on success, false on error.
 	 */
-	public function load_default_css_from_file( $load_rtl = false ) {
+	public function load_default_css_from_file( bool $load_rtl = false ) /* : string|false */ {
 		$rtl = $load_rtl ? '-rtl' : '';
 		$filename = TABLEPRESS_ABSPATH . "css/build/default{$rtl}.css";
 		// Check if file name is valid (0 means yes).
 		if ( 0 !== validate_file( $filename ) ) {
 			return false;
 		}
-		if ( ! @is_file( $filename ) ) {
+		if ( ! @is_file( $filename ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			return false;
 		}
-		if ( ! @is_readable( $filename ) ) {
+		if ( ! @is_readable( $filename ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			return false;
 		}
 		return file_get_contents( $filename );
@@ -227,7 +224,7 @@ class TablePress_CSS {
 	 * @param string $custom_css_minified Minified CSS code to be saved.
 	 * @return bool True on success, false on failure.
 	 */
-	public function save_custom_css_to_file( $custom_css_normal, $custom_css_minified ) {
+	public function save_custom_css_to_file( string $custom_css_normal, string $custom_css_minified ): bool {
 		/**
 		 * Filters whether the "Custom CSS" code shall be saved to a file on the server.
 		 *
@@ -247,7 +244,7 @@ class TablePress_CSS {
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
 		 */
-		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) {
+		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore-line
 			ob_end_clean();
 			return false;
 		}
@@ -267,7 +264,7 @@ class TablePress_CSS {
 	 * @param string $custom_css_minified Minified CSS code to be saved.
 	 * @return bool|string True on success, false on failure, or string of HTML for the credentials form for the WP_Filesystem API, if necessary.
 	 */
-	public function save_custom_css_to_file_plugin_options( $custom_css_normal, $custom_css_minified ) {
+	public function save_custom_css_to_file_plugin_options( string $custom_css_normal, string $custom_css_minified ) /* : bool|string */ {
 		/** This filter is documented in classes/class-css.php */
 		if ( ! apply_filters( 'tablepress_save_custom_css_to_file', true ) ) {
 			return false;
@@ -279,16 +276,16 @@ class TablePress_CSS {
 		// Do we have credentials already? Otherwise the form will have been rendered already.
 		if ( false === $credentials ) {
 			$form_data = ob_get_clean();
-			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data );
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data ); // @phpstan-ignore-line
 			return $form_data;
 		}
 
 		// We have received credentials, but don't know if they are valid yet.
-		if ( ! WP_Filesystem( $credentials ) ) {
+		if ( ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore-line
 			// Credentials failed, so ask again (with $error flag true).
 			request_filesystem_credentials( '', '', true, '', null, false );
 			$form_data = ob_get_clean();
-			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data );
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data ); // @phpstan-ignore-line
 			return $form_data;
 		}
 
@@ -315,7 +312,7 @@ class TablePress_CSS {
 	 * @param string $custom_css_minified Minified CSS code to be saved.
 	 * @return bool True on success, false on failure.
 	 */
-	protected function _custom_css_save_helper( $custom_css_normal, $custom_css_minified ) {
+	protected function _custom_css_save_helper( string $custom_css_normal, string $custom_css_minified ): bool {
 		global $wp_filesystem;
 
 		/*
@@ -369,7 +366,7 @@ class TablePress_CSS {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function delete_custom_css_files() {
+	public function delete_custom_css_files(): bool {
 		// Start capturing the output, to later prevent it.
 		ob_start();
 		$credentials = request_filesystem_credentials( '', '', false, '', null, false );
@@ -378,7 +375,7 @@ class TablePress_CSS {
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
 		 */
-		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) {
+		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore-line
 			ob_end_clean();
 			return false;
 		}
@@ -400,7 +397,7 @@ class TablePress_CSS {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	protected function _custom_css_delete_helper() {
+	protected function _custom_css_delete_helper(): bool {
 		global $wp_filesystem;
 
 		/*
@@ -438,7 +435,7 @@ class TablePress_CSS {
 	 *
 	 * @since 1.4.0
 	 */
-	protected function _flush_caching_plugins_css_minify_caches() {
+	protected function _flush_caching_plugins_css_minify_caches(): void {
 		/** This filter is documented in models/model-table.php */
 		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) ) {
 			return;
@@ -450,7 +447,7 @@ class TablePress_CSS {
 		}
 		// WP Fastest Cache.
 		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( array( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) ) {
-			$GLOBALS['wp_fastest_cache']->deleteCache( true );
+			$GLOBALS['wp_fastest_cache']->deleteCache( true ); // @phpstan-ignore-line
 		}
 	}
 

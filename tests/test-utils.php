@@ -21,7 +21,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 *
 	 * @since 1.4.0
 	 */
-	public function test_controller_was_set_up() {
+	public function test_controller_was_set_up(): void {
 		$this->assertTrue( is_object( TablePress::$controller ) );
 	}
 
@@ -30,7 +30,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 *
 	 * @since 1.1.0
 	 */
-	public function test_nonce() {
+	public function test_nonce(): void {
 		$this->assertSame( 'tablepress_foo_bar', TablePress::nonce( 'foo', 'bar' ) );
 		$this->assertSame( 'tablepress_foo', TablePress::nonce( 'foo' ) );
 		$this->assertSame( 'tablepress_foo', TablePress::nonce( 'foo', false ) );
@@ -46,7 +46,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @param string $letter Letter to convert.
 	 * @param int    $number Conversion result number.
 	 */
-	public function test_letter_to_number( $letter, $number ) {
+	public function test_letter_to_number( string $letter, int $number ): void {
 		$this->assertSame( $number, TablePress::letter_to_number( $letter ) );
 	}
 
@@ -55,9 +55,9 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 *
 	 * @since 1.4.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array<string, int>> Test data.
 	 */
-	public function data_letter_to_number() {
+	public function data_letter_to_number(): array {
 		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine, Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return array(
 			array(    '',     0 ),
@@ -87,7 +87,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 * @param int    $number Number to convert.
 	 * @param string $letter Conversion result letter.
 	 */
-	public function test_number_to_letter( $number, $letter ) {
+	public function test_number_to_letter( int $number, string $letter ): void {
 		$this->assertSame( $letter, TablePress::number_to_letter( $number ) );
 	}
 
@@ -96,9 +96,9 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 *
 	 * @since 1.4.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array{int, string}> Test data.
 	 */
-	public function data_number_to_letter() {
+	public function data_number_to_letter(): array {
 		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine, Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return array(
 			array(    -1,    '' ),
@@ -119,7 +119,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 *
 	 * @since 1.1.0
 	 */
-	public function test_url_not_toplevel() {
+	public function test_url_not_toplevel(): void {
 		TablePress::$controller->is_top_level_page = false;
 		TablePress::$controller->parent_page = 'index.php';
 
@@ -132,7 +132,7 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 	 *
 	 * @since 1.1.0
 	 */
-	public function test_url_toplevel() {
+	public function test_url_toplevel(): void {
 		TablePress::$controller->is_top_level_page = true;
 		TablePress::$controller->parent_page = 'middle';
 

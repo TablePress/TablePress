@@ -24,7 +24,7 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
  * @param {[type]} e   [description]
  * @return {Array} Context menu items.
  */
-export default function contextMenu( obj /*, x, y, e */ ) {
+const contextMenu = ( obj /*, x, y, e */ ) => {
 	const num_rows = tp.editor.options.data.length;
 	const num_columns = tp.editor.options.columns.length;
 	const num_selected_rows = tp.helpers.selection.rows.length;
@@ -332,4 +332,6 @@ export default function contextMenu( obj /*, x, y, e */ ) {
 	];
 
 	return items;
-}
+};
+
+export default contextMenu;

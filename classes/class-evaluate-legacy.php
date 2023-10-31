@@ -35,7 +35,7 @@ class TablePress_Evaluate_Legacy {
 	 * Table data in which formulas shall be evaluated.
 	 *
 	 * @since 1.5.0
-	 * @var array
+	 * @var array<int, array<int, string>>
 	 */
 	protected $table_data;
 
@@ -43,7 +43,7 @@ class TablePress_Evaluate_Legacy {
 	 * Storage for cell ranges that have been replaced in formulas.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var array<string, string>
 	 */
 	protected $known_ranges = array();
 
@@ -63,11 +63,11 @@ class TablePress_Evaluate_Legacy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array  $table_data Table data in which formulas shall be evaluated.
-	 * @param string $table_id   ID of the passed table.
-	 * @return array Table data with evaluated formulas.
+	 * @param array<int, array<int, string>> $table_data Table data in which formulas shall be evaluated.
+	 * @param string                         $table_id   ID of the passed table.
+	 * @return array<int, array<int, string>> Table data with evaluated formulas.
 	 */
-	public function evaluate_table_data( array $table_data, $table_id ) {
+	public function evaluate_table_data( array $table_data, string $table_id ): array {
 		$this->table_data = $table_data;
 
 		$num_rows = count( $this->table_data );
@@ -98,13 +98,13 @@ class TablePress_Evaluate_Legacy {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $content Content of a cell.
-	 * @param int    $row_idx Row index of the cell.
-	 * @param int    $col_idx Column index of the cell.
-	 * @param array  $parents Optional. List of cells that depend on this cell (to prevent circle references).
+	 * @param string   $content Content of a cell.
+	 * @param int      $row_idx Row index of the cell.
+	 * @param int      $col_idx Column index of the cell.
+	 * @param string[] $parents Optional. List of cells that depend on this cell (to prevent circle references).
 	 * @return string Result of the parsing/evaluation.
 	 */
-	protected function _evaluate_cell( $content, $row_idx, $col_idx, array $parents = array() ) {
+	protected function _evaluate_cell( string $content, int $row_idx, int $col_idx, array $parents = array() ): string {
 		if ( '' === $content || '=' === $content || '=' !== $content[0] ) {
 			return $content;
 		}
@@ -142,15 +142,15 @@ class TablePress_Evaluate_Legacy {
 					$replaced_ranges[] = $cell_range[0];
 
 					if ( isset( $this->known_ranges[ $cell_range[0] ] ) ) {
-						$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_range[0], '#' ) . '(?![0-9])#', $this->known_ranges[ $cell_range[0] ], $expression );
+						$expression = (string) preg_replace( '#(?<![A-Z])' . preg_quote( $cell_range[0], '#' ) . '(?![0-9])#', $this->known_ranges[ $cell_range[0] ], $expression );
 						continue;
 					}
 
 					// No -1 necessary for this transformation, as we don't actually access the table.
 					$first_col = TablePress::letter_to_number( $cell_range[1] );
-					$first_row = $cell_range[2];
+					$first_row = (int) $cell_range[2];
 					$last_col = TablePress::letter_to_number( $cell_range[3] );
-					$last_row = $cell_range[4];
+					$last_row = (int) $cell_range[4];
 
 					$col_start = min( $first_col, $last_col );
 					$col_end = max( $first_col, $last_col ) + 1; // +1 for loop below
@@ -166,7 +166,7 @@ class TablePress_Evaluate_Legacy {
 					}
 					$cell_list = implode( ',', $cell_list );
 
-					$expression = preg_replace( '#(?<![A-Z])' . preg_quote( $cell_range[0], '#' ) . '(?![0-9])#', $cell_list, $expression );
+					$expression = (string) preg_replace( '#(?<![A-Z])' . preg_quote( $cell_range[0], '#' ) . '(?![0-9])#', $cell_list, $expression );
 					$this->known_ranges[ $cell_range[0] ] = $cell_list;
 				}
 			}
@@ -185,7 +185,7 @@ class TablePress_Evaluate_Legacy {
 					$replaced_references[] = $cell_reference[0];
 
 					$ref_col = TablePress::letter_to_number( $cell_reference[1] ) - 1;
-					$ref_row = $cell_reference[2] - 1;
+					$ref_row = (int) $cell_reference[2] - 1;
 
 					if ( ! isset( $this->table_data[ $ref_row ][ $ref_col ] ) ) {
 						return "!ERROR! Cell {$cell_reference[0]} does not exist";
@@ -197,27 +197,27 @@ class TablePress_Evaluate_Legacy {
 					$result = $this->_evaluate_cell( $this->table_data[ $ref_row ][ $ref_col ], $ref_row, $ref_col, $ref_parents );
 					$this->table_data[ $ref_row ][ $ref_col ] = $result;
 					// Bail if there was an error already.
-					if ( false !== strpos( $result, '!ERROR!' ) ) {
+					if ( str_contains( $result, '!ERROR!' ) ) {
 						return $result;
 					}
 					// Remove all whitespace characters.
 					$result = str_replace( array( "\n", "\r", "\t", ' ' ), '', $result );
 					// Treat empty cells as 0.
 					if ( '' === $result ) {
-						$result = 0;
+						$result = '0';
 					}
 					// Bail if the cell does not result in a number (meaning it was a number or expression before being evaluated).
 					if ( ! is_numeric( $result ) ) {
 						return "!ERROR! {$cell_reference[0]} does not contain a number or expression";
 					}
 
-					$expression = preg_replace( '#(?<![A-Z])' . $cell_reference[0] . '(?![0-9])#', $result, $expression );
+					$expression = (string) preg_replace( '#(?<![A-Z])' . $cell_reference[0] . '(?![0-9])#', $result, $expression );
 				}
 			}
 
 			$result = $this->_evaluate_math_expression( $expression, $row_idx, $col_idx );
 			// Support putting formulas in strings, like =Total: {A3+A4}.
-			if ( $formula_in_string ) {
+			if ( $formula_in_string ) { // @phpstan-ignore-line
 				$content = str_replace( $orig_expression, $result, $content );
 			} else {
 				$content = $result;
@@ -237,7 +237,7 @@ class TablePress_Evaluate_Legacy {
 	 * @param int    $col_idx    Column index of the cell with the expression.
 	 * @return string Result of the evaluation.
 	 */
-	protected function _evaluate_math_expression( $expression, $row_idx, $col_idx ) {
+	protected function _evaluate_math_expression( string $expression, int $row_idx, int $col_idx ): string {
 		// Make current cell's name and row and column number available as variables in formulas.
 		$this->evalmath->variables['row'] = $row_idx + 1;
 		$this->evalmath->variables['column'] = $col_idx + 1;

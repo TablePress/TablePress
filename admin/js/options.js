@@ -12,12 +12,13 @@
 /**
  * WordPress dependencies.
  */
-import { __, _x, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
  */
-import { $ } from './_common-functions';
+import { $ } from './common/functions';
+import { register_save_changes_keyboard_shortcut } from './common/keyboard-shortcut';
 
 /**
  * Enable/disable the regular textarea according to state of "Load Custom CSS" checkbox.
@@ -41,44 +42,7 @@ document.querySelector( '#tablepress-page form' ).addEventListener( 'submit', fu
 	this.querySelectorAll( ':scope input, :scope select, :scope textarea' ).forEach( ( field ) => ( field.disabled = false ) );
 } );
 
-// Add keyboard shortcut as title attribute to the "Save Changes" button, with correct modifier key for Mac/non-Mac.
-const modifier_key = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
-	_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
-	_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
-const $save_changes_button = $( '#tablepress-options-save-changes' );
-const shortcut = sprintf( $save_changes_button.dataset.shortcut, modifier_key ); // eslint-disable-line @wordpress/valid-sprintf
-$save_changes_button.title = sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), shortcut );
-
-/**
- * Registers keyboard events and triggers corresponding actions by emulating button clicks.
- *
- * @since 2.1.1
- *
- * @param {Event} event Keyboard event.
- */
-const keyboard_shortcuts = function ( event ) {
-	let action = '';
-
-	if ( event.ctrlKey || event.metaKey ) {
-		if ( 83 === event.keyCode ) {
-			// Save Changes: Ctrl/Cmd + S.
-			action = 'save-changes';
-		}
-	}
-
-	if ( 'save-changes' === action ) {
-		// Blur the focussed element to make sure that all change events were triggered.
-		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
-
-		// Emulate a click on the button corresponding to the action.
-		$save_changes_button.click();
-
-		// Prevent the browser's native handling of the shortcut, i.e. showing the Save or Print dialogs.
-		event.preventDefault();
-	}
-};
-// Register keyboard shortcut handler.
-window.addEventListener( 'keydown', keyboard_shortcuts, true );
+register_save_changes_keyboard_shortcut( $( '#tablepress-options-save-changes' ) );
 
 /**
  * Require double confirmation when wanting to uninstall TablePress.
@@ -88,8 +52,8 @@ window.addEventListener( 'keydown', keyboard_shortcuts, true );
 $( '#uninstall-tablepress' ).addEventListener( 'click', ( event ) => {
 	if (
 		! confirm( __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ) ) ||
-		! confirm( __( 'Are you really sure?', 'tablepress' ) ) )
-	{
+		! confirm( __( 'Are you really sure?', 'tablepress' ) )
+	) {
 		event.preventDefault();
 	}
 } );

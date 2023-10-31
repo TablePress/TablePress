@@ -25,7 +25,7 @@ class TablePress_Import_View extends TablePress_View {
 	 * List of WP feature pointers for this view.
 	 *
 	 * @since 2.0.0
-	 * @var array
+	 * @var string[]
 	 */
 	protected $wp_pointers = array( 'tp20_import_drag_drop_detect_format' );
 
@@ -34,11 +34,15 @@ class TablePress_Import_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view.
-	 * @param array  $data   Data for this view.
+	 * @param string               $action Action for this view.
+	 * @param array<string, mixed> $data   Data for this view.
 	 */
-	public function setup( $action, array $data ) {
+	public function setup( /* string */ $action, array $data ) /* : void */ {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		parent::setup( $action, $data );
+
+		$this->add_text_box( 'no-javascript', array( $this, 'textbox_no_javascript' ), 'header' );
 
 		$this->admin_page->enqueue_style( 'jsuites' );
 		$this->admin_page->enqueue_style( 'import', array( 'tablepress-jsuites' ) );
@@ -51,6 +55,9 @@ class TablePress_Import_View extends TablePress_View {
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( $this, 'postbox_import_form' ), 'normal' );
+		$screen = get_current_screen();
+		add_filter( "postbox_classes_{$screen->id}_tablepress_{$this->action}-import-form", array( $this, 'postbox_classes' ) );
+		$this->add_meta_box( 'tables-auto-import', __( 'Automatic Periodic Table Import', 'tablepress' ), array( $this, 'postbox_auto_import' ), 'additional' );
 	}
 
 	/**
@@ -58,10 +65,10 @@ class TablePress_Import_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_head( array $data, array $box ) {
+	public function textbox_head( array $data, array $box ): void {
 		?>
 		<p>
 			<?php _e( 'TablePress can import tables from common spreadsheet applications, like XLSX files fom Excel, or CSV, ODS, HTML, and JSON files.', 'tablepress' ); ?>
@@ -74,109 +81,73 @@ class TablePress_Import_View extends TablePress_View {
 	}
 
 	/**
-	 * Print the content of the "Import Tables" post meta box.
+	 * Prints the content of the "Import Tables" post meta box.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_import_form( array $data, array $box ) {
-		?>
-<table class="tablepress-postbox-table fixed">
-	<tr id="row-import-source">
-		<th class="column-1" scope="row" id="import-source-header"><?php _e( 'Import Source', 'tablepress' ); ?>:</th>
-		<td class="column-2">
-			<label for="tables-import-source-file-upload"><input name="import[source]" id="tables-import-source-file-upload" type="radio" aria-labelledby="import-source-header" value="file-upload"<?php checked( $data['import_source'], 'file-upload', true ); ?> /> <?php _e( 'File Upload', 'tablepress' ); ?></label>
-			<label for="tables-import-source-url"><input name="import[source]" id="tables-import-source-url" type="radio" aria-labelledby="import-source-header" value="url"<?php checked( $data['import_source'], 'url', true ); ?> /> <?php _e( 'URL', 'tablepress' ); ?></label>
-			<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
-			<label for="tables-import-source-server"><input name="import[source]" id="tables-import-source-server" type="radio" aria-labelledby="import-source-header" value="server"<?php checked( $data['import_source'], 'server', true ); ?> /> <?php _e( 'File on server', 'tablepress' ); ?></label>
-			<?php } ?>
-			<label for="tables-import-source-form-field"><input name="import[source]" id="tables-import-source-form-field" type="radio" aria-labelledby="import-source-header" value="form-field"<?php checked( $data['import_source'], 'form-field', true ); ?> /> <?php _e( 'Manual Input', 'tablepress' ); ?></label>
-		</td>
-	</tr>
-	<tr id="row-import-source-file-upload" class="top-border bottom-border">
-		<th class="column-1 top-align" scope="row"><label for="tables-import-file-upload"><?php _e( 'Select files', 'tablepress' ); ?>:</label></th>
-		<td class="column-2">
-			<div class="file-upload-area">
-				<input name="import_file_upload[]" id="tables-import-file-upload" type="file" multiple />
-				<div id="tables-import-file-upload-dropzone" class="dropzone hide-if-no-js">
-					<span><?php _e( 'Click to select files, or drag them here.', 'tablepress' ); ?></span>
-				</div>
-			</div>
-			<?php
-			if ( $data['zip_support_available'] ) {
-				echo '<span class="description">' . __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
-			}
+	public function postbox_import_form( array $data, array $box ): void {
+		$script_data = array(
+			'tables'                 => $this->admin_page->convert_to_json_parse_output( $data['tables'] ),
+			'importSource'           => $this->admin_page->convert_to_json_parse_output( $data['import_source'] ),
+			'importType'             => $this->admin_page->convert_to_json_parse_output( $data['import_type'] ),
+			'importUrl'              => $this->admin_page->convert_to_json_parse_output( esc_url( $data['import_url'] ) ),
+			'importServer'           => $this->admin_page->convert_to_json_parse_output( $data['import_server'] ),
+			'importFormField'        => $this->admin_page->convert_to_json_parse_output( $data['import_form-field'] ),
+			'importExistingTable'    => $this->admin_page->convert_to_json_parse_output( $data['import_existing_table'] ),
+			'zipSupportAvailable'    => $this->admin_page->convert_to_json_parse_output( $data['zip_support_available'] ),
+			'showImportSourceServer' => ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) ? 'true' : 'false',
+			'legacyImport'           => $this->admin_page->convert_to_json_parse_output( $data['legacy_import'] ),
+		);
+
+		echo "<script>\n";
+		echo "window.tp = window.tp || {};\n";
+		echo "tp.import = {};\n";
+		foreach ( $script_data as $variable => $value ) {
+			echo "tp.import.{$variable} = {$value};\n";
+		}
+		echo "</script>\n";
+
+		echo '<div id="tablepress-import-screen"></div>';
+	}
+
+	/**
+	 * Adds the "no-validation-highlighting" class to the "Import Tables" post meta box.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param string[] $classes The array of postbox classes.
+	 * @return string[] The modified array of postbox classes.
+	 */
+	public function postbox_classes( array $classes ): array {
+		$classes[] = 'no-validation-highlighting';
+		return $classes;
+	}
+
+	/**
+	 * Prints the content of the "Automatic Periodic Table Import Screen" post meta box.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
+	 *
+	 * @phpstan-ignore-next-line (PHPStan would like to see a type hint.)
+	 */
+	public function postbox_auto_import( /* array */ $data, /* array */ $box ) /* : void */ {
+		// Don't use type hints in the method declaration, as the method is extended in the TablePress Table Auto Update Extension which is no longer updated.
+
+		if ( tb_tp_fs()->is_free_plan() ) :
 			?>
-		</td>
-	</tr>
-	<tr id="row-import-source-url" class="top-border bottom-border">
-		<th class="column-1 top-align" scope="row"><label for="tables-import-url"><?php _e( 'File URL', 'tablepress' ); ?>:</label></th>
-		<td class="column-2">
-			<input type="text" name="import[url]" id="tables-import-url" class="large-text code" value="<?php echo esc_url( $data['import_url'] ); ?>" />
+			<p style="font-size:14px;">
+				<span class="dashicons dashicons-info-outline"></span>
+				<strong><?php _e( 'Pro Tip:', 'tablepress' ); ?></strong>
+				<?php printf( __( 'You can automate the import of tables from URLs or server files with the <a href="%1$s">“%2$s” premium feature</a>!', 'tablepress' ), 'https://tablepress.org/modules/automatic-periodic-table-import/?utm_source=plugin&utm_medium=textlink&utm_content=import-screen', __( 'Automatic Periodic Table Import', 'tablepress' ) ); ?>
+			</p>
 			<?php
-			if ( $data['zip_support_available'] ) {
-				echo '<br /><span class="description">' . __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
-			}
-			?>
-		</td>
-	</tr>
-		<?php if ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) { ?>
-	<tr id="row-import-source-server" class="top-border bottom-border">
-		<th class="column-1 top-align" scope="row"><label for="tables-import-server"><?php _e( 'Server Path to file', 'tablepress' ); ?>:</label></th>
-		<td class="column-2">
-			<input type="text" name="import[server]" id="tables-import-server" class="large-text code" value="<?php echo esc_attr( $data['import_server'] ); ?>" />
-			<?php
-			if ( $data['zip_support_available'] ) {
-				echo '<br /><span class="description">' . __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) . '</span>';
-			}
-			?>
-		</td>
-	</tr>
-	<?php } ?>
-	<tr id="row-import-source-form-field" class="top-border bottom-border">
-		<th class="column-1 top-align" scope="row"><label for="tables-import-form-field"><?php _e( 'Import data', 'tablepress' ); ?>:</label></th>
-		<td class="column-2">
-			<textarea name="import[form-field]" id="tables-import-form-field" rows="15" cols="40" class="large-text code"><?php echo esc_textarea( $data['import_form-field'] ); ?></textarea>
-		</td>
-	</tr>
-	<tr id="row-import-type" class="top-border">
-		<th class="column-1" scope="row" id="import-type-header"><?php _e( 'Add, Replace, or Append?', 'tablepress' ); ?>:</th>
-		<td class="column-2">
-			<label for="tables-import-type-add"><input name="import[type]" id="tables-import-type-add" type="radio" aria-labelledby="import-type-header" value="add"<?php checked( $data['import_type'], 'add', true ); ?> /> <?php _e( 'Add as new table', 'tablepress' ); ?></label>
-			<label for="tables-import-type-replace"><input name="import[type]" id="tables-import-type-replace" type="radio" aria-labelledby="import-type-header" value="replace"<?php checked( $data['import_type'], 'replace', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Replace existing table', 'tablepress' ); ?></label>
-			<label for="tables-import-type-append"><input name="import[type]" id="tables-import-type-append" type="radio" aria-labelledby="import-type-header" value="append"<?php checked( $data['import_type'], 'append', true ); ?><?php disabled( $data['tables_count'] > 0, false, true ); ?> /> <?php _e( 'Append rows to existing table', 'tablepress' ); ?></label>
-		</td>
-	</tr>
-	<tr id="row-import-existing-table" class="top-border bottom-border">
-		<th class="column-1" scope="row"><label for="tables-import-existing-table"><?php _e( 'Table to replace or append to', 'tablepress' ); ?>:</label></th>
-		<td class="column-2">
-			<select id="tables-import-existing-table" name="import[existing_table]"<?php disabled( $data['tables_count'] > 0, false, true ); ?>>
-				<option value=""><?php _e( '— Select or type —', 'tablepress' ); ?></option>
-			<?php
-			foreach ( $data['table_ids'] as $table_id ) {
-				$table = TablePress::$model_table->load( $table_id, false, false ); // Load table, without table data, options, and visibility settings.
-				if ( ! current_user_can( 'tablepress_edit_table', $table['id'] ) ) {
-					continue;
-				}
-				if ( '' === trim( $table['name'] ) ) {
-					$table['name'] = __( '(no name)', 'tablepress' );
-				}
-				$text = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table['id'], $table['name'] ) );
-				$selected = selected( $table['id'], $data['import_existing_table'], false );
-				echo "<option{$selected} value=\"{$table['id']}\">{$text}</option>";
-			}
-			?>
-			</select>
-		</td>
-	</tr>
-	<tr class="top-border">
-		<td class="column-1"></td>
-		<td class="column-2"><input type="hidden" name="import[legacy_import]" value="<?php echo ( 'true' === $data['legacy_import'] ) ? 'true' : 'false'; ?>" /><input type="submit" value="<?php echo esc_attr_x( 'Import', 'button', 'tablepress' ); ?>" class="button button-primary button-large" id="import-submit-button" /></td>
-	</tr>
-</table>
-		<?php
+		endif;
 	}
 
 	/**
@@ -184,7 +155,7 @@ class TablePress_Import_View extends TablePress_View {
 	 *
 	 * @since 2.0.0
 	 */
-	public function wp_pointer_tp20_import_drag_drop_detect_format() {
+	public function wp_pointer_tp20_import_drag_drop_detect_format(): void {
 		$content  = '<h3>' . __( 'TablePress feature: Drag and Drop Import with Format Detection', 'tablepress' ) . '</h3>';
 		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . __( 'The import of tables is now even more powerful! You can simply drag and drop your files into this area and TablePress will automatically detect the file format!', 'tablepress' ) . '</p>';
 

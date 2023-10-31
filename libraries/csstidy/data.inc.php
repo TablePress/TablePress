@@ -703,20 +703,20 @@ $data['csstidy']['multiple_properties'] = array_merge( $data['csstidy']['color_v
  *
  * @see CSSTidy::load_template()
  */
-$data['csstidy']['predefined_templates']['default'][] = ''; // string before @rule
-$data['csstidy']['predefined_templates']['default'][] = " {\n"; // bracket after @-rule
-$data['csstidy']['predefined_templates']['default'][] = ''; // string before selector
-$data['csstidy']['predefined_templates']['default'][] = " {\n"; // bracket after selector
-$data['csstidy']['predefined_templates']['default'][] = "\t"; // string before property
-$data['csstidy']['predefined_templates']['default'][] = ' '; // string after property+before value
-$data['csstidy']['predefined_templates']['default'][] = ';'; // string after value
-$data['csstidy']['predefined_templates']['default'][] = '}'; // closing bracket - selector
-$data['csstidy']['predefined_templates']['default'][] = "\n\n"; // space between blocks {...}
-$data['csstidy']['predefined_templates']['default'][] = "\n}\n\n"; // closing bracket @-rule
-$data['csstidy']['predefined_templates']['default'][] = "\t"; // indent in @-rule
-$data['csstidy']['predefined_templates']['default'][] = ''; // before comment
-$data['csstidy']['predefined_templates']['default'][] = "\n"; // after comment
-$data['csstidy']['predefined_templates']['default'][] = "\n"; // after each line @-rule
+$data['csstidy']['predefined_templates']['default'][] = ''; // string before @rule.
+$data['csstidy']['predefined_templates']['default'][] = " {\n"; // bracket after @-rule.
+$data['csstidy']['predefined_templates']['default'][] = ''; // string before selector.
+$data['csstidy']['predefined_templates']['default'][] = " {\n"; // bracket after selector.
+$data['csstidy']['predefined_templates']['default'][] = "\t"; // string before property.
+$data['csstidy']['predefined_templates']['default'][] = ' '; // string after property+before value.
+$data['csstidy']['predefined_templates']['default'][] = ';'; // string after value.
+$data['csstidy']['predefined_templates']['default'][] = '}'; // closing bracket - selector.
+$data['csstidy']['predefined_templates']['default'][] = "\n\n"; // space between blocks {...}.
+$data['csstidy']['predefined_templates']['default'][] = "\n}\n\n"; // closing bracket @-rule.
+$data['csstidy']['predefined_templates']['default'][] = "\t"; // indent in @-rule.
+$data['csstidy']['predefined_templates']['default'][] = ''; // before comment.
+$data['csstidy']['predefined_templates']['default'][] = "\n"; // after comment.
+$data['csstidy']['predefined_templates']['default'][] = "\n"; // after each line @-rule.
 
 $data['csstidy']['predefined_templates']['low'][] = '<span class="at">';
 $data['csstidy']['predefined_templates']['low'][] = '</span> <span class="format">{</span>' . "\n";
@@ -765,20 +765,20 @@ $data['csstidy']['predefined_templates']['highest'][] = '';
 
 // Support browser prefixes for properties only in the latest CSS draft.
 foreach ( $data['csstidy']['all_properties'] as $property => $levels ) {
-	if ( false === strpos( $levels, ',' ) ) {
+	if ( ! str_contains( $levels, ',' ) ) {
 		$data['csstidy']['all_properties'][ '-moz-' . $property ] = $levels;
 		$data['csstidy']['all_properties'][ '-webkit-' . $property ] = $levels;
 		$data['csstidy']['all_properties'][ '-ms-' . $property ] = $levels;
 		$data['csstidy']['all_properties'][ '-o-' . $property ] = $levels;
 
-		if ( in_array( $property, $data['csstidy']['unit_values'] ) ) {
+		if ( in_array( $property, $data['csstidy']['unit_values'], true ) ) {
 			$data['csstidy']['unit_values'][] = '-moz-' . $property;
 			$data['csstidy']['unit_values'][] = '-webkit-' . $property;
 			$data['csstidy']['unit_values'][] = '-ms-' . $property;
 			$data['csstidy']['unit_values'][] = '-o-' . $property;
 		}
 
-		if ( in_array( $property, $data['csstidy']['color_values'] ) ) {
+		if ( in_array( $property, $data['csstidy']['color_values'], true ) ) {
 			$data['csstidy']['color_values'][] = '-moz-' . $property;
 			$data['csstidy']['color_values'][] = '-webkit-' . $property;
 			$data['csstidy']['color_values'][] = '-ms-' . $property;

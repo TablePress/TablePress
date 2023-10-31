@@ -20,9 +20,9 @@ import { buildQueryString } from '@wordpress/url';
 /**
  * Internal dependencies.
  */
-import { $ } from './_common-functions';
-import contextMenu from './_edit-contextmenu';
-import naturalSort from './_edit-naturalsort';
+import { $ } from './common/functions';
+import contextMenu from './edit/contextmenu';
+import naturalSort from './edit/naturalsort';
 
 // Ensure the global `tp` object exists.
 window.tp = window.tp || {};

@@ -13,16 +13,16 @@
  *
  * @since 1.0.0
  *
- * @param string|array $table_query Query-string-like list or array of parameters for Shortcode "table" rendering.
+ * @param string|array<string, mixed> $table_query Query-string-like list or array of parameters for Shortcode "table" rendering.
  * @return string HTML of the rendered table.
  */
-function tablepress_get_table( $table_query ) {
+function tablepress_get_table( /* string|array */ $table_query ): string {
 	if ( is_array( $table_query ) ) {
 		$atts = $table_query;
 	} else {
 		parse_str( (string) $table_query, $atts );
 	}
-	return TablePress::$controller->shortcode_table( $atts );
+	return TablePress::$controller->shortcode_table( $atts ); // @phpstan-ignore-line
 }
 
 /**
@@ -32,9 +32,9 @@ function tablepress_get_table( $table_query ) {
  *
  * @see tablepress_get_table()
  *
- * @param string|array $table_query Query-string-like list or array of parameters for Shortcode "table" rendering.
+ * @param string|array<string, mixed> $table_query Query-string-like list or array of parameters for Shortcode "table" rendering.
  */
-function tablepress_print_table( $table_query ) {
+function tablepress_print_table( /* string|array */ $table_query ): void {
 	echo tablepress_get_table( $table_query );
 }
 
@@ -43,16 +43,16 @@ function tablepress_print_table( $table_query ) {
  *
  * @since 1.0.0
  *
- * @param string|array $table_query Query-string-like list or array of parameters for Shortcode "table-info" rendering.
+ * @param string|array<string, mixed> $table_query Query-string-like list or array of parameters for Shortcode "table-info" rendering.
  * @return string Desired table information.
  */
-function tablepress_get_table_info( $table_query ) {
+function tablepress_get_table_info( /* string|array */ $table_query ): string {
 	if ( is_array( $table_query ) ) {
 		$atts = $table_query;
 	} else {
 		parse_str( (string) $table_query, $atts );
 	}
-	return TablePress::$controller->shortcode_table_info( $atts );
+	return TablePress::$controller->shortcode_table_info( $atts ); // @phpstan-ignore-line
 }
 
 /**
@@ -62,8 +62,8 @@ function tablepress_get_table_info( $table_query ) {
  *
  * @see tablepress_get_table_info()
  *
- * @param string|array $table_query Query-string-like list or array of parameters for Shortcode "table-info" rendering.
+ * @param string|array<string, mixed> $table_query Query-string-like list or array of parameters for Shortcode "table-info" rendering.
  */
-function tablepress_print_table_info( $table_query ) {
+function tablepress_print_table_info( /* string|array */ $table_query ): void {
 	echo tablepress_get_table_info( $table_query );
 }

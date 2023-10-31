@@ -3,6 +3,7 @@
 # Exclude these folders and files from release archives.
 /.git/ export-ignore
 /.github/ export-ignore
+/.phpstan/ export-ignore
 /node_modules/ export-ignore
 /tests/ export-ignore
 /vendor/ export-ignore
@@ -22,8 +23,8 @@
 /package.json export-ignore
 /package-lock.json export-ignore
 /phpcompat.xml.dist export-ignore
-/phpcompat-7.2.xml.dist export-ignore
 /phpcs.xml.dist export-ignore
+/phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
 /readme.md export-ignore
 /webpack.config.js export-ignore
@@ -42,6 +43,7 @@
 *.scss text
 *.yml text
 *.xml.dist text
+*.neon.dist text
 
 # Explicitly set CRLF for the CRLF test files for the CSV import unit tests.
 /tests/data/import/phpspreadsheet/test-table-comma-crlf.csv text eol=crlf

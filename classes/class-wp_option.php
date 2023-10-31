@@ -35,7 +35,7 @@ class TablePress_WP_Option {
 	 * Current value of the option.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var mixed[]
 	 */
 	protected $option_value;
 
@@ -44,7 +44,7 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $params {
+	 * @param array{option_name: string, default_value: mixed[]} $params {
 	 *     An array of Option parameters.
 	 *
 	 *     @type string $option_name   Name of the Option.
@@ -70,7 +70,7 @@ class TablePress_WP_Option {
 	 * @param string $name Name of the option to check.
 	 * @return bool Whether the option is set.
 	 */
-	public function is_set( $name ) {
+	public function is_set( string $name ): bool {
 		return isset( $this->option_value[ $name ] );
 	}
 
@@ -79,11 +79,11 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string|bool $name          Optional. Name of a single option to get, or false for all options.
-	 * @param mixed       $default_value Optional. Default value to return, if a single option $name does not exist.
-	 * @return mixed|array Value of the retrieved option $name or $default_value if it does not exist, or all options.
+	 * @param string|false $name          Optional. Name of a single option to get, or false for all options.
+	 * @param mixed        $default_value Optional. Default value to return, if a single option $name does not exist.
+	 * @return mixed Value of the retrieved option $name or $default_value if it does not exist, or all options.
 	 */
-	public function get( $name = false, $default_value = null ) {
+	public function get( /* string|false */ $name = false, /* string|int|float|bool|array|null */ $default_value = null ) /* : string|int|float|bool|array|null */ {
 		if ( false === $name ) {
 			return $this->option_value;
 		}
@@ -101,12 +101,12 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $new_options New options (name => value).
+	 * @param array<string, mixed> $new_options New options (name => value).
 	 * @return bool True on success, false on failure.
 	 */
-	public function update( array $new_options ) {
+	public function update( array $new_options ): bool {
 		$this->option_value = $new_options;
-		return $this->_update_option( $this->option_name, wp_json_encode( $this->option_value, TABLEPRESS_JSON_OPTIONS ) );
+		return $this->_update_option( $this->option_name, wp_json_encode( $this->option_value, TABLEPRESS_JSON_OPTIONS ) ); // @phpstan-ignore-line
 	}
 
 	/**
@@ -116,7 +116,7 @@ class TablePress_WP_Option {
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	public function delete() {
+	public function delete(): bool {
 		return $this->_delete_option( $this->option_name );
 	}
 
@@ -133,7 +133,7 @@ class TablePress_WP_Option {
 	 * @param mixed  $default_value Default value of the WP Option.
 	 * @return mixed Current value of the WP Option, or $default_value if it does not exist.
 	 */
-	protected function _get_option( $option_name, $default_value ) {
+	protected function _get_option( string $option_name, /* string|int|float|bool|array|null */ $default_value ) /* : string|int|float|bool|array|null */ {
 		return get_option( $option_name, $default_value );
 	}
 
@@ -146,7 +146,7 @@ class TablePress_WP_Option {
 	 * @param string $new_value   New value of the WP Option.
 	 * @return bool True on success, false on failure.
 	 */
-	protected function _update_option( $option_name, $new_value ) {
+	protected function _update_option( string $option_name, string $new_value ): bool {
 		return update_option( $option_name, $new_value );
 	}
 
@@ -158,7 +158,7 @@ class TablePress_WP_Option {
 	 * @param string $option_name Name of the WP Option.
 	 * @return bool True on success, false on failure.
 	 */
-	protected function _delete_option( $option_name ) {
+	protected function _delete_option( string $option_name ): bool {
 		return delete_option( $option_name );
 	}
 

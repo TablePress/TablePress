@@ -115,9 +115,21 @@
 			&:hover,
 			&:active,
 			&:focus {
-				color: #fff;
+				color: #ffffff;
 				background-color: #69b547;
 				border-color: #69b547;
+			}
+
+			&.renew {
+				background-color: #dba617;
+				border-color: #dba617;
+
+				&:hover,
+				&:active,
+				&:focus {
+					background-color: #ebb72a;
+					border-color: #ebb72a;
+				}
 			}
 
 			.dashicons {
@@ -132,102 +144,138 @@
 	}
 }
 
-/* Add New Table form */
-#tablepress_add-add-table .form-wrap {
-	max-width: 500px;
-}
-#tablepress_add-add-table .form-field {
-	margin: 0;
-}
-/* Number of rows/columns in the "Add New Table" form */
-#tablepress_add-add-table .form-field-small {
-	float: left;
-	width: 150px;
-	margin-right: 20px;
-}
+/* Styling for the "Add New Table" form. */
+#tablepress_add-add-table {
+	.form-wrap {
+		max-width: 500px;
+	}
 
-/* Width of the columns on the "All Tables" list */
-.tablepress-all-tables thead .column-table_id {
-	width: 50px;
-}
-.tablepress-all-tables thead .column-table_name {
-	width: 30%;
-}
-.tablepress-all-tables thead .column-table_author {
-	width: 12%;
-}
-.tablepress-all-tables thead .column-table_last_modified {
-	width: 15%;
-}
-/* Font weight for the table ID column */
-.tablepress-all-tables tbody .column-table_id {
-	font-weight: bold;
-}
-/* Responsiveness on the All Tables screen */
-@media screen and (max-width: 782px) {
-	.tablepress-all-tables .column-table_id {
-		display: none !important;
-		padding: 3px 8px 3px 35%;
+	.form-field {
+		margin: 0;
+
+	}
+
+	/* Number of rows/columns in the "Add New Table" form. */
+	.form-field-small {
+		float: left;
+		width: 150px;
+		margin-right: 20px;
 	}
 }
 
-/* Search results for WP_List_Table */
+/* Width of the columns on the "All Tables" list. */
+.tablepress-all-tables {
+	thead {
+		.column-table_id {
+			width: 50px;
+		}
+		.column-table_name {
+			width: 30%;
+		}
+		.column-table_author {
+			width: 12%;
+		}
+		.column-table_last_modified {
+			width: 15%;
+		}
+	}
+
+	/* Font weight for the table ID column. */
+	tbody .column-table_id {
+		font-weight: bold;
+	}
+
+	/* Responsiveness on the All Tables screen. */
+	@media screen and (max-width: 782px) {
+		.column-table_id {
+			display: none !important;
+			padding: 3px 8px 3px 35%;
+		}
+	}
+}
+
+/* Positioning of Search results of WP_List_Tables. */
 #tablepress-page .subtitle {
 	float: left;
 	padding: 8px 0 0 0;
 }
 
-/* Table ID/name dropdown on "Export" screen */
-#tablepress-page #tables-export {
-	width: 100%;
-}
-
-/* Tables in postboxes (on the "Edit" and "Plugin Options" screens) */
+/* Tables in postboxes (on the "Edit" and "Plugin Options" screens). */
 .tablepress-postbox-table {
 	border-spacing: 0;
 	max-width: 1000px;
 	width: 100%;
+
+	/* Default column widths */
+	.column-1 {
+		width: 25%;
+	}
+	.column-2 {
+		width: 75%;
+	}
+
+	th {
+		text-align: left;
+		font-weight: normal;
+	}
+	th,
+	td {
+		padding: 2px;
+		word-wrap: break-word;
+	}
+	.top-border {
+		th,
+		td {
+			padding-top: 6px;
+		}
+	}
+	.bottom-border {
+		th,
+		td {
+			padding-bottom: 6px;
+			border-bottom: 1px solid #eeeeee;
+		}
+	}
+	.top-align {
+		vertical-align: top;
+		padding-top: 6px;
+	}
 }
-/* Default column widths */
-.tablepress-postbox-table .column-1 {
-	width: 25%;
-}
-.tablepress-postbox-table .column-2 {
-	width: 75%;
-}
-.tablepress-postbox-table th {
-	text-align: left;
-	font-weight: normal;
-}
-.tablepress-postbox-table th,
-.tablepress-postbox-table td {
-	padding: 2px;
-	word-wrap: break-word;
-}
-.tablepress-postbox-table .top-border th,
-.tablepress-postbox-table .top-border td {
-	padding-top: 6px;
-}
-.tablepress-postbox-table .bottom-border th,
-.tablepress-postbox-table .bottom-border td {
-	padding-bottom: 6px;
-	border-bottom: 1px solid #eeeeee;
-}
-.tablepress-postbox-table .top-align {
-	vertical-align: top;
-	padding-top: 6px;
-}
-/* Select dropdown alignment */
+
+/* Select dropdown alignment. */
 #tablepress-page select {
 	vertical-align: baseline;
 }
-/* Alignment of textareas and buttons in postboxes */
+
+/* Alignment of textareas and buttons in postboxes. */
 #tablepress-page textarea,
 .tablepress-postbox-table .button {
 	margin: 1px;
 }
 
-/* Red color for the "Uninstall TablePress" button on the "Plugin Options" screen */
+/* Red color for the "Uninstall TablePress" button on the "Plugin Options" screen. */
 #uninstall-tablepress {
 	color: #bc0b0b;
+}
+
+/* Styling of pills in postbox headings. */
+.postbox .postbox-header .hndle {
+	display: inline;
+
+	.beta-label {
+		display: inline-block;
+		vertical-align: top;
+		box-sizing: border-box;
+		margin: 1px 0 -1px 6px;
+		padding: 0 5px;
+		min-width: 18px;
+		height: 18px;
+		border-radius: 9px;
+		background-color: #049cdb;
+		color: #ffffff;
+		font-size: 11px;
+		line-height: 1.6;
+		text-align: center;
+		z-index: 26;
+	}
 }

@@ -13,9 +13,8 @@ on:
       - '**.php'
       # These files configure Composer. Changes could affect the outcome.
       - 'composer.*'
-      # These files configure PHP Compatibility scanning. Changes could affect the outcome.
+      # This file configures PHP Compatibility scanning. Changes could affect the outcome.
       - 'phpcompat.xml.dist'
-      - 'phpcompat-7.2.xml.dist'
       # Changes to workflow files should always verify all workflows are successful.
       - '.github/workflows/*.yml'
   pull_request:
@@ -26,9 +25,8 @@ on:
       - '**.php'
       # These files configure Composer. Changes could affect the outcome.
       - 'composer.*'
-      # These files configure PHP Compatibility scanning. Changes could affect the outcome.
+      # This file configures PHP Compatibility scanning. Changes could affect the outcome.
       - 'phpcompat.xml.dist'
-      - 'phpcompat-7.2.xml.dist'
       # Changes to workflow files should always verify all workflows are successful.
       - '.github/workflows/*.yml'
   schedule:
@@ -67,7 +65,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@72ae4ccbe57f82bbe08411e84e2130bd4ba1c10f # v2.25.5
+        uses: shivammathur/setup-php@7fdd3ece872ec7ec4c098ae5ab7637d5e0a96067 # v2.26.0
         with:
           php-version: '8.2'
           coverage: none
@@ -80,7 +78,7 @@ jobs:
           composer --version
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6 # v2.2.0
@@ -88,21 +86,13 @@ jobs:
       - name: Make Composer packages available globally
         run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
 
-      - name: Run PHP compatibility tests, excluding PHPSpreadsheet
+      - name: Run PHP compatibility tests
         id: phpcs
         run: phpcs --standard=phpcompat.xml.dist --report-full --report-checkstyle=./phpcs-report.xml
 
-      - name: Show PHPCS results in PR/commit, excluding PHPSpreadsheet
+      - name: Show PHPCS results in PR/commit
         if: ${{ always() && steps.phpcs.outcome == 'failure' }}
         run: cs2pr ./phpcs-report.xml
-
-      - name: Run PHP compatibility tests for PHPSpreadsheet
-        id: phpcs-phpspreadsheet
-        run: phpcs --standard=phpcompat-7.2.xml.dist --report-full --report-checkstyle=./phpcs-report-7.2.xml
-
-      - name: Show PHPCS results in PR/commit for PHPSpreadsheet
-        if: ${{ always() && steps.phpcs-phpspreadsheet.outcome == 'failure' }}
-        run: cs2pr ./phpcs-report-7.2.xml
 
       - name: Ensure version-controlled files are not modified during the tests
         run: git diff --exit-code

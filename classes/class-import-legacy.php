@@ -25,7 +25,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 * File/Data Formats that are available for import.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var array<string, string>
 	 */
 	public $import_formats = array();
 
@@ -49,7 +49,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 * Imported table.
 	 *
 	 * @since 1.0.0
-	 * @var array|false
+	 * @var array<string, mixed>|false
 	 */
 	protected $imported_table = false;
 
@@ -81,9 +81,17 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @param string $format Import format.
 	 * @param string $data   Data to import.
-	 * @return array|false Table array on success, false on error.
+	 * @return array<string, mixed>|false Table array on success, false on error.
 	 */
-	public function import_table( $format, $data ) {
+	public function import_table( string $format, string $data ) /* : array|false */ {
+		/**
+		 * Filters the data that is to be imported.
+		 *
+		 * @since 1.8.1
+		 *
+		 * @param string $data   Data to import.
+		 * @param string $format Import format.
+		 */
 		$this->import_data = apply_filters( 'tablepress_import_table_data', $data, $format );
 
 		if ( ! in_array( $format, array( 'xlsx', 'xls' ), true ) ) {
@@ -110,10 +118,14 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 				return false;
 		}
 
+		if ( false === $this->imported_table ) {
+			return false;
+		}
+
 		// Make sure that cells are stored as strings.
 		array_walk_recursive(
 			$this->imported_table['data'],
-			static function( &$cell_content, $col_idx ) {
+			static function ( /* string|int|float|bool|null */ &$cell_content, int $col_idx ): void {
 				$cell_content = (string) $cell_content;
 			}
 		);
@@ -126,7 +138,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function import_csv() {
+	protected function import_csv(): void {
 		$csv_parser = TablePress::load_class( 'CSV_Parser', 'csv-parser.class.php', 'libraries' );
 		$csv_parser->load_data( $this->import_data );
 		$delimiter = $csv_parser->find_delimiter();
@@ -141,7 +153,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function import_html() {
+	protected function import_html(): void {
 		if ( ! $this->html_import_support_available ) {
 			return;
 		}
@@ -164,7 +176,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function import_json() {
+	protected function import_json(): void {
 		$json_table = json_decode( $this->import_data, true );
 
 		// Check if JSON could be decoded.
@@ -197,7 +209,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @since 1.1.0
 	 */
-	protected function import_xls() {
+	protected function import_xls(): void {
 		$excel_reader = TablePress::load_class( 'Spreadsheet_Excel_Reader', 'excel-reader.class.php', 'libraries', $this->import_data );
 
 		// Loop through Excel file and retrieve value and colspan/rowspan properties for each cell.
@@ -262,7 +274,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @since 1.1.0
 	 */
-	protected function import_xlsx() {
+	protected function import_xlsx(): void {
 		TablePress::load_file( 'simplexlsx.class.php', 'libraries' );
 		$xlsx_file = \Shuchkin\SimpleXLSX::parse( $this->import_data, true );
 
@@ -281,10 +293,10 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	 *
 	 * @link http://stevephillips.me/blog/dealing-php-and-character-encoding
 	 */
-	protected function fix_table_encoding() {
+	protected function fix_table_encoding(): void {
 		// Check and remove possible UTF-8 Byte-Order Mark (BOM).
 		$bom = pack( 'CCC', 0xef, 0xbb, 0xbf );
-		if ( 0 === strncmp( $this->import_data, $bom, 3 ) ) {
+		if ( str_starts_with( $this->import_data, $bom ) ) {
 			$this->import_data = substr( $this->import_data, 3 );
 			// If data has a BOM, it's UTF-8, so further checks unnecessary.
 			return;
@@ -296,7 +308,7 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 		}
 
 		// Check for possible UTF-16 BOMs ("little endian" and "big endian") and try to convert the data to UTF-8.
-		if ( "\xFF\xFE" === substr( $this->import_data, 0, 2 ) || "\xFE\xFF" === substr( $this->import_data, 0, 2 ) ) {
+		if ( str_starts_with( $this->import_data, "\xFF\xFE" ) || str_starts_with( $this->import_data, "\xFE\xFF" ) ) {
 			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			$data = @iconv( 'UTF-16', 'UTF-8', $this->import_data );
 			if ( false !== $data ) {
@@ -310,13 +322,31 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 			$current_encoding = mb_detect_encoding( $this->import_data, 'ASCII, UTF-8, ISO-8859-1' );
 			if ( 'UTF-8' !== $current_encoding ) {
 				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				$data = @iconv( $current_encoding, 'UTF-8', $this->import_data );
+				$data = @iconv( $current_encoding, 'UTF-8', $this->import_data ); // @phpstan-ignore-line
 				if ( false !== $data ) {
 					$this->import_data = $data;
 					return;
 				}
 			}
 		}
+	}
+
+	/**
+	 * Replaces Windows line breaks \r\n with Unix line breaks \n.
+	 *
+	 * This function uses call by reference to save PHP memory on large arrays.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string[] $an_array Array in which Windows line breaks should be replaced by Unix line breaks.
+	 */
+	protected function normalize_line_endings( array &$an_array ): void {
+		array_walk_recursive(
+			$an_array,
+			static function ( string &$cell_content, int $col_idx ): void {
+				$cell_content = str_replace( "\r\n", "\n", $cell_content );
+			}
+		);
 	}
 
 } // class TablePress_Import_Legacy

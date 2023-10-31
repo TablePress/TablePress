@@ -21,7 +21,7 @@ import { RawHTML } from '@wordpress/element';
  * @param {Object} params.attributes            Block attributes.
  * @param {string} params.attributes.id         Table ID.
  * @param {string} params.attributes.parameters Table render attributes.
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export default function save( { attributes: { id = '', parameters = '' } } ) {
 	if ( '' === id ) {

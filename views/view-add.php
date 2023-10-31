@@ -26,10 +26,12 @@ class TablePress_Add_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view.
-	 * @param array  $data   Data for this view.
+	 * @param string               $action Action for this view.
+	 * @param array<string, mixed> $data   Data for this view.
 	 */
-	public function setup( $action, array $data ) {
+	public function setup( /* string */ $action, array $data ) /* : void */ {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		parent::setup( $action, $data );
 
 		$this->process_action_messages( array(
@@ -47,10 +49,10 @@ class TablePress_Add_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_head( array $data, array $box ) {
+	public function textbox_head( array $data, array $box ): void {
 		?>
 		<p>
 			<?php _e( 'To add a new table, enter its name, a description (optional), and the number of rows and columns into the form below.', 'tablepress' ); ?>
@@ -66,10 +68,10 @@ class TablePress_Add_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_add_table( array $data, array $box ) {
+	public function postbox_add_table( array $data, array $box ): void {
 		?>
 		<div class="form-wrap">
 			<div class="form-field">

@@ -27,9 +27,9 @@ abstract class HTML_Parser {
 	 * @since 2.0.0
 	 *
 	 * @param string $html Data to be parsed.
-	 * @return array|WP_Error Array with table data and options (current table head and foot row) on success, WP_Error on error.
+	 * @return array<string, mixed>|WP_Error Array with table data and options (current table head and foot row) on success, WP_Error on error.
 	 */
-	public static function parse( $html ) {
+	public static function parse( string $html ) /* : array|WP_Error */ {
 		if ( false === stripos( $html, '<table' ) || false === stripos( $html, '</table>' ) ) {
 			return new WP_Error( 'table_import_html_no_table_found' );
 		}
@@ -41,15 +41,15 @@ abstract class HTML_Parser {
 			 * Don't expand external entities, see https://websec.io/2012/08/27/Preventing-XXE-in-PHP.html.
 			 * Silence warnings as the function is deprecated in PHP 8, but can be necessary with LIBXML_NOENT being defined, see https://core.trac.wordpress.org/changeset/50714.
 			 */
-			@libxml_disable_entity_loader( true ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@libxml_disable_entity_loader( true ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,Generic.PHP.DeprecatedFunctions.Deprecated
 		}
 		// No warnings/errors raised, but stored internally.
 		libxml_use_internal_errors( true );
 		$dom = new DOMDocument( '1.0', 'UTF-8' );
 		// No strict checking for invalid HTML.
 		$dom->strictErrorChecking = false; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$dom->loadHTML( $full_html );
-		if ( false === $dom ) {
+		$result = $dom->loadHTML( $full_html );
+		if ( ! $result ) {
 			return new WP_Error( 'table_import_html_dom_load_html_failed' );
 		}
 		$dom_tables = $dom->getElementsByTagName( 'table' );
@@ -57,8 +57,8 @@ abstract class HTML_Parser {
 			return new WP_Error( 'table_import_html_dom_get_tables' );
 		}
 		libxml_clear_errors(); // Clear errors so that we only catch those inside the table in the next line.
-		$table = simplexml_import_dom( $dom_tables->item( 0 ) );
-		if ( false === $table ) {
+		$table = simplexml_import_dom( $dom_tables->item( 0 ) ); // @phpstan-ignore-line
+		if ( is_null( $table ) ) {
 			return new WP_Error( 'table_import_html_simplexml_import_dom_failed' );
 		}
 
@@ -87,17 +87,17 @@ abstract class HTML_Parser {
 			'options' => array(),
 		);
 		if ( isset( $table->thead ) ) {
-			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->thead[0]->tr ) );
+			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->thead[0]->tr ) ); // @phpstan-ignore-line
 			$html_table['options']['table_head'] = true;
 		}
 		if ( isset( $table->tbody ) ) {
-			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tbody[0]->tr ) );
+			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tbody[0]->tr ) ); // @phpstan-ignore-line
 		}
 		if ( isset( $table->tr ) ) {
 			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tr ) );
 		}
 		if ( isset( $table->tfoot ) ) {
-			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tfoot[0]->tr ) );
+			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tfoot[0]->tr ) ); // @phpstan-ignore-line
 			$html_table['options']['table_foot'] = true;
 		}
 
@@ -110,16 +110,16 @@ abstract class HTML_Parser {
 	 * @since 2.0.0
 	 *
 	 * @param SimpleXMLElement $element XMLElement.
-	 * @return array SimpleXMLElement exported to an array.
+	 * @return array<int, array<int, string>> SimpleXMLElement exported to an array.
 	 */
-	protected static function _import_html_rows( $element ) {
+	protected static function _import_html_rows( SimpleXMLElement $element ): array {
 		$rows = array(); // Container for the table data.
 		$rowspans = array(); // Container for information about rowspans in rows that follow the currently processed row.
 
 		$row_idx = 0;
 		foreach ( $element as $row ) {
 			// If all cells in a row should be merged with the cells in the row above, add the trigger word to each of them (should be very rare).
-			while ( isset( $rowspans[ $row_idx ] ) && count( $rowspans[ $row_idx ] ) === count( $rows[ $row_idx - 1 ] ) ) {
+			while ( isset( $rowspans[ $row_idx ] ) && count( $rowspans[ $row_idx ] ) === count( $rows[ $row_idx - 1 ] ) ) { // phpcs:ignore Squiz.PHP.DisallowSizeFunctionsInLoops.Found
 				$rows[] = $rowspans[ $row_idx ];
 				++$row_idx;
 			}
@@ -136,7 +136,7 @@ abstract class HTML_Parser {
 				$cell_xml = $cell->asXml();
 
 				// Get content between <td>...</td>, or <th>...</th>, possibly with HTML.
-				if ( 1 === preg_match( '#<t[d|h].*?>(.*)</t[d|h]>#is', $cell_xml, $matches ) ) {
+				if ( false !== $cell_xml && 1 === preg_match( '#<t[d|h].*?>(.*)</t[d|h]>#is', $cell_xml, $matches ) ) {
 					/*
 					 * Decode HTML entities again, as there might be some left especially in attributes of HTML tags in the cells,
 					 * see https://secure.php.net/manual/en/simplexmlelement.asxml.php#107137.
@@ -187,7 +187,7 @@ abstract class HTML_Parser {
 		}
 
 		// After the last data row: If all cells in a row should be merged with the cells in the row above, add the trigger word to each of them (should be very rare).
-		while ( isset( $rowspans[ $row_idx ] ) && count( $rowspans[ $row_idx ] ) === count( $rows[ $row_idx - 1 ] ) ) {
+		while ( isset( $rowspans[ $row_idx ] ) && count( $rowspans[ $row_idx ] ) === count( $rows[ $row_idx - 1 ] ) ) { // phpcs:ignore Squiz.PHP.DisallowSizeFunctionsInLoops.Found
 			$rows[] = $rowspans[ $row_idx ];
 			++$row_idx;
 		}

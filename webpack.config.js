@@ -15,6 +15,7 @@
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
+const { EnvironmentPlugin } = require( 'webpack' );
 const glob = require( 'glob' );
 
 /**
@@ -45,6 +46,9 @@ const blockConfig = {
 		} ),
 		new MiniCSSExtractPlugin( { filename: '[name].css' } ),
 		new DependencyExtractionWebpackPlugin(),
+		new EnvironmentPlugin( {
+			DEVELOP: false,
+		} ),
 	],
 };
 
@@ -58,7 +62,7 @@ const adminJsConfig = {
 	entry:
 		// Find all .js files in ./admin/js and contruct an "entry" object ( { name: <file> } ).
 		glob.sync(
-			'[^_]*.js',
+			'*.js',
 			{
 				cwd: './admin/js/',
 			}
@@ -80,6 +84,9 @@ const adminJsConfig = {
 			cleanOnceBeforeBuildPatterns: [ '**/*', '!index.php' ],
 		} ),
 		new DependencyExtractionWebpackPlugin(),
+		new EnvironmentPlugin( {
+			DEVELOP: false,
+		} ),
 	],
 };
 

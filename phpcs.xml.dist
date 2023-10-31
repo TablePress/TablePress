@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards">
+<ruleset name="TablePress Coding Standards">
 	<description>Apply WordPress Coding Standards to all TablePress plugin files.</description>
+
+	<!--
+	#############################################################################
+	COMMAND LINE ARGUMENTS
+	https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset
+	#############################################################################
+	-->
 
 	<!-- Only scan PHP files. -->
 	<arg name="extensions" value="php"/>
@@ -23,28 +30,93 @@
 	<!-- Show sniff codes in all reports. -->
 	<arg value="ps"/>
 
+	<!--
+	#############################################################################
+	FILE SELECTION
+	Set which files will be subject to the scans executed using this ruleset.
+	#############################################################################
+	-->
+
 	<!-- Scan in all locations. -->
 	<file>./</file>
 
-	<!-- Load WordPress Core rules set. -->
-	<rule ref="WordPress-Core">
-		<!-- Exclude rules that are not enforced in TablePress. -->
+	<!-- Exclude auto-generated JS build asset files that don't follow all whitespace rules. -->
+	<exclude-pattern>/admin/js/*\.asset\.php</exclude-pattern>
+	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
+
+	<!-- Exclude third-party libraries and build tools. -->
+	<exclude-pattern type="relative">^\.phpstan/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/freemius/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/autoload\.php$</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php$</exclude-pattern>
+	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php$</exclude-pattern>
+	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
+	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
+
+	<!--
+	#############################################################################
+	SET UP THE RULESET
+	#############################################################################
+	-->
+
+	<!-- Load the full WordPress rules set. -->
+	<rule ref="WordPress">
+		<!-- Exclude rules that are not enforced or handled directly in TablePress. -->
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
 		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
 		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
 		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
-		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.SpaceAfterFunction"/>
+		<exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+		<exclude name="Squiz.PHP.CommentedOutCode.Found"/>
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound"/>
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped"/>
+		<exclude name="WordPress.Security.EscapeOutput.UnsafePrintingFunction"/>
+		<exclude name="WordPress.Security.NonceVerification.Missing"/>
+		<exclude name="WordPress.Security.NonceVerification.Recommended"/>
+		<exclude name="WordPress.Security.SafeRedirect.wp_redirect_wp_redirect"/>
+		<exclude name="WordPress.Security.ValidatedSanitizedInput.InputNotSanitized"/>
+		<exclude name="WordPress.Security.ValidatedSanitizedInput.InputNotValidated"/>
+		<exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash"/>
+		<exclude name="WordPress.WP.AlternativeFunctions"/>
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
 	</rule>
 
-	<!-- Load WordPress Docs rules set. -->
-	<rule ref="WordPress-Docs">
+	<!-- All index.php files only contain a short comment about them being a placeholder to prevent directory listings. -->
+	<rule ref="Squiz.Commenting.FileComment.WrongStyle">
+		<exclude-pattern>*/index\.php</exclude-pattern>
 	</rule>
 
-	<!-- Load WordPress I18n rules set. -->
+	<!-- Configure the custom TablePress capabilities in the WordPress Capabilities rules set. -->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<!-- Configure custom capabilities. -->
+			<property name="custom_capabilities" type="array">
+				<element value="tablepress_access_about_screen"/>
+				<element value="tablepress_access_options_screen"/>
+				<element value="tablepress_add_tables"/>
+				<element value="tablepress_copy_table"/>
+				<element value="tablepress_copy_tables"/>
+				<element value="tablepress_delete_table"/>
+				<element value="tablepress_delete_tables"/>
+				<element value="tablepress_edit_options"/>
+				<element value="tablepress_edit_table"/>
+				<element value="tablepress_edit_tables"/>
+				<element value="tablepress_edit_table_id"/>
+				<element value="tablepress_export_table"/>
+				<element value="tablepress_export_tables"/>
+				<element value="tablepress_import_tables"/>
+				<element value="tablepress_list_tables"/>
+				<element value="tablepress_preview_table"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Configure the WordPress I18n rules set. -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- Configure used text domains. -->
@@ -55,27 +127,4 @@
 		</properties>
 	</rule>
 
-	<!-- Even though it's allowed in PHP, not using reserved keywords as parameter names reduces confusion. -->
-	<rule ref="Universal.NamingConventions.NoReservedKeywordParameterNames">
-	</rule>
-
-	<!-- All index.php files only contain a short comment about them being a placeholder to prevent directory listings. -->
-	<rule ref="Squiz.Commenting.FileComment.WrongStyle">
-		<exclude-pattern>*/index\.php</exclude-pattern>
-	</rule>
-
-	<!-- Auto-generated JS build asset files don't follow all whitespace rules. -->
-	<exclude-pattern>/admin/js/*\.asset\.php</exclude-pattern>
-	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
-
-	<!-- Directories and third party library exclusions. -->
-	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/csstidy/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/freemius/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/autoload\.php</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php</exclude-pattern>
-	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
-	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
 </ruleset>

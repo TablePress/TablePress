@@ -29,7 +29,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public static function set_up_before_class() {
+	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-import.php';
 	}
@@ -39,7 +39,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function set_up() {
+	public function set_up(): void {
 		parent::set_up();
 		$this->importer = new TablePress_Import();
 	}
@@ -49,7 +49,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function test_tablepress_import_class_loaded() {
+	public function test_tablepress_import_class_loaded(): void {
 		$this->assertTrue( class_exists( 'TablePress_Import', false ) );
 	}
 
@@ -58,7 +58,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function test_tablepress_import_instance() {
+	public function test_tablepress_import_instance(): void {
 		$this->assertInstanceOf( 'TablePress_Import', $this->importer );
 	}
 
@@ -67,7 +67,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function test_table_import_incomplete_configuration() {
+	public function test_table_import_incomplete_configuration(): void {
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => '...',
@@ -85,9 +85,9 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array<int, string>> Test data.
 	 */
-	public function data_table_import_server_xlsx_phpspreadsheet() {
+	public function data_table_import_server_xlsx_phpspreadsheet(): array {
 		return array(
 			array( 'test-table.xlsx' ),
 		);
@@ -96,17 +96,13 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	/**
 	 * Test import of XLSX files from the server, using the PHPSpreadsheet import class.
 	 *
-	 * This test requires PHP 7.2 as that's a PHPSpreadsheet requirement.
-	 *
-	 * @requires PHP 7.2
-	 *
 	 * @dataProvider data_table_import_server_xlsx_phpspreadsheet
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
-	public function test_table_import_server_xlsx_phpspreadsheet( $file ) {
+	public function test_table_import_server_xlsx_phpspreadsheet( string $file ): void {
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
@@ -175,9 +171,9 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 			array( 'Merged/combined cells', '<del>strikethrough</del>', '<u>underline</u>', '' ),
 			array( '#rowspan#', '<strong>bold</strong>', '<em>italics</em>', '' ),
 			array( '<span style="color:#FF0000;">red text</span>', 'yellow background', 'right aligned', '' ),
-			array( "Cell comment<div class=\"comment\">Microsoft Office User:\nComment text</div>", 'CO<span style="color:#000000;"><strong><sub>2</sub></strong></span><span style="color:#000000;"> subscript bold</span>', 'center aligned', '' ),
-			array( '<span style="color:#FF0000;">red text <span style="color:#FFFF00;">yellow text</span></span>', 'H<span style="color:#000000;"><sub>2</sub></span><span style="color:#000000;">O</span>', 'left aligned', '' ),
-			array( '', 'H<span style="color:#000000;"><sub>2</sub></span><span style="color:#000000;">O </span><span style="color:#00FA00;">green</span>', '<span style="color:#0432FF;">H<span style="color:#0432FF;"><sub>2</sub></span><span style="color:#0432FF;">O </span><span style="color:#FF2600;">gr</span><span style="color:#000000;">e</span><span style="color:#FF2600;">en</span></span>', '' ),
+			array( "Cell comment<div class=\"comment\">Microsoft Office User:\nComment text</div>", 'CO<strong><sub>2</sub></strong> subscript bold', 'center aligned', '' ),
+			array( '<span style="color:#FF0000;">red text <span style="color:#FFFF00;">yellow text</span></span>', 'H<sub>2</sub>O', 'left aligned', '' ),
+			array( '', 'H<sub>2</sub>O <span style="color:#00FA00;">green</span>', '<span style="color:#0432FF;">H<span style="color:#0432FF;"><sub>2</sub></span><span style="color:#0432FF;">O </span><span style="color:#FF2600;">gr</span>e<span style="color:#FF2600;">en</span></span>', '' ),
 			array( '1', '2', 'Styled formula does not get inline HTML after import', '=A61+B61' ),
 		);
 
@@ -189,9 +185,9 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array<int, string>> Test data.
 	 */
-	public function data_table_import_server_xls_phpspreadsheet() {
+	public function data_table_import_server_xls_phpspreadsheet(): array {
 		return array(
 			array( 'test-table.xls' ),
 		);
@@ -200,17 +196,13 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	/**
 	 * Test import of XLS files from the server, using the PHPSpreadsheet import class.
 	 *
-	 * This test requires PHP 7.2 as that's a PHPSpreadsheet requirement.
-	 *
-	 * @requires PHP 7.2
-	 *
 	 * @dataProvider data_table_import_server_xls_phpspreadsheet
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
-	public function test_table_import_server_xls_phpspreadsheet( $file ) {
+	public function test_table_import_server_xls_phpspreadsheet( string $file ): void {
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
@@ -292,9 +284,9 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array<int, string>> Test data.
 	 */
-	public function data_table_import_server_csv_json_html_phpspreadsheet() {
+	public function data_table_import_server_csv_json_html_phpspreadsheet(): array {
 		return array(
 			array( 'test-table-comma.csv' ),
 			array( 'test-table-comma.csv.zip' ),
@@ -310,17 +302,13 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	/**
 	 * Test import of CSV, JSON, and HTML files from the server, using the PHPSpreadsheet import class.
 	 *
-	 * This test requires PHP 7.2 as that's a PHPSpreadsheet requirement.
-	 *
-	 * @requires PHP 7.2
-	 *
 	 * @dataProvider data_table_import_server_csv_json_html_phpspreadsheet
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
-	public function test_table_import_server_csv_json_html_phpspreadsheet( $file ) {
+	public function test_table_import_server_csv_json_html_phpspreadsheet( string $file ): void {
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
@@ -399,9 +387,9 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array<int, string>> Test data.
 	 */
-	public function data_table_import_server_csv_json_html_legacy() {
+	public function data_table_import_server_csv_json_html_legacy(): array {
 		return array(
 			array( 'test-table-comma.csv' ),
 			array( 'test-table-comma.csv.zip' ),
@@ -423,7 +411,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
-	public function test_table_import_server_csv_json_html_legacy( $file ) {
+	public function test_table_import_server_csv_json_html_legacy( string $file ): void {
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/legacy/' . $file,

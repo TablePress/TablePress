@@ -24,7 +24,7 @@ import block from '../block.json';
 /**
  * Internal dependencies.
  */
-import { shortcode_attrs_to_string } from './_common-functions';
+import { shortcode_attrs_to_string } from './common/functions';
 
 /**
  * Load CSS code that only applies inside the block editor.
@@ -58,7 +58,7 @@ const ManageTablesLink = function() {
  * @param {Object}   params               Function parameters.
  * @param {Object}   params.attributes    Block attributes.
  * @param {Function} params.setAttributes Function to set block attributes.
- * @return {WPElement} Element to render.
+ * @return {Element} Element to render.
  */
 export default function TablePressTableEdit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps();

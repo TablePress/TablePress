@@ -47,9 +47,8 @@ jobs:
   # - Sets up PHP.
   # - Logs debug information.
   # - Checks out the WordPress develop repository.
-  # - Checks out the repository.
   # - Sets up the WordPress unit tests configuration.
-  # - Installs PHPUnit for WP 5.8, if needed.
+  # - Checks out the TablePress repository.
   # - Installs Composer dependencies.
   # - Makes Composer packages available globally.
   # - Runs the PHPUnit tests.
@@ -74,42 +73,26 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '6.4'
           - '6.3'
           - '6.2'
           - '6.1'
           - '6.0'
-          - '5.9'
-          - '5.8'
         php:
+          - '8.3'
           - '8.2'
           - '8.1'
           - '8.0'
           - '7.4'
           - '7.3'
           - '7.2'
-          - '7.1'
-          - '7.0'
-          - '5.6'
         multisite: [ false, true ]
-        exclude:
-          # Testing with PHP 8+ on WP 5.8 fails due to PHPUnit incompatibilities.
-          - wp: '5.8'
-            php: '8.2'
-          - wp: '5.8'
-            php: '8.1'
-          - wp: '5.8'
-            php: '8.0'
-          # WordPress 6.3+ does no longer support PHP 5.6.
-          - wp: 'trunk'
-            php: '5.6'
-          - wp: '6.3'
-            php: '5.6'
     env:
       PLUGIN_DIR: ./src/wp-content/plugins/tablepress
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@72ae4ccbe57f82bbe08411e84e2130bd4ba1c10f # v2.25.5
+        uses: shivammathur/setup-php@7fdd3ece872ec7ec4c098ae5ab7637d5e0a96067 # v2.26.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -121,7 +104,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -135,19 +118,14 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           path: ${{ env.PLUGIN_DIR }}
-
-      - name: Manually install PHPUnit when running WP 5.8, depending on the PHP version
-        if: ${{ matrix.wp == '5.8' }}
-        working-directory: ${{ env.PLUGIN_DIR }}
-        run: composer require --dev "phpunit/phpunit:^5.7.21 || ^6.5 || ^7.5" --no-update
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6 # v2.2.0
         with:
-          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' ) && ' --ignore-platform-reqs' || '' }}"
+          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' ) && ' --ignore-platform-reqs' || '' }}"
 
       - name: Make Composer packages available globally
         working-directory: ${{ env.PLUGIN_DIR }}
@@ -159,13 +137,12 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ matrix.php == '8.2' && ( matrix.wp == '5.9' || matrix.wp == '6.0' ) }} # WP 5.9 and WP 6.0 run into dynamic property deprecations.
+        continue-on-error: ${{ ( matrix.php == '8.2' || matrix.php == '8.3' ) && matrix.wp == '6.0' }} # WP 6.0 runs into dynamic property deprecations.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
-      # composer.json will have been modified on WP 5.8, where PHPUnit is installed.
       - name: Ensure version-controlled files are not modified or deleted
         working-directory: ${{ env.PLUGIN_DIR }}
-        run: git diff --exit-code${{ ( matrix.wp == '5.8' ) && ' -- . ":!composer.json"' || '' }}
+        run: git diff --exit-code
 
   failed-workflow:
     name: Failed workflow tasks

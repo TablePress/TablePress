@@ -39,6 +39,11 @@ module.exports = function ( grunt ) {
 				src: [
 					'**/*.js',
 					// Exclude files that contain JSX from jshint checking.
+					'!admin/js/common/react-loader.js',
+					'!admin/js/export.js',
+					'!admin/js/export/*.js',
+					'!admin/js/import.js',
+					'!admin/js/import/*.js',
 					'!blocks/**/src/edit.js',
 					'!blocks/**/src/save.js',
 					// Exclude built JS files from jshint checking.

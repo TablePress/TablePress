@@ -36,12 +36,11 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 
 	// Ignore downgrade rules for functions that WordPress is polyfilling.
 	$rector_config->skip( array(
-		// The following rules can be skipped once TablePress requires WordPress 5.9 or higher.
-		// Rector\DowngradePhp73\Rector\FuncCall\DowngradeArrayKeyFirstLastRector::class, // array_key_first() and array_key_list().
-		// Rector\DowngradePhp73\Rector\FuncCall\DowngradeIsCountableRector::class, // is_countable().
-		// Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector::class, // str_contains().
-		// Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrEndsWithRector::class, // str_ends_with().
-		// Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrStartsWithRector::class, // str_starts_with().
+		Rector\DowngradePhp73\Rector\FuncCall\DowngradeArrayKeyFirstLastRector::class, // array_key_first() and array_key_list().
+		Rector\DowngradePhp73\Rector\FuncCall\DowngradeIsCountableRector::class, // is_countable().
+		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector::class, // str_contains().
+		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrEndsWithRector::class, // str_ends_with().
+		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrStartsWithRector::class, // str_starts_with().
 	) );
 
 	// Set used (maximum) PHP version. This has to be at the end of the configuration, for some reason.

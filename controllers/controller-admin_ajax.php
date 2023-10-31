@@ -43,7 +43,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ajax_action_hide_message() {
+	public function ajax_action_hide_message(): void {
 		if ( empty( $_GET['item'] ) ) {
 			wp_die( '0' );
 		}
@@ -66,7 +66,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ajax_action_save_table() {
+	public function ajax_action_save_table(): void {
 		if ( empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
 		}
@@ -156,7 +156,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$message = 'success_save_error_id_change';
 				$error_details = 'table_id_could_not_be_changed: capability_check_failed';
 			}
-		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
+		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early. // @phpstan-ignore-line .
 
 		// Generate the response.
 
@@ -166,11 +166,11 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			'message' => $message,
 		);
 		if ( $success ) {
-			$response['table_id'] = $table['id'];
-			$response['new_edit_nonce'] = wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) );
-			$response['new_preview_nonce'] = wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) );
-			$response['last_modified'] = TablePress::format_datetime( $table['last_modified'] );
-			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] );
+			$response['table_id'] = $table['id']; // @phpstan-ignore-line
+			$response['new_edit_nonce'] = wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ); // @phpstan-ignore-line
+			$response['new_preview_nonce'] = wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) ); // @phpstan-ignore-line
+			$response['last_modified'] = TablePress::format_datetime( $table['last_modified'] ); // @phpstan-ignore-line
+			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] ); // @phpstan-ignore-line
 		}
 		if ( ! empty( $error_details ) ) {
 			$response['error_details'] = esc_html( $error_details );
@@ -190,7 +190,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ajax_action_preview_table() {
+	public function ajax_action_preview_table(): void {
 		if ( empty( $_POST['tablepress']['id'] ) ) {
 			wp_die( '-1' );
 		}
@@ -247,7 +247,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// At this point, the table data is valid and sanitized and can be rendered.
 			$success = true;
-		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
+		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early. // @phpstan-ignore-line .
 
 		if ( $success ) {
 			// Create a render class instance.
@@ -256,11 +256,11 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$default_render_options = $_render->get_default_render_options();
 			/** This filter is documented in controllers/controller-frontend.php */
 			$default_render_options = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_render_options );
-			$render_options = shortcode_atts( $default_render_options, $table['options'] );
+			$render_options = shortcode_atts( $default_render_options, $table['options'] ); // @phpstan-ignore-line
 			/** This filter is documented in controllers/controller-frontend.php */
 			$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
-			$render_options['html_id'] = "tablepress-{$table['id']}";
-			$_render->set_input( $table, $render_options );
+			$render_options['html_id'] = "tablepress-{$table['id']}"; // @phpstan-ignore-line
+			$_render->set_input( $table, $render_options ); // @phpstan-ignore-line
 			$head_html = $_render->get_preview_css();
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
 			$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );
@@ -306,7 +306,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 	 *
 	 * @since 2.1.0
 	 */
-	public function ajax_action_save_screen_options() {
+	public function ajax_action_save_screen_options(): void {
 		// Check if the submitted nonce matches the generated nonce we created earlier, dies -1 on failure.
 		TablePress::check_nonce( 'screen_options', false, '_ajax_nonce', true );
 

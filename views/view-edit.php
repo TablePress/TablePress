@@ -25,7 +25,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * List of WP feature pointers for this view.
 	 *
 	 * @since 2.0.0
-	 * @var array
+	 * @var string[]
 	 */
 	protected $wp_pointers = array( 'tp20_edit_context_menu', 'tp21_edit_screen_options' );
 
@@ -34,10 +34,12 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $action Action for this view.
-	 * @param array  $data   Data for this view.
+	 * @param string               $action Action for this view.
+	 * @param array<string, mixed> $data   Data for this view.
 	 */
-	public function setup( $action, array $data ) {
+	public function setup( /* string */ $action, array $data ) /* : void */ {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		parent::setup( $action, $data );
 
 		$this->add_text_box( 'no-javascript', array( $this, 'textbox_no_javascript' ), 'header' );
@@ -89,10 +91,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $strings Current set of Media View strings.
-	 * @return array Changed Media View strings.
+	 * @param array<string, string> $strings Current set of Media View strings.
+	 * @return array<string, string> Changed Media View strings.
 	 */
-	public function change_media_view_strings( array $strings ) {
+	public function change_media_view_strings( array $strings ): array {
 		$strings['insertIntoPost'] = __( 'Insert into Table', 'tablepress' );
 		return $strings;
 	}
@@ -106,7 +108,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param WP_Screen $screen          WP_Screen object.
 	 * @return string Extended Screen settings.
 	 */
-	public function add_screen_options_output( $screen_settings, $screen ) {
+	public function add_screen_options_output( string $screen_settings, WP_Screen $screen ): string {
 		$screen_settings = '<fieldset id="tablepress-screen-options" class="screen-options">';
 		$screen_settings .= '<legend>' . __( 'Table editor settings', 'tablepress' ) . '</legend>';
 		$screen_settings .= '<p>' . __( 'Adjust the default size of the table cells in the table editor below.', 'tablepress' ) . ' ' . __( 'Cells with many lines of text will expand to their full height when they are edited.', 'tablepress' ) . '</p>';
@@ -133,7 +135,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 2.0.0
 	 */
-	public function render() {
+	public function render(): void {
 		?>
 		<div id="tablepress-page" class="wrap">
 		<form>
@@ -180,10 +182,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	protected function action_nonce_field( array $data, array $box ) {
+	protected function action_nonce_field( array $data, array $box ): void {
 		// Intentionally left empty. Nonces for this view are generated in postbox_table_data().
 	}
 
@@ -192,10 +194,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_table_information( array $data, array $box ) {
+	public function postbox_table_information( array $data, array $box ): void {
 		?>
 <table class="tablepress-postbox-table fixed">
 	<tr class="bottom-border">
@@ -234,7 +236,7 @@ class TablePress_Edit_View extends TablePress_View {
 							TablePress::init_modules();
 							$random_module_slug = array_rand( TablePress::$modules );
 							$feature_module = TablePress::$modules[ $random_module_slug ];
-							$module_url = esc_url( "https://tablepress.org/modules/{$random_module_slug}/" );
+							$module_url = esc_url( "https://tablepress.org/modules/{$random_module_slug}/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen" );
 
 							echo '<strong>' . __( 'Supercharge your tables with exceptional features:', 'tablepress' ) . '</strong>';
 							echo '<h3><a href="' . $module_url . '">' . $feature_module['name'] . '</a></h3>';
@@ -243,7 +245,7 @@ class TablePress_Edit_View extends TablePress_View {
 						</div>
 					</div>
 					<div class="buttons">
-						<a href="<?php echo 'https://tablepress.org/premium/'; ?>" class="tablepress-button">
+						<a href="<?php echo 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen'; ?>" class="tablepress-button">
 							<span><?php _e( 'Compare the TablePress premium versions', 'tablepress' ); ?></span>
 							<span class="dashicons dashicons-arrow-right-alt"></span>
 						</a>
@@ -259,10 +261,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_table_data( array $data, array $box ) {
+	public function postbox_table_data( array $data, array $box ): void {
 		echo "<script>\n";
 		echo "window.tp = window.tp || {};\n";
 
@@ -270,7 +272,6 @@ class TablePress_Edit_View extends TablePress_View {
 		echo "tp.nonces.edit_table = '" . wp_create_nonce( TablePress::nonce( $this->action, $data['table']['id'] ) ) . "';\n";
 		echo "tp.nonces.preview_table = '" . wp_create_nonce( TablePress::nonce( 'preview_table', $data['table']['id'] ) ) . "';\n";
 		echo "tp.nonces.screen_options = '" . wp_create_nonce( TablePress::nonce( 'screen_options' ) ) . "';\n";
-		echo "\n";
 
 		echo "tp.table = {};\n";
 		echo "tp.table.shortcode = '" . esc_js( TablePress::$shortcode ) . "';\n";
@@ -296,10 +297,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_table_manipulation( array $data, array $box ) {
+	public function postbox_table_manipulation( array $data, array $box ): void {
 		?>
 <table id="tablepress-manipulation-controls" class="tablepress-postbox-table fixed">
 	<tr class="bottom-border">
@@ -372,10 +373,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_buttons( array $data, array $box ) {
+	public function textbox_buttons( array $data, array $box ): void {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 
 		echo '<p id="' . $box['id'] . '-submit" class="submit">';
@@ -393,10 +394,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_other_actions( array $data, array $box ) {
+	public function textbox_other_actions( array $data, array $box ): void {
 		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $data['table']['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
@@ -424,10 +425,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_hidden_containers( array $data, array $box ) {
+	public function textbox_hidden_containers( array $data, array $box ): void {
 		?>
 <div class="hidden-container">
 	<div id="advanced-editor">
@@ -470,10 +471,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_table_options( array $data, array $box ) {
+	public function postbox_table_options( array $data, array $box ): void {
 		?>
 <table class="tablepress-postbox-table fixed">
 	<tr>
@@ -525,10 +526,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the meta box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
-	public function postbox_datatables_features( array $data, array $box ) {
+	public function postbox_datatables_features( array $data, array $box ): void {
 		?>
 <p id="notice-datatables-head-row"><em><?php printf( __( 'These features and options are only available when the &#8220;%1$s&#8221; checkbox in the &#8220;%2$s&#8221; section is checked.', 'tablepress' ), __( 'Table Head Row', 'tablepress' ), __( 'Table Options', 'tablepress' ) ); ?></em></p>
 <table class="tablepress-postbox-table fixed">
@@ -581,10 +582,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.4.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_corrupted_table( array $data, array $box ) {
+	public function textbox_corrupted_table( array $data, array $box ): void {
 		?>
 		<div class="notice notice-error notice-large">
 			<h3><em>
@@ -616,10 +617,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $data Data for this screen.
-	 * @param array $box  Information about the text box.
+	 * @param array<string, mixed> $data Data for this screen.
+	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_head( array $data, array $box ) {
+	public function textbox_head( array $data, array $box ): void {
 		echo '<p>';
 		_e( 'To edit the content or modify the structure of this table, use the input fields and buttons below.', 'tablepress' );
 		echo ' ';
@@ -637,7 +638,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 2.0.0
 	 */
-	public function wp_pointer_tp20_edit_context_menu() {
+	public function wp_pointer_tp20_edit_context_menu(): void {
 		$content  = '<h3>' . __( 'TablePress feature: Context menu', 'tablepress' ) . '</h3>';
 		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . __( 'Right-clicking the table content fields will open a context menu for quick access to common editing tools.', 'tablepress' ) . '</p>';
 
@@ -656,7 +657,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 2.1.0
 	 */
-	public function wp_pointer_tp21_edit_screen_options() {
+	public function wp_pointer_tp21_edit_screen_options(): void {
 		$content  = '<h3>' . __( 'TablePress feature: Column width and row height of the table editor', 'tablepress' ) . '</h3>';
 		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . sprintf( __( 'You can change the default cell size for the table editor on this “Edit” screen in the “%s”.', 'tablepress' ), __( 'Screen Options', 'default' ) ) . '</p>';
 

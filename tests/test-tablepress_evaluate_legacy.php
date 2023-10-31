@@ -29,7 +29,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public static function set_up_before_class() {
+	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-evaluate-legacy.php';
 	}
@@ -39,7 +39,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function set_up() {
+	public function set_up(): void {
 		parent::set_up();
 		$this->evaluate = new TablePress_Evaluate_Legacy();
 	}
@@ -49,7 +49,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_empty_one_cell_table() {
+	public function test_empty_one_cell_table(): void {
 		$table_id = '123';
 		$input_table = array( array( '' ) );
 		$expected_table = $input_table;
@@ -62,7 +62,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_table_without_formulas() {
+	public function test_table_without_formulas(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( '', '=', "'=" ),
@@ -86,7 +86,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_table_with_basic_formulas() {
+	public function test_table_with_basic_formulas(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
@@ -107,7 +107,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.12.0
 	 */
-	public function test_table_with_variables() {
+	public function test_table_with_variables(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
@@ -128,7 +128,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.12.0
 	 */
-	public function test_table_with_text_around_expressions() {
+	public function test_table_with_text_around_expressions(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
@@ -149,7 +149,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_table_with_formulas_and_references() {
+	public function test_table_with_formulas_and_references(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
@@ -170,7 +170,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_table_with_formulas_and_reference_ranges() {
+	public function test_table_with_formulas_and_reference_ranges(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
@@ -191,7 +191,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_table_with_formulas_and_circle_reference_error() {
+	public function test_table_with_formulas_and_circle_reference_error(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),
@@ -212,7 +212,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_table_with_formulas_and_missing_reference_error() {
+	public function test_table_with_formulas_and_missing_reference_error(): void {
 		$table_id = '123';
 		$input_table = array(
 			array( 'foo', 'bar', 'baz' ),

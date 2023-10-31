@@ -36,9 +36,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * and thus can't be inherited.
 	 *
 	 * @since 1.0.0
-	 * @var array|null
+	 * @var array<string, string>|null
 	 */
-	protected $_actions;
+	protected $_actions; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Initialize the List Table.
@@ -53,6 +53,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			update_user_option( get_current_user_id(), "manage{$screen->id}columnshidden", array( 'table_last_modified_by' ), true );
 		}
 
+		// @phpstan-ignore-next-line (WordPress Core's docblocks state wrong argument types in some places.)
 		parent::__construct( array(
 			'singular' => 'tablepress-table',      // Singular name of the listed records.
 			'plural'   => 'tablepress-all-tables', // Plural name of the listed records.
@@ -66,9 +67,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $items Tables to be displayed in the List Table.
+	 * @param string[] $items Tables to be displayed in the List Table.
 	 */
-	public function set_items( array $items ) {
+	public function set_items( array $items ): void {
 		$this->items = $items;
 		$this->items_count = count( $items );
 	}
@@ -81,7 +82,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return bool true (Default value).
 	 */
-	public function ajax_user_can() {
+	public function ajax_user_can(): bool {
 		return true;
 	}
 
@@ -92,9 +93,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array List of columns in this List Table.
+	 * @return array<string, string> List of columns in this List Table.
 	 */
-	public function get_columns() {
+	public function get_columns(): array {
 		$columns = array(
 			'cb'                     => $this->has_items() ? '<input type="checkbox" />' : '', // Checkbox for "Select all", but only if there are items in the table.
 			// "name" is special in WP, which is why we prefix every entry here, to be safe!
@@ -115,9 +116,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array List of sortable columns in this List Table.
+	 * @return array<string, array{string, bool}> List of sortable columns in this List Table.
 	 */
-	protected function get_sortable_columns() {
+	protected function get_sortable_columns(): array {
 		// No sorting on the Empty List placeholder.
 		if ( ! $this->has_items() ) {
 			return array();
@@ -141,7 +142,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return string Name of the default primary column, in this case, the table name.
 	 */
-	protected function get_default_primary_column_name() {
+	protected function get_default_primary_column_name(): string {
 		return 'table_name';
 	}
 
@@ -150,11 +151,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_cb( /* array */ $item ) {
-		// Don't use `array` type hint in method declaration to prevent a Strict Standards notice, as the method is inherited.
+	protected function column_cb( /* array */ $item ): string {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $item['id'] );
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $item['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $item['id'] );
@@ -180,10 +182,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_table_id( array $item ) {
+	protected function column_table_id( array $item ): string {
 		return esc_html( $item['id'] );
 	}
 
@@ -192,10 +194,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_table_name( array $item ) {
+	protected function column_table_name( array $item ): string {
 		$user_can_edit_table = current_user_can( 'tablepress_edit_table', $item['id'] );
 		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $item['id'] );
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $item['id'] );
@@ -244,10 +246,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_table_description( array $item ) {
+	protected function column_table_description( array $item ): string {
 		if ( '' === trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
 		}
@@ -259,10 +261,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_table_author( array $item ) {
+	protected function column_table_author( array $item ): string {
 		return TablePress::get_user_display_name( $item['author'] );
 	}
 
@@ -271,10 +273,10 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_table_last_modified_by( array $item ) {
+	protected function column_table_last_modified_by( array $item ): string {
 		return TablePress::get_user_display_name( $item['options']['last_editor'] );
 	}
 
@@ -283,12 +285,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item Data item for the current row.
+	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
-	protected function column_table_last_modified( array $item ) {
+	protected function column_table_last_modified( array $item ): string {
 		$modified_timestamp = date_create( $item['last_modified'], wp_timezone() );
-		$modified_timestamp = $modified_timestamp->getTimestamp();
+		$modified_timestamp = $modified_timestamp->getTimestamp(); // @phpstan-ignore-line
 		$current_timestamp = time();
 		$time_diff = $current_timestamp - $modified_timestamp;
 		// Time difference is only shown up to one week.
@@ -306,18 +308,19 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.8.0
 	 *
-	 * @param array  $item        Data item for the current row.
-	 * @param string $column_name Current column name.
+	 * @param array<string, mixed> $item        Data item for the current row.
+	 * @param string               $column_name Current column name.
 	 */
-	protected function column_default( /* array */ $item, $column_name ) {
-		// Don't use `array` type hint in method declaration to prevent a Strict Standards notice, as the method is inherited.
+	protected function column_default( /* array */ $item, /* string */ $column_name ): void {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		/**
 		 * Fires inside each custom column of the TablePress list table.
 		 *
 		 * @since 1.8.0
 		 *
-		 * @param array  $column_name Current column name.
-		 * @param string $item        Data item for the current row.
+		 * @param string               $column_name Current column name.
+		 * @param array<string, mixed> $item        Data item for the current row.
 		 */
 		do_action( 'manage_tablepress_list_custom_column', $column_name, $item );
 	}
@@ -329,13 +332,14 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param object|array $item        The item being acted upon.
-	 * @param string       $column_name Current column name.
-	 * @param string       $primary     Primary column name.
-	 * @return string The row actions HTML, or an empty string
-	 *                if the current column is not the primary column.
+	 * @param object|array<string, mixed> $item        The item being acted upon.
+	 * @param string                      $column_name Current column name.
+	 * @param string                      $primary     Primary column name.
+	 * @return string The row actions HTML, or an empty string if the current column is not the primary column.
 	 */
-	protected function handle_row_actions( $item, $column_name, $primary ) {
+	protected function handle_row_actions( /* object|array */ $item, /* string */ $column_name, /* string */ $primary ): string {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		return '';
 	}
 
@@ -344,9 +348,9 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Bulk actions for this table.
+	 * @return array<string, string> Bulk actions for this table.
 	 */
-	protected function get_bulk_actions() {
+	protected function get_bulk_actions(): array {
 		$bulk_actions = array();
 
 		if ( current_user_can( 'tablepress_copy_tables' ) ) {
@@ -369,10 +373,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $which The location of the bulk actions: 'top' or 'bottom'.
-	 *                      This is designated as optional for backwards-compatibility.
+	 * @param 'top'|'bottom' $which The location of the bulk actions: 'top' or 'bottom'.
+	 *                              This is designated as optional for backwards-compatibility.
 	 */
-	protected function bulk_actions( $which = '' ) {
+	protected function bulk_actions( /* string */ $which = 'top' ): void {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		if ( is_null( $this->_actions ) ) {
 			$this->_actions = $this->get_bulk_actions();
 			$no_new_actions = $this->_actions;
@@ -405,7 +411,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
-	public function no_items() {
+	public function no_items(): void {
 		_e( 'No tables found.', 'tablepress' );
 		if ( 0 === $this->items_count ) {
 			$user_can_add_tables = current_user_can( 'tablepress_add_tables' );
@@ -431,9 +437,11 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $which Location ("top" or "bottom").
+	 * @param 'top'|'bottom' $which Location ("top" or "bottom").
 	 */
-	protected function display_tablenav( $which ) {
+	protected function display_tablenav( /* string */ $which ): void {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		?>
 	<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
@@ -447,7 +455,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 
 		add_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
 		$this->pagination( $which );
-		remove_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10, 5 );
+		remove_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10 );
 		?>
 
 		<br class="clear" />
@@ -467,7 +475,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param string $domain      Text domain. Defaults to 'default'.
 	 * @return string The changed translation.
 	 */
-	public function change_pagination_items_string( $translation, $single, $plural, $number, $domain ) {
+	public function change_pagination_items_string( string $translation, string $single, string $plural, int $number, string $domain ): string {
 		if ( '%s item' === $single && '%s items' === $plural ) {
 			$translation = _n( '%s table', '%s tables', $number, 'tablepress' );
 		}
@@ -482,12 +490,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param string $item Table ID that shall be searched.
 	 * @return bool Whether the search term was found or not.
 	 */
-	protected function _search_callback( $item ) {
+	protected function _search_callback( string $item ): bool {
 		static $term;
 		static $json_encoded_term;
 		if ( is_null( $term ) || is_null( $json_encoded_term ) ) {
 			$term = wp_unslash( $_GET['s'] );
-			$json_encoded_term = substr( wp_json_encode( $term, TABLEPRESS_JSON_OPTIONS ), 1, -1 );
+			$json_encoded_term = substr( wp_json_encode( $term, TABLEPRESS_JSON_OPTIONS ), 1, -1 ); // @phpstan-ignore-line
 		}
 
 		static $debug;
@@ -496,8 +504,12 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			$debug = isset( $_GET['debug'] ) ? ( 'true' === $_GET['debug'] ) : WP_DEBUG;
 		}
 
-		// load table again, with data and options (for last_editor).
+		// Load table again, with data and options (for last_editor).
 		$item = TablePress::$model_table->load( $item, true, true );
+
+		if ( is_wp_error( $item ) ) {
+			return false;
+		}
 
 		// Don't search corrupted tables, except when debug mode is enabled via $_GET parameter or WP_DEBUG constant.
 		if ( ! $debug && isset( $item['is_corrupted'] ) && $item['is_corrupted'] ) {
@@ -511,7 +523,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::get_user_display_name( $item['options']['last_editor'] ), $term )
 		|| false !== stripos( TablePress::format_datetime( $item['last_modified'] ), $term )
-		|| false !== stripos( wp_json_encode( $item['data'], TABLEPRESS_JSON_OPTIONS ), $json_encoded_term ) ) {
+		|| false !== stripos( wp_json_encode( $item['data'], TABLEPRESS_JSON_OPTIONS ), $json_encoded_term ) ) { // @phpstan-ignore-line
 			return true;
 		}
 
@@ -523,18 +535,18 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item_a First item that shall be compared to.
-	 * @param array $item_b The second item for the comparison.
+	 * @param array<string, mixed> $item_a First item that shall be compared to.
+	 * @param array<string, mixed> $item_b The second item for the comparison.
 	 * @return int (-1, 0, 1) depending on which item sorts "higher".
 	 */
-	protected function _order_callback( array $item_a, array $item_b ) {
+	protected function _order_callback( array $item_a, array $item_b ): int {
 		global $orderby, $order;
 
 		if ( 'last_modified_by' !== $orderby ) {
 			if ( $item_a[ $orderby ] === $item_b[ $orderby ] ) {
 				return 0;
 			}
-		} else {
+		} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
 			if ( $item_a['options']['last_editor'] === $item_b['options']['last_editor'] ) {
 				return 0;
 			}
@@ -567,7 +579,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
-	public function prepare_items() {
+	public function prepare_items(): void {
 		global $orderby, $order, $s;
 		wp_reset_vars( array( 'orderby', 'order', 's' ) );
 

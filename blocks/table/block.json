@@ -1,8 +1,8 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "tablepress/table",
-	"version": "2.0.0",
+	"version": "2.2",
 	"title": "TablePress table",
 	"category": "media",
 	"icon": "list-view",
@@ -25,5 +25,5 @@
 		"customClassName": false
 	},
 	"editorScript": "file:build/index.js",
-	"editorStyle": "file:build/index.css"
+	"editorStyle": [ "dashicons", "file:build/index.css" ]
 }

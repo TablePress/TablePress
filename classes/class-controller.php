@@ -62,7 +62,7 @@ abstract class TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function plugin_update_check() {
+	protected function plugin_update_check(): void {
 		// First activation or plugin update.
 		$current_plugin_options_db_version = TablePress::$model_options->get( 'plugin_options_db_version' );
 		if ( $current_plugin_options_db_version < TablePress::db_version ) {

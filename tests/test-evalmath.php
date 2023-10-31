@@ -29,7 +29,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public static function set_up_before_class() {
+	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'libraries/evalmath.class.php';
 	}
@@ -39,7 +39,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function set_up() {
+	public function set_up(): void {
 		parent::set_up();
 		$this->evalmath = new EvalMath();
 	}
@@ -49,7 +49,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_evalmath_classes_loaded() {
+	public function test_evalmath_classes_loaded(): void {
 		$this->assertTrue( class_exists( 'EvalMath', false ) );
 		$this->assertTrue( class_exists( 'EvalMath_Stack', false ) );
 		$this->assertTrue( class_exists( 'EvalMath_Functions', false ) );
@@ -60,7 +60,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_evalmath_instance() {
+	public function test_evalmath_instance(): void {
 		$this->assertInstanceOf( 'EvalMath', $this->evalmath );
 	}
 
@@ -69,7 +69,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_basic() {
+	public function test_basic(): void {
 		$result = $this->evalmath->evaluate( '1+2' );
 		$this->assertSame( 3, $result );
 	}
@@ -79,7 +79,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_other_functions() {
+	public function test_other_functions(): void {
 		$this->assertSame( 2, $this->evalmath->evaluate( 'average(1,2,3)' ) );
 		$this->assertSame( 1, $this->evalmath->evaluate( 'mod(10,3)' ) );
 		$this->assertSame( 8, $this->evalmath->evaluate( 'power(2,3)' ) );
@@ -92,7 +92,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_minmax_function() {
+	public function test_minmax_function(): void {
 		$result = $this->evalmath->evaluate( 'min(20,10,30)' );
 		$this->assertEquals( 10, $result );
 
@@ -111,7 +111,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_more_complex_expressions() {
+	public function test_more_complex_expressions(): void {
 		$result = $this->evalmath->evaluate( 'pi() + 10' );
 		$this->assertSame( pi() + 10, $result );
 
@@ -127,7 +127,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_error_handling() {
+	public function test_error_handling(): void {
 		$result = $this->evalmath->evaluate( 'pi( + 10' );
 		$this->assertFalse( $result );
 		$this->assertSame( "unexpected operator '+'", $this->evalmath->last_error );
@@ -151,7 +151,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 * @param string $expression Expression with a rounding function to evaluate.
 	 * @param double $result     Expected result.
 	 */
-	public function test_rounding_function( $expression, $result ) {
+	public function test_rounding_function( string $expression, float $result ): void {
 		$this->assertSame( $result, $this->evalmath->evaluate( $expression ) );
 	}
 
@@ -160,9 +160,9 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @return array Test data.
+	 * @return array<int, array{string, float}> Test data.
 	 */
-	public function data_rounding_function() {
+	public function data_rounding_function(): array {
 		return array(
 			// Rounding to the default number of decimal places (0 decimals).
 			array( 'round(2.5)', 3.0 ),
@@ -196,7 +196,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_scientific_notation() {
+	public function test_scientific_notation(): void {
 		$this->assertEqualsWithDelta( 1e11, $this->evalmath->evaluate( '10e10' ), 1e11 * 1e-15 );
 		$this->assertEqualsWithDelta( 1e-9, $this->evalmath->evaluate( '10e-10' ), 1e11 * 1e-15 );
 		$this->assertEqualsWithDelta( 1e11, $this->evalmath->evaluate( '10e+10' ), 1e11 * 1e-15 );
@@ -209,7 +209,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
-	public function test_rand_functions_type() {
+	public function test_rand_functions_type(): void {
 		$result = $this->evalmath->evaluate( 'rand_float()' );
 		$this->assertIsFloat( $result );
 

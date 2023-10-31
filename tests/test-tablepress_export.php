@@ -29,7 +29,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public static function set_up_before_class() {
+	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-export.php';
 	}
@@ -39,7 +39,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function set_up() {
+	public function set_up(): void {
 		parent::set_up();
 		$this->exporter = new TablePress_Export();
 	}
@@ -49,7 +49,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function test_tablepress_export_class_loaded() {
+	public function test_tablepress_export_class_loaded(): void {
 		$this->assertTrue( class_exists( 'TablePress_Export', false ) );
 	}
 
@@ -58,7 +58,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
-	public function test_tablepress_export_instance() {
+	public function test_tablepress_export_instance(): void {
 		$this->assertInstanceOf( 'TablePress_Export', $this->exporter );
 	}
 
@@ -67,9 +67,9 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array Test data.
+	 * @return array<string, array<string, string|mixed[]>> Test data.
 	 */
-	public function data_table_export() {
+	public function data_table_export(): array {
 		$export_table = array(
 			'id'            => false,
 			'name'          => '',
@@ -214,12 +214,12 @@ DATA;
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array  $table         Table to export.
-	 * @param string $export_format Export format (CSV, HTML, JSON).
-	 * @param string $csv_delimiter CSV delimiter (semicolon, comma, tab).
-	 * @param string $expected_data Expected exported data.
+	 * @param array<string, mixed> $table         Table to export.
+	 * @param string               $export_format Export format (CSV, HTML, JSON).
+	 * @param string               $csv_delimiter CSV delimiter (semicolon, comma, tab).
+	 * @param string               $expected_data Expected exported data.
 	 */
-	public function test_table_export( $table, $export_format, $csv_delimiter, $expected_data ) {
+	public function test_table_export( array $table, string $export_format, string $csv_delimiter, string $expected_data ): void {
 		$exported_table_data = $this->exporter->export_table( $table, $export_format, $csv_delimiter );
 
 		$this->assertSame( $expected_data, $exported_table_data );
