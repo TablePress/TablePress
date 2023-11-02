@@ -91,10 +91,10 @@ class TablePress_List_View extends TablePress_View {
 			$button_label = __( 'Find out more', 'tablepress' );
 
 			/*
-			 * Show the message only if the previous version was not 2.2.x (to not spam the user with each update),
-			 * and if the user is on the Free plan or has the "tablepress_edit_options" capability.
+			 * Show the message only if the user is on
+			 * the Free plan or has the "tablepress_edit_options" capability.
 			 */
-			if ( ! str_starts_with( TablePress::$model_options->get( 'prev_tablepress_version' ), '2.2' ) && ( tb_tp_fs()->is_free_plan() || current_user_can( 'tablepress_edit_options' ) ) ) {
+			if ( tb_tp_fs()->is_free_plan() || current_user_can( 'tablepress_edit_options' ) ) {
 				$message .= '<p style="font-size:14px;"><strong>' . __( 'Here’s the latest great addition:', 'tablepress' ) . '</strong></p>';
 				$message .= '<div style="display:flex;max-width:625px;gap:20px;font-size:14px;border:1px solid #c3c4c7;box-shadow:0 1px 1px rgba(0, 0, 0, 0.04);padding:12px;">
 					<div>

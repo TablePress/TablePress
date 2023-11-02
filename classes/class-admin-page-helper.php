@@ -98,14 +98,21 @@ class TablePress_Admin_Page {
 	}
 
 	/**
-	 * Add a TablePress "Thank You" message to the admin footer content.
+	 * Adds a TablePress "Thank You" message to the admin footer content.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $content Current admin footer content.
 	 * @return string New admin footer content.
 	 */
-	public function _admin_footer_text( string $content ): string {
+	public function _admin_footer_text( /* string */ $content ): string {
+		// Don't use a type hint in the method declaration as many WordPress plugins use the `admin_footer_text` filter in the wrong way.
+
+		// Protect against other plugins not returning a string in their filter callbacks.
+		if ( ! is_string( $content ) ) {
+			$content = '';
+		}
+
 		$content .= ' &bull; ' . sprintf( __( 'Thank you for using <a href="%s">TablePress</a>.', 'tablepress' ), 'https://tablepress.org/' );
 		if ( tb_tp_fs()->is_free_plan() ) {
 			$content .= ' ' . sprintf( __( 'Take a look at the <a href="%s">Premium features</a>!', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=admin-footer' );
