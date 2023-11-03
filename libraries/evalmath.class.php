@@ -1016,7 +1016,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 *
 	 * @param double|int $op1 First number (dividend).
 	 * @param double|int $op2 Second number (divisor).
-	 * @return int Remainer of the division (dividend / divisor).
+	 * @return int Remainder of the division (dividend / divisor).
 	 */
 	public static function mod( $op1, $op2 ): int {
 		return $op1 % $op2;

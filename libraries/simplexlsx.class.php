@@ -258,7 +258,7 @@ class SimpleXLSX {
 
 			$vZ = $this->_substr($vZ, 26 + $nF + $mF);
 
-			if ($this->_strlen($vZ) !== (int)$aP['CS']) { // check only if availabled
+			if ($this->_strlen($vZ) !== (int)$aP['CS']) { // check only if available
 				$aI['E'] = 1;
 				$aI['EM'] = 'Compressed size is not equal with the value in header information.';
 			}
@@ -268,7 +268,7 @@ class SimpleXLSX {
 /*            } else {
 				switch ($aP['CM']) {
 					case 0: // Stored
-						// Here is nothing to do, the file ist flat.
+						// Here is nothing to do, the file is flat.
 						break;
 					case 8: // Deflated
 						$vZ = gzinflate($vZ);
@@ -477,7 +477,7 @@ class SimpleXLSX {
 			$entry_xml .= ' '; // force run garbage collector
 			$entry_xml = preg_replace('/[a-zA-Z0-9]+:([a-zA-Z0-9]+="[^"]+")/', '$1', $entry_xml); // remove namespaced attrs
 			$entry_xml .= ' ';
-			$entry_xml = preg_replace('/<[a-zA-Z0-9]+:([^>]+)>/', '<$1>', $entry_xml); // fix namespaced openned tags
+			$entry_xml = preg_replace('/<[a-zA-Z0-9]+:([^>]+)>/', '<$1>', $entry_xml); // fix namespaced opened tags
 			$entry_xml .= ' ';
 			$entry_xml = preg_replace('/<\/[a-zA-Z0-9]+:([^>]+)>/', '</$1>', $entry_xml); // fix namespaced closed tags
 			$entry_xml .= ' ';
@@ -549,7 +549,7 @@ class SimpleXLSX {
 				switch ($entry['cm']) {
 					case -1:
 					case 0: // Stored
-						// Here is nothing to do, the file ist flat.
+						// Here is nothing to do, the file is flat.
 						break;
 					case 8: // Deflated
 						$entry['data'] = gzinflate($entry['data']);
