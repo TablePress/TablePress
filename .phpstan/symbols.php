@@ -1,6 +1,6 @@
 <?php
 /**
- * Classes and constants to be ignored in PHPStan checks.
+ * Constants to be ignored in PHPStan checks.
  *
  * @see: https://phpstan.org/user-guide/discovering-symbols
  */
@@ -14,8 +14,3 @@ define( 'WPINC', 'wp-includes' );
 // TablePress constants.
 define( 'TABLEPRESS_ABSPATH', dirname( __DIR__ ) . '/' );
 define( 'TABLEPRESS_BASENAME', 'tablepress/tablepress.php' );
-
-// Classes.
-require_once TABLEPRESS_ABSPATH . 'classes/class-controller.php';
-require_once TABLEPRESS_ABSPATH . 'controllers/controller-frontend.php';
-class_alias( 'TablePress_Frontend_Controller', 'TablePress_' ); // PHPStan is looking for a "TablePress_" class for some reason.

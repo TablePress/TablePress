@@ -70,7 +70,7 @@ abstract class TablePress {
 	 * Instance of the controller.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_*_Controller
+	 * @var TablePress_Frontend_Controller
 	 */
 	public static $controller;
 
