@@ -135,7 +135,7 @@ class TablePress_Admin_Page {
 		}
 
 		/*
-		 * Print JS code for the feature pointers, extened with event handling for opened/closed "Screen Options", so that pointers can
+		 * Print JS code for the feature pointers, extended with event handling for opened/closed "Screen Options", so that pointers can
 		 * be repositioned. 210 ms is slightly slower than jQuery's "fast" value, to allow all elements to reach their original position.
 		 */
 		?>

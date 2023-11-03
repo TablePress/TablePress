@@ -60,7 +60,7 @@ const adminJsConfig = {
 	name: 'tablepress-admin-js',
 	context: __dirname,
 	entry:
-		// Find all .js files in ./admin/js and contruct an "entry" object ( { name: <file> } ).
+		// Find all .js files in ./admin/js and construct an "entry" object ( { name: <file> } ).
 		glob.sync(
 			'*.js',
 			{
@@ -98,7 +98,7 @@ const adminCssConfig = {
 	name: 'tablepress-admin-css',
 	context: __dirname,
 	entry:
-		// Find all .scss and .css files in ./admin/css and contruct an "entry" object ( { name: <file> } ).
+		// Find all .scss and .css files in ./admin/css and construct an "entry" object ( { name: <file> } ).
 		glob.sync(
 			'[^_]*.?(s)css',
 			{
@@ -134,7 +134,7 @@ const frontendCssConfig = {
 	name: 'tablepress-frontend-css',
 	context: __dirname,
 	entry:
-		// Find all .scss and .css files in ./css and contruct an "entry" object ( { name: <file> } ).
+		// Find all .scss and .css files in ./css and construct an "entry" object ( { name: <file> } ).
 		glob.sync(
 			'[^_]*.?(s)css',
 			{
