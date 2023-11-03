@@ -274,7 +274,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Sanitize each cell.
 		foreach ( $table['data'] as $row_idx => $row ) {
 			foreach ( $row as $column_idx => $cell_content ) {
-				$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // Equals wp_filter_post_kses(), but without the unncessary slashes handling.
+				$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // Equals wp_filter_post_kses(), but without the unnecessary slashes handling.
 			}
 		}
 

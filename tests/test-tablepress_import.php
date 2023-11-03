@@ -319,7 +319,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 		$import = $this->importer->run( $import_config );
 		$imported_table_data = $import['tables'][0]['data'];
 
-		// In comparision to the expected table data from `test_table_import_server_csv_json_html_legacy()`, this does have three rows with unescaped spaces before and after text, integer, and float.
+		// In comparison to the expected table data from `test_table_import_server_csv_json_html_legacy()`, this does have three rows with unescaped spaces before and after text, integer, and float.
 		$expected_table_data = array(
 			array( 'First column', 'Middle column', 'Description', 'Last column' ),
 			array( 'Text', 'Text', 'Simple word', 'Text' ),
@@ -422,7 +422,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 		$import = $this->importer->run( $import_config );
 		$imported_table_data = $import['tables'][0]['data'];
 
-		// In comparision to the expected table data from `test_table_import_server_csv_json_html_phpspreadsheet()`, this does not have three rows with unescaped spaces before and after text, integer, and float.
+		// In comparison to the expected table data from `test_table_import_server_csv_json_html_phpspreadsheet()`, this does not have three rows with unescaped spaces before and after text, integer, and float.
 		$expected_table_data = array(
 			array( 'First column', 'Middle column', 'Description', 'Last column' ),
 			array( 'Text', 'Text', 'Simple word', 'Text' ),

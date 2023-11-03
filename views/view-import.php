@@ -71,7 +71,7 @@ class TablePress_Import_View extends TablePress_View {
 	public function textbox_head( array $data, array $box ): void {
 		?>
 		<p>
-			<?php _e( 'TablePress can import tables from common spreadsheet applications, like XLSX files fom Excel, or CSV, ODS, HTML, and JSON files.', 'tablepress' ); ?>
+			<?php _e( 'TablePress can import tables from common spreadsheet applications, like XLSX files from Excel, or CSV, ODS, HTML, and JSON files.', 'tablepress' ); ?>
 		</p>
 		<p>
 			<?php _e( 'To import tables, select and enter the import source in the following form.', 'tablepress' ); ?>
