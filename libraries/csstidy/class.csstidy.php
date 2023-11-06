@@ -316,8 +316,8 @@ class TablePress_CSSTidy {
 		$this->settings['case_properties'] = 1;
 
 		/*
-		 * Sort properties in alpabetic order, better for later gzipping,
-		 * but can cause trouble in case of overiding same properties or using hacks.
+		 * Sort properties in alphabetic order, better for later gzipping,
+		 * but can cause trouble in case of overriding same properties or using hacks.
 		 */
 		$this->settings['sort_properties'] = false;
 
@@ -989,7 +989,7 @@ class TablePress_CSSTidy {
 	}
 
 	/**
-	 * Quoting: format() in font-face needs quoted values for somes browser (FF at least).
+	 * Quoting: format() in font-face needs quoted values for some browser (FF at least).
 	 *
 	 * @since 1.0.0
 	 *

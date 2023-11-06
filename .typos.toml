@@ -1,0 +1,19 @@
+# Configuration and exclusion file for the "typos" tool (https://github.com/crate-ci/typos)
+
+[files]
+extend-exclude = [
+	"/admin/js/build/",
+	"/admin/js/jspreadsheet.js",
+	"/admin/js/jsuites.js",
+	"/i18n/",
+	"/js/*.min.js",
+	"/libraries/freemius/",
+	"/libraries/vendor/",
+	"/libraries/simplexlsx.class.php",
+	"/modules/i18n/",
+	"/modules/admin/js/build/",
+	"/modules/js/*.min.js",
+]
+
+[default.extend-words]
+BA = "BA"

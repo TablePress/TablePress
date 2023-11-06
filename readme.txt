@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.4
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,13 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.2.2 =
+
+* Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
+* The code that evaluates Shortcode parameters was optimized for a higher performance.
+* The “Sorted” order of the “Row Order” premium feature module no longer raises an error. (TablePress Pro and Max only.)
+* Updated external libraries to benefit from enhancements and bug fixes.
+
 = Version 2.2.1 =
 
 * Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
@@ -149,5 +156,5 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.2.1 =
+= 2.2.2 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.

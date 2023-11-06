@@ -298,7 +298,14 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @param mixed[]  $args    Arguments for the check, here e.g. the table ID.
 	 * @return string[] Modified set of primitive caps.
 	 */
-	public function map_tablepress_meta_caps( array $caps, string $cap, int $user_id, array $args ): array {
+	public function map_tablepress_meta_caps( array $caps, /* string */ $cap, int $user_id, array $args ): array {
+		// Don't use a type hint for the `$cap` argument as many WordPress plugins seem to be passing `null` to capability check or admin menu functions.
+
+		// Protect against other plugins not supplying a string for the `$cap` argument.
+		if ( ! is_string( $cap ) ) {
+			return $caps;
+		}
+
 		if ( ! in_array( $cap, array( 'tablepress_edit_table', 'tablepress_edit_table_id', 'tablepress_copy_table', 'tablepress_delete_table', 'tablepress_export_table', 'tablepress_preview_table' ), true ) ) {
 			return $caps;
 		}

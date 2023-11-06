@@ -108,7 +108,14 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param WP_Screen $screen          WP_Screen object.
 	 * @return string Extended Screen settings.
 	 */
-	public function add_screen_options_output( string $screen_settings, WP_Screen $screen ): string {
+	public function add_screen_options_output( /* string */ $screen_settings, WP_Screen $screen ): string {
+		// Don't use a type hint for the `$screen_settings` argument as many WordPress plugins seem to be returning `null` in their filter hook handlers.
+
+		// Protect against other plugins not returning a string for the `$screen_settings` argument.
+		if ( ! is_string( $screen_settings ) ) {
+			$screen_settings = '';
+		}
+
 		$screen_settings = '<fieldset id="tablepress-screen-options" class="screen-options">';
 		$screen_settings .= '<legend>' . __( 'Table editor settings', 'tablepress' ) . '</legend>';
 		$screen_settings .= '<p>' . __( 'Adjust the default size of the table cells in the table editor below.', 'tablepress' ) . ' ' . __( 'Cells with many lines of text will expand to their full height when they are edited.', 'tablepress' ) . '</p>';

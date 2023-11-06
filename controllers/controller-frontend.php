@@ -574,14 +574,21 @@ JS;
 		// Determine options to use (if set in Shortcode, use those, otherwise use stored options, from the "Edit" screen).
 		$render_options = array();
 		foreach ( $shortcode_atts as $key => $value ) {
-			// We have to check this, because strings 'true' or 'false' are not recognized as boolean!
-			if ( is_string( $value ) && 'true' === strtolower( $value ) ) {
-				$render_options[ $key ] = true;
-			} elseif ( is_string( $value ) && 'false' === strtolower( $value ) ) {
-				$render_options[ $key ] = false;
-			} elseif ( is_null( $value ) && isset( $table['options'][ $key ] ) ) {
+			if ( is_null( $value ) && isset( $table['options'][ $key ] ) ) {
+				// Use the table's stored option value, if the Shortcode parameter was not set.
 				$render_options[ $key ] = $table['options'][ $key ];
+			} elseif ( is_string( $value ) ) {
+				// Convert strings 'true' or 'false' to boolean, keep others.
+				$value_lowercase = strtolower( $value );
+				if ( 'true' === $value_lowercase ) {
+					$render_options[ $key ] = true;
+				} elseif ( 'false' === $value_lowercase ) {
+					$render_options[ $key ] = false;
+				} else {
+					$render_options[ $key ] = $value;
+				}
 			} else {
+				// Keep all other values.
 				$render_options[ $key ] = $value;
 			}
 		}

@@ -70,12 +70,14 @@
 		"phpcs:full": "vendor/bin/phpcs",
 		"fix-phpcs": "vendor/bin/phpcbf --report=summary,source",
 		"php-parallel-lint": "vendor/bin/parallel-lint --exclude .git --exclude node_modules --exclude vendor --show-deprecated .",
-		"phpstan": "./vendor/bin/phpstan analyze --memory-limit 1G",
+		"phpstan": "vendor/bin/phpstan analyze --memory-limit 1G",
+		"typos": "typos",
 		"build": [
 			"@compat",
 			"@phpcs:full",
 			"@phpstan",
-			"@php-parallel-lint"
+			"@php-parallel-lint",
+			"@typos"
 		],
 		"spaces-to-tabs": "find . -type f -not -path './node_modules/*' -not -path './vendor/*' \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
 		"update-phpspreadsheet": [
