@@ -260,7 +260,7 @@ const ImportScreen = () => {
 								type="radio"
 								aria-labelledby="import-type-header"
 								value="add"
-								checked={ appendReplaceDropdownDisabled }
+								checked={ 'add' === screenData.importType || 0 === tablesCount }
 								onChange={ ( event ) => updateScreenData( 'importType', event.target.value ) }
 							/> { __( 'Add as new table', 'tablepress' ) }
 						</label>
@@ -271,8 +271,8 @@ const ImportScreen = () => {
 								type="radio"
 								aria-labelledby="import-type-header"
 								value="replace"
-								disabled={ 0 === tablesCount || fileUploadMultipleFilesChosen }
-								checked={ 'replace' === screenData.importType && ! appendReplaceDropdownDisabled }
+								disabled={ 0 === tablesCount }
+								checked={ 'replace' === screenData.importType }
 								onChange={ ( event ) => updateScreenData( 'importType', event.target.value ) }
 							/> { __( 'Replace existing table', 'tablepress' ) }
 						</label>
@@ -283,8 +283,8 @@ const ImportScreen = () => {
 								type="radio"
 								aria-labelledby="import-type-header"
 								value="append"
-								disabled={ 0 === tablesCount || fileUploadMultipleFilesChosen }
-								checked={ 'append' === screenData.importType && ! appendReplaceDropdownDisabled }
+								disabled={ 0 === tablesCount }
+								checked={ 'append' === screenData.importType }
 								onChange={ ( event ) => updateScreenData( 'importType', event.target.value ) }
 							/> { __( 'Append rows to existing table', 'tablepress' ) }
 						</label>
@@ -335,12 +335,8 @@ const ImportScreen = () => {
 									importServerInput.current.setCustomValidity( __( 'You must specify a path to a file on the server.', 'tablepress' ) );
 								}
 
-								// If replace or append is selected, a table must be selected.
-								if (
-									( 'replace' === screenData.importType || 'append' === screenData.importType )
-									&& ! appendReplaceDropdownDisabled
-									&& '' === screenData.importExistingTable
-								) {
+								// If the table selection dropdown for replace or append is enabled, a table must be selected.
+								if ( ! appendReplaceDropdownDisabled && '' === screenData.importExistingTable ) {
 									// Use the jSuites dropdown input field, as the actual <select> is hidden.
 									appendReplaceDropdown.current.previousElementSibling.querySelector( '.jdropdown-header' ).setCustomValidity( __( 'You must select a table.', 'tablepress' ) );
 								}

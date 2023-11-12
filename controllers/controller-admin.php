@@ -750,7 +750,7 @@ JS;
 				break;
 		}
 
-		if ( 0 !== count( $no_success ) ) { // @TODO: maybe pass this information to the view?
+		if ( 0 !== count( $no_success ) ) { // @todo maybe pass this information to the view?
 			$message = "error_{$bulk_action}_not_all_tables";
 		} else {
 			$plural = ( count( $tables ) > 1 ) ? '_plural' : '';

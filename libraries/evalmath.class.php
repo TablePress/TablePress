@@ -347,16 +347,17 @@ class EvalMath {
 					// Check the argument count, depending on what type of function we have.
 					if ( in_array( $function_name, $this->builtin_functions, true ) ) {
 						// Built-in functions.
-						if ( $arg_count > 1 ) {
+						if ( $arg_count > 1 ) { // @phpstan-ignore-line
 							$error_data = array( 'expected' => 1, 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
 					} elseif ( array_key_exists( $function_name, $this->calc_functions ) ) {
 						// Calc-emulation functions.
 						$counts = $this->calc_functions[ $function_name ];
+						// @phpstan-ignore-next-line
 						if ( in_array( -1, $counts, true ) && $arg_count > 0 ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 							// Everything is fine, we expected an indefinite number arguments and got some.
-						} elseif ( ! in_array( $arg_count, $counts, true ) ) {
+						} elseif ( ! in_array( $arg_count, $counts, true ) ) { // @phpstan-ignore-line
 							$error_data = array( 'expected' => implode( '/', $this->calc_functions[ $function_name ] ), 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
@@ -390,7 +391,7 @@ class EvalMath {
 					return $this->raise_error( 'unexpected_comma' );
 				}
 				// Increment the argument count.
-				$stack->push( $stack->pop() + 1 );
+				$stack->push( $stack->pop() + 1 ); // @phpstan-ignore-line
 				// Put the ( back on, we'll need to pop back to it again.
 				$stack->push( '(' );
 				++$index;

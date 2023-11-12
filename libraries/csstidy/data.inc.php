@@ -78,7 +78,7 @@ $data['csstidy']['at_rules'] = array(
 /**
  * Properties that need a value with unit.
  *
- * @TODO CSS3 properties.
+ * @todo CSS3 properties.
  * @see compress_numbers();
  */
 $data['csstidy']['unit_values'] = array(
@@ -136,7 +136,7 @@ $data['csstidy']['unit_values'] = array(
 /**
  * Properties that allow <color> as value.
  *
- * @TODO CSS3 properties
+ * @todo CSS3 properties
  * @see compress_numbers();
  */
 $data['csstidy']['color_values'] = array( 'background-color', 'border-color', 'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color', 'color', 'outline-color', 'column-rule-color' );
@@ -144,7 +144,7 @@ $data['csstidy']['color_values'] = array( 'background-color', 'border-color', 'b
 /**
  * Default values for the background properties.
  *
- * @TODO Possibly property names will change during CSS3 development.
+ * @todo Possibly property names will change during CSS3 development.
  * @see dissolve_short_bg()
  * @see merge_bg()
  */

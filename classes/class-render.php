@@ -839,7 +839,7 @@ class TablePress_Render {
 	/**
 	 * Possibly replace certain HTML entities and replace line breaks with HTML.
 	 *
-	 * @TODO: Find a better solution than this function, e.g. something like wpautop().
+	 * @todo Find a better solution than this function, e.g. something like wpautop().
 	 *
 	 * @since 1.0.0
 	 *

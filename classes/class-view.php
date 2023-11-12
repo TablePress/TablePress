@@ -262,7 +262,7 @@ abstract class TablePress_View {
 	 */
 	protected function add_meta_box( string $id, string $title, callable $callback, string $context = 'normal', string $priority = 'default', ?array $callback_args = null ): void {
 		$this->has_meta_boxes = true;
-		add_meta_box( "tablepress_{$this->action}-{$id}", $title, $callback, null, $context, $priority, $callback_args ); // @phpstan-ignore-line
+		add_meta_box( "tablepress_{$this->action}-{$id}", $title, $callback, null, $context, $priority, $callback_args );
 	}
 
 	/**
@@ -413,10 +413,20 @@ abstract class TablePress_View {
 			<h1 class="name"><img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>" /><?php _e( 'TablePress', 'tablepress' ); ?></h1>
 			<?php if ( tb_tp_fs()->is_free_plan() ) : ?>
 				<div class="buttons">
-					<a href="<?php echo 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-button'; ?>" class="tablepress-button">
+				<?php
+				$timestamp_today = strtotime( 'today' );
+				if ( strtotime( '2023-11-19' ) < $timestamp_today && $timestamp_today < strtotime( '2023-11-28' ) ) :
+					?>
+					<a href="https://tablepress.org/premium/?utm_campaign=black-week-2023&utm_source=plugin&utm_medium=button&utm_content=upgrade-button" class="tablepress-button" style="background:linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);border-color:#ffffff;font-weight:bold;font-size:20px;border-radius:6px;">
+						<span>Premium: 20% off during Black Week 2023!</span>
+						<span class="dashicons dashicons-arrow-right-alt" />
+					</a>
+				<?php else : ?>
+					<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-button" class="tablepress-button">
 						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
 						<span class="dashicons dashicons-arrow-right-alt" />
 					</a>
+				<?php endif;?>
 				</div>
 			<?php endif; ?>
 		</div>

@@ -88,7 +88,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	/**
 	 * Test the min and max functions for integer and double inputs.
 	 *
-	 * @TODO: Use assertSame()!
+	 * @todo Use assertSame()!
 	 *
 	 * @since 1.5.0
 	 */

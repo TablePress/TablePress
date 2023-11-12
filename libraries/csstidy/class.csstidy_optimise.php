@@ -745,7 +745,7 @@ class TablePress_CSSTidy_Optimise {
 	/**
 	 * Dissolve background property.
 	 *
-	 * @TODO Full CSS3 compliance.
+	 * @todo Full CSS3 compliance.
 	 *
 	 * @since 1.0.0
 	 *
@@ -839,7 +839,7 @@ class TablePress_CSSTidy_Optimise {
 	/**
 	 * Merges all background properties.
 	 *
-	 * @TODO Full CSS3 compliance.
+	 * @todo Full CSS3 compliance.
 	 *
 	 * @since 1.0.0
 	 *

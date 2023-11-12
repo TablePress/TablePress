@@ -252,7 +252,7 @@ class TablePress_Edit_View extends TablePress_View {
 						</div>
 					</div>
 					<div class="buttons">
-						<a href="<?php echo 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen'; ?>" class="tablepress-button">
+						<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen" class="tablepress-button">
 							<span><?php _e( 'Compare the TablePress premium versions', 'tablepress' ); ?></span>
 							<span class="dashicons dashicons-arrow-right-alt"></span>
 						</a>

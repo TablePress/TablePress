@@ -901,8 +901,15 @@ JS;
 	 * @param string $search_sql Current part of the "WHERE" clause of the SQL statement used to get posts/pages from the WP database that is related to searching.
 	 * @return string Eventually extended SQL "WHERE" clause, to also find posts/pages with Shortcodes in them.
 	 */
-	public function posts_search_filter( string $search_sql ): string {
+	public function posts_search_filter( /* string */ $search_sql ): string {
+		// Don't use a type hint in the method declaration as there can be cases where `null` is passed to the filter hook callback somehow.
+
 		global $wpdb;
+
+		// Protect against cases where `null` is somehow passed to the filter hook callback.
+		if ( ! is_string( $search_sql ) ) {
+			return '';
+		}
 
 		if ( ! is_search() || ! is_main_query() ) {
 			return $search_sql;
@@ -948,7 +955,7 @@ JS;
 							// Column is hidden, so don't search in it.
 							continue;
 						}
-						// @TODO: Cells are not evaluated here, so math formulas are searched.
+						// @todo Cells are not evaluated here, so math formulas are searched.
 						if ( false !== stripos( $table_cell, $search_term ) ) {
 							// Found the search term in the cell content.
 							$query_result[ $search_term ][] = $table_id; // Add table ID to result list
