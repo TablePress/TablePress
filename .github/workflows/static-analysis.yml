@@ -78,7 +78,7 @@ jobs:
 
       - name: Run PHP static analysis checks
         id: phpstan
-        run: phpstan analyze --memory-limit 1G --error-format=github
+        run: phpstan analyze --memory-limit 2G --error-format=github
 
   failed-workflow:
     name: Failed workflow tasks

@@ -70,7 +70,7 @@
 		"phpcs:full": "vendor/bin/phpcs",
 		"fix-phpcs": "vendor/bin/phpcbf --report=summary,source",
 		"php-parallel-lint": "vendor/bin/parallel-lint --exclude .git --exclude node_modules --exclude vendor --show-deprecated .",
-		"phpstan": "vendor/bin/phpstan analyze --memory-limit 1G",
+		"phpstan": "vendor/bin/phpstan analyze --memory-limit 2G",
 		"typos": "typos",
 		"build": [
 			"@compat",
