@@ -426,7 +426,7 @@ abstract class TablePress_View {
 						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
 						<span class="dashicons dashicons-arrow-right-alt" />
 					</a>
-				<?php endif;?>
+				<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		</div>
