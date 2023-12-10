@@ -189,7 +189,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param bool   $load_options_visibility Whether the table options and table visibility shall be loaded.
 	 * @return array<string, mixed>|WP_Error Table as an array on success, WP_Error on error.
 	 */
-	public function load( string $table_id, bool $load_data = true, bool $load_options_visibility = true ) /* : array|WP_Post */ {
+	public function load( string $table_id, bool $load_data = true, bool $load_options_visibility = true ) /* : array|WP_Error */ {
 		if ( empty( $table_id ) ) {
 			return new WP_Error( 'table_load_empty_table_id' );
 		}
@@ -993,8 +993,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int                                               $post_id    Post ID.
-	 * @param array<string, array{rows: int[], columns: int[]}> $visibility Table visibility.
+	 * @param int                                $post_id    Post ID.
+	 * @param array{rows: int[], columns: int[]} $visibility Table visibility.
 	 * @return bool True on success, false on error.
 	 */
 	protected function _add_table_visibility( int $post_id, array $visibility ): bool {
@@ -1007,8 +1007,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int                                               $post_id    Post ID.
-	 * @param array<string, array{rows: int[], columns: int[]}> $visibility Table visibility.
+	 * @param int                                $post_id    Post ID.
+	 * @param array{rows: int[], columns: int[]} $visibility Table visibility.
 	 * @return bool True on success, false on error.
 	 */
 	protected function _update_table_visibility( int $post_id, array $visibility ): bool {
@@ -1022,12 +1022,15 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
-	 * @return array<string, array{rows: int[], columns: int[]}> Table visibility on success, empty array on error.
+	 * @return array{rows: int[], columns: int[]} Table visibility on success, empty array on error.
 	 */
 	protected function _get_table_visibility( int $post_id ): array {
 		$visibility = $this->model_post->get_meta_field( $post_id, $this->table_visibility_field_name );
 		if ( empty( $visibility ) ) {
-			return array();
+			return array(
+				'rows'    => array(),
+				'columns' => array(),
+			);
 		}
 		return json_decode( $visibility, true );
 	}

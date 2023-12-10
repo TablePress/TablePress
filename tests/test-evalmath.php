@@ -29,6 +29,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
+	#[\Override]
 	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'libraries/evalmath.class.php';
@@ -39,6 +40,7 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
+	#[\Override]
 	public function set_up(): void {
 		parent::set_up();
 		$this->evalmath = new EvalMath();

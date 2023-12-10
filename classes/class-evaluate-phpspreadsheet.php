@@ -52,11 +52,11 @@ class TablePress_Evaluate_PHPSpreadsheet {
 
 				$table_has_formulas = true;
 
-				// Convert legacy "formulas in text" notation to standard Excel notation (`=Text {A3+B3} Text` => `="Text "&A3+B3&" Text"`).
-				$count = 0;
-				$cell_content = (string) preg_replace( '#{(.+?)}#', '"&$1&"', $cell_content, -1, $count );
-				if ( $count > 0 ) {
-					$cell_content = '="' . substr( $cell_content, 1 ) . '"';
+				// Convert legacy "formulas in text" notation (`=Text {A3+B3} Text`) to standard Excel notation (`="Text "&A3+B3&" Text"`).
+				if ( 1 === preg_match( '#{(.+?)}#', $cell_content ) ) {
+					$cell_content = str_replace( '"', '""', $cell_content ); // Preserve existing quotation marks in text around formulas.
+					$cell_content = '="' . substr( $cell_content, 1 ) . '"'; // Wrap the whole cell content in quotation marks, as there will be text around formulas.
+					$cell_content = (string) preg_replace( '#{(.+?)}#', '"&$1&"', $cell_content, -1, $count ); // Convert all wrapped formulas to standard Excel notation.
 				}
 			}
 		}

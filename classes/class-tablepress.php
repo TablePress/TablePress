@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	public const version = '2.2.3'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const version = '2.2.4'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	public const db_version = 69; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const db_version = 70; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -439,7 +439,13 @@ abstract class TablePress {
 				$error_strings[ $error_code ] .= " ({$error_messages})";
 			}
 			$error_data = $wp_error->get_error_data( $error_code );
-			if ( ! is_null( $error_data ) ) {
+			if ( is_string( $error_data ) ) {
+				$error_strings[ $error_code ] .= " [{$error_data}]";
+			} elseif ( is_array( $error_data ) ) {
+				foreach ( $error_data as $key => $value ) {
+					$error_data[ $key ] = "{$key}: {$value}";
+				}
+				$error_data = implode( ', ', $error_data );
 				$error_strings[ $error_code ] .= " [{$error_data}]";
 			}
 		}

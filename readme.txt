@@ -5,7 +5,7 @@ Tags: table,spreadsheet,data,csv,excel,html,tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.4
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,24 +106,37 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.2.3 =
+= Version 2.2.4 (December 11, 2023) =
+
+* The math formula calculation engine now properly handles quotation marks in text around embedded formulas.
+* An issue with the block theme preview when using the Site Editor on multisite installations was fixed.
+* Data consistency when saving tables is checked more thorougly.
+* Forward-compatibility with PHP 8.3 was added, to benefit from new features.
+* The extraction of error information for displaying error messages was improved.
+* The loading of the Default Style Customizer was improved. (TablePress Pro and Max only.)
+* The handling and loading of translation files was improved. (TablePress Pro and Max only.)
+* The debugging capabilities for the “Automatic Periodic Table Import” feature module were improved. (TablePress Max only.)
+* Updated external libraries to benefit from enhancements and bug fixes.
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+
+= Version 2.2.3 (November 13, 2023) =
 
 * Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
 * An issue where it was not possible to replace existing tables during an import was fixed.
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 
-= Version 2.2.2 =
+= Version 2.2.2 (November 6, 2023) =
 
 * Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
 * The code that evaluates Shortcode parameters was optimized for a higher performance.
 * The “Sorted” order of the “Row Order” premium feature module no longer raises an error. (TablePress Pro and Max only.)
 * Updated external libraries to benefit from enhancements and bug fixes.
 
-= Version 2.2.1 =
+= Version 2.2.1 (November 2, 2023)=
 
 * Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
 
-= Version 2.2 =
+= Version 2.2 (November 2, 2023)=
 
 **Improvements around table styling**
 
@@ -162,7 +175,7 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.2.3 =
+= 2.2.4 =
 This update is a stability and maintenance release. Updating is highly recommended.
 
 = 2.2 =

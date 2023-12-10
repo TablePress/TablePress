@@ -64,6 +64,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @return bool true (Default value).
 	 */
+	#[\Override]
 	public function ajax_user_can(): bool {
 		return true;
 	}
@@ -77,6 +78,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @return array<string, string> List of columns in this List Table.
 	 */
+	#[\Override]
 	public function get_columns(): array {
 		$columns = array(
 			// "name" is special in WP, which is why we prefix every entry here, to be safe!
@@ -97,6 +99,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @return array<string, array{string, bool}> List of sortable columns in this List Table.
 	 */
+	#[\Override]
 	protected function get_sortable_columns(): array {
 		// No sorting on the Empty List placeholder.
 		if ( ! $this->has_items() ) {
@@ -118,6 +121,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @return string Name of the default primary column, in this case, the table name.
 	 */
+	#[\Override]
 	protected function get_default_primary_column_name(): string {
 		return 'table_name';
 	}
@@ -181,6 +185,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
+	#[\Override]
 	public function no_items(): void {
 		_e( 'No tables found.', 'tablepress' );
 		if ( 0 === $this->items_count ) {
@@ -197,6 +202,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @param 'top'|'bottom' $which Location ("top" or "bottom").
 	 */
+	#[\Override]
 	protected function display_tablenav( /* string */ $which ): void {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
@@ -307,6 +313,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
+	#[\Override]
 	public function prepare_items(): void {
 		global $orderby, $order, $s;
 		wp_reset_vars( array( 'orderby', 'order', 's' ) );

@@ -82,6 +82,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return bool true (Default value).
 	 */
+	#[\Override]
 	public function ajax_user_can(): bool {
 		return true;
 	}
@@ -95,6 +96,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return array<string, string> List of columns in this List Table.
 	 */
+	#[\Override]
 	public function get_columns(): array {
 		$columns = array(
 			'cb'                     => $this->has_items() ? '<input type="checkbox" />' : '', // Checkbox for "Select all", but only if there are items in the table.
@@ -118,6 +120,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return array<string, array{string, bool}> List of sortable columns in this List Table.
 	 */
+	#[\Override]
 	protected function get_sortable_columns(): array {
 		// No sorting on the Empty List placeholder.
 		if ( ! $this->has_items() ) {
@@ -142,6 +145,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return string Name of the default primary column, in this case, the table name.
 	 */
+	#[\Override]
 	protected function get_default_primary_column_name(): string {
 		return 'table_name';
 	}
@@ -154,6 +158,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
 	 */
+	#[\Override]
 	protected function column_cb( /* array */ $item ): string {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
@@ -311,6 +316,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param array<string, mixed> $item        Data item for the current row.
 	 * @param string               $column_name Current column name.
 	 */
+	#[\Override]
 	protected function column_default( /* array */ $item, /* string */ $column_name ): void {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
@@ -337,6 +343,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param string                      $primary     Primary column name.
 	 * @return string The row actions HTML, or an empty string if the current column is not the primary column.
 	 */
+	#[\Override]
 	protected function handle_row_actions( /* object|array */ $item, /* string */ $column_name, /* string */ $primary ): string {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
@@ -350,6 +357,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @return array<string, string> Bulk actions for this table.
 	 */
+	#[\Override]
 	protected function get_bulk_actions(): array {
 		$bulk_actions = array();
 
@@ -376,6 +384,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param 'top'|'bottom' $which The location of the bulk actions: 'top' or 'bottom'.
 	 *                              This is designated as optional for backwards-compatibility.
 	 */
+	#[\Override]
 	protected function bulk_actions( /* string */ $which = 'top' ): void {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
@@ -411,6 +420,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
+	#[\Override]
 	public function no_items(): void {
 		_e( 'No tables found.', 'tablepress' );
 		if ( 0 === $this->items_count ) {
@@ -439,6 +449,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @param 'top'|'bottom' $which Location ("top" or "bottom").
 	 */
+	#[\Override]
 	protected function display_tablenav( /* string */ $which ): void {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
@@ -579,6 +590,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @since 1.0.0
 	 */
+	#[\Override]
 	public function prepare_items(): void {
 		global $orderby, $order, $s;
 		wp_reset_vars( array( 'orderby', 'order', 's' ) );

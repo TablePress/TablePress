@@ -226,7 +226,7 @@ class TablePress_Import {
 
 				$extracted_files = $this->_extract_zip_file( $file );
 				if ( is_wp_error( $extracted_files ) ) {
-					$file['error'] = $extracted_files->get_error_code();
+					$file['error'] = $extracted_files;
 					$this->_maybe_unlink_file( $file );
 					continue;
 				}

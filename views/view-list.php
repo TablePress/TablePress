@@ -37,6 +37,7 @@ class TablePress_List_View extends TablePress_View {
 	 * @param string               $action Action for this view.
 	 * @param array<string, mixed> $data   Data for this view.
 	 */
+	#[\Override]
 	public function setup( /* string */ $action, array $data ) /* : void */ {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 		parent::setup( $action, $data );
@@ -81,37 +82,10 @@ class TablePress_List_View extends TablePress_View {
 		}
 
 		if ( $data['messages']['plugin_update_message'] ) {
-			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/' ) . '</p>';
+			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</p>';
 
 			if ( tb_tp_fs()->is_free_plan() ) {
 				$message .= '<p><strong>' . sprintf( __( 'More great features and priority email support are available with a Premium license plan. <a href="%s">Check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</strong></p>';
-			}
-
-			$url = 'https://tablepress.org/modules/default-style-customizer/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message';
-			$button_label = __( 'Find out more', 'tablepress' );
-
-			/*
-			 * Show the message only if the user is on
-			 * the Free plan or has the "tablepress_edit_options" capability.
-			 */
-			if ( tb_tp_fs()->is_free_plan() || current_user_can( 'tablepress_edit_options' ) ) {
-				$message .= '<p style="font-size:14px;"><strong>' . __( 'Here’s the latest great addition:', 'tablepress' ) . '</strong></p>';
-				$message .= '<div style="display:flex;max-width:625px;gap:20px;font-size:14px;border:1px solid #c3c4c7;box-shadow:0 1px 1px rgba(0, 0, 0, 0.04);padding:12px;">
-					<div>
-						<p style="font-size:14px;margin-top:0;">
-							' . __( 'The TablePress premium versions come with a table default style customizer!', 'tablepress' ) . '
-							' . __( 'Choose from multiple style variations or define your own color scheme in an easy-to-use visual tool!', 'tablepress' ) . '
-							<strong>' . __( 'Change your tables’ default style without touching CSS code!', 'tablepress' ) . '</strong>
-						</p>
-						<div class="buttons" style="text-align:center;">
-							<a href="' . $url . '" class="tablepress-button">
-								<span>' . $button_label . '</span>
-								<span class="dashicons dashicons-arrow-right-alt"></span>
-							</a>
-						</div>
-					</div>
-					<a href="' . $url . '"><img src="' . esc_url( plugins_url( 'admin/img/default-style-customizer.png', TABLEPRESS__FILE__ ) ) . '" width="305" height="172" alt="' . esc_attr__( 'Screenshot of the Default Style Customizer that is part of the TablePress premium versions.', 'tablepress' ) . '" /></a>
-				</div>';
 			}
 
 			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
@@ -154,6 +128,7 @@ class TablePress_List_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 */
+	#[\Override]
 	public function render(): void {
 		?>
 		<div id="tablepress-page" class="wrap">

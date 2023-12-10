@@ -29,6 +29,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
+	#[\Override]
 	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-import.php';
@@ -39,6 +40,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 *
 	 * @since 2.0.0
 	 */
+	#[\Override]
 	public function set_up(): void {
 		parent::set_up();
 		$this->importer = new TablePress_Import();

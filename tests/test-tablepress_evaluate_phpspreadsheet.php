@@ -29,6 +29,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	 *
 	 * @since 2.0.0
 	 */
+	#[\Override]
 	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-evaluate-phpspreadsheet.php';
@@ -39,6 +40,7 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	 *
 	 * @since 2.0.0
 	 */
+	#[\Override]
 	public function set_up(): void {
 		parent::set_up();
 		$this->evaluate = new TablePress_Evaluate_PHPSpreadsheet();
@@ -136,11 +138,13 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 			array( 'foo', 'bar', 'baz' ),
 			array( '=Table ID: {TABLE_ID}', '={5*2}', '{5*2}' ),
 			array( '=This is row {ROW}, column {COLUMN}.', '=Total: {SUM(1,2,B2)}', '=' ),
+			array( '=The result is "{5+3}".', '="Result": {5+3}', '="{5+3} years"' ),
 		);
 		$expected_table = array(
 			array( 'foo', 'bar', 'baz' ),
 			array( 'Table ID: 123', '10', '{5*2}' ),
 			array( 'This is row 3, column 1.', 'Total: 13', '=' ),
+			array( 'The result is "8".', '"Result": 8', '"8 years"' ),
 		);
 		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
 		$this->assertSame( $expected_table, $evaluated_table );

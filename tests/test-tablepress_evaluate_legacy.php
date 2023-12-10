@@ -29,6 +29,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
+	#[\Override]
 	public static function set_up_before_class(): void {
 		TablePress_TestCase::set_up_before_class();
 		require_once TABLEPRESS_ABSPATH . 'classes/class-evaluate-legacy.php';
@@ -39,6 +40,7 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 *
 	 * @since 1.5.0
 	 */
+	#[\Override]
 	public function set_up(): void {
 		parent::set_up();
 		$this->evaluate = new TablePress_Evaluate_Legacy();

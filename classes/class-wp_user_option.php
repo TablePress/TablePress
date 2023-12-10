@@ -35,6 +35,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 * @param mixed  $default_value Default value of the WP User Option.
 	 * @return mixed Current value of the WP User Option, or $default_value if it does not exist.
 	 */
+	#[\Override]
 	protected function _get_option( string $option_name, /* string|int|float|bool|array|null */ $default_value ) /* : string|int|float|bool|array|null */ {
 		// Non-logged-in user can never have a saved option value.
 		if ( ! is_user_logged_in() ) {
@@ -58,6 +59,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 * @param string $new_value   New value of the WP User Option (not slashed).
 	 * @return bool True on success, false on failure.
 	 */
+	#[\Override]
 	protected function _update_option( string $option_name, string $new_value ): bool {
 		// Non-logged-in user can never have a saved option value to be updated.
 		if ( ! is_user_logged_in() ) {
@@ -77,6 +79,7 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 	 * @param string $option_name Name of the WP User Option.
 	 * @return bool True on success, false on failure.
 	 */
+	#[\Override]
 	protected function _delete_option( string $option_name ): bool {
 		// Non-logged-in user can never have a saved option value to be deleted.
 		if ( ! is_user_logged_in() ) {
