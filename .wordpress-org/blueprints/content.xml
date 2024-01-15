@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>TablePress Demo</title>
+	<link>https://tablepress.org/</link>
+	<description>TablePress Demo site</description>
+	<pubDate>Mo, 15 Jan 2024 12:48:37 +0000</pubDate>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<generator>https://wordpress.org/</generator>
+	<wp:base_site_url>https://tablepress.org/</wp:base_site_url>
+	<item>
+		<title><![CDATA[Sample Post with TablePress tables]]></title>
+		<link>https://tablepress.org/2024/01/07/tablepress-demo-post/</link>
+		<pubDate>Mo, 15 Jan 2024 12:48:37 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://tablepress.org/?p=1</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>This is an example post that embeds a TablePress table:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
+<div class="wp-block-group alignwide"><!-- wp:tablepress/table {"id":"1"} -->
+[table id=1 /]
+<!-- /wp:tablepress/table --></div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph -->
+<p>This is a TablePress table with math formulas:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:tablepress/table {"id":"2"} -->
+[table id=2 /]
+<!-- /wp:tablepress/table -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>1</wp:post_id>
+		<wp:post_date><![CDATA[2024-01-15 12:47:27]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2024-01-15 12:47:27]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2024-01-15 12:48:05]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2024-01-15 12:48:05]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[open]]></wp:ping_status>
+		<wp:post_name><![CDATA[tablepress-demo-post]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
+	</item>
+	<item>
+		<title><![CDATA[Sample Page with TablePress tables]]></title>
+		<link>https://tablepress.org/tablepress-demo-page/</link>
+		<pubDate>Mo, 15 Jan 2024 12:48:37 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://tablepress.org/?page_id=2</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>This is an example page that embeds a TablePress table:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
+<div class="wp-block-group alignwide"><!-- wp:tablepress/table {"id":"1"} -->
+[table id=1 /]
+<!-- /wp:tablepress/table --></div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph -->
+<p>This is a TablePress table with math formulas:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:tablepress/table {"id":"2"} -->
+[table id=2 /]
+<!-- /wp:tablepress/table -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>2</wp:post_id>
+		<wp:post_date><![CDATA[2024-01-15 12:47:27]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2024-01-15 12:47:27]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2024-01-15 12:47:27]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2024-01-15 12:47:27]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[open]]></wp:ping_status>
+		<wp:post_name><![CDATA[tablepress-demo-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+			<wp:meta_value><![CDATA[default]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+	<item>
+		<title><![CDATA[Demo Table]]></title>
+		<link>https://tablepress.org/?post_type=tablepress_table&#038;p=6</link>
+		<pubDate>Mo, 15 Jan 2024 12:48:37 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://tablepress.org/?post_type=tablepress_table&#038;p=6</guid>
+		<description></description>
+		<content:encoded><![CDATA[[["First\u00a0Name","Last\u00a0Name","ZIP","Birthday","Points","Average","Amount"],["Gloria","Reeves","67439","10/18/1985","4","0.1","$50"],["Graham","Bonner","90727","12/07/1983","4","0.9","$90"],["Warren","Wheeler","99134","11/11/1984","2","0.7","$50"],["Zena","Hale","19803","06/17/1987","9","0.3","$90"],["Julia","Haupt","24116","03/15/1991","10","1.0","$40"],["Rachel","English","58951","02/25/1982","7","0.3","$20"],["Lionel","Barry","65036","02/17/1980","7","0.5","$50"],["Zena","Spears","16874","12/13/1981","5","0.6","$20"],["Dillon","Bradford","91543","01/20/1985","7","0.4","$100"],["Haley","Mcleod","99321","04/12/1980","4","0.1","$20"],["Abra","House","99537","08/10/1980","6","0.1","$60"],["Ariel","Nichols","56555","04/10/1984","6","0.7","$90"],["Roary","Ayers","12720","06/19/1987","3","0.5","$40"],["Mason","Stevens","81062","08/11/1986","3","0.6","$10"],["Gillian","Simon","69137","05/12/1988","10","0.7","$40"],["Rebekah","Fisher","32572","05/21/1981","3","0.7","$70"],["Cameron","Walls","18788","11/20/1981","2","0.2","$100"],["Phelan","Palmer","95413","08/10/1988","6","0.2","$30"],["Mona","Fischer","48912","01/25/1983","9","0.6","$40"],["Rashad","Webb","27993","12/08/1983","4","0.1","$50"],["Brandon","Kinney","00986","09/15/1986","2","0.2","$30"],["Sacha","Gould","17722","07/31/1985","8","0.7","$30"],["Brenda","Osborn","52139","02/28/1981","4","0.5","$60"],["Sophia","Flynn","79688","08/07/1989","3","0.2","$80"],["Bree","Orr","70160","11/17/1988","9","0.7","$80"],["Last\u00a0Name","First\u00a0Name","ZIP","Birthday","Points","Average","Amount"]]]]></content:encoded>
+		<excerpt:encoded><![CDATA[This is a table with some fictional data.]]></excerpt:encoded>
+		<wp:post_id>6</wp:post_id>
+		<wp:post_date><![CDATA[2024-01-15 12:37:10]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2024-01-15 12:37:10]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2024-01-15 12:40:50]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2024-01-15 12:40:50]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[https-tablepress-org-demo]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[tablepress_table]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:postmeta>
+			<wp:meta_key>_tablepress_export_table_id</wp:meta_key>
+			<wp:meta_value><![CDATA[1]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_tablepress_table_options]]></wp:meta_key>
+			<wp:meta_value><![CDATA[{"last_editor":1,"table_head":true,"table_foot":true,"alternating_row_colors":true,"row_hover":true,"print_name":false,"print_name_position":"above","print_description":false,"print_description_position":"below","extra_css_classes":"","use_datatables":true,"datatables_sort":true,"datatables_filter":true,"datatables_paginate":true,"datatables_lengthchange":true,"datatables_paginate_entries":5,"datatables_info":true,"datatables_scrollx":true,"datatables_custom_commands":""}]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_tablepress_table_visibility]]></wp:meta_key>
+			<wp:meta_value><![CDATA[{"rows":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"columns":[1,1,1,1,1,1,1]}]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+	<item>
+		<title><![CDATA[Table with formulas]]></title>
+		<link>https://tablepress.org/?post_type=tablepress_table&#038;p=14</link>
+		<pubDate>Mo, 15 Jan 2024 12:48:37 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">https://tablepress.org/?post_type=tablepress_table&#038;p=14</guid>
+		<description></description>
+		<content:encoded><![CDATA[[["Data 1","Data 2","Formula","Result"],["1","0.4","'=A2+A3+A4","=A2+A3+A4"],["2","-0.9","'=\"Sum: \"&SUM(A2:A8)","=\"Sum: \"&SUM(A2:A8)"],["5","4.5","'=SIN(PI()/2)","=SIN(PI()/2)"],["4","-0.1","'=ABS(B3)+CEIL(B2,0)","=ABS(B3)+CEIL(B2,0)"],["3","2.2","'=POWER(A3,A4)","=POWER(A3,A4)"],["7","-0.4","'=MEDIAN(A2:A8)","=MEDIAN(A2:A8)"],["8","5.8","'=IF(A3>A4, 1, 0)","=IF(A3>A4, 1, 0)"]]]]></content:encoded>
+		<excerpt:encoded><![CDATA[This is a test table with some Excel-like math formulas.]]></excerpt:encoded>
+		<wp:post_id>14</wp:post_id>
+		<wp:post_date><![CDATA[2024-01-15 12:42:18]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2024-01-15 12:42:18]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2024-01-15 12:46:58]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2024-01-15 12:46:58]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[https-tablepress-org-tablepress-features-formulas]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[tablepress_table]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:postmeta>
+			<wp:meta_key>_tablepress_export_table_id</wp:meta_key>
+			<wp:meta_value><![CDATA[2]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_tablepress_table_options]]></wp:meta_key>
+			<wp:meta_value><![CDATA[{"last_editor":1,"table_head":true,"table_foot":false,"alternating_row_colors":true,"row_hover":true,"print_name":false,"print_name_position":"above","print_description":false,"print_description_position":"below","extra_css_classes":"","use_datatables":false,"datatables_sort":true,"datatables_filter":true,"datatables_paginate":true,"datatables_lengthchange":true,"datatables_paginate_entries":10,"datatables_info":true,"datatables_scrollx":false,"datatables_custom_commands":""}]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_tablepress_table_visibility]]></wp:meta_key>
+			<wp:meta_value><![CDATA[{"rows":[1,1,1,1,1,1,1,1],"columns":[1,1,1,1]}]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+</channel>
+</rss>
