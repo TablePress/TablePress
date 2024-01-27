@@ -765,7 +765,7 @@ tp.callbacks.table_preview.process = function ( event ) {
 
 	// Add spinner, disable "Preview" buttons, and change cursor.
 	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-table-preview" class="spinner-table-preview spinner is-active" title="${ __( 'The Table Preview is being loaded …', 'tablepress' ) }"/>` );
-	$( '.button-show-preview' ).forEach( ( button ) => button.classList.add( 'disabled' ) );
+	$( '.button-preview' ).forEach( ( button ) => button.classList.add( 'disabled' ) );
 	document.body.classList.add( 'wait' );
 
 	// Load the table preview data from the server via an AJAX request.
@@ -800,7 +800,7 @@ tp.callbacks.table_preview.process = function ( event ) {
 	.catch( ( error ) => tp.callbacks.table_preview.error( error.message ) )
 	.finally( () => {
 		$( '#spinner-table-preview' ).remove();
-		$( '.button-show-preview' ).forEach( ( button ) => button.classList.remove( 'disabled' ) );
+		$( '.button-preview' ).forEach( ( button ) => button.classList.remove( 'disabled' ) );
 		document.body.classList.remove( 'wait' );
 	} );
 };
@@ -938,12 +938,22 @@ tp.callbacks.save_changes.success = function ( data ) {
 	// Update the nonces.
 	tp.nonces.edit_table = data.new_edit_nonce;
 	tp.nonces.preview_table = data.new_preview_nonce;
+	tp.nonces.copy_table = data.new_copy_nonce;
+	tp.nonces.delete_table = data.new_delete_nonce;
 
-	// Update URLs in Preview links.
-	$( '.button-show-preview' ).forEach( ( button ) => {
+	// Update URLs in Preview, Copy, and Delete links/buttons.
+	[ 'preview', 'copy', 'delete' ].forEach( ( action ) => {
+		$( `.button-${ action }` ).forEach( ( button ) => {
+			button.href = button.href
+				.replace( /item=[a-zA-Z0-9_-]+/g, `item=${ data.table_id }` ) // Updates both the "item" and the "return_item" parameters.
+				.replace( /&_wpnonce=[a-z0-9]+/ig, `&_wpnonce=${ data[ `new_${ action }_nonce` ] }` );
+		} );
+	} );
+
+	// Update URL in Export links/buttons.
+	$( '.button-export' ).forEach( ( button ) => {
 		button.href = button.href
-			.replace( /item=[a-zA-Z0-9_-]+/g, `item=${ data.table_id }` )
-			.replace( /&_wpnonce=[a-z0-9]+/ig, `&_wpnonce=${ data.new_preview_nonce }` );
+			.replace( /table_id=[a-zA-Z0-9_-]+/g, `table_id=${ data.table_id }` );
 	} );
 
 	// Update last-modified date and user nickname.
@@ -1309,7 +1319,7 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 	if ( event.ctrlKey || event.metaKey ) {
 		if ( 80 === event.keyCode ) {
 			// Preview: Ctrl/Cmd + P.
-			action = 'show-preview';
+			action = 'preview';
 		} else if ( 83 === event.keyCode ) {
 			// Save Changes: Ctrl/Cmd + S.
 			action = 'save-changes';
@@ -1365,7 +1375,7 @@ tp.callbacks.keyboard_shortcuts = function ( event ) {
 		}
 	}
 
-	if ( 'save-changes' === action || 'show-preview' === action ) {
+	if ( 'save-changes' === action || 'preview' === action ) {
 		// Blur the focussed element to make sure that all change events were triggered.
 		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
 
@@ -1446,7 +1456,7 @@ $( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
 		return;
 	}
 
-	if ( event.target.matches( '.button-show-preview' ) ) {
+	if ( event.target.matches( '.button-preview' ) ) {
 		tp.callbacks.table_preview.process( event );
 		return;
 	}

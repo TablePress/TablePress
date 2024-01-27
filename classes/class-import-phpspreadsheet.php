@@ -77,10 +77,12 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 	 * @return array<string, mixed>|false Table array on success, false if the file is not a JSON file.
 	 */
 	protected function _maybe_import_json( string $data ) /* : array|false */ {
-		// If the first non-whitespace character is not a { or [, the file is not a supported JSON file.
-		$data = ltrim( $data );
+		$data = trim( $data );
+
+		// If the file does not begin / end with [ / ] or { / }, it's not a supported JSON file.
 		$first_character = $data[0];
-		if ( '{' !== $first_character && '[' !== $first_character ) {
+		$last_character = $data[-1];
+		if ( ! ( '[' === $first_character && ']' === $last_character ) && ! ( '{' === $first_character && '}' === $last_character ) ) {
 			return false;
 		}
 
@@ -246,9 +248,16 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 					// Apply data type formatting.
 					$style = $spreadsheet->getCellXfByIndex( $cell->getXfIndex() );
+
+					$format = $style->getNumberFormat()->getFormatCode() ?? \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL;
+
+					// Fix floating point precision issues with numbers in the "General" Excel .xlsx format.
+					if ( 'xlsx' === $detected_format && \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL === $format && is_numeric( $cell_data ) ) {
+						$cell_data = (string) (float) $cell_data; // Type-cast strings to float and back.
+					}
 					$cell_data = \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString(
 						$cell_data,
-						$style->getNumberFormat() ? $style->getNumberFormat()->getFormatCode() : \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL, // @phpstan-ignore-line
+						$format,
 						array( $this, 'format_color' )
 					);
 

@@ -13,6 +13,8 @@ parameters:
 		- libraries/
 	bootstrapFiles:
 		- .phpstan/symbols.php
+	dynamicConstantNames:
+		- TABLEPRESS_IS_PLAYGROUND_PREVIEW
 	earlyTerminatingMethodCalls:
 		TablePress:
 			- redirect

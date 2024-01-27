@@ -253,6 +253,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		$commands = array();
 
 		foreach ( $this->shown_tables as $table_id => $table_store ) {
+			$table_id = (string) $table_id; // Ensure that the table ID is a string, as it comes from an array key where numeric strings are converted to integers.
+
 			if ( empty( $table_store['instances'] ) ) {
 				continue;
 			}
@@ -514,7 +516,7 @@ JS;
 		// Check, if a table with the given ID exists.
 		$table_id = (string) preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
 		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
-			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
+			$message = "&#91;table “{$table_id}” not found /&#93;<br />\n";
 			/**
 			 * Filters the "Table not found" message.
 			 *
@@ -530,7 +532,7 @@ JS;
 		// Load table, with table data, options, and visibility settings.
 		$table = TablePress::$model_table->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
-			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
+			$message = "&#91;table “{$table_id}” could not be loaded /&#93;<br />\n";
 			/**
 			 * Filters the "Table could not be loaded" message.
 			 *
@@ -544,7 +546,7 @@ JS;
 			return $message;
 		}
 		if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
-			$message = "<div>Attention: The internal data of table &#8220;{$table_id}&#8221; is corrupted!</div>";
+			$message = "<div>Attention: The internal data of table “{$table_id}” is corrupted!</div>";
 			/**
 			 * Filters the "Table data is corrupted" message.
 			 *
@@ -786,7 +788,7 @@ JS;
 		// Check, if a table with the given ID exists.
 		$table_id = preg_replace( '/[^a-zA-Z0-9_-]/', '', $shortcode_atts['id'] );
 		if ( ! TablePress::$model_table->table_exists( $table_id ) ) {
-			$message = "[table &#8220;{$table_id}&#8221; not found /]<br />\n";
+			$message = "&#91;table “{$table_id}” not found /&#93;<br />\n";
 			/** This filter is documented in controllers/controller-frontend.php */
 			$message = apply_filters( 'tablepress_table_not_found_message', $message, $table_id );
 			return $message;
@@ -795,7 +797,7 @@ JS;
 		// Load table, with table data, options, and visibility settings.
 		$table = TablePress::$model_table->load( $table_id, true, true );
 		if ( is_wp_error( $table ) ) {
-			$message = "[table &#8220;{$table_id}&#8221; could not be loaded /]<br />\n";
+			$message = "&#91;table “{$table_id}” could not be loaded /&#93;<br />\n";
 			/** This filter is documented in controllers/controller-frontend.php */
 			$message = apply_filters( 'tablepress_table_load_error_message', $message, $table_id, $table );
 			return $message;
@@ -860,7 +862,7 @@ JS;
 				$output = count( $table['data'][0] );
 				break;
 			default:
-				$output = "[table-info field &#8220;{$field}&#8221; not found in table &#8220;{$table_id}&#8221; /]<br />\n";
+				$output = "&#91;table-info field “{$field}” not found in table “{$table_id}” /&#93;<br />\n";
 				/**
 				 * Filters the "table info field not found" message.
 				 *

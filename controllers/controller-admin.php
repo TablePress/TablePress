@@ -410,7 +410,7 @@ JS;
 			$links[] = '<a href="https://tablepress.org/faq/" title="' . esc_attr__( 'Frequently Asked Questions', 'tablepress' ) . '">' . __( 'FAQ', 'tablepress' ) . '</a>';
 			$links[] = '<a href="https://tablepress.org/documentation/">' . __( 'Documentation', 'tablepress' ) . '</a>';
 			$links[] = '<a href="https://tablepress.org/support/">' . __( 'Support', 'tablepress' ) . '</a>';
-			if ( tb_tp_fs()->is_free_plan() ) {
+			if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) {
 				$links[] = '<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=plugins-screen" title="' . esc_attr__( 'Check out the Premium version of TablePress!', 'tablepress' ) . '"><strong>' . __( 'Go Premium', 'tablepress' ) . '</strong></a>';
 			}
 		}
@@ -790,7 +790,7 @@ JS;
 
 		$add_table = wp_unslash( $_POST['table'] );
 
-		// Perform sanity checks of posted data.
+		// Perform confidence checks of posted data.
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
 		$description = ( isset( $add_table['description'] ) ) ? $add_table['description'] : '';
 		if ( ! isset( $add_table['rows'], $add_table['columns'] ) ) {

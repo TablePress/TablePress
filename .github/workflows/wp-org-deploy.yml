@@ -1,0 +1,47 @@
+name: Deploy to wordpress.org Repository
+
+on:
+  # Deploy to wordpress.org when a production release is created.
+  release:
+    types: [ released ]
+  # Do a "dry run" (without comming to SVN) when the workflow is manually triggered.
+  workflow_dispatch:
+
+jobs:
+
+  deploy_to_wordpress_org:
+    name: Deploy to wordpress.org${{ github.event_name == 'workflow_dispatch' && ' (dry run)' || '' }}
+    if: github.repository == 'TablePress/TablePress'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout TablePress repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: WordPress Plugin Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+          dry-run: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ${{ vars.SLUG }}
+
+      - name: Get plugin version
+        id: get-version
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        run: |
+          echo "version=$(awk '/Stable tag: /{print $NF}' readme.txt)" >> $GITHUB_OUTPUT
+
+      - name: Upload release ZIP file
+        uses: actions/upload-release-asset@v1
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.deploy.outputs.zip-path }}
+          asset_name: ${{ vars.SLUG }}.${{ steps.get-version.outputs.version }}.zip
+          asset_content_type: application/zip

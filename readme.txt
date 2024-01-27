@@ -1,11 +1,11 @@
 === TablePress - Tables in WordPress made easy ===
 Contributors: TobiasBg
 Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=donate-link
-Tags: table,spreadsheet,data,csv,excel,html,tables
+Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.4
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,6 +97,7 @@ After installing the plugin, you can create and manage tables on the "TablePress
 
 To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table or use Shortcodes with common page builders.
 
+Beginner-friendly step-by-step [tutorials, guides, and how-tos](https://tablepress.org/tutorials/) show how to achieve common and popular tasks with TablePress.
 Examples for common styling changes via "Custom CSS" code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table's "Edit" screen.
 
@@ -105,6 +106,18 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 == Changelog ==
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
+
+= Version 2.2.5 (January 30, 2024) =
+
+* *Security fix*: The URL import now properly blocks hosts of cloud providers’ metadata API endpoints to prevent data extraction.
+* When importing a table in the Excel format, floating point numbers are now detected and handled more reliably.
+* The detection of the JSON format when importing a table is now more reliable.
+* The “Copy”, “Export”, and “Delete” buttons/links on a table’s “Edit” screen now work again after a table ID was changed.
+* Error messages when a table could not be found and similar are now shown properly in modern themes.
+* The “Automatic Filtering” feature module now also allows using a slash in the filter term. (TablePress Pro and Max only.)
+* The “Debug and Version Information” section was cleaned up and updated with more relevant checks.
+* Updated external libraries to benefit from enhancements and bug fixes.
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 
 = Version 2.2.4 (December 11, 2023) =
 
@@ -132,11 +145,11 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 * The “Sorted” order of the “Row Order” premium feature module no longer raises an error. (TablePress Pro and Max only.)
 * Updated external libraries to benefit from enhancements and bug fixes.
 
-= Version 2.2.1 (November 2, 2023)=
+= Version 2.2.1 (November 2, 2023) =
 
 * Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
 
-= Version 2.2 (November 2, 2023)=
+= Version 2.2 (November 2, 2023) =
 
 **Improvements around table styling**
 
@@ -175,8 +188,8 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.2.4 =
-This update is a stability and maintenance release. Updating is highly recommended.
+= 2.2.5 =
+This update is a security and maintenance release. Updating is highly recommended.
 
 = 2.2 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.

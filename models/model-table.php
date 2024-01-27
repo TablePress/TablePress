@@ -233,9 +233,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		// This loop now uses the WP cache.
 		$table_ids = array();
 		foreach ( $table_post as $table_id => $post_id ) {
-			$table_id = (string) $table_id;
+			$table_id = (string) $table_id; // Ensure that the table ID is a string, as it comes from an array key where numeric strings are converted to integers.
+
 			// Load table without data and options to save memory.
 			$table = $this->load( $table_id, false, false );
+
 			// Skip tables that could not be loaded properly.
 			if ( ! is_wp_error( $table ) ) {
 				$table_ids[] = $table_id;
@@ -527,9 +529,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		foreach ( $tables['table_post'] as $table_id => $post_id ) {
-			$table_id = (string) $table_id;
+			$table_id = (string) $table_id; // Ensure that the table ID is a string, as it comes from an array key where numeric strings are converted to integers.
+
 			$this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function.
 			unset( $tables['table_post'][ $table_id ] );
+
 			// Invalidate table output caches that belong to this table.
 			$this->invalidate_table_output_cache( $table_id );
 		}
@@ -1058,7 +1062,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		$default_table = $this->get_table_template();
 
 		// Go through all tables (this loop now uses the WP cache).
-		foreach ( $table_post as $table_id => $post_id ) {
+		foreach ( $table_post as $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
 			if ( $remove_old_options ) {
 				// Remove old (i.e. no longer existing) Table Options.
@@ -1082,6 +1086,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		foreach ( $table_post as $table_id => $post_id ) {
+			$table_id = (string) $table_id; // Ensure that the table ID is a string, as it comes from an array key where numeric strings are converted to integers.
 			$this->invalidate_table_output_cache( $table_id );
 		}
 	}

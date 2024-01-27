@@ -137,7 +137,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 			array( '1230', '1230', 'Integer with trailing zero', '1230' ),
 			array( '0123', '0123', 'Integer with leading zero', '0123' ),
 			array( '   123   ', '   123   ', 'Three spaces before and after an integer', '   123   ' ),
-			array( '123.5', '123.5', 'Float', '123.5' ),
+			array( '123.5', '123.5', 'Float with comma and period', '123.5' ),
 			array( '0123.5', '0123.5', 'Float with leading zero', '0123.5' ),
 			array( '123.50', '123.50', 'Float with trailing zero', '123.50' ),
 			array( '0123.50', '0123.50', 'Float with leading and trailing zero', '0123.50' ),
@@ -177,6 +177,8 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 			array( '<span style="color:#FF0000;">red text <span style="color:#FFFF00;">yellow text</span></span>', 'H<sub>2</sub>O', 'left aligned', '' ),
 			array( '', 'H<sub>2</sub>O <span style="color:#00FA00;">green</span>', '<span style="color:#0432FF;">H<span style="color:#0432FF;"><sub>2</sub></span><span style="color:#0432FF;">O </span><span style="color:#FF2600;">gr</span>e<span style="color:#FF2600;">en</span></span>', '' ),
 			array( '1', '2', 'Styled formula does not get inline HTML after import', '=A61+B61' ),
+			array( '3.022', '-0.162', 'Floats that can cause floating point precision errors with the General format 1', '0.579' ),
+			array( '-3.022', '-0.051', 'Floats that can cause floating point precision errors with the General format 2', '0.094' ),
 		);
 
 		$this->assertSame( $expected_table_data, $imported_table_data );

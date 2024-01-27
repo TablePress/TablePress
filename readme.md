@@ -68,6 +68,7 @@ After installing the plugin, you can create and manage tables on the “TablePre
 
 To insert a table into a post or page, add a “TablePress table” block in the block editor and select the desired table.
 
+Beginner-friendly step-by-step [tutorials, guides, and how-tos](https://tablepress.org/tutorials/) show how to achieve common and popular tasks with TablePress.
 Examples for common styling changes via “Custom CSS” code can be found on the [TablePress FAQ page](https://tablepress.org/faq/).
 You may also add certain features (like sorting, pagination, filtering, alternating row colors, row highlighting, print name and/or description, ...) by enabling the corresponding checkboxes on a table’s “Edit” screen.
 

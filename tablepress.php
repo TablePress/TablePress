@@ -4,13 +4,13 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 2.2.4
+ * @version 2.2.5
  *
  *
  * Plugin Name: TablePress
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and interactive tables into your WordPress website’s posts and pages, without having to write code!
- * Version: 2.2.4
+ * Version: 2.2.5
  * Requires at least: 6.0
  * Requires PHP: 7.2
  * Author: Tobias Bäthge
@@ -20,7 +20,7 @@
  * Donate URI: https://tablepress.org/donate/
  *
  *
- * Copyright 2012-2023 Tobias Bäthge
+ * Copyright 2012-2024 Tobias Bäthge
  *
  * TablePress is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as published by
@@ -39,6 +39,10 @@
 
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
+if ( ! defined( 'TABLEPRESS_IS_PLAYGROUND_PREVIEW' ) ) {
+	define( 'TABLEPRESS_IS_PLAYGROUND_PREVIEW', false );
+}
 
 if ( function_exists( 'tb_tp_fs' ) ) {
 	tb_tp_fs()->set_basename( false, __FILE__ ); // @phpstan-ignore-line
@@ -78,6 +82,7 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 					'localhost' => false,
 				),
 				'is_live'           => true,
+				'anonymous_mode'    => TABLEPRESS_IS_PLAYGROUND_PREVIEW,
 			) );
 		}
 

@@ -211,7 +211,7 @@ class TablePress_List_View extends TablePress_View {
 			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( wp_unslash( $_GET['s'] ) ) );
 		}
 		?>
-<form method="get" action="">
+<form method="get">
 		<?php
 		if ( isset( $_GET['page'] ) ) {
 			echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />' . "\n";

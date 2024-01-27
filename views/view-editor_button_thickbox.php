@@ -125,7 +125,7 @@ html {
 			printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( wp_unslash( $_GET['s'] ) ) );
 		}
 		?>
-<form method="get" action="">
+<form method="get">
 	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
 		<?php
 		wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false );

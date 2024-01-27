@@ -127,12 +127,16 @@ class TablePress_Import {
 					return new WP_Error( 'table_import_url_host_invalid', '', $this->import_config['url'] );
 				}
 
-				// Check the host of the Import URL against a blacklist of hosts, which should not be accessible, e.g. for security considerations.
-				$blocked_hosts = array(
-					'169.254.169.254', // AWS Meta-data API.
+				// Check the IP address of the host against a blocklist of hosts which should not be accessible, e.g. for security considerations.
+				$ip = gethostbyname( $host ); // If no IP address can be found, this will return the host name, which will then be checked against the blocklist.
+				$blocked_ips = array(
+					'169.254.169.254', // Meta-data API for various cloud providers.
+					'169.254.170.2', // AWS task metadata endpoint.
+					'192.0.0.192', // Oracle Cloud endpoint.
+					'100.100.100.200', // Alibaba Cloud endpoint.
 				);
-				if ( in_array( $host, $blocked_hosts, true ) ) {
-					return new WP_Error( 'table_import_url_host_blocked', '', $this->import_config['url'] );
+				if ( in_array( $ip, $blocked_ips, true ) ) {
+					return new WP_Error( 'table_import_url_host_blocked', '', array( 'url' => $this->import_config['url'], 'ip' => $ip ) );
 				}
 
 				/**
@@ -395,7 +399,7 @@ class TablePress_Import {
 			&& class_exists( 'ZipArchive', false )
 			&& class_exists( 'DOMDocument', false )
 			&& function_exists( 'simplexml_load_string' )
-			&& function_exists( 'libxml_disable_entity_loader' );
+			&& ( function_exists( 'libxml_disable_entity_loader' ) || PHP_VERSION_ID >= 80000 ); // This function is only needed for older versions of PHP.
 		if ( ! $phpspreadsheet_requirements_fulfilled ) {
 			return true;
 		}
@@ -531,11 +535,17 @@ class TablePress_Import {
 
 		// If no format could be determined from the file extension, try guessing from the file content.
 		if ( '' === $format ) {
+			$data = trim( $data );
 			$first_character = $data[0];
-			if ( '<' === $first_character ) {
+			$last_character = $data[-1];
+
+			if ( '<' === $first_character && '>' === $last_character ) {
 				$format = 'html';
-			} elseif ( '{' === $first_character || '[' === $first_character ) {
-				$format = 'json';
+			} elseif ( ( '[' === $first_character && ']' === $last_character ) || ( '{' === $first_character && '}' === $last_character ) ) {
+				$json_table = json_decode( $data, true );
+				if ( ! is_null( $json_table ) ) {
+					$format = 'json';
+				}
 			}
 		}
 

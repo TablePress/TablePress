@@ -411,7 +411,7 @@ abstract class TablePress_View {
 		?>
 		<div id="tablepress-header" class="header">
 			<h1 class="name"><img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>" /><?php _e( 'TablePress', 'tablepress' ); ?></h1>
-			<?php if ( tb_tp_fs()->is_free_plan() ) : ?>
+			<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
 				<div class="buttons">
 					<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-button" class="tablepress-button">
 						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
