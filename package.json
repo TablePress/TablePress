@@ -16,7 +16,7 @@
 	"bugs": "https://github.com/TablePress/TablePress/issues",
 	"devDependencies": {
 		"@wordpress/icons": "^9.36.0",
-		"@wordpress/scripts": "^26.16.0",
+		"@wordpress/scripts": "^26.19.0",
 		"autoprefixer": "^9.8.8",
 		"grunt": "^1.6.1",
 		"grunt-contrib-csslint": "^2.0.0",
