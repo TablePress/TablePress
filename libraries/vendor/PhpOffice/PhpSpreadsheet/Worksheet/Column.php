@@ -5,25 +5,20 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 class Column
 {
 	/**
-	 * \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet.
-	 *
-	 * @var Worksheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
 	 */
 	private $worksheet;
 
 	/**
 	 * Column index.
-	 *
 	 * @var string
 	 */
 	private $columnIndex;
 
 	/**
 	 * Create a new column.
-	 *
-	 * @param string $columnIndex
 	 */
-	public function __construct(Worksheet $worksheet, $columnIndex = 'A')
+	public function __construct(Worksheet $worksheet, string $columnIndex = 'A')
 	{
 		// Set parent and column index
 		$this->worksheet = $worksheet;
@@ -35,8 +30,7 @@ class Column
 	 */
 	public function __destruct()
 	{
-		// @phpstan-ignore-next-line
-		$this->worksheet = null;
+		unset($this->worksheet);
 	}
 
 	/**
@@ -51,22 +45,22 @@ class Column
 	 * Get cell iterator.
 	 *
 	 * @param int $startRow The row number at which to start iterating
-	 * @param int $endRow Optionally, the row number at which to stop iterating
+	 * @param ?int $endRow Optionally, the row number at which to stop iterating
 	 */
-	public function getCellIterator($startRow = 1, $endRow = null): ColumnCellIterator
+	public function getCellIterator(int $startRow = 1, ?int $endRow = null, bool $iterateOnlyExistingCells = false): ColumnCellIterator
 	{
-		return new ColumnCellIterator($this->worksheet, $this->columnIndex, $startRow, $endRow);
+		return new ColumnCellIterator($this->worksheet, $this->columnIndex, $startRow, $endRow, $iterateOnlyExistingCells);
 	}
 
 	/**
 	 * Get row iterator. Synonym for getCellIterator().
 	 *
 	 * @param int $startRow The row number at which to start iterating
-	 * @param int $endRow Optionally, the row number at which to stop iterating
+	 * @param ?int $endRow Optionally, the row number at which to stop iterating
 	 */
-	public function getRowIterator($startRow = 1, $endRow = null): ColumnCellIterator
+	public function getRowIterator(int $startRow = 1, ?int $endRow = null, bool $iterateOnlyExistingCells = false): ColumnCellIterator
 	{
-		return $this->getCellIterator($startRow, $endRow);
+		return $this->getCellIterator($startRow, $endRow, $iterateOnlyExistingCells);
 	}
 
 	/**
@@ -86,9 +80,9 @@ class Column
 	 *                  CellIterator::TREAT_NULL_VALUE_AS_EMPTY_CELL
 	 *                  CellIterator::TREAT_EMPTY_STRING_AS_EMPTY_CELL
 	 * @param int $startRow The row number at which to start checking if cells are empty
-	 * @param int $endRow Optionally, the row number at which to stop checking if cells are empty
+	 * @param ?int $endRow Optionally, the row number at which to stop checking if cells are empty
 	 */
-	public function isEmpty(int $definitionOfEmptyFlags = 0, $startRow = 1, $endRow = null): bool
+	public function isEmpty(int $definitionOfEmptyFlags = 0, int $startRow = 1, ?int $endRow = null): bool
 	{
 		$nullValueCellIsEmpty = (bool) ($definitionOfEmptyFlags & CellIterator::TREAT_NULL_VALUE_AS_EMPTY_CELL);
 		$emptyStringCellIsEmpty = (bool) ($definitionOfEmptyFlags & CellIterator::TREAT_EMPTY_STRING_AS_EMPTY_CELL);
@@ -96,7 +90,6 @@ class Column
 		$cellIterator = $this->getCellIterator($startRow, $endRow);
 		$cellIterator->setIterateOnlyExistingCells(true);
 		foreach ($cellIterator as $cell) {
-			/** @scrutinizer ignore-call */
 			$value = $cell->getValue();
 			if ($value === null && $nullValueCellIsEmpty === true) {
 				continue;

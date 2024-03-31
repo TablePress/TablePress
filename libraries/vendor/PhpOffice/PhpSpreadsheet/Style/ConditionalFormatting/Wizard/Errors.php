@@ -64,8 +64,8 @@ class Errors extends WizardAbstract implements WizardInterface
 	public static function fromConditional(Conditional $conditional, string $cellRange = 'A1'): WizardInterface
 	{
 		if (
-			$conditional->getConditionType() !== Conditional::CONDITION_CONTAINSERRORS &&
-			$conditional->getConditionType() !== Conditional::CONDITION_NOTCONTAINSERRORS
+			$conditional->getConditionType() !== Conditional::CONDITION_CONTAINSERRORS
+			&& $conditional->getConditionType() !== Conditional::CONDITION_NOTCONTAINSERRORS
 		) {
 			throw new Exception('Conditional is not an Errors CF Rule conditional');
 		}
@@ -79,10 +79,9 @@ class Errors extends WizardAbstract implements WizardInterface
 	}
 
 	/**
-	 * @param string $methodName
 	 * @param mixed[] $arguments
 	 */
-	public function __call($methodName, $arguments): self
+	public function __call(string $methodName, array $arguments): self
 	{
 		if (!array_key_exists($methodName, self::OPERATORS)) {
 			throw new Exception('Invalid Operation for Errors CF Rule Wizard');

@@ -8,7 +8,6 @@ class PlotArea
 {
 	/**
 	 * No fill in plot area (show Excel gridlines through chart).
-	 *
 	 * @var bool
 	 */
 	private $noFill = false;
@@ -25,15 +24,13 @@ class PlotArea
 
 	/**
 	 * PlotArea Gradient Angle.
-	 *
-	 * @var ?float
+	 * @var float|null
 	 */
 	private $gradientFillAngle;
 
 	/**
 	 * PlotArea Layout.
-	 *
-	 * @var ?Layout
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Layout|null
 	 */
 	private $layout;
 
@@ -42,7 +39,7 @@ class PlotArea
 	 *
 	 * @var DataSeries[]
 	 */
-	private $plotSeries = [];
+	private $plotSeries;
 
 	/**
 	 * Create a new PlotArea.
@@ -70,8 +67,7 @@ class PlotArea
 
 	/**
 	 * Get Number of Plot Series.
-	 *
-	 * @return int
+	 * @return int|float
 	 */
 	public function getPlotSeriesCount()
 	{
@@ -88,19 +84,15 @@ class PlotArea
 	 *
 	 * @return DataSeries[]
 	 */
-	public function getPlotGroup()
+	public function getPlotGroup(): array
 	{
 		return $this->plotSeries;
 	}
 
 	/**
 	 * Get Plot Series by Index.
-	 *
-	 * @param mixed $index
-	 *
-	 * @return DataSeries
 	 */
-	public function getPlotGroupByIndex($index)
+	public function getPlotGroupByIndex(int $index): DataSeries
 	{
 		return $this->plotSeries[$index];
 	}
@@ -156,21 +148,25 @@ class PlotArea
 
 	/**
 	 * Get gradientFillStops.
-	 *
-	 * @return array
 	 */
-	public function getGradientFillStops()
+	public function getGradientFillStops(): array
 	{
 		return $this->gradientFillStops;
 	}
 
-	/** @var ?int */
+	/**
+	 * @var int|null
+	 */
 	private $gapWidth;
 
-	/** @var bool */
+	/**
+	 * @var bool
+	 */
 	private $useUpBars = false;
 
-	/** @var bool */
+	/**
+	 * @var bool
+	 */
 	private $useDownBars = false;
 
 	public function getGapWidth(): ?int
@@ -207,5 +203,18 @@ class PlotArea
 		$this->useDownBars = $useDownBars;
 
 		return $this;
+	}
+
+	/**
+	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
+	 */
+	public function __clone()
+	{
+		$this->layout = ($this->layout === null) ? null : clone $this->layout;
+		$plotSeries = $this->plotSeries;
+		$this->plotSeries = [];
+		foreach ($plotSeries as $series) {
+			$this->plotSeries[] = clone $series;
+		}
 	}
 }

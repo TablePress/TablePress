@@ -40,7 +40,7 @@ class AccruedInterest
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 * @param mixed $calcMethod
+	 * @param mixed $calcMethod Unused by PhpSpreadsheet, and apparently by Excel (https://exceljet.net/functions/accrint-function)
 	 *
 	 * @return float|string Result, or a string containing an error
 	 */
@@ -54,7 +54,6 @@ class AccruedInterest
 		$basis = FinancialConstants::BASIS_DAYS_PER_YEAR_NASD,
 		$calcMethod = self::ACCRINT_CALCMODE_ISSUE_TO_SETTLEMENT
 	) {
-		self::doNothing($calcMethod);
 		$issue = Functions::flattenSingleValue($issue);
 		$firstInterest = Functions::flattenSingleValue($firstInterest);
 		$settlement = Functions::flattenSingleValue($settlement);
@@ -73,8 +72,7 @@ class AccruedInterest
 			SecurityValidations::validateSecurityPeriod($issue, $settlement);
 			$rate = SecurityValidations::validateRate($rate);
 			$parValue = SecurityValidations::validateParValue($parValue);
-			$frequency = SecurityValidations::validateFrequency($frequency);
-			self::doNothing($frequency);
+			SecurityValidations::validateFrequency($frequency);
 			$basis = SecurityValidations::validateBasis($basis);
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -149,11 +147,5 @@ class AccruedInterest
 		}
 
 		return $parValue * $rate * $daysBetweenIssueAndSettlement;
-	}
-
-	/** @param mixed $arg */
-	private static function doNothing($arg): bool
-	{
-		return (bool) $arg;
 	}
 }

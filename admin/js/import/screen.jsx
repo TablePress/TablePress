@@ -13,6 +13,10 @@
  * WordPress dependencies.
  */
 import { useEffect, useRef, useState } from 'react';
+import {
+	Icon,
+} from '@wordpress/components';
+import { info } from '@wordpress/icons';
 import { __, _n, _x, sprintf } from '@wordpress/i18n';
 
 // Details for the available import sources.
@@ -55,7 +59,7 @@ const tablesSelectOptions = Object.entries( tp.import.tables ).map( ( [ tableId,
  *
  * @return {Object} Import Screen component.
  */
-const ImportScreen = () => {
+const Screen = () => {
 	const [ screenData, setScreenData ] = useState( {
 		importSource: tp.import.importSource,
 		importType: tp.import.importType,
@@ -70,14 +74,13 @@ const ImportScreen = () => {
 	/**
 	 * Handles screen data state changes.
 	 *
-	 * @param {string}      item  Configuration item name.
-	 * @param {string|null} value Value for configuration item.
+	 * @param {Object} updatedData Data in the screen data state that should be updated.
 	 */
-	const updateScreenData = ( item, value ) => {
+	const updateScreenData = ( updatedData ) => {
 		const newScreenData = {
 			...screenData,
 			validationHighlighting: false, // Reset with every UI state change.
-			[ item ]: value,
+			...updatedData,
 		};
 		setScreenData( newScreenData );
 	};
@@ -155,7 +158,7 @@ const ImportScreen = () => {
 										aria-labelledby="import-source-header"
 										value={ importSource }
 										checked={ importSource === screenData.importSource }
-										onChange={ ( event ) => updateScreenData( 'importSource', event.target.value ) }
+										onChange={ ( event ) => updateScreenData( { importSource: event.target.value } ) }
 									/> { importSourceData.label }
 								</label>
 							) )
@@ -187,7 +190,7 @@ const ImportScreen = () => {
 								type="file"
 								multiple
 								required={ 'file-upload' === screenData.importSource }
-								onChange={ ( event ) => ( event.target.files && updateScreenData( 'importFileUpload', event.target.files ) ) }
+								onChange={ ( event ) => ( event.target.files && updateScreenData( { importFileUpload: event.target.files } ) ) }
 								onDragEnter={ () => fileUploadDropzone.current.classList.add( 'dragover' ) }
 								onDragLeave={ () => fileUploadDropzone.current.classList.remove( 'dragover' ) }
 							/>
@@ -214,7 +217,7 @@ const ImportScreen = () => {
 								className="large-text code"
 								required={ true }
 								value={ screenData.importUrl }
-								onChange={ ( event ) => updateScreenData( 'importUrl', event.target.value ) }
+								onChange={ ( event ) => updateScreenData( { importUrl: event.target.value } ) }
 							/>
 						}
 						{ tp.import.showImportSourceServer && 'server' === screenData.importSource &&
@@ -226,7 +229,7 @@ const ImportScreen = () => {
 								className="large-text code"
 								required={ true }
 								value={ screenData.importServer }
-								onChange={ ( event ) => updateScreenData( 'importServer', event.target.value ) }
+								onChange={ ( event ) => updateScreenData( { importServer: event.target.value } ) }
 							/>
 						}
 						{ 'form-field' === screenData.importSource &&
@@ -238,13 +241,18 @@ const ImportScreen = () => {
 								className="large-text code"
 								required={ true }
 								value={ screenData.importFormField }
-								onChange={ ( event ) => updateScreenData( 'importFormField', event.target.value ) }
+								onChange={ ( event ) => updateScreenData( { importFormField: event.target.value } ) }
 							/>
 						}
-						{ tp.import.zipSupportAvailable && 'form-field' !== screenData.importSource &&
-							<span className="description">
-								{ __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) }
-							</span>
+						{ 'form-field' !== screenData.importSource &&
+							<p className="info-text" style={ {
+								marginTop: '0.5em',
+							} }>
+								<Icon icon={ info } />
+								<span>
+									{ __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) }
+								</span>
+							</p>
 						}
 					</td>
 				</tr>
@@ -261,7 +269,7 @@ const ImportScreen = () => {
 								aria-labelledby="import-type-header"
 								value="add"
 								checked={ 'add' === screenData.importType || 0 === tablesCount }
-								onChange={ ( event ) => updateScreenData( 'importType', event.target.value ) }
+								onChange={ ( event ) => updateScreenData( { importType: event.target.value } ) }
 							/> { __( 'Add as new table', 'tablepress' ) }
 						</label>
 						<label htmlFor="tables-import-type-replace">
@@ -273,7 +281,7 @@ const ImportScreen = () => {
 								value="replace"
 								disabled={ 0 === tablesCount }
 								checked={ 'replace' === screenData.importType }
-								onChange={ ( event ) => updateScreenData( 'importType', event.target.value ) }
+								onChange={ ( event ) => updateScreenData( { importType: event.target.value } ) }
 							/> { __( 'Replace existing table', 'tablepress' ) }
 						</label>
 						<label htmlFor="tables-import-type-append">
@@ -285,7 +293,7 @@ const ImportScreen = () => {
 								value="append"
 								disabled={ 0 === tablesCount }
 								checked={ 'append' === screenData.importType }
-								onChange={ ( event ) => updateScreenData( 'importType', event.target.value ) }
+								onChange={ ( event ) => updateScreenData( { importType: event.target.value } ) }
 							/> { __( 'Append rows to existing table', 'tablepress' ) }
 						</label>
 					</td>
@@ -328,7 +336,7 @@ const ImportScreen = () => {
 							id="import-submit-button"
 							onClick={ () => {
 								// Show validation :invalid CSS pseudo-selector highlighting.
-								updateScreenData( 'validationHighlighting', true );
+								updateScreenData( { validationHighlighting: true } );
 
 								// When importing from the server, the value must have been changed from the default (normally ABSPATH).
 								if ( 'server' === screenData.importSource && tp.import.importServer === screenData.importServer ) {
@@ -349,4 +357,4 @@ const ImportScreen = () => {
 	);
 };
 
-export default ImportScreen;
+export default Screen;

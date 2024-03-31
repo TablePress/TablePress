@@ -9,7 +9,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Reader\Csv\Delimiter;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
-use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Csv extends BaseReader
 {
@@ -32,49 +32,42 @@ class Csv extends BaseReader
 
 	/**
 	 * Input encoding.
-	 *
 	 * @var string
 	 */
 	private $inputEncoding = 'UTF-8';
 
 	/**
 	 * Fallback encoding if guess strikes out.
-	 *
 	 * @var string
 	 */
 	private $fallbackEncoding = self::DEFAULT_FALLBACK_ENCODING;
 
 	/**
 	 * Delimiter.
-	 *
-	 * @var ?string
+	 * @var string|null
 	 */
 	private $delimiter;
 
 	/**
 	 * Enclosure.
-	 *
 	 * @var string
 	 */
 	private $enclosure = '"';
 
 	/**
 	 * Sheet index to read.
-	 *
 	 * @var int
 	 */
 	private $sheetIndex = 0;
 
 	/**
 	 * Load rows contiguously.
-	 *
 	 * @var bool
 	 */
 	private $contiguous = false;
 
 	/**
 	 * The character that can escape the enclosure.
-	 *
 	 * @var string
 	 */
 	private $escapeCharacter = '\\';
@@ -88,7 +81,6 @@ class Csv extends BaseReader
 
 	/**
 	 * Attempt autodetect line endings (deprecated after PHP8.1)?
-	 *
 	 * @var bool
 	 */
 	private $testAutodetect = true;
@@ -103,8 +95,35 @@ class Csv extends BaseReader
 	 */
 	protected $preserveNumericFormatting = false;
 
-	/** @var bool */
+	/**
+	 * @var bool
+	 */
 	private $preserveNullString = false;
+
+	/**
+	 * @var bool
+	 */
+	private $sheetNameIsFileName = false;
+
+	/**
+	 * @var string
+	 */
+	private $getTrue = 'true';
+
+	/**
+	 * @var string
+	 */
+	private $getFalse = 'false';
+
+	/**
+	 * @var string
+	 */
+	private $thousandsSeparator = ',';
+
+	/**
+	 * @var string
+	 */
+	private $decimalSeparator = '.';
 
 	/**
 	 * Create a new CSV Reader instance.
@@ -238,13 +257,14 @@ class Csv extends BaseReader
 		$worksheetInfo[0]['lastColumnIndex'] = 0;
 		$worksheetInfo[0]['totalRows'] = 0;
 		$worksheetInfo[0]['totalColumns'] = 0;
+		$delimiter = $this->delimiter ?? '';
 
 		// Loop through each line of the file in turn
-		$rowData = fgetcsv($fileHandle, 0, $this->delimiter ?? '', $this->enclosure, $this->escapeCharacter);
+		$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 		while (is_array($rowData)) {
 			++$worksheetInfo[0]['totalRows'];
 			$worksheetInfo[0]['lastColumnIndex'] = max($worksheetInfo[0]['lastColumnIndex'], count($rowData) - 1);
-			$rowData = fgetcsv($fileHandle, 0, $this->delimiter ?? '', $this->enclosure, $this->escapeCharacter);
+			$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 		}
 
 		$worksheetInfo[0]['lastColumnLetter'] = Coordinate::stringFromColumnIndex($worksheetInfo[0]['lastColumnIndex'] + 1);
@@ -381,21 +401,33 @@ class Csv extends BaseReader
 			$spreadsheet->createSheet();
 		}
 		$sheet = $spreadsheet->setActiveSheetIndex($this->sheetIndex);
+		if ($this->sheetNameIsFileName) {
+			$sheet->setTitle(substr(basename($filename, '.csv'), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH));
+		}
 
 		// Set our starting row based on whether we're in contiguous mode or not
 		$currentRow = 1;
 		$outRow = 0;
 
 		// Loop through each line of the file in turn
-		$rowData = fgetcsv($fileHandle, 0, $this->delimiter ?? '', $this->enclosure, $this->escapeCharacter);
+		$delimiter = $this->delimiter ?? '';
+		$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 		$valueBinder = Cell::getValueBinder();
 		$preserveBooleanString = method_exists($valueBinder, 'getBooleanConversion') && $valueBinder->getBooleanConversion();
+		$this->getTrue = Calculation::getTRUE();
+		$this->getFalse = Calculation::getFALSE();
+		$this->thousandsSeparator = StringHelper::getThousandsSeparator();
+		$this->decimalSeparator = StringHelper::getDecimalSeparator();
 		while (is_array($rowData)) {
 			$noOutputYet = true;
 			$columnLetter = 'A';
 			foreach ($rowData as $rowDatum) {
-				$this->convertBoolean($rowDatum, $preserveBooleanString);
-				$numberFormatMask = $this->convertFormattedNumber($rowDatum);
+				if ($preserveBooleanString) {
+					$rowDatum = $rowDatum ?? '';
+				} else {
+					$this->convertBoolean($rowDatum);
+				}
+				$numberFormatMask = $this->castFormattedNumberToNumeric ? $this->convertFormattedNumber($rowDatum) : '';
 				if (($rowDatum !== '' || $this->preserveNullString) && $this->readFilter->readCell($columnLetter, $currentRow)) {
 					if ($this->contiguous) {
 						if ($noOutputYet) {
@@ -406,15 +438,17 @@ class Csv extends BaseReader
 						$outRow = $currentRow;
 					}
 					// Set basic styling for the value (Note that this could be overloaded by styling in a value binder)
-					$sheet->getCell($columnLetter . $outRow)->getStyle()
-						->getNumberFormat()
-						->setFormatCode($numberFormatMask);
+					if ($numberFormatMask !== '') {
+						$sheet->getStyle($columnLetter . $outRow)
+							->getNumberFormat()
+							->setFormatCode($numberFormatMask);
+					}
 					// Set cell value
 					$sheet->getCell($columnLetter . $outRow)->setValue($rowDatum);
 				}
 				++$columnLetter;
 			}
-			$rowData = fgetcsv($fileHandle, 0, $this->delimiter ?? '', $this->enclosure, $this->escapeCharacter);
+			$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 			++$currentRow;
 		}
 
@@ -429,15 +463,14 @@ class Csv extends BaseReader
 
 	/**
 	 * Convert string true/false to boolean, and null to null-string.
-	 *
 	 * @param mixed $rowDatum
 	 */
-	private function convertBoolean(&$rowDatum, bool $preserveBooleanString): void
+	private function convertBoolean(&$rowDatum): void
 	{
-		if (is_string($rowDatum) && !$preserveBooleanString) {
-			if (strcasecmp(Calculation::getTRUE(), $rowDatum) === 0 || strcasecmp('true', $rowDatum) === 0) {
+		if (is_string($rowDatum)) {
+			if (strcasecmp($this->getTrue, $rowDatum) === 0 || strcasecmp('true', $rowDatum) === 0) {
 				$rowDatum = true;
-			} elseif (strcasecmp(Calculation::getFALSE(), $rowDatum) === 0 || strcasecmp('false', $rowDatum) === 0) {
+			} elseif (strcasecmp($this->getFalse, $rowDatum) === 0 || strcasecmp('false', $rowDatum) === 0) {
 				$rowDatum = false;
 			}
 		} else {
@@ -447,23 +480,22 @@ class Csv extends BaseReader
 
 	/**
 	 * Convert numeric strings to int or float values.
-	 *
 	 * @param mixed $rowDatum
 	 */
 	private function convertFormattedNumber(&$rowDatum): string
 	{
-		$numberFormatMask = NumberFormat::FORMAT_GENERAL;
+		$numberFormatMask = '';
 		if ($this->castFormattedNumberToNumeric === true && is_string($rowDatum)) {
 			$numeric = str_replace(
-				[StringHelper::getThousandsSeparator(), StringHelper::getDecimalSeparator()],
+				[$this->thousandsSeparator, $this->decimalSeparator],
 				['', '.'],
 				$rowDatum
 			);
 
 			if (is_numeric($numeric)) {
-				$decimalPos = strpos($rowDatum, StringHelper::getDecimalSeparator());
+				$decimalPos = strpos($rowDatum, $this->decimalSeparator);
 				if ($this->preserveNumericFormatting === true) {
-					$numberFormatMask = (strpos($rowDatum, StringHelper::getThousandsSeparator()) !== false)
+					$numberFormatMask = (str_contains($rowDatum, $this->thousandsSeparator))
 						? '#,##0' : '0';
 					if ($decimalPos !== false) {
 						$decimals = strlen($rowDatum) - $decimalPos - 1;
@@ -549,14 +581,14 @@ class Csv extends BaseReader
 		// Check if file exists
 		try {
 			$this->openFile($filename);
-		} catch (ReaderException $e) {
+		} catch (ReaderException $exception) {
 			return false;
 		}
 
 		fclose($this->fileHandle);
 
 		// Trust file extension if any
-		$extension = strtolower(/** @scrutinizer ignore-type */ pathinfo($filename, PATHINFO_EXTENSION));
+		$extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 		if (in_array($extension, ['csv', 'tsv'])) {
 			return true;
 		}
@@ -607,7 +639,7 @@ class Csv extends BaseReader
 	private static function guessEncodingTestBom(string &$encoding, string $first4, string $compare, string $setEncoding): void
 	{
 		if ($encoding === '') {
-			if ($compare === substr($first4, 0, strlen($compare))) {
+			if (str_starts_with($first4, $compare)) {
 				$encoding = $setEncoding;
 			}
 		}
@@ -648,5 +680,12 @@ class Csv extends BaseReader
 	public function getPreserveNullString(): bool
 	{
 		return $this->preserveNullString;
+	}
+
+	public function setSheetNameIsFileName(bool $sheetNameIsFileName): self
+	{
+		$this->sheetNameIsFileName = $sheetNameIsFileName;
+
+		return $this;
 	}
 }

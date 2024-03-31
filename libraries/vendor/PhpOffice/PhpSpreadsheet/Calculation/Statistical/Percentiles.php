@@ -188,7 +188,7 @@ class Percentiles
 	{
 		return array_filter(
 			$dataSet,
-			function ($value): bool {
+			function ($value) : bool {
 				return is_numeric($value) && !is_string($value);
 			}
 		);
@@ -198,7 +198,7 @@ class Percentiles
 	{
 		return array_filter(
 			$dataSet,
-			function ($value): bool {
+			function ($value) : bool {
 				return is_numeric($value);
 			}
 		);

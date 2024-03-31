@@ -11,29 +11,31 @@ class PageSettings
 	/**
 	 * @var string
 	 */
-	private $officeNs;
+	private $officeNs = '';
 
 	/**
 	 * @var string
 	 */
-	private $stylesNs;
+	private $stylesNs = '';
 
 	/**
 	 * @var string
 	 */
-	private $stylesFo;
+	private $stylesFo = '';
 
 	/**
 	 * @var string
 	 */
-	private $tableNs;
+	private $tableNs = '';
 
 	/**
 	 * @var string[]
 	 */
 	private $tableStylesCrossReference = [];
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	private $pageLayoutStyles = [];
 
 	/**
@@ -55,10 +57,10 @@ class PageSettings
 
 	private function setDomNameSpaces(DOMDocument $styleDom): void
 	{
-		$this->officeNs = $styleDom->lookupNamespaceUri('office');
-		$this->stylesNs = $styleDom->lookupNamespaceUri('style');
-		$this->stylesFo = $styleDom->lookupNamespaceUri('fo');
-		$this->tableNs = $styleDom->lookupNamespaceUri('table');
+		$this->officeNs = (string) $styleDom->lookupNamespaceUri('office');
+		$this->stylesNs = (string) $styleDom->lookupNamespaceUri('style');
+		$this->stylesFo = (string) $styleDom->lookupNamespaceUri('fo');
+		$this->tableNs = (string) $styleDom->lookupNamespaceUri('table');
 	}
 
 	private function readPageSettingStyles(DOMDocument $styleDom): void

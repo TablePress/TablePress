@@ -33,7 +33,7 @@ class Operations
 	 */
 	public static function logicalAnd(...$args)
 	{
-		return self::countTrueValues($args, function (int $trueValueCount, int $count): bool {
+		return self::countTrueValues($args, function (int $trueValueCount, int $count) : bool {
 			return $trueValueCount === $count;
 		});
 	}
@@ -60,7 +60,7 @@ class Operations
 	 */
 	public static function logicalOr(...$args)
 	{
-		return self::countTrueValues($args, function (int $trueValueCount): bool {
+		return self::countTrueValues($args, function (int $trueValueCount) : bool {
 			return $trueValueCount > 0;
 		});
 	}
@@ -89,7 +89,7 @@ class Operations
 	 */
 	public static function logicalXor(...$args)
 	{
-		return self::countTrueValues($args, function (int $trueValueCount): bool {
+		return self::countTrueValues($args, function (int $trueValueCount) : bool {
 			return $trueValueCount % 2 === 1;
 		});
 	}

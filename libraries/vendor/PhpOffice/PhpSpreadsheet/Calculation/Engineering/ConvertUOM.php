@@ -435,10 +435,8 @@ class ConvertUOM
 	/**
 	 *    getConversionGroups
 	 * Returns a list of the different conversion groups for UOM conversions.
-	 *
-	 * @return array
 	 */
-	public static function getConversionCategories()
+	public static function getConversionCategories(): array
 	{
 		$conversionGroups = [];
 		foreach (self::$conversionUnits as $conversionUnit) {
@@ -452,11 +450,9 @@ class ConvertUOM
 	 *    getConversionGroupUnits
 	 * Returns an array of units of measure, for a specified conversion group, or for all groups.
 	 *
-	 * @param string $category The group whose units of measure you want to retrieve
-	 *
-	 * @return array
+	 * @param ?string $category The group whose units of measure you want to retrieve
 	 */
-	public static function getConversionCategoryUnits($category = null)
+	public static function getConversionCategoryUnits(?string $category = null): array
 	{
 		$conversionGroups = [];
 		foreach (self::$conversionUnits as $conversionUnit => $conversionGroup) {
@@ -471,11 +467,9 @@ class ConvertUOM
 	/**
 	 * getConversionGroupUnitDetails.
 	 *
-	 * @param string $category The group whose units of measure you want to retrieve
-	 *
-	 * @return array
+	 * @param ?string $category The group whose units of measure you want to retrieve
 	 */
-	public static function getConversionCategoryUnitDetails($category = null)
+	public static function getConversionCategoryUnitDetails(?string $category = null): array
 	{
 		$conversionGroups = [];
 		foreach (self::$conversionUnits as $conversionUnit => $conversionGroup) {
@@ -496,7 +490,7 @@ class ConvertUOM
 	 *
 	 * @return mixed[]
 	 */
-	public static function getConversionMultipliers()
+	public static function getConversionMultipliers(): array
 	{
 		return self::$conversionMultipliers;
 	}
@@ -507,7 +501,7 @@ class ConvertUOM
 	 *
 	 * @return mixed[]
 	 */
-	public static function getBinaryConversionMultipliers()
+	public static function getBinaryConversionMultipliers(): array
 	{
 		return self::$binaryConversionMultipliers;
 	}
@@ -546,7 +540,7 @@ class ConvertUOM
 		try {
 			[$fromUOM, $fromCategory, $fromMultiplier] = self::getUOMDetails($fromUOM);
 			[$toUOM, $toCategory, $toMultiplier] = self::getUOMDetails($toUOM);
-		} catch (Exception $e) {
+		} catch (Exception $exception) {
 			return ExcelError::NA();
 		}
 
@@ -564,7 +558,7 @@ class ConvertUOM
 		} elseif ($fromUOM === $toUOM) {
 			return $value / $toMultiplier;
 		} elseif ($fromCategory === self::CATEGORY_TEMPERATURE) {
-			return self::convertTemperature($fromUOM, $toUOM, /** @scrutinizer ignore-type */ $value);
+			return self::convertTemperature($fromUOM, $toUOM, $value);
 		}
 
 		$baseValue = $value * (1.0 / self::$unitConversions[$fromCategory][$fromUOM]);
@@ -623,7 +617,6 @@ class ConvertUOM
 
 	/**
 	 * @param float|int $value
-	 *
 	 * @return float|int
 	 */
 	protected static function convertTemperature(string $fromUOM, string $toUOM, $value)
@@ -687,8 +680,8 @@ class ConvertUOM
 				return 'C';
 			case 'kel':
 				return 'K';
+			default:
+				return $uom;
 		}
-
-		return $uom;
 	}
 }

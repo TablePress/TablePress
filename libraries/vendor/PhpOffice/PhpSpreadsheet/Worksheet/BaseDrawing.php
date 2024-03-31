@@ -5,6 +5,8 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Hyperlink;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\IComparable;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Drawing\Shadow;
+use SimpleXMLElement;
 
 class BaseDrawing implements IComparable
 {
@@ -19,150 +21,142 @@ class BaseDrawing implements IComparable
 
 	/**
 	 * The editAs attribute, used only with two cell anchor.
-	 *
 	 * @var string
 	 */
 	protected $editAs = '';
 
 	/**
 	 * Image counter.
-	 *
 	 * @var int
 	 */
 	private static $imageCounter = 0;
 
 	/**
 	 * Image index.
-	 *
 	 * @var int
 	 */
-	private $imageIndex = 0;
+	private $imageIndex;
 
 	/**
 	 * Name.
-	 *
 	 * @var string
 	 */
 	protected $name = '';
 
 	/**
 	 * Description.
-	 *
 	 * @var string
 	 */
 	protected $description = '';
 
 	/**
 	 * Worksheet.
-	 *
-	 * @var null|Worksheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
 	protected $worksheet;
 
 	/**
 	 * Coordinates.
-	 *
 	 * @var string
 	 */
 	protected $coordinates = 'A1';
 
 	/**
 	 * Offset X.
-	 *
 	 * @var int
 	 */
 	protected $offsetX = 0;
 
 	/**
 	 * Offset Y.
-	 *
 	 * @var int
 	 */
 	protected $offsetY = 0;
 
 	/**
 	 * Coordinates2.
-	 *
 	 * @var string
 	 */
 	protected $coordinates2 = '';
 
 	/**
 	 * Offset X2.
-	 *
 	 * @var int
 	 */
 	protected $offsetX2 = 0;
 
 	/**
 	 * Offset Y2.
-	 *
 	 * @var int
 	 */
 	protected $offsetY2 = 0;
 
 	/**
 	 * Width.
-	 *
 	 * @var int
 	 */
 	protected $width = 0;
 
 	/**
 	 * Height.
-	 *
 	 * @var int
 	 */
 	protected $height = 0;
 
 	/**
 	 * Pixel width of image. See $width for the size the Drawing will be in the sheet.
-	 *
 	 * @var int
 	 */
 	protected $imageWidth = 0;
 
 	/**
 	 * Pixel width of image. See $height for the size the Drawing will be in the sheet.
-	 *
 	 * @var int
 	 */
 	protected $imageHeight = 0;
 
 	/**
 	 * Proportional resize.
-	 *
 	 * @var bool
 	 */
 	protected $resizeProportional = true;
 
 	/**
 	 * Rotation.
-	 *
 	 * @var int
 	 */
 	protected $rotation = 0;
 
 	/**
+	 * @var bool
+	 */
+	protected $flipVertical = false;
+
+	/**
+	 * @var bool
+	 */
+	protected $flipHorizontal = false;
+
+	/**
 	 * Shadow.
-	 *
-	 * @var Drawing\Shadow
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Drawing\Shadow
 	 */
 	protected $shadow;
 
 	/**
 	 * Image hyperlink.
-	 *
-	 * @var null|Hyperlink
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\Hyperlink|null
 	 */
 	private $hyperlink;
 
 	/**
 	 * Image type.
-	 *
 	 * @var int
 	 */
 	protected $type = IMAGETYPE_UNKNOWN;
+
+	/** @var null|SimpleXMLElement|string[] */
+	protected $srcRect = [];
 
 	/**
 	 * Create a new BaseDrawing.
@@ -175,6 +169,11 @@ class BaseDrawing implements IComparable
 		// Set image index
 		++self::$imageCounter;
 		$this->imageIndex = self::$imageCounter;
+	}
+
+	public function __destruct()
+	{
+		$this->worksheet = null;
 	}
 
 	public function getImageIndex(): int
@@ -232,7 +231,7 @@ class BaseDrawing implements IComparable
 
 				while ($iterator->valid()) {
 					if ($iterator->current()->getHashCode() === $this->getHashCode()) {
-						$this->worksheet->getDrawingCollection()->offsetUnset(/** @scrutinizer ignore-type */ $iterator->key());
+						$this->worksheet->getDrawingCollection()->offsetUnset($iterator->key());
 						$this->worksheet = null;
 
 						break;
@@ -431,23 +430,23 @@ class BaseDrawing implements IComparable
 	 *
 	 * @return string Hash code
 	 */
-	public function getHashCode()
+	public function getHashCode(): string
 	{
 		return md5(
-			$this->name .
-			$this->description .
-			(($this->worksheet === null) ? '' : $this->worksheet->getHashCode()) .
-			$this->coordinates .
-			$this->offsetX .
-			$this->offsetY .
-			$this->coordinates2 .
-			$this->offsetX2 .
-			$this->offsetY2 .
-			$this->width .
-			$this->height .
-			$this->rotation .
-			$this->shadow->getHashCode() .
-			__CLASS__
+			$this->name
+			. $this->description
+			. (($this->worksheet === null) ? '' : $this->worksheet->getHashCode())
+			. $this->coordinates
+			. $this->offsetX
+			. $this->offsetY
+			. $this->coordinates2
+			. $this->offsetX2
+			. $this->offsetY2
+			. $this->width
+			. $this->height
+			. $this->rotation
+			. $this->shadow->getHashCode()
+			. __CLASS__
 		);
 	}
 
@@ -531,5 +530,47 @@ class BaseDrawing implements IComparable
 	public function validEditAs(): bool
 	{
 		return in_array($this->editAs, self::VALID_EDIT_AS, true);
+	}
+
+	/**
+	 * @return null|SimpleXMLElement|string[]
+	 */
+	public function getSrcRect()
+	{
+		return $this->srcRect;
+	}
+
+	/**
+	 * @param null|SimpleXMLElement|string[] $srcRect
+	 */
+	public function setSrcRect($srcRect): self
+	{
+		$this->srcRect = $srcRect;
+
+		return $this;
+	}
+
+	public function setFlipHorizontal(bool $flipHorizontal): self
+	{
+		$this->flipHorizontal = $flipHorizontal;
+
+		return $this;
+	}
+
+	public function getFlipHorizontal(): bool
+	{
+		return $this->flipHorizontal;
+	}
+
+	public function setFlipVertical(bool $flipVertical): self
+	{
+		$this->flipVertical = $flipVertical;
+
+		return $this;
+	}
+
+	public function getFlipVertical(): bool
+	{
+		return $this->flipVertical;
 	}
 }

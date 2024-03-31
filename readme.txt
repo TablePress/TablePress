@@ -4,8 +4,8 @@ Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium
 Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
-Tested up to: 6.4
-Stable tag: 2.2.5
+Tested up to: 6.5
+Stable tag: 2.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,80 +107,19 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.2.5 (January 30, 2024) =
+= Version 2.3 (April 2, 2024) =
 
-* *Security fix*: The URL import now properly blocks hosts of cloud providers’ metadata API endpoints to prevent data extraction.
-* When importing a table in the Excel format, floating point numbers are now detected and handled more reliably.
-* The detection of the JSON format when importing a table is now more reliable.
-* The “Copy”, “Export”, and “Delete” buttons/links on a table’s “Edit” screen now work again after a table ID was changed.
-* Error messages when a table could not be found and similar are now shown properly in modern themes.
-* The “Automatic Filtering” feature module now also allows using a slash in the filter term. (TablePress Pro and Max only.)
-* The “Debug and Version Information” section was cleaned up and updated with more relevant checks.
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-
-= Version 2.2.4 (December 11, 2023) =
-
-* The math formula calculation engine now properly handles quotation marks in text around embedded formulas.
-* An issue with the block theme preview when using the Site Editor on multisite installations was fixed.
-* Data consistency when saving tables is checked more thorougly.
-* Forward-compatibility with PHP 8.3 was added, to benefit from new features.
-* The extraction of error information for displaying error messages was improved.
-* The loading of the Default Style Customizer was improved. (TablePress Pro and Max only.)
-* The handling and loading of translation files was improved. (TablePress Pro and Max only.)
-* The debugging capabilities for the “Automatic Periodic Table Import” feature module were improved. (TablePress Max only.)
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-
-= Version 2.2.3 (November 13, 2023) =
-
-* Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
-* An issue where it was not possible to replace existing tables during an import was fixed.
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-
-= Version 2.2.2 (November 6, 2023) =
-
-* Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
-* The code that evaluates Shortcode parameters was optimized for a higher performance.
-* The “Sorted” order of the “Row Order” premium feature module no longer raises an error. (TablePress Pro and Max only.)
-* Updated external libraries to benefit from enhancements and bug fixes.
-
-= Version 2.2.1 (November 2, 2023) =
-
-* Further protection against bugs in other plugins that interfere with the loading of JavaScript files, causing the TablePress admin screens to be unusable, was added.
-
-= Version 2.2 (November 2, 2023) =
-
-**Improvements around table styling**
-
-* The preview of the TablePress table block in the block editor now takes into account “Custom CSS”, for a more precise preview.
-* TablePress Pro and Max now have an **easy-to-use visual “Default Style Customizer”**: Choose from pre-defined style variations or define your own color scheme to change your tables’ default style -- without touching CSS code!
-
-**The “Responsive Tables” premium module offers more possibilities**
-
-* The “Modal” mode can show all table data in an overlay modal window if columns don’t fit on the screen. (TablePress Pro and Max only.)
-* The “Scroll” mode now allows the visitor to scroll left and right by clicking arrow buttons. (TablePress Pro and Max only.)
-
-**Enhanced and more polished user interfaces**
-
-* The “Advanced Access Rights” module now has a fixed header row and offers a keyboard shortcut for saving changes. (TablePress Max only.)
-* The “Automatic Periodic Table Import” module now has a fixed header row, filtering, and sorting, to make working with long table lists easier. (TablePress Max only.)
-* In addition, the “Automatic Periodic Table Import” module now allows periodic imports with a 1-minute interval. (TablePress Max only.)
-
-**Miscellaneous changes**
-
-* The TablePress REST API now has “Create table” and “Delete table” endpoints and received optimizations and improvements. (TablePress Max only.)
-* The spacing between dropdowns of the “Column Filter Dropdowns” module is more consistent across different screen sizes. (TablePress Pro and Max only.)
-* The legacy math formula evaluation engine now also supports the % (modulo) operator.
-* A bug in the import format detection of the legacy import engine was fixed.
-* TablePress Pro and TablePress Max are now fully translated to German.
-
-**Behind the scenes**
-
+* Full compatibility with WordPress 6.5.
+* Feature: The “Automatic Periodic Table Import” feature module has been rewritten from scratch: It now supports a different import interval or schedule for each table and is much more reliable. (TablePress Max only.)
+* Enhancement: The import of multiple tables from a ZIP file is more robust and now works independently from the server configuration.
+* Enhancement: The user interface works more reliably even when other plugins insert code on the TablePress screens.
+* Enhancement: The “TablePress table” block settings are less confusing as the unsupported “Alignment” setting was removed.
+* Enhancement: The “Automatic Filter” feature module now uses less-restrictive input filtering, to allow for more filtering terms, e.g. from different alphabets. (TablePress Pro and Max only.)
+* Enhancement: The “About” screen now shows more useful troubleshooting information.
+* Bugfix: The “Column Filter Dropdowns” feature module now properly handles multiple line breaks in table cells. (TablePress Pro and Max only.)
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
 * Automated code compatibility checks and build tools simplify chores for easier development.
-* **TablePress 2.2 requires WordPress 6.0 and PHP 7.2!**
 
 **Premium versions**
 
@@ -188,8 +127,5 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.2.5 =
-This update is a security and maintenance release. Updating is highly recommended.
-
-= 2.2 =
+= 2.3 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.

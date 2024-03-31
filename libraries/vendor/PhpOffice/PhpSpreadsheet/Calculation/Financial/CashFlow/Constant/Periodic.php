@@ -28,8 +28,7 @@ class Periodic
 	 * @param mixed $type A number 0 or 1 and indicates when payments are due:
 	 *                      0 or omitted    At the end of the period.
 	 *                      1               At the beginning of the period.
-	 *
-	 * @return float|string
+	 * @return string|float
 	 */
 	public static function futureValue(
 		$rate,
@@ -153,8 +152,8 @@ class Periodic
 		int $type
 	): float {
 		if ($rate !== null && $rate != 0) {
-			return -$presentValue *
-				(1 + $rate) ** $numberOfPeriods - $payment * (1 + $rate * $type) * ((1 + $rate) ** $numberOfPeriods - 1)
+			return -$presentValue
+				* (1 + $rate) ** $numberOfPeriods - $payment * (1 + $rate * $type) * ((1 + $rate) ** $numberOfPeriods - 1)
 					/ $rate;
 		}
 
@@ -177,7 +176,7 @@ class Periodic
 	}
 
 	/**
-	 * @return float|string
+	 * @return string|float
 	 */
 	private static function calculatePeriods(
 		float $rate,
@@ -191,8 +190,8 @@ class Periodic
 				return ExcelError::NAN();
 			}
 
-			return log(($payment * (1 + $rate * $type) / $rate - $futureValue) /
-					($presentValue + $payment * (1 + $rate * $type) / $rate)) / log(1 + $rate);
+			return log(($payment * (1 + $rate * $type) / $rate - $futureValue)
+					/ ($presentValue + $payment * (1 + $rate * $type) / $rate)) / log(1 + $rate);
 		}
 
 		return (-$presentValue - $futureValue) / $payment;

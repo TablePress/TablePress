@@ -11,9 +11,9 @@
  * Internal dependencies.
  */
 import { initializeReactComponent } from './common/react-loader';
-import ImportScreen from './import/screen';
+import Screen from './import/screen';
 
 initializeReactComponent(
 	'tablepress-import-screen',
-	<ImportScreen />
+	<Screen />
 );

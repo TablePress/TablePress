@@ -5,7 +5,6 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\MathTrig;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
-use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\Value;
 
 class Sum
 {
@@ -18,8 +17,7 @@ class Sum
 	 *        SUM(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 *
-	 * @return float|string
+	 * @return float|int|string
 	 */
 	public static function sumIgnoringStrings(...$args)
 	{
@@ -47,8 +45,7 @@ class Sum
 	 *        SUM(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 *
-	 * @return float|string
+	 * @return float|int|string|mixed[]
 	 */
 	public static function sumErroringStrings(...$args)
 	{
@@ -57,10 +54,7 @@ class Sum
 		$aArgs = Functions::flattenArrayIndexed($args);
 		foreach ($aArgs as $k => $arg) {
 			// Is it a numeric value?
-			if (is_numeric($arg) || empty($arg)) {
-				if (is_string($arg)) {
-					$arg = (int) $arg;
-				}
+			if (is_numeric($arg)) {
 				$returnValue += $arg;
 			} elseif (is_bool($arg)) {
 				$returnValue += (int) $arg;
@@ -83,7 +77,7 @@ class Sum
 	 *
 	 * @param mixed ...$args Data values
 	 *
-	 * @return float|string The result, or a string containing an error
+	 * @return float|int|string The result, or a string containing an error
 	 */
 	public static function product(...$args)
 	{

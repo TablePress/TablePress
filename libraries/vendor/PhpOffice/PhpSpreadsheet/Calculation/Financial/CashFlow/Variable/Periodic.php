@@ -28,8 +28,7 @@ class Periodic
 	 *                                Values must contain at least one positive value and one negative value to
 	 *                                    calculate the internal rate of return.
 	 * @param mixed $guess A number that you guess is close to the result of IRR
-	 *
-	 * @return float|string
+	 * @return string|float
 	 */
 	public static function rate($values, $guess = 0.1)
 	{
@@ -112,7 +111,7 @@ class Periodic
 		$rr = 1.0 + $reinvestmentRate;
 		$fr = 1.0 + $financeRate;
 
-		$npvPos = $npvNeg = self::$zeroPointZero;
+		$npvPos = $npvNeg = 0.0;
 		foreach ($values as $i => $v) {
 			if ($v >= 0) {
 				$npvPos += $v / $rr ** $i;
@@ -121,7 +120,7 @@ class Periodic
 			}
 		}
 
-		if ($npvNeg === self::$zeroPointZero || $npvPos === self::$zeroPointZero) {
+		if ($npvNeg === 0.0 || $npvPos === 0.0) {
 			return ExcelError::DIV0();
 		}
 
@@ -132,21 +131,13 @@ class Periodic
 	}
 
 	/**
-	 * Sop to Scrutinizer.
-	 *
-	 * @var float
-	 */
-	private static $zeroPointZero = 0.0;
-
-	/**
 	 * NPV.
 	 *
 	 * Returns the Net Present Value of a cash flow series given a discount rate.
 	 *
-	 * @param mixed $rate
 	 * @param array $args
-	 *
-	 * @return float
+	 * @return int|float
+	 * @param mixed $rate
 	 */
 	public static function presentValue($rate, ...$args)
 	{

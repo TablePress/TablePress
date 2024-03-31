@@ -656,7 +656,7 @@ JS;
 			if ( false === $output || '' === $output ) {
 				// Render/generate the table HTML, as it was not found in the cache.
 				$_render->set_input( $table, $render_options );
-				$output = $_render->get_output();
+				$output = $_render->get_output( 'html' );
 				// Save render output in a transient, set cache timeout to 24 hours.
 				set_transient( $transient_name, $output, DAY_IN_SECONDS );
 				// Update output caches list transient (necessary for cache invalidation upon table saving).
@@ -684,7 +684,7 @@ JS;
 		} else {
 			// Render/generate the table HTML, as no cache is to be used.
 			$_render->set_input( $table, $render_options );
-			$output = $_render->get_output();
+			$output = $_render->get_output( 'html' );
 		}
 
 		// If DataTables is to be and can be used with this instance of a table, process its parameters and register the call for inclusion in the footer.

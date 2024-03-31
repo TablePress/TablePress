@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout TablePress repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
 
       - name: WordPress Plugin Deploy
         id: deploy
@@ -29,19 +29,17 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: ${{ vars.SLUG }}
 
-      - name: Get plugin version
-        id: get-version
-        if: ${{ github.event_name != 'workflow_dispatch' }}
-        run: |
-          echo "version=$(awk '/Stable tag: /{print $NF}' readme.txt)" >> $GITHUB_OUTPUT
-
-      - name: Upload release ZIP file
-        uses: actions/upload-release-asset@v1
+      - name: Get plugin version and rename ZIP file
         if: ${{ github.event_name != 'workflow_dispatch' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLUG: ${{ vars.SLUG }}
+          ZIPPATH: ${{ steps.deploy.outputs.zip-path }}
+        run: |
+          VERSION=$(awk '/Stable tag: /{print $NF}' readme.txt)
+          mv ${ZIPPATH} ${GITHUB_WORKSPACE}/${SLUG}.${VERSION}.zip
+
+      - name: Upload release ZIP file
+        uses: softprops/action-gh-release@v2
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.deploy.outputs.zip-path }}
-          asset_name: ${{ vars.SLUG }}.${{ steps.get-version.outputs.version }}.zip
-          asset_content_type: application/zip
+          files: ${{ github.workspace }}/${{ vars.SLUG }}.${{ steps.get-version.outputs.version }}.zip

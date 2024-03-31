@@ -22,8 +22,7 @@ class Difference
 	 * @param mixed $endDate Excel date serial value, PHP date/time stamp, PHP DateTime object
 	 *                                    or a standard date string
 	 *                         Or can be an array of date values
-	 * @param array|string $unit
-	 *                         Or can be an array of unit values
+	 * @param array|string $unit Or can be an array of unit values
 	 *
 	 * @return array|int|string Interval between the dates
 	 *         If an array of values is passed for the $startDate or $endDays,arguments, then the returned result
@@ -80,9 +79,7 @@ class Difference
 
 	/**
 	 * Decide whether it's time to set retVal.
-	 *
 	 * @param bool|int $retVal
-	 *
 	 * @return null|bool|int
 	 */
 	private static function replaceRetValue($retVal, string $unit, string $compare)

@@ -27,7 +27,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		// Load PHPSpreadsheet via the Composer autoloading mechanism.
+		// Load PHPSpreadsheet via its autoloading mechanism.
 		TablePress::load_file( 'autoload.php', 'libraries' );
 	}
 
@@ -73,7 +73,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 			$worksheet->fromArray( /* $source */ $table_data, /* $nullValue */ '' );
 
 			// Don't allow cyclic references.
-			TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance( $spreadsheet )->cyclicFormulaCount = 0;
+			\TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance( $spreadsheet )->cyclicFormulaCount = 0;
 
 			/*
 			 * Register variables as Named Formulas.

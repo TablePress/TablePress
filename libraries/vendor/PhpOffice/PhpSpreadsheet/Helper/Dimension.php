@@ -51,15 +51,14 @@ class Dimension
 	protected $size;
 
 	/**
-	 * @var null|string
+	 * @var string|null
 	 */
 	protected $unit;
 
 	/**
 	 * Phpstan bug has been fixed; this function allows us to
 	 * pass Phpstan whether fixed or not.
-	 *
-	 * @param mixed $value
+	 * @param mixed[]|int|null $value
 	 */
 	private static function stanBugFixed($value): array
 	{

@@ -142,6 +142,21 @@
 	div.notice {
 		margin: 20px 0 0;
 	}
+
+	/* Styling for the "Info" icon next to descriptions/notices. */
+	.info-text {
+		display: flex;
+		gap: 6px;
+		margin: 0;
+
+		svg {
+			min-width: 24px;
+		}
+
+		span {
+			margin-top: 2px;
+		}
+	}
 }
 
 /* Styling for the "Add New Table" form. */

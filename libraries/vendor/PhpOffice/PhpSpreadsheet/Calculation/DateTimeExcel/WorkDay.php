@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel;
 
+use DateTime;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
@@ -21,16 +22,16 @@ class WorkDay
 	 * Excel Function:
 	 *        WORKDAY(startDate,endDays[,holidays[,holiday[,...]]])
 	 *
-	 * @param array|mixed $startDate Excel date serial value (float), PHP date timestamp (integer),
+	 * @param mixed $startDate Excel date serial value (float), PHP date timestamp (integer),
 	 *                                        PHP DateTime object, or a standard date string
 	 *                         Or can be an array of date values
 	 * @param array|int $endDays The number of nonweekend and nonholiday days before or after
 	 *                                        startDate. A positive value for days yields a future date; a
 	 *                                        negative value yields a past date.
 	 *                         Or can be an array of int values
-	 * @param null|mixed $dateArgs An array of dates (such as holidays) to exclude from the calculation
+	 * @param mixed $dateArgs An array of dates (such as holidays) to exclude from the calculation
 	 *
-	 * @return array|mixed Excel date/time serial value, PHP date/time serial value or PHP date/time object,
+	 * @return array|DateTime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
 	 *                        depending on the value of the ReturnDateType flag
 	 *         If an array of values is passed for the $startDate or $endDays,arguments, then the returned result
 	 *            will also be an array with matching dimensions
@@ -71,8 +72,7 @@ class WorkDay
 
 	/**
 	 * Use incrementing logic to determine Workday.
-	 *
-	 * @return mixed
+	 * @return float|int|\DateTime
 	 */
 	private static function incrementing(float $startDate, int $endDays, array $holidayArray)
 	{
@@ -132,8 +132,7 @@ class WorkDay
 
 	/**
 	 * Use decrementing logic to determine Workday.
-	 *
-	 * @return mixed
+	 * @return float|int|\DateTime
 	 */
 	private static function decrementing(float $startDate, int $endDays, array $holidayArray)
 	{

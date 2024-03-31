@@ -8,7 +8,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\BranchPruner;
 class Stack
 {
 	/**
-	 * @var BranchPruner
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\BranchPruner
 	 */
 	private $branchPruner;
 
@@ -21,7 +21,6 @@ class Stack
 
 	/**
 	 * Count of entries in the parser stack.
-	 *
 	 * @var int
 	 */
 	private $count = 0;
@@ -41,7 +40,6 @@ class Stack
 
 	/**
 	 * Push a new entry onto the stack.
-	 *
 	 * @param mixed $value
 	 */
 	public function push(string $type, $value, ?string $reference = null): void

@@ -13,6 +13,10 @@
  * WordPress dependencies.
  */
 import { useState } from 'react';
+import {
+	Icon,
+} from '@wordpress/components';
+import { info } from '@wordpress/icons';
 import { __, _x, sprintf } from '@wordpress/i18n';
 
 // Number of tables.
@@ -44,7 +48,7 @@ const csvDelimitersSelectOptions = Object.entries( tp.export.csvDelimiters ).map
  *
  * @return {Object} Export Screen component.
  */
-const ExportScreen = () => {
+const Screen = () => {
 	const [ screenData, setScreenData ] = useState( {
 		selectedTables: tp.export.selectedTables,
 		exportFormat: tp.export.exportFormat,
@@ -59,13 +63,12 @@ const ExportScreen = () => {
 	/**
 	 * Handles screen data state changes.
 	 *
-	 * @param {string}      item  Configuration item name.
-	 * @param {string|null} value Value for configuration item.
+	 * @param {Object} updatedData Data in the screen data state that should be updated.
 	 */
-	const updateScreenData = ( item, value ) => {
+	const updateScreenData = ( updatedData ) => {
 		const newScreenData = {
 			...screenData,
-			[ item ]: value,
+			...updatedData,
 		};
 		setScreenData( newScreenData );
 	};
@@ -91,7 +94,7 @@ const ExportScreen = () => {
 										checked={ screenData.selectedTables.length === tablesCount }
 										onChange={ () => {
 											const selectedTables = ( screenData.selectedTables.length === tablesCount ) ? [] : Object.keys( tp.export.tables );
-											updateScreenData( 'selectedTables', selectedTables );
+											updateScreenData( { selectedTables } );
 										} }
 									/> { __( 'Select all', 'tablepress' ) }
 								</label>
@@ -107,7 +110,7 @@ const ExportScreen = () => {
 												type="checkbox"
 												checked={ screenData.reverseList }
 												onChange={ () => {
-													updateScreenData( 'reverseList', ! screenData.reverseList );
+													updateScreenData( { reverseList: ! screenData.reverseList } );
 													tablesSelectOptions.reverse();
 												} }
 											/> { __( 'Reverse list', 'tablepress' ) }
@@ -125,7 +128,7 @@ const ExportScreen = () => {
 							value={ screenData.selectedTables }
 							onChange={ ( event ) => {
 								const selectedTables = [ ...event.target.selectedOptions ].map( ( option ) => option.value );
-								updateScreenData( 'selectedTables', selectedTables );
+								updateScreenData( { selectedTables } );
 							} }
 							style={ {
 								width: '100%',
@@ -136,13 +139,16 @@ const ExportScreen = () => {
 						{ tp.export.zipSupportAvailable &&
 							<>
 								<br />
-								<span className="description">
-									{ sprintf(
-										__( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ),
-										window?.navigator?.platform?.includes( 'Mac' ) ? _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : _x( 'Ctrl', 'keyboard key', 'tablepress' ),
-										_x( 'Shift', 'keyboard key', 'tablepress' ) )
-									}
-								</span>
+								<p className="info-text">
+									<Icon icon={ info } />
+									<span>
+										{ sprintf(
+											__( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ),
+											window?.navigator?.platform?.includes( 'Mac' ) ? _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : _x( 'Ctrl', 'keyboard key', 'tablepress' ),
+											_x( 'Shift', 'keyboard key', 'tablepress' ) )
+										}
+									</span>
+								</p>
 							</>
 						}
 					</td>
@@ -158,7 +164,7 @@ const ExportScreen = () => {
 							id="tables-export-format"
 							name="export[format]"
 							value={ screenData.exportFormat }
-							onChange={ ( event ) => updateScreenData( 'exportFormat', event.target.value ) }
+							onChange={ ( event ) => updateScreenData( { exportFormat: event.target.value } ) }
 						>
 							{ exportFormatsSelectOptions }
 						</select>
@@ -176,7 +182,7 @@ const ExportScreen = () => {
 							name="export[csv_delimiter]"
 							disabled={ 'csv' !== screenData.exportFormat }
 							value={ screenData.csvDelimiter }
-							onChange={ ( event ) => updateScreenData( 'csvDelimiter', event.target.value ) }
+							onChange={ ( event ) => updateScreenData( { csvDelimiter: event.target.value } ) }
 						>
 							{ csvDelimitersSelectOptions }
 						</select>
@@ -202,7 +208,7 @@ const ExportScreen = () => {
 									id="tables-export-zip-file"
 									checked={ screenData.createZipFile || zipFileRequired }
 									disabled={ zipFileRequired }
-									onChange={ () => updateScreenData( 'createZipFile', ! screenData.createZipFile ) }
+									onChange={ () => updateScreenData( { createZipFile: ! screenData.createZipFile } ) }
 								/> { __( 'Create a ZIP archive.', 'tablepress' ) }
 								{ zipFileRequired &&
 									<>
@@ -245,4 +251,4 @@ const ExportScreen = () => {
 	);
 };
 
-export default ExportScreen;
+export default Screen;

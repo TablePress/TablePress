@@ -217,7 +217,7 @@ class TablePress_Evaluate_Legacy {
 
 			$result = $this->_evaluate_math_expression( $expression, $row_idx, $col_idx );
 			// Support putting formulas in strings, like =Total: {A3+A4}.
-			if ( $formula_in_string ) { // @phpstan-ignore-line
+			if ( $formula_in_string ) {
 				$content = str_replace( $orig_expression, $result, $content );
 			} else {
 				$content = $result;

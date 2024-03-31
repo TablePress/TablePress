@@ -25,13 +25,13 @@ class TimeValue
 	 * Excel Function:
 	 *        TIMEVALUE(timeValue)
 	 *
-	 * @param null|array|string $timeValue A text string that represents a time in any one of the Microsoft
+	 * @param null|array|bool|int|string $timeValue A text string that represents a time in any one of the Microsoft
 	 *                                    Excel time formats; for example, "6:45 PM" and "18:45" text strings
 	 *                                    within quotation marks that represent time.
 	 *                                    Date information in time_text is ignored.
 	 *                         Or can be an array of date/time values
 	 *
-	 * @return mixed Excel date/time serial value, PHP date/time serial value or PHP date/time object,
+	 * @return array|Datetime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
 	 *                        depending on the value of the ReturnDateType flag
 	 *         If an array of numbers is passed as the argument, then the returned result will also be an array
 	 *            with the same dimensions
@@ -47,7 +47,7 @@ class TimeValue
 			return ExcelError::VALUE();
 		}
 
-		$timeValue = trim($timeValue ?? '', '"');
+		$timeValue = trim((string) $timeValue, '"');
 		$timeValue = str_replace(['/', '.'], '-', $timeValue);
 
 		$arraySplit = preg_split('/[\/:\-\s]/', $timeValue) ?: [];
@@ -59,11 +59,8 @@ class TimeValue
 		$PHPDateArray = Helpers::dateParse($timeValue);
 		$retValue = ExcelError::VALUE();
 		if (Helpers::dateParseSucceeded($PHPDateArray)) {
-			/** @var int */
 			$hour = $PHPDateArray['hour'];
-			/** @var int */
 			$minute = $PHPDateArray['minute'];
-			/** @var int */
 			$second = $PHPDateArray['second'];
 			// OpenOffice-specific code removed - it works just like Excel
 			$excelDateValue = SharedDateHelper::formattedPHPToExcel(1900, 1, 1, $hour, $minute, $second) - 1;

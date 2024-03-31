@@ -4,39 +4,37 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting;
 
 class ConditionalDataBar
 {
-	/** <dataBar> attribute  */
-
-	/** @var null|bool */
+	/**
+	 * @var bool|null
+	 */
 	private $showValue;
 
-	/** <dataBar> children */
-
-	/** @var ?ConditionalFormatValueObject */
+	/**
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject|null
+	 */
 	private $minimumConditionalFormatValueObject;
 
-	/** @var ?ConditionalFormatValueObject */
+	/**
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject|null
+	 */
 	private $maximumConditionalFormatValueObject;
 
-	/** @var string */
-	private $color;
-
-	/** <extLst> */
-
-	/** @var ?ConditionalFormattingRuleExtension */
-	private $conditionalFormattingRuleExt;
+	/**
+	 * @var string
+	 */
+	private $color = '';
 
 	/**
-	 * @return null|bool
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormattingRuleExtension|null
 	 */
-	public function getShowValue()
+	private $conditionalFormattingRuleExt;
+
+	public function getShowValue(): ?bool
 	{
 		return $this->showValue;
 	}
 
-	/**
-	 * @param bool $showValue
-	 */
-	public function setShowValue($showValue): self
+	public function setShowValue(bool $showValue): self
 	{
 		$this->showValue = $showValue;
 

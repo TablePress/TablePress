@@ -26,8 +26,8 @@ class CashFlowValidations extends FinancialValidations
 	{
 		$rate = self::validateInt($type);
 		if (
-			$type !== FinancialConstants::PAYMENT_END_OF_PERIOD &&
-			$type !== FinancialConstants::PAYMENT_BEGINNING_OF_PERIOD
+			$type !== FinancialConstants::PAYMENT_END_OF_PERIOD
+			&& $type !== FinancialConstants::PAYMENT_BEGINNING_OF_PERIOD
 		) {
 			throw new Exception(ExcelError::NAN());
 		}

@@ -122,7 +122,7 @@ class Extract
 	 *                             The default is a #N/A Error
 	 *                          Or can be an array of values
 	 *
-	 * @return mixed|mixed[] the string extracted from text before the delimiter; or the $ifNotFound value
+	 * @return array|string the string extracted from text before the delimiter; or the $ifNotFound value
 	 *         If an array of values is passed for any of the arguments, then the returned result
 	 *            will also be an array with matching dimensions
 	 */
@@ -180,7 +180,7 @@ class Extract
 	 *                             The default is a #N/A Error
 	 *                          Or can be an array of values
 	 *
-	 * @return mixed|mixed[] the string extracted from text before the delimiter; or the $ifNotFound value
+	 * @return array|string the string extracted from text before the delimiter; or the $ifNotFound value
 	 *         If an array of values is passed for any of the arguments, then the returned result
 	 *            will also be an array with matching dimensions
 	 */
@@ -217,14 +217,11 @@ class Extract
 	}
 
 	/**
-	 * @param null|array|string $delimiter
-	 * @param int $matchMode
-	 * @param int $matchEnd
+	 * @param null|mixed[]|string $delimiter
+	 * @return mixed[]|string
 	 * @param mixed $ifNotFound
-	 *
-	 * @return array|string
 	 */
-	private static function validateTextBeforeAfter(string $text, $delimiter, int $instance, $matchMode, $matchEnd, $ifNotFound)
+	private static function validateTextBeforeAfter(string $text, $delimiter, int $instance, int $matchMode, int $matchEnd, $ifNotFound)
 	{
 		$flags = self::matchFlags($matchMode);
 		$delimiter = self::buildDelimiter($delimiter);
@@ -260,7 +257,7 @@ class Extract
 		if (is_array($delimiter)) {
 			$delimiter = Functions::flattenArray($delimiter);
 			$quotedDelimiters = array_map(
-				function ($delimiter) {
+				function ($delimiter) : string {
 					return preg_quote($delimiter ?? '', '/');
 				},
 				$delimiter

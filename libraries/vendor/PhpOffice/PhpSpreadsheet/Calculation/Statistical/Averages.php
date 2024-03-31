@@ -67,7 +67,7 @@ class Averages extends AggregateBase
 	 *
 	 * @param mixed ...$args Data values
 	 *
-	 * @return float|string (string if result is an error)
+	 * @return float|int|string (string if result is an error)
 	 */
 	public static function average(...$args)
 	{
@@ -106,7 +106,7 @@ class Averages extends AggregateBase
 	 *
 	 * @param mixed ...$args Data values
 	 *
-	 * @return float|string (string if result is an error)
+	 * @return float|int|string (string if result is an error)
 	 */
 	public static function averageA(...$args)
 	{
@@ -200,9 +200,9 @@ class Averages extends AggregateBase
 	{
 		return array_filter(
 			$args,
-			function ($value) {
+			function ($value): bool {
 				// Is it a numeric value?
-				return  is_numeric($value) && (!is_string($value));
+				return is_numeric($value) && (!is_string($value));
 			}
 		);
 	}
@@ -210,7 +210,6 @@ class Averages extends AggregateBase
 	/**
 	 * Special variant of array_count_values that isn't limited to strings and integers,
 	 * but can work with floating point numbers as values.
-	 *
 	 * @return float|string
 	 */
 	private static function modeCalc(array $data)

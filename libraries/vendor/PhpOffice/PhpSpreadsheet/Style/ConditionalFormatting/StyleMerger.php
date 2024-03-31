@@ -11,7 +11,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 class StyleMerger
 {
 	/**
-	 * @var Style
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Style
 	 */
 	protected $baseStyle;
 

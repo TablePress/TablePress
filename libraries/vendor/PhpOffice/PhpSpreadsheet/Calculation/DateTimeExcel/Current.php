@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel;
 
+use DateTime;
 use DateTimeImmutable;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 
@@ -21,7 +22,7 @@ class Current
 	 * Excel Function:
 	 *        TODAY()
 	 *
-	 * @return mixed Excel date/time serial value, PHP date/time serial value or PHP date/time object,
+	 * @return DateTime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
 	 *                        depending on the value of the ReturnDateType flag
 	 */
 	public static function today()
@@ -46,7 +47,7 @@ class Current
 	 * Excel Function:
 	 *        NOW()
 	 *
-	 * @return mixed Excel date/time serial value, PHP date/time serial value or PHP date/time object,
+	 * @return DateTime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
 	 *                        depending on the value of the ReturnDateType flag
 	 */
 	public static function now()

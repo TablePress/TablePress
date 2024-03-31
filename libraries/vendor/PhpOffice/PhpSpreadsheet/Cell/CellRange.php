@@ -4,16 +4,20 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Cell;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Stringable;
 
+/**
+ * @implements AddressRange<CellAddress>
+ */
 class CellRange implements AddressRange
 {
 	/**
-	 * @var CellAddress
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress
 	 */
 	protected $from;
 
 	/**
-	 * @var CellAddress
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress
 	 */
 	protected $to;
 

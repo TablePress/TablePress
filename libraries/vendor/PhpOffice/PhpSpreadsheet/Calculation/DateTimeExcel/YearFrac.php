@@ -39,7 +39,7 @@ class YearFrac
 	 *                                        4                European 30/360
 	 *                         Or can be an array of methods
 	 *
-	 * @return array|float|string fraction of the year, or a string containing an error
+	 * @return array|float|int|string fraction of the year, or a string containing an error
 	 *         If an array of values is passed for the $startDate or $endDays,arguments, then the returned result
 	 *            will also be an array with matching dimensions
 	 */
@@ -72,14 +72,13 @@ class YearFrac
 				return Functions::scalar(Difference::interval($startDate, $endDate)) / 365;
 			case 4:
 				return Functions::scalar(Days360::between($startDate, $endDate, true)) / 360;
+			default:
+				return ExcelError::NAN();
 		}
-
-		return ExcelError::NAN();
 	}
 
 	/**
 	 * Excel 1900 calendar treats date argument of null as 1900-01-00. Really.
-	 *
 	 * @param mixed $startDate
 	 * @param mixed $endDate
 	 */

@@ -36,7 +36,6 @@ class StandardDeviations
 	 *        STDEVA(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 *
 	 * @return float|string
 	 */
 	public static function STDEVA(...$args)
@@ -58,7 +57,6 @@ class StandardDeviations
 	 *        STDEVP(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 *
 	 * @return float|string
 	 */
 	public static function STDEVP(...$args)
@@ -80,7 +78,6 @@ class StandardDeviations
 	 *        STDEVPA(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 *
 	 * @return float|string
 	 */
 	public static function STDEVPA(...$args)

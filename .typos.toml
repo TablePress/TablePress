@@ -10,9 +10,6 @@ extend-exclude = [
 	"/libraries/freemius/",
 	"/libraries/vendor/",
 	"/libraries/simplexlsx.class.php",
-	"/modules/i18n/",
-	"/modules/admin/js/build/",
-	"/modules/js/*.min.js",
 ]
 
 [default.extend-words]

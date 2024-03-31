@@ -8,34 +8,28 @@ class Blip
 {
 	/**
 	 * The parent BSE.
-	 *
-	 * @var BSE
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE
 	 */
 	private $parent;
 
 	/**
 	 * Raw image data.
-	 *
 	 * @var string
 	 */
 	private $data;
 
 	/**
 	 * Get the raw image data.
-	 *
-	 * @return string
 	 */
-	public function getData()
+	public function getData(): string
 	{
 		return $this->data;
 	}
 
 	/**
 	 * Set the raw image data.
-	 *
-	 * @param string $data
 	 */
-	public function setData($data): void
+	public function setData(string $data): void
 	{
 		$this->data = $data;
 	}

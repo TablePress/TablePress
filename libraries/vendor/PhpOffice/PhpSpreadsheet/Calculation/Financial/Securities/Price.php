@@ -28,7 +28,6 @@ class Price
 	 *                              For annual payments, frequency = 1;
 	 *                              for semiannual, frequency = 2;
 	 *                              for quarterly, frequency = 4.
-	 * @param mixed $frequency
 	 * @param mixed $basis The type of day count to use.
 	 *                         0 or omitted    US (NASD) 30/360
 	 *                         1               Actual/actual
@@ -37,6 +36,7 @@ class Price
 	 *                         4               European 30/360
 	 *
 	 * @return float|string Result, or a string containing an error
+	 * @param mixed $frequency
 	 */
 	public static function price(
 		$settlement,
@@ -218,9 +218,9 @@ class Price
 		}
 		$daysBetweenSettlementAndMaturity *= $daysPerYear;
 
-		return (100 + (($daysBetweenIssueAndMaturity / $daysPerYear) * $rate * 100)) /
-			(1 + (($daysBetweenSettlementAndMaturity / $daysPerYear) * $yield)) -
-			(($daysBetweenIssueAndSettlement / $daysPerYear) * $rate * 100);
+		return (100 + (($daysBetweenIssueAndMaturity / $daysPerYear) * $rate * 100))
+			/ (1 + (($daysBetweenSettlementAndMaturity / $daysPerYear) * $yield))
+			- (($daysBetweenIssueAndSettlement / $daysPerYear) * $rate * 100);
 	}
 
 	/**

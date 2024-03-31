@@ -11,14 +11,12 @@ class Iterator implements \Iterator
 {
 	/**
 	 * Spreadsheet to iterate.
-	 *
-	 * @var Spreadsheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet
 	 */
 	private $subject;
 
 	/**
 	 * Current iterator position.
-	 *
 	 * @var int
 	 */
 	private $position = 0;

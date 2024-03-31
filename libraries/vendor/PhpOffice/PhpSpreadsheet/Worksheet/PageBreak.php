@@ -8,16 +8,24 @@ use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class PageBreak
 {
-	/** @var int */
+	/**
+	 * @var int
+	 */
 	private $breakType;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $coordinate;
 
-	/** @var int */
+	/**
+	 * @var int
+	 */
 	private $maxColOrRow;
 
-	/** @param array|CellAddress|string $coordinate */
+	/**
+	 * @param array{0: int, 1: int}|CellAddress|string $coordinate
+	 */
 	public function __construct(int $breakType, $coordinate, int $maxColOrRow = -1)
 	{
 		$coordinate = Functions::trimSheetFromCellReference(Validations::validateCellAddress($coordinate));

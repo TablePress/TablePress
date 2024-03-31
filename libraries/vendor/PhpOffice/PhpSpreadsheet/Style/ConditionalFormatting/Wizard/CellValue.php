@@ -36,10 +36,14 @@ class CellValue extends WizardAbstract implements WizardInterface
 
 	protected const RANGE_OPERATORS = CellMatcher::COMPARISON_RANGE_OPERATORS;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $operator = Conditional::OPERATOR_EQUAL;
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	protected $operand = [0];
 
 	/**
@@ -75,9 +79,8 @@ class CellValue extends WizardAbstract implements WizardInterface
 	}
 
 	/**
-	 * @param mixed $value
-	 *
 	 * @return float|int|string
+	 * @param mixed $value
 	 */
 	protected function wrapValue($value, string $operandValueType)
 	{
@@ -117,7 +120,7 @@ class CellValue extends WizardAbstract implements WizardInterface
 
 	protected static function unwrapString(string $condition): string
 	{
-		if ((strpos($condition, '"') === 0) && (strpos(strrev($condition), '"') === 0)) {
+		if ((str_starts_with($condition, '"')) && (str_starts_with(strrev($condition), '"'))) {
 			$condition = substr($condition, 1, -1);
 		}
 
@@ -146,8 +149,8 @@ class CellValue extends WizardAbstract implements WizardInterface
 					$operandValueType = Wizard::VALUE_TYPE_CELL;
 					$condition = self::reverseAdjustCellRef($condition, $cellRange);
 				} elseif (
-					preg_match('/\(\)/', $condition) ||
-					preg_match('/' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '/i', $condition)
+					preg_match('/\(\)/', $condition)
+					|| preg_match('/' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '/i', $condition)
 				) {
 					$operandValueType = Wizard::VALUE_TYPE_FORMULA;
 					$condition = self::reverseAdjustCellRef($condition, $cellRange);
@@ -162,10 +165,9 @@ class CellValue extends WizardAbstract implements WizardInterface
 	}
 
 	/**
-	 * @param string $methodName
 	 * @param mixed[] $arguments
 	 */
-	public function __call($methodName, $arguments): self
+	public function __call(string $methodName, array $arguments): self
 	{
 		if (!isset(self::MAGIC_OPERATIONS[$methodName]) && $methodName !== 'and') {
 			throw new Exception('Invalid Operator for Cell Value CF Rule Wizard');
@@ -176,13 +178,7 @@ class CellValue extends WizardAbstract implements WizardInterface
 				throw new Exception('AND Value is only appropriate for range operators');
 			}
 
-			// Scrutinizer ignores its own suggested workaround.
-			//$this->operand(1, /** @scrutinizer ignore-type */ ...$arguments);
-			if (count($arguments) < 2) {
-				$this->operand(1, $arguments[0]);
-			} else {
-				$this->operand(1, $arguments[0], $arguments[1]);
-			}
+			$this->operand(1, ...$arguments);
 
 			return $this;
 		}

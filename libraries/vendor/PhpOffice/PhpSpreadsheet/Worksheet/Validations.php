@@ -12,7 +12,7 @@ class Validations
 	/**
 	 * Validate a cell address.
 	 *
-	 * @param null|array<int>|CellAddress|string $cellAddress Coordinate of the cell as a string, eg: 'C5';
+	 * @param null|array{0: int, 1: int}|CellAddress|string $cellAddress Coordinate of the cell as a string, eg: 'C5';
 	 *               or as an array of [$columnIndex, $row] (e.g. [3, 5]), or a CellAddress object.
 	 */
 	public static function validateCellAddress($cellAddress): string
@@ -36,7 +36,7 @@ class Validations
 	/**
 	 * Validate a cell address or cell range.
 	 *
-	 * @param AddressRange|array<int>|CellAddress|int|string $cellRange Coordinate of the cells as a string, eg: 'C5:F12';
+	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|CellAddress|int|string $cellRange Coordinate of the cells as a string, eg: 'C5:F12';
 	 *               or as an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 12]),
 	 *               or as a CellAddress or AddressRange object.
 	 */
@@ -59,7 +59,7 @@ class Validations
 	/**
 	 * Validate a cell range.
 	 *
-	 * @param AddressRange|array<int>|string $cellRange Coordinate of the cells as a string, eg: 'C5:F12';
+	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $cellRange Coordinate of the cells as a string, eg: 'C5:F12';
 	 *               or as an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 12]),
 	 *               or as an AddressRange object.
 	 */
@@ -73,7 +73,7 @@ class Validations
 			$addressRange = (string) preg_replace(
 				['/^([A-Z]+):([A-Z]+)$/i', '/^(\\d+):(\\d+)$/'],
 				[self::SETMAXROW, self::SETMAXCOL],
-				$addressRange
+				$addressRange ?? ''
 			);
 
 			return empty($worksheet) ? strtoupper($addressRange) : $worksheet . '!' . strtoupper($addressRange);
@@ -81,14 +81,14 @@ class Validations
 
 		if (is_array($cellRange)) {
 			switch (count($cellRange)) {
-				case 2:
-					$from = [$cellRange[0], $cellRange[1]];
-					$to = [$cellRange[0], $cellRange[1]];
-
-					break;
 				case 4:
 					$from = [$cellRange[0], $cellRange[1]];
 					$to = [$cellRange[2], $cellRange[3]];
+
+					break;
+				case 2:
+					$from = [$cellRange[0], $cellRange[1]];
+					$to = [$cellRange[0], $cellRange[1]];
 
 					break;
 				default:

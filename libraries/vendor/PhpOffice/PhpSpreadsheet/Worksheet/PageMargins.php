@@ -6,42 +6,36 @@ class PageMargins
 {
 	/**
 	 * Left.
-	 *
 	 * @var float
 	 */
 	private $left = 0.7;
 
 	/**
 	 * Right.
-	 *
 	 * @var float
 	 */
 	private $right = 0.7;
 
 	/**
 	 * Top.
-	 *
 	 * @var float
 	 */
 	private $top = 0.75;
 
 	/**
 	 * Bottom.
-	 *
 	 * @var float
 	 */
 	private $bottom = 0.75;
 
 	/**
 	 * Header.
-	 *
 	 * @var float
 	 */
 	private $header = 0.3;
 
 	/**
 	 * Footer.
-	 *
 	 * @var float
 	 */
 	private $footer = 0.3;
@@ -55,10 +49,8 @@ class PageMargins
 
 	/**
 	 * Get Left.
-	 *
-	 * @return float
 	 */
-	public function getLeft()
+	public function getLeft(): float
 	{
 		return $this->left;
 	}
@@ -66,11 +58,9 @@ class PageMargins
 	/**
 	 * Set Left.
 	 *
-	 * @param float $left
-	 *
 	 * @return $this
 	 */
-	public function setLeft($left)
+	public function setLeft(float $left)
 	{
 		$this->left = $left;
 
@@ -79,10 +69,8 @@ class PageMargins
 
 	/**
 	 * Get Right.
-	 *
-	 * @return float
 	 */
-	public function getRight()
+	public function getRight(): float
 	{
 		return $this->right;
 	}
@@ -90,11 +78,9 @@ class PageMargins
 	/**
 	 * Set Right.
 	 *
-	 * @param float $right
-	 *
 	 * @return $this
 	 */
-	public function setRight($right)
+	public function setRight(float $right)
 	{
 		$this->right = $right;
 
@@ -103,10 +89,8 @@ class PageMargins
 
 	/**
 	 * Get Top.
-	 *
-	 * @return float
 	 */
-	public function getTop()
+	public function getTop(): float
 	{
 		return $this->top;
 	}
@@ -114,11 +98,9 @@ class PageMargins
 	/**
 	 * Set Top.
 	 *
-	 * @param float $top
-	 *
 	 * @return $this
 	 */
-	public function setTop($top)
+	public function setTop(float $top)
 	{
 		$this->top = $top;
 
@@ -127,10 +109,8 @@ class PageMargins
 
 	/**
 	 * Get Bottom.
-	 *
-	 * @return float
 	 */
-	public function getBottom()
+	public function getBottom(): float
 	{
 		return $this->bottom;
 	}
@@ -138,11 +118,9 @@ class PageMargins
 	/**
 	 * Set Bottom.
 	 *
-	 * @param float $bottom
-	 *
 	 * @return $this
 	 */
-	public function setBottom($bottom)
+	public function setBottom(float $bottom)
 	{
 		$this->bottom = $bottom;
 
@@ -151,10 +129,8 @@ class PageMargins
 
 	/**
 	 * Get Header.
-	 *
-	 * @return float
 	 */
-	public function getHeader()
+	public function getHeader(): float
 	{
 		return $this->header;
 	}
@@ -162,11 +138,9 @@ class PageMargins
 	/**
 	 * Set Header.
 	 *
-	 * @param float $header
-	 *
 	 * @return $this
 	 */
-	public function setHeader($header)
+	public function setHeader(float $header)
 	{
 		$this->header = $header;
 
@@ -175,10 +149,8 @@ class PageMargins
 
 	/**
 	 * Get Footer.
-	 *
-	 * @return float
 	 */
-	public function getFooter()
+	public function getFooter(): float
 	{
 		return $this->footer;
 	}
@@ -186,11 +158,9 @@ class PageMargins
 	/**
 	 * Set Footer.
 	 *
-	 * @param float $footer
-	 *
 	 * @return $this
 	 */
-	public function setFooter($footer)
+	public function setFooter(float $footer)
 	{
 		$this->footer = $footer;
 

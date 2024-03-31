@@ -27,8 +27,7 @@ class Cumulative
 	 * @param mixed $type A number 0 or 1 and indicates when payments are due:
 	 *                    0 or omitted    At the end of the period.
 	 *                    1               At the beginning of the period.
-	 *
-	 * @return float|string
+	 * @return string|float|int
 	 */
 	public static function interest(
 		$rate,
@@ -92,8 +91,7 @@ class Cumulative
 	 * @param mixed $type A number 0 or 1 and indicates when payments are due:
 	 *                    0 or omitted    At the end of the period.
 	 *                    1               At the beginning of the period.
-	 *
-	 * @return float|string
+	 * @return string|float|int
 	 */
 	public static function principal(
 		$rate,

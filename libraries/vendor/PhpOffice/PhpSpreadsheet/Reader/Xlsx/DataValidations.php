@@ -8,10 +8,14 @@ use SimpleXMLElement;
 
 class DataValidations
 {
-	/** @var Worksheet */
+	/**
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
+	 */
 	private $worksheet;
 
-	/** @var SimpleXMLElement */
+	/**
+	 * @var \SimpleXMLElement
+	 */
 	private $worksheetXml;
 
 	public function __construct(Worksheet $workSheet, SimpleXMLElement $worksheetXml)

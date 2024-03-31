@@ -3,11 +3,15 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Cell;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Stringable;
 
+/**
+ * @implements AddressRange<int>
+ */
 class RowRange implements AddressRange
 {
 	/**
-	 * @var ?Worksheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
 	protected $worksheet;
 
@@ -25,6 +29,11 @@ class RowRange implements AddressRange
 	{
 		$this->validateFromTo($from, $to ?? $from);
 		$this->worksheet = $worksheet;
+	}
+
+	public function __destruct()
+	{
+		$this->worksheet = null;
 	}
 
 	public static function fromArray(array $array, ?Worksheet $worksheet = null): self

@@ -9,7 +9,7 @@ use SimpleXMLElement;
 class Properties
 {
 	/**
-	 * @var Spreadsheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet
 	 */
 	protected $spreadsheet;
 

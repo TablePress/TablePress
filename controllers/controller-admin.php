@@ -475,8 +475,6 @@ JS;
 				break;
 			case 'about':
 				$data['first_activation'] = TablePress::$model_options->get( 'first_activation' );
-				$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
-				$data['zip_support_available'] = $exporter->zip_support_available;
 				break;
 			case 'options':
 				/*
@@ -556,10 +554,9 @@ JS;
 					$table = TablePress::$model_table->load( $table_id, false, false );
 					$data['tables'][ $table['id'] ] = $table['name']; // @phpstan-ignore-line
 				}
-				$data['table_ids'] = $table_ids; // Backwards compatibility for the retired "Table Auto Update" Extension, which still relies on this variable name.
+				$data['table_ids'] = $table_ids; // Backward compatibility for the retired "Table Auto Update" Extension, which still relies on this variable name.
 				$data['tables_count'] = TablePress::$model_table->count_tables();
 				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
-				$data['zip_support_available'] = $importer->zip_support_available;
 				$data['import_type'] = ( ! empty( $_GET['import_type'] ) ) ? $_GET['import_type'] : 'add';
 				$data['import_existing_table'] = ( ! empty( $_GET['import_existing_table'] ) ) ? $_GET['import_existing_table'] : '';
 				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
@@ -1133,7 +1130,7 @@ JS;
 			} elseif ( 0 < count( $import['errors'] ) ) {
 				$wp_error_strings = array();
 				foreach ( $import['errors'] as $file ) {
-					$wp_error_strings[] = TablePress::get_wp_error_string( $file['error'] );
+					$wp_error_strings[] = TablePress::get_wp_error_string( $file->error );
 				}
 				$redirect_parameters['error_details'] = implode( ', ', $wp_error_strings );
 			}
@@ -1299,7 +1296,7 @@ JS;
 		$view_data = array(
 			'table_id'               => $table_id,
 			'head_html'              => $_render->get_preview_css(),
-			'body_html'              => $_render->get_output(),
+			'body_html'              => $_render->get_output( 'html' ),
 			'site_uses_block_editor' => TablePress::site_uses_block_editor(),
 		);
 

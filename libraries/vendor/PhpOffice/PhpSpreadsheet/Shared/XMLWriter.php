@@ -6,7 +6,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 
 class XMLWriter extends \XMLWriter
 {
-	/** @var bool */
+	/**
+	 * @var bool
+	 */
 	public static $debugEnabled = false;
 
 	/** Temporary storage method */
@@ -15,7 +17,6 @@ class XMLWriter extends \XMLWriter
 
 	/**
 	 * Temporary filename.
-	 *
 	 * @var string
 	 */
 	private $tempFileName = '';
@@ -24,9 +25,9 @@ class XMLWriter extends \XMLWriter
 	 * Create a new XMLWriter instance.
 	 *
 	 * @param int $temporaryStorage Temporary storage location
-	 * @param string $temporaryStorageFolder Temporary storage folder
+	 * @param ?string $temporaryStorageFolder Temporary storage folder
 	 */
-	public function __construct($temporaryStorage = self::STORAGE_MEMORY, $temporaryStorageFolder = null)
+	public function __construct(int $temporaryStorage = self::STORAGE_MEMORY, ?string $temporaryStorageFolder = null)
 	{
 		// Open temporary storage
 		if ($temporaryStorage == self::STORAGE_MEMORY) {
@@ -59,7 +60,6 @@ class XMLWriter extends \XMLWriter
 		// Unlink temporary files
 		// There is nothing reasonable to do if unlink fails.
 		if ($this->tempFileName != '') {
-			/** @scrutinizer ignore-unhandled */
 			@unlink($this->tempFileName);
 		}
 	}
@@ -73,10 +73,8 @@ class XMLWriter extends \XMLWriter
 
 	/**
 	 * Get written data.
-	 *
-	 * @return string
 	 */
-	public function getData()
+	public function getData(): string
 	{
 		if ($this->tempFileName == '') {
 			return $this->outputMemory(true);
@@ -90,10 +88,8 @@ class XMLWriter extends \XMLWriter
 	 * Wrapper method for writeRaw.
 	 *
 	 * @param null|string|string[] $rawTextData
-	 *
-	 * @return bool
 	 */
-	public function writeRawData($rawTextData)
+	public function writeRawData($rawTextData): bool
 	{
 		if (is_array($rawTextData)) {
 			$rawTextData = implode("\n", $rawTextData);

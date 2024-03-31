@@ -19,7 +19,6 @@ class Shadow implements IComparable
 
 	/**
 	 * Visible.
-	 *
 	 * @var bool
 	 */
 	private $visible;
@@ -28,7 +27,6 @@ class Shadow implements IComparable
 	 * Blur radius.
 	 *
 	 * Defaults to 6
-	 *
 	 * @var int
 	 */
 	private $blurRadius;
@@ -37,35 +35,30 @@ class Shadow implements IComparable
 	 * Shadow distance.
 	 *
 	 * Defaults to 2
-	 *
 	 * @var int
 	 */
 	private $distance;
 
 	/**
 	 * Shadow direction (in degrees).
-	 *
 	 * @var int
 	 */
 	private $direction;
 
 	/**
 	 * Shadow alignment.
-	 *
 	 * @var string
 	 */
 	private $alignment;
 
 	/**
 	 * Color.
-	 *
-	 * @var Color
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color
 	 */
 	private $color;
 
 	/**
 	 * Alpha.
-	 *
 	 * @var int
 	 */
 	private $alpha;
@@ -87,10 +80,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Visible.
-	 *
-	 * @return bool
 	 */
-	public function getVisible()
+	public function getVisible(): bool
 	{
 		return $this->visible;
 	}
@@ -98,11 +89,9 @@ class Shadow implements IComparable
 	/**
 	 * Set Visible.
 	 *
-	 * @param bool $visible
-	 *
 	 * @return $this
 	 */
-	public function setVisible($visible)
+	public function setVisible(bool $visible)
 	{
 		$this->visible = $visible;
 
@@ -111,10 +100,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Blur radius.
-	 *
-	 * @return int
 	 */
-	public function getBlurRadius()
+	public function getBlurRadius(): int
 	{
 		return $this->blurRadius;
 	}
@@ -122,11 +109,9 @@ class Shadow implements IComparable
 	/**
 	 * Set Blur radius.
 	 *
-	 * @param int $blurRadius
-	 *
 	 * @return $this
 	 */
-	public function setBlurRadius($blurRadius)
+	public function setBlurRadius(int $blurRadius)
 	{
 		$this->blurRadius = $blurRadius;
 
@@ -135,10 +120,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Shadow distance.
-	 *
-	 * @return int
 	 */
-	public function getDistance()
+	public function getDistance(): int
 	{
 		return $this->distance;
 	}
@@ -146,11 +129,9 @@ class Shadow implements IComparable
 	/**
 	 * Set Shadow distance.
 	 *
-	 * @param int $distance
-	 *
 	 * @return $this
 	 */
-	public function setDistance($distance)
+	public function setDistance(int $distance)
 	{
 		$this->distance = $distance;
 
@@ -159,10 +140,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Shadow direction (in degrees).
-	 *
-	 * @return int
 	 */
-	public function getDirection()
+	public function getDirection(): int
 	{
 		return $this->direction;
 	}
@@ -170,11 +149,9 @@ class Shadow implements IComparable
 	/**
 	 * Set Shadow direction (in degrees).
 	 *
-	 * @param int $direction
-	 *
 	 * @return $this
 	 */
-	public function setDirection($direction)
+	public function setDirection(int $direction)
 	{
 		$this->direction = $direction;
 
@@ -183,10 +160,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Shadow alignment.
-	 *
-	 * @return string
 	 */
-	public function getAlignment()
+	public function getAlignment(): string
 	{
 		return $this->alignment;
 	}
@@ -194,11 +169,9 @@ class Shadow implements IComparable
 	/**
 	 * Set Shadow alignment.
 	 *
-	 * @param string $alignment
-	 *
 	 * @return $this
 	 */
-	public function setAlignment($alignment)
+	public function setAlignment(string $alignment)
 	{
 		$this->alignment = $alignment;
 
@@ -207,10 +180,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Color.
-	 *
-	 * @return Color
 	 */
-	public function getColor()
+	public function getColor(): Color
 	{
 		return $this->color;
 	}
@@ -229,10 +200,8 @@ class Shadow implements IComparable
 
 	/**
 	 * Get Alpha.
-	 *
-	 * @return int
 	 */
-	public function getAlpha()
+	public function getAlpha(): int
 	{
 		return $this->alpha;
 	}
@@ -240,11 +209,9 @@ class Shadow implements IComparable
 	/**
 	 * Set Alpha.
 	 *
-	 * @param int $alpha
-	 *
 	 * @return $this
 	 */
-	public function setAlpha($alpha)
+	public function setAlpha(int $alpha)
 	{
 		$this->alpha = $alpha;
 
@@ -256,17 +223,17 @@ class Shadow implements IComparable
 	 *
 	 * @return string Hash code
 	 */
-	public function getHashCode()
+	public function getHashCode(): string
 	{
 		return md5(
-			($this->visible ? 't' : 'f') .
-			$this->blurRadius .
-			$this->distance .
-			$this->direction .
-			$this->alignment .
-			$this->color->getHashCode() .
-			$this->alpha .
-			__CLASS__
+			($this->visible ? 't' : 'f')
+			. $this->blurRadius
+			. $this->distance
+			. $this->direction
+			. $this->alignment
+			. $this->color->getHashCode()
+			. $this->alpha
+			. __CLASS__
 		);
 	}
 

@@ -19,140 +19,120 @@ class Protection
 
 	/**
 	 * Autofilters are locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $autoFilter;
 
 	/**
 	 * Deleting columns is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $deleteColumns;
 
 	/**
 	 * Deleting rows is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $deleteRows;
 
 	/**
 	 * Formatting cells is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $formatCells;
 
 	/**
 	 * Formatting columns is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $formatColumns;
 
 	/**
 	 * Formatting rows is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $formatRows;
 
 	/**
 	 * Inserting columns is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $insertColumns;
 
 	/**
 	 * Inserting hyperlinks is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $insertHyperlinks;
 
 	/**
 	 * Inserting rows is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $insertRows;
 
 	/**
 	 * Objects are locked when sheet is protected, default false.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $objects;
 
 	/**
 	 * Pivot tables are locked when the sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $pivotTables;
 
 	/**
 	 * Scenarios are locked when sheet is protected, default false.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $scenarios;
 
 	/**
 	 * Selection of locked cells is locked when sheet is protected, default false.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $selectLockedCells;
 
 	/**
 	 * Selection of unlocked cells is locked when sheet is protected, default false.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $selectUnlockedCells;
 
 	/**
 	 * Sheet is locked when sheet is protected, default false.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $sheet;
 
 	/**
 	 * Sorting is locked when sheet is protected, default true.
-	 *
-	 * @var ?bool
+	 * @var bool|null
 	 */
 	private $sort;
 
 	/**
 	 * Hashed password.
-	 *
 	 * @var string
 	 */
 	private $password = '';
 
 	/**
 	 * Algorithm name.
-	 *
 	 * @var string
 	 */
 	private $algorithm = '';
 
 	/**
 	 * Salt value.
-	 *
 	 * @var string
 	 */
 	private $salt = '';
 
 	/**
 	 * Spin count.
-	 *
 	 * @var int
 	 */
 	private $spinCount = 10000;
@@ -170,23 +150,23 @@ class Protection
 	public function isProtectionEnabled(): bool
 	{
 		return
-			$this->password !== '' ||
-			isset($this->sheet) ||
-			isset($this->objects) ||
-			isset($this->scenarios) ||
-			isset($this->formatCells) ||
-			isset($this->formatColumns) ||
-			isset($this->formatRows) ||
-			isset($this->insertColumns) ||
-			isset($this->insertRows) ||
-			isset($this->insertHyperlinks) ||
-			isset($this->deleteColumns) ||
-			isset($this->deleteRows) ||
-			isset($this->selectLockedCells) ||
-			isset($this->sort) ||
-			isset($this->autoFilter) ||
-			isset($this->pivotTables) ||
-			isset($this->selectUnlockedCells);
+			$this->password !== ''
+			|| isset($this->sheet)
+			|| isset($this->objects)
+			|| isset($this->scenarios)
+			|| isset($this->formatCells)
+			|| isset($this->formatColumns)
+			|| isset($this->formatRows)
+			|| isset($this->insertColumns)
+			|| isset($this->insertRows)
+			|| isset($this->insertHyperlinks)
+			|| isset($this->deleteColumns)
+			|| isset($this->deleteRows)
+			|| isset($this->selectLockedCells)
+			|| isset($this->sort)
+			|| isset($this->autoFilter)
+			|| isset($this->pivotTables)
+			|| isset($this->selectUnlockedCells);
 	}
 
 	public function getSheet(): ?bool
@@ -383,10 +363,8 @@ class Protection
 
 	/**
 	 * Get hashed password.
-	 *
-	 * @return string
 	 */
-	public function getPassword()
+	public function getPassword(): string
 	{
 		return $this->password;
 	}
@@ -394,12 +372,11 @@ class Protection
 	/**
 	 * Set Password.
 	 *
-	 * @param string $password
 	 * @param bool $alreadyHashed If the password has already been hashed, set this to true
 	 *
 	 * @return $this
 	 */
-	public function setPassword($password, $alreadyHashed = false)
+	public function setPassword(string $password, bool $alreadyHashed = false)
 	{
 		if (!$alreadyHashed) {
 			$salt = $this->generateSalt();

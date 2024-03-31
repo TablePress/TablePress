@@ -54,21 +54,18 @@ class FormulaToken
 
 	/**
 	 * Value.
-	 *
 	 * @var string
 	 */
 	private $value;
 
 	/**
 	 * Token Type (represented by TOKEN_TYPE_*).
-	 *
 	 * @var string
 	 */
 	private $tokenType;
 
 	/**
 	 * Token SubType (represented by TOKEN_SUBTYPE_*).
-	 *
 	 * @var string
 	 */
 	private $tokenSubType;
@@ -76,11 +73,10 @@ class FormulaToken
 	/**
 	 * Create a new FormulaToken.
 	 *
-	 * @param string $value
 	 * @param string $tokenType Token type (represented by TOKEN_TYPE_*)
 	 * @param string $tokenSubType Token Subtype (represented by TOKEN_SUBTYPE_*)
 	 */
-	public function __construct($value, $tokenType = self::TOKEN_TYPE_UNKNOWN, $tokenSubType = self::TOKEN_SUBTYPE_NOTHING)
+	public function __construct(string $value, string $tokenType = self::TOKEN_TYPE_UNKNOWN, string $tokenSubType = self::TOKEN_SUBTYPE_NOTHING)
 	{
 		// Initialise values
 		$this->value = $value;
@@ -90,60 +86,48 @@ class FormulaToken
 
 	/**
 	 * Get Value.
-	 *
-	 * @return string
 	 */
-	public function getValue()
+	public function getValue(): string
 	{
 		return $this->value;
 	}
 
 	/**
 	 * Set Value.
-	 *
-	 * @param string $value
 	 */
-	public function setValue($value): void
+	public function setValue(string $value): void
 	{
 		$this->value = $value;
 	}
 
 	/**
 	 * Get Token Type (represented by TOKEN_TYPE_*).
-	 *
-	 * @return string
 	 */
-	public function getTokenType()
+	public function getTokenType(): string
 	{
 		return $this->tokenType;
 	}
 
 	/**
 	 * Set Token Type (represented by TOKEN_TYPE_*).
-	 *
-	 * @param string $value
 	 */
-	public function setTokenType($value): void
+	public function setTokenType(string $value): void
 	{
 		$this->tokenType = $value;
 	}
 
 	/**
 	 * Get Token SubType (represented by TOKEN_SUBTYPE_*).
-	 *
-	 * @return string
 	 */
-	public function getTokenSubType()
+	public function getTokenSubType(): string
 	{
 		return $this->tokenSubType;
 	}
 
 	/**
 	 * Set Token SubType (represented by TOKEN_SUBTYPE_*).
-	 *
-	 * @param string $value
 	 */
-	public function setTokenSubType($value): void
+	public function setTokenSubType(string $value): void
 	{
 		$this->tokenSubType = $value;
 	}

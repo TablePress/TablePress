@@ -48,11 +48,6 @@ class TablePress_Evaluate {
 			return true;
 		}
 
-		// Use the legacy evaluate class, if the PHPSpreadsheet files do not exist (e.g. because `composer install` was not run).
-		if ( ! file_exists( TABLEPRESS_ABSPATH . 'libraries/autoload.php' ) ) {
-			return true;
-		}
-
 		return false;
 	}
 
@@ -66,10 +61,8 @@ class TablePress_Evaluate {
 	 * @return array<int, array<int, string>> Table data with evaluated formulas.
 	 */
 	public function evaluate_table_data( array $table_data, string $table_id ): array {
-		$use_legacy_evaluate_class = $this->_should_use_legacy_evaluate_class();
-
 		// Choose the Table Evaluate library based on the PHP version and the filter hook value.
-		if ( $use_legacy_evaluate_class ) {
+		if ( $this->_should_use_legacy_evaluate_class() ) {
 			$evaluate_class = TablePress::load_class( 'TablePress_Evaluate_Legacy', 'class-evaluate-legacy.php', 'classes' );
 		} else {
 			$evaluate_class = TablePress::load_class( 'TablePress_Evaluate_PHPSpreadsheet', 'class-evaluate-phpspreadsheet.php', 'classes' );

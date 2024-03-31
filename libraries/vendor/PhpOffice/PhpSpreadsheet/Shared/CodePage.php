@@ -8,7 +8,9 @@ class CodePage
 {
 	public const DEFAULT_CODE_PAGE = 'CP1252';
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	private static $pageArray = [
 		0 => 'CP1252', //    CodePage is not always correctly set when the xls file was saved by Apple's Numbers program
 		367 => 'ASCII', //    ASCII

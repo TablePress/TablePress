@@ -39,8 +39,7 @@ class Coupons
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 *
-	 * @return float|string
+	 * @return string|int|float
 	 */
 	public static function COUPDAYBS(
 		$settlement,
@@ -102,8 +101,7 @@ class Coupons
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 *
-	 * @return float|string
+	 * @return string|int|float
 	 */
 	public static function COUPDAYS(
 		$settlement,
@@ -173,8 +171,7 @@ class Coupons
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 *
-	 * @return float|string
+	 * @return string|float
 	 */
 	public static function COUPDAYSNC(
 		$settlement,
@@ -199,7 +196,7 @@ class Coupons
 			return $e->getMessage();
 		}
 
-		/** @var int */
+		/** @var int $daysPerYear */
 		$daysPerYear = Helpers::daysPerYear(Functions::Scalar(DateTimeExcel\DateParts::year($settlement)), $basis);
 		$next = self::couponFirstPeriodDate($settlement, $maturity, $frequency, self::PERIOD_DATE_NEXT);
 
@@ -239,8 +236,7 @@ class Coupons
 	 *                         3               Actual/365
 	 *                         4               European 30/360
 	 *
-	 * @return mixed Excel date/time serial value, PHP date/time serial value or PHP date/time object,
-	 *                     depending on the value of the ReturnDateType flag
+	 * @return float|string Excel date/time serial value or error message
 	 */
 	public static function COUPNCD(
 		$settlement,
@@ -260,8 +256,7 @@ class Coupons
 			$maturity = FinancialValidations::validateMaturityDate($maturity);
 			self::validateCouponPeriod($settlement, $maturity);
 			$frequency = FinancialValidations::validateFrequency($frequency);
-			$basis = FinancialValidations::validateBasis($basis);
-			self::doNothing($basis);
+			FinancialValidations::validateBasis($basis);
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -294,8 +289,7 @@ class Coupons
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 *
-	 * @return int|string
+	 * @return string|int
 	 */
 	public static function COUPNUM(
 		$settlement,
@@ -315,8 +309,7 @@ class Coupons
 			$maturity = FinancialValidations::validateMaturityDate($maturity);
 			self::validateCouponPeriod($settlement, $maturity);
 			$frequency = FinancialValidations::validateFrequency($frequency);
-			$basis = FinancialValidations::validateBasis($basis);
-			self::doNothing($basis);
+			FinancialValidations::validateBasis($basis);
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -355,8 +348,7 @@ class Coupons
 	 *                         3               Actual/365
 	 *                         4               European 30/360
 	 *
-	 * @return mixed Excel date/time serial value, PHP date/time serial value or PHP date/time object,
-	 *                     depending on the value of the ReturnDateType flag
+	 * @return float|string Excel date/time serial value or error message
 	 */
 	public static function COUPPCD(
 		$settlement,
@@ -376,8 +368,7 @@ class Coupons
 			$maturity = FinancialValidations::validateMaturityDate($maturity);
 			self::validateCouponPeriod($settlement, $maturity);
 			$frequency = FinancialValidations::validateFrequency($frequency);
-			$basis = FinancialValidations::validateBasis($basis);
-			self::doNothing($basis);
+			FinancialValidations::validateBasis($basis);
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -416,11 +407,5 @@ class Coupons
 		if ($settlement >= $maturity) {
 			throw new Exception(ExcelError::NAN());
 		}
-	}
-
-	/** @param mixed $basis */
-	private static function doNothing($basis): bool
-	{
-		return $basis;
 	}
 }

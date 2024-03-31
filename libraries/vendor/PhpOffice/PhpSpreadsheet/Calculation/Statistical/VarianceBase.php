@@ -7,9 +7,8 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 abstract class VarianceBase
 {
 	/**
-	 * @param mixed $value
-	 *
-	 * @return mixed
+	 * @param int|float|string|bool $value
+	 * @return int|float
 	 */
 	protected static function datatypeAdjustmentAllowStrings($value)
 	{
@@ -24,7 +23,6 @@ abstract class VarianceBase
 
 	/**
 	 * @param mixed $value
-	 *
 	 * @return mixed
 	 */
 	protected static function datatypeAdjustmentBooleans($value)

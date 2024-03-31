@@ -169,18 +169,17 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
-	 * @param array $sortIndex
 	 * @param mixed $sortOrder
 	 */
-	private static function validateArrayArgumentsForSort(&$sortIndex, &$sortOrder, int $sortArraySize): void
+	private static function validateArrayArgumentsForSort(array &$sortIndex, &$sortOrder, int $sortArraySize): void
 	{
 		// It doesn't matter if they're row or column vectors, it works either way
 		$sortIndex = Functions::flattenArray($sortIndex);
 		$sortOrder = Functions::flattenArray($sortOrder);
 
 		if (
-			count($sortOrder) === 0 || count($sortOrder) > $sortArraySize ||
-			(count($sortOrder) > count($sortIndex))
+			count($sortOrder) === 0 || count($sortOrder) > $sortArraySize
+			|| (count($sortOrder) > count($sortIndex))
 		) {
 			throw new Exception(ExcelError::VALUE());
 		}
@@ -219,7 +218,7 @@ class Sort extends LookupRefValidations
 	 * @param array[] $sortIndex
 	 * @param int[] $sortOrder
 	 */
-	private static function processSortBy(array $sortArray, array $sortIndex, $sortOrder): array
+	private static function processSortBy(array $sortArray, array $sortIndex, array $sortOrder): array
 	{
 		$sortArguments = [];
 		$sortData = [];

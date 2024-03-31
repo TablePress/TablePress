@@ -448,7 +448,7 @@ class TablePress_CSSTidy {
 			++$i;
 		}
 
-		if ( hexdec( $add ) > 47 && hexdec( $add ) < 58 || hexdec( $add ) > 64 && hexdec( $add ) < 91 || hexdec( $add ) > 96 && hexdec( $add ) < 123 ) {
+		if ( ( hexdec( $add ) > 47 && hexdec( $add ) < 58 ) || ( hexdec( $add ) > 64 && hexdec( $add ) < 91 ) || ( hexdec( $add ) > 96 && hexdec( $add ) < 123 ) ) {
 			$this->log( 'Replaced unicode notation: Changed \\' . $add . ' to ' . chr( hexdec( $add ) ), 'Information' );
 			$add = chr( hexdec( $add ) );
 			$replaced = true;
@@ -456,7 +456,7 @@ class TablePress_CSSTidy {
 			$add = trim( '\\' . $add );
 		}
 
-		if ( @ctype_xdigit( $a_string[ $i + 1 ] ) && ctype_space( $a_string[ $i ] ) && ! $replaced || ! ctype_space( $a_string[ $i ] ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		if ( ( @ctype_xdigit( $a_string[ $i + 1 ] ) && ctype_space( $a_string[ $i ] ) && ! $replaced ) || ! ctype_space( $a_string[ $i ] ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			--$i;
 		}
 
@@ -619,7 +619,7 @@ class TablePress_CSSTidy {
 						}
 					} else {
 						$lastpos = strlen( $cur_at ) - 1;
-						if ( ! ( ( ctype_space( $cur_at[ $lastpos ] ) || $this->is_token( $cur_at, $lastpos ) && ',' === $cur_at[ $lastpos ] ) && ctype_space( $a_string[ $i ] ) ) ) {
+						if ( ! ( ( ctype_space( $cur_at[ $lastpos ] ) || ( $this->is_token( $cur_at, $lastpos ) && ',' === $cur_at[ $lastpos ] ) ) && ctype_space( $a_string[ $i ] ) ) ) {
 							$cur_at .= $a_string[ $i ];
 						}
 					}
@@ -704,7 +704,7 @@ class TablePress_CSSTidy {
 						}
 					} else {
 						$lastpos = strlen( $this->selector ) - 1;
-						if ( -1 === $lastpos || ! ( ( ctype_space( $this->selector[ $lastpos ] ) || $this->is_token( $this->selector, $lastpos ) && ',' === $this->selector[ $lastpos ] ) && ctype_space( $a_string[ $i ] ) ) ) {
+						if ( -1 === $lastpos || ! ( ( ctype_space( $this->selector[ $lastpos ] ) || ( $this->is_token( $this->selector, $lastpos ) && ',' === $this->selector[ $lastpos ] ) ) && ctype_space( $a_string[ $i ] ) ) ) {
 							$this->selector .= $a_string[ $i ];
 						}
 					}
@@ -750,7 +750,7 @@ class TablePress_CSSTidy {
 					break;
 				/* Case in-value */
 				case 'iv':
-					$pn = ( ( "\n" === $a_string[ $i ] || "\r" === $a_string[ $i ] ) && $this->property_is_next( $a_string, $i + 1 ) || ( strlen( $a_string ) - 1 ) === $i );
+					$pn = ( ( ( "\n" === $a_string[ $i ] || "\r" === $a_string[ $i ] ) && $this->property_is_next( $a_string, $i + 1 ) ) || ( strlen( $a_string ) - 1 ) === $i );
 					if ( ( $this->is_token( $a_string, $i ) || $pn ) && ( ! ( ',' === $a_string[ $i ] && ! ctype_space( $a_string[ $i + 1 ] ) ) ) ) {
 						if ( '/' === $a_string[ $i ] && '*' === @$a_string[ $i + 1 ] ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 							$this->status = 'ic';

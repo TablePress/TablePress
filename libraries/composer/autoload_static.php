@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 use Composer\AutoloadTablePress\ClassLoader as ClassLoaderTablePress;
 
 
-class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
+class ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8
 {
 	public static $prefixLengthsPsr4 = array (
 		'T' => 
@@ -48,7 +48,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\BinaryComparison' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/BinaryComparison.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Calculation' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Calculation.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Category' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Category.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database\\DAverage' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database/DAverage.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database\\DCount' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database/DCount.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database\\DCountA' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database/DCountA.php',
@@ -62,7 +61,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database\\DVar' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database/DVar.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database\\DVarP' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database/DVarP.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Database\\DatabaseAbstract' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Database/DatabaseAbstract.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\DateTime' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/DateTime.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\DateTimeExcel\\Constants' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/DateTimeExcel/Constants.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\DateTimeExcel\\Current' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/DateTimeExcel/Current.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\DateTimeExcel\\Date' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/DateTimeExcel/Date.php',
@@ -88,7 +86,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engine\\Logger' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engine/Logger.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engine\\Operands\\Operand' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engine/Operands/Operand.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engine\\Operands\\StructuredReference' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engine/Operands/StructuredReference.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engineering' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engineering.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engineering\\BesselI' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engineering/BesselI.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engineering\\BesselJ' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engineering/BesselJ.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engineering\\BesselK' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engineering/BesselK.php',
@@ -110,7 +107,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Engineering\\ErfC' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Engineering/ErfC.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Exception' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Exception.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\ExceptionHandler' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/ExceptionHandler.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Financial' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Financial.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Financial\\Amortization' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Financial/Amortization.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Financial\\CashFlow\\CashFlowValidations' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Financial/CashFlow/CashFlowValidations.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Financial\\CashFlow\\Constant\\Periodic' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Financial/CashFlow/Constant/Periodic.php',
@@ -142,11 +138,9 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Information\\Value' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Information/Value.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Internal\\MakeMatrix' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Internal/MakeMatrix.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Internal\\WildcardMatch' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Internal/WildcardMatch.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Logical' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Logical.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Logical\\Boolean' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Logical/Boolean.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Logical\\Conditional' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Logical/Conditional.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Logical\\Operations' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Logical/Operations.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef\\Address' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef/Address.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef\\ExcelMatch' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef/ExcelMatch.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef\\Filter' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef/Filter.php',
@@ -165,7 +159,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef\\Sort' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef/Sort.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef\\Unique' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef/Unique.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\LookupRef\\VLookup' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/LookupRef/VLookup.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig\\Absolute' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig/Absolute.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig\\Angle' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig/Angle.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig\\Arabic' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig/Arabic.php',
@@ -198,7 +191,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig\\Trig\\Sine' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig/Trig/Sine.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig\\Trig\\Tangent' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig/Trig/Tangent.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\MathTrig\\Trunc' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/MathTrig/Trunc.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical\\AggregateBase' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical/AggregateBase.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical\\Averages' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical/Averages.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical\\Averages\\Mean' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical/Averages/Mean.php',
@@ -236,7 +228,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical\\Trends' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical/Trends.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical\\VarianceBase' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical/VarianceBase.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Statistical\\Variances' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Statistical/Variances.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\TextData' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/TextData.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\TextData\\CaseConvert' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/TextData/CaseConvert.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\TextData\\CharacterConvert' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/TextData/CharacterConvert.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\TextData\\Concatenate' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/TextData/Concatenate.php',
@@ -248,7 +239,6 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\TextData\\Text' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/TextData/Text.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\TextData\\Trim' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/TextData/Trim.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Token\\Stack' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Token/Stack.php',
-		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Web' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Web.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Calculation\\Web\\Service' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Calculation/Web/Service.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\CellReferenceHelper' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/CellReferenceHelper.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Cell\\AddressHelper' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Cell/AddressHelper.php',
@@ -418,6 +408,7 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\Conditional' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/Conditional.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\ConditionalFormatting\\CellMatcher' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/ConditionalFormatting/CellMatcher.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\ConditionalFormatting\\CellStyleAssessor' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/ConditionalFormatting/CellStyleAssessor.php',
+		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\ConditionalFormatting\\ConditionalColorScale' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/ConditionalFormatting/ConditionalColorScale.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\ConditionalFormatting\\ConditionalDataBar' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/ConditionalFormatting/ConditionalDataBar.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\ConditionalFormatting\\ConditionalDataBarExtension' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/ConditionalFormatting/ConditionalDataBarExtension.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Style\\ConditionalFormatting\\ConditionalFormatValueObject' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Style/ConditionalFormatting/ConditionalFormatValueObject.php',
@@ -480,6 +471,7 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageBreak' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageBreak.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageMargins' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageMargins.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageSetup' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageSetup.php',
+		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Pane' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Pane.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Protection' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Protection.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Row' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Row.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\RowCellIterator' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/RowCellIterator.php',
@@ -516,9 +508,9 @@ class ComposerStaticInit2c2a075c812f1443c16c5df478156a36
 	public static function getInitializer(ClassLoaderTablePress $loader)
 	{
 		return \Closure::bind(function () use ($loader) {
-			$loader->prefixLengthsPsr4 = ComposerStaticInit2c2a075c812f1443c16c5df478156a36::$prefixLengthsPsr4;
-			$loader->prefixDirsPsr4 = ComposerStaticInit2c2a075c812f1443c16c5df478156a36::$prefixDirsPsr4;
-			$loader->classMap = ComposerStaticInit2c2a075c812f1443c16c5df478156a36::$classMap;
+			$loader->prefixLengthsPsr4 = ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8::$prefixLengthsPsr4;
+			$loader->prefixDirsPsr4 = ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8::$prefixDirsPsr4;
+			$loader->classMap = ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8::$classMap;
 
 		}, null, ClassLoaderTablePress::class);
 	}

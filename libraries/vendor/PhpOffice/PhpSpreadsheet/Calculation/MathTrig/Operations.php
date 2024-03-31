@@ -19,7 +19,7 @@ class Operations
 	 * @param mixed $divisor Divisor
 	 *                      Or can be an array of values
 	 *
-	 * @return array|float|int|string Remainder, or a string containing an error
+	 * @return array|float|string Remainder, or a string containing an error
 	 *         If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
@@ -52,10 +52,8 @@ class Operations
 	 *
 	 * Computes x raised to the power y.
 	 *
-	 * @param array|float|int $x
-	 *                      Or can be an array of values
-	 * @param array|float|int $y
-	 *                      Or can be an array of values
+	 * @param array|float|int|string $x Or can be an array of values
+	 * @param array|float|int|string $y Or can be an array of values
 	 *
 	 * @return array|float|int|string The result, or a string containing an error
 	 *         If an array of numbers is passed as an argument, then the returned result will also be an array
@@ -97,14 +95,13 @@ class Operations
 	 *        PRODUCT(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 *
-	 * @return float|string
+	 * @return string|float
 	 */
 	public static function product(...$args)
 	{
 		$args = array_filter(
 			Functions::flattenArray($args),
-			function ($value) {
+			function ($value) : bool {
 				return $value !== null;
 			}
 		);
@@ -139,8 +136,7 @@ class Operations
 	 * @param mixed $denominator Expect float|int
 	 *                      Or can be an array of values
 	 *
-	 * @return array|int|string
-	 *         If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array|int|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function quotient($numerator, $denominator)

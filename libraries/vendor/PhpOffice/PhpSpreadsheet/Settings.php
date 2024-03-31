@@ -16,14 +16,13 @@ class Settings
 	 * Class name of the chart renderer used for rendering charts
 	 * eg: TablePress\PhpOffice\PhpSpreadsheet\Chart\Renderer\JpGraph.
 	 *
-	 * @var ?string
+	 * @var null|class-string<IRenderer>
 	 */
 	private static $chartRenderer;
 
 	/**
 	 * Default options for libxml loader.
-	 *
-	 * @var ?int
+	 * @var int|null
 	 */
 	private static $libXmlLoaderOptions;
 
@@ -47,13 +46,12 @@ class Settings
 
 	/**
 	 * The HTTP client implementation to be used for network request.
-	 *
-	 * @var null|ClientInterface
+	 * @var \TablePress\Psr\Http\Client\ClientInterface|null
 	 */
 	private static $httpClient;
 
 	/**
-	 * @var null|RequestFactoryInterface
+	 * @var \TablePress\Psr\Http\Message\RequestFactoryInterface|null
 	 */
 	private static $requestFactory;
 
@@ -64,7 +62,7 @@ class Settings
 	 *
 	 * @return bool Success or failure
 	 */
-	public static function setLocale(string $locale)
+	public static function setLocale(string $locale): bool
 	{
 		return Calculation::getInstance()->setLocale($locale);
 	}
@@ -77,7 +75,7 @@ class Settings
 	/**
 	 * Identify to PhpSpreadsheet the external library to use for rendering charts.
 	 *
-	 * @param string $rendererClassName Class name of the chart renderer
+	 * @param class-string<IRenderer> $rendererClassName Class name of the chart renderer
 	 *    eg: TablePress\PhpOffice\PhpSpreadsheet\Chart\Renderer\JpGraph
 	 */
 	public static function setChartRenderer(string $rendererClassName): void
@@ -89,10 +87,15 @@ class Settings
 		self::$chartRenderer = $rendererClassName;
 	}
 
+	public static function unsetChartRenderer(): void
+	{
+		self::$chartRenderer = null;
+	}
+
 	/**
 	 * Return the Chart Rendering Library that PhpSpreadsheet is currently configured to use.
 	 *
-	 * @return null|string Class name of the chart renderer
+	 * @return null|class-string<IRenderer> Class name of the chart renderer
 	 *    eg: TablePress\PhpOffice\PhpSpreadsheet\Chart\Renderer\JpGraph
 	 */
 	public static function getChartRenderer(): ?string
@@ -102,7 +105,7 @@ class Settings
 
 	public static function htmlEntityFlags(): int
 	{
-		return \ENT_COMPAT;
+		return ENT_COMPAT;
 	}
 
 	/**
@@ -110,7 +113,7 @@ class Settings
 	 *
 	 * @param ?int $options Default options for libxml loader
 	 */
-	public static function setLibXmlLoaderOptions($options): int
+	public static function setLibXmlLoaderOptions(?int $options): int
 	{
 		if ($options === null) {
 			$options = defined('LIBXML_DTDLOAD') ? (LIBXML_DTDLOAD | LIBXML_DTDATTR) : 0;
@@ -145,7 +148,7 @@ class Settings
 	 *
 	 * @param bool $state
 	 */
-	public static function setLibXmlDisableEntityLoader(/** @scrutinizer ignore-unused */ $state): void
+	public static function setLibXmlDisableEntityLoader($state): void
 	{
 		self::$libXmlDisableEntityLoader = (bool) $state;
 	}

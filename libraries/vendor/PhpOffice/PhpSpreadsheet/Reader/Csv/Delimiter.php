@@ -9,16 +9,24 @@ class Delimiter
 	/** @var resource */
 	protected $fileHandle;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $escapeCharacter;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $enclosure;
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	protected $counts = [];
 
-	/** @var int */
+	/**
+	 * @var int
+	 */
 	protected $numberLines = 0;
 
 	/** @var ?string */

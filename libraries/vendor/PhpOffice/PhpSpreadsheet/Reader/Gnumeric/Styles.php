@@ -15,16 +15,18 @@ use SimpleXMLElement;
 class Styles
 {
 	/**
-	 * @var Spreadsheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet
 	 */
 	private $spreadsheet;
 
 	/**
 	 * @var bool
 	 */
-	protected $readDataOnly = false;
+	protected $readDataOnly;
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	public static $mappings = [
 		'borderStyle' => [
 			'0' => Border::BORDER_NONE,
@@ -101,7 +103,6 @@ class Styles
 	private function readStyles(SimpleXMLElement $styleRegion, int $maxRow, int $maxCol): void
 	{
 		foreach ($styleRegion as $style) {
-			/** @scrutinizer ignore-call */
 			$styleAttributes = $style->attributes();
 			if ($styleAttributes !== null && ($styleAttributes['startRow'] <= $maxRow) && ($styleAttributes['startCol'] <= $maxCol)) {
 				$cellRange = $this->readStyleRange($styleAttributes, $maxCol, $maxRow);
@@ -118,7 +119,7 @@ class Styles
 				if ($this->readDataOnly === false && $styleAttributes !== null) {
 					//    If readDataOnly is false, we set all formatting information
 					$styleArray['numberFormat']['formatCode'] = $formatCode;
-					$styleArray = $this->readStyle($styleArray, $styleAttributes, /** @scrutinizer ignore-type */ $style);
+					$styleArray = $this->readStyle($styleArray, $styleAttributes, $style);
 				}
 				$this->spreadsheet->getActiveSheet()->getStyle($cellRange)->applyFromArray($styleArray);
 			}

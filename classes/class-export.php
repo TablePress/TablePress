@@ -63,8 +63,7 @@ class TablePress_Export {
 			'tab' => __( '\t (tabulator)', 'tablepress' ),
 		);
 
-		/** This filter is documented in the WordPress function unzip_file() in wp-admin/includes/file.php */
-		if ( class_exists( 'ZipArchive', false ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
+		if ( class_exists( 'ZipArchive', false ) ) {
 			$this->zip_support_available = true;
 		}
 	}

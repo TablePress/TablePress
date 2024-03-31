@@ -34,12 +34,8 @@ class FillPattern
 	/**
 	 * Get fill pattern from index
 	 * OpenOffice documentation: 2.5.12.
-	 *
-	 * @param int $index
-	 *
-	 * @return string
 	 */
-	public static function lookup($index)
+	public static function lookup(int $index): string
 	{
 		if (isset(self::$fillPatternMap[$index])) {
 			return self::$fillPatternMap[$index];

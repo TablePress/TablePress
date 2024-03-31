@@ -8,35 +8,30 @@ class Security
 {
 	/**
 	 * LockRevision.
-	 *
 	 * @var bool
 	 */
 	private $lockRevision = false;
 
 	/**
 	 * LockStructure.
-	 *
 	 * @var bool
 	 */
 	private $lockStructure = false;
 
 	/**
 	 * LockWindows.
-	 *
 	 * @var bool
 	 */
 	private $lockWindows = false;
 
 	/**
 	 * RevisionsPassword.
-	 *
 	 * @var string
 	 */
 	private $revisionsPassword = '';
 
 	/**
 	 * WorkbookPassword.
-	 *
 	 * @var string
 	 */
 	private $workbookPassword = '';
@@ -53,9 +48,9 @@ class Security
 	 */
 	public function isSecurityEnabled(): bool
 	{
-		return  $this->lockRevision ||
-				$this->lockStructure ||
-				$this->lockWindows;
+		return $this->lockRevision
+				|| $this->lockStructure
+				|| $this->lockWindows;
 	}
 
 	public function getLockRevision(): bool
@@ -108,7 +103,6 @@ class Security
 	/**
 	 * Set RevisionsPassword.
 	 *
-	 * @param string $password
 	 * @param bool $alreadyHashed If the password has already been hashed, set this to true
 	 *
 	 * @return $this
@@ -133,7 +127,6 @@ class Security
 	/**
 	 * Set WorkbookPassword.
 	 *
-	 * @param string $password
 	 * @param bool $alreadyHashed If the password has already been hashed, set this to true
 	 *
 	 * @return $this

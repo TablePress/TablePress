@@ -9,13 +9,10 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Internal\WildcardMatch;
 abstract class DatabaseAbstract
 {
 	/**
-	 * @param array $database
-	 * @param int|string $field
-	 * @param array $criteria
-	 *
+	 * @param mixed[]|null|int|string $field
 	 * @return null|float|int|string
 	 */
-	abstract public static function evaluate($database, $field, $criteria);
+	abstract public static function evaluate(array $database, $field, array $criteria);
 
 	/**
 	 * fieldExtract.
@@ -115,7 +112,7 @@ abstract class DatabaseAbstract
 		}
 
 		$rowQuery = array_map(
-			function ($rowValue) {
+			function ($rowValue) : string {
 				return (count($rowValue) > 1) ? 'AND(' . implode(',', $rowValue) . ')' : ($rowValue[0] ?? '');
 			},
 			$baseQuery
@@ -168,10 +165,7 @@ abstract class DatabaseAbstract
 		return $database;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	private static function processCondition(string $criterion, array $fields, array $dataValues, string $conditions)
+	private static function processCondition(string $criterion, array $fields, array $dataValues, string $conditions): string
 	{
 		$key = array_search($criterion, $fields, true);
 
@@ -181,7 +175,7 @@ abstract class DatabaseAbstract
 		} elseif ($dataValues[$key] !== null) {
 			$dataValue = $dataValues[$key];
 			// escape quotes if we have a string containing quotes
-			if (is_string($dataValue) && strpos($dataValue, '"') !== false) {
+			if (is_string($dataValue) && str_contains($dataValue, '"')) {
 				$dataValue = str_replace('"', '""', $dataValue);
 			}
 			$dataValue = (is_string($dataValue)) ? Calculation::wrapResult(strtoupper($dataValue)) : $dataValue;

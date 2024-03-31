@@ -30,7 +30,7 @@ class ExcelMatch
 	 * @param mixed $matchType The number -1, 0, or 1. -1 means above, 0 means exact match, 1 means below.
 	 *                         If match_type is 1 or -1, the list has to be ordered.
 	 *
-	 * @return array|int|string The relative position of the found item
+	 * @return array|float|int|string The relative position of the found item
 	 */
 	public static function MATCH($lookupValue, $lookupArray, $matchType = self::MATCHTYPE_LARGEST_VALUE)
 	{
@@ -63,19 +63,16 @@ class ExcelMatch
 			$lookupValue = StringHelper::strToLower($lookupValue);
 		}
 
-		$valueKey = null;
 		switch ($matchType) {
 			case self::MATCHTYPE_LARGEST_VALUE:
 				$valueKey = self::matchLargestValue($lookupArray, $lookupValue, $keySet);
-
 				break;
 			case self::MATCHTYPE_FIRST_VALUE:
 				$valueKey = self::matchFirstValue($lookupArray, $lookupValue);
-
 				break;
-			case self::MATCHTYPE_SMALLEST_VALUE:
 			default:
 				$valueKey = self::matchSmallestValue($lookupArray, $lookupValue);
+				break;
 		}
 
 		if ($valueKey !== null) {
@@ -87,9 +84,8 @@ class ExcelMatch
 	}
 
 	/**
+	 * @return int|string|null
 	 * @param mixed $lookupValue
-	 *
-	 * @return mixed
 	 */
 	private static function matchFirstValue(array $lookupArray, $lookupValue)
 	{
@@ -129,7 +125,6 @@ class ExcelMatch
 
 	/**
 	 * @param mixed $lookupValue
-	 *
 	 * @return mixed
 	 */
 	private static function matchLargestValue(array $lookupArray, $lookupValue, array $keySet)
@@ -167,9 +162,8 @@ class ExcelMatch
 	}
 
 	/**
+	 * @return int|string|null
 	 * @param mixed $lookupValue
-	 *
-	 * @return mixed
 	 */
 	private static function matchSmallestValue(array $lookupArray, $lookupValue)
 	{
@@ -270,8 +264,8 @@ class ExcelMatch
 				$lookupArray[$i] = StringHelper::strToLower($value);
 			}
 			if (
-				($value === null) &&
-				(($matchType == self::MATCHTYPE_LARGEST_VALUE) || ($matchType == self::MATCHTYPE_SMALLEST_VALUE))
+				($value === null)
+				&& (($matchType == self::MATCHTYPE_LARGEST_VALUE) || ($matchType == self::MATCHTYPE_SMALLEST_VALUE))
 			) {
 				unset($lookupArray[$i]);
 			}

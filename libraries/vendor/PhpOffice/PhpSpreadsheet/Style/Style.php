@@ -12,56 +12,48 @@ class Style extends Supervisor
 {
 	/**
 	 * Font.
-	 *
-	 * @var Font
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Font
 	 */
 	protected $font;
 
 	/**
 	 * Fill.
-	 *
-	 * @var Fill
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Fill
 	 */
 	protected $fill;
 
 	/**
 	 * Borders.
-	 *
-	 * @var Borders
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Borders
 	 */
 	protected $borders;
 
 	/**
 	 * Alignment.
-	 *
-	 * @var Alignment
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Alignment
 	 */
 	protected $alignment;
 
 	/**
 	 * Number Format.
-	 *
-	 * @var NumberFormat
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat
 	 */
 	protected $numberFormat;
 
 	/**
 	 * Protection.
-	 *
-	 * @var Protection
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Protection
 	 */
 	protected $protection;
 
 	/**
 	 * Index of style in collection. Only used for real style.
-	 *
 	 * @var int
 	 */
 	protected $index;
 
 	/**
 	 * Use Quote Prefix when displaying in cell editor. Only used for real style.
-	 *
 	 * @var bool
 	 */
 	protected $quotePrefix = false;
@@ -95,7 +87,7 @@ class Style extends Supervisor
 	 *       Leave this value at default unless you understand exactly what
 	 *    its ramifications are
 	 */
-	public function __construct($isSupervisor = false, $isConditional = false)
+	public function __construct(bool $isSupervisor = false, bool $isConditional = false)
 	{
 		parent::__construct($isSupervisor);
 
@@ -146,12 +138,8 @@ class Style extends Supervisor
 
 	/**
 	 * Build style array from subcomponents.
-	 *
-	 * @param array $array
-	 *
-	 * @return array
 	 */
-	public function getStyleArray($array)
+	public function getStyleArray(array $array): array
 	{
 		return ['quotePrefix' => $array];
 	}
@@ -201,14 +189,14 @@ class Style extends Supervisor
 	 *
 	 * @return $this
 	 */
-	public function applyFromArray(array $styleArray, $advancedBorders = true)
+	public function applyFromArray(array $styleArray, bool $advancedBorders = true)
 	{
 		if ($this->isSupervisor) {
 			$pRange = $this->getSelectedCells();
 
 			// Uppercase coordinate and strip any Worksheet reference from the selected range
 			$pRange = strtoupper($pRange);
-			if (strpos($pRange, '!') !== false) {
+			if (str_contains($pRange, '!')) {
 				$pRangeWorksheet = StringHelper::strToUpper(trim(substr($pRange, 0, (int) strrpos($pRange, '!')), "'"));
 				if ($pRangeWorksheet !== '' && StringHelper::strToUpper($this->getActiveSheet()->getTitle()) !== $pRangeWorksheet) {
 					throw new Exception('Invalid Worksheet for specified Range');
@@ -217,7 +205,7 @@ class Style extends Supervisor
 			}
 
 			// Is it a cell range or a single cell?
-			if (strpos($pRange, ':') === false) {
+			if (!str_contains($pRange, ':')) {
 				$rangeA = $pRange;
 				$rangeB = $pRange;
 			} else {
@@ -279,12 +267,12 @@ class Style extends Supervisor
 				// loop through up to 3 x 3 = 9 regions
 				for ($x = 1; $x <= $xMax; ++$x) {
 					// start column index for region
-					$colStart = ($x == 3) ?
-						Coordinate::stringFromColumnIndex($rangeEndIndexes[0])
+					$colStart = ($x == 3)
+						? Coordinate::stringFromColumnIndex($rangeEndIndexes[0])
 						: Coordinate::stringFromColumnIndex($rangeStartIndexes[0] + $x - 1);
 					// end column index for region
-					$colEnd = ($x == 1) ?
-						Coordinate::stringFromColumnIndex($rangeStartIndexes[0])
+					$colEnd = ($x == 1)
+						? Coordinate::stringFromColumnIndex($rangeStartIndexes[0])
 						: Coordinate::stringFromColumnIndex($rangeEndIndexes[0] - $xMax + $x);
 
 					for ($y = 1; $y <= $yMax; ++$y) {
@@ -308,12 +296,12 @@ class Style extends Supervisor
 						}
 
 						// start row index for region
-						$rowStart = ($y == 3) ?
-							$rangeEndIndexes[1] : $rangeStartIndexes[1] + $y - 1;
+						$rowStart = ($y == 3)
+							? $rangeEndIndexes[1] : $rangeStartIndexes[1] + $y - 1;
 
 						// end row index for region
-						$rowEnd = ($y == 1) ?
-							$rangeStartIndexes[1] : $rangeEndIndexes[1] - $yMax + $y;
+						$rowEnd = ($y == 1)
+							? $rangeStartIndexes[1] : $rangeEndIndexes[1] - $yMax + $y;
 
 						// build range for region
 						$range = $colStart . $rowStart . ':' . $colEnd . $rowEnd;
@@ -560,20 +548,16 @@ class Style extends Supervisor
 
 	/**
 	 * Get Fill.
-	 *
-	 * @return Fill
 	 */
-	public function getFill()
+	public function getFill(): Fill
 	{
 		return $this->fill;
 	}
 
 	/**
 	 * Get Font.
-	 *
-	 * @return Font
 	 */
-	public function getFont()
+	public function getFont(): Font
 	{
 		return $this->font;
 	}
@@ -592,30 +576,24 @@ class Style extends Supervisor
 
 	/**
 	 * Get Borders.
-	 *
-	 * @return Borders
 	 */
-	public function getBorders()
+	public function getBorders(): Borders
 	{
 		return $this->borders;
 	}
 
 	/**
 	 * Get Alignment.
-	 *
-	 * @return Alignment
 	 */
-	public function getAlignment()
+	public function getAlignment(): Alignment
 	{
 		return $this->alignment;
 	}
 
 	/**
 	 * Get Number Format.
-	 *
-	 * @return NumberFormat
 	 */
-	public function getNumberFormat()
+	public function getNumberFormat(): NumberFormat
 	{
 		return $this->numberFormat;
 	}
@@ -625,7 +603,7 @@ class Style extends Supervisor
 	 *
 	 * @return Conditional[]
 	 */
-	public function getConditionalStyles()
+	public function getConditionalStyles(): array
 	{
 		return $this->getActiveSheet()->getConditionalStyles($this->getActiveCell());
 	}
@@ -646,20 +624,16 @@ class Style extends Supervisor
 
 	/**
 	 * Get Protection.
-	 *
-	 * @return Protection
 	 */
-	public function getProtection()
+	public function getProtection(): Protection
 	{
 		return $this->protection;
 	}
 
 	/**
 	 * Get quote prefix.
-	 *
-	 * @return bool
 	 */
-	public function getQuotePrefix()
+	public function getQuotePrefix(): bool
 	{
 		if ($this->isSupervisor) {
 			return $this->getSharedComponent()->getQuotePrefix();
@@ -671,11 +645,9 @@ class Style extends Supervisor
 	/**
 	 * Set quote prefix.
 	 *
-	 * @param bool $quotePrefix
-	 *
 	 * @return $this
 	 */
-	public function setQuotePrefix($quotePrefix)
+	public function setQuotePrefix(bool $quotePrefix)
 	{
 		if ($quotePrefix == '') {
 			$quotePrefix = false;
@@ -695,36 +667,32 @@ class Style extends Supervisor
 	 *
 	 * @return string Hash code
 	 */
-	public function getHashCode()
+	public function getHashCode(): string
 	{
 		return md5(
-			$this->fill->getHashCode() .
-			$this->font->getHashCode() .
-			$this->borders->getHashCode() .
-			$this->alignment->getHashCode() .
-			$this->numberFormat->getHashCode() .
-			$this->protection->getHashCode() .
-			($this->quotePrefix ? 't' : 'f') .
-			__CLASS__
+			$this->fill->getHashCode()
+			. $this->font->getHashCode()
+			. $this->borders->getHashCode()
+			. $this->alignment->getHashCode()
+			. $this->numberFormat->getHashCode()
+			. $this->protection->getHashCode()
+			. ($this->quotePrefix ? 't' : 'f')
+			. __CLASS__
 		);
 	}
 
 	/**
 	 * Get own index in style collection.
-	 *
-	 * @return int
 	 */
-	public function getIndex()
+	public function getIndex(): int
 	{
 		return $this->index;
 	}
 
 	/**
 	 * Set own index in style collection.
-	 *
-	 * @param int $index
 	 */
-	public function setIndex($index): void
+	public function setIndex(int $index): void
 	{
 		$this->index = $index;
 	}

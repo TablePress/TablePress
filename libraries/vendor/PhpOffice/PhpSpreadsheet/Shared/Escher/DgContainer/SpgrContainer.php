@@ -6,15 +6,13 @@ class SpgrContainer
 {
 	/**
 	 * Parent Shape Group Container.
-	 *
-	 * @var null|SpgrContainer
+	 * @var $this|null
 	 */
 	private $parent;
 
 	/**
 	 * Shape Container collection.
-	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $children = [];
 
@@ -36,7 +34,6 @@ class SpgrContainer
 
 	/**
 	 * Add a child. This will be either spgrContainer or spContainer.
-	 *
 	 * @param mixed $child
 	 */
 	public function addChild($child): void
@@ -58,7 +55,7 @@ class SpgrContainer
 	 *
 	 * @return SpgrContainer\SpContainer[]
 	 */
-	public function getAllSpContainers()
+	public function getAllSpContainers(): array
 	{
 		$allSpContainers = [];
 

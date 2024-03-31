@@ -8,8 +8,12 @@
  * @since 1.0.0
  */
 
+use TablePress\Import\File;
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
+
+TablePress::load_file( 'class-import-file.php', 'classes' );
 
 /**
  * TablePress Table Import Class
@@ -38,12 +42,13 @@ class TablePress_Import {
 	protected $import_config = array();
 
 	/**
-	 * Whether ZIP archive support is available in the PHP installation on the server.
+	 * Whether ZIP archive support is available (which it always is, as PclZip is used as a fallback).
 	 *
 	 * @since 1.0.0
+	 * @deprecated 2.3.0 ZIP support is now always available, either through `ZipArchive` or through `PclZip`.
 	 * @var bool
 	 */
-	public $zip_support_available = false;
+	public $zip_support_available = true;
 
 	/**
 	 * List of table names/IDs for use when replacing/appending existing tables (except for the JSON format).
@@ -54,24 +59,12 @@ class TablePress_Import {
 	protected $table_names_ids = array();
 
 	/**
-	 * Initializes the Import class.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct() {
-		/** This filter is documented in the WordPress function unzip_file() in wp-admin/includes/file.php */
-		if ( class_exists( 'ZipArchive', false ) && apply_filters( 'unzip_file_use_ziparchive', true ) ) {
-			$this->zip_support_available = true;
-		}
-	}
-
-	/**
 	 * Runs the import process for a given import configuration.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param array<string, mixed> $import_config Import configuration.
-	 * @return array{tables: array<int, array<string, mixed>>, errors: array<int, array<string, mixed>>}|WP_Error List of imported tables on success, WP_Error on failure.
+	 * @return array{tables: array<int, array<string, mixed>>, errors: File[]}|WP_Error List of imported tables on success, WP_Error on failure.
 	 */
 	public function run( array $import_config ) /* : array|WP_Error */ {
 		// Unziping can use a lot of memory and execution time, but not this much hopefully.
@@ -82,18 +75,18 @@ class TablePress_Import {
 
 		$this->import_config = $import_config;
 
-		$import_files = $this->_get_import_files();
+		$import_files = $this->get_files_to_import();
 		if ( is_wp_error( $import_files ) ) {
 			return $import_files;
 		}
 
+		$import_files = $this->convert_zip_files( $import_files );
+
 		if ( in_array( $this->import_config['type'], array( 'replace', 'append' ), true ) ) {
-			$this->table_names_ids = $this->_get_list_of_table_names();
+			$this->table_names_ids = $this->get_list_of_table_names();
 		}
 
-		$import_files = $this->_convert_zip_files( $import_files );
-
-		return $this->_import_files( $import_files );
+		return $this->import_files( $import_files );
 	}
 
 	/**
@@ -101,21 +94,21 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return array<int, array<string, string|bool>>|WP_Error Files that shall be imported or WP_Error on failure.
+	 * @return File[]|WP_Error Array of files that shall be imported or WP_Error on failure.
 	 */
-	protected function _get_import_files() /* : array|WP_Error */ {
+	protected function get_files_to_import() /* : array|WP_Error */ {
 		$import_files = array();
 
 		switch ( $this->import_config['source'] ) {
 			case 'file-upload':
 				foreach ( $this->import_config['file-upload']['error'] as $key => $error ) {
-					$file = array(
+					$file = new File( array(
 						'location' => $this->import_config['file-upload']['tmp_name'][ $key ],
 						'name'     => $this->import_config['file-upload']['name'][ $key ],
-					);
+					) );
 					if ( UPLOAD_ERR_OK !== $error ) {
 						@unlink( $this->import_config['file-upload']['tmp_name'][ $key ] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-						$file['error'] = new WP_Error( 'table_import_file-upload_error', '', $error );
+						$file->error = new WP_Error( 'table_import_file-upload_error', '', $error );
 					}
 					$import_files[] = $file;
 				}
@@ -152,10 +145,10 @@ class TablePress_Import {
 					return $error;
 				}
 
-				$import_files[] = array(
+				$import_files[] = new File( array(
 					'location' => $location,
 					'name'     => $this->import_config['url'],
-				);
+				) );
 				break;
 			case 'server':
 				if ( ABSPATH === $this->import_config['server'] ) {
@@ -166,11 +159,11 @@ class TablePress_Import {
 					return new WP_Error( 'table_import_server_not_readable', '', $this->import_config['server'] );
 				}
 
-				$import_files[] = array(
+				$import_files[] = new File( array(
 					'location'  => $this->import_config['server'],
 					'name'      => pathinfo( $this->import_config['server'], PATHINFO_BASENAME ),
 					'keep_file' => true, // Files on the server must not be deleted.
-				);
+				) );
 				break;
 			case 'form-field':
 				$location = wp_tempnam();
@@ -180,10 +173,10 @@ class TablePress_Import {
 					return new WP_Error( 'table_import_form-field_temp_file_not_written' );
 				}
 
-				$import_files[] = array(
+				$import_files[] = new File( array(
 					'location' => $location,
 					'name'     => __( 'Imported from Manual Input', 'tablepress' ),
-				);
+				) );
 				break;
 			default:
 				return new WP_Error( 'table_import_invalid_source', '', $this->import_config['source'] );
@@ -199,53 +192,50 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<int, array<string, mixed>> $import_files Files that shall be imported, including ZIP archives.
-	 * @return array<int, array<string, mixed>> Files that shall be imported, with all ZIP archives recursively replaced by their contents.
+	 * @param File[] $import_files Files that shall be imported, including ZIP archives.
+	 * @return File[] Files that shall be imported, with all ZIP archives recursively replaced by their contents.
 	 */
-	protected function _convert_zip_files( array $import_files ): array {
+	protected function convert_zip_files( array $import_files ): array {
 		foreach ( $import_files as $key => &$file ) {
 			// $file has to be used by reference, so that $key points to the correct element, due to array modification with `unset()` and `array_push()`.
-			if ( isset( $file['error'] ) && is_wp_error( $file['error'] ) ) {
+
+			// Skip files that already have an error.
+			if ( is_wp_error( $file->error ) ) {
 				continue;
 			}
 
-			$file['extension'] = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
+			$file->extension = strtolower( pathinfo( $file->name, PATHINFO_EXTENSION ) );
 
 			if ( function_exists( 'mime_content_type' ) ) {
-				$file['mime_type'] = mime_content_type( $file['location'] );
-				if ( false === $file['mime_type'] ) {
-					$file['mime_type'] = '';
+				$mime_type = mime_content_type( $file->location );
+				if ( false !== $mime_type ) {
+					$file->mime_type = $mime_type;
 				}
-			} else {
-				$file['mime_type'] = '';
 			}
 
 			// Detect ZIP files from their file extension or MIME type.
-			if ( 'zip' === $file['extension'] || 'application/zip' === $file['mime_type'] ) {
-				if ( ! $this->zip_support_available ) {
-					$file['error'] = new WP_Error( 'table_import_no_zip_support', '', $file['name'] );
-					$this->_maybe_unlink_file( $file );
-					continue;
-				}
-
-				$extracted_files = $this->_extract_zip_file( $file );
+			if ( 'zip' === $file->extension || 'application/zip' === $file->mime_type ) {
+				$extracted_files = $this->extract_zip_file( $file );
 				if ( is_wp_error( $extracted_files ) ) {
-					$file['error'] = $extracted_files;
-					$this->_maybe_unlink_file( $file );
+					$file->error = $extracted_files;
+					$this->maybe_unlink_file( $file );
 					continue;
 				}
 
 				if ( empty( $extracted_files ) ) {
-					$file['error'] = new WP_Error( 'table_import_zip_file_empty', '', $file['name'] );
-					$this->_maybe_unlink_file( $file );
+					$file->error = new WP_Error( 'table_import_zip_file_empty', '', $file->name );
+					$this->maybe_unlink_file( $file );
 					continue;
 				}
 
-				// Remove the ZIP file from the list and instead append its contents.
+				/*
+				 * Remove the ZIP file from the list and instead append its contents.
+				 * Appending ensures recursiveness, as the appended files will be checked again.
+				 */
 				unset( $import_files[ $key ] );
 				array_push( $import_files, ...$extracted_files );
 
-				$this->_maybe_unlink_file( $file );
+				$this->maybe_unlink_file( $file );
 			}
 		}
 		unset( $file ); // Unset use-by-reference parameter of foreach loop.
@@ -256,39 +246,69 @@ class TablePress_Import {
 	}
 
 	/**
-	 * Extracts the files of a ZIP files to a temporary folder and returns a list of files and their location.
+	 * Extracts the files of a ZIP file and returns a list of files and their location.
+	 *
+	 * Depending on availability, either the PHP's ZipArchive class or WordPress' PclZip class is used.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<string, mixed> $zip_file File data of a ZIP file (likely in a temporary folder).
-	 * @return array<int, array<string, mixed>>|WP_Error List of files (name and location where they were extracted to) of the ZIP file or WP_Error on failure.
+	 * @param File $zip_file File data of a ZIP file (likely in a temporary folder).
+	 * @return File[]|WP_Error List of files to import that were extracted from the ZIP file or WP_Error on failure.
 	 */
-	protected function _extract_zip_file( array $zip_file ) /* : array|WP_Error */ {
-		$zip = new ZipArchive();
-		$zip_opened = $zip->open( $zip_file['location'], ZIPARCHIVE::CHECKCONS );
+	protected function extract_zip_file( File $zip_file ) /* : array|WP_Error */ {
+		if ( class_exists( 'ZipArchive', false ) ) {
+			$ziparchive_result = $this->extract_zip_file_ziparchive( $zip_file );
+			if ( is_array( $ziparchive_result ) ) {
+				return $ziparchive_result;
+			}
+		} else {
+			$ziparchive_result = new WP_Error( 'table_import_error_zip_open', '', array( 'ziparchive_error' => 'Class ZipArchive not available' ) );
+		}
+
+		// Fall through to PclZip if ZipArchive is not available or encountered an error opening the file.
+		$pclzip_result = $this->extract_zip_file_pclzip( $zip_file );
+		if ( is_wp_error( $pclzip_result ) ) {
+			// Append the WP_Error from ZipArchive, to have all error information available.
+			$pclzip_result->merge_from( $ziparchive_result );
+		}
+
+		return $pclzip_result;
+	}
+
+	/**
+	 * Extracts the files of a ZIP file using the PHP ZipArchive class.
+	 *
+	 * The ZIP file is extracted to a temporary folder and a list of files and their location is returned.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param File $zip_file File data of a ZIP file (likely in a temporary folder).
+	 * @return File[]|WP_Error List of files to import that were extracted from the ZIP file or WP_Error on failure.
+	 */
+	protected function extract_zip_file_ziparchive( File $zip_file ) /* : array|WP_Error */ {
+		$archive = new ZipArchive();
+		$archive_opened = $archive->open( $zip_file->location, ZIPARCHIVE::CHECKCONS );
 
 		// If the ZIP file can't be opened with ZIPARCHIVE::CHECKCONS, try again without.
-		if ( true !== $zip_opened ) {
-			$zip_opened = $zip->open( $zip_file['location'] );
+		if ( true !== $archive_opened ) {
+			$archive_opened = $archive->open( $zip_file->location );
 		}
 
 		// If the ZIP file can't even be opened without ZIPARCHIVE::CHECKCONS, bail.
-		if ( true !== $zip_opened ) {
-			return new WP_Error( 'table_import_error_zip_open', '', array( 'ziparchive_error' => $zip_opened ) );
+		if ( true !== $archive_opened ) {
+			return new WP_Error( 'table_import_error_zip_open', '', array( 'ziparchive_error' => $archive_opened ) );
 		}
 
 		$files = array();
 
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
-			$file_name = $zip->getNameIndex( $file_idx );
+		for ( $file_idx = 0; $file_idx < $archive->numFiles; $file_idx++ ) {
+			$file_name = $archive->getNameIndex( $file_idx );
 
 			if ( false === $file_name ) {
-				$files[] = array(
-					'location' => '',
-					'name'     => '',
-					'error'    => new WP_Error( 'table_import_error_zip_stat', '', array( 'ziparchive_file_index' => $file_idx ) ),
-				);
+				$files[] = new File( array(
+					'error' => new WP_Error( 'table_import_error_zip_stat', '', array( 'ziparchive_file_index' => $file_idx ) ),
+				) );
 				continue;
 			}
 
@@ -302,13 +322,17 @@ class TablePress_Import {
 				continue;
 			}
 
-			$file_data = $zip->getFromIndex( $file_idx );
+			// Don't extract invalid files.
+			if ( 0 !== validate_file( $file_name ) ) {
+				continue;
+			}
+
+			$file_data = $archive->getFromIndex( $file_idx );
 			if ( false === $file_data ) {
-				$files[] = array(
-					'location' => '',
-					'name'     => $file_name,
-					'error'    => new WP_Error( 'table_import_error_zip_get_data', '', array( 'ziparchive_file_index' => $file_idx, 'ziparchive_file_name' => $file_name ) ),
-				);
+				$files[] = new File( array(
+					'name'  => $file_name,
+					'error' => new WP_Error( 'table_import_error_zip_get_data', '', array( 'ziparchive_file_index' => $file_idx, 'ziparchive_file_name' => $file_name ) ),
+				) );
 				continue;
 			}
 
@@ -316,21 +340,83 @@ class TablePress_Import {
 			$num_written_bytes = file_put_contents( $location, $file_data );
 			if ( false === $num_written_bytes || 0 === $num_written_bytes ) {
 				@unlink( $location ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				$files[] = array(
-					'location' => '',
-					'name'     => $file_name,
-					'error'    => new WP_Error( 'table_import_error_zip_write_temp_data', '', array( 'ziparchive_file_index' => $file_idx, 'ziparchive_file_name' => $file_name ) ),
-				);
+				$files[] = new File( array(
+					'name'  => $file_name,
+					'error' => new WP_Error( 'table_import_error_zip_write_temp_data', '', array( 'ziparchive_file_index' => $file_idx, 'ziparchive_file_name' => $file_name ) ),
+				) );
 				continue;
 			}
 
-			$files[] = array(
+			$files[] = new File( array(
 				'location' => $location,
 				'name'     => $file_name,
-			);
+			) );
 		}
 
-		$zip->close();
+		$archive->close();
+
+		return $files;
+	}
+
+	/**
+	 * Extracts the files of a ZIP file using WordPress' PclZip class.
+	 *
+	 * The ZIP file is extracted to a temporary folder and a list of files and their location is returned.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param File $zip_file File data of a ZIP file (likely in a temporary folder).
+	 * @return File[]|WP_Error List of files to import that were extracted from the ZIP file or WP_Error on failure.
+	 */
+	protected function extract_zip_file_pclzip( File $zip_file ) /* : array|WP_Error */ {
+		mbstring_binary_safe_encoding();
+
+		require_once ABSPATH . 'wp-admin/includes/class-pclzip.php';
+
+		$archive = new PclZip( $zip_file->location );
+		$archive_files = $archive->extract( PCLZIP_OPT_EXTRACT_AS_STRING ); // @phpstan-ignore-line PclZip::extract() uses `func_get_args()` to handle optional arguments.
+
+		reset_mbstring_encoding();
+
+		// If the ZIP file can't be opened, bail.
+		if ( ! is_array( $archive_files ) ) {
+			return new WP_Error( 'table_import_error_zip_open', '', array( 'pclzip_error' => $archive->errorInfo( true ) ) );
+		}
+
+		$files = array();
+
+		foreach ( $archive_files as $file ) {
+			// Skip directories.
+			if ( $file['folder'] ) {
+				continue;
+			}
+
+			// Skip the __MACOSX directory that macOS adds to archives.
+			if ( str_starts_with( $file['filename'], '__MACOSX/' ) ) {
+				continue;
+			}
+
+			// Don't extract invalid files.
+			if ( 0 !== validate_file( $file['filename'] ) ) {
+				continue;
+			}
+
+			$location = wp_tempnam();
+			$num_written_bytes = file_put_contents( $location, $file['content'] );
+			if ( false === $num_written_bytes || 0 === $num_written_bytes ) {
+				@unlink( $location ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				$files[] = new File( array(
+					'name'  => $file['filename'],
+					'error' => new WP_Error( 'table_import_error_zip_write_temp_data', '', array( 'ziparchive_file_index' => $file['index'], 'ziparchive_file_name' => $file['filename'] ) ),
+				) );
+				continue;
+			}
+
+			$files[] = new File( array(
+				'location' => $location,
+				'name'     => $file['filename'],
+			) );
+		}
 
 		return $files;
 	}
@@ -340,12 +426,11 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<string, string|WP_Error> $file File that should maybe be deleted.
+	 * @param File $file File that should maybe be deleted.
 	 */
-	protected function _maybe_unlink_file( array $file ): void {
-		if ( ! ( isset( $file['keep_file'] ) && $file['keep_file'] ) && file_exists( $file['location'] ) ) { // @phpstan-ignore-line
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $file['location'] ); // @phpstan-ignore-line
+	protected function maybe_unlink_file( File $file ): void {
+		if ( ! $file->keep_file && file_exists( $file->location ) ) {
+			@unlink( $file->location ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 	}
 
@@ -356,7 +441,7 @@ class TablePress_Import {
 	 *
 	 * @return array<string, string[]> List of table names and IDs.
 	 */
-	protected function _get_list_of_table_names(): array {
+	protected function get_list_of_table_names(): array {
 		$existing_tables = array();
 		// Load all table IDs and names for a comparison with the file name.
 		$table_ids = TablePress::$model_table->load_all( false );
@@ -364,10 +449,10 @@ class TablePress_Import {
 			// Load table, without table data, options, and visibility settings.
 			$table = TablePress::$model_table->load( $table_id, false, false );
 			if ( ! is_wp_error( $table ) ) {
-				$existing_tables[ $table['name'] ][] = $table['id']; // Attention: The table name is not unique!
+				$existing_tables[ (string) $table['name'] ][] = $table_id; // Attention: The table name is not unique!
 			}
 		}
-		return $existing_tables; // @phpstan-ignore-line
+		return $existing_tables;
 	}
 
 	/**
@@ -377,7 +462,7 @@ class TablePress_Import {
 	 *
 	 * @return bool Whether the legacy import class should be used.
 	 */
-	protected function _should_use_legacy_import_class(): bool {
+	protected function should_use_legacy_import_class(): bool {
 		// Allow overriding in the import config (coming e.g. from the import form UI).
 		if ( $this->import_config['legacy_import'] ) {
 			return true;
@@ -404,11 +489,6 @@ class TablePress_Import {
 			return true;
 		}
 
-		// Use the legacy import class, if the PHPSpreadsheet files do not exist (e.g. because `composer install` was not run).
-		if ( ! file_exists( TABLEPRESS_ABSPATH . 'libraries/autoload.php' ) ) {
-			return true;
-		}
-
 		return false;
 	}
 
@@ -417,14 +497,14 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<int, array<string, mixed>> $import_files Files that shall be imported.
-	 * @return array{tables: array<int, array<string, mixed>>, errors: array<int, array<string, mixed>>} Import tables and import errors.
+	 * @param File[] $import_files Files that shall be imported.
+	 * @return array{tables: array<int, array<string, mixed>>, errors: File[]} Imported tables and files that caused errors.
 	 */
-	protected function _import_files( array $import_files ): array {
+	protected function import_files( array $import_files ): array {
 		$tables = array();
 		$errors = array();
 
-		$use_legacy_import_class = $this->_should_use_legacy_import_class();
+		$use_legacy_import_class = $this->should_use_legacy_import_class();
 
 		// Load Import Base Class.
 		TablePress::load_file( 'class-import-base.php', 'classes' );
@@ -440,7 +520,7 @@ class TablePress_Import {
 		if ( in_array( $this->import_config['type'], array( 'replace', 'append' ), true ) && '' !== $this->import_config['existing_table'] ) {
 			$valid_import_files = 0;
 			foreach ( $import_files as $file ) {
-				if ( ! isset( $file['error'] ) || ! is_wp_error( $file['error'] ) ) {
+				if ( ! is_wp_error( $file->error ) ) {
 					++$valid_import_files;
 					if ( $valid_import_files > 1 ) {
 						$this->import_config['existing_table'] = '';
@@ -452,29 +532,29 @@ class TablePress_Import {
 
 		// Loop through all import files and import them.
 		foreach ( $import_files as $file ) {
-			if ( isset( $file['error'] ) && is_wp_error( $file['error'] ) ) {
+			if ( is_wp_error( $file->error ) ) {
 				$errors[] = $file;
 				continue;
 			}
 
 			// Use import method depending on chosen import class.
 			if ( $use_legacy_import_class ) {
-				$table = $this->_load_table_from_file_legacy( $file );
+				$table = $this->load_table_from_file_legacy( $file );
 			} else {
-				$table = $this->_load_table_from_file_phpspreadsheet( $file );
+				$table = $this->load_table_from_file_phpspreadsheet( $file );
 			}
 
-			$this->_maybe_unlink_file( $file );
+			$this->maybe_unlink_file( $file );
 
 			if ( is_wp_error( $table ) ) {
-				$file['error'] = $table;
+				$file->error = $table;
 				$errors[] = $file;
 				continue;
 			}
 
-			$table = $this->_import_table( $table, $file );
+			$table = $this->save_imported_table( $table, $file );
 			if ( is_wp_error( $table ) ) {
-				$file['error'] = $table;
+				$file->error = $table;
 				$errors[] = $file;
 				continue;
 			}
@@ -493,12 +573,12 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<string, string|WP_Error> $file File with the table data.
+	 * @param File $file File with the table data.
 	 * @return array<string, mixed>|WP_Error Loaded table on success (either with all properties or just 'data'), WP_Error on failure.
 	 */
-	protected function _load_table_from_file_legacy( array $file ) /* : array|WP_Error */ {
+	protected function load_table_from_file_legacy( File $file ) /* : array|WP_Error */ {
 		// Guess the import format from the file extension.
-		switch ( $file['extension'] ) {
+		switch ( $file->extension ) {
 			case 'xlsx': // Excel (OfficeOpenXML) Spreadsheet.
 			case 'xlsm': // Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded).
 			case 'xltx': // Excel (OfficeOpenXML) Template.
@@ -525,12 +605,12 @@ class TablePress_Import {
 				$format = '';
 		}
 
-		$data = file_get_contents( $file['location'] ); // @phpstan-ignore-line
+		$data = file_get_contents( $file->location );
 		if ( false === $data ) {
-			return new WP_Error( 'table_import_legacy_data_read', '', $file['location'] );
+			return new WP_Error( 'table_import_legacy_data_read', '', $file->location );
 		}
 		if ( '' === $data ) {
-			return new WP_Error( 'table_import_legacy_data_empty', '', $file['location'] );
+			return new WP_Error( 'table_import_legacy_data_empty', '', $file->location );
 		}
 
 		// If no format could be determined from the file extension, try guessing from the file content.
@@ -555,13 +635,13 @@ class TablePress_Import {
 		}
 
 		if ( ! isset( $this->importer->import_formats[ $format ] ) ) {
-			return new WP_Error( 'table_import_legacy_unknown_format', '', $file['name'] );
+			return new WP_Error( 'table_import_legacy_unknown_format', '', $file->name );
 		}
 
 		$table = $this->importer->import_table( $format, $data );
 
 		if ( false === $table ) {
-			return new WP_Error( 'table_import_legacy_importer_failed', '', array( 'file_name' => $file['name'], 'file_format' => $format ) );
+			return new WP_Error( 'table_import_legacy_importer_failed', '', array( 'file_name' => $file->name, 'file_format' => $format ) );
 		}
 
 		return $table;
@@ -572,10 +652,11 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<string, string|WP_Error> $file File with the table data.
+	 * @param File $file File with the table data.
 	 * @return array<string, mixed>|WP_Error Loaded table on success (either with all properties or just 'data'), WP_Error on failure.
 	 */
-	protected function _load_table_from_file_phpspreadsheet( array $file ) /* : array|WP_Error */ {
+	protected function load_table_from_file_phpspreadsheet( File $file ) /* : array|WP_Error */ {
+		// Convert File object to array, as those are not yet used outside of this class.
 		return $this->importer->import_table( $file ); // @phpstan-ignore-line
 	}
 
@@ -584,17 +665,17 @@ class TablePress_Import {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array<string, mixed>           $table The table to be imported, either with properties or just the $table['data'] property set.
-	 * @param array<string, string|WP_Error> $file  File with the table data.
+	 * @param array<string, mixed> $table The table to be imported, either with properties or just the $table['data'] property set.
+	 * @param File                 $file  File with the table data.
 	 * @return array<string, mixed>|WP_Error Imported table on success, WP_Error on failure.
 	 */
-	protected function _import_table( array $table, array $file ) /* : array|WP_Error */ {
+	protected function save_imported_table( array $table, File $file ) /* : array|WP_Error */ {
 		// If name and description are imported from a new table, use those.
 		if ( ! isset( $table['name'] ) ) {
-			$table['name'] = $file['name'];
+			$table['name'] = $file->name;
 		}
 		if ( ! isset( $table['description'] ) ) {
-			$table['description'] = $file['name'];
+			$table['description'] = $file->name;
 		}
 
 		$import_type = $this->import_config['type'];
@@ -605,9 +686,9 @@ class TablePress_Import {
 			if ( isset( $table['id'] ) ) {
 				// If the table already contained a table ID (e.g. for the JSON format), use that.
 				$existing_table_id = $table['id'];
-			} elseif ( isset( $this->table_names_ids[ $file['name'] ] ) && 1 === count( $this->table_names_ids[ $file['name'] ] ) ) { // @phpstan-ignore-line
+			} elseif ( isset( $this->table_names_ids[ $file->name ] ) && 1 === count( $this->table_names_ids[ $file->name ] ) ) {
 				// Use the replace/append ID of tables where the table name matches the file name, but only if there was exactly one file name match.
-				$existing_table_id = $this->table_names_ids[ $file['name'] ][0]; // @phpstan-ignore-line
+				$existing_table_id = $this->table_names_ids[ $file->name ][0];
 			}
 		}
 
@@ -617,7 +698,7 @@ class TablePress_Import {
 			$import_type = 'add';
 		}
 
-		$table = $this->_import_tablepress_table( $table, $import_type, $existing_table_id );
+		$table = $this->import_tablepress_table( $table, $import_type, $existing_table_id );
 
 		return $table;
 	}
@@ -632,12 +713,13 @@ class TablePress_Import {
 	 * @param string               $existing_table_id Empty string if table shall be added as a new table, ID of the table to be replaced or appended to otherwise.
 	 * @return array<string, mixed>|WP_Error Table on success, WP_Error on error.
 	 */
-	protected function _import_tablepress_table( array $imported_table, string $import_type, string $existing_table_id ) /* : array|WP_Error */ {
+	protected function import_tablepress_table( array $imported_table, string $import_type, string $existing_table_id ) /* : array|WP_Error */ {
 		// Full JSON format table can contain a table ID, try to keep that, by later changing the imported table ID to this.
 		$table_id_in_import = $imported_table['id'] ?? '';
 
-		// To be able to replace or append to a table, the user must be able to edit the table, or it must be a Cron request (e.g. via the Automatic Periodic Table Import module).
-		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! ( current_user_can( 'tablepress_edit_table', $existing_table_id ) || wp_doing_cron() ) ) {
+		// To be able to replace or append to a table, the user must be able to edit the table, or it must be a request via the Automatic Periodic Table Import module.
+		if ( in_array( $import_type, array( 'replace', 'append' ), true )
+			&& ! ( current_user_can( 'tablepress_edit_table', $existing_table_id ) || doing_action( 'tablepress_automatic_periodic_table_import_action' ) ) ) {
 			return new WP_Error( 'table_import_replace_append_capability_check_failed', '', $existing_table_id );
 		}
 
@@ -759,7 +841,7 @@ class TablePress_Import {
 	public function import_table( string $format, string $data ) /* : array|false */ {
 		TablePress::load_file( 'class-import-base.php', 'classes' );
 		$importer = TablePress::load_class( 'TablePress_Import_Legacy', 'class-import-legacy.php', 'classes' );
-		return $importer->import_table( $format, $data );
+		return $importer->save_imported_table( $format, $data );
 	}
 
 } // class TablePress_Import

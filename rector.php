@@ -44,5 +44,5 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 	) );
 
 	// Set used (maximum) PHP version. This has to be at the end of the configuration, for some reason.
-	$rector_config->phpVersion( Rector\Core\ValueObject\PhpVersion::PHP_82 );
+	$rector_config->phpVersion( Rector\ValueObject\PhpVersion::PHP_83 );
 };

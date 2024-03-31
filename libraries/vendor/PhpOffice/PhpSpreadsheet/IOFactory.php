@@ -23,7 +23,7 @@ abstract class IOFactory
 	public const READER_HTML = 'Html';
 	public const READER_CSV = 'Csv';
 
-	/** @var string[] */
+	/** @var array<string, class-string<IReader>> */
 	private static $readers = [
 		self::READER_XLSX => Reader\Xlsx::class,
 		self::READER_XLS => Reader\Xls::class,
@@ -45,7 +45,6 @@ abstract class IOFactory
 		}
 
 		// Instantiate reader
-		/** @var IReader */
 		$className = self::$readers[$readerType];
 
 		return new $className();
@@ -104,7 +103,7 @@ abstract class IOFactory
 			$readers = array_map('strtoupper', $readers);
 			$testReaders = array_filter(
 				self::$readers,
-				function (string $readerType) use ($readers) {
+				function (string $readerType) use ($readers) : bool {
 					return in_array(strtoupper($readerType), $readers, true);
 				},
 				ARRAY_FILTER_USE_KEY
@@ -148,20 +147,20 @@ abstract class IOFactory
 		}
 
 		switch (strtolower($pathinfo['extension'])) {
-			case 'xlsx': // Excel (OfficeOpenXML) Spreadsheet
-			case 'xlsm': // Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded)
-			case 'xltx': // Excel (OfficeOpenXML) Template
-			case 'xltm': // Excel (OfficeOpenXML) Macro Template (macros will be discarded)
+			case 'xlsx':
+			case 'xlsm':
+			case 'xltx':
+			case 'xltm':
 				return 'Xlsx';
-			case 'xls': // Excel (BIFF) Spreadsheet
-			case 'xlt': // Excel (BIFF) Template
+			case 'xls':
+			case 'xlt':
 				return 'Xls';
-			case 'ods': // Open/Libre Offic Calc
-			case 'ots': // Open/Libre Offic Calc Template
+			case 'ods':
+			case 'ots':
 				return 'Ods';
 			case 'slk':
 				return 'Slk';
-			case 'xml': // Excel 2003 SpreadSheetML
+			case 'xml':
 				return 'Xml';
 			case 'gnumeric':
 				return 'Gnumeric';
@@ -169,9 +168,6 @@ abstract class IOFactory
 			case 'html':
 				return 'Html';
 			case 'csv':
-				// Do nothing
-				// We must not try to use CSV reader since it loads
-				// all files including Excel files etc.
 				return null;
 			default:
 				return null;

@@ -9,76 +9,60 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
+use Stringable;
 
 class Table
 {
 	/**
 	 * Table Name.
-	 *
 	 * @var string
 	 */
 	private $name;
-
 	/**
 	 * Show Header Row.
-	 *
 	 * @var bool
 	 */
 	private $showHeaderRow = true;
-
 	/**
 	 * Show Totals Row.
-	 *
 	 * @var bool
 	 */
 	private $showTotalsRow = false;
-
 	/**
 	 * Table Range.
-	 *
 	 * @var string
 	 */
 	private $range = '';
-
 	/**
 	 * Table Worksheet.
-	 *
-	 * @var null|Worksheet
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
 	private $workSheet;
-
 	/**
 	 * Table allow filter.
-	 *
 	 * @var bool
 	 */
 	private $allowFilter = true;
-
 	/**
 	 * Table Column.
 	 *
 	 * @var Table\Column[]
 	 */
 	private $columns = [];
-
 	/**
 	 * Table Style.
-	 *
-	 * @var TableStyle
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle
 	 */
 	private $style;
-
 	/**
 	 * Table AutoFilter.
-	 *
-	 * @var AutoFilter
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter
 	 */
 	private $autoFilter;
-
 	/**
 	 * Create a new Table.
 	 *
-	 * @param AddressRange|array<int>|string $range
+	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.
@@ -91,7 +75,13 @@ class Table
 		$this->setRange($range);
 		$this->setName($name);
 	}
-
+	/**
+	 * Code to execute when this table is unset().
+	 */
+	public function __destruct()
+	{
+		$this->workSheet = null;
+	}
 	/**
 	 * Get Table name.
 	 */
@@ -99,7 +89,6 @@ class Table
 	{
 		return $this->name;
 	}
-
 	/**
 	 * Set Table name.
 	 *
@@ -118,8 +107,8 @@ class Table
 			}
 			// Check for A1 or R1C1 cell reference notation
 			if (
-				preg_match(Coordinate::A1_COORDINATE_REGEX, $name) ||
-				preg_match('/^R\[?\-?[0-9]*\]?C\[?\-?[0-9]*\]?$/i', $name)
+				preg_match(Coordinate::A1_COORDINATE_REGEX, $name)
+				|| preg_match('/^R\[?\-?[0-9]*\]?C\[?\-?[0-9]*\]?$/i', $name)
 			) {
 				throw new PhpSpreadsheetException('The table name can\'t be the same as a cell reference');
 			}
@@ -138,7 +127,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * @throws PhpSpreadsheetException
 	 */
@@ -159,10 +147,9 @@ class Table
 			}
 		}
 	}
-
 	private function updateStructuredReferences(string $name): void
 	{
-		if ($this->workSheet === null || $this->name === null || $this->name === '') {
+		if (!$this->workSheet || !$this->name) {
 			return;
 		}
 
@@ -177,7 +164,6 @@ class Table
 			$this->updateStructuredReferencesInNamedFormulae($spreadsheet, $name);
 		}
 	}
-
 	private function updateStructuredReferencesInCells(Worksheet $worksheet, string $newName): void
 	{
 		$pattern = '/' . preg_quote($this->name, '/') . '\[/mui';
@@ -193,7 +179,6 @@ class Table
 			}
 		}
 	}
-
 	private function updateStructuredReferencesInNamedFormulae(Spreadsheet $spreadsheet, string $newName): void
 	{
 		$pattern = '/' . preg_quote($this->name, '/') . '\[/mui';
@@ -206,7 +191,6 @@ class Table
 			}
 		}
 	}
-
 	/**
 	 * Get show Header Row.
 	 */
@@ -214,7 +198,6 @@ class Table
 	{
 		return $this->showHeaderRow;
 	}
-
 	/**
 	 * Set show Header Row.
 	 */
@@ -224,7 +207,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get show Totals Row.
 	 */
@@ -232,7 +214,6 @@ class Table
 	{
 		return $this->showTotalsRow;
 	}
-
 	/**
 	 * Set show Totals Row.
 	 */
@@ -242,7 +223,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get allow filter.
 	 * If false, autofiltering is disabled for the table, if true it is enabled.
@@ -251,7 +231,6 @@ class Table
 	{
 		return $this->allowFilter;
 	}
-
 	/**
 	 * Set show Autofiltering.
 	 * Disabling autofiltering has the same effect as hiding the filter button on all the columns in the table.
@@ -262,7 +241,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get Table Range.
 	 */
@@ -270,11 +248,10 @@ class Table
 	{
 		return $this->range;
 	}
-
 	/**
 	 * Set Table Cell Range.
 	 *
-	 * @param AddressRange|array<int>|string $range
+	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.
@@ -293,7 +270,7 @@ class Table
 			return $this;
 		}
 
-		if (strpos($range, ':') === false) {
+		if (!str_contains($range, ':')) {
 			throw new PhpSpreadsheetException('Table must be set on a range of cells.');
 		}
 
@@ -316,7 +293,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Set Table Cell Range to max row.
 	 */
@@ -332,7 +308,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get Table's Worksheet.
 	 */
@@ -340,7 +315,6 @@ class Table
 	{
 		return $this->workSheet;
 	}
-
 	/**
 	 * Set Table's Worksheet.
 	 */
@@ -364,7 +338,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get all Table Columns.
 	 *
@@ -374,7 +347,6 @@ class Table
 	{
 		return $this->columns;
 	}
-
 	/**
 	 * Validate that the specified column is in the Table range.
 	 *
@@ -396,7 +368,6 @@ class Table
 
 		return $columnIndex - $rangeStart[0];
 	}
-
 	/**
 	 * Get a specified Table Column Offset within the defined Table range.
 	 *
@@ -404,17 +375,16 @@ class Table
 	 *
 	 * @return int The offset of the specified column within the table range
 	 */
-	public function getColumnOffset($column): int
+	public function getColumnOffset(string $column): int
 	{
 		return $this->isColumnInRange($column);
 	}
-
 	/**
 	 * Get a specified Table Column.
 	 *
 	 * @param string $column Column name (e.g. A)
 	 */
-	public function getColumn($column): Table\Column
+	public function getColumn(string $column): Table\Column
 	{
 		$this->isColumnInRange($column);
 
@@ -424,20 +394,18 @@ class Table
 
 		return $this->columns[$column];
 	}
-
 	/**
 	 * Get a specified Table Column by it's offset.
 	 *
 	 * @param int $columnOffset Column offset within range (starting from 0)
 	 */
-	public function getColumnByOffset($columnOffset): Table\Column
+	public function getColumnByOffset(int $columnOffset): Table\Column
 	{
 		[$rangeStart, $rangeEnd] = Coordinate::rangeBoundaries($this->range);
 		$pColumn = Coordinate::stringFromColumnIndex($rangeStart[0] + $columnOffset);
 
 		return $this->getColumn($pColumn);
 	}
-
 	/**
 	 * Set Table.
 	 *
@@ -465,13 +433,12 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Clear a specified Table Column.
 	 *
 	 * @param string $column Column name (e.g. A)
 	 */
-	public function clearColumn($column): self
+	public function clearColumn(string $column): self
 	{
 		$this->isColumnInRange($column);
 
@@ -481,7 +448,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Shift an Table Column Rule to a different column.
 	 *
@@ -492,7 +458,7 @@ class Table
 	 * @param string $fromColumn Column name (e.g. A)
 	 * @param string $toColumn Column name (e.g. B)
 	 */
-	public function shiftColumn($fromColumn, $toColumn): self
+	public function shiftColumn(string $fromColumn, string $toColumn): self
 	{
 		$fromColumn = strtoupper($fromColumn);
 		$toColumn = strtoupper($toColumn);
@@ -509,7 +475,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get table Style.
 	 */
@@ -517,7 +482,6 @@ class Table
 	{
 		return $this->style;
 	}
-
 	/**
 	 * Set table Style.
 	 */
@@ -527,7 +491,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Get AutoFilter.
 	 */
@@ -535,7 +498,6 @@ class Table
 	{
 		return $this->autoFilter;
 	}
-
 	/**
 	 * Set AutoFilter.
 	 */
@@ -545,7 +507,6 @@ class Table
 
 		return $this;
 	}
-
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
@@ -573,12 +534,11 @@ class Table
 			}
 		}
 	}
-
 	/**
 	 * toString method replicates previous behavior by returning the range if object is
 	 * referenced as a property of its worksheet.
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return (string) $this->range;
 	}

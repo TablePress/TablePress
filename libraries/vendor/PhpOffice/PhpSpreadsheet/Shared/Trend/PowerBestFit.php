@@ -7,7 +7,6 @@ class PowerBestFit extends BestFit
 	/**
 	 * Algorithm type to use for best-fit
 	 * (Name of this Trend class).
-	 *
 	 * @var string
 	 */
 	protected $bestFitType = 'power';
@@ -19,7 +18,7 @@ class PowerBestFit extends BestFit
 	 *
 	 * @return float Y-Value
 	 */
-	public function getValueOfYForX($xValue)
+	public function getValueOfYForX(float $xValue): float
 	{
 		return $this->getIntersect() * ($xValue - $this->xOffset) ** $this->getSlope();
 	}
@@ -31,7 +30,7 @@ class PowerBestFit extends BestFit
 	 *
 	 * @return float X-Value
 	 */
-	public function getValueOfXForY($yValue)
+	public function getValueOfXForY(float $yValue): float
 	{
 		return (($yValue + $this->yOffset) / $this->getIntersect()) ** (1 / $this->getSlope());
 	}
@@ -40,10 +39,8 @@ class PowerBestFit extends BestFit
 	 * Return the Equation of the best-fit line.
 	 *
 	 * @param int $dp Number of places of decimal precision to display
-	 *
-	 * @return string
 	 */
-	public function getEquation($dp = 0)
+	public function getEquation(int $dp = 0): string
 	{
 		$slope = $this->getSlope($dp);
 		$intersect = $this->getIntersect($dp);
@@ -55,10 +52,8 @@ class PowerBestFit extends BestFit
 	 * Return the Value of X where it intersects Y = 0.
 	 *
 	 * @param int $dp Number of places of decimal precision to display
-	 *
-	 * @return float
 	 */
-	public function getIntersect($dp = 0)
+	public function getIntersect(int $dp = 0): float
 	{
 		if ($dp != 0) {
 			return round(exp($this->intersect), $dp);
@@ -76,13 +71,13 @@ class PowerBestFit extends BestFit
 	private function powerRegression(array $yValues, array $xValues, bool $const): void
 	{
 		$adjustedYValues = array_map(
-			function ($value) {
+			function ($value) : float {
 				return ($value < 0.0) ? 0 - log(abs($value)) : log($value);
 			},
 			$yValues
 		);
 		$adjustedXValues = array_map(
-			function ($value) {
+			function ($value) : float {
 				return ($value < 0.0) ? 0 - log(abs($value)) : log($value);
 			},
 			$xValues
@@ -96,9 +91,8 @@ class PowerBestFit extends BestFit
 	 *
 	 * @param float[] $yValues The set of Y-values for this regression
 	 * @param float[] $xValues The set of X-values for this regression
-	 * @param bool $const
 	 */
-	public function __construct($yValues, $xValues = [], $const = true)
+	public function __construct(array $yValues, array $xValues = [], bool $const = true)
 	{
 		parent::__construct($yValues, $xValues);
 

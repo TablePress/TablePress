@@ -29,94 +29,83 @@ use TablePress\PhpOffice\PhpSpreadsheet\Shared\OLE;
  */
 class PPS
 {
+	private const ALL_ONE_BITS = (PHP_INT_SIZE > 4) ? 0xFFFFFFFF : -1;
+
 	/**
 	 * The PPS index.
-	 *
 	 * @var int
 	 */
 	public $No;
 
 	/**
 	 * The PPS name (in Unicode).
-	 *
 	 * @var string
 	 */
 	public $Name;
 
 	/**
 	 * The PPS type. Dir, Root or File.
-	 *
 	 * @var int
 	 */
 	public $Type;
 
 	/**
 	 * The index of the previous PPS.
-	 *
 	 * @var int
 	 */
 	public $PrevPps;
 
 	/**
 	 * The index of the next PPS.
-	 *
 	 * @var int
 	 */
 	public $NextPps;
 
 	/**
 	 * The index of it's first child if this is a Dir or Root PPS.
-	 *
 	 * @var int
 	 */
 	public $DirPps;
 
 	/**
 	 * A timestamp.
-	 *
 	 * @var float|int
 	 */
 	public $Time1st;
 
 	/**
 	 * A timestamp.
-	 *
 	 * @var float|int
 	 */
 	public $Time2nd;
 
 	/**
 	 * Starting block (small or big) for this PPS's data  inside the container.
-	 *
-	 * @var ?int
+	 * @var int|null
 	 */
 	public $startBlock;
 
 	/**
 	 * The size of the PPS's data (in bytes).
-	 *
 	 * @var int
 	 */
 	public $Size;
 
 	/**
 	 * The PPS's data (only used if it's not using a temporary file).
-	 *
 	 * @var string
 	 */
 	public $_data = '';
 
 	/**
 	 * Array of child PPS's (only used by Root and Dir PPS's).
-	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	public $children = [];
 
 	/**
 	 * Pointer to OLE container.
-	 *
-	 * @var OLE
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\OLE
 	 */
 	public $ole;
 
@@ -134,7 +123,7 @@ class PPS
 	 * @param ?string $data The (usually binary) source data of the PPS
 	 * @param array $children Array containing children PPS for this PPS
 	 */
-	public function __construct($No, $name, $type, $prev, $next, $dir, $time_1st, $time_2nd, $data, $children)
+	public function __construct(?int $No, ?string $name, ?int $type, ?int $prev, ?int $next, ?int $dir, $time_1st, $time_2nd, ?string $data, array $children)
 	{
 		$this->No = (int) $No;
 		$this->Name = (string) $name;
@@ -154,7 +143,7 @@ class PPS
 	 *
 	 * @return int The amount of data (in bytes)
 	 */
-	public function getDataLen()
+	public function getDataLen(): int
 	{
 		//if (!isset($this->_data)) {
 		//    return 0;
@@ -168,7 +157,7 @@ class PPS
 	 *
 	 * @return string The binary string
 	 */
-	public function getPpsWk()
+	public function getPpsWk(): string
 	{
 		$ret = str_pad($this->Name, 64, "\x00");
 
@@ -198,22 +187,21 @@ class PPS
 	 *
 	 * @param array $raList Reference to the array of PPS's for the whole OLE
 	 *                          container
-	 * @param mixed $to_save
-	 * @param mixed $depth
 	 *
 	 * @return int The index for this PPS
+	 * @param mixed $to_save
 	 */
-	public static function savePpsSetPnt(&$raList, $to_save, $depth = 0)
+	public static function savePpsSetPnt(array &$raList, $to_save, int $depth = 0): int
 	{
 		if (!is_array($to_save) || (empty($to_save))) {
-			return 0xFFFFFFFF;
+			return self::ALL_ONE_BITS;
 		} elseif (count($to_save) == 1) {
 			$cnt = count($raList);
 			// If the first entry, it's the root... Don't clone it!
 			$raList[$cnt] = ($depth == 0) ? $to_save[0] : clone $to_save[0];
 			$raList[$cnt]->No = $cnt;
-			$raList[$cnt]->PrevPps = 0xFFFFFFFF;
-			$raList[$cnt]->NextPps = 0xFFFFFFFF;
+			$raList[$cnt]->PrevPps = self::ALL_ONE_BITS;
+			$raList[$cnt]->NextPps = self::ALL_ONE_BITS;
 			$raList[$cnt]->DirPps = self::savePpsSetPnt($raList, @$raList[$cnt]->children, $depth++);
 		} else {
 			$iPos = (int) floor(count($to_save) / 2);

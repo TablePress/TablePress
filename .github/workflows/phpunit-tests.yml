@@ -73,12 +73,14 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '6.5'
           - '6.4'
           - '6.3'
           - '6.2'
           - '6.1'
           - '6.0'
         php:
+          - '8.4'
           - '8.3'
           - '8.2'
           - '8.1'
@@ -92,7 +94,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@e6f75134d35752277f093989e72e140eaa222f35 # v2.28.0
+        uses: shivammathur/setup-php@73963f5001e335723c998e4a0125ce060083985c # v2.30.1
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -104,7 +106,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -118,14 +120,14 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
         with:
           path: ${{ env.PLUGIN_DIR }}
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6 # v2.2.0
+        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
         with:
-          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' ) && ' --ignore-platform-reqs' || '' }}"
+          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' ) && ' --ignore-platform-reqs' || '' }}"
 
       - name: Make Composer packages available globally
         working-directory: ${{ env.PLUGIN_DIR }}
@@ -137,7 +139,7 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ ( matrix.php == '8.2' || matrix.php == '8.3' ) && matrix.wp == '6.0' }} # WP 6.0 runs into dynamic property deprecations.
+        continue-on-error: ${{ ( ( matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' ) && matrix.wp == '6.0' ) || ( matrix.php == '8.4' && matrix.wp != '6.0' ) }} # WP 6.0 runs into dynamic property deprecations with PHP 8.2+, WP > 6.0 runs in to nullable parameter marking deprecations with PHP 8.4+.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

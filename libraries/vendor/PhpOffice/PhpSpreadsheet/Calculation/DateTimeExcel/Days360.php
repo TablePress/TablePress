@@ -21,13 +21,13 @@ class Days360
 	 * Excel Function:
 	 *        DAYS360(startDate,endDate[,method])
 	 *
-	 * @param array|mixed $startDate Excel date serial value (float), PHP date timestamp (integer),
+	 * @param mixed $startDate Excel date serial value (float), PHP date timestamp (integer),
 	 *                                        PHP DateTime object, or a standard date string
 	 *                         Or can be an array of date values
-	 * @param array|mixed $endDate Excel date serial value (float), PHP date timestamp (integer),
+	 * @param mixed $endDate Excel date serial value (float), PHP date timestamp (integer),
 	 *                                        PHP DateTime object, or a standard date string
 	 *                         Or can be an array of date values
-	 * @param array|mixed $method US or European Method as a bool
+	 * @param mixed $method US or European Method as a bool
 	 *                                        FALSE or omitted: U.S. (NASD) method. If the starting date is
 	 *                                        the last day of a month, it becomes equal to the 30th of the
 	 *                                        same month. If the ending date is the last day of a month and

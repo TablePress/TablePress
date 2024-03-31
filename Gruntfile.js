@@ -27,9 +27,7 @@ module.exports = function ( grunt ) {
 				immed: true,
 				noarg: true,
 				nonbsp: true,
-				onevar: true,
 				quotmark: 'single',
-				trailing: true,
 				undef: true,
 				unused: true,
 				browser: true,
@@ -39,11 +37,10 @@ module.exports = function ( grunt ) {
 				src: [
 					'**/*.js',
 					// Exclude files that contain JSX from jshint checking.
+					'!**/*.jsx',
 					'!admin/js/common/react-loader.js',
 					'!admin/js/export.js',
-					'!admin/js/export/*.js',
 					'!admin/js/import.js',
-					'!admin/js/import/*.js',
 					'!blocks/**/src/edit.js',
 					'!blocks/**/src/save.js',
 					// Exclude built JS files from jshint checking.

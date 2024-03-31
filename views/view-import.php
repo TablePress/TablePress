@@ -98,7 +98,6 @@ class TablePress_Import_View extends TablePress_View {
 			'importServer'           => $this->admin_page->convert_to_json_parse_output( $data['import_server'] ),
 			'importFormField'        => $this->admin_page->convert_to_json_parse_output( $data['import_form-field'] ),
 			'importExistingTable'    => $this->admin_page->convert_to_json_parse_output( $data['import_existing_table'] ),
-			'zipSupportAvailable'    => $this->admin_page->convert_to_json_parse_output( $data['zip_support_available'] ),
 			'showImportSourceServer' => ( ( ! is_multisite() && current_user_can( 'manage_options' ) ) || is_super_admin() ) ? 'true' : 'false',
 			'legacyImport'           => $this->admin_page->convert_to_json_parse_output( $data['legacy_import'] ),
 		);

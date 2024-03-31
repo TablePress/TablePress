@@ -14,10 +14,8 @@ class Trunc
 	 *
 	 * Truncates value to the number of fractional digits by number_digits.
 	 *
-	 * @param array|float $value
-	 *                      Or can be an array of values
-	 * @param array|int $digits
-	 *                      Or can be an array of values
+	 * @param array|float $value Or can be an array of values
+	 * @param array|int $digits Or can be an array of values
 	 *
 	 * @return array|float|string Truncated value, or a string containing an error
 	 *         If an array of numbers is passed as an argument, then the returned result will also be an array

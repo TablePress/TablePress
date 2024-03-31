@@ -135,7 +135,7 @@ class CSV_Parser {
 				} elseif ( $enclosed ) {
 					++$i; // Skip next character.
 				}
-			} elseif ( ( "\n" === $curr_char && "\r" !== $prev_char || "\r" === $curr_char ) && ! $enclosed ) {
+			} elseif ( ( ( "\n" === $curr_char && "\r" !== $prev_char ) || "\r" === $curr_char ) && ! $enclosed ) {
 				// Reached end of a line.
 				++$current_line;
 				if ( $current_line >= $this->delimiter_search_max_lines ) {

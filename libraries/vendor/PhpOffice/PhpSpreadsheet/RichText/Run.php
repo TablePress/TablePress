@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\RichText;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Font;
 
 class Run extends TextElement implements ITextElement
@@ -18,7 +19,7 @@ class Run extends TextElement implements ITextElement
 	 *
 	 * @param string $text Text
 	 */
-	public function __construct($text = '')
+	public function __construct(string $text = '')
 	{
 		parent::__construct($text);
 		// Initialise variables
@@ -27,18 +28,25 @@ class Run extends TextElement implements ITextElement
 
 	/**
 	 * Get font.
-	 *
-	 * @return null|\TablePress\PhpOffice\PhpSpreadsheet\Style\Font
 	 */
-	public function getFont()
+	public function getFont(): ?Font
 	{
+		return $this->font;
+	}
+
+	public function getFontOrThrow(): Font
+	{
+		if ($this->font === null) {
+			throw new SpreadsheetException('unexpected null font');
+		}
+
 		return $this->font;
 	}
 
 	/**
 	 * Set font.
 	 *
-	 * @param Font $font Font
+	 * @param ?Font $font Font
 	 *
 	 * @return $this
 	 */
@@ -54,12 +62,12 @@ class Run extends TextElement implements ITextElement
 	 *
 	 * @return string Hash code
 	 */
-	public function getHashCode()
+	public function getHashCode(): string
 	{
 		return md5(
-			$this->getText() .
-			(($this->font === null) ? '' : $this->font->getHashCode()) .
-			__CLASS__
+			$this->getText()
+			. (($this->font === null) ? '' : $this->font->getHashCode())
+			. __CLASS__
 		);
 	}
 }

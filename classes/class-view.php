@@ -367,7 +367,7 @@ abstract class TablePress_View {
 		// "Import" screen has file upload.
 		$enctype = ( 'import' === $this->action ) ? ' enctype="multipart/form-data"' : '';
 		?>
-		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?>>
+		<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $enctype; ?> id="tablepress-page-form">
 			<?php
 				$this->do_text_boxes( 'header' );
 				$hide_if_no_js = ( in_array( $this->action, array( 'export', 'import' ), true ) ) ? ' class="hide-if-no-js"' : '';

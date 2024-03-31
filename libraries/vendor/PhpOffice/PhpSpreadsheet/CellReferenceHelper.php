@@ -40,7 +40,7 @@ class CellReferenceHelper
 
 		// Get coordinate of $beforeCellAddress
 		[$beforeColumn, $beforeRow] = Coordinate::coordinateFromString($beforeCellAddress);
-		$this->beforeColumn = (int) Coordinate::columnIndexFromString($beforeColumn);
+		$this->beforeColumn = Coordinate::columnIndexFromString($beforeColumn);
 		$this->beforeRow = (int) $beforeRow;
 	}
 
@@ -51,12 +51,12 @@ class CellReferenceHelper
 
 	public function refreshRequired(string $beforeCellAddress, int $numberOfColumns, int $numberOfRows): bool
 	{
-		return $this->beforeCellAddress !== $beforeCellAddress ||
-			$this->numberOfColumns !== $numberOfColumns ||
-			$this->numberOfRows !== $numberOfRows;
+		return $this->beforeCellAddress !== $beforeCellAddress
+			|| $this->numberOfColumns !== $numberOfColumns
+			|| $this->numberOfRows !== $numberOfRows;
 	}
 
-	public function updateCellReference(string $cellReference = 'A1', bool $includeAbsoluteReferences = false): string
+	public function updateCellReference(string $cellReference = 'A1', bool $includeAbsoluteReferences = false, bool $onlyAbsoluteReferences = false): string
 	{
 		if (Coordinate::coordinateIsRange($cellReference)) {
 			throw new Exception('Only single cell references may be passed to this method.');
@@ -64,13 +64,16 @@ class CellReferenceHelper
 
 		// Get coordinate of $cellReference
 		[$newColumn, $newRow] = Coordinate::coordinateFromString($cellReference);
-		$newColumnIndex = (int) Coordinate::columnIndexFromString(str_replace('$', '', $newColumn));
+		$newColumnIndex = Coordinate::columnIndexFromString(str_replace('$', '', $newColumn));
 		$newRowIndex = (int) str_replace('$', '', $newRow);
 
 		$absoluteColumn = $newColumn[0] === '$' ? '$' : '';
 		$absoluteRow = $newRow[0] === '$' ? '$' : '';
 		// Verify which parts should be updated
-		if ($includeAbsoluteReferences === false) {
+		if ($onlyAbsoluteReferences === true) {
+			$updateColumn = (($absoluteColumn === '$') && $newColumnIndex >= $this->beforeColumn);
+			$updateRow = (($absoluteRow === '$') && $newRowIndex >= $this->beforeRow);
+		} elseif ($includeAbsoluteReferences === false) {
 			$updateColumn = (($absoluteColumn !== '$') && $newColumnIndex >= $this->beforeColumn);
 			$updateRow = (($absoluteRow !== '$') && $newRowIndex >= $this->beforeRow);
 		} else {
@@ -98,15 +101,15 @@ class CellReferenceHelper
 		$cellColumnIndex = Coordinate::columnIndexFromString($cellColumn);
 		//    Is cell within the range of rows/columns if we're deleting
 		if (
-			$this->numberOfRows < 0 &&
-			($cellRow >= ($this->beforeRow + $this->numberOfRows)) &&
-			($cellRow < $this->beforeRow)
+			$this->numberOfRows < 0
+			&& ($cellRow >= ($this->beforeRow + $this->numberOfRows))
+			&& ($cellRow < $this->beforeRow)
 		) {
 			return true;
 		} elseif (
-			$this->numberOfColumns < 0 &&
-			($cellColumnIndex >= ($this->beforeColumn + $this->numberOfColumns)) &&
-			($cellColumnIndex < $this->beforeColumn)
+			$this->numberOfColumns < 0
+			&& ($cellColumnIndex >= ($this->beforeColumn + $this->numberOfColumns))
+			&& ($cellColumnIndex < $this->beforeColumn)
 		) {
 			return true;
 		}

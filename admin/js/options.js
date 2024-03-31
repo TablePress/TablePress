@@ -38,7 +38,7 @@ if ( $cb_use_custom_css ) { // The checkbox field only exists for admins!
  *
  * @since 1.0.0
  */
-document.querySelector( '#tablepress-page form' ).addEventListener( 'submit', function () {
+$( '#tablepress-page-form' ).addEventListener( 'submit', function () {
 	this.querySelectorAll( ':scope input, :scope select, :scope textarea' ).forEach( ( field ) => ( field.disabled = false ) );
 } );
 

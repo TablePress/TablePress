@@ -24,19 +24,29 @@ class Styles extends BaseParserClass
 	 */
 	private $theme;
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	private $workbookPalette = [];
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	private $styles = [];
 
-	/** @var array */
+	/**
+	 * @var mixed[]
+	 */
 	private $cellStyles = [];
 
-	/** @var SimpleXMLElement */
+	/**
+	 * @var \SimpleXMLElement
+	 */
 	private $styleXml;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $namespace = '';
 
 	public function setNamespace(string $namespace): void
@@ -49,20 +59,11 @@ class Styles extends BaseParserClass
 		$this->workbookPalette = $palette;
 	}
 
-	/**
-	 * Cast SimpleXMLElement to bool to overcome Scrutinizer problem.
-	 *
-	 * @param mixed $value
-	 */
-	private static function castBool($value): bool
-	{
-		return (bool) $value;
-	}
-
 	private function getStyleAttributes(SimpleXMLElement $value): SimpleXMLElement
 	{
+		// TablePress: Added check for $value being falsy, which is needed here for compatibility with PHP < 8.
 		$attr = null;
-		if (self::castBool($value)) {
+		if ( $value ) {
 			$attr = $value->attributes('');
 			if ($attr === null || count($attr) === 0) {
 				$attr = $value->attributes($this->namespace);
@@ -293,8 +294,7 @@ class Styles extends BaseParserClass
 
 	/**
 	 * Read style.
-	 *
-	 * @param SimpleXMLElement|stdClass $style
+	 * @param \SimpleXMLElement|\stdClass $style
 	 */
 	public function readStyle(Style $docStyle, $style): void
 	{
@@ -448,11 +448,9 @@ class Styles extends BaseParserClass
 	 * Get array item.
 	 *
 	 * @param mixed $array (usually array, in theory can be false)
-	 *
-	 * @return stdClass
 	 */
-	private static function getArrayItem($array, int $key = 0)
+	private static function getArrayItem($array): ?SimpleXMLElement
 	{
-		return is_array($array) ? ($array[$key] ?? null) : null;
+		return is_array($array) ? ($array[0] ?? null) : null;
 	}
 }

@@ -31,7 +31,6 @@ class Rates
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 *
 	 * @return float|string
 	 */
 	public static function discount(
@@ -94,7 +93,6 @@ class Rates
 	 *                         2               Actual/360
 	 *                         3               Actual/365
 	 *                         4               European 30/360
-	 *
 	 * @return float|string
 	 */
 	public static function interest(

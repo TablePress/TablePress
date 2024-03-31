@@ -684,7 +684,7 @@ class TablePress_CSSTidy_Optimise {
 				case 'st':
 					if ( $a_string[ $i ] === $sep && ! $this->parser->escaped( $a_string, $i ) ) {
 						++$num;
-					} elseif ( '"' === $a_string[ $i ] || "'" === $a_string[ $i ] || '(' === $a_string[ $i ] && ! $this->parser->escaped( $a_string, $i ) ) {
+					} elseif ( '"' === $a_string[ $i ] || "'" === $a_string[ $i ] || ( '(' === $a_string[ $i ] && ! $this->parser->escaped( $a_string, $i ) ) ) {
 						$status = 'str';
 						$to = ( '(' === $a_string[ $i ] ) ? ')' : $a_string[ $i ];
 						( isset( $output[ $num ] ) ) ? $output[ $num ] .= $a_string[ $i ] : $output[ $num ] = $a_string[ $i ];

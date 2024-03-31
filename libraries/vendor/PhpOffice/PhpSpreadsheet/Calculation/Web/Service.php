@@ -18,7 +18,7 @@ class Service
 	 *
 	 * @return string the output resulting from a call to the webservice
 	 */
-	public static function webService(string $url)
+	public static function webService(string $url): string
 	{
 		$url = trim($url);
 		if (strlen($url) > 2048) {
@@ -36,7 +36,7 @@ class Service
 
 		try {
 			$response = $client->sendRequest($request);
-		} catch (ClientExceptionInterface $e) {
+		} catch (ClientExceptionInterface $exception) {
 			return ExcelError::VALUE(); // cURL error
 		}
 
@@ -60,11 +60,10 @@ class Service
 	 * Excel Function:
 	 *        urlEncode(text)
 	 *
-	 * @param mixed $text
-	 *
 	 * @return string the url encoded output
+	 * @param mixed $text
 	 */
-	public static function urlEncode($text)
+	public static function urlEncode($text): string
 	{
 		if (!is_string($text)) {
 			return ExcelError::VALUE();
