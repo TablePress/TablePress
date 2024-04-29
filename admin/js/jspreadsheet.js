@@ -1,10 +1,10 @@
 /**
- * Jspreadsheet v4.13.3
+ * Jspreadsheet v4.2.1
  *
  * Website: https://bossanova.uk/jspreadsheet/
  * Description: Create amazing web based spreadsheets.
  *
- * This software is distribute under MIT License
+ * This software is distributed under MIT License
  */
 
 // TablePress: var formula = ... removed.
@@ -23,7 +23,7 @@
 		// Information
 		var info = {
 			title: 'Jspreadsheet',
-			version: '4.13.3',
+			version: '4.2.1',
 			type: 'CE',
 			host: 'https://bossanova.uk/jspreadsheet',
 			license: 'MIT',
@@ -3101,7 +3101,7 @@
 					borderRight = 0;
 				}
 				for (var i = borderLeft; i <= borderRight; i++) {
-					if (obj.options.columns[i].type != 'hidden') {
+					if (obj.options.columns[i].type != 'hidden' && obj.colgroup[i].style && obj.colgroup[i].style.display != 'none') {
 						// Top border
 						if (obj.records[borderTop] && obj.records[borderTop][i]) {
 							obj.records[borderTop][i].classList.add('highlight-top');
@@ -6504,6 +6504,23 @@
 		 * @return string value
 		 */
 		obj.paste = function(x, y, data) {
+			var x_1 = parseInt(x),
+			y_1 = parseInt(y),
+			x_2 = parseInt(obj.selectedCell[2]),
+			y_2 = parseInt(obj.selectedCell[3]),
+			w = x_2 - x_1 + 1,
+			h = y_2 - y_1 + 1;
+
+			// change paste range if select is from right to left
+			if (x_2 < x_1){
+				x = x_2.toString();
+				w = x_1 - x_2 + 1;
+			}
+			// change paste range if select is from down to up
+			if (y_2 < y_1){
+				y = y_2.toString();
+				h = y_1 - y_2 + 1;
+			}
 			// Paste filter
 			var ret = obj.dispatch('onbeforepaste', el, data, x, y);
 
@@ -6524,6 +6541,27 @@
 
 			// Split new line
 			var data = obj.parseCSV(data, "\t");
+			// Modify data to allow wor extending paste range in multiples of input range
+			if ((w > 1) & Number.isInteger(w / data[0].length)) {
+				style = null;
+				repeats = w / data[0].length;
+
+				var arrayB = data.map(function (row, i) {
+				var arrayC = Array.apply(null, { length: repeats * row.length }).map(
+					function (e, i) { return row[i % row.length]; }
+				);
+				return arrayC;
+				});
+				data = arrayB;
+			}
+			if ((h > 1) & Number.isInteger(h / data.length)) {
+				style = null;
+				var repeats = h / data.length;
+				var arrayB = Array.apply(null, { length: repeats * data.length }).map(
+				function (e, i) { return data[i % data.length]; }
+				);
+				data = arrayB;
+			}
 
 			if (x != null && y != null && data) {
 				// Records
@@ -8718,20 +8756,11 @@
 	/**
 	 * Get letter based on a number
 	 *
-	 * @param integer i
+	 * @param {number} columnNumber
 	 * @return string letter
 	 */
-	jexcel.getColumnName = function(i) {
-		var letter = '';
-		if (i > 701) {
-			letter += String.fromCharCode(64 + parseInt(i / 676));
-			letter += String.fromCharCode(64 + parseInt((i % 676) / 26));
-		} else if (i > 25) {
-			letter += String.fromCharCode(64 + parseInt(i / 26));
-		}
-		letter += String.fromCharCode(65 + (i % 26));
-
-		return letter;
+	jexcel.getColumnName = function(columnNumber) {
+		return jexcel.helpers.getColumnName(columnNumber);
 	}
 
 	/**
@@ -9102,20 +9131,19 @@
 		/**
 		 * Get letter based on a number
 		 *
-		 * @param integer i
+		 * @param {number} columnNumber
 		 * @return string letter
 		 */
-		component.getColumnName = function(i) {
-			var letter = '';
-			if (i > 701) {
-				letter += String.fromCharCode(64 + parseInt(i / 676));
-				letter += String.fromCharCode(64 + parseInt((i % 676) / 26));
-			} else if (i > 25) {
-				letter += String.fromCharCode(64 + parseInt(i / 26));
+		component.getColumnName = function(columnNumber) {
+			let dividend = columnNumber+1;
+			let columnName = "";
+			let modulo;
+			while (dividend > 0) {
+				modulo = (dividend - 1) % 26;
+				columnName = String.fromCharCode(65 + modulo).toString() + columnName;
+				dividend = parseInt((dividend - modulo) / 26);
 			}
-			letter += String.fromCharCode(65 + (i % 26));
-
-			return letter;
+			return  columnName;
 		}
 
 		/**

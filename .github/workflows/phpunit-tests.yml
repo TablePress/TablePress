@@ -94,7 +94,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@73963f5001e335723c998e4a0125ce060083985c # v2.30.1
+        uses: shivammathur/setup-php@c665c7a15b5295c2488ac8a87af9cb806cd72198 # v2.30.4
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -106,7 +106,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -120,7 +120,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
           path: ${{ env.PLUGIN_DIR }}
 

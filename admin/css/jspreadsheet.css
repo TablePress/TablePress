@@ -230,7 +230,6 @@
 
 .jexcel > tbody > tr > td > select
 {
-	-webkit-appearance: none;
 	appearance: none;
 	background-repeat: no-repeat;
 	background-position-x: 100%;

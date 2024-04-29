@@ -841,7 +841,7 @@ class TablePress_Import {
 	public function import_table( string $format, string $data ) /* : array|false */ {
 		TablePress::load_file( 'class-import-base.php', 'classes' );
 		$importer = TablePress::load_class( 'TablePress_Import_Legacy', 'class-import-legacy.php', 'classes' );
-		return $importer->save_imported_table( $format, $data );
+		return $importer->import_table( $format, $data );
 	}
 
 } // class TablePress_Import

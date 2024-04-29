@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout TablePress repository
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: WordPress Plugin Deploy
         id: deploy
@@ -30,12 +30,14 @@ jobs:
           SLUG: ${{ vars.SLUG }}
 
       - name: Get plugin version and rename ZIP file
+        id: get-version
         if: ${{ github.event_name != 'workflow_dispatch' }}
         env:
           SLUG: ${{ vars.SLUG }}
           ZIPPATH: ${{ steps.deploy.outputs.zip-path }}
         run: |
           VERSION=$(awk '/Stable tag: /{print $NF}' readme.txt)
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
           mv ${ZIPPATH} ${GITHUB_WORKSPACE}/${SLUG}.${VERSION}.zip
 
       - name: Upload release ZIP file

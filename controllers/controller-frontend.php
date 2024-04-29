@@ -1007,7 +1007,7 @@ JS;
 		} else {
 			$render_attributes = array();
 		}
-		$render_attributes['id'] = $block_attributes['id']; // @phpstan-ignore-line
+		$render_attributes['id'] = $block_attributes['id'];
 
 		return $this->shortcode_table( $render_attributes );
 	}
