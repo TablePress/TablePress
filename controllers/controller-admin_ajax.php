@@ -171,6 +171,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			'message' => $message,
 		);
 		if ( $success ) {
+			// For the phpstan ignores in the next lines: If this is reached, $table is guaranteed to exist and is a valid array.
 			$response['table_id'] = $table['id']; // @phpstan-ignore-line
 			$response['new_edit_nonce'] = wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ); // @phpstan-ignore-line
 			$response['new_preview_nonce'] = wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) ); // @phpstan-ignore-line
@@ -266,6 +267,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			$default_render_options = $_render->get_default_render_options();
 			/** This filter is documented in controllers/controller-frontend.php */
 			$default_render_options = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_render_options );
+			// For the phpstan ignores in the next lines: If this is reached, $table is guaranteed to exist and is a valid array.
 			$render_options = shortcode_atts( $default_render_options, $table['options'] ); // @phpstan-ignore-line
 			/** This filter is documented in controllers/controller-frontend.php */
 			$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );

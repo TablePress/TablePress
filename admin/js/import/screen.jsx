@@ -38,6 +38,9 @@ const importSources = {
 		instruction: __( 'Import data', 'tablepress' ),
 	},
 };
+if ( ! tp.import.showImportSourceUrl ) {
+	delete importSources.url;
+}
 if ( ! tp.import.showImportSourceServer ) {
 	delete importSources.server;
 }
@@ -209,7 +212,7 @@ const Screen = () => {
 								}
 							</div>
 						</div>
-						{ 'url' === screenData.importSource &&
+						{ tp.import.showImportSourceUrl && 'url' === screenData.importSource &&
 							<input
 								type="url"
 								name="import[url]"

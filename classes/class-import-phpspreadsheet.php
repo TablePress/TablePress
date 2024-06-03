@@ -58,12 +58,12 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 		}
 
 		$table = $this->_maybe_import_json( $data );
-		if ( false !== $table ) {
+		if ( is_array( $table ) ) {
 			return $table;
 		}
 
 		$table = $this->_maybe_import_html( $data );
-		if ( false !== $table ) {
+		if ( is_array( $table ) ) {
 			return $table;
 		}
 
@@ -130,7 +130,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 	 * @since 2.0.0
 	 *
 	 * @param string $data Data to import.
-	 * @return array<string, mixed>|false Table array on success, false if the file is not an HTML file.
+	 * @return array<string, mixed>|WP_Error Table array on success, WP_Error if the file is not an HTML file.
 	 */
 	protected function _maybe_import_html( string $data ) /* : array|false */ {
 		TablePress::load_file( 'html-parser.class.php', 'libraries' );
@@ -138,7 +138,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 		// Check if the HTML code could be parsed. If not, this is probably not an HTML file.
 		if ( is_wp_error( $table ) ) {
-			return false;
+			return $table;
 		}
 
 		$this->pad_array_to_max_cols( $table['data'] );
@@ -156,11 +156,20 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 	protected function _import_phpspreadsheet( File $file ) /* : array|WP_Error */ {
 		// Rename the temporary file, as PHPSpreadsheet tries to infer the format from the file's extension.
 		if ( '' !== $file->extension ) {
-			$temp_file = pathinfo( $file->location );
-			if ( ! isset( $temp_file['extension'] ) || $file->extension !== $temp_file['extension'] ) {
-				$new_location = "{$temp_file['dirname']}/{$temp_file['filename']}.{$file->extension}"; // @phpstan-ignore-line
-				if ( rename( $file->location, $new_location ) ) {
-					$file->location = $new_location;
+			$file_data = pathinfo( $file->location );
+			if ( ! isset( $file_data['extension'] ) || $file->extension !== $file_data['extension'] ) {
+				$temp_file = wp_tempnam();
+				$new_location = "{$temp_file}.{$file->extension}";
+				if ( $file->keep_file ) {
+					// Copy the file, as the original should be kept.
+					if ( copy( $file->location, $new_location ) ) {
+						$file->location = $new_location;
+						$file->keep_file = false; // Delete the newly created file after the import.
+					}
+				} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+					if ( rename( $file->location, $new_location ) ) {
+						$file->location = $new_location;
+					}
 				}
 			}
 		}
@@ -178,10 +187,19 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 				$reader = \TablePress\PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile( $file->location );
 			} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception $exception ) {
 				$reader = \TablePress\PhpOffice\PhpSpreadsheet\IOFactory::createReader( 'Csv' );
-				// Append .csv to the file name, so that \TablePress\PhpOffice\PhpSpreadsheet\Reader\Csv::canRead() returns true.
-				$new_location = $file->location . '.csv';
-				if ( rename( $file->location, $new_location ) ) {
-					$file->location = $new_location;
+				// Change the file extension to .csv, so that \TablePress\PhpOffice\PhpSpreadsheet\Reader\Csv::canRead() returns true.
+				$temp_file = wp_tempnam();
+				$new_location = "{$temp_file}.csv";
+				if ( $file->keep_file ) {
+					// Copy the file, as the original should be kept.
+					if ( copy( $file->location, $new_location ) ) {
+						$file->location = $new_location;
+						$file->keep_file = false; // Delete the newly created file after the import.
+					}
+				} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+					if ( rename( $file->location, $new_location ) ) {
+						$file->location = $new_location;
+					}
 				}
 			}
 
@@ -252,6 +270,14 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 					$style = $spreadsheet->getCellXfByIndex( $cell->getXfIndex() );
 
 					$format = $style->getNumberFormat()->getFormatCode() ?? \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL;
+
+					/*
+					 * When cells in Excel files are formatted as "Text", quotation marks are removed, due to https://github.com/PHPOffice/PhpSpreadsheet/pull/3344.
+					 * Setting the format to "General" seems to prevent that.
+					 */
+					if ( \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT === $format && ! is_numeric( $cell_data ) ) {
+						$format = \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL;
+					}
 
 					// Fix floating point precision issues with numbers in the "General" Excel .xlsx format.
 					if ( 'xlsx' === $detected_format && \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL === $format && is_numeric( $cell_data ) ) {
@@ -353,7 +379,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			unset( $comments, $cell_collection, $worksheet, $spreadsheet );
 
 			return $table;
-		} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception $exception ) {
+		} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception | \TablePress\PhpOffice\PhpSpreadsheet\Exception $exception ) {
 			return new WP_Error( 'table_import_phpspreadsheet_failed', '', 'Exception: ' . $exception->getMessage() );
 		}
 	}

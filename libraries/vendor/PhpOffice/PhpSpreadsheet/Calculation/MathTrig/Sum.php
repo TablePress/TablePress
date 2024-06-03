@@ -45,7 +45,7 @@ class Sum
 	 *        SUM(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 * @return float|int|string|mixed[]
+	 * @return mixed[]|float|int|string
 	 */
 	public static function sumErroringStrings(...$args)
 	{

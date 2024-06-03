@@ -158,12 +158,12 @@ class Properties
 	}
 
 	/**
-	 * @param null|float|int|string $timestamp
+	 * @param null|bool|float|int|string $timestamp
 	 * @return float|int
 	 */
 	private static function intOrFloatTimestamp($timestamp)
 	{
-		if ($timestamp === null) {
+		if ($timestamp === null || is_bool($timestamp)) {
 			$timestamp = (float) (new DateTime())->format('U');
 		} elseif (is_string($timestamp)) {
 			if (is_numeric($timestamp)) {
@@ -383,7 +383,7 @@ class Properties
 
 	/**
 	 * Get a Custom Property Value.
-	 * @return bool|int|float|string|null
+	 * @return bool|float|int|string|null
 	 */
 	public function getCustomPropertyValue(string $propertyName)
 	{
@@ -479,7 +479,7 @@ class Properties
 	/**
 	 * Convert property to form desired by Excel.
 	 * @param bool|int|float|string|null $propertyValue
-	 * @return bool|int|float|string|null
+	 * @return bool|float|int|string|null
 	 */
 	public static function convertProperty($propertyValue, string $propertyType)
 	{
@@ -489,7 +489,7 @@ class Properties
 	/**
 	 * Convert property to form desired by Excel.
 	 * @param bool|int|float|string|null $propertyValue
-	 * @return bool|int|float|string|null
+	 * @return bool|float|int|string|null
 	 */
 	private static function convertProperty2($propertyValue, string $type)
 	{
@@ -502,7 +502,7 @@ class Properties
 			case self::PROPERTY_TYPE_FLOAT:
 				return (float) $propertyValue;
 			case self::PROPERTY_TYPE_DATE:
-				return self::intOrFloatTimestamp($propertyValue); // @phpstan-ignore-line
+				return self::intOrFloatTimestamp($propertyValue);
 			case self::PROPERTY_TYPE_BOOLEAN:
 				return is_bool($propertyValue) ? $propertyValue : ($propertyValue === 'true');
 			default: // includes string

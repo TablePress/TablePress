@@ -95,7 +95,7 @@ class Operations
 	 *        PRODUCT(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 * @return string|float
+	 * @return float|string
 	 */
 	public static function product(...$args)
 	{

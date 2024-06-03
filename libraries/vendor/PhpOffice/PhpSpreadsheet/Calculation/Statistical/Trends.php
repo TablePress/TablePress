@@ -150,7 +150,7 @@ class Trends
 	 * @param mixed[] $newValues Values of X for which we want to find Y
 	 * @param mixed $const A logical (boolean) value specifying whether to force the intersect to equal 0 or not
 	 *
-	 * @return float[]
+	 * @return array<int, array<int, array<int, float>>>
 	 */
 	public static function GROWTH(array $yValues, array $xValues = [], array $newValues = [], $const = true): array
 	{
@@ -169,7 +169,7 @@ class Trends
 			$returnArray[0][] = [$bestFitExponential->getValueOfYForX($xValue)];
 		}
 
-		return $returnArray; //* @phpstan-ignore-line
+		return $returnArray;
 	}
 
 	/**
@@ -405,7 +405,7 @@ class Trends
 	 * @param mixed[] $newValues Values of X for which we want to find Y
 	 * @param mixed $const A logical (boolean) value specifying whether to force the intersect to equal 0 or not
 	 *
-	 * @return float[]
+	 * @return array<int, array<int, array<int, float>>>
 	 */
 	public static function TREND(array $yValues, array $xValues = [], array $newValues = [], $const = true): array
 	{
@@ -424,6 +424,6 @@ class Trends
 			$returnArray[0][] = [$bestFitLinear->getValueOfYForX($xValue)];
 		}
 
-		return $returnArray; //* @phpstan-ignore-line
+		return $returnArray;
 	}
 }

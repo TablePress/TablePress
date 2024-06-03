@@ -28,7 +28,7 @@ class Periodic
 	 * @param mixed $type A number 0 or 1 and indicates when payments are due:
 	 *                      0 or omitted    At the end of the period.
 	 *                      1               At the beginning of the period.
-	 * @return string|float
+	 * @return float|string
 	 */
 	public static function futureValue(
 		$rate,
@@ -176,7 +176,7 @@ class Periodic
 	}
 
 	/**
-	 * @return string|float
+	 * @return float|string
 	 */
 	private static function calculatePeriods(
 		float $rate,

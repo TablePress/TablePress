@@ -147,7 +147,7 @@ class ChartColor
 
 	/**
 	 * Get Color Property.
-	 * @return null|int|string
+	 * @return int|string|null
 	 */
 	public function getColorProperty(string $propertyName)
 	{

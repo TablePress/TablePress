@@ -19,7 +19,7 @@ class InterestRate
 	 *
 	 * @param mixed $nominalRate Nominal interest rate as a float
 	 * @param mixed $periodsPerYear Integer number of compounding payments per year
-	 * @return string|float
+	 * @return float|string
 	 */
 	public static function effective($nominalRate = 0, $periodsPerYear = 0)
 	{

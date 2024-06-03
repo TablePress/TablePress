@@ -110,6 +110,7 @@
 				<element value="tablepress_export_table"/>
 				<element value="tablepress_export_tables"/>
 				<element value="tablepress_import_tables"/>
+				<element value="tablepress_import_tables_url"/>
 				<element value="tablepress_list_tables"/>
 				<element value="tablepress_preview_table"/>
 			</property>

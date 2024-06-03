@@ -29,7 +29,7 @@ class DGet extends DatabaseAbstract
 	 *                                        includes at least one column label and at least one cell below
 	 *                                        the column label in which you specify a condition for the
 	 *                                        column.
-	 * @return null|float|int|string
+	 * @return float|int|string|null
 	 */
 	public static function evaluate(array $database, $field, array $criteria)
 	{

@@ -34,6 +34,22 @@ class SheetView
 	private $zoomScaleNormal = 100;
 
 	/**
+	 * ZoomScalePageLayoutView.
+	 *
+	 * Valid values range from 10 to 400.
+	 * @var int
+	 */
+	private $zoomScalePageLayoutView = 100;
+
+	/**
+	 * ZoomScaleSheetLayoutView.
+	 *
+	 * Valid values range from 10 to 400.
+	 * @var int
+	 */
+	private $zoomScaleSheetLayoutView = 100;
+
+	/**
 	 * ShowZeros.
 	 *
 	 * If true, "null" values from a calculation will be shown as "0". This is the default Excel behaviour and can be changed
@@ -102,6 +118,44 @@ class SheetView
 	{
 		if ($zoomScaleNormal === null || $zoomScaleNormal >= 1) {
 			$this->zoomScaleNormal = $zoomScaleNormal;
+		} else {
+			throw new PhpSpreadsheetException('Scale must be greater than or equal to 1.');
+		}
+
+		return $this;
+	}
+
+	public function getZoomScalePageLayoutView(): int
+	{
+		return $this->zoomScalePageLayoutView;
+	}
+
+	/**
+	 * @return static
+	 */
+	public function setZoomScalePageLayoutView(int $zoomScalePageLayoutView)
+	{
+		if ($zoomScalePageLayoutView >= 1) {
+			$this->zoomScalePageLayoutView = $zoomScalePageLayoutView;
+		} else {
+			throw new PhpSpreadsheetException('Scale must be greater than or equal to 1.');
+		}
+
+		return $this;
+	}
+
+	public function getZoomScaleSheetLayoutView(): int
+	{
+		return $this->zoomScaleSheetLayoutView;
+	}
+
+	/**
+	 * @return static
+	 */
+	public function setZoomScaleSheetLayoutView(int $zoomScaleSheetLayoutView)
+	{
+		if ($zoomScaleSheetLayoutView >= 1) {
+			$this->zoomScaleSheetLayoutView = $zoomScaleSheetLayoutView;
 		} else {
 			throw new PhpSpreadsheetException('Scale must be greater than or equal to 1.');
 		}

@@ -67,7 +67,11 @@ jobs:
           MYSQL_DATABASE: wordpress_tests
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     strategy:
       fail-fast: false
       matrix:
@@ -106,7 +110,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -120,7 +124,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
           path: ${{ env.PLUGIN_DIR }}
 

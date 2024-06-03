@@ -932,14 +932,19 @@ JS;
 			// Load table, with table data, options, and visibility settings.
 			$table = TablePress::$model_table->load( $table_id, true, true );
 
+			// Skip tables that could not be loaded.
+			if ( is_wp_error( $table ) ) {
+				continue;
+			}
+
+			// Do not search in corrupted tables.
 			if ( isset( $table['is_corrupted'] ) && $table['is_corrupted'] ) {
-				// Do not search in corrupted tables.
 				continue;
 			}
 
 			foreach ( $search_terms as $search_term ) {
-				if ( ( $table['options']['print_name'] && false !== stripos( $table['name'], $search_term ) ) // @phpstan-ignore-line
-					|| ( $table['options']['print_description'] && false !== stripos( $table['description'], $search_term ) ) ) { // @phpstan-ignore-line
+				if ( ( $table['options']['print_name'] && false !== stripos( $table['name'], $search_term ) )
+					|| ( $table['options']['print_description'] && false !== stripos( $table['description'], $search_term ) ) ) {
 					// Found the search term in the name or description (and they are shown).
 					$query_result[ $search_term ][] = $table_id; // Add table ID to result list.
 					// No need to continue searching this search term in this table.
@@ -947,7 +952,7 @@ JS;
 				}
 
 				// Search search term in visible table cells (without taking Shortcode parameters into account!).
-				foreach ( $table['data'] as $row_idx => $table_row ) { // @phpstan-ignore-line
+				foreach ( $table['data'] as $row_idx => $table_row ) {
 					if ( 0 === $table['visibility']['rows'][ $row_idx ] ) {
 						// Row is hidden, so don't search in it.
 						continue;
@@ -977,7 +982,7 @@ JS;
 		$search_sql = $wpdb->remove_placeholder_escape( $search_sql );
 		foreach ( $query_result as $search_term => $table_ids ) {
 			$search_term = esc_sql( $wpdb->esc_like( $search_term ) );
-			$old_or = "OR ({$wpdb->posts}.post_content LIKE '{$n}{$search_term}{$n}')"; // @phpstan-ignore-line
+			$old_or = "OR ({$wpdb->posts}.post_content LIKE '{$n}{$search_term}{$n}')"; // @phpstan-ignore-line (The esc_sql() call above returns a string, as a string is passed.)
 			$table_ids = implode( '|', $table_ids );
 			$regexp = '\\\\[' . TablePress::$shortcode . ' id=(["\\\']?)(' . $table_ids . ')([\]"\\\' /])'; // ' needs to be single escaped, [ double escaped (with \\) in mySQL
 			$new_or = $old_or . " OR ({$wpdb->posts}.post_content REGEXP '{$regexp}')";

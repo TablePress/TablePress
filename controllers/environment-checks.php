@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * Check if the site is using WordPress 6.0 or newer.
  */
 require ABSPATH . WPINC . '/version.php'; // Include an unmodified $wp_version.
-if ( version_compare( str_replace( '-src', '', $wp_version ), '6.0', '<' ) ) { // @phpstan-ignore-line
+if ( version_compare( str_replace( '-src', '', $wp_version ), '6.0', '<' ) ) { // @phpstan-ignore-line ($wp_version is a global variable, defined in the included file.)
 	/**
 	 * Show an error notice to admins, if the installed version of WordPress is not supported.
 	 *

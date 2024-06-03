@@ -28,7 +28,7 @@ class Periodic
 	 *                                Values must contain at least one positive value and one negative value to
 	 *                                    calculate the internal rate of return.
 	 * @param mixed $guess A number that you guess is close to the result of IRR
-	 * @return string|float
+	 * @return float|string
 	 */
 	public static function rate($values, $guess = 0.1)
 	{
@@ -136,7 +136,7 @@ class Periodic
 	 * Returns the Net Present Value of a cash flow series given a discount rate.
 	 *
 	 * @param array $args
-	 * @return int|float
+	 * @return float|int
 	 * @param mixed $rate
 	 */
 	public static function presentValue($rate, ...$args)

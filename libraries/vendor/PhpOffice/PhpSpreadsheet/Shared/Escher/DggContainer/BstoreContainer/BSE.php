@@ -19,10 +19,10 @@ class BSE
 
 	/**
 	 * The parent BLIP Store Entry Container.
-	 * Property is never currently read.
+	 * Property is currently unused.
 	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer
 	 */
-	private $parent; // @phpstan-ignore-line
+	private $parent;
 
 	/**
 	 * The BLIP (Big Large Image or Picture).
@@ -43,6 +43,11 @@ class BSE
 	public function setParent(BstoreContainer $parent): void
 	{
 		$this->parent = $parent;
+	}
+
+	public function getParent(): BstoreContainer
+	{
+		return $this->parent;
 	}
 
 	/**

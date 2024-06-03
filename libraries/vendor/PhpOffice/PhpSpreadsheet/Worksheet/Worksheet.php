@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
 use ArrayObject;
+use Generator;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange;
@@ -207,7 +208,7 @@ class Worksheet implements IComparable
 	/**
 	 * Collection of protected cell ranges.
 	 *
-	 * @var string[]
+	 * @var ProtectedRange[]
 	 */
 	private $protectedCells = [];
 
@@ -796,7 +797,7 @@ class Worksheet implements IComparable
 						$cellValue = NumberFormat::toFormattedString(
 							$cell->getCalculatedValue(),
 							(string) $this->getParentOrThrow()->getCellXfByIndex($cell->getXfIndex())
-								->getNumberFormat()->getFormatCode()
+								->getNumberFormat()->getFormatCode(true)
 						);
 
 						if ($cellValue !== null && $cellValue !== '') {
@@ -1915,14 +1916,14 @@ class Worksheet implements IComparable
 	 *
 	 * @return $this
 	 */
-	public function protectCells($range, string $password, bool $alreadyHashed = false)
+	public function protectCells($range, string $password = '', bool $alreadyHashed = false, string $name = '', string $securityDescriptor = '')
 	{
 		$range = Functions::trimSheetFromCellReference(Validations::validateCellOrCellRange($range));
 
-		if (!$alreadyHashed) {
+		if (!$alreadyHashed && $password !== '') {
 			$password = Shared\PasswordHasher::hashPassword($password);
 		}
-		$this->protectedCells[$range] = $password;
+		$this->protectedCells[$range] = new ProtectedRange($range, $password, $name, $securityDescriptor);
 
 		return $this;
 	}
@@ -1950,11 +1951,29 @@ class Worksheet implements IComparable
 	}
 
 	/**
-	 * Get protected cells.
+	 * Get password for protected cells.
 	 *
 	 * @return string[]
+	 *
+	 * @deprecated 2.0.1 use getProtectedCellRanges instead
+	 * @see Worksheet::getProtectedCellRanges()
 	 */
 	public function getProtectedCells(): array
+	{
+		$array = [];
+		foreach ($this->protectedCells as $key => $protectedRange) {
+			$array[$key] = $protectedRange->getPassword();
+		}
+
+		return $array;
+	}
+
+	/**
+	 * Get protected cells.
+	 *
+	 * @return ProtectedRange[]
+	 */
+	public function getProtectedCellRanges(): array
 	{
 		return $this->protectedCells;
 	}
@@ -2657,7 +2676,7 @@ class Worksheet implements IComparable
 	 * @param array{0: int, 1: int}|CellAddress|string $cellCoordinate Coordinate of the cell as a string, eg: 'C5';
 	 *               or as an array of [$columnIndex, $row] (e.g. [3, 5]), or a CellAddress object.
 	 */
-	public function getComment($cellCoordinate): Comment
+	public function getComment($cellCoordinate, bool $attachNew = true): Comment
 	{
 		$cellAddress = Functions::trimSheetFromCellReference(Validations::validateCellAddress($cellCoordinate));
 
@@ -2676,7 +2695,9 @@ class Worksheet implements IComparable
 
 		// If not, create a new comment.
 		$newComment = new Comment();
-		$this->comments[$cellAddress] = $newComment;
+		if ($attachNew) {
+			$this->comments[$cellAddress] = $newComment;
+		}
 
 		return $newComment;
 	}
@@ -2852,9 +2873,6 @@ class Worksheet implements IComparable
 		return $returnValue;
 	}
 
-	/** @var array<string, bool> */
-	private $hiddenColumns;
-
 	/**
 	 * Create array from a range of cells.
 	 *
@@ -2874,9 +2892,40 @@ class Worksheet implements IComparable
 		bool $returnCellRef = false,
 		bool $ignoreHidden = false
 	): array {
+		$returnValue = [];
+
+		// Loop through rows
+		foreach ($this->rangeToArrayYieldRows($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden) as $rowRef => $rowArray) {
+			$returnValue[$rowRef] = $rowArray;
+		}
+
+		// Return
+		return $returnValue;
+	}
+
+	/**
+	 * Create array from a range of cells, yielding each row in turn.
+	 *
+	 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
+	 * @param bool $calculateFormulas Should formulas be calculated?
+	 * @param bool $formatData Should formatting be applied to cell values?
+	 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
+	 *                             True - Return rows and columns indexed by their actual row and column IDs
+	 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
+	 *                            True - Don't return values for rows/columns that are defined as hidden.
+	 *
+	 * @return Generator<array>
+	 */
+	public function rangeToArrayYieldRows(
+		string $range,
+		$nullValue = null,
+		bool $calculateFormulas = true,
+		bool $formatData = true,
+		bool $returnCellRef = false,
+		bool $ignoreHidden = false
+	) {
 		$range = Validations::validateCellOrCellRange($range);
 
-		$returnValue = [];
 		//    Identify the range that we need to extract from the worksheet
 		[$rangeStart, $rangeEnd] = Coordinate::rangeBoundaries($range);
 		$minCol = Coordinate::stringFromColumnIndex($rangeStart[0]);
@@ -2887,8 +2936,10 @@ class Worksheet implements IComparable
 		$maxColInt = $rangeEnd[0];
 
 		++$maxCol;
-		$nullRow = $this->buildNullRow($nullValue, $minCol, $maxCol, $returnCellRef, $ignoreHidden);
-		$hideColumns = !empty($this->hiddenColumns);
+		/** @var array<string, bool> */
+		$hiddenColumns = [];
+		$nullRow = $this->buildNullRow($nullValue, $minCol, $maxCol, $returnCellRef, $ignoreHidden, $hiddenColumns);
+		$hideColumns = !empty($hiddenColumns);
 
 		$keys = $this->cellCollection->getSortedCoordinatesInt();
 		$keyIndex = 0;
@@ -2899,7 +2950,7 @@ class Worksheet implements IComparable
 				continue;
 			}
 			$rowRef = $returnCellRef ? $row : ($row - $minRow);
-			$returnValue[$rowRef] = $nullRow;
+			$returnValue = $nullRow;
 
 			$index = ($row - 1) * AddressRange::MAX_COLUMN_INT + 1;
 			$indexPlus = $index + AddressRange::MAX_COLUMN_INT - 1;
@@ -2912,24 +2963,22 @@ class Worksheet implements IComparable
 				$thisCol = ($key % AddressRange::MAX_COLUMN_INT) ?: AddressRange::MAX_COLUMN_INT;
 				if ($thisCol >= $minColInt && $thisCol <= $maxColInt) {
 					$col = Coordinate::stringFromColumnIndex($thisCol);
-					if ($hideColumns === false || !isset($this->hiddenColumns[$col])) {
+					if ($hideColumns === false || !isset($hiddenColumns[$col])) {
 						$columnRef = $returnCellRef ? $col : ($thisCol - $minColInt);
 						$cell = $this->cellCollection->get("{$col}{$thisRow}");
 						if ($cell !== null) {
 							$value = $this->cellToArray($cell, $calculateFormulas, $formatData, $nullValue);
 							if ($value !== $nullValue) {
-								$returnValue[$rowRef][$columnRef] = $value;
+								$returnValue[$columnRef] = $value;
 							}
 						}
 					}
 				}
 				++$keyIndex;
 			}
-		}
-		unset($this->hiddenColumns);
 
-		// Return
-		return $returnValue;
+			yield $rowRef => $returnValue;
+		}
 	}
 
 	/**
@@ -2942,20 +2991,27 @@ class Worksheet implements IComparable
 	 *                              True - Return rows and columns indexed by their actual row and column IDs
 	 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
 	 *                             True - Don't return values for rows/columns that are defined as hidden.
+	 * @param array<string, bool> $hiddenColumns
 	 */
-	private function buildNullRow($nullValue, string $minCol, string $maxCol, bool $returnCellRef, bool $ignoreHidden): array
-	{
-		$this->hiddenColumns = [];
+	private function buildNullRow(
+		$nullValue,
+		string $minCol,
+		string $maxCol,
+		bool $returnCellRef,
+		bool $ignoreHidden,
+		array &$hiddenColumns
+	): array {
 		$nullRow = [];
 		$c = -1;
 		for ($col = $minCol; $col !== $maxCol; ++$col) {
 			if ($ignoreHidden === true && $this->columnDimensionExists($col) && $this->getColumnDimension($col)->getVisible() === false) {
-				$this->hiddenColumns[$col] = true;
+				$hiddenColumns[$col] = true;
 			} else {
 				$columnRef = $returnCellRef ? $col : ++$c;
 				$nullRow[$columnRef] = $nullValue;
 			}
 		}
+
 		return $nullRow;
 	}
 

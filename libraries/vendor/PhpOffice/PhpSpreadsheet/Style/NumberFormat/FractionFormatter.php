@@ -6,9 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\MathTrig;
 
 class FractionFormatter extends BaseFormatter
 {
-	/**
-	 * @param mixed $value
-	 */
+	/** @param mixed $value value to be formatted */
 	public static function format($value, string $format): string
 	{
 		$format = self::stripQuotes($format);

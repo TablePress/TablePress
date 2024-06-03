@@ -80,7 +80,7 @@ class Difference
 	/**
 	 * Decide whether it's time to set retVal.
 	 * @param bool|int $retVal
-	 * @return null|bool|int
+	 * @return bool|int|null
 	 */
 	private static function replaceRetValue($retVal, string $unit, string $compare)
 	{

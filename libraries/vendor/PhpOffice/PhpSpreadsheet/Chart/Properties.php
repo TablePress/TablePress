@@ -456,7 +456,7 @@ abstract class Properties
 	/**
 	 * Get Glow Property.
 	 * @param mixed[]|string $property
-	 * @return null|mixed[]|float|int|string
+	 * @return mixed[]|float|int|string|null
 	 */
 	public function getGlowProperty($property)
 	{
@@ -478,7 +478,7 @@ abstract class Properties
 
 	/**
 	 * Get Glow Color Property.
-	 * @return null|int|string
+	 * @return int|string|null
 	 */
 	public function getGlowColor(string $propertyName)
 	{
@@ -751,7 +751,7 @@ abstract class Properties
 
 	/**
 	 * Get Line Color Property.
-	 * @return null|int|string
+	 * @return int|string|null
 	 */
 	public function getLineColorProperty(string $propertyName)
 	{

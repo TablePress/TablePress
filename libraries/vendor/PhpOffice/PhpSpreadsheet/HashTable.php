@@ -26,7 +26,7 @@ class HashTable
 	 *
 	 * @param T[] $source Optional source array to create HashTable from
 	 */
-	public function __construct(?array $source = null)
+	public function __construct(?array $source = [])
 	{
 		if ($source !== null) {
 			// Create HashTable
@@ -109,7 +109,7 @@ class HashTable
 
 	/**
 	 * Get index for hash code.
-	 * @return false|int
+	 * @return int|false
 	 */
 	public function getIndexForHashCode(string $hashCode)
 	{

@@ -1589,9 +1589,11 @@ document.querySelectorAll( '#tablepress-body .button-module-help' ).forEach( ( $
 
 // Register callbacks for the screen options.
 const $tablepress_screen_options = $( '#tablepress-screen-options' );
-$tablepress_screen_options.addEventListener( 'input', tp.callbacks.screen_options.update );
-$tablepress_screen_options.addEventListener( 'change', tp.callbacks.screen_options.set_was_changed );
-$tablepress_screen_options.addEventListener( 'focusout', tp.callbacks.screen_options.save ); // Use the `focusout` event instead of `blur` as that does not bubble.
+if ( $tablepress_screen_options ) {
+	$tablepress_screen_options.addEventListener( 'input', tp.callbacks.screen_options.update );
+	$tablepress_screen_options.addEventListener( 'change', tp.callbacks.screen_options.set_was_changed );
+	$tablepress_screen_options.addEventListener( 'focusout', tp.callbacks.screen_options.save ); // Use the `focusout` event instead of `blur` as that does not bubble.
+}
 
 // Register keyboard shortcut handler.
 window.addEventListener( 'keydown', tp.callbacks.keyboard_shortcuts, true );

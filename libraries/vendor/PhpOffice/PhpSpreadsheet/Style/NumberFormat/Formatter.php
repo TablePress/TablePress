@@ -53,9 +53,7 @@ class Formatter extends BaseFormatter
 		}
 	}
 
-	/**
-	 * @param mixed $value
-	 */
+	/** @param mixed $value value to be formatted */
 	private static function splitFormatForSectionSelection(array $sections, $value): array
 	{
 		// Extract the relevant section depending on whether number is positive, negative, or zero?

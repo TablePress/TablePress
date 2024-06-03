@@ -213,7 +213,7 @@ class NonPeriodic
 	}
 
 	/**
-	 * @return string|float
+	 * @return float|string
 	 */
 	private static function xirrBisection(array $values, array $dates, float $x1, float $x2)
 	{

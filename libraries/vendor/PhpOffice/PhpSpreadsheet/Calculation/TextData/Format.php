@@ -56,6 +56,7 @@ class Format
 			if ($value < 0) {
 				$round = 0 - $round;
 			}
+			/** @var float|int|string */
 			$value = MathTrig\Round::multiple($value, $round);
 		}
 		$mask = "{$mask};-{$mask}";
@@ -124,10 +125,13 @@ class Format
 
 		$value = Helpers::extractString($value);
 		$format = Helpers::extractString($format);
+		$format = (string) NumberFormat::convertSystemFormats($format);
 
 		if (!is_numeric($value) && Date::isDateTimeFormatCode($format)) {
-			// @phpstan-ignore-next-line
-			$value = DateTimeExcel\DateValue::fromString($value) + DateTimeExcel\TimeValue::fromString($value);
+			$value1 = DateTimeExcel\DateValue::fromString($value);
+			$value2 = DateTimeExcel\TimeValue::fromString($value);
+			/** @var float|int|string */
+			$value = (is_numeric($value1) && is_numeric($value2)) ? ($value1 + $value2) : (is_numeric($value1) ? $value2 : $value1);
 		}
 
 		return (string) NumberFormat::toFormattedString($value, $format);
@@ -272,7 +276,7 @@ class Format
 	 *                         Or can be an array of values
 	 * @param mixed $groupSeparator A string with the group/thousands separator to use, defaults to locale defined value
 	 *                         Or can be an array of values
-	 * @return mixed[]|string|float
+	 * @return mixed[]|float|string
 	 */
 	public static function NUMBERVALUE($value = '', $decimalSeparator = null, $groupSeparator = null)
 	{

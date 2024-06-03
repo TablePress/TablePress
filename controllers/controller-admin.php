@@ -221,10 +221,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		foreach ( $table_ids as $table_id ) {
 			// Load table, without table data, options, and visibility settings.
 			$table = TablePress::$model_table->load( $table_id, false, false );
-			if ( '' === trim( $table['name'] ) ) { // @phpstan-ignore-line
-				$table['name'] = __( '(no name)', 'tablepress' ); // @phpstan-ignore-line
+
+			// Skip tables that could not be loaded.
+			if ( is_wp_error( $table ) ) {
+				continue;
 			}
-			$tables[ $table_id ] = esc_html( $table['name'] ); // @phpstan-ignore-line
+
+			if ( '' === trim( $table['name'] ) ) {
+				$table['name'] = __( '(no name)', 'tablepress' );
+			}
+			$tables[ $table_id ] = esc_html( $table['name'] );
 		}
 
 		/**
@@ -434,7 +440,7 @@ JS;
 		}
 
 		// Check if action is a supported action, and whether the user is allowed to access this screen.
-		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['required_cap'] ) ) { // @phpstan-ignore-line
+		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['required_cap'] ) ) { // @phpstan-ignore-line (The array value for the capability is always a string.)
 			wp_die( __( 'Sorry, you are not allowed to access this page.', 'default' ), 403 );
 		}
 
@@ -531,7 +537,13 @@ JS;
 					}
 					// Load table, without table data, options, and visibility settings.
 					$table = TablePress::$model_table->load( $table_id, false, false );
-					$data['tables'][ $table['id'] ] = $table['name']; // @phpstan-ignore-line
+
+					// Skip tables that could not be loaded.
+					if ( is_wp_error( $table ) ) {
+						continue;
+					}
+
+					$data['tables'][ $table['id'] ] = $table['name'];
 				}
 				$data['tables_count'] = TablePress::$model_table->count_tables();
 				$data['export_ids'] = ( ! empty( $_GET['table_id'] ) ) ? explode( ',', $_GET['table_id'] ) : array();
@@ -552,7 +564,13 @@ JS;
 					}
 					// Load table, without table data, options, and visibility settings.
 					$table = TablePress::$model_table->load( $table_id, false, false );
-					$data['tables'][ $table['id'] ] = $table['name']; // @phpstan-ignore-line
+
+					// Skip tables that could not be loaded.
+					if ( is_wp_error( $table ) ) {
+						continue;
+					}
+
+					$data['tables'][ $table['id'] ] = $table['name'];
 				}
 				$data['table_ids'] = $table_ids; // Backward compatibility for the retired "Table Auto Update" Extension, which still relies on this variable name.
 				$data['tables_count'] = TablePress::$model_table->count_tables();
@@ -1088,6 +1106,13 @@ JS;
 		// For security reasons, the "server" source is only available for super admins on multisite and admins on single sites.
 		if ( 'server' === $import_config['source'] ) {
 			if ( ! is_super_admin() && ! ( ! is_multisite() && current_user_can( 'manage_options' ) ) ) {
+				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import', 'error_details' => 'You do not have the required access rights.' ) );
+			}
+		}
+
+		// For security reasons, the "url" source is only available admins and editors via a custom capability.
+		if ( 'url' === $import_config['source'] ) {
+			if ( ! current_user_can( 'tablepress_import_tables_url' ) ) {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import', 'error_details' => 'You do not have the required access rights.' ) );
 			}
 		}

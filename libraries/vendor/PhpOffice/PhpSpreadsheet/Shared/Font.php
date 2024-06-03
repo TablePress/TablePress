@@ -330,7 +330,7 @@ class Font
 
 	/**
 	 * Pad amount for exact in pixels; use best guess if null.
-	 * @var null|float|int
+	 * @var float|int|null
 	 */
 	private static $paddingAmountExact = null;
 
@@ -345,7 +345,7 @@ class Font
 
 	/**
 	 * Get pad amount for exact in pixels; or null if using best guess.
-	 * @return null|float|int
+	 * @return float|int|null
 	 */
 	public static function getPaddingAmountExact()
 	{
@@ -700,8 +700,10 @@ class Font
 					$it,
 					RecursiveIteratorIterator::LEAVES_ONLY,
 					RecursiveIteratorIterator::CATCH_GET_CHILD
-				) as $file
+				) as $filex
 			) {
+				/** @var string */
+				$file = $filex;
 				if (basename($file) === $desiredFont) {
 					$fontPath = $file;
 

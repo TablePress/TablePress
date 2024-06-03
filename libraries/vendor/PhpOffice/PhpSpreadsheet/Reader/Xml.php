@@ -8,6 +8,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\DataType;
 use TablePress\PhpOffice\PhpSpreadsheet\DefinedName;
+use TablePress\PhpOffice\PhpSpreadsheet\Helper\Html as HelperHtml;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx\Namespaces;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xml\PageSettings;
@@ -19,8 +20,10 @@ use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\SheetView;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use SimpleXMLElement;
+use Throwable;
 
 /**
  * Reader for SpreadsheetML, the XML schema for Microsoft Office Excel 2003.
@@ -48,6 +51,11 @@ class Xml extends BaseReader
 	 * @var string
 	 */
 	private $fileContents = '';
+
+	/**
+	 * @var string
+	 */
+	private $xmlFailMessage = '';
 
 	public static function xmlMappings(): array
 	{
@@ -110,17 +118,44 @@ class Xml extends BaseReader
 	 * Check if the file is a valid SimpleXML.
 	 *
 	 * @return false|SimpleXMLElement
+	 *
+	 * @deprecated 2.0.1 Should never have had public visibility
+	 *
+	 * @codeCoverageIgnore
 	 */
-	public function trySimpleXMLLoadString(string $filename)
+	public function trySimpleXMLLoadString(string $filename, string $fileOrString = 'file')
 	{
+		return $this->trySimpleXMLLoadStringPrivate($filename, $fileOrString);
+	}
+
+	/** @return false|SimpleXMLElement */
+	private function trySimpleXMLLoadStringPrivate(string $filename, string $fileOrString = 'file')
+	{
+		$this->xmlFailMessage = "Cannot load invalid XML $fileOrString: " . $filename;
+		$xml = false;
+
 		try {
-			$xml = simplexml_load_string(
-				$this->getSecurityScannerOrThrow()->scan($this->fileContents ?: file_get_contents($filename)),
-				'SimpleXMLElement',
-				Settings::getLibXmlLoaderOptions()
-			);
-		} catch (\Exception $e) {
-			throw new Exception('Cannot load invalid XML file: ' . $filename, 0, $e);
+			$data = $this->fileContents;
+			$continue = true;
+			if ($data === '' && $fileOrString === 'file') {
+				if ($filename === '') {
+					$this->xmlFailMessage = 'Cannot load empty path';
+					$continue = false;
+				} else {
+					$datax = @file_get_contents($filename);
+					$data = $datax ?: '';
+					$continue = $datax !== false;
+				}
+			}
+			if ($continue) {
+				$xml = @simplexml_load_string(
+					$this->getSecurityScannerOrThrow()->scan($data),
+					'SimpleXMLElement',
+					Settings::getLibXmlLoaderOptions()
+				);
+			}
+		} catch (Throwable $e) {
+			throw new Exception($this->xmlFailMessage, 0, $e);
 		}
 		$this->fileContents = '';
 
@@ -139,7 +174,7 @@ class Xml extends BaseReader
 
 		$worksheetNames = [];
 
-		$xml = $this->trySimpleXMLLoadString($filename);
+		$xml = $this->trySimpleXMLLoadStringPrivate($filename);
 		if ($xml === false) {
 			throw new Exception("Problem reading {$filename}");
 		}
@@ -165,7 +200,7 @@ class Xml extends BaseReader
 
 		$worksheetInfo = [];
 
-		$xml = $this->trySimpleXMLLoadString($filename);
+		$xml = $this->trySimpleXMLLoadStringPrivate($filename);
 		if ($xml === false) {
 			throw new Exception("Problem reading {$filename}");
 		}
@@ -256,16 +291,18 @@ class Xml extends BaseReader
 	{
 		if ($useContents) {
 			$this->fileContents = $filename;
+			$fileOrString = 'string';
 		} else {
 			File::assertFile($filename);
 			if (!$this->canRead($filename)) {
 				throw new Exception($filename . ' is an Invalid Spreadsheet file.');
 			}
+			$fileOrString = 'file';
 		}
 
-		$xml = $this->trySimpleXMLLoadString($filename);
+		$xml = $this->trySimpleXMLLoadStringPrivate($filename, $fileOrString);
 		if ($xml === false) {
-			throw new Exception("Problem reading {$filename}");
+			throw new Exception($this->xmlFailMessage);
 		}
 
 		$namespaces = $xml->getNamespaces(true);
@@ -430,6 +467,14 @@ class Xml extends BaseReader
 									*/
 									case 'String':
 										$type = DataType::TYPE_STRING;
+										$rich = $cellData->children('http://www.w3.org/TR/REC-html40');
+										if ($rich) {
+											// in case of HTML content we extract the payload
+											// and convert it into a rich text object
+											$content = $cellData->asXML() ?: '';
+											$html = new HelperHtml();
+											$cellValue = $html->toRichTextObject($content, true);
+										}
 
 										break;
 									case 'Number':
@@ -509,6 +554,25 @@ class Xml extends BaseReader
 			$dataValidations->loadDataValidations($worksheet, $spreadsheet);
 			$xmlX = $worksheet->children(Namespaces::URN_EXCEL);
 			if (isset($xmlX->WorksheetOptions)) {
+				if (isset($xmlX->WorksheetOptions->ShowPageBreakZoom)) {
+					$spreadsheet->getActiveSheet()->getSheetView()->setView(SheetView::SHEETVIEW_PAGE_BREAK_PREVIEW);
+				}
+				if (isset($xmlX->WorksheetOptions->Zoom)) {
+					$zoomScaleNormal = (int) $xmlX->WorksheetOptions->Zoom;
+					if ($zoomScaleNormal > 0) {
+						$spreadsheet->getActiveSheet()->getSheetView()->setZoomScaleNormal($zoomScaleNormal);
+						$spreadsheet->getActiveSheet()->getSheetView()->setZoomScale($zoomScaleNormal);
+					}
+				}
+				if (isset($xmlX->WorksheetOptions->PageBreakZoom)) {
+					$zoomScaleNormal = (int) $xmlX->WorksheetOptions->PageBreakZoom;
+					if ($zoomScaleNormal > 0) {
+						$spreadsheet->getActiveSheet()->getSheetView()->setZoomScaleSheetLayoutView($zoomScaleNormal);
+					}
+				}
+				if (isset($xmlX->WorksheetOptions->ShowPageBreakZoom)) {
+					$spreadsheet->getActiveSheet()->getSheetView()->setView(SheetView::SHEETVIEW_PAGE_BREAK_PREVIEW);
+				}
 				if (isset($xmlX->WorksheetOptions->FreezePanes)) {
 					$freezeRow = $freezeColumn = 1;
 					if (isset($xmlX->WorksheetOptions->SplitHorizontal)) {
@@ -591,6 +655,20 @@ class Xml extends BaseReader
 					if (is_numeric($activeRow) && is_numeric($activeColumn)) {
 						$selectedCell = Coordinate::stringFromColumnIndex((int) $activeColumn + 1) . (string) ($activeRow + 1);
 						$spreadsheet->getActiveSheet()->setSelectedCells($selectedCell);
+					}
+				}
+			}
+			if (isset($xmlX->PageBreaks)) {
+				if (isset($xmlX->PageBreaks->ColBreaks)) {
+					foreach ($xmlX->PageBreaks->ColBreaks->ColBreak as $colBreak) {
+						$colBreak = (string) $colBreak->Column;
+						$spreadsheet->getActiveSheet()->setBreak([1 + (int) $colBreak, 1], Worksheet::BREAK_COLUMN);
+					}
+				}
+				if (isset($xmlX->PageBreaks->RowBreaks)) {
+					foreach ($xmlX->PageBreaks->RowBreaks->RowBreak as $rowBreak) {
+						$rowBreak = (string) $rowBreak->Row;
+						$spreadsheet->getActiveSheet()->setBreak([1, (int) $rowBreak], Worksheet::BREAK_ROW);
 					}
 				}
 			}

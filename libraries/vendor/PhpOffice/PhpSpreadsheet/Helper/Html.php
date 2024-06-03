@@ -622,6 +622,11 @@ class Html
 	 */
 	private $richTextObject;
 
+	/**
+	 * @var bool
+	 */
+	private $preserveWhiteSpace = false;
+
 	private function initialise(): void
 	{
 		$this->face = $this->size = $this->color = null;
@@ -635,7 +640,7 @@ class Html
 	/**
 	 * Parse HTML formatting and return the resulting RichText.
 	 */
-	public function toRichTextObject(string $html): RichText
+	public function toRichTextObject(string $html, bool $preserveWhiteSpace = false): RichText
 	{
 		$this->initialise();
 
@@ -649,7 +654,9 @@ class Html
 		$dom->preserveWhiteSpace = false;
 
 		$this->richTextObject = new RichText();
+		$this->preserveWhiteSpace = $preserveWhiteSpace;
 		$this->parseElements($dom);
+		$this->preserveWhiteSpace = false;
 
 		// Clean any further spurious whitespace
 		$this->cleanWhitespace();
@@ -733,6 +740,7 @@ class Html
 		if ($attrs !== null) {
 			foreach ($attrs as $attribute) {
 				$attributeName = strtolower($attribute->name);
+				$attributeName = preg_replace('/^html:/', '', $attributeName) ?? $attributeName; // in case from Xml spreadsheet
 				$attributeValue = $attribute->value;
 
 				if ($attributeName == 'color') {
@@ -822,11 +830,15 @@ class Html
 
 	private function parseTextNode(DOMText $textNode): void
 	{
-		$domText = (string) preg_replace(
-			'/\s+/u',
-			' ',
-			str_replace(["\r", "\n"], ' ', $textNode->nodeValue ?? '')
-		);
+		if ($this->preserveWhiteSpace) {
+			$domText = $textNode->nodeValue ?? '';
+		} else {
+			$domText = (string) preg_replace(
+				'/\s+/u',
+				' ',
+				str_replace(["\r", "\n"], ' ', $textNode->nodeValue ?? '')
+			);
+		}
 		$this->stringData .= $domText;
 		$this->buildTextRun();
 	}

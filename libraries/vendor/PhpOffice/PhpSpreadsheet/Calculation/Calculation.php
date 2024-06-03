@@ -1031,7 +1031,7 @@ class Calculation
 		],
 		'ERROR.TYPE' => [
 			'category' => Category::CATEGORY_INFORMATION,
-			'functionCall' => [Information\ExcelError::class, 'type'],
+			'functionCall' => [ExcelError::class, 'type'],
 			'argumentCount' => '1',
 		],
 		'EVEN' => [
@@ -1340,7 +1340,7 @@ class Calculation
 		'IF' => [
 			'category' => Category::CATEGORY_LOGICAL,
 			'functionCall' => [Logical\Conditional::class, 'statementIf'],
-			'argumentCount' => '1-3',
+			'argumentCount' => '2-3',
 		],
 		'IFERROR' => [
 			'category' => Category::CATEGORY_LOGICAL,
@@ -1859,7 +1859,7 @@ class Calculation
 		],
 		'NA' => [
 			'category' => Category::CATEGORY_INFORMATION,
-			'functionCall' => [Information\ExcelError::class, 'NA'],
+			'functionCall' => [ExcelError::class, 'NA'],
 			'argumentCount' => '0',
 		],
 		'NEGBINOMDIST' => [
@@ -3478,7 +3478,7 @@ class Calculation
 			return self::FORMULA_STRING_QUOTE . $value . self::FORMULA_STRING_QUOTE;
 		} elseif ((is_float($value)) && ((is_nan($value)) || (is_infinite($value)))) {
 			//    Convert numeric errors to NaN error
-			return Information\ExcelError::NAN();
+			return ExcelError::NAN();
 		}
 
 		return $value;
@@ -3497,7 +3497,7 @@ class Calculation
 			}
 			//    Convert numeric errors to NAN error
 		} elseif ((is_float($value)) && ((is_nan($value)) || (is_infinite($value)))) {
-			return Information\ExcelError::NAN();
+			return ExcelError::NAN();
 		}
 
 		return $value;
@@ -3585,7 +3585,7 @@ class Calculation
 			self::$returnArrayAsType = $returnArrayAsType;
 			$testResult = Functions::flattenArray($result);
 			if (self::$returnArrayAsType == self::RETURN_ARRAY_AS_ERROR) {
-				return Information\ExcelError::VALUE();
+				return ExcelError::VALUE();
 			}
 			//    If there's only a single cell in the array, then we allow it
 			if (count($testResult) != 1) {
@@ -3593,13 +3593,13 @@ class Calculation
 				$r = array_keys($result);
 				$r = array_shift($r);
 				if (!is_numeric($r)) {
-					return Information\ExcelError::VALUE();
+					return ExcelError::VALUE();
 				}
 				if (is_array($result[$r])) {
 					$c = array_keys($result[$r]);
 					$c = array_shift($c);
 					if (!is_numeric($c)) {
-						return Information\ExcelError::VALUE();
+						return ExcelError::VALUE();
 					}
 				}
 			}
@@ -3610,7 +3610,7 @@ class Calculation
 		if ($result === null && $cell->getWorksheet()->getSheetView()->getShowZeros()) {
 			return 0;
 		} elseif ((is_float($result)) && ((is_nan($result)) || (is_infinite($result)))) {
-			return Information\ExcelError::NAN();
+			return ExcelError::NAN();
 		}
 
 		return $result;
@@ -3826,6 +3826,8 @@ class Calculation
 			//    Given two matrices of (potentially) unequal size, convert the larger in each dimension to match the smaller
 			self::resizeMatricesShrink($operand1, $operand2, $matrix1Rows, $matrix1Columns, $matrix2Rows, $matrix2Columns);
 		}
+		[$matrix1Rows, $matrix1Columns] = self::getMatrixDimensions($operand1);
+		[$matrix2Rows, $matrix2Columns] = self::getMatrixDimensions($operand2);
 
 		return [$matrix1Rows, $matrix1Columns, $matrix2Rows, $matrix2Columns];
 	}
@@ -4290,7 +4292,7 @@ class Calculation
 				//    If we've a comma when we're expecting an operand, then what we actually have is a null operand;
 				//        so push a null onto the stack
 				if (($expectingOperand) || (!$expectingOperator)) {
-					$output[] = ['type' => 'Empty Argument', 'value' => self::$excelConstants['NULL'], 'reference' => 'NULL'];
+					$output[] = $stack->getStackItem('Empty Argument', null, 'NULL');
 				}
 				// make sure there was a function
 				$d = $stack->last(2);
@@ -4368,7 +4370,7 @@ class Calculation
 									$val = $rangeStartMatches[2] . '!' . $val;
 								}
 							} else {
-								$val = Information\ExcelError::REF();
+								$val = ExcelError::REF();
 							}
 						} else {
 							$rangeStartCellRef = $output[count($output) - 1]['value'] ?? '';
@@ -4437,7 +4439,7 @@ class Calculation
 								}
 								$val = $address;
 							}
-						} elseif ($val === Information\ExcelError::REF()) {
+						} elseif ($val === ExcelError::REF()) {
 							$stackItemReference = $val;
 						} else {
 							/** @var non-empty-string $startRowColRef */
@@ -4537,7 +4539,7 @@ class Calculation
 				++$index;
 			} elseif ($opCharacter === ')') { // miscellaneous error checking
 				if ($expectingOperand) {
-					$output[] = ['type' => 'Empty Argument', 'value' => self::$excelConstants['NULL'], 'reference' => 'NULL'];
+					$output[] = $stack->getStackItem('Empty Argument', null, 'NULL');
 					$expectingOperand = false;
 					$expectingOperator = true;
 				} else {
@@ -4744,8 +4746,8 @@ class Calculation
 					}
 				} catch (Exception $e) {
 					if ($e->getCode() === Exception::CALCULATION_ENGINE_PUSH_TO_STACK) {
-						$stack->push('Error', Information\ExcelError::REF(), null);
-						$this->debugLog->writeDebugLog('Evaluated Structured Reference %s as error value %s', $token->value(), Information\ExcelError::REF());
+						$stack->push('Error', ExcelError::REF(), null);
+						$this->debugLog->writeDebugLog('Evaluated Structured Reference %s as error value %s', $token->value(), ExcelError::REF());
 					} else {
 						return $this->raiseFormulaError($e->getMessage(), $e->getCode(), $e);
 					}
@@ -4753,10 +4755,12 @@ class Calculation
 			} elseif (!is_numeric($token) && !is_object($token) && isset(self::BINARY_OPERATORS[$token])) {
 				// if the token is a binary operator, pop the top two values off the stack, do the operation, and push the result back on the stack
 				//    We must have two operands, error if we don't
-				if (($operand2Data = $stack->pop()) === null) {
+				$operand2Data = $stack->pop();
+				if ($operand2Data === null) {
 					return $this->raiseFormulaError('Internal error - Operand value missing from stack');
 				}
-				if (($operand1Data = $stack->pop()) === null) {
+				$operand1Data = $stack->pop();
+				if ($operand1Data === null) {
 					return $this->raiseFormulaError('Internal error - Operand value missing from stack');
 				}
 
@@ -4840,7 +4844,7 @@ class Calculation
 									$oCol[] = Coordinate::columnIndexFromString($oCR[0]) - 1;
 									$oRow[] = $oCR[1];
 								} catch (\Exception $exception) {
-									$stack->push('Error', Information\ExcelError::REF(), null);
+									$stack->push('Error', ExcelError::REF(), null);
 									$breakNeeded = true;
 
 									break;
@@ -4860,7 +4864,7 @@ class Calculation
 							$stack->push('Cell Reference', $cellValue, $cellRef);
 						} else {
 							$this->debugLog->writeDebugLog('Evaluation Result is a #REF! Error');
-							$stack->push('Error', Information\ExcelError::REF(), null);
+							$stack->push('Error', ExcelError::REF(), null);
 						}
 
 						break;
@@ -4931,7 +4935,7 @@ class Calculation
 						}
 						if (count(Functions::flattenArray($cellIntersect)) === 0) {
 							$this->debugLog->writeDebugLog('Evaluation Result is %s', $this->showTypeDetails($cellIntersect));
-							$stack->push('Error', Information\ExcelError::null(), null);
+							$stack->push('Error', ExcelError::null(), null);
 						} else {
 							$cellRef = Coordinate::stringFromColumnIndex(min($oCol) + 1) . min($oRow) . ':'
 								. Coordinate::stringFromColumnIndex(max($oCol) + 1) . max($oRow);
@@ -4982,7 +4986,7 @@ class Calculation
 				if (isset($matches[8])) {
 					if ($cell === null) {
 						// We can't access the range, so return a REF error
-						$cellValue = Information\ExcelError::REF();
+						$cellValue = ExcelError::REF();
 					} else {
 						$cellRef = $matches[6] . $matches[7] . ':' . $matches[9] . $matches[10];
 						if ($matches[2] > '') {
@@ -5012,7 +5016,7 @@ class Calculation
 				} else {
 					if ($cell === null) {
 						// We can't access the cell, so return a REF error
-						$cellValue = Information\ExcelError::REF();
+						$cellValue = ExcelError::REF();
 					} else {
 						$cellRef = $matches[6] . $matches[7];
 						if ($matches[2] > '') {
@@ -5029,7 +5033,7 @@ class Calculation
 									$cell->attach($pCellParent);
 								} else {
 									$cellRef = ($cellSheet !== null) ? "'{$matches[2]}'!{$cellRef}" : $cellRef;
-									$cellValue = ($cellSheet !== null) ? null : Information\ExcelError::REF();
+									$cellValue = ($cellSheet !== null) ? null : ExcelError::REF();
 								}
 							} else {
 								return $this->raiseFormulaError('Unable to access Cell Reference');
@@ -5101,11 +5105,12 @@ class Calculation
 								}
 							}
 						} else {
-							$emptyArguments[] = ($arg['type'] === 'Empty Argument');
-							if ($arg['type'] === 'Empty Argument' && in_array($functionName, ['MIN', 'MINA', 'MAX', 'MAXA'], true)) {
+							if ($arg['type'] === 'Empty Argument' && in_array($functionName, ['MIN', 'MINA', 'MAX', 'MAXA', 'IF'], true)) {
+								$emptyArguments[] = false;
 								$args[] = $arg['value'] = 0;
 								$this->debugLog->writeDebugLog('Empty Argument reevaluated as 0');
 							} else {
+								$emptyArguments[] = $arg['type'] === 'Empty Argument';
 								$args[] = self::unwrapResult($arg['value']);
 							}
 							if ($functionName !== 'MKMATRIX') {
@@ -5347,7 +5352,7 @@ class Calculation
 			&& ((is_string($operand1) && !is_numeric($operand1) && $operand1 !== '')
 				|| (is_string($operand2) && !is_numeric($operand2) && $operand2 !== ''))
 		) {
-			$result = Information\ExcelError::VALUE();
+			$result = ExcelError::VALUE();
 		} elseif (is_array($operand1) || is_array($operand2)) {
 			//    Ensure that both operands are arrays/matrices
 			if (is_array($operand1)) {
@@ -5393,7 +5398,7 @@ class Calculation
 							break;
 						case '/':
 							if ($operand2[$row][$column] == 0) {
-								$operand1[$row][$column] = Information\ExcelError::DIV0();
+								$operand1[$row][$column] = ExcelError::DIV0();
 							} else {
 								$operand1[$row][$column] /= $operand2[$row][$column];
 							}
@@ -5432,8 +5437,8 @@ class Calculation
 				case '/':
 					if ($operand2 == 0) {
 						//    Trap for Divide by Zero error
-						$stack->push('Error', Information\ExcelError::DIV0());
-						$this->debugLog->writeDebugLog('Evaluation Result is %s', $this->showTypeDetails(Information\ExcelError::DIV0()));
+						$stack->push('Error', ExcelError::DIV0());
+						$this->debugLog->writeDebugLog('Evaluation Result is %s', $this->showTypeDetails(ExcelError::DIV0()));
 
 						return false;
 					}
@@ -5551,7 +5556,7 @@ class Calculation
 			// Named range?
 			$namedRange = ($worksheet === null) ? null : DefinedName::resolveName($range, $worksheet);
 			if ($namedRange === null) {
-				return Information\ExcelError::REF();
+				return ExcelError::REF();
 			}
 
 			$worksheet = $namedRange->getWorksheet();
@@ -5710,7 +5715,7 @@ class Calculation
 		$definedNameScope = $namedRange->getScope();
 		if ($definedNameScope !== null && $definedNameScope !== $cellWorksheet) {
 			// The defined name isn't in our current scope, so #REF
-			$result = Information\ExcelError::REF();
+			$result = ExcelError::REF();
 			$stack->push('Error', $result, $namedRange->getName());
 
 			return $result;
@@ -5795,6 +5800,6 @@ class Calculation
 	 */
 	private static function makeError($operand = ''): string
 	{
-		return Information\ErrorValue::isError($operand) ? $operand : Information\ExcelError::VALUE();
+		return Information\ErrorValue::isError($operand) ? $operand : ExcelError::VALUE();
 	}
 }

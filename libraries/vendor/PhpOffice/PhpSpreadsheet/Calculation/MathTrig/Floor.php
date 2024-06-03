@@ -130,7 +130,7 @@ class Floor
 
 	/**
 	 * Avoid Scrutinizer problems concerning complexity.
-	 * @return string|float
+	 * @return float|string
 	 */
 	private static function argumentsOkPrecise(float $number, float $significance)
 	{
@@ -174,7 +174,7 @@ class Floor
 
 	/**
 	 * Avoid Scrutinizer problems concerning complexity.
-	 * @return string|float
+	 * @return float|string
 	 */
 	private static function argumentsOk(float $number, float $significance)
 	{

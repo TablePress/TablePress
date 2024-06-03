@@ -44,12 +44,12 @@ class DgContainer
 		$this->lastSpId = $value;
 	}
 
-	public function getSpgrContainer(): ?DgContainer\SpgrContainer
+	public function getSpgrContainer(): ?SpgrContainer
 	{
 		return $this->spgrContainer;
 	}
 
-	public function getSpgrContainerOrThrow(): DgContainer\SpgrContainer
+	public function getSpgrContainerOrThrow(): SpgrContainer
 	{
 		if ($this->spgrContainer !== null) {
 			return $this->spgrContainer;
@@ -58,7 +58,7 @@ class DgContainer
 		throw new SpreadsheetException('spgrContainer is unexpectedly null');
 	}
 
-	public function setSpgrContainer(DgContainer\SpgrContainer $spgrContainer): DgContainer\SpgrContainer
+	public function setSpgrContainer(SpgrContainer $spgrContainer): SpgrContainer
 	{
 		return $this->spgrContainer = $spgrContainer;
 	}

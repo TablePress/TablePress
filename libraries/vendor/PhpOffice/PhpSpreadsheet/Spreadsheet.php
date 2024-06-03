@@ -286,7 +286,7 @@ class Spreadsheet implements JsonSerializable
 
 	/**
 	 * retrieve ribbon XML Data.
-	 * @return null|mixed[]|string
+	 * @return mixed[]|string|null
 	 */
 	public function getRibbonXMLData(string $what = 'all') //we need some constants here...
 	{
@@ -439,10 +439,10 @@ class Spreadsheet implements JsonSerializable
 		$this->activeSheetIndex = 0;
 
 		// Create document properties
-		$this->properties = new Document\Properties();
+		$this->properties = new Properties();
 
 		// Create document security
-		$this->security = new Document\Security();
+		$this->security = new Security();
 
 		// Set defined names
 		$this->definedNames = [];
@@ -492,7 +492,7 @@ class Spreadsheet implements JsonSerializable
 	/**
 	 * Get properties.
 	 */
-	public function getProperties(): Document\Properties
+	public function getProperties(): Properties
 	{
 		return $this->properties;
 	}
@@ -500,7 +500,7 @@ class Spreadsheet implements JsonSerializable
 	/**
 	 * Set properties.
 	 */
-	public function setProperties(Document\Properties $documentProperties): void
+	public function setProperties(Properties $documentProperties): void
 	{
 		$this->properties = $documentProperties;
 	}
@@ -508,7 +508,7 @@ class Spreadsheet implements JsonSerializable
 	/**
 	 * Get security.
 	 */
-	public function getSecurity(): Document\Security
+	public function getSecurity(): Security
 	{
 		return $this->security;
 	}
@@ -516,7 +516,7 @@ class Spreadsheet implements JsonSerializable
 	/**
 	 * Set security.
 	 */
-	public function setSecurity(Document\Security $documentSecurity): void
+	public function setSecurity(Security $documentSecurity): void
 	{
 		$this->security = $documentSecurity;
 	}

@@ -10,7 +10,7 @@ abstract class DatabaseAbstract
 {
 	/**
 	 * @param mixed[]|null|int|string $field
-	 * @return null|float|int|string
+	 * @return float|int|string|null
 	 */
 	abstract public static function evaluate(array $database, $field, array $criteria);
 

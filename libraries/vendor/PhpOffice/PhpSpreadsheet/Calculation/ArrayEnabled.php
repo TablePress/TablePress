@@ -8,7 +8,12 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\ArrayArgumentProcesso
 trait ArrayEnabled
 {
 	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\ArrayArgumentHelper|null
+	 * @var bool
+	 */
+	private static $initializationNeeded = true;
+
+	/**
+	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\ArrayArgumentHelper
 	 */
 	private static $arrayArgumentHelper;
 
@@ -17,8 +22,9 @@ trait ArrayEnabled
 	 */
 	private static function initialiseHelper($arguments): void
 	{
-		if (self::$arrayArgumentHelper === null) {
+		if (self::$initializationNeeded === true) {
 			self::$arrayArgumentHelper = new ArrayArgumentHelper();
+			self::$initializationNeeded = false;
 		}
 		self::$arrayArgumentHelper->initialise(($arguments === false) ? [] : $arguments);
 	}

@@ -47,7 +47,7 @@ class Dollar
 	 *              Or can be an array of values
 	 * @param mixed $fraction Fraction
 	 *              Or can be an array of values
-	 * @return mixed[]|string|float
+	 * @return mixed[]|float|string
 	 */
 	public static function decimal($fractionalDollar = null, $fraction = 0)
 	{
@@ -94,7 +94,7 @@ class Dollar
 	 *              Or can be an array of values
 	 * @param mixed $fraction Fraction
 	 *              Or can be an array of values
-	 * @return mixed[]|string|float
+	 * @return mixed[]|float|string
 	 */
 	public static function fractional($decimalDollar = null, $fraction = 0)
 	{

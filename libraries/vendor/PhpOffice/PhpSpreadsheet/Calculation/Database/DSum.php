@@ -29,7 +29,7 @@ class DSum extends DatabaseAbstract
 	 *                                        includes at least one column label and at least one cell below
 	 *                                        the column label in which you specify a condition for the
 	 *                                        column.
-	 * @return null|float|string
+	 * @return float|string|null
 	 */
 	public static function evaluate(array $database, $field, array $criteria, bool $returnNull = false)
 	{

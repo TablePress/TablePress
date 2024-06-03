@@ -49,7 +49,7 @@ class Mean
 	 *        HARMEAN(value1[,value2[, ...]])
 	 *
 	 * @param mixed ...$args Data values
-	 * @return string|float|int
+	 * @return float|int|string
 	 */
 	public static function harmonic(...$args)
 	{

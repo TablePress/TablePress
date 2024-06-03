@@ -2284,7 +2284,7 @@ class Xls extends BaseReader
 				}
 
 				// bit: 31-26; mask: 0xFC000000 fill pattern
-				if ($fillType = Xls\Style\FillPattern::lookup((self::FC000000 & self::getInt4d($recordData, 14)) >> 26)) {
+				if ($fillType = FillPattern::lookup((self::FC000000 & self::getInt4d($recordData, 14)) >> 26)) {
 					$objStyle->getFill()->setFillType($fillType);
 				}
 				// offset: 18; size: 2; pattern and background colour
@@ -2330,7 +2330,7 @@ class Xls extends BaseReader
 				$objStyle->getFill()->endcolorIndex = (0x00003F80 & $borderAndBackground) >> 7;
 
 				// bit: 21-16; mask: 0x003F0000; fill pattern
-				$objStyle->getFill()->setFillType(Xls\Style\FillPattern::lookup((0x003F0000 & $borderAndBackground) >> 16));
+				$objStyle->getFill()->setFillType(FillPattern::lookup((0x003F0000 & $borderAndBackground) >> 16));
 
 				// bit: 24-22; mask: 0x01C00000; bottom line style
 				$objStyle->getBorders()->getBottom()->setBorderStyle(Xls\Style\Border::lookup((0x01C00000 & $borderAndBackground) >> 22));
@@ -2846,6 +2846,7 @@ class Xls extends BaseReader
 				$formula = $this->getFormulaFromStructure($formulaStructure);
 			} catch (PhpSpreadsheetException $exception) {
 				$formula = '';
+				$isBuiltInName = 0;
 			}
 
 			$this->definedname[] = [
@@ -5078,7 +5079,7 @@ class Xls extends BaseReader
 
 			// Apply range protection to sheet
 			if ($cellRanges) {
-				$this->phpSheet->protectCells(implode(' ', $cellRanges), strtoupper(dechex($wPassword)), true);
+				$this->phpSheet->protectCells(implode(' ', $cellRanges), ($wPassword === 0) ? '' : strtoupper(dechex($wPassword)), true);
 			}
 		}
 	}
@@ -7479,7 +7480,7 @@ class Xls extends BaseReader
 	 * Reads first 8 bytes of a string and return IEEE 754 float.
 	 *
 	 * @param string $data Binary string that is at least 8 bytes long
-	 * @return int|float
+	 * @return float|int
 	 */
 	private static function extractNumber(string $data)
 	{

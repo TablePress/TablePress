@@ -6,7 +6,7 @@ abstract class MaxMinBase
 {
 	/**
 	 * @param int|float|string|bool $value
-	 * @return int|float
+	 * @return float|int
 	 */
 	protected static function datatypeAdjustmentAllowStrings($value)
 	{

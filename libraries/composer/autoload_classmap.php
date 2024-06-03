@@ -454,6 +454,7 @@ return array(
 	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageMargins' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageMargins.php',
 	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageSetup' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageSetup.php',
 	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Pane' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Pane.php',
+	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\ProtectedRange' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/ProtectedRange.php',
 	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Protection' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Protection.php',
 	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Row' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Row.php',
 	'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\RowCellIterator' => $baseDir . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/RowCellIterator.php',

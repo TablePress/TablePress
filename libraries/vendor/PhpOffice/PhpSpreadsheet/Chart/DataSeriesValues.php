@@ -367,7 +367,7 @@ class DataSeriesValues extends Properties
 
 	/**
 	 * Get line width for series.
-	 * @return null|float|int
+	 * @return float|int|null
 	 */
 	public function getLineWidth()
 	{
@@ -405,7 +405,7 @@ class DataSeriesValues extends Properties
 	public function multiLevelCount(): int
 	{
 		$levelCount = 0;
-		foreach ($this->dataValues as $dataValueSet) {
+		foreach (($this->dataValues ?? []) as $dataValueSet) {
 			$levelCount = max($levelCount, count($dataValueSet));
 		}
 
@@ -426,6 +426,9 @@ class DataSeriesValues extends Properties
 	 */
 	public function getDataValue()
 	{
+		if ($this->dataValues === null) {
+			return null;
+		}
 		$count = count($this->dataValues);
 		if ($count == 0) {
 			return null;

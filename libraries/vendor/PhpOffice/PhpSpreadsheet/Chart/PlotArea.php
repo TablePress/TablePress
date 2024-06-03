@@ -67,7 +67,7 @@ class PlotArea
 
 	/**
 	 * Get Number of Plot Series.
-	 * @return int|float
+	 * @return float|int
 	 */
 	public function getPlotSeriesCount()
 	{

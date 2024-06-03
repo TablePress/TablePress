@@ -85,7 +85,7 @@
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
 			"composer config platform.php 7.2",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 2.0.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 2.1.0\" --no-update",
 			"composer update --no-dev",
 			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart /mozart/bin/mozart compose",
 			"composer remove phpoffice/phpspreadsheet --no-update",

@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 use Composer\AutoloadTablePress\ClassLoader as ClassLoaderTablePress;
 
 
-class ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8
+class ComposerStaticInita46cd5a2897e45921b7ca3996de68e49
 {
 	public static $prefixLengthsPsr4 = array (
 		'T' => 
@@ -472,6 +472,7 @@ class ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageMargins' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageMargins.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\PageSetup' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/PageSetup.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Pane' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Pane.php',
+		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\ProtectedRange' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/ProtectedRange.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Protection' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Protection.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\Row' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/Row.php',
 		'TablePress\\PhpOffice\\PhpSpreadsheet\\Worksheet\\RowCellIterator' => __DIR__ . '/../..' . '/libraries/vendor/PhpOffice/PhpSpreadsheet/Worksheet/RowCellIterator.php',
@@ -508,9 +509,9 @@ class ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8
 	public static function getInitializer(ClassLoaderTablePress $loader)
 	{
 		return \Closure::bind(function () use ($loader) {
-			$loader->prefixLengthsPsr4 = ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8::$prefixLengthsPsr4;
-			$loader->prefixDirsPsr4 = ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8::$prefixDirsPsr4;
-			$loader->classMap = ComposerStaticInitbdc74b663ea7898186a6e4b25f1f64c8::$classMap;
+			$loader->prefixLengthsPsr4 = ComposerStaticInita46cd5a2897e45921b7ca3996de68e49::$prefixLengthsPsr4;
+			$loader->prefixDirsPsr4 = ComposerStaticInita46cd5a2897e45921b7ca3996de68e49::$prefixDirsPsr4;
+			$loader->classMap = ComposerStaticInita46cd5a2897e45921b7ca3996de68e49::$classMap;
 
 		}, null, ClassLoaderTablePress::class);
 	}
