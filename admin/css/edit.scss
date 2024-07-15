@@ -21,12 +21,23 @@
 }
 
 /* Positioning of the "Help" button in the header section of a postbox. */
-.postbox-header .handle-actions .button-module-help {
-	margin-right: 10px;
+.postbox-header .handle-actions {
+	.button-module-help {
+		margin-right: 10px;
 
-	@media screen and (min-width: 783px) {
-		position: relative;
-		top: -5px;
+		@media screen and (max-width: 782px) {
+			line-height: 2.18181818;
+			vertical-align: top;
+			min-height: auto;
+			margin-bottom: 0;
+		}
+	}
+
+	/* Backward compatibility with WP < 6.5. */
+	.handle-order-higher,
+	.handle-order-lower,
+	.handlediv {
+		height: 1.62rem;
 	}
 }
 
@@ -90,8 +101,9 @@ body #wp-link-backdrop {
 	min-width: 99.9%; /* but use the full width, minus approx. 1px as the box is wider than the others otherwise. */
 }
 
-#tablepress-page .button {
-	vertical-align: baseline;
+/* Button positioning inside tables in postboxes, like "Table Manipulation". */
+.tablepress-postbox-table .button {
+	vertical-align: middle;
 }
 
 #table-id-shortcode-wrapper {

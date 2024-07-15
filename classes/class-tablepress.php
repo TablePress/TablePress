@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	public const version = '2.3.2'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const version = '2.4'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	public const db_version = 78; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const db_version = 85; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -369,11 +369,16 @@ abstract class TablePress {
 	public static function format_datetime( string $datetime_string, string $separator_or_format = ' ' ): string {
 		$timezone = wp_timezone();
 		$datetime = date_create( $datetime_string, $timezone );
-		$timestamp = $datetime->getTimestamp(); // @phpstan-ignore-line
+		if ( false === $datetime ) {
+			return $datetime_string;
+		}
+		$timestamp = $datetime->getTimestamp();
 
 		switch ( $separator_or_format ) {
 			case ' ':
 			case '<br />':
+			case '<br/>':
+			case '<br>':
 				$date = wp_date( get_option( 'date_format' ), $timestamp, $timezone );
 				$time = wp_date( get_option( 'time_format' ), $timestamp, $timezone );
 				$output = "{$date}{$separator_or_format}{$time}";
@@ -678,6 +683,15 @@ abstract class TablePress {
 				),
 				'minimum_plan'         => 'pro',
 				'default_active'       => true,
+			),
+			'datatables-fuzzysearch'              => array(
+				'name'                 => __( 'Fuzzy Search', 'tablepress' ),
+				'description'          => __( 'Let the search account for spelling mistakes and typos and find similar matches.', 'tablepress' ),
+				'category'             => 'search-filter',
+				'class'                => 'TablePress_Module_DataTables_FuzzySearch',
+				'incompatible_classes' => array(),
+				'minimum_plan'         => 'max',
+				'default_active'       => false,
 			),
 			'datatables-rowgroup'                 => array(
 				'name'                 => __( 'Row Grouping', 'tablepress' ),

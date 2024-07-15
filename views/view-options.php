@@ -105,7 +105,7 @@ class TablePress_Options_View extends TablePress_View {
 						</a>
 					</div>
 				</div>
-				<a href="https://tablepress.org/modules/default-style-customizer/?utm_source=plugin&utm_medium=textlink&utm_content=options-screen"><img src="<?php echo esc_url( plugins_url( 'admin/img/default-style-customizer.png', TABLEPRESS__FILE__ ) ); ?>" width="305" height="172" alt="<?php esc_attr_e( 'Screenshot of the Default Style Customizer that is part of the TablePress premium versions.', 'tablepress' ); ?>" /></a>
+				<a href="https://tablepress.org/modules/default-style-customizer/?utm_source=plugin&utm_medium=textlink&utm_content=options-screen"><img src="<?php echo esc_url( plugins_url( 'admin/img/default-style-customizer.png', TABLEPRESS__FILE__ ) ); ?>" width="305" height="172" alt="<?php esc_attr_e( 'Screenshot of the Default Style Customizer that is part of the TablePress premium versions.', 'tablepress' ); ?>"></a>
 			</div>
 			<?php
 		endif;
@@ -124,7 +124,7 @@ class TablePress_Options_View extends TablePress_View {
 <table class="tablepress-postbox-table fixed">
 	<tr>
 		<th class="column-1" scope="row"><label for="option-custom-css"><?php _e( 'Custom CSS', 'tablepress' ); ?></label>:</th>
-		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?> /> <?php _e( 'Load this &#8220;Custom CSS&#8221; code to change the table styling:', 'tablepress' ); ?></label>
+		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?>> <?php _e( 'Load this &#8220;Custom CSS&#8221; code to change the table styling:', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr>
@@ -206,7 +206,7 @@ class TablePress_Options_View extends TablePress_View {
 	public function textbox_submit_button( array $data, array $box ): void {
 		?>
 			<p class="submit">
-				<input type="submit" id="tablepress-options-save-changes" class="button button-primary button-large button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sS', 'keyboard shortcut for Save Changes', 'tablepress' ) ); ?>" />
+				<input type="submit" id="tablepress-options-save-changes" class="button button-primary button-large button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sS', 'keyboard shortcut for Save Changes', 'tablepress' ) ); ?>">
 			</p>
 		<?php
 	}
@@ -224,9 +224,9 @@ class TablePress_Options_View extends TablePress_View {
 		<h1 style="margin-top:40px;"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></h1>
 		<p>
 		<?php
-			echo __( 'Uninstalling <strong>will permanently delete</strong> all TablePress tables and options from the database.', 'tablepress' ) . '<br />'
-				. __( 'It is recommended that you create a backup of the tables (by exporting the tables in the JSON format), in case you later change your mind.', 'tablepress' ) . '<br />'
-				. __( 'You will manually need to remove the plugin&#8217;s files from the plugin folder afterwards.', 'tablepress' ) . '<br />'
+			echo __( 'Uninstalling <strong>will permanently delete</strong> all TablePress tables and options from the database.', 'tablepress' ) . '<br>'
+				. __( 'It is recommended that you create a backup of the tables (by exporting the tables in the JSON format), in case you later change your mind.', 'tablepress' ) . '<br>'
+				. __( 'You will manually need to remove the plugin&#8217;s files from the plugin folder afterwards.', 'tablepress' ) . '<br>'
 				. __( 'Be very careful with this and only click the button if you know what you are doing!', 'tablepress' );
 		?>
 		</p>

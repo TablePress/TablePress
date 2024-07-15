@@ -177,7 +177,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @return string HTML content of the cell.
 	 */
 	protected function column_table_action( array $item ): string {
-		return '<input type="button" class="insert-shortcode button" title="' . esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ) . '" value="' . esc_attr__( 'Insert Shortcode', 'tablepress' ) . '" />';
+		return '<input type="button" class="insert-shortcode button" title="' . esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ) . '" value="' . esc_attr__( 'Insert Shortcode', 'tablepress' ) . '">';
 	}
 
 	/**
@@ -221,7 +221,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		$this->pagination( $which );
 		remove_filter( 'ngettext_default', array( $this, 'change_pagination_items_string' ), 10 );
 		?>
-			<br class="clear" />
+			<br class="clear">
 		</div>
 		<?php
 	}
@@ -328,8 +328,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 			// Don't load data nor table options.
 			$item = TablePress::$model_table->load( $item, false, false );
 		}
-		// Break reference in foreach iterator.
-		unset( $item );
+		unset( $item ); // Unset use-by-reference parameter of foreach loop.
 
 		// Maybe sort the items.
 		$_sortable_columns = $this->get_sortable_columns();

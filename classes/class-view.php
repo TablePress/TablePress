@@ -343,7 +343,7 @@ abstract class TablePress_View {
 	 * @param array<string, mixed> $box  Information about the text box.
 	 */
 	protected function action_field( array $data, array $box ): void {
-		echo "<input type=\"hidden\" name=\"action\" value=\"tablepress_{$this->action}\" />\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"tablepress_{$this->action}\">\n";
 	}
 
 	/**
@@ -358,7 +358,7 @@ abstract class TablePress_View {
 			$this->print_nav_tab_menu();
 		?>
 		<div id="tablepress-body">
-		<hr class="wp-header-end" />
+		<hr class="wp-header-end">
 		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
@@ -394,7 +394,7 @@ abstract class TablePress_View {
 					?>
 					</div>
 				</div>
-				<br class="clear" />
+				<br class="clear">
 			</div>
 		</form>
 		</div>
@@ -410,12 +410,12 @@ abstract class TablePress_View {
 	protected function print_nav_tab_menu(): void {
 		?>
 		<div id="tablepress-header" class="header">
-			<h1 class="name"><img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>" /><?php _e( 'TablePress', 'tablepress' ); ?></h1>
+			<h1 class="name"><img src="<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>" class="tablepress-icon" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>"><?php _e( 'TablePress', 'tablepress' ); ?></h1>
 			<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
 				<div class="buttons">
 					<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-button" class="tablepress-button">
 						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
-						<span class="dashicons dashicons-arrow-right-alt" />
+						<span class="dashicons dashicons-arrow-right-alt"></span>
 					</a>
 				</div>
 			<?php endif; ?>
@@ -457,11 +457,11 @@ abstract class TablePress_View {
 				<?php _e( 'Attention: Unfortunately, there is a problem!', 'tablepress' ); ?>
 			</em></h3>
 			<p style="font-size:14px">
-				<strong><?php _e( 'This screen requires JavaScript. Please enable JavaScript in your browser settings.', 'tablepress' ); ?></strong><br />
+				<strong><?php _e( 'This screen requires JavaScript. Please enable JavaScript in your browser settings.', 'tablepress' ); ?></strong><br>
 				<?php _e( 'For help, please follow <a href="https://www.enable-javascript.com/">the instructions on how to enable JavaScript in your browser</a>.', 'tablepress' ); ?>
 			</p>
 			<p>
-				<?php echo '<a href="' . TablePress::url( array( 'action' => 'list' ) ) . '">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
+				<?php echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'list' ) ) ) . '">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
 			</p>
 		</div>
 		<?php
@@ -478,7 +478,7 @@ abstract class TablePress_View {
 	protected function textbox_submit_button( array $data, array $box ): void {
 		$caption = $data['submit_button_caption'] ?? __( 'Save Changes', 'tablepress' );
 		?>
-		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary button-large" /></p>
+		<p class="submit"><input type="submit" value="<?php echo esc_attr( $caption ); ?>" class="button button-primary button-large"></p>
 		<?php
 	}
 

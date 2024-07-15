@@ -142,64 +142,6 @@ class TablePress_CSSTidy_Print {
 	}
 
 	/**
-	 * Returns the formatted CSS code.
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $default_media Optional. Default @media to add to selectors without any @media.
-	 * @return string Formatted CSS.
-	 */
-	public function formatted( string $default_media = '' ): string {
-		$this->_print( false, $default_media );
-		return $this->output_css;
-	}
-
-	/**
-	 * Returns the formatted CSS code to make a complete webpage.
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $doctype     Optional. Shorthand for the document type.
-	 * @param bool   $externalcss Optional. Indicates whether styles to be attached internally or as an external stylesheet.
-	 * @param string $title       Optional. Title to be added in the head of the document.
-	 * @param string $lang        Optional. Two-letter language code to be added to the output.
-	 * @return string Formatted CSS for a full page.
-	 */
-	public function formatted_page( string $doctype = 'html5', bool $externalcss = true, string $title = '', string $lang = 'en' ): string {
-		switch ( $doctype ) {
-			case 'html5':
-				$doctype_output = '<!DOCTYPE html>';
-				break;
-			case 'xhtml1.0strict':
-				$doctype_output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-				break;
-			case 'xhtml1.1':
-			default:
-				$doctype_output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
-				break;
-		}
-
-		$output = '';
-		$output .= $doctype_output . "\n" . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $lang . '"';
-		$output .= ( 'xhtml1.1' === $doctype ) ? '>' : ' lang="' . $lang . '">';
-		$output .= "\n<head>\n\t<title>{$title}</title>";
-
-		if ( $externalcss ) {
-			$output .= "\n\t<style>\n";
-			$output .= file_get_contents( 'cssparsed.css' ); // Adds an invisible BOM or something, but not in css_optimised.php.
-			$output .= "\n</style>";
-		} else {
-			$output .= "\n" . '<link rel="stylesheet" type="text/css" href="cssparsed.css" />'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-		}
-		$output .= "\n</head>\n<body><code id=\"copytext\">";
-		$output .= $this->formatted();
-		$output .= '</code>' . "\n" . '</body></html>';
-
-		$this->output_css_plain = $output;
-		return $this->output_css_plain;
-	}
-
-	/**
 	 * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain.
 	 *
 	 * @since 1.0
@@ -470,63 +412,6 @@ class TablePress_CSSTidy_Print {
 			return htmlspecialchars( $a_string, ENT_QUOTES, 'utf-8' );
 		}
 		return $a_string;
-	}
-
-	/**
-	 * Gets compression ratio.
-	 *
-	 * @since 1.2
-	 *
-	 * @return double Compression ratio.
-	 */
-	public function get_ratio(): float {
-		if ( ! $this->output_css_plain ) {
-			$this->formatted();
-		}
-		return round( ( strlen( $this->input_css ) - strlen( $this->output_css_plain ) ) / strlen( $this->input_css ), 3 ) * 100;
-	}
-
-	/**
-	 * Gets difference between the old and new code in bytes and prints the code if necessary.
-	 *
-	 * @since 1.1
-	 *
-	 * @return string Size difference.
-	 */
-	public function get_diff(): string {
-		if ( ! $this->output_css_plain ) {
-			$this->formatted();
-		}
-
-		$diff = strlen( $this->output_css_plain ) - strlen( $this->input_css );
-
-		if ( $diff > 0 ) {
-			return '+' . $diff;
-		} elseif ( 0 === $diff ) {
-			return '+-' . $diff;
-		}
-
-		return (string) $diff;
-	}
-
-	/**
-	 * Gets the size of either input or output CSS in kilobytes (KB).
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $loc Optional. Location of the CSS.
-	 * @return double Size of the CSS.
-	 */
-	public function size( string $loc = 'output' ): float {
-		if ( 'output' === $loc && ! $this->output_css ) {
-			$this->formatted();
-		}
-
-		if ( 'input' === $loc ) {
-			return strlen( $this->input_css ) / 1000;
-		} else {
-			return strlen( $this->output_css_plain ) / 1000;
-		}
 	}
 
 } // class TablePress_CSSTidy_Print

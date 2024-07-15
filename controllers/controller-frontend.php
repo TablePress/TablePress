@@ -438,7 +438,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// DataTables language/translation handling.
 		if ( ! empty( $datatables_language ) ) {
-			$datatables_language = wp_json_encode( $datatables_language, JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT );
+			$datatables_language = wp_json_encode( $datatables_language, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT );
 			$datatables_language = "var DT_language={$datatables_language};\n";
 		} else {
 			$datatables_language = '';
@@ -820,7 +820,11 @@ JS;
 						break;
 					case 'human':
 						$modified_timestamp = date_create( $table['last_modified'], wp_timezone() );
-						$modified_timestamp = $modified_timestamp->getTimestamp(); // @phpstan-ignore-line
+						if ( false === $modified_timestamp ) {
+							$modified_timestamp = $table['last_modified'];
+						} else {
+							$modified_timestamp = $modified_timestamp->getTimestamp();
+						}
 						$current_timestamp = time();
 						$time_diff = $current_timestamp - $modified_timestamp;
 						// Time difference is only shown up to one week.

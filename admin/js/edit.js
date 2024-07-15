@@ -140,7 +140,11 @@ tp.helpers.options.change = function ( event ) {
 
 	// Save numeric options as numbers.
 	if ( event.target instanceof HTMLInputElement && 'number' === event.target.type ) {
-		tp.table.options[ option_name ] = parseInt( tp.table.options[ option_name ], 10 );
+		if ( tp.table.options[ option_name ].includes( '.' ) ) {
+			tp.table.options[ option_name ] = parseFloat( tp.table.options[ option_name ] );
+		} else {
+			tp.table.options[ option_name ] = parseInt( tp.table.options[ option_name ], 10 );
+		}
 	}
 
 	// Turn off "Enable Visitor Features" if the table has merged cells.
@@ -767,7 +771,7 @@ tp.callbacks.table_preview.process = function ( event ) {
 	};
 
 	// Add spinner, disable "Preview" buttons, and change cursor.
-	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-table-preview" class="spinner-table-preview spinner is-active" title="${ __( 'The Table Preview is being loaded …', 'tablepress' ) }"/>` );
+	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-table-preview" class="spinner-table-preview spinner is-active" title="${ __( 'The Table Preview is being loaded …', 'tablepress' ) }"></span>` );
 	$( '.button-preview' ).forEach( ( button ) => button.classList.add( 'disabled' ) );
 	document.body.classList.add( 'wait' );
 
@@ -874,7 +878,7 @@ tp.callbacks.save_changes.process = function ( event ) {
 	};
 
 	// Add spinner, disable "Save Changes" buttons, and change cursor.
-	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"/>` );
+	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"></span>` );
 	$( '.button-save-changes' ).forEach( ( button ) => ( button.disabled = true ) );
 	document.body.classList.add( 'wait' );
 
@@ -1073,7 +1077,7 @@ tp.callbacks.screen_options.save = function ( event ) {
 	};
 
 	// Add spinner and change cursor.
-	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"/>` );
+	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"></span>` );
 	document.body.classList.add( 'wait' );
 
 	// Save the table data to the server via an AJAX request.

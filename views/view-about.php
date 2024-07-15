@@ -211,26 +211,26 @@ class TablePress_About_View extends TablePress_View {
 		</p>
 		<p class="ltr">
 			&middot; Website: <?php echo site_url(); ?>
-			<br />&middot; TablePress: <?php echo TablePress::version; ?>
-			<br />&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
-			<br />&middot; TablePress table scheme: <?php echo TablePress::table_scheme_version; ?>
-			<br />&middot; Plan: Free
-			<br />&middot; Plugin installed: <?php echo wp_date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
-			<br />&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
-			<br />&middot; Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?>
-			<br />&middot; PHP: <?php echo PHP_VERSION; ?>
-			<br />&middot; mySQL (Server): <?php echo ( isset( $GLOBALS['wpdb']->dbh ) && function_exists( 'mysqli_get_server_info' ) ) ? mysqli_get_server_info( $GLOBALS['wpdb']->dbh ) : 'no mySQL server'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info ?>
-			<br />&middot; mySQL (Client): <?php echo function_exists( 'mysqli_get_client_info' ) ? mysqli_get_client_info() : 'no mySQL client'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_client_info ?>
-			<br />&middot; mbstring: <?php echo extension_loaded( 'mbstring' ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
-			<br />&middot; ZipArchive: <?php echo class_exists( 'ZipArchive', false ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
-			<br />&middot; DOMDocument: <?php echo class_exists( 'DOMDocument', false ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
-			<br />&middot; simplexml_load_string: <?php echo function_exists( 'simplexml_load_string' ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
-			<br />&middot; libxml_disable_entity_loader: <?php echo function_exists( 'libxml_disable_entity_loader' ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
-			<br />&middot; UTF-8 conversion: <?php echo ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
-			<br />&middot; WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?>
-			<br />&middot; Server Memory Limit: <?php echo esc_html( @ini_get( 'memory_limit' ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged ?>
-			<br />&middot; WP_DEBUG: <?php echo WP_DEBUG ? 'true' : 'false'; ?>
-			<br />&middot; WP_POST_REVISIONS: <?php echo is_bool( WP_POST_REVISIONS ) ? ( WP_POST_REVISIONS ? 'true' : 'false' ) : WP_POST_REVISIONS; // @phpstan-ignore-line ?>
+			<br>&middot; TablePress: <?php echo TablePress::version; ?>
+			<br>&middot; TablePress (DB): <?php echo TablePress::db_version; ?>
+			<br>&middot; TablePress table scheme: <?php echo TablePress::table_scheme_version; ?>
+			<br>&middot; Plan: Free
+			<br>&middot; Plugin installed: <?php echo wp_date( 'Y/m/d H:i:s', $data['first_activation'] ); ?>
+			<br>&middot; WordPress: <?php echo $GLOBALS['wp_version']; ?>
+			<br>&middot; Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?>
+			<br>&middot; PHP: <?php echo PHP_VERSION; ?>
+			<br>&middot; mySQL (Server): <?php echo ( isset( $GLOBALS['wpdb']->dbh ) && function_exists( 'mysqli_get_server_info' ) ) ? mysqli_get_server_info( $GLOBALS['wpdb']->dbh ) : 'no mySQL server'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info ?>
+			<br>&middot; mySQL (Client): <?php echo function_exists( 'mysqli_get_client_info' ) ? mysqli_get_client_info() : 'no mySQL client'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_client_info ?>
+			<br>&middot; mbstring: <?php echo extension_loaded( 'mbstring' ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
+			<br>&middot; ZipArchive: <?php echo class_exists( 'ZipArchive', false ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
+			<br>&middot; DOMDocument: <?php echo class_exists( 'DOMDocument', false ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
+			<br>&middot; simplexml_load_string: <?php echo function_exists( 'simplexml_load_string' ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
+			<br>&middot; libxml_disable_entity_loader: <?php echo function_exists( 'libxml_disable_entity_loader' ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
+			<br>&middot; UTF-8 conversion: <?php echo ( function_exists( 'mb_detect_encoding' ) && function_exists( 'iconv' ) ) ? 'yes' : '<span style="color:#800000;font-weight:bold;">no</span>'; ?>
+			<br>&middot; WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?>
+			<br>&middot; Server Memory Limit: <?php echo esc_html( @ini_get( 'memory_limit' ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged ?>
+			<br>&middot; WP_DEBUG: <?php echo WP_DEBUG ? 'true' : 'false'; ?>
+			<br>&middot; WP_POST_REVISIONS: <?php echo is_bool( WP_POST_REVISIONS ) ? ( WP_POST_REVISIONS ? 'true' : 'false' ) : WP_POST_REVISIONS; // @phpstan-ignore-line ?>
 		</p>
 		<?php
 	}
@@ -247,9 +247,9 @@ class TablePress_About_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'Special Thanks go to:', 'tablepress' ); ?>
-			<br />&middot; <?php printf( __( 'Allan Jardine for <a href="%s">DataTables</a>,', 'tablepress' ), 'https://www.datatables.net/' ); ?>
-			<br />&middot; <?php printf( __( 'the translators in the <a href="%s">Plugin Directory</a>,', 'tablepress' ), 'https://translate.wordpress.org/projects/wp-plugins/tablepress/' ); ?>
-			<br />&middot; <?php _e( 'all customers, donors, contributors, supporters, reviewers, and users of the plugin!', 'tablepress' ); ?>
+			<br>&middot; <?php printf( __( 'Allan Jardine for <a href="%s">DataTables</a>,', 'tablepress' ), 'https://www.datatables.net/' ); ?>
+			<br>&middot; <?php printf( __( 'the translators in the <a href="%s">Plugin Directory</a>,', 'tablepress' ), 'https://translate.wordpress.org/projects/wp-plugins/tablepress/' ); ?>
+			<br>&middot; <?php _e( 'all customers, donors, contributors, supporters, reviewers, and users of the plugin!', 'tablepress' ); ?>
 		</p>
 		<?php
 	}

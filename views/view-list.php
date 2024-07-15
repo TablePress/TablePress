@@ -45,23 +45,180 @@ class TablePress_List_View extends TablePress_View {
 		add_thickbox(); // For the table preview.
 		$this->admin_page->enqueue_script( 'list' );
 
+		if ( $data['messages']['superseded_extensions'] ) {
+			$superseded_extensions = array(
+				'tablepress-advanced-access-rights/tablepress-advanced-access-rights.php' => array(
+					'name'       => 'TablePress Extension: Advanced Access Rights',
+					'compatible' => true,
+				),
+				'tablepress-auto-export-tables/tablepress-auto-export-tables.php' => array(
+					'name'       => 'TablePress Extension: Automatic Table Export',
+					'compatible' => true,
+				),
+				'tablepress-cell-highlighting/tablepress-cell-highlighting.php' => array(
+					'name'       => 'TablePress Extension: Cell Highlighting',
+					'compatible' => true,
+				),
+				'tablepress-datatables-alphabetsearch/tablepress-datatables-alphabetsearch.php' => array(
+					'name'       => 'TablePress Extension: DataTables AlphabetSearch',
+					'compatible' => false,
+				),
+				'tablepress-datatables-buttons/tablepress-datatables-buttons.php' => array(
+					'name'       => 'TablePress Extension: DataTables Buttons',
+					'compatible' => true,
+				),
+				'tablepress-datatables-column-filter-widgets/tablepress-datatables-column-filter-widgets.php' => array(
+					'name'       => 'TablePress Extension: DataTables ColumnFilterWidgets',
+					'compatible' => false,
+				),
+				'tablepress-datatables-columnfilter/tablepress-datatables-columnfilter.php' => array(
+					'name'       => 'TablePress Extension: DataTables Column Filter',
+					'compatible' => false,
+				),
+				'tablepress-datatables-counter-column/tablepress-datatables-counter-column.php' => array(
+					'name'       => 'TablePress Extension: DataTables Counter Column',
+					'compatible' => true,
+				),
+				'tablepress-datatables-fixedcolumns/tablepress-datatables-fixedcolumns.php' => array(
+					'name'       => 'TablePress Extension: DataTables FixedColumns',
+					'compatible' => false,
+				),
+				'tablepress-datatables-fixedheader/tablepress-datatables-fixedheader.php' => array(
+					'name'       => 'TablePress Extension: DataTables FixedHeader',
+					'compatible' => true,
+				),
+				'tablepress-datatables-row-details/tablepress-datatables-row-details.php' => array(
+					'name'       => 'TablePress Extension: DataTables Row Details',
+					'compatible' => false,
+				),
+				'tablepress-datatables-rowgroup/tablepress-datatables-rowgroup.php' => array(
+					'name'       => 'TablePress Extension: DataTables RowGroup',
+					'compatible' => false,
+				),
+				'tablepress-responsive-tables/tablepress-responsive-tables.php' => array(
+					'name'       => 'TablePress Extension: Responsive Tables',
+					'compatible' => false,
+				),
+				'tablepress-row-filter/tablepress-row-filter.php' => array(
+					'name'       => 'TablePress Extension: Row Filtering',
+					'compatible' => true,
+				),
+				'tablepress-row-highlighting/tablepress-row-highlighting.php' => array(
+					'name'       => 'TablePress Extension: Row Highlighting',
+					'compatible' => true,
+				),
+				'tablepress-table-auto-update/tablepress-table-auto-update.php' => array(
+					'name'       => 'TablePress Extension: Table Auto Update',
+					'compatible' => true,
+				),
+				'tablepress-table-column-order/tablepress-table-column-order.php' => array(
+					'name'       => 'TablePress Extension: Table Column Order',
+					'compatible' => true,
+				),
+			);
+
+			$active_compatible_superseded_extensions = array();
+			$active_incompatible_superseded_extensions = array();
+			foreach ( $superseded_extensions as $plugin => $extension ) {
+				if ( is_plugin_active( $plugin ) ) {
+					if ( $extension['compatible'] ) {
+						$active_compatible_superseded_extensions[] = $extension['name'];
+					} else {
+						$active_incompatible_superseded_extensions[] = $extension['name'];
+					}
+				}
+			}
+
+			/*
+			 * If no superseded extensions are used, hide the message, to prevent running the checks on every load of the view.
+			 * This leaves a small risk of an Extension being activated later, but that's acceptable as they are no longer publicly available.
+			 */
+			if ( empty( $active_incompatible_superseded_extensions ) && ( empty( $active_compatible_superseded_extensions ) || ! tb_tp_fs()->is_free_plan() ) ) {
+				TablePress::$model_options->update( 'message_superseded_extensions', false );
+			}
+
+			$message = '';
+
+			$notice_css_classes = 'not-dismissible';
+
+			if ( ! empty( $active_incompatible_superseded_extensions ) ) {
+				$notice_css_classes .= ' notice-error notice-large';
+
+				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired more than 2 years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>will stop working with TablePress 3</strong> later this year:', 'tablepress' ) . '</p>';
+				$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:16px;">';
+				foreach ( $active_incompatible_superseded_extensions as $extension ) {
+					$message .= '<li>' . esc_html( $extension ) . '</li>';
+				}
+				$message .= '</ul>';
+				$message .= '<p style="font-size:16px;"><strong>' . __( 'Keeping them activated can lead to errors on your website.', 'tablepress' ) . '</strong></p>';
+
+				if ( tb_tp_fs()->is_free_plan() ) {
+					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'To continue using these features, <a href="%s">upgrade to a TablePress Premium license plan</a>!', 'tablepress' ), 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=textlink&utm_content=superseded-extensions-message' ) . '</strong><br>'
+					. __( 'TablePress Pro and TablePress Max come with updated and heavily improved versions of these features and include direct priority email support.', 'tablepress' ) . '</p>';
+				} else {
+					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'To continue using these features, please deactivate the listed Extensions on the <a href="%1$s">“Plugins” screen</a> and activate the corresponding feature module of your TablePress Premium license on the <a href="%2$s">“Modules” screen</a>.', 'tablepress' ), esc_url( admin_url( 'plugins.php' ) ), esc_url( TablePress::url( array( 'action' => 'modules' ) ) ) ) . '</strong></p>';
+				}
+
+				if ( ! empty( $active_compatible_superseded_extensions ) && tb_tp_fs()->is_free_plan() ) {
+					$message .= '<p style="margin-top:1em;font-size:14px;">' . __( 'In addition, these TablePress Extension plugins have been retired and might become incompatible in the future as well:', 'tablepress' ) . '</strong></p>';
+					$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:14px;">';
+					foreach ( $active_compatible_superseded_extensions as $extension ) {
+						$message .= '<li>' . esc_html( $extension ) . '</li>';
+					}
+					$message .= '</ul>';
+				}
+			} elseif ( ! empty( $active_compatible_superseded_extensions ) && tb_tp_fs()->is_free_plan() ) {
+				$notice_css_classes .= ' notice-warning notice-alt';
+
+				$message .= '<p style="font-size:14px;"><strong>' . __( 'You are using TablePress Extension plugins on this website that have been retired and will no longer receive updates or support:', 'tablepress' ) . '</strong></p>';
+				$message .= '<ul style="list-style:disc;margin:0.5em 1em;">';
+				foreach ( $active_compatible_superseded_extensions as $extension ) {
+					$message .= '<li>' . esc_html( $extension ) . '</li>';
+				}
+				$message .= '</ul>';
+				$message .= '<p style="font-size:14px;"><strong>' . __( 'It is possible that these become incompatible with TablePress or WordPress in the future!', 'tablepress' ) . '</strong></p>';
+				$message .= '<p style="margin-top:1em;font-size:14px;">' . sprintf( __( 'However, their features were heavily improved and are now part of the up-to-date <a href="%s">TablePress Premium versions</a>!', 'tablepress' ), 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=textlink&utm_content=superseded-extensions-message' ) . '</p>';
+			}
+
+			if ( '' !== $message ) {
+				if ( tb_tp_fs()->is_free_plan() ) {
+					$message .= '<p style="font-size:16px;margin-top:1.5em;"><strong>' . __( 'Upgrade to a TablePress Premium license plan now and get:', 'tablepress' ) . '</strong></p>';
+					$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:16px;">';
+					$message .= '<li>' . __( 'Updated and heavily improved versions of these features!', 'tablepress' ) . '</li>';
+					$message .= '<li>' . __( 'Direct integration into the user interface!', 'tablepress' ) . '</li>';
+					$message .= '<li>' . __( 'Regular updates that ensure compatibility with WordPress!', 'tablepress' ) . '</li>';
+					$message .= '<li>' . __( 'Priority email support!', 'tablepress' ) . '</li>';
+					$message .= '</ul>';
+					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'And the best: %s', 'tablepress' ), sprintf( __( 'Use the promo code %1$s during the checkout process and save %2$s now!', 'tablepress' ), '<code>THANKYOU30</code>', '30%' ) ) . '</strong></p>';
+					$message .= '<p style="margin-top:2em;">' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:3em;background:linear-gradient(135deg,#00d184 0%%,#0791e3 100%%);border:none;font-weight:bold;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=button&utm_content=superseded-extensions-message', __( 'Upgrade to a TablePress Premium version now!', 'tablepress' ) );
+				} else {
+					$message .= '<p style="margin-top:2em;">';
+				}
+				$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'superseded_extensions', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
+
+				$title = '<em>' . __( 'Important Notice!', 'tablepress' ) . '</em>';
+
+				$this->add_header_message( $message, $notice_css_classes, $title );
+			}
+		}
+
 		if ( $data['messages']['first_visit'] ) {
-			$message = '<p><strong style="font-size:14px;">' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>';
+			$message = '<p style="font-size:14px;"><strong>' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>';
 			$message .= '<p>' . sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p>';
 
 			if ( tb_tp_fs()->is_free_plan() ) {
 				$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'More great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. <a href="%s">Go check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=first-visit-message' ) . '</strong></p>';
 			}
 
-			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
+			$message .= '<p style="margin-top:1em;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'first_visit', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
 			$title = '<em>' . __( 'Welcome!', 'tablepress' ) . '</em>';
 
 			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
 		}
 
-		if ( $data['messages']['donation_message'] ) {
-			$message = '<p style="font-size:14px;"><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=300" height="150" width="150" style="float:left;margin:2px 15px 30px 0;" />'
+		if ( $data['messages']['donation_nag'] ) {
+			$message = '<p style="font-size:14px;"><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=300" height="150" width="150" style="float:left;margin:2px 15px 30px 0;">'
 				. __( 'Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin.', 'tablepress' ) . '</p>';
 			$message .= '<p style="font-size:14px;">' . __( 'Thank you for using it!', 'tablepress' ) . ' ';
 			if ( $data['table_count'] > 0 ) {
@@ -70,10 +227,10 @@ class TablePress_List_View extends TablePress_View {
 				$message .= sprintf( __( 'It looks like you haven’t added a table yet. If you need help to get started, please find more information in the FAQ and Documentation on the <a href="%s">TablePress website</a>.', 'tablepress' ), 'https://tablepress.org/' );
 			}
 			$message .= '</p>';
-			$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=upgrade-message' ) . '<br />'
+			$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=upgrade-message' ) . '<br>'
 				. __( 'The available Pro and Max plans offer user support and many exciting and helpful features for your tables.', 'tablepress' ) . '</strong></p>';
 			$message .= '<p style="font-size:14px;">' . __( 'Sincerely, Tobias', 'tablepress' ) . '</p>';
-			$message .= '<p>' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:1em">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=upgrade-message', __( 'Tell me more about the Premium features', 'tablepress' ) )
+			$message .= '<p style="margin-top:1em;">' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:3em;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-message', __( 'Tell me more about the Premium features', 'tablepress' ) )
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
 			$title = '<em>' . __( 'TablePress has more to offer!', 'tablepress' ) . '</em>';
@@ -81,14 +238,14 @@ class TablePress_List_View extends TablePress_View {
 			$this->add_header_message( $message, 'notice-success not-dismissible', $title );
 		}
 
-		if ( $data['messages']['plugin_update_message'] ) {
+		if ( $data['messages']['plugin_update'] ) {
 			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</p>';
 
 			if ( tb_tp_fs()->is_free_plan() ) {
 				$message .= '<p><strong>' . sprintf( __( 'More great features and priority email support are available with a Premium license plan. <a href="%s">Check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</strong></p>';
 			}
 
-			$message .= '<p style="margin-top:14px;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
+			$message .= '<p style="margin-top:1em;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
 			$title = '<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>';
 
@@ -136,7 +293,7 @@ class TablePress_List_View extends TablePress_View {
 			$this->print_nav_tab_menu();
 		?>
 		<div id="tablepress-body">
-		<hr class="wp-header-end" />
+		<hr class="wp-header-end">
 		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
@@ -168,7 +325,7 @@ class TablePress_List_View extends TablePress_View {
 					?>
 					</div>
 				</div>
-				<br class="clear" />
+				<br class="clear">
 			</div>
 		</div>
 		</div>
@@ -214,7 +371,7 @@ class TablePress_List_View extends TablePress_View {
 <form method="get">
 		<?php
 		if ( isset( $_GET['page'] ) ) {
-			echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />' . "\n";
+			echo '<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '">' . "\n";
 		}
 		$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' );
 		?>

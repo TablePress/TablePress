@@ -472,50 +472,6 @@ class TablePress_CSSTidy {
 	}
 
 	/**
-	 * Writes formatted output to a file.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $filename File name.
-	 */
-	public function write_page( string $filename ): void {
-		$this->write( $filename, true );
-	}
-
-	/**
-	 * Writes plain output to a file.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $filename    File name.
-	 * @param bool   $formatted   Optional. Whether to print formatted or not.
-	 * @param string $doctype     Optional. When printing formatted, is a shorthand for the document type.
-	 * @param bool   $externalcss Optional. When printing formatted, indicates whether styles to be attached internally or as an external stylesheet.
-	 * @param string $title       Optional. When printing formatted, is the title to be added in the head of the document.
-	 * @param string $lang        Optional. When printing formatted, gives a two-letter language code to be added to the output.
-	 */
-	public function write( string $filename, bool $formatted = false, string $doctype = 'xhtml1.1', bool $externalcss = true, string $title = '', string $lang = 'en' ): void {
-		$filename .= ( $formatted ) ? '.xhtml' : '.css';
-
-		if ( ! is_dir( 'temp' ) ) {
-			$madedir = mkdir( 'temp' );
-			if ( ! $madedir ) {
-				print 'Could not make directory "temp" in ' . __DIR__;
-				exit;
-			}
-		}
-		$handle = fopen( 'temp/' . $filename, 'w' );
-		if ( $handle ) {
-			if ( ! $formatted ) {
-				fwrite( $handle, $this->print->plain() );
-			} else {
-				fwrite( $handle, $this->print->formatted_page( $doctype, $externalcss, $title, $lang ) );
-			}
-		}
-		fclose( $handle );
-	}
-
-	/**
 	 * Loads a new template.
 	 *
 	 * @since 1.0.0

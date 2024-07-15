@@ -77,6 +77,7 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '6.6'
           - '6.5'
           - '6.4'
           - '6.3'
@@ -98,7 +99,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@c665c7a15b5295c2488ac8a87af9cb806cd72198 # v2.30.4
+        uses: shivammathur/setup-php@c541c155eee45413f5b09a52248675b1a2575231 # v2.31.1
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -110,7 +111,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -124,7 +125,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           path: ${{ env.PLUGIN_DIR }}
 

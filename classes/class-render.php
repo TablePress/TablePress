@@ -545,7 +545,7 @@ class TablePress_Render {
 				 * @param int    $col_idx    The number of the column.
 				 */
 				$attributes = apply_filters( 'tablepress_colgroup_tag_attributes', $attributes, $this->table['id'], $col_idx + 1 );
-				$colgroup .= "\t<col{$attributes}/>\n";
+				$colgroup .= "\t<col{$attributes} />\n";
 			}
 		}
 		if ( ! empty( $colgroup ) ) {
@@ -636,9 +636,23 @@ class TablePress_Render {
 		$table_attributes = apply_filters( 'tablepress_table_tag_attributes', $table_attributes, $this->table, $this->render_options );
 		$table_attributes = $this->_attributes_array_to_string( $table_attributes );
 
-		$output .= "\n<table{$table_attributes}>\n";
-		$output .= $caption . $colgroup . $thead . $tbody . $tfoot;
-		$output .= "</table>\n";
+		$table_html = "<table{$table_attributes}>\n";
+		$table_html .= $caption . $colgroup . $thead . $tbody . $tfoot;
+		$table_html .= '</table>';
+
+		/**
+		 * Filters the generated HTML code for the table, without HTML elements around it.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param string               $output         The generated HTML for the table, without HTML elements around it.
+		 * @param array<string, mixed> $table          The current table.
+		 * @param array<string, mixed> $render_options The render options for the table, without HTML elements around it.
+		 */
+		$table_html = apply_filters( 'tablepress_table_html', $table_html, $this->table, $this->render_options );
+
+		$output .= "\n{$table_html}\n";
+		unset( $table_html ); // Unset the potentially large variable to free up memory.
 
 		// name/description below table (HTML already generated above).
 		if ( $this->render_options['print_name'] && 'below' === $this->render_options['print_name_position'] ) {
@@ -649,13 +663,13 @@ class TablePress_Render {
 		}
 
 		/**
-		 * Filters the generated HTML code for table.
+		 * Filters the generated HTML code for the table and HTML elements around it.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string               $output         The generated HTML for the table.
+		 * @param string               $output         The generated HTML for the table and HTML elements around it.
 		 * @param array<string, mixed> $table          The current table.
-		 * @param array<string, mixed> $render_options The render options for the table.
+		 * @param array<string, mixed> $render_options The render options for the table and HTML elements around it.
 		 */
 		$this->output = apply_filters( 'tablepress_table_output', $output, $this->table, $this->render_options );
 	}
@@ -877,6 +891,7 @@ class TablePress_Render {
 		// Attention: Array keys have to be lowercase, otherwise they won't match the Shortcode attributes, which will be passed in lowercase by WP.
 		return array(
 			'alternating_row_colors'      => null,
+			'block_preview'               => false,
 			'border'                      => false,
 			'cache_table_output'          => true,
 			'cellpadding'                 => false,

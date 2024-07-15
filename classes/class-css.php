@@ -93,7 +93,10 @@ class TablePress_CSS {
 		$csstidy->set_cfg( 'template', 'highest' );
 
 		$csstidy->parse( $css );
-		return $csstidy->print->plain();
+		$css = $csstidy->print->plain();
+
+		// Remove all CSS comments from the minified CSS code, as CSSTidy does not remove those inside a CSS selector.
+		return preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/\n?!', '', $css );
 	}
 
 	/**

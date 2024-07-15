@@ -1,15 +1,12 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	// TablePress: Comment out next seven lines to force creation of a global jSuites object.
-	// if(typeof exports === 'object' && typeof module === 'object')
-	//	module.exports = factory();
-	// else if(typeof define === 'function' && define.amd)
-	//	define([], factory);
-	// else if(typeof exports === 'object')
-	//	exports["jSuites"] = factory();
-	// else
-		root["jSuites"] = factory();
-})(window, function() { // TablePress: Use `window` instead of `this` to get a global jSuites object.
-return /******/ (function() { // webpackBootstrap
+;(function (global, factory) {
+	// TablePress: Comment out next two lines to force creation of a global jSuites object.
+	// typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	// typeof define === 'function' && define.amd ? define(factory) :
+	global.jSuites = factory();
+}(window, (function () { // TablePress: Use `window` instead of `this` to get a global jSuites object.
+
+var jSuites;
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 195:
@@ -26,8 +23,7 @@ return /******/ (function() { // webpackBootstrap
  */
 
 ;(function (global, factory) {
-		true ? module.exports = factory() :
-	0;
+	true ? module.exports = factory() : 0;
 }(this, (function () {
 
 	return (function(str) {
@@ -687,25 +683,26 @@ var translate = function(t) {
 
 /* harmony default export */ var dictionary = ({ setDictionary, translate });
 ;// CONCATENATED MODULE: ./src/utils/tracking.js
-function Tracking(component, state) {
-	if (state == true) {
-		document.jsuitesComponents = document.jsuitesComponents.filter(function(v) {
+const Tracking = function(component, state) {
+	if (state === true) {
+		Tracking.state = Tracking.state.filter(function(v) {
 			return v !== null;
 		});
 
 		// Start after all events
 		setTimeout(function() {
-			document.jsuitesComponents.push(component);
+			Tracking.state.push(component);
 		}, 0);
 
 	} else {
-		var index = document.jsuitesComponents.indexOf(component);
+		var index = Tracking.state.indexOf(component);
 		if (index >= 0) {
-			document.jsuitesComponents.splice(index, 1);
+			Tracking.state.splice(index, 1);
 		}
 	}
 }
 
+/* harmony default export */ var tracking = (Tracking);
 ;// CONCATENATED MODULE: ./src/utils/path.js
 function Path(str, val, remove) {
 	str = str.split('.');
@@ -778,37 +775,54 @@ function Sorting(el, options) {
 	el.classList.add('jsorting');
 
 	el.addEventListener('dragstart', function(e) {
-		var position = Array.prototype.indexOf.call(e.target.parentNode.children, e.target);
-		dragElement = {
-			element: e.target,
-			o: position,
-			d: position
+		let target = e.target;
+		if (target.nodeType === 3) {
+			if (target.parentNode.getAttribute('draggable') === 'true') {
+				target = target.parentNode;
+			} else {
+				e.preventDefault();
+				e.stopPropagation();
+				return;
+			}
 		}
-		e.target.style.opacity = '0.25';
 
-		if (typeof(obj.options.ondragstart) == 'function') {
-			obj.options.ondragstart(el, e.target, e);
+		if (target.getAttribute('draggable') === 'true') {
+			let position = Array.prototype.indexOf.call(target.parentNode.children, target);
+			dragElement = {
+				element: target,
+				o: position,
+				d: position
+			}
+			target.style.opacity = '0.25';
+
+			if (typeof (obj.options.ondragstart) == 'function') {
+				obj.options.ondragstart(el, target, e);
+			}
+
+			e.dataTransfer.setDragImage(target,0,0);
 		}
 	});
 
 	el.addEventListener('dragover', function(e) {
 		e.preventDefault();
 
-		if (getElement(e.target) && dragElement) {
-			if (e.target.getAttribute('draggable') == 'true' && dragElement.element != e.target) {
-				if (! obj.options.direction) {
-					var condition = e.target.clientHeight / 2 > e.offsetY;
-				} else {
-					var condition = e.target.clientWidth / 2 > e.offsetX;
-				}
+		if (dragElement) {
+			if (getElement(e.target)) {
+				if (e.target.getAttribute('draggable') == 'true' && dragElement.element != e.target) {
+					if (!obj.options.direction) {
+						var condition = e.target.clientHeight / 2 > e.offsetY;
+					} else {
+						var condition = e.target.clientWidth / 2 > e.offsetX;
+					}
 
-				if (condition) {
-					e.target.parentNode.insertBefore(dragElement.element, e.target);
-				} else {
-					e.target.parentNode.insertBefore(dragElement.element, e.target.nextSibling);
-				}
+					if (condition) {
+						e.target.parentNode.insertBefore(dragElement.element, e.target);
+					} else {
+						e.target.parentNode.insertBefore(dragElement.element, e.target.nextSibling);
+					}
 
-				dragElement.d = Array.prototype.indexOf.call(e.target.parentNode.children, dragElement.element);
+					dragElement.d = Array.prototype.indexOf.call(e.target.parentNode.children, dragElement.element);
+				}
 			}
 		}
 	});
@@ -840,14 +854,16 @@ function Sorting(el, options) {
 	el.addEventListener('drop', function(e) {
 		e.preventDefault();
 
-		if (dragElement && (dragElement.o != dragElement.d)) {
-			if (typeof(obj.options.ondrop) == 'function') {
-				obj.options.ondrop(el, dragElement.o, dragElement.d, dragElement.element, e.target, e);
+		if (dragElement) {
+			if (dragElement.o !== dragElement.d) {
+				if (typeof (obj.options.ondrop) == 'function') {
+					obj.options.ondrop(el, dragElement.o, dragElement.d, dragElement.element, e.target, e);
+				}
 			}
-		}
 
-		dragElement.element.style.opacity = '';
-		dragElement = null;
+			dragElement.element.style.opacity = '';
+			dragElement = null;
+		}
 	});
 
 	var getElement = function(element) {
@@ -2588,7 +2604,7 @@ function Mask() {
 					// Extract the number
 					o.number = Extract.call(o, v);
 					// Keep the raw data as a property of the tag
-					if (o.type == 'percentage' && v.indexOf('%') !== -1) {
+					if (o.type == 'percentage' && (''+v).indexOf('%') !== -1) {
 						label = obj.adjustPrecision(o.number / 100);
 					} else {
 						label = o.number;
@@ -2740,7 +2756,7 @@ function Mask() {
 		} else {
 			value = Extract.call(options, v);
 			// Percentage
-			if (type === 'percentage' && v.indexOf('%') !== -1) {
+			if (type === 'percentage' && (''+v).indexOf('%') !== -1) {
 				value /= 100;
 			}
 			var o = options;
@@ -2937,7 +2953,7 @@ function Mask() {
 
 		var complete = false;
 
-		if (o.values.length === o.tokens.length && o.values[o.values.length - 1].length >= o.tokens[o.tokens.length - 1].length) {
+		if (o.values && o.values.length === o.tokens.length && o.values[o.values.length - 1].length >= o.tokens[o.tokens.length - 1].length) {
 			complete = true;
 		}
 
@@ -3312,7 +3328,7 @@ function Calendar() {
 					// Current
 					Component.current = obj;
 					// Start tracking
-					Tracking(obj, true);
+					tracking(obj, true);
 					// Create the days
 					obj.getDays();
 					// Render months
@@ -3407,7 +3423,7 @@ function Calendar() {
 				// Hide
 				calendar.classList.remove('jcalendar-focus');
 				// Stop tracking
-				Tracking(obj, false);
+				tracking(obj, false);
 				// Current
 				Component.current = null;
 			}
@@ -4419,23 +4435,25 @@ function Tabs(el, options) {
 	var border = null;
 
 	// Helpers
-	var setBorder = function(index) {
+	const setBorder = function(index) {
 		if (obj.options.animation) {
-			var rect = obj.headers.children[index].getBoundingClientRect();
+			setTimeout(function() {
+				let rect = obj.headers.children[index].getBoundingClientRect();
 
-			if (obj.options.palette === 'modern') {
-				border.style.width = rect.width - 4 + 'px';
-				border.style.left = obj.headers.children[index].offsetLeft + 2 + 'px';
-			} else {
-				border.style.width = rect.width + 'px';
-				border.style.left = obj.headers.children[index].offsetLeft + 'px';
-			}
+				if (obj.options.palette === 'modern') {
+					border.style.width = rect.width - 4 + 'px';
+					border.style.left = obj.headers.children[index].offsetLeft + 2 + 'px';
+				} else {
+					border.style.width = rect.width + 'px';
+					border.style.left = obj.headers.children[index].offsetLeft + 'px';
+				}
 
-			if (obj.options.position === 'bottom') {
-				border.style.top = '0px';
-			} else {
-				border.style.bottom = '0px';
-			}
+				if (obj.options.position === 'bottom') {
+					border.style.top = '0px';
+				} else {
+					border.style.bottom = '0px';
+				}
+			}, 50);
 		}
 	}
 
@@ -4537,7 +4555,7 @@ function Tabs(el, options) {
 			title = prompt('New title', obj.headers.children[i].innerText);
 		}
 		obj.headers.children[i].innerText = title;
-		obj.open(i);
+		setBorder(obj.getActive());
 	}
 
 	obj.create = function(title, url) {
@@ -4556,7 +4574,7 @@ function Tabs(el, options) {
 			obj.options.oncreate(el, div)
 		}
 
-		setBorder();
+		setBorder(obj.getActive());
 
 		return div;
 	}
@@ -4583,6 +4601,8 @@ function Tabs(el, options) {
 	}
 
 	obj.deleteElement = function(index) {
+		let current = obj.getActive();
+
 		if (! obj.headers.children[index]) {
 			return false;
 		} else {
@@ -4590,7 +4610,12 @@ function Tabs(el, options) {
 			obj.content.removeChild(obj.content.children[index]);
 		}
 
-		obj.open(0);
+		if (current === index) {
+			obj.open(0);
+		} else {
+			let current = obj.getActive() || 0;
+			setBorder(current);
+		}
 
 		if (typeof(obj.options.ondelete) == 'function') {
 			obj.options.ondelete(el, index)
@@ -5049,7 +5074,7 @@ function Color(el, options) {
 	obj.open = function() {
 		if (! container.classList.contains('jcolor-focus')) {
 			// Start tracking
-			Tracking(obj, true);
+			tracking(obj, true);
 
 			// Show color picker
 			container.classList.add('jcolor-focus');
@@ -5124,7 +5149,7 @@ function Color(el, options) {
 				obj.options.onclose(el, obj);
 			}
 			// Stop  the object
-			Tracking(obj, false);
+			tracking(obj, false);
 		}
 
 		return obj.options.value;
@@ -5660,7 +5685,7 @@ function Contextmenu() {
 			}
 
 			// Add to the opened components monitor
-			Tracking(obj, true);
+			tracking(obj, true);
 
 			// Show context menu
 			el.classList.add('jcontextmenu-focus');
@@ -5718,7 +5743,7 @@ function Contextmenu() {
 			if (el.classList.contains('jcontextmenu-focus')) {
 				el.classList.remove('jcontextmenu-focus');
 			}
-			Tracking(obj, false);
+			tracking(obj, false);
 		}
 
 		/**
@@ -7037,7 +7062,7 @@ function Dropdown() {
 				Component.current = obj;
 
 				// Start tracking
-				Tracking(obj, true);
+				tracking(obj, true);
 
 				// Add focus
 				el.classList.add('jdropdown-focus');
@@ -7126,7 +7151,7 @@ function Dropdown() {
 				// Remove focus
 				el.classList.remove('jdropdown-focus');
 				// Start tracking
-				Tracking(obj, false);
+				tracking(obj, false);
 				// Current dropdown
 				Component.current = null;
 			}
@@ -7864,7 +7889,7 @@ function Picker(el, options) {
 	obj.open = function() {
 		if (! el.classList.contains('jpicker-focus')) {
 			// Start tracking the element
-			Tracking(obj, true);
+			tracking(obj, true);
 
 			// Open picker
 			el.classList.add('jpicker-focus');
@@ -7910,7 +7935,7 @@ function Picker(el, options) {
 			el.classList.remove('jpicker-focus');
 
 			// Start tracking the element
-			Tracking(obj, false);
+			tracking(obj, false);
 
 			if (typeof obj.options.onclose == 'function') {
 				obj.options.onclose(el, obj);
@@ -8208,13 +8233,13 @@ function Toolbar(el, options) {
 
 		toolbarArrow.children[0].focus();
 		// Start tracking
-		Tracking(obj, true);
+		tracking(obj, true);
 	}
 
 	obj.close = function() {
 		toolbarArrow.classList.remove('jtoolbar-arrow-selected')
 		// End tracking
-		Tracking(obj, false);
+		tracking(obj, false);
 	}
 
 	obj.refresh = function() {
@@ -9782,7 +9807,7 @@ function Validations() {
 	 */
 
 	const isNumeric = function(num) {
-		return !isNaN(num) && num !== null && num !== '';
+		return !isNaN(num) && num !== null && (typeof num !== 'string' || num.trim() !== '');
 	}
 
 	const numberCriterias = {
@@ -9876,10 +9901,10 @@ function Validations() {
 	// Component router
 	const component = function(value, options) {
 		if (typeof(component[options.type]) === 'function') {
-			if (options.allowBlank && value === '') {
+			if (options.allowBlank && (typeof value === 'undefined' || value === '' || value === null)) {
 				return true;
 			}
-			return component[options.type](value, options);
+			return component[options.type].call(this, value, options);
 		}
 		return null;
 	}
@@ -9898,21 +9923,17 @@ function Validations() {
 		return data && data.trim() ? true : false;
 	}
 
-	component.exist = function(data, options) {
-		return !!data.toString().trim();
-	}
-
-	component['not exist'] = function(data, options) {
-		return !data.toString().trim();
-	}
-
 	component.empty = function(data) {
-		return !data.toString().trim();
+		return typeof data === 'undefined' || data === null || (typeof data === 'string' && !data.toString().trim());
 	}
+
+	component['not exist'] = component.empty;
 
 	component.notEmpty = function(data) {
-		return !!data.toString().trim();
+		return !component.empty(data);
 	}
+
+	component.exist = component.notEmpty;
 
 	component.number = function(data, options) {
 	   if (! isNumeric(data)) {
@@ -10036,7 +10057,9 @@ function Validations() {
 	}
 
 	component.text = function(data, options) {
-		if (typeof data !== 'string') {
+		if (typeof data === 'undefined' || data === null) {
+			data = '';
+		} else if (typeof data !== 'string') {
 			return false;
 		}
 
@@ -12724,7 +12747,7 @@ var jSuites = {
 	...dictionary,
 	...helpers,
 	/** Current version */
-	version: '5.3.1',
+	version: '5.4.2',
 	/** Bind new extensions to Jsuites */
 	setExtensions: function(o) {
 		if (typeof(o) == 'object') {
@@ -12734,7 +12757,7 @@ var jSuites = {
 			}
 		}
 	},
-	tracking: Tracking,
+	tracking: tracking,
 	path: Path,
 	sorting: Sorting,
 	lazyLoading: LazyLoading,
@@ -12784,7 +12807,7 @@ jSuites.sha512 = (sha512_default());
 /** Core events */
 const Events = function() {
 
-	document.jsuitesComponents = [];
+	tracking.state = [];
 
 	const find = function(DOMElement, component) {
 		if (DOMElement[component.type] && DOMElement[component.type] == component) {
@@ -12800,10 +12823,10 @@ const Events = function() {
 	}
 
 	const isOpened = function(e) {
-		if (document.jsuitesComponents && document.jsuitesComponents.length > 0) {
-			for (var i = 0; i < document.jsuitesComponents.length; i++) {
-				if (document.jsuitesComponents[i] && ! find(e, document.jsuitesComponents[i])) {
-					document.jsuitesComponents[i].close();
+		if (tracking.state && tracking.state.length > 0) {
+			for (var i = 0; i < tracking.state.length; i++) {
+				if (tracking.state[i] && ! find(e, tracking.state[i])) {
+					tracking.state[i].close();
 				}
 			}
 		}
@@ -12828,6 +12851,36 @@ const Events = function() {
 	let tooltip = document.createElement('div')
 	tooltip.classList.add('jtooltip');
 
+	const isWebcomponent = function(e) {
+		return e.shadowRoot || e.tagName.includes('-');
+	}
+
+	const getElement = function(e) {
+		let d;
+		let element;
+		// Which component I am clicking
+		let path = e.path || (e.composedPath && e.composedPath());
+
+		// If path available get the first element in the chain
+		if (path) {
+			element = path[0];
+			// Adjustment sales force
+			if (element && isWebcomponent(element) && ! element.shadowRoot && e.toElement) {
+				element = e.toElement;
+			}
+		} else {
+			// Try to guess using the coordinates
+			if (e.target && isWebcomponent(e.target)) {
+				d = e.target.shadowRoot;
+			} else {
+				d = document;
+			}
+			// Get the first target element
+			element = d.elementFromPoint(x, y);
+		}
+		return element;
+	}
+
 	// Events
 	const mouseDown = function(e) {
 		// Verify current components tracking
@@ -12839,10 +12892,11 @@ const Events = function() {
 			var y = e.clientY;
 		}
 
+		let element = getElement(e);
 		// Editable
-		let editable = e.target && e.target.tagName === 'DIV' && e.target.getAttribute('contentEditable');
+		let editable = element && element.tagName === 'DIV' && element.getAttribute('contentEditable');
 		// Check if this is the floating
-		let item = jSuites.findElement(e.target, 'jpanel');
+		let item = jSuites.findElement(element, 'jpanel');
 		// Jfloating found
 		if (item && ! item.classList.contains("readonly") && ! editable) {
 			// Keep the tracking information
@@ -12853,8 +12907,8 @@ const Events = function() {
 				angle = parseFloat(item.style.rotate);
 			}
 			let action = 'move';
-			if (e.target.getAttribute('data-action')) {
-				action = e.target.getAttribute('data-action');
+			if (element.getAttribute('data-action')) {
+				action = element.getAttribute('data-action');
 			} else {
 				if (item.style.cursor) {
 					action = 'resize';
@@ -12891,24 +12945,9 @@ const Events = function() {
 			editorAction = false;
 		}
 
-		// Which component I am clicking
-		var path = e.path || (e.composedPath && e.composedPath());
-
-		// If path available get the first element in the chain
-		if (path) {
-			element = path[0];
-		} else {
-			// Try to guess using the coordinates
-			if (e.target && e.target.shadowRoot) {
-				var d = e.target.shadowRoot;
-			} else {
-				var d = document;
-			}
-			// Get the first target element
-			element = d.elementFromPoint(x, y);
-		}
-
 		isOpened(element);
+
+		focus(e);
 	}
 
 	const calculateAngle = function(x1, y1, x2, y2, x3, y3) {
@@ -13041,14 +13080,15 @@ const Events = function() {
 			state.x = x;
 			state.y = y;
 		} else {
+			let element = getElement(e);
 			// Resize action
-			let item = jSuites.findElement(e.target, 'jpanel');
+			let item = jSuites.findElement(element, 'jpanel');
 			// Found eligible component
 			if (item) {
 				// Resizing action
 				let controls = item.classList.contains('jpanel-controls');
 				if (controls) {
-					let position = e.target.getAttribute('data-position');
+					let position = element.getAttribute('data-position');
 					if (position) {
 						item.style.cursor = position;
 					} else {
@@ -13097,30 +13137,37 @@ const Events = function() {
 		}
 	});
 
+	let currentElement;
+
 	const focus = function(e) {
+		let element = getElement(e);
 		// Check if this is the floating
-		let item = jSuites.findElement(e.target, 'jpanel');
+		let item = jSuites.findElement(element, 'jpanel');
 		if (item && ! item.classList.contains("readonly") && item.classList.contains('jpanel-controls')) {
 			item.append(...position);
 
 			if (! item.classList.contains('jpanel-rotate')) {
 				position[position.length-1].remove();
 			}
+
+			currentElement = item;
+		} else {
+			blur(e);
 		}
 	}
 
 	const blur = function(e) {
-		// Check if this is the floating
-		let item = jSuites.findElement(e.target, 'jpanel');
-		if (item && item.classList.contains('jpanel-controls')) {
+		if (currentElement) {
 			position.forEach(function(v) {
 				v.remove();
 			});
+			currentElement = null;
 		}
 	}
 
 	const mouseOver = function(e) {
-		var message = e.target.getAttribute('data-tooltip');
+		let element = getElement(e);
+		var message = element.getAttribute('data-tooltip');
 		if (message) {
 			// Instructions
 			tooltip.innerText = message;
@@ -13180,8 +13227,8 @@ const Events = function() {
 			}
 		}
 
-		if (document.jsuitesComponents && document.jsuitesComponents.length) {
-			item = document.jsuitesComponents[document.jsuitesComponents.length - 1]
+		if (tracking.state && tracking.state.length) {
+			item = tracking.state[tracking.state.length - 1]
 			if (item) {
 				if (e.key === "Escape" && typeof(item.isOpened) == 'function' && typeof(item.close) == 'function') {
 					if (item.isOpened()) {
@@ -13201,7 +13248,6 @@ const Events = function() {
 	}
 
 	document.addEventListener('focusin', focus);
-	document.addEventListener('focusout', blur);
 	document.addEventListener('mouseup', mouseUp);
 	document.addEventListener("mousedown", mouseDown);
 	document.addEventListener('mousemove', mouseMove);
@@ -13211,14 +13257,15 @@ const Events = function() {
 	document.addEventListener('input', input);
 }
 
-if (typeof(document) !== "undefined" && ! document.jsuitesComponents) {
+if (typeof(document) !== "undefined" && ! tracking.state) {
 	Events();
 }
 
 /* harmony default export */ var jsuites = (jSuites);
 }();
-__webpack_exports__ = __webpack_exports__["default"];
-/******/ 	return __webpack_exports__;
+jSuites = __webpack_exports__["default"];
 /******/ })()
 ;
-});
+
+	return jSuites;
+})));

@@ -96,7 +96,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 					?>
 					</div>
 				</div>
-				<br class="clear" />
+				<br class="clear">
 			</div>
 		</div>
 		</div>

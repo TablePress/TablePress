@@ -71,6 +71,9 @@ $align-side: left !default;
 		vertical-align: middle;
 	}
 	> :where(tbody) {
+		> tr > * {
+			color: var(--text-color);
+		}
 		> .odd > * {
 			background-color: var(--odd-bg-color);
 			color: var(--odd-text-color);

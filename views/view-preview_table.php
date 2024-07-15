@@ -61,7 +61,7 @@ class TablePress_Preview_Table_View extends TablePress_View {
 <body>
 <div id="tablepress-page">
 <p>
-		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The Table Features for Site Visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ); ?><br />
+		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The Table Features for Site Visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ); ?><br>
 		<?php
 		// Show the instructions string depending on whether the Block Editor is used on the site or not.
 		if ( $this->data['site_uses_block_editor'] ) {

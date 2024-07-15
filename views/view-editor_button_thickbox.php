@@ -126,7 +126,7 @@ html {
 		}
 		?>
 <form method="get">
-	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
+	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>">
 		<?php
 		wp_nonce_field( TablePress::nonce( $this->action ), '_wpnonce', false );
 		$this->wp_list_table->search_box( __( 'Search Tables', 'tablepress' ), 'tables_search' );

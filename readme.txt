@@ -4,8 +4,8 @@ Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium
 Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
-Tested up to: 6.5
-Stable tag: 2.3.2
+Tested up to: 6.6
+Stable tag: 2.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,32 +107,42 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.3.2 (June 4, 2024) =
+= Version 2.4 (July 16, 2024) =
 
-* *Security hardening* (breaking change): Users with the “Author” user role are no longer allowed to import tables from URLs (CVE-2024-4354). Thanks to the Wordfence team and to Tobias Weißhaar for following responsible disclosure policies when reporting this potential issue!
-* Bugfix: Improve the data type detection during an Excel import to reduce undesired consequences.
-* Bugfix: Properly clean up after importing a file.
-* Bugfix: Restore the data selection feature in the “Custom Search Builder” module. (TablePress Max only.)
-* Enhancement: Increase compatibility with sites that remove WordPress user interface elements for certain users.
-* Enhancement: Improve the user experience when dragging/dropping buttons in the “Buttons” module. (TablePress Pro and Max only.)
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+**New and improved features**
 
-= Version 2.3.1 (April 30, 2024) =
+* A *new “Fuzzy Search” feature module* allows the visitor to find similar and not just exact search matches. This is useful when e.g. searching for words with the same pronunciation but different spelling. (TablePress Max only.)
+* The “Column Filter Dropdowns” feature module now allows specifying which columns should get a dropdown, and it’s possible to change their order! (TablePress Pro and Max only.)
+* Similarly, the “Search Panes” feature module now allows specifying which columns should get a search pane. (TablePress Pro and Max only.)
+* The “Fixed Columns” feature module now also allows the visitor to scroll left and right by clicking arrow buttons (see below for more). (TablePress Pro and Max only.)
+* The “Row Order” feature module now allows ordering a table by multiple columns at the same time! (TablePress Pro and Max only.)
+* The “Server-side Processing” feature module can automatically refresh the shown data after a configured interval, so that the visitor will always see the latest data. (TablePress Max only.)
+* The “Row Order” and “Server-side Processing” feature modules now sort non-numeric columns “naturally” and case-insensitive. (TablePress Pro and Max only.)
+* The “REST API” feature module now supports pagination and ordering request parameters and sends corresponding HTTP headers for easier integration. (TablePress Max only.)
 
-* Bugfix: Fix an error in the legacy import that accidentally broke an old and retired TablePress Extension.
-* Enhancement: Improve the sorting on the “Edit” and “Automatic Periodic Table Import” screens and of the “Column Filter Dropdowns” feature module.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+**The “Responsive Tables” and “Fixed Columns” premium modules offer more possibilities**
 
-= Version 2.3 (April 2, 2024) =
+* The “Scroll” mode’s arrow buttons now stick to the top of the page, making them easier to use in long tables.
+* In addition, they will now only be shown if a table actually needs horizontal scrolling!
+* They also scroll the table in the expected direction now.
+* And even better: These scroll arrow buttons are now also available when using the “Fixed Columns” feature module!
+* When using the “Scroll” mode, the table name, description, and control elements like the Search now remain in place.
+* In the “Flip” mode, the sorting arrows are now properly rotated.
+* The “Stack” no longer conflicts with the “Fixed Columns” feature.
+* The Safari browser on iOS will no longer unexpectedly change font sizes.
 
-* Full compatibility with WordPress 6.5.
-* Feature: The “Automatic Periodic Table Import” feature module has been rewritten from scratch: It now supports a different import interval or schedule for each table and is much more reliable. (TablePress Max only.)
-* Enhancement: The import of multiple tables from a ZIP file is more robust and now works independently from the server configuration.
-* Enhancement: The user interface works more reliably even when other plugins insert code on the TablePress screens.
-* Enhancement: The “TablePress table” block settings are less confusing as the unsupported “Alignment” setting was removed.
-* Enhancement: The “Automatic Filter” feature module now uses less-restrictive input filtering, to allow for more filtering terms, e.g. from different alphabets. (TablePress Pro and Max only.)
-* Enhancement: The “About” screen now shows more useful troubleshooting information.
-* Bugfix: The “Column Filter Dropdowns” feature module now properly handles multiple line breaks in table cells. (TablePress Pro and Max only.)
+**Miscellaneous changes**
+
+* TablePress warns that certain activated but retired TablePress Extensions will stop working with TablePress 3.0, later this year.
+* TablePress actively prevents conflicts with overwritten menu items in the dashboard’s admin menu.
+* The user interface experience on the “Edit” screen was improved.
+* The size of “Custom CSS” code will be reduced even further, if the code has comments.
+* The “Automatic Table Export” feature module now properly detects automatic periodic table imports. (TablePress Max only.)
+* The “Automatic Periodic Table Import” feature module’s configuration screen now has better spacing. (TablePress Max only.)
+* The “Server-side Processing” feature module checks for potential conflicts with incompatible features. (TablePress Max only.)
+
+**Behind the scenes**
+
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
 * Automated code compatibility checks and build tools simplify chores for easier development.
@@ -143,8 +153,5 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.3.2 =
-This update is a security and maintenance release. Updating is highly recommended.
-
-= 2.3 =
+= 2.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.

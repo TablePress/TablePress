@@ -1,13 +1,3 @@
-/**
- * (c) jSuites Javascript Web Components
- *
- * Website: https://jsuites.net
- * Description: Create amazing web based applications.
- *
- * MIT License
- *
- */
-
 :root {
 	--jbutton-color: #298BA8;
 	--jactive-color: #007aff;
@@ -95,7 +85,7 @@ div[data-before]:before {
 	min-height: 180px;
 }
 
-.jupload:not(.input):before {
+.jupload:not(.input):empty:before {
 	content: "\e2c3";
 	font-family: "Material Icons";
 	font-size: 90px;
@@ -106,7 +96,6 @@ div[data-before]:before {
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	z-index: -1;
 }
 
 .jupload-item {
@@ -186,7 +175,6 @@ div[data-before]:before {
 
 .jpanel:focus {
 	outline: 2px solid black;
-	z-index: 999 !important;
 	outline-offset: -1px;
 }
 

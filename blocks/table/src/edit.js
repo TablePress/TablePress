@@ -70,7 +70,10 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 				{ tp.load_block_preview &&
 					<ServerSideRender
 						block={ block.name }
-						attributes={ attributes }
+						attributes={ {
+							id: attributes.id,
+							parameters: `block_preview=true {$attributes.parameters}`.trim(), // Set the `block_preview` parameter to allow detecting that this is a block preview.
+						} }
 						className="render-wrapper"
 					/>
 				}

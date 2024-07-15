@@ -51,11 +51,12 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @var array<string, mixed>>
 	 */
 	protected $default_user_options = array(
-		'user_options_db_version'   => TablePress::db_version, // To prevent saving on first load.
-		'admin_menu_parent_page'    => 'middle',
-		'message_first_visit'       => true,
-		'table_editor_column_width' => '170', // Default column width of 170px of the table editor on the "Edit" screen.
-		'table_editor_line_clamp'   => '5', // Maximum number of lines per cell in the table editor on the "Edit" screen.
+		'user_options_db_version'       => TablePress::db_version, // To prevent saving on first load.
+		'admin_menu_parent_page'        => 'middle',
+		'message_first_visit'           => true,
+		'message_superseded_extensions' => true,
+		'table_editor_column_width'     => '170', // Default column width of 170px of the table editor on the "Edit" screen.
+		'table_editor_line_clamp'       => '5', // Maximum number of lines per cell in the table editor on the "Edit" screen.
 	);
 
 	/**

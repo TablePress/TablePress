@@ -105,12 +105,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$position = 3; // Position of Dashboard + 1.
 					break;
 				case 'bottom':
-					$position = ( ++$GLOBALS['_wp_last_utility_menu'] );
+					$position = isset( $GLOBALS['_wp_last_utility_menu'] ) ? ++$GLOBALS['_wp_last_utility_menu'] : 80;
 					break;
 				case 'middle':
 				default:
-					$position = ( ++$GLOBALS['_wp_last_object_menu'] );
+					$position = isset( $GLOBALS['_wp_last_object_menu'] ) ? ++$GLOBALS['_wp_last_object_menu'] : 25;
 					break;
+			}
+			// Prevent overwriting existing menu entries.
+			while ( isset( $GLOBALS['menu'][ $position ] ) ) {
+				++$position;
 			}
 			add_menu_page( 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback, $icon_url, $position ); // @phpstan-ignore-line
 			foreach ( $this->view_actions as $action => $entry ) {
@@ -242,24 +246,24 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		 */
 		$tables = apply_filters( 'tablepress_block_editor_tables_list', $tables );
 
-		$tables = wp_json_encode( $tables, TABLEPRESS_JSON_OPTIONS );
+		$tables = wp_json_encode( $tables, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES );
 		if ( false === $tables ) {
 			// JSON encoding failed, return an error object. Use a prefixed "_error" key to avoid conflicts with intentionally added "error" keys.
 			$tables = '{ "_error": "The data could not be encoded to JSON!" }';
 		}
-		// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
-		$tables = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $tables );
+		// Print the JSON data inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `\` and `'`.
+		$tables = str_replace( array( '\\', "'" ), array( '\\\\', "\'" ), $tables );
 
 		$shortcode = esc_js( TablePress::$shortcode );
 
 		$template = TablePress::$model_table->get_table_template();
-		$template = wp_json_encode( $template['options'], TABLEPRESS_JSON_OPTIONS );
+		$template = wp_json_encode( $template['options'], JSON_HEX_TAG | JSON_UNESCAPED_SLASHES );
 		if ( false === $template ) {
 			// JSON encoding failed, return an error object. Use a prefixed "_error" key to avoid conflicts with intentionally added "error" keys.
 			$template = '{ "_error": "The data could not be encoded to JSON!" }';
 		}
-		// Print them inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `</script>`, `'`, and `\`.
-		$template = str_replace( array( '</script>', '\\', "'" ), array( '<\/script>', '\\\\', "\'" ), $template );
+		// Print the JSON data inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `\` and `'`.
+		$template = str_replace( array( '\\', "'" ), array( '\\\\', "\'" ), $template );
 
 		/**
 		 * Filters whether the table block preview should be loaded via a <ServerSideRender> in the block editor.
@@ -397,7 +401,7 @@ JS;
 	 */
 	public function add_plugin_action_links( array $links ): array {
 		if ( current_user_can( 'tablepress_list_tables' ) ) {
-			$links[] = '<a href="' . TablePress::url() . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
+			$links[] = '<a href="' . esc_url( TablePress::url() ) . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
 		}
 		return $links;
 	}
@@ -474,9 +478,10 @@ JS;
 				$data['table_id'] = ( ! empty( $_GET['table_id'] ) ) ? $_GET['table_id'] : false;
 				// Prime the post meta cache for cached loading of last_editor.
 				$data['table_ids'] = TablePress::$model_table->load_all( true );
-				$data['messages']['donation_message'] = $this->maybe_show_donation_message();
-				$data['messages']['first_visit'] = ! $data['messages']['donation_message'] && TablePress::$model_options->get( 'message_first_visit' );
-				$data['messages']['plugin_update_message'] = TablePress::$model_options->get( 'message_plugin_update' );
+				$data['messages']['donation_nag'] = $this->maybe_show_donation_message();
+				$data['messages']['first_visit'] = ! $data['messages']['donation_nag'] && TablePress::$model_options->get( 'message_first_visit' );
+				$data['messages']['plugin_update'] = TablePress::$model_options->get( 'message_plugin_update' );
+				$data['messages']['superseded_extensions'] = TablePress::$model_options->get( 'message_superseded_extensions' );
 				$data['table_count'] = count( $data['table_ids'] );
 				break;
 			case 'about':
@@ -1317,6 +1322,7 @@ JS;
 		/** This filter is documented in controllers/controller-frontend.php */
 		$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
 		$render_options['html_id'] = "tablepress-{$table['id']}";
+		$render_options['block_preview'] = true;
 		$_render->set_input( $table, $render_options );
 		$view_data = array(
 			'table_id'               => $table_id,
@@ -1387,7 +1393,7 @@ JS;
 		TablePress::$model_table->destroy();
 		TablePress::$model_options->destroy();
 
-		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />';
+		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br><br>';
 		$output .= __( 'All tables, data, and options were deleted.', 'tablepress' );
 		if ( is_multisite() ) {
 			$output .= ' ' . __( 'You may now ask the network admin to delete the plugin&#8217;s folder <code>tablepress</code> from the server, if no other site in the network uses it.', 'tablepress' );

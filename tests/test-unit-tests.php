@@ -26,16 +26,11 @@ class TablePress_Test_Unit_Tests extends TablePress_TestCase {
 	}
 
 	/**
-	 * If the unit tests are being run in a CI environment, verify that the
-	 * installed version of WordPress is the version that was requested.
+	 * Verify that the installed version of WordPress is the version that was requested.
 	 *
 	 * @since 1.4.0
 	 */
 	public function test_wp_version(): void {
-		if ( ! getenv( 'CI' ) ) {
-			$this->markTestSkipped( "Test skipped as it's not running in a CI environment." );
-		}
-
 		$requested_version = getenv( 'WP_VERSION' );
 
 		// For the "trunk" branch, get the current version number from the wordpress.org SVN server.

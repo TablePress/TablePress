@@ -86,10 +86,11 @@ abstract class TablePress_Controller {
 				// Update Plugin Options Options, if necessary.
 				TablePress::$model_options->merge_plugin_options_defaults();
 				$updated_options = array(
-					'plugin_options_db_version' => TablePress::db_version,
-					'prev_tablepress_version'   => TablePress::$model_options->get( 'tablepress_version' ),
-					'tablepress_version'        => TablePress::version,
-					'message_plugin_update'     => true,
+					'plugin_options_db_version'     => TablePress::db_version,
+					'prev_tablepress_version'       => TablePress::$model_options->get( 'tablepress_version' ),
+					'tablepress_version'            => TablePress::version,
+					'message_plugin_update'         => true,
+					'message_superseded_extensions' => true,
 				);
 
 				// Only write files if "Custom CSS" is to be used, and if there is "Custom CSS".
