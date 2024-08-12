@@ -389,6 +389,18 @@ JS;
 		// Add additional links on Plugins page.
 		add_filter( 'plugin_action_links_' . TABLEPRESS_BASENAME, array( $this, 'add_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
+		$incompatible_superseded_extensions = array(
+			'tablepress-datatables-alphabetsearch/tablepress-datatables-alphabetsearch.php',
+			'tablepress-datatables-column-filter-widgets/tablepress-datatables-column-filter-widgets.php',
+			'tablepress-datatables-columnfilter/tablepress-datatables-columnfilter.php',
+			'tablepress-datatables-fixedcolumns/tablepress-datatables-fixedcolumns.php',
+			'tablepress-datatables-row-details/tablepress-datatables-row-details.php',
+			'tablepress-datatables-rowgroup/tablepress-datatables-rowgroup.php',
+			'tablepress-responsive-tables/tablepress-responsive-tables.php',
+		);
+		foreach ( $incompatible_superseded_extensions as $plugin_file ) {
+			add_action( "after_plugin_row_{$plugin_file}", array( $this, 'add_superseded_extension_meta_row' ), 10, 3 );
+		}
 	}
 
 	/**
@@ -425,6 +437,52 @@ JS;
 			}
 		}
 		return $links;
+	}
+
+	/**
+	 * Prints a superseded extension notice below certain TablePress Extension plugins' meta rows on the "Plugins" screen.
+	 *
+	 * @since 2.4.1
+	 *
+	 * @param string                           $plugin_file Path to the plugin file relative to the plugins directory.
+	 * @param array<int, string|string[]|bool> $plugin_data An array of plugin data.
+	 * @param string                           $status      Status filter currently applied to the plugin list.
+	 */
+	public function add_superseded_extension_meta_row( string $plugin_file, array $plugin_data, string $status ): void {
+		if ( ! is_plugin_active( $plugin_file ) ) {
+			return;
+		}
+		?>
+		<tr class="plugin-update-tr active">
+			<td colspan="<?php echo esc_attr( $GLOBALS['wp_list_table']->get_column_count() ); ?>" class="plugin-update colspanchange">
+				<div class="update-message notice inline notice-error notice-alt">
+					<?php
+					if ( tb_tp_fs()->is_free_plan() ) {
+						echo '<p style="font-size:14px;">';
+						_e( 'This TablePress Extension was retired.', 'tablepress' );
+						echo ' ';
+						_e( '<strong>The plugin will stop working with TablePress 3 later this year</strong> and will no longer receive updates or support!', 'tablepress' );
+						echo '<br>';
+						_e( 'Keeping it activated can lead to errors on your website!', 'tablepress' );
+						echo ' <strong>' . sprintf( __( '<a href="%s">Find out what you can do to continue using its features!</a>', 'tablepress' ), 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=textlink&utm_content=plugins-list-table' ) . '</strong>';
+						echo '</p>';
+					}
+					?>
+					<style>
+						/* Remove the separator line between the plugin's and the notice's table row. */
+						.plugins .active[data-plugin="<?php echo $plugin_file; ?>"] th,
+						.plugins .active[data-plugin="<?php echo $plugin_file; ?>"] td {
+							box-shadow: none;
+						}
+						/* Hide the plugin update row for the Extension as those won't work anymore anyways. */
+						.plugins .plugin-update-tr[data-plugin="<?php echo $plugin_file; ?>"] {
+							display: none;
+						}
+					</style>
+				</div>
+			</td>
+		</tr>
+		<?php
 	}
 
 	/**

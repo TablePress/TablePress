@@ -40,6 +40,7 @@ class TablePress_List_View extends TablePress_View {
 	#[\Override]
 	public function setup( /* string */ $action, array $data ) /* : void */ {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
 		parent::setup( $action, $data );
 
 		add_thickbox(); // For the table preview.
@@ -155,8 +156,6 @@ class TablePress_List_View extends TablePress_View {
 				if ( tb_tp_fs()->is_free_plan() ) {
 					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'To continue using these features, <a href="%s">upgrade to a TablePress Premium license plan</a>!', 'tablepress' ), 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=textlink&utm_content=superseded-extensions-message' ) . '</strong><br>'
 					. __( 'TablePress Pro and TablePress Max come with updated and heavily improved versions of these features and include direct priority email support.', 'tablepress' ) . '</p>';
-				} else {
-					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'To continue using these features, please deactivate the listed Extensions on the <a href="%1$s">“Plugins” screen</a> and activate the corresponding feature module of your TablePress Premium license on the <a href="%2$s">“Modules” screen</a>.', 'tablepress' ), esc_url( admin_url( 'plugins.php' ) ), esc_url( TablePress::url( array( 'action' => 'modules' ) ) ) ) . '</strong></p>';
 				}
 
 				if ( ! empty( $active_compatible_superseded_extensions ) && tb_tp_fs()->is_free_plan() ) {
@@ -191,8 +190,6 @@ class TablePress_List_View extends TablePress_View {
 					$message .= '</ul>';
 					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'And the best: %s', 'tablepress' ), sprintf( __( 'Use the promo code %1$s during the checkout process and save %2$s now!', 'tablepress' ), '<code>THANKYOU30</code>', '30%' ) ) . '</strong></p>';
 					$message .= '<p style="margin-top:2em;">' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:3em;background:linear-gradient(135deg,#00d184 0%%,#0791e3 100%%);border:none;font-weight:bold;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=button&utm_content=superseded-extensions-message', __( 'Upgrade to a TablePress Premium version now!', 'tablepress' ) );
-				} else {
-					$message .= '<p style="margin-top:2em;">';
 				}
 				$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'superseded_extensions', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 

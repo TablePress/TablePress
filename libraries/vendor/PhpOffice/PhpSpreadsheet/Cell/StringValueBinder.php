@@ -119,7 +119,7 @@ class StringValueBinder implements IValueBinder
 			$cell->setValueExplicit($value, DataType::TYPE_STRING);
 		} elseif ($value instanceof RichText) {
 			$cell->setValueExplicit($value, DataType::TYPE_INLINE);
-		} elseif ($value instanceof Stringable) {
+		} elseif ((is_object($value) && method_exists($value, '__toString'))) {
 			$cell->setValueExplicit((string) $value, DataType::TYPE_STRING);
 		} else {
 			throw new SpreadsheetException('Unable to bind unstringable object of type ' . get_class($value));

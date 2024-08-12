@@ -61,9 +61,13 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 		// phpcs:disable WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma, WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterArrayOpener, NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine, Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return array(
 			array(    '',     0 ),
+			array(   '-',     0 ),
 			array(   'a',     1 ),
+			array( '“a”',     1 ),
 			array(   'A',     1 ),
+			array(  'A,',     1 ),
 			array(   'Z',    26 ),
+			array(  'Z1',    26 ),
 			array(  'AA',    27 ),
 			array(  'Aa',    27 ),
 			array(  'aA',    27 ),

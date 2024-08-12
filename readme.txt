@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.6
-Stable tag: 2.4
+Stable tag: 2.4.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,16 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.4.1 (August 13, 2024) =
+
+* Bugfix: The table width is correct again, when using the “Scroll” mode of the “Responsive Tables” feature module. (TablePress Pro and Max only.)
+* Bugfix: The “Responsive Tables” feature module’s “Stack” mode now properly handles tables with combined cells. (TablePress Pro and Max only.)
+* Bugfix: An edge case problem in the “Row Order” feature module’s multi-column sorting was fixed. (TablePress Pro and Max only.)
+* Bugfix: In the table import engine, compatibility issues with older versions of PHP were fixed.
+* Enhancement: The settings of the “Server-side Processing” and the “Automatic Filtering” feature modules are now compatible. (TablePress Max only.)
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 2.4 (July 16, 2024) =
 
 **New and improved features**
@@ -152,6 +162,9 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 * Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=readme)
 
 == Upgrade Notice ==
+
+= 2.4.1 =
+This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.

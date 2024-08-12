@@ -12,7 +12,7 @@ class BaseParserClass
 	protected static function boolean($value): bool
 	{
 		if (is_object($value)) {
-			$value = ($value instanceof Stringable) ? ((string) $value) : 'true';
+			$value = ((is_object($value) && method_exists($value, '__toString'))) ? ((string) $value) : 'true';
 		}
 
 		if (is_numeric($value)) {

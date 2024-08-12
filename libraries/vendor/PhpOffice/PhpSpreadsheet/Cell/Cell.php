@@ -173,7 +173,7 @@ class Cell
 	{
 		$value = $this->value;
 
-		return ($value === '' || is_scalar($value) || $value instanceof Stringable) ? "$value" : '';
+		return ($value === '' || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) ? "$value" : '';
 	}
 	/**
 	 * Get cell value with formatting.
@@ -348,7 +348,7 @@ class Cell
 	{
 		$value = $this->getCalculatedValue();
 
-		return ($value === '' || is_scalar($value) || $value instanceof Stringable) ? "$value" : '';
+		return ($value === '' || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) ? "$value" : '';
 	}
 	/**
 	 * Get calculated cell value.
