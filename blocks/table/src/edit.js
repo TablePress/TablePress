@@ -72,7 +72,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 						block={ block.name }
 						attributes={ {
 							id: attributes.id,
-							parameters: `block_preview=true {$attributes.parameters}`.trim(), // Set the `block_preview` parameter to allow detecting that this is a block preview.
+							parameters: `block_preview=true ${ attributes.parameters }`.trim(), // Set the `block_preview` parameter to allow detecting that this is a block preview.
 						} }
 						className="render-wrapper"
 					/>
