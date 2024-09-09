@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.6
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,13 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.4.2 (September 10, 2024) =
+
+* Bugfix: The “TablePress table” block in the WordPress Block Editor will properly show the table preview again.
+* Bugfix: Control elements like the Search again remain in place, when using the “Scroll” mode of the “Responsive Tables” feature module. (TablePress Pro and Max only.)
+* Bugfix: When the “Responsive Tables” feature module’s “Flip” is used, a “Fixed Header” row will be hidden. (TablePress Pro and Max only.)
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+
 = Version 2.4.1 (August 13, 2024) =
 
 * Bugfix: The table width is correct again, when using the “Scroll” mode of the “Responsive Tables” feature module. (TablePress Pro and Max only.)
@@ -163,7 +170,7 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.4.1 =
+= 2.4.2 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 2.4 =

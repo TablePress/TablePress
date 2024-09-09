@@ -31,6 +31,7 @@
 /phpunit.xml.dist export-ignore
 /readme.md export-ignore
 /rector.php export-ignore
+/update-version.php export-ignore
 /webpack.config.js export-ignore
 
 # Set default behaviour, in case users don't have core.autocrlf set.
