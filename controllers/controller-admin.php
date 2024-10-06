@@ -539,7 +539,7 @@ JS;
 				$data['messages']['donation_nag'] = $this->maybe_show_donation_message();
 				$data['messages']['first_visit'] = ! $data['messages']['donation_nag'] && TablePress::$model_options->get( 'message_first_visit' );
 				$data['messages']['plugin_update'] = TablePress::$model_options->get( 'message_plugin_update' );
-				$data['messages']['superseded_extensions'] = TablePress::$model_options->get( 'message_superseded_extensions' );
+				$data['messages']['superseded_extensions'] = current_user_can( 'manage_options' ) && TablePress::$model_options->get( 'message_superseded_extensions' );
 				$data['table_count'] = count( $data['table_ids'] );
 				break;
 			case 'about':

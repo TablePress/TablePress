@@ -86,11 +86,10 @@ abstract class TablePress_Controller {
 				// Update Plugin Options Options, if necessary.
 				TablePress::$model_options->merge_plugin_options_defaults();
 				$updated_options = array(
-					'plugin_options_db_version'     => TablePress::db_version,
-					'prev_tablepress_version'       => TablePress::$model_options->get( 'tablepress_version' ),
-					'tablepress_version'            => TablePress::version,
-					'message_plugin_update'         => true,
-					'message_superseded_extensions' => true,
+					'plugin_options_db_version' => TablePress::db_version,
+					'prev_tablepress_version'   => TablePress::$model_options->get( 'tablepress_version' ),
+					'tablepress_version'        => TablePress::version,
+					'message_plugin_update'     => true,
 				);
 
 				// Only write files if "Custom CSS" is to be used, and if there is "Custom CSS".
@@ -143,7 +142,11 @@ abstract class TablePress_Controller {
 		 */
 		if ( is_user_logged_in() && TablePress::$model_options->get( 'user_options_db_version' ) < TablePress::db_version ) {
 			TablePress::$model_options->merge_user_options_defaults();
-			TablePress::$model_options->update( 'user_options_db_version', TablePress::db_version );
+			$updated_options = array(
+				'user_options_db_version'       => TablePress::db_version,
+				'message_superseded_extensions' => true,
+			);
+			TablePress::$model_options->update( $updated_options );
 		}
 	}
 

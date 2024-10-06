@@ -86,9 +86,9 @@
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
 			"composer config platform.php 7.2",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 2.1.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 2.1.1\" --no-update",
 			"composer update --no-dev",
-			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart /mozart/bin/mozart compose",
+			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart:0.7.1 /mozart/bin/mozart compose",
 			"composer remove phpoffice/phpspreadsheet --no-update",
 			"composer require dangoodman/composer-for-wordpress --dev --no-update",
 			"composer update",
@@ -102,6 +102,7 @@
 			"find ./libraries -type f \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
 			"composer require rector/rector --dev",
 			"vendor/bin/rector",
+			"find ./libraries/vendor -type f -name \"*.php\" -exec sed -i '' 's/\\(\\$[a-zA-Z_][a-zA-Z0-9_]*\\) instanceof Stringable/(is_object(\\1) \\&\\& method_exists(\\1, '\\''__toString'\\''))/g' {} +",
 			"git checkout -- composer.json",
 			"composer update --with-all-dependencies"
 		]

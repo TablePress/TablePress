@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.6
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,16 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.4.3 (October 8, 2024) =
+
+* *Security fix*: Sanitize output of evaluated formulas (CVE-2024-9595). Thanks to Max Boll and to the Wordfence team for following responsible disclosure policies when reporting this issue!
+* Bugfix: On the “Import” screen, a helpful feature pointer for new users is now shown properly again.
+* Bugfix: A check for whether combining cells on the “Edit” screen is possible was not strict enough.
+* Bugfix: The “Column Filter Dropdowns” feature module no longer shows duplicate entries in the dropdowns. (TablePress Pro and Max only.)
+* Bugfix: The “Individual Column Filtering” feature module no longer shows duplicate entries in the dropdowns. (TablePress Pro and Max only.)
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+
 = Version 2.4.2 (September 10, 2024) =
 
 * Bugfix: The “TablePress table” block in the WordPress Block Editor will properly show the table preview again.
@@ -170,8 +180,8 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.4.2 =
-This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
+= 2.4.3 =
+This update is a security and maintenance release. Updating is highly recommended.
 
 = 2.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.

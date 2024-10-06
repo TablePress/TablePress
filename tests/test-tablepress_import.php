@@ -99,6 +99,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of XLSX files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_xlsx_phpspreadsheet
+	 * @expectedDeprecated wp_targeted_link_rel
 	 *
 	 * @since 2.0.0
 	 *
@@ -201,6 +202,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of XLS files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_xls_phpspreadsheet
+	 * @expectedDeprecated wp_targeted_link_rel
 	 *
 	 * @since 2.0.0
 	 *
@@ -307,6 +309,8 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of CSV, JSON, and HTML files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_csv_json_html_phpspreadsheet
+	 * @expectedDeprecated wp_targeted_link_rel
+	 * @expectedDeprecated wp_targeted_link_rel_callback
 	 *
 	 * @since 2.0.0
 	 *
@@ -410,6 +414,8 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of CSV, JSON, and HTML files from the server, using the legacy import class.
 	 *
 	 * @dataProvider data_table_import_server_csv_json_html_legacy
+	 * @expectedDeprecated wp_targeted_link_rel
+	 * @expectedDeprecated wp_targeted_link_rel_callback
 	 *
 	 * @since 2.0.0
 	 *

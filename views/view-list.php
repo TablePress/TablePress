@@ -188,7 +188,7 @@ class TablePress_List_View extends TablePress_View {
 					$message .= '<li>' . __( 'Regular updates that ensure compatibility with WordPress!', 'tablepress' ) . '</li>';
 					$message .= '<li>' . __( 'Priority email support!', 'tablepress' ) . '</li>';
 					$message .= '</ul>';
-					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'And the best: %s', 'tablepress' ), sprintf( __( 'Use the promo code %1$s during the checkout process and save %2$s now!', 'tablepress' ), '<code>THANKYOU30</code>', '30%' ) ) . '</strong></p>';
+					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'And the best: %s', 'tablepress' ), sprintf( __( 'Use the promo code %1$s during the checkout process for a special offer!', 'tablepress' ), '<code>UPGRADE</code>' ) ) . '</strong></p>';
 					$message .= '<p style="margin-top:2em;">' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:3em;background:linear-gradient(135deg,#00d184 0%%,#0791e3 100%%);border:none;font-weight:bold;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=button&utm_content=superseded-extensions-message', __( 'Upgrade to a TablePress Premium version now!', 'tablepress' ) );
 				}
 				$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'superseded_extensions', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';

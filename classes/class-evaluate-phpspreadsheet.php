@@ -111,6 +111,9 @@ class TablePress_Evaluate_PHPSpreadsheet {
 										$cell_content = "<a href=\"{$url}\">{$cell_content}</a>";
 									}
 								}
+
+								// Sanitize the output of the evaluated formula.
+								$cell_content = wp_kses_post( $cell_content ); // Equals wp_filter_post_kses(), but without the unnecessary slashes handling.
 							} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception $exception ) {
 								$message = str_replace( 'Worksheet!', '', $exception->getMessage() );
 								$cell_content = "!ERROR! {$message}";

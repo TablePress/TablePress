@@ -68,9 +68,21 @@ class Csv extends BaseReader
 
 	/**
 	 * The character that can escape the enclosure.
+	 * This will probably become unsupported in Php 9.
+	 * Not yet ready to mark deprecated in order to give users
+	 * a migration path.
+	 * @var string|null
+	 */
+	private $escapeCharacter;
+
+	/**
+	 * The character that will be supplied to fgetcsv
+	 * when escapeCharacter is null.
+	 * It is anticipated that it will conditionally be set
+	 * to null-string for Php9 and above.
 	 * @var string
 	 */
-	private $escapeCharacter = '\\';
+	private static $defaultEscapeCharacter = '\\';
 
 	/**
 	 * Callback for setting defaults in construction.
@@ -217,7 +229,7 @@ class Csv extends BaseReader
 			return;
 		}
 
-		$inferenceEngine = new Delimiter($this->fileHandle, $this->escapeCharacter, $this->enclosure);
+		$inferenceEngine = new Delimiter($this->fileHandle, $this->escapeCharacter ?? self::$defaultEscapeCharacter, $this->enclosure);
 
 		// If number of lines is 0, nothing to infer : fall back to the default
 		if ($inferenceEngine->linesCounted() === 0) {
@@ -260,11 +272,11 @@ class Csv extends BaseReader
 		$delimiter = $this->delimiter ?? '';
 
 		// Loop through each line of the file in turn
-		$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
+		$rowData = self::getCsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 		while (is_array($rowData)) {
 			++$worksheetInfo[0]['totalRows'];
 			$worksheetInfo[0]['lastColumnIndex'] = max($worksheetInfo[0]['lastColumnIndex'], count($rowData) - 1);
-			$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
+			$rowData = self::getCsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 		}
 
 		$worksheetInfo[0]['lastColumnLetter'] = Coordinate::stringFromColumnIndex($worksheetInfo[0]['lastColumnIndex'] + 1);
@@ -411,7 +423,7 @@ class Csv extends BaseReader
 
 		// Loop through each line of the file in turn
 		$delimiter = $this->delimiter ?? '';
-		$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
+		$rowData = self::getCsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 		$valueBinder = Cell::getValueBinder();
 		$preserveBooleanString = method_exists($valueBinder, 'getBooleanConversion') && $valueBinder->getBooleanConversion();
 		$this->getTrue = Calculation::getTRUE();
@@ -448,7 +460,7 @@ class Csv extends BaseReader
 				}
 				++$columnLetter;
 			}
-			$rowData = fgetcsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
+			$rowData = self::getCsv($fileHandle, 0, $delimiter, $this->enclosure, $this->escapeCharacter);
 			++$currentRow;
 		}
 
@@ -561,6 +573,11 @@ class Csv extends BaseReader
 		return $this->contiguous;
 	}
 
+	/**
+	 * Php9 intends to drop support for this parameter in fgetcsv.
+	 * Not yet ready to mark deprecated in order to give users
+	 * a migration path.
+	 */
 	public function setEscapeCharacter(string $escapeCharacter): self
 	{
 		$this->escapeCharacter = $escapeCharacter;
@@ -570,7 +587,7 @@ class Csv extends BaseReader
 
 	public function getEscapeCharacter(): string
 	{
-		return $this->escapeCharacter;
+		return $this->escapeCharacter ?? self::$defaultEscapeCharacter;
 	}
 
 	/**
@@ -687,5 +704,29 @@ class Csv extends BaseReader
 		$this->sheetNameIsFileName = $sheetNameIsFileName;
 
 		return $this;
+	}
+
+	/**
+	 * Php8.4 deprecates use of anything other than null string
+	 * as escape Character.
+	 *
+	 * @param resource $stream
+	 * @param null|int<0, max> $length
+	 *
+	 * @return array<int,?string>|false
+	 */
+	private static function getCsv(
+		$stream,
+		?int $length = null,
+		string $separator = ',',
+		string $enclosure = '"',
+		?string $escape = null
+	) {
+		$escape = $escape ?? self::$defaultEscapeCharacter;
+		if (PHP_VERSION_ID >= 80400 && $escape !== '') {
+			return @fgetcsv($stream, $length, $separator, $enclosure, $escape);
+		}
+
+		return fgetcsv($stream, $length, $separator, $enclosure, $escape);
 	}
 }

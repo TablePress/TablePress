@@ -199,6 +199,7 @@ const Screen = () => {
 							/>
 							<div
 								ref={ fileUploadDropzone }
+								id="tables-import-file-upload-dropzone"
 								className="dropzone"
 							>
 								<span>

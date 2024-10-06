@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 use Composer\AutoloadTablePress\ClassLoader as ClassLoaderTablePress;
 
 
-class ComposerStaticInita46cd5a2897e45921b7ca3996de68e49
+class ComposerStaticInit8570b6703453641e5ef16804fe962775
 {
 	public static $prefixLengthsPsr4 = array (
 		'T' => 
@@ -509,9 +509,9 @@ class ComposerStaticInita46cd5a2897e45921b7ca3996de68e49
 	public static function getInitializer(ClassLoaderTablePress $loader)
 	{
 		return \Closure::bind(function () use ($loader) {
-			$loader->prefixLengthsPsr4 = ComposerStaticInita46cd5a2897e45921b7ca3996de68e49::$prefixLengthsPsr4;
-			$loader->prefixDirsPsr4 = ComposerStaticInita46cd5a2897e45921b7ca3996de68e49::$prefixDirsPsr4;
-			$loader->classMap = ComposerStaticInita46cd5a2897e45921b7ca3996de68e49::$classMap;
+			$loader->prefixLengthsPsr4 = ComposerStaticInit8570b6703453641e5ef16804fe962775::$prefixLengthsPsr4;
+			$loader->prefixDirsPsr4 = ComposerStaticInit8570b6703453641e5ef16804fe962775::$prefixDirsPsr4;
+			$loader->classMap = ComposerStaticInit8570b6703453641e5ef16804fe962775::$classMap;
 
 		}, null, ClassLoaderTablePress::class);
 	}

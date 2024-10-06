@@ -481,7 +481,7 @@ class EvalMath {
 
 		// Pop everything off the stack and push onto output.
 		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-		while ( ! is_null( $op = $stack->pop() ) ) { // @phpstan-ignore-line
+		while ( ! is_null( $op = $stack->pop() ) ) {
 			if ( '(' === $op ) {
 				// If there are (s on the stack, ()s were unbalanced.
 				return $this->raise_error( 'expecting_a_closing_bracket' );

@@ -374,8 +374,8 @@ tp.helpers.editor.reselect = function ( el, obj ) {
 tp.helpers.editor.has_merged_cells = function () {
 	const num_rows = tp.editor.options.data.length;
 	const num_columns = tp.editor.options.columns.length;
-	for ( let row_idx = 1; row_idx < num_rows; row_idx++ ) {
-		for ( let col_idx = 1; col_idx < num_columns; col_idx++ ) {
+	for ( let row_idx = 0; row_idx < num_rows; row_idx++ ) {
+		for ( let col_idx = 0; col_idx < num_columns; col_idx++ ) {
 			if ( '#rowspan#' === tp.editor.options.data[ row_idx ][ col_idx ] || '#colspan#' === tp.editor.options.data[ row_idx ][ col_idx ] ) {
 				return true;
 			}
