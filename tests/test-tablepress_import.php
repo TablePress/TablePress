@@ -99,13 +99,17 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of XLSX files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_xlsx_phpspreadsheet
-	 * @expectedDeprecated wp_targeted_link_rel
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
 	public function test_table_import_server_xlsx_phpspreadsheet( string $file ): void {
+		// `wp_targeted_link()` and related functions are deprecated in WP 6.7+, but used in TablePress < 3.0.
+		if ( version_compare( substr( get_bloginfo( 'version' ), 0, 3 ), '6.7', '>=' ) ) {
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel' );
+		}
+
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
@@ -202,13 +206,17 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of XLS files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_xls_phpspreadsheet
-	 * @expectedDeprecated wp_targeted_link_rel
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
 	public function test_table_import_server_xls_phpspreadsheet( string $file ): void {
+		// `wp_targeted_link()` and related functions are deprecated in WP 6.7+, but used in TablePress < 3.0.
+		if ( version_compare( substr( get_bloginfo( 'version' ), 0, 3 ), '6.7', '>=' ) ) {
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel' );
+		}
+
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
@@ -309,14 +317,18 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of CSV, JSON, and HTML files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_csv_json_html_phpspreadsheet
-	 * @expectedDeprecated wp_targeted_link_rel
-	 * @expectedDeprecated wp_targeted_link_rel_callback
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
 	public function test_table_import_server_csv_json_html_phpspreadsheet( string $file ): void {
+		// `wp_targeted_link()` and related functions are deprecated in WP 6.7+, but used in TablePress < 3.0.
+		if ( version_compare( substr( get_bloginfo( 'version' ), 0, 3 ), '6.7', '>=' ) ) {
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel' );
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel_callback' );
+		}
+
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
@@ -414,14 +426,18 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	 * Test import of CSV, JSON, and HTML files from the server, using the legacy import class.
 	 *
 	 * @dataProvider data_table_import_server_csv_json_html_legacy
-	 * @expectedDeprecated wp_targeted_link_rel
-	 * @expectedDeprecated wp_targeted_link_rel_callback
 	 *
 	 * @since 2.0.0
 	 *
 	 * @param string $file File name to import and compare to the expected table data.
 	 */
 	public function test_table_import_server_csv_json_html_legacy( string $file ): void {
+		// `wp_targeted_link()` and related functions are deprecated in WP 6.7+, but used in TablePress < 3.0.
+		if ( version_compare( substr( get_bloginfo( 'version' ), 0, 3 ), '6.7', '>=' ) ) {
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel' );
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel_callback' );
+		}
+
 		$import_config = array(
 			'source'         => 'server',
 			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/legacy/' . $file,
