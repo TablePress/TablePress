@@ -107,7 +107,7 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.4.3 (October 8, 2024) =
+= Version 2.4.3 (October 9, 2024) =
 
 * *Security fix*: Sanitize output of evaluated formulas (CVE-2024-9595). Thanks to Max Boll and to the Wordfence team for following responsible disclosure policies when reporting this issue!
 * Bugfix: On the “Import” screen, a helpful feature pointer for new users is now shown properly again.
