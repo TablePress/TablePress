@@ -25,7 +25,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	protected $importer;
 
 	/**
-	 * Load the TablePress_Import class PHP file once for all tests.
+	 * Loads the TablePress_Import class PHP file once for all tests.
 	 *
 	 * @since 2.0.0
 	 */
@@ -36,7 +36,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Set up an instance of the TablePress_Import class before every test.
+	 * Sets up an instance of the TablePress_Import class before every test.
 	 *
 	 * @since 2.0.0
 	 */
@@ -47,7 +47,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test that TablePress_Import class is loaded.
+	 * Teststhat TablePress_Import class is loaded.
 	 *
 	 * @since 2.0.0
 	 */
@@ -56,7 +56,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test that a proper instance of the TablePress_Import class was created.
+	 * Tests that a proper instance of the TablePress_Import class was created.
 	 *
 	 * @since 2.0.0
 	 */
@@ -65,7 +65,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test import with incomplete configuration.
+	 * Tests import with incomplete configuration.
 	 *
 	 * @since 2.0.0
 	 */
@@ -83,7 +83,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Provide test data for the XLSX import from server tests for the PHPSpreadsheet import class.
+	 * Provides test data for the XLSX import from server tests for the PHPSpreadsheet import class.
 	 *
 	 * @since 2.0.0
 	 *
@@ -96,7 +96,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test import of XLSX files from the server, using the PHPSpreadsheet import class.
+	 * Tests import of XLSX files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_xlsx_phpspreadsheet
 	 *
@@ -190,7 +190,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Provide test data for the XLS import from server tests for the PHPSpreadsheet import class.
+	 * Provides test data for the XLS import from server tests for the PHPSpreadsheet import class.
 	 *
 	 * @since 2.0.0
 	 *
@@ -203,7 +203,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test import of XLS files from the server, using the PHPSpreadsheet import class.
+	 * Tests import of XLS files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_xls_phpspreadsheet
 	 *
@@ -294,7 +294,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Provide test data for the CSV, JSON, and HTML import from server tests for the PHPSpreadsheet import class.
+	 * Provides test data for the CSV, JSON, and HTML import from server tests for the PHPSpreadsheet import class.
 	 *
 	 * @since 2.0.0
 	 *
@@ -314,7 +314,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test import of CSV, JSON, and HTML files from the server, using the PHPSpreadsheet import class.
+	 * Tests import of CSV, JSON, and HTML files from the server, using the PHPSpreadsheet import class.
 	 *
 	 * @dataProvider data_table_import_server_csv_json_html_phpspreadsheet
 	 *
@@ -397,6 +397,54 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 			array( '', '', '', '' ),
 			array( '', '', '', '' ),
 			array( '', '', 'Two rows above are empty (escaped and unescaped).', '' ),
+		);
+
+		$this->assertSame( $expected_table_data, $imported_table_data );
+	}
+
+	/**
+	 * Provides test data for the CSV (UTF-8 with BOM) with HTML content import from server tests for the PHPSpreadsheet import class.
+	 *
+	 * @since 2.4.4
+	 *
+	 * @return array<int, array<int, string>> Test data.
+	 */
+	public function data_table_import_server_csv_bom_phpspreadsheet(): array {
+		return array(
+			array( 'test-table-comma-utf8-bom.csv' ),
+			array( 'test-table-comma-crlf-utf8-bom.csv' ),
+		);
+	}
+
+	/**
+	 * Tests import of CSV (UTF-8 with BOM) files with HTML content from the server, using the PHPSpreadsheet import class.
+	 *
+	 * @dataProvider data_table_import_server_csv_bom_phpspreadsheet
+	 *
+	 * @since 2.4.4
+	 *
+	 * @param string $file File name to import and compare to the expected table data.
+	 */
+	public function test_table_import_server_csv_bom_phpspreadsheet( string $file ): void {
+		// `wp_targeted_link()` and related functions are deprecated in WP 6.7+, but used in TablePress < 3.0.
+		if ( version_compare( substr( get_bloginfo( 'version' ), 0, 3 ), '6.7', '>=' ) ) {
+			$this->setExpectedDeprecated( 'wp_targeted_link_rel' );
+		}
+
+		$import_config = array(
+			'source'         => 'server',
+			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
+			'type'           => 'add',
+			'existing_table' => '',
+			'legacy_import'  => false, // Use PHPSpreadsheet.
+		);
+		$import = $this->importer->run( $import_config );
+		$imported_table_data = $import['tables'][0]['data'];
+
+		// In comparison to the expected table data from `test_table_import_server_csv_json_html_legacy()`, this does have three rows with unescaped spaces before and after text, integer, and float.
+		$expected_table_data = array(
+			array( 'First column', 'Middle column', 'Description', 'Last column' ),
+			array( '<a href="https://example.com/">Text</a>', '<a href="https://example.com/">Text</a>', 'HTML with URL', '<a href="https://example.com/">Text</a>' ),
 		);
 
 		$this->assertSame( $expected_table_data, $imported_table_data );

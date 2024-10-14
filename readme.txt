@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.0
 Requires PHP: 7.2
 Tested up to: 6.6
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,12 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 2.4.4 (October 15, 2024) =
+
+* Bugfix: The import of CSV files with special formatting characters (BOM) is working again.
+* Bugfix: The position of the Search field in the “Automatic Periodic Table Import” configuration is correct again. (TablePress Max only.)
+* *Important note*: This release also contains an important security fix that was first released in TablePress 2.4.3.
+
 = Version 2.4.3 (October 9, 2024) =
 
 * *Security fix*: Sanitize output of evaluated formulas (CVE-2024-9595). Thanks to Max Boll and to the Wordfence team for following responsible disclosure policies when reporting this issue!
@@ -180,8 +186,8 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.4.3 =
-This update is a security and maintenance release. Updating is highly recommended.
+= 2.4.4 =
+This update is a stability and maintenance release. Updating is highly recommended.
 
 = 2.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.
