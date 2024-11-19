@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Reader;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\IValueBinder;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
@@ -14,24 +15,21 @@ abstract class BaseReader implements IReader
 	 * Read data only?
 	 * Identifies whether the Reader should only read data values for cells, and ignore any formatting information;
 	 *        or whether it should read both data and formatting.
-	 * @var bool
 	 */
-	protected $readDataOnly = false;
+	protected bool $readDataOnly = false;
 
 	/**
 	 * Read empty cells?
-	 * Identifies whether the Reader should read data values for cells all cells, or should ignore cells containing
+	 * Identifies whether the Reader should read data values for all cells, or should ignore cells containing
 	 *         null value or empty string.
-	 * @var bool
 	 */
-	protected $readEmptyCells = true;
+	protected bool $readEmptyCells = true;
 
 	/**
 	 * Read charts that are defined in the workbook?
 	 * Identifies whether the Reader should read the definitions for any charts that exist in the workbook;.
-	 * @var bool
 	 */
-	protected $includeCharts = false;
+	protected bool $includeCharts = false;
 
 	/**
 	 * Restrict which sheets should be loaded?
@@ -40,21 +38,26 @@ abstract class BaseReader implements IReader
 	 *
 	 * @var null|string[]
 	 */
-	protected $loadSheetsOnly;
+	protected ?array $loadSheetsOnly = null;
+
+	/**
+	 * Ignore rows with no cells?
+	 * Identifies whether the Reader should ignore rows with no cells.
+	 *        Currently implemented only for Xlsx.
+	 */
+	protected bool $ignoreRowsWithNoCells = false;
 
 	/**
 	 * IReadFilter instance.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReadFilter
 	 */
-	protected $readFilter;
+	protected IReadFilter $readFilter;
 
 	/** @var resource */
 	protected $fileHandle;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner|null
-	 */
-	protected $securityScanner;
+	protected ?XmlScanner $securityScanner = null;
+
+	protected ?IValueBinder $valueBinder = null;
 
 	public function __construct()
 	{
@@ -66,10 +69,7 @@ abstract class BaseReader implements IReader
 		return $this->readDataOnly;
 	}
 
-	/**
-	 * @return $this
-	 */
-	public function setReadDataOnly(bool $readCellValuesOnly): \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReader
+	public function setReadDataOnly(bool $readCellValuesOnly): self
 	{
 		$this->readDataOnly = $readCellValuesOnly;
 
@@ -81,12 +81,21 @@ abstract class BaseReader implements IReader
 		return $this->readEmptyCells;
 	}
 
-	/**
-	 * @return $this
-	 */
-	public function setReadEmptyCells(bool $readEmptyCells): \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReader
+	public function setReadEmptyCells(bool $readEmptyCells): self
 	{
 		$this->readEmptyCells = $readEmptyCells;
+
+		return $this;
+	}
+
+	public function getIgnoreRowsWithNoCells(): bool
+	{
+		return $this->ignoreRowsWithNoCells;
+	}
+
+	public function setIgnoreRowsWithNoCells(bool $ignoreRowsWithNoCells): self
+	{
+		$this->ignoreRowsWithNoCells = $ignoreRowsWithNoCells;
 
 		return $this;
 	}
@@ -96,10 +105,7 @@ abstract class BaseReader implements IReader
 		return $this->includeCharts;
 	}
 
-	/**
-	 * @return $this
-	 */
-	public function setIncludeCharts(bool $includeCharts): \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReader
+	public function setIncludeCharts(bool $includeCharts): self
 	{
 		$this->includeCharts = $includeCharts;
 
@@ -113,9 +119,8 @@ abstract class BaseReader implements IReader
 
 	/**
 	 * @param string|mixed[]|null $sheetList
-	 * @return $this
 	 */
-	public function setLoadSheetsOnly($sheetList): \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReader
+	public function setLoadSheetsOnly($sheetList): self
 	{
 		if ($sheetList === null) {
 			return $this->setLoadAllSheets();
@@ -126,10 +131,7 @@ abstract class BaseReader implements IReader
 		return $this;
 	}
 
-	/**
-	 * @return $this
-	 */
-	public function setLoadAllSheets(): \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReader
+	public function setLoadAllSheets(): self
 	{
 		$this->loadSheetsOnly = null;
 
@@ -141,10 +143,7 @@ abstract class BaseReader implements IReader
 		return $this->readFilter;
 	}
 
-	/**
-	 * @return $this
-	 */
-	public function setReadFilter(IReadFilter $readFilter): \TablePress\PhpOffice\PhpSpreadsheet\Reader\IReader
+	public function setReadFilter(IReadFilter $readFilter): self
 	{
 		$this->readFilter = $readFilter;
 
@@ -173,8 +172,11 @@ abstract class BaseReader implements IReader
 		if (((bool) ($flags & self::READ_DATA_ONLY)) === true) {
 			$this->setReadDataOnly(true);
 		}
-		if (((bool) ($flags & self::SKIP_EMPTY_CELLS) || (bool) ($flags & self::IGNORE_EMPTY_CELLS)) === true) {
+		if (((bool) ($flags & self::IGNORE_EMPTY_CELLS)) === true) {
 			$this->setReadEmptyCells(false);
+		}
+		if (((bool) ($flags & self::IGNORE_ROWS_WITH_NO_CELLS)) === true) {
+			$this->setIgnoreRowsWithNoCells(true);
 		}
 	}
 
@@ -245,5 +247,17 @@ abstract class BaseReader implements IReader
 		}
 
 		return $returnArray;
+	}
+
+	public function getValueBinder(): ?IValueBinder
+	{
+		return $this->valueBinder;
+	}
+
+	public function setValueBinder(?IValueBinder $valueBinder): self
+	{
+		$this->valueBinder = $valueBinder;
+
+		return $this;
 	}
 }

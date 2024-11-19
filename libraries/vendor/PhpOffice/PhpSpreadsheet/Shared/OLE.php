@@ -58,49 +58,46 @@ class OLE
 
 	/**
 	 * Array of PPS's found on the OLE container.
-	 * @var mixed[]
 	 */
-	public $_list = [];
+	public array $_list = [];
 
 	/**
 	 * Root directory of OLE container.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\OLE\PPS\Root
 	 */
-	public $root;
+	public Root $root;
 
 	/**
 	 * Big Block Allocation Table.
 	 *
 	 * @var array (blockId => nextBlockId)
 	 */
-	public $bbat;
+	public array $bbat;
 
 	/**
 	 * Short Block Allocation Table.
 	 *
 	 * @var array (blockId => nextBlockId)
 	 */
-	public $sbat;
+	public array $sbat;
 
 	/**
 	 * Size of big blocks. This is usually 512.
 	 *
 	 * @var int number of octets per block
 	 */
-	public $bigBlockSize;
+	public int $bigBlockSize;
 
 	/**
 	 * Size of small blocks. This is usually 64.
 	 *
 	 * @var int number of octets per block
 	 */
-	public $smallBlockSize;
+	public int $smallBlockSize;
 
 	/**
 	 * Threshold for big blocks.
-	 * @var int
 	 */
-	public $bigBlockThreshold;
+	public int $bigBlockThreshold;
 
 	/**
 	 * Reads an OLE container from the contents of the file given.

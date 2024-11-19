@@ -27,9 +27,8 @@ class TablePress_WP_Option {
 	 * Name/Key of the Option (in its location in the database).
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $option_name;
+	protected string $option_name;
 
 	/**
 	 * Current value of the option.
@@ -37,7 +36,7 @@ class TablePress_WP_Option {
 	 * @since 1.0.0
 	 * @var mixed[]
 	 */
-	protected $option_value;
+	protected array $option_value;
 
 	/**
 	 * Initialize with Option Name.
@@ -106,7 +105,7 @@ class TablePress_WP_Option {
 	 */
 	public function update( array $new_options ): bool {
 		$this->option_value = $new_options;
-		return $this->_update_option( $this->option_name, wp_json_encode( $this->option_value, TABLEPRESS_JSON_OPTIONS ) ); // @phpstan-ignore-line
+		return $this->_update_option( $this->option_name, wp_json_encode( $this->option_value, TABLEPRESS_JSON_OPTIONS ) ); // @phpstan-ignore argument.type
 	}
 
 	/**

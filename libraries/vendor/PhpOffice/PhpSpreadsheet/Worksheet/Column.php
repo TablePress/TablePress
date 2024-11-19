@@ -4,16 +4,12 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
 class Column
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
 	/**
 	 * Column index.
-	 * @var string
 	 */
-	private $columnIndex;
+	private string $columnIndex;
 
 	/**
 	 * Create a new column.

@@ -10,9 +10,8 @@ abstract class Supervisor implements IComparable
 {
 	/**
 	 * Supervisor?
-	 * @var bool
 	 */
-	protected $isSupervisor;
+	protected bool $isSupervisor;
 
 	/**
 	 * Parent. Only used for supervisor.
@@ -23,9 +22,8 @@ abstract class Supervisor implements IComparable
 
 	/**
 	 * Parent property name.
-	 * @var string|null
 	 */
-	protected $parentPropertyName;
+	protected ?string $parentPropertyName = null;
 
 	/**
 	 * Create a new Supervisor.

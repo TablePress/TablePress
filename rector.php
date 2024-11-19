@@ -21,9 +21,9 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 	// Set default indenting.
 	$rector_config->indent( "\t", 1 );
 
-	// Downgrade everything to PHP 7.2.
+	// Downgrade everything to PHP 7.4.
 	$rector_config->sets( array(
-		Rector\Set\ValueObject\DowngradeLevelSetList::DOWN_TO_PHP_72,
+		Rector\Set\ValueObject\DowngradeLevelSetList::DOWN_TO_PHP_74,
 	) );
 
 	// Add PHP attribute to prevent deprecation warnings.
@@ -31,13 +31,11 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 		Rector\Transform\Rector\ClassMethod\ReturnTypeWillChangeRector::class,
 		array(
 			new Rector\Transform\ValueObject\ClassMethodReference( 'JsonSerializable', 'jsonSerialize' ),
-		)
+		),
 	);
 
 	// Ignore downgrade rules for functions that WordPress is polyfilling.
 	$rector_config->skip( array(
-		Rector\DowngradePhp73\Rector\FuncCall\DowngradeArrayKeyFirstLastRector::class, // array_key_first() and array_key_list().
-		Rector\DowngradePhp73\Rector\FuncCall\DowngradeIsCountableRector::class, // is_countable().
 		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector::class, // str_contains().
 		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrEndsWithRector::class, // str_ends_with().
 		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrStartsWithRector::class, // str_starts_with().

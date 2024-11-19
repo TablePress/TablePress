@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Hľadať:',
 	'zeroRecords'    => 'Nenašli sa žiadne vyhovujúce záznamy',
 	'paginate'       => array(
-		'first'    => 'Prvá',
-		'previous' => 'Predchádzajúca',
-		'next'     => 'Nasledujúca',
-		'last'     => 'Posledná',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': aktivujte na zoradenie stĺpca vzostupne',

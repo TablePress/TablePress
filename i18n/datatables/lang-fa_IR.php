@@ -18,9 +18,9 @@ return array(
 	'search'       => 'جستجو:',
 	'zeroRecords'  => 'موردی یافت نشد',
 	'paginate'     => array(
-		'first'    => 'ابتدا',
-		'previous' => 'قبلی',
-		'next'     => 'بعدی',
-		'last'     => 'انتها',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 );

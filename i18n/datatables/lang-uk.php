@@ -18,10 +18,10 @@ return array(
 	'search'       => 'Пошук:',
 	'zeroRecords'  => 'Записи відсутні.',
 	'paginate'     => array(
-		'first'    => 'Перша',
-		'previous' => 'Попередня',
-		'next'     => 'Наступна',
-		'last'     => 'Остання',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'         => array(
 		'sortAscending'  => ': активувати для сортування стовпців за зростанням',

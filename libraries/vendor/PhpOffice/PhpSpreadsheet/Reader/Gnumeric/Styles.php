@@ -14,20 +14,11 @@ use SimpleXMLElement;
 
 class Styles
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet
-	 */
-	private $spreadsheet;
+	private Spreadsheet $spreadsheet;
 
-	/**
-	 * @var bool
-	 */
-	protected $readDataOnly;
+	protected bool $readDataOnly;
 
-	/**
-	 * @var mixed[]
-	 */
-	public static $mappings = [
+	public static array $mappings = [
 		'borderStyle' => [
 			'0' => Border::BORDER_NONE,
 			'1' => Border::BORDER_THIN,

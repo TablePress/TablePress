@@ -14,69 +14,58 @@ class Borders extends Supervisor
 
 	/**
 	 * Left.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $left;
+	protected Border $left;
 
 	/**
 	 * Right.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $right;
+	protected Border $right;
 
 	/**
 	 * Top.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $top;
+	protected Border $top;
 
 	/**
 	 * Bottom.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $bottom;
+	protected Border $bottom;
 
 	/**
 	 * Diagonal.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $diagonal;
+	protected Border $diagonal;
 
 	/**
 	 * DiagonalDirection.
-	 * @var int
 	 */
-	protected $diagonalDirection;
+	protected int $diagonalDirection;
 
 	/**
 	 * All borders pseudo-border. Only applies to supervisor.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $allBorders;
+	protected Border $allBorders;
 
 	/**
 	 * Outline pseudo-border. Only applies to supervisor.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $outline;
+	protected Border $outline;
 
 	/**
 	 * Inside pseudo-border. Only applies to supervisor.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $inside;
+	protected Border $inside;
 
 	/**
 	 * Vertical pseudo-border. Only applies to supervisor.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $vertical;
+	protected Border $vertical;
 
 	/**
 	 * Horizontal pseudo-border. Only applies to supervisor.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Border
 	 */
-	protected $horizontal;
+	protected Border $horizontal;
 
 	/**
 	 * Create a new Borders.

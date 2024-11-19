@@ -42,6 +42,12 @@ if ( 1 === substr_count( $new_version_long, '.' ) ) {
  * - type: (optional) The type of replacement to perform. Currently only 'integer' is supported, which increments the number found in the search pattern (instead of a version replacement).
  */
 $replacements = array(
+	'blocks/blocks-manifest.php'   => array(
+		array(
+			'search'  => "		'version' => '\d+\.\d+\.?\d*',",
+			'replace' => "		'version' => '{$new_version}',",
+		),
+	),
 	'blocks/table/block.json'      => array(
 		array(
 			'search'  => '	"version": "\d+\.\d+\.?\d*",',
@@ -100,11 +106,11 @@ foreach ( $replacements as $file => $replacements ) {
 		if ( isset( $replacement['type'] ) && 'integer' === $replacement['type'] ) {
 			$content = preg_replace_callback(
 				"#{$replacement['search']}#",
-				static function ( $matches ) {
+				static function ( array $matches ): string {
 					$increased_version = $matches[2] + 1;
 					return $matches[1] . $increased_version . $matches[3];
 				},
-				$content
+				$content,
 			);
 		} else {
 			$content = (string) preg_replace( "#{$replacement['search']}#", $replacement['replace'], $content );

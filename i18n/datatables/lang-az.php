@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Axtarış:',
 	'zeroRecords'    => 'Nəticə Tapılmadı.',
 	'paginate'       => array(
-		'first'    => 'İlk',
-		'previous' => 'Öncəki',
-		'next'     => 'Sonraki',
-		'last'     => 'Axırıncı',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': sütunu artma sırası üzərə aktiv etmək',

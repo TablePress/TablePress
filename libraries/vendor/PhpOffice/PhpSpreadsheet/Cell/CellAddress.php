@@ -8,26 +8,11 @@ use Stringable;
 
 class CellAddress
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
-	 */
-	protected $worksheet;
-	/**
-	 * @var string
-	 */
-	protected $cellAddress;
-	/**
-	 * @var string
-	 */
-	protected $columnName = '';
-	/**
-	 * @var int
-	 */
-	protected $columnId;
-	/**
-	 * @var int
-	 */
-	protected $rowId;
+	protected ?Worksheet $worksheet;
+	protected string $cellAddress;
+	protected string $columnName = '';
+	protected int $columnId;
+	protected int $rowId;
 	public function __construct(string $cellAddress, ?Worksheet $worksheet = null)
 	{
 		$this->cellAddress = str_replace('$', '', $cellAddress);

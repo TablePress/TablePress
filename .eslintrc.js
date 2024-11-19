@@ -10,6 +10,7 @@ const eslintConfig = {
 		'no-undef': 'off',
 		'no-useless-return': 'off',
 		'prettier/prettier': 'off',
+		'@wordpress/i18n-hyphenated-range': 'off',
 		'@wordpress/i18n-translator-comments': 'off',
 		'jsdoc/check-tag-names': 'off',
 		'jsdoc/empty-tags': 'off',

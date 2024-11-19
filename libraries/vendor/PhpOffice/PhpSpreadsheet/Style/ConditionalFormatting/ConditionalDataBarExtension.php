@@ -4,70 +4,34 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting;
 
 class ConditionalDataBarExtension
 {
-	/** <dataBar> attributes
-	 * @var int */
-	private $minLength;
+	/** <dataBar> attributes */
+	private int $minLength;
 
-	/**
-	 * @var int
-	 */
-	private $maxLength;
+	private int $maxLength;
 
-	/**
-	 * @var bool|null
-	 */
-	private $border;
+	private ?bool $border = null;
 
-	/**
-	 * @var bool|null
-	 */
-	private $gradient;
+	private ?bool $gradient = null;
 
-	/**
-	 * @var string|null
-	 */
-	private $direction;
+	private ?string $direction = null;
 
-	/**
-	 * @var bool|null
-	 */
-	private $negativeBarBorderColorSameAsPositive;
+	private ?bool $negativeBarBorderColorSameAsPositive = null;
 
-	/**
-	 * @var string|null
-	 */
-	private $axisPosition;
+	private ?string $axisPosition = null;
 
 	// <dataBar> children
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject
-	 */
-	private $maximumConditionalFormatValueObject;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject
-	 */
-	private $minimumConditionalFormatValueObject;
+	private ConditionalFormatValueObject $maximumConditionalFormatValueObject;
 
-	/**
-	 * @var string|null
-	 */
-	private $borderColor;
+	private ConditionalFormatValueObject $minimumConditionalFormatValueObject;
 
-	/**
-	 * @var string|null
-	 */
-	private $negativeFillColor;
+	private ?string $borderColor = null;
 
-	/**
-	 * @var string|null
-	 */
-	private $negativeBorderColor;
+	private ?string $negativeFillColor = null;
 
-	/**
-	 * @var mixed[]
-	 */
-	private $axisColor = [
+	private ?string $negativeBorderColor = null;
+
+	private array $axisColor = [
 		'rgb' => null,
 		'theme' => null,
 		'tint' => null,

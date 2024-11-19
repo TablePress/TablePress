@@ -9,167 +9,120 @@ class Chart
 {
 	/**
 	 * Chart Name.
-	 * @var string
 	 */
-	private $name;
+	private string $name;
 
 	/**
 	 * Worksheet.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
-	private $worksheet;
+	private ?Worksheet $worksheet = null;
 
 	/**
 	 * Chart Title.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Title|null
 	 */
-	private $title;
+	private ?Title $title;
 
 	/**
 	 * Chart Legend.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Legend|null
 	 */
-	private $legend;
+	private ?Legend $legend;
 
 	/**
 	 * X-Axis Label.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Title|null
 	 */
-	private $xAxisLabel;
+	private ?Title $xAxisLabel;
 
 	/**
 	 * Y-Axis Label.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Title|null
 	 */
-	private $yAxisLabel;
+	private ?Title $yAxisLabel;
 
 	/**
 	 * Chart Plot Area.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\PlotArea|null
 	 */
-	private $plotArea;
+	private ?PlotArea $plotArea;
 
 	/**
 	 * Plot Visible Only.
-	 * @var bool
 	 */
-	private $plotVisibleOnly;
+	private bool $plotVisibleOnly;
 
 	/**
 	 * Display Blanks as.
-	 * @var string
 	 */
-	private $displayBlanksAs;
+	private string $displayBlanksAs;
 
 	/**
 	 * Chart Asix Y as.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Axis
 	 */
-	private $yAxis;
+	private Axis $yAxis;
 
 	/**
 	 * Chart Asix X as.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Axis
 	 */
-	private $xAxis;
+	private Axis $xAxis;
 
 	/**
 	 * Top-Left Cell Position.
-	 * @var string
 	 */
-	private $topLeftCellRef = 'A1';
+	private string $topLeftCellRef = 'A1';
 
 	/**
 	 * Top-Left X-Offset.
-	 * @var int
 	 */
-	private $topLeftXOffset = 0;
+	private int $topLeftXOffset = 0;
 
 	/**
 	 * Top-Left Y-Offset.
-	 * @var int
 	 */
-	private $topLeftYOffset = 0;
+	private int $topLeftYOffset = 0;
 
 	/**
 	 * Bottom-Right Cell Position.
-	 * @var string
 	 */
-	private $bottomRightCellRef = '';
+	private string $bottomRightCellRef = '';
 
 	/**
 	 * Bottom-Right X-Offset.
-	 * @var int
 	 */
-	private $bottomRightXOffset = 10;
+	private int $bottomRightXOffset = 10;
 
 	/**
 	 * Bottom-Right Y-Offset.
-	 * @var int
 	 */
-	private $bottomRightYOffset = 10;
+	private int $bottomRightYOffset = 10;
 
-	/**
-	 * @var int|null
-	 */
-	private $rotX;
+	private ?int $rotX = null;
 
-	/**
-	 * @var int|null
-	 */
-	private $rotY;
+	private ?int $rotY = null;
 
-	/**
-	 * @var int|null
-	 */
-	private $rAngAx;
+	private ?int $rAngAx = null;
 
-	/**
-	 * @var int|null
-	 */
-	private $perspective;
+	private ?int $perspective = null;
 
-	/**
-	 * @var bool
-	 */
-	private $oneCellAnchor = false;
+	private bool $oneCellAnchor = false;
 
-	/**
-	 * @var bool
-	 */
-	private $autoTitleDeleted = false;
+	private bool $autoTitleDeleted = false;
 
-	/**
-	 * @var bool
-	 */
-	private $noFill = false;
+	private bool $noFill = false;
 
-	/**
-	 * @var bool
-	 */
-	private $roundedCorners = false;
+	private bool $noBorder = false;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\GridLines
-	 */
-	private $borderLines;
+	private bool $roundedCorners = false;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	private $fillColor;
+	private GridLines $borderLines;
+
+	private ChartColor $fillColor;
 
 	/**
 	 * Rendered width in pixels.
-	 * @var float|null
 	 */
-	private $renderedWidth;
+	private ?float $renderedWidth = null;
 
 	/**
 	 * Rendered height in pixels.
-	 * @var float|null
 	 */
-	private $renderedHeight;
+	private ?float $renderedHeight = null;
 
 	/**
 	 * Create a new Chart.
@@ -741,6 +694,18 @@ class Chart
 	public function setNoFill(bool $noFill): self
 	{
 		$this->noFill = $noFill;
+
+		return $this;
+	}
+
+	public function getNoBorder(): bool
+	{
+		return $this->noBorder;
+	}
+
+	public function setNoBorder(bool $noBorder): self
+	{
+		$this->noBorder = $noBorder;
 
 		return $this;
 	}

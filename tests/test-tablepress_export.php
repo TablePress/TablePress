@@ -20,9 +20,8 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 * Instance of the TablePress_Export class.
 	 *
 	 * @since 2.0.0
-	 * @var TablePress_Export
 	 */
-	protected $exporter;
+	protected \TablePress_Export $exporter;
 
 	/**
 	 * Load the TablePress_Export class PHP file once for all tests.
@@ -87,8 +86,8 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 			'author'        => '1',
 			'options'       => array(
 				'last_editor'                 => '1',
-				'table_head'                  => true,
-				'table_foot'                  => false,
+				'table_head'                  => 1,
+				'table_foot'                  => 0,
 				'alternating_row_colors'      => true,
 				'row_hover'                   => true,
 				'print_name'                  => false,
@@ -114,66 +113,66 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 
 		$expected_data = array();
 		$expected_data['csv-semicolon'] = <<<DATA
-Text;"  with whitespace  ";"and\nline break"
-123;123.456;123,456
-"a semicolon: (;)";a comma: (,);a tab: (	)
-=3+4;'=5+cmd|' /C notepad'!'A1';'@IMPORTXML(...)
-HTML: <em>an empty cell follows:</em>;;"<a href=""https://example.com/"">Link</a>"
+			Text;"  with whitespace  ";"and\nline break"
+			123;123.456;123,456
+			"a semicolon: (;)";a comma: (,);a tab: (	)
+			=3+4;'=5+cmd|' /C notepad'!'A1';'@IMPORTXML(...)
+			HTML: <em>an empty cell follows:</em>;;"<a href=""https://example.com/"">Link</a>"
 
-DATA;
+			DATA;
 		$expected_data['csv-comma'] = <<<DATA
-Text,"  with whitespace  ","and\nline break"
-123,123.456,"123,456"
-a semicolon: (;),"a comma: (,)",a tab: (	)
-=3+4,'=5+cmd|' /C notepad'!'A1','@IMPORTXML(...)
-HTML: <em>an empty cell follows:</em>,,"<a href=""https://example.com/"">Link</a>"
+			Text,"  with whitespace  ","and\nline break"
+			123,123.456,"123,456"
+			a semicolon: (;),"a comma: (,)",a tab: (	)
+			=3+4,'=5+cmd|' /C notepad'!'A1','@IMPORTXML(...)
+			HTML: <em>an empty cell follows:</em>,,"<a href=""https://example.com/"">Link</a>"
 
-DATA;
+			DATA;
 		$expected_data['csv-tab'] = <<<DATA
-Text	"  with whitespace  "	"and\nline break"
-123	123.456	123,456
-a semicolon: (;)	a comma: (,)	"a tab: (	)"
-=3+4	'=5+cmd|' /C notepad'!'A1'	'@IMPORTXML(...)
-HTML: <em>an empty cell follows:</em>		"<a href=""https://example.com/"">Link</a>"
+			Text	"  with whitespace  "	"and\nline break"
+			123	123.456	123,456
+			a semicolon: (;)	a comma: (,)	"a tab: (	)"
+			=3+4	'=5+cmd|' /C notepad'!'A1'	'@IMPORTXML(...)
+			HTML: <em>an empty cell follows:</em>		"<a href=""https://example.com/"">Link</a>"
 
-DATA;
+			DATA;
 		$expected_data['html'] = <<<DATA
-<table>
-	<thead>
-		<tr>
-			<th>Text</th>
-			<th>  with whitespace  </th>
-			<th>and\nline break</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>123</td>
-			<td>123.456</td>
-			<td>123,456</td>
-		</tr>
-		<tr>
-			<td>a semicolon: (;)</td>
-			<td>a comma: (,)</td>
-			<td>a tab: (	)</td>
-		</tr>
-		<tr>
-			<td>=3+4</td>
-			<td>=5+cmd|' /C notepad'!'A1'</td>
-			<td>@IMPORTXML(...)</td>
-		</tr>
-		<tr>
-			<td>HTML: <em>an empty cell follows:</em></td>
-			<td></td>
-			<td><a href="https://example.com/">Link</a></td>
-		</tr>
-	</tbody>
-</table>
+			<table>
+				<thead>
+					<tr>
+						<th>Text</th>
+						<th>  with whitespace  </th>
+						<th>and\nline break</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>123</td>
+						<td>123.456</td>
+						<td>123,456</td>
+					</tr>
+					<tr>
+						<td>a semicolon: (;)</td>
+						<td>a comma: (,)</td>
+						<td>a tab: (	)</td>
+					</tr>
+					<tr>
+						<td>=3+4</td>
+						<td>=5+cmd|' /C notepad'!'A1'</td>
+						<td>@IMPORTXML(...)</td>
+					</tr>
+					<tr>
+						<td>HTML: <em>an empty cell follows:</em></td>
+						<td></td>
+						<td><a href="https://example.com/">Link</a></td>
+					</tr>
+				</tbody>
+			</table>
 
-DATA;
+			DATA;
 		$expected_data['json'] = <<<'DATA'
-{"id":false,"name":"","description":"","data":[["Text","  with whitespace  ","and\nline break"],["123","123.456","123,456"],["a semicolon: (;)","a comma: (,)","a tab: (\t)"],["=3+4","=5+cmd|' /C notepad'!'A1'","@IMPORTXML(...)"],["HTML: <em>an empty cell follows:</em>","","<a href=\"https://example.com/\">Link</a>"]],"last_modified":"2022-11-14 14:00:00","author":"1","options":{"last_editor":"1","table_head":true,"table_foot":false,"alternating_row_colors":true,"row_hover":true,"print_name":false,"print_name_position":"above","print_description":false,"print_description_position":"below","extra_css_classes":"","use_datatables":true,"datatables_sort":true,"datatables_filter":true,"datatables_paginate":true,"datatables_lengthchange":true,"datatables_paginate_entries":10,"datatables_info":true,"datatables_scrollx":false,"datatables_custom_commands":""},"visibility":{"rows":[1,1,1,1,1],"columns":[1,1,1]}}
-DATA;
+			{"id":false,"name":"","description":"","data":[["Text","  with whitespace  ","and\nline break"],["123","123.456","123,456"],["a semicolon: (;)","a comma: (,)","a tab: (\t)"],["=3+4","=5+cmd|' /C notepad'!'A1'","@IMPORTXML(...)"],["HTML: <em>an empty cell follows:</em>","","<a href=\"https://example.com/\">Link</a>"]],"last_modified":"2022-11-14 14:00:00","author":"1","options":{"last_editor":"1","table_head":1,"table_foot":0,"alternating_row_colors":true,"row_hover":true,"print_name":false,"print_name_position":"above","print_description":false,"print_description_position":"below","extra_css_classes":"","use_datatables":true,"datatables_sort":true,"datatables_filter":true,"datatables_paginate":true,"datatables_lengthchange":true,"datatables_paginate_entries":10,"datatables_info":true,"datatables_scrollx":false,"datatables_custom_commands":""},"visibility":{"rows":[1,1,1,1,1],"columns":[1,1,1]}}
+			DATA;
 
 		return array(
 			'CSV with semicolon' => array(

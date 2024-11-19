@@ -25,15 +25,13 @@ class Properties
 
 	/**
 	 * Creator.
-	 * @var string
 	 */
-	private $creator = 'Unknown Creator';
+	private string $creator = 'Unknown Creator';
 
 	/**
 	 * LastModifiedBy.
-	 * @var string
 	 */
-	private $lastModifiedBy;
+	private string $lastModifiedBy;
 
 	/**
 	 * Created.
@@ -49,62 +47,49 @@ class Properties
 
 	/**
 	 * Title.
-	 * @var string
 	 */
-	private $title = 'Untitled Spreadsheet';
+	private string $title = 'Untitled Spreadsheet';
 
 	/**
 	 * Description.
-	 * @var string
 	 */
-	private $description = '';
+	private string $description = '';
 
 	/**
 	 * Subject.
-	 * @var string
 	 */
-	private $subject = '';
+	private string $subject = '';
 
 	/**
 	 * Keywords.
-	 * @var string
 	 */
-	private $keywords = '';
+	private string $keywords = '';
 
 	/**
 	 * Category.
-	 * @var string
 	 */
-	private $category = '';
+	private string $category = '';
 
 	/**
 	 * Manager.
-	 * @var string
 	 */
-	private $manager = '';
+	private string $manager = '';
 
 	/**
 	 * Company.
-	 * @var string
 	 */
-	private $company = '';
+	private string $company = '';
 
 	/**
 	 * Custom Properties.
 	 *
 	 * @var array{value: null|bool|float|int|string, type: string}[]
 	 */
-	private $customProperties = [];
+	private array $customProperties = [];
 
-	/**
-	 * @var string
-	 */
-	private $hyperlinkBase = '';
+	private string $hyperlinkBase = '';
 
-	/**
-	 * @var string
-	 */
-	private $viewport = '';
+	private string $viewport = '';
 
 	/**
 	 * Create a new Document Properties instance.

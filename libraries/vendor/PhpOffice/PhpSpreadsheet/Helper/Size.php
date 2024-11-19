@@ -7,22 +7,13 @@ use Stringable;
 class Size
 {
 	const REGEXP_SIZE_VALIDATION = '/^(?P<size>\d*\.?\d+)(?P<unit>pt|px|em)?$/i';
-	/**
-	 * @var bool
-	 */
-	protected $valid;
-	/**
-	 * @var string
-	 */
-	protected $size = '';
-	/**
-	 * @var string
-	 */
-	protected $unit = '';
+	protected bool $valid = false;
+	protected string $size = '';
+	protected string $unit = '';
 	public function __construct(string $size)
 	{
-		$this->valid = (bool) preg_match(self::REGEXP_SIZE_VALIDATION, $size, $matches);
-		if ($this->valid) {
+		if (1 === preg_match(self::REGEXP_SIZE_VALIDATION, $size, $matches)) {
+			$this->valid = true;
 			$this->size = $matches['size'];
 			$this->unit = $matches['unit'] ?? 'pt';
 		}

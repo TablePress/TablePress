@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\TextData;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalcExp;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 
@@ -26,7 +27,12 @@ class CharacterConvert
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $character);
 		}
 
-		$character = Helpers::validateInt($character);
+		try {
+			$character = Helpers::validateInt($character, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
+
 		$min = Functions::getCompatibilityMode() === Functions::COMPATIBILITY_OPENOFFICE ? 0 : 1;
 		if ($character < $min || $character > 255) {
 			return ExcelError::VALUE();
@@ -52,7 +58,12 @@ class CharacterConvert
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $characters);
 		}
 
-		$characters = Helpers::extractString($characters);
+		try {
+			$characters = Helpers::extractString($characters, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
+
 		if ($characters === '') {
 			return ExcelError::VALUE();
 		}

@@ -25,12 +25,11 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Name of the "Custom Post Type" for the tables.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $post_type = 'tablepress_table';
+	protected string $post_type = 'tablepress_table';
 
 	/**
-	 * Init the model by registering the Custom Post Type.
+	 * Inits the model by registering the Custom Post Type.
 	 *
 	 * @since 1.0.0
 	 */
@@ -40,7 +39,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Register the Custom Post Type which the tables use.
+	 * Registers the Custom Post Type which the tables use.
 	 *
 	 * @since 1.0.0
 	 */
@@ -78,7 +77,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Insert a post with the correct Custom Post Type and default values in the the wp_posts table in the database.
+	 * Inserts a post with the correct Custom Post Type and default values in the the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
 	 *
@@ -137,7 +136,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		}
 
 		// In rare cases, `wp_insert_post()` returns 0 as the post ID, when an error happens, so it's converted to a WP_Error here.
-		if ( 0 === $post_id ) { // @phpstan-ignore-line (False-positive in the PHPStan WordPress stubs.)
+		if ( 0 === $post_id ) { // @phpstan-ignore identical.alwaysFalse (False-positive in the PHPStan WordPress stubs.)
 			return new WP_Error( 'post_insert', '' );
 		}
 
@@ -145,7 +144,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Update an existing post with the correct Custom Post Type and default values in the the wp_posts table in the database.
+	 * Updates an existing post with the correct Custom Post Type and default values in the the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
 	 *
@@ -207,7 +206,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Get a post from the wp_posts table in the database.
+	 * Gets a post from the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
 	 *
@@ -223,7 +222,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Delete a post (and all revisions) from the wp_posts table in the database.
+	 * Deletes a post (and all revisions) from the wp_posts table in the database.
 	 *
 	 * @since 1.0.0
 	 *
@@ -235,7 +234,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Move a post to the trash (if trash is globally enabled), instead of directly deleting the post.
+	 * Moves a post to the trash (if trash is globally enabled), instead of directly deleting the post.
 	 * (yet unused)
 	 *
 	 * @since 1.0.0
@@ -248,7 +247,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Restore a post from the trash.
+	 * Restores a post from the trash.
 	 * (yet unused)
 	 *
 	 * @since 1.0.0
@@ -261,7 +260,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Load all posts with one query, to prime the cache.
+	 * Loads all posts with one query, to prime the cache.
 	 *
 	 * @since 1.0.0
 	 *
@@ -275,11 +274,8 @@ class TablePress_Post_Model extends TablePress_Model {
 		global $wpdb;
 
 		// Split post loading, to save memory.
-		$offset = 0;
-		$length = 100; // 100 posts at a time
-		$number_of_posts = count( $all_post_ids );
-		while ( $offset < $number_of_posts ) {
-			$post_ids = array_slice( $all_post_ids, $offset, $length );
+		while ( ! empty( $all_post_ids ) ) {
+			$post_ids = array_splice( $all_post_ids, 0, 100 ); // Extract 100 posts at a time.
 			// Don't load posts that are in the cache already.
 			$post_ids = _get_non_cached_ids( $post_ids, 'posts' );
 			if ( ! empty( $post_ids ) ) {
@@ -292,12 +288,11 @@ class TablePress_Post_Model extends TablePress_Model {
 					update_meta_cache( 'post', $post_ids );
 				}
 			}
-			$offset += $length; // next array_slice() $offset.
 		}
 	}
 
 	/**
-	 * Count the number of posts with the model's CPT in the wp_posts table in the database.
+	 * Counts the number of posts with the model's CPT in the wp_posts table in the database.
 	 * (currently for debug only)
 	 *
 	 * @since 1.0.0
@@ -309,7 +304,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Add a post meta field to a post.
+	 * Adds a post meta field to a post.
 	 *
 	 * @since 1.0.0
 	 *
@@ -328,7 +323,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Update the value of a post meta field of a post.
+	 * Updatse the value of a post meta field of a post.
 	 *
 	 * If the field does not yet exist, it is added.
 	 *
@@ -352,7 +347,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Get the value of a post meta field of a post.
+	 * Gets the value of a post meta field of a post.
 	 *
 	 * @since 1.0.0
 	 *
@@ -365,7 +360,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Delete a post meta field of a post.
+	 * Deletes a post meta field of a post.
 	 * (yet unused)
 	 *
 	 * @since 1.0.0
@@ -379,7 +374,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	}
 
 	/**
-	 * Return the Custom Post Type that TablePress uses.
+	 * Returns the Custom Post Type that TablePress uses.
 	 *
 	 * @since 1.5.0
 	 *

@@ -26,48 +26,37 @@ class Axis extends Properties
 
 	/**
 	 * Chart Major Gridlines as.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\GridLines|null
 	 */
-	private $majorGridlines;
+	private ?GridLines $majorGridlines = null;
 
 	/**
 	 * Chart Minor Gridlines as.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\GridLines|null
 	 */
-	private $minorGridlines;
+	private ?GridLines $minorGridlines = null;
 
 	/**
 	 * Axis Number.
 	 *
-	 * @var mixed[]
+	 * @var array{format: string, source_linked: int, numeric: ?bool}
 	 */
-	private $axisNumber = [
+	private array $axisNumber = [
 		'format' => self::FORMAT_CODE_GENERAL,
 		'source_linked' => 1,
 		'numeric' => null,
 	];
 
-	/**
-	 * @var string
-	 */
-	private $axisType = '';
+	private string $axisType = '';
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\AxisText|null
-	 */
-	private $axisText;
+	private ?AxisText $axisText = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Title|null
-	 */
-	private $dispUnitsTitle;
+	private ?Title $dispUnitsTitle = null;
 
 	/**
 	 * Axis Options.
 	 *
 	 * @var array<string, null|string>
 	 */
-	private $axisOptions = [
+	private array $axisOptions = [
 		'minimum' => null,
 		'maximum' => null,
 		'major_unit' => null,
@@ -110,9 +99,8 @@ class Axis extends Properties
 
 	/**
 	 * Fill Properties.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
 	 */
-	private $fillColor;
+	private ChartColor $fillColor;
 
 	private const NUMERIC_FORMAT = [
 		Properties::FORMAT_CODE_NUMBER,
@@ -120,10 +108,7 @@ class Axis extends Properties
 		Properties::FORMAT_CODE_DATE_ISO8601,
 	];
 
-	/**
-	 * @var bool
-	 */
-	private $noFill = false;
+	private bool $noFill = false;
 
 	/**
 	 * Get Series Data Type.
@@ -279,10 +264,7 @@ class Axis extends Properties
 		return $this->fillColor;
 	}
 
-	/**
-	 * @var string
-	 */
-	private $crossBetween = ''; // 'between' or 'midCat' might be better
+	private string $crossBetween = ''; // 'between' or 'midCat' might be better
 
 	public function setCrossBetween(string $crossBetween): self
 	{

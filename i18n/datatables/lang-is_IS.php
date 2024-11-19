@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Leita:',
 	'zeroRecords'    => 'Engar færslur fundust',
 	'paginate'       => array(
-		'first'    => 'Fyrsta',
-		'previous' => 'Fyrri',
-		'next'     => 'Næsta',
-		'last'     => 'Síðasta',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': virkja til að raða dálki í hækkandi röð',

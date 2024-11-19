@@ -11,15 +11,13 @@ class Protection extends Supervisor
 
 	/**
 	 * Locked.
-	 * @var string|null
 	 */
-	protected $locked;
+	protected ?string $locked = null;
 
 	/**
 	 * Hidden.
-	 * @var string|null
 	 */
-	protected $hidden;
+	protected ?string $hidden = null;
 
 	/**
 	 * Create a new Protection.

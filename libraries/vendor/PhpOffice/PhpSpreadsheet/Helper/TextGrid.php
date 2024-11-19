@@ -4,30 +4,15 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Helper;
 
 class TextGrid
 {
-	/**
-	 * @var bool
-	 */
-	private $isCli;
+	private bool $isCli;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $matrix;
+	protected array $matrix;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $rows;
+	protected array $rows;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $columns;
+	protected array $columns;
 
-	/**
-	 * @var string
-	 */
-	private $gridDisplay;
+	private string $gridDisplay;
 
 	public function __construct(array $matrix, bool $isCli = true)
 	{

@@ -53,7 +53,7 @@ class TablePress_Options_View extends TablePress_View {
 				$this->admin_page->enqueue_script( 'codemirror' );
 			}
 
-			$this->add_meta_box( 'default-style', sprintf( __( 'Default Styling %s', 'tablepress' ), '<span class="beta-label">' . ( tb_tp_fs()->is_free_plan() ? __( 'Premium', 'tablepress' ) : __( 'beta', 'tablepress' ) ) . '</span>' ), array( $this, 'postbox_default_style_customizer_screen' ), 'normal' );
+			$this->add_meta_box( 'default-style', sprintf( __( 'Default Styling %s', 'tablepress' ), tb_tp_fs()->is_free_plan() ? '<span class="pill-label">' . __( 'Premium', 'tablepress' ) . '</span>' : '' ), array( $this, 'postbox_default_style_customizer_screen' ), 'normal' );
 			$this->add_meta_box( 'frontend-options', __( 'Custom Styling', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
 		}
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( $this, 'postbox_user_options' ), 'normal' );
@@ -124,7 +124,7 @@ class TablePress_Options_View extends TablePress_View {
 <table class="tablepress-postbox-table fixed">
 	<tr>
 		<th class="column-1" scope="row"><label for="option-custom-css"><?php _e( 'Custom CSS', 'tablepress' ); ?></label>:</th>
-		<td class="column-2"><label for="option-use-custom-css"><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?>> <?php _e( 'Load this &#8220;Custom CSS&#8221; code to change the table styling:', 'tablepress' ); ?></label>
+		<td class="column-2"><label><input type="checkbox" id="option-use-custom-css" name="options[use_custom_css]" value="true"<?php checked( $data['frontend_options']['use_custom_css'] ); ?>> <?php _e( 'Load this &#8220;Custom CSS&#8221; code to change the table styling:', 'tablepress' ); ?></label>
 		</td>
 	</tr>
 	<tr>
@@ -206,7 +206,7 @@ class TablePress_Options_View extends TablePress_View {
 	public function textbox_submit_button( array $data, array $box ): void {
 		?>
 			<p class="submit">
-				<input type="submit" id="tablepress-options-save-changes" class="button button-primary button-large button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sS', 'keyboard shortcut for Save Changes', 'tablepress' ) ); ?>">
+				<input type="submit" id="tablepress-options-save-changes" class="components-button is-primary button-save-changes" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" data-shortcut="<?php echo esc_attr( _x( '%1$sS', 'keyboard shortcut for Save Changes', 'tablepress' ) ); ?>">
 			</p>
 		<?php
 	}
@@ -230,7 +230,7 @@ class TablePress_Options_View extends TablePress_View {
 				. __( 'Be very careful with this and only click the button if you know what you are doing!', 'tablepress' );
 		?>
 		</p>
-		<p><a href="<?php echo TablePress::url( array( 'action' => 'uninstall_tablepress' ), true, 'admin-post.php' ); ?>" id="uninstall-tablepress" class="button"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></a></p>
+		<p><a href="<?php echo TablePress::url( array( 'action' => 'uninstall_tablepress' ), true, 'admin-post.php' ); ?>" id="uninstall-tablepress" class="components-button is-secondary is-destructive"><?php _e( 'Uninstall TablePress', 'tablepress' ); ?></a></p>
 		<?php
 	}
 

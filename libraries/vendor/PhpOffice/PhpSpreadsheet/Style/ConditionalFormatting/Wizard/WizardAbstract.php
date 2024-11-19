@@ -9,40 +9,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 
 abstract class WizardAbstract
 {
-	/**
-	 * @var ?Style
-	 */
-	protected $style;
+	protected ?Style $style = null;
 
-	/**
-	 * @var string
-	 */
-	protected $expression;
+	protected string $expression;
 
-	/**
-	 * @var string
-	 */
-	protected $cellRange;
+	protected string $cellRange;
 
-	/**
-	 * @var string
-	 */
-	protected $referenceCell;
+	protected string $referenceCell;
 
-	/**
-	 * @var int
-	 */
-	protected $referenceRow;
+	protected int $referenceRow;
 
-	/**
-	 * @var bool
-	 */
-	protected $stopIfTrue = false;
+	protected bool $stopIfTrue = false;
 
-	/**
-	 * @var int
-	 */
-	protected $referenceColumn;
+	protected int $referenceColumn;
 
 	public function __construct(string $cellRange)
 	{
@@ -136,9 +115,7 @@ abstract class WizardAbstract
 			if ($i) {
 				$value = (string) preg_replace_callback(
 					'/' . Calculation::CALCULATION_REGEXP_CELLREF_RELATIVE . '/i',
-					function ($matches) use ($referenceColumnIndex, $referenceRow) : string {
-						return self::reverseCellAdjustment($matches, $referenceColumnIndex, $referenceRow);
-					},
+					fn ($matches): string => self::reverseCellAdjustment($matches, $referenceColumnIndex, $referenceRow),
 					$value
 				);
 			}

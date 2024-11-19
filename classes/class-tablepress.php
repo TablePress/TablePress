@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	public const version = '2.4.4'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const version = '3.0'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	public const db_version = 89; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const db_version = 96; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -54,25 +54,22 @@ abstract class TablePress {
 	 * Instance of the Options Model.
 	 *
 	 * @since 1.3.0
-	 * @var TablePress_Options_Model
 	 */
-	public static $model_options;
+	public static \TablePress_Options_Model $model_options;
 
 	/**
 	 * Instance of the Table Model.
 	 *
 	 * @since 1.3.0
-	 * @var TablePress_Table_Model
 	 */
-	public static $model_table;
+	public static \TablePress_Table_Model $model_table;
 
 	/**
 	 * Instance of the controller.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_Frontend_Controller
 	 */
-	public static $controller;
+	public static \TablePress_Frontend_Controller $controller;
 
 	/**
 	 * Name of the Shortcode to show a TablePress table.
@@ -80,9 +77,8 @@ abstract class TablePress {
 	 * Should only be modified through the filter hook 'tablepress_table_shortcode'.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public static $shortcode = 'table';
+	public static string $shortcode = 'table';
 
 	/**
 	 * Name of the Shortcode to show extra information of a TablePress table.
@@ -90,9 +86,8 @@ abstract class TablePress {
 	 * Should only be modified through the filter hook 'tablepress_table_info_shortcode'.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public static $shortcode_info = 'table-info';
+	public static string $shortcode_info = 'table-info';
 
 	/**
 	 * List of TablePress premium modules.
@@ -100,7 +95,7 @@ abstract class TablePress {
 	 * @since 2.1.0
 	 * @var array<string, array{name: string, description: string, category: string, class: string, incompatible_classes: string[], minimum_plan: string, default_active: bool}>
 	 */
-	public static $modules = array();
+	public static array $modules = array();
 
 	/**
 	 * Start-up TablePress (run on WordPress "init") and load the controller for the current state.
@@ -165,6 +160,11 @@ abstract class TablePress {
 		}
 		// Load the frontend controller in all scenarios, so that Shortcode render functions are always available.
 		self::$controller = self::load_controller( 'frontend' );
+
+		// Add filters and actions for the integration into the WP WXR exporter and importer.
+		add_action( 'wp_import_insert_post', array( TablePress::$model_table, 'add_table_id_on_wp_import' ), 10, 4 ); // phpcs:ignore Squiz.Classes.SelfMemberReference.NotUsed
+		add_filter( 'wp_import_post_meta', array( TablePress::$model_table, 'prevent_table_id_post_meta_import_on_wp_import' ), 10, 3 ); // phpcs:ignore Squiz.Classes.SelfMemberReference.NotUsed
+		add_filter( 'wxr_export_skip_postmeta', array( TablePress::$model_table, 'add_table_id_to_wp_export' ), 10, 3 ); // phpcs:ignore Squiz.Classes.SelfMemberReference.NotUsed
 
 		/**
 		 * Fires after TablePress is loaded.
@@ -334,7 +334,7 @@ abstract class TablePress {
 		$count = strlen( $column );
 		$number = 0;
 		for ( $i = 0; $i < $count; $i++ ) {
-			$number += ( ord( $column[ $count - 1 - $i ] ) - 64 ) * pow( 26, $i );
+			$number += ( ord( $column[ $count - 1 - $i ] ) - 64 ) * 26 ** $i;
 		}
 		return $number;
 	}
@@ -402,7 +402,7 @@ abstract class TablePress {
 	 */
 	public static function get_user_display_name( int $user_id ): string {
 		$user = get_userdata( $user_id );
-		return ( isset( $user->display_name ) ) ? $user->display_name : sprintf( '<em>%s</em>', __( 'unknown', 'tablepress' ) );
+		return $user->display_name ?? sprintf( '<em>%s</em>', __( 'unknown', 'tablepress' ) );
 	}
 
 	/**
@@ -422,6 +422,254 @@ abstract class TablePress {
 		// Limit to A-Z, a-z, 0-9, ':', '_', and '-'.
 		$sanitized_css_class = (string) preg_replace( '/[^A-Za-z0-9:_-]/', '', $sanitized_css_class );
 		return $sanitized_css_class;
+	}
+
+	/**
+	 * Extracts the top-level keys from a JavaScript object string.
+	 *
+	 * This function is used to extract the keys of the "Custom Commands" JavaScript object string, to check for overrides.
+	 * It covers most cases, like normal object properties with and without quotes, shorthand properties, and shorthand methods,
+	 * and also ignores single-line and multi-line comments.
+	 * It does not cover all possible JavaScript syntax (like template literals, special characters, ...),
+	 * but should be sufficient for the use case.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $js_object_string A JavaScript object as a string.
+	 * @return string[] Array of top-level keys of the object.
+	 */
+	public static function extract_keys_from_js_object_string( string $js_object_string ): array {
+		$object_keys = array();
+		$length = strlen( $js_object_string );
+		$depth = 0;
+		$key_expected = true;
+		$in_quotes = false;
+		$quote_char = '';
+		$in_function_declaration = false;
+		$in_single_line_comment = false;
+		$in_multi_line_comment = false;
+		$object_key = '';
+
+		for ( $i = 0; $i < $length; $i++ ) {
+			$char = $js_object_string[ $i ];
+
+			// Skip parsing single-line comments.
+			if ( $in_single_line_comment ) {
+				if ( "\n" === $char ) {
+					$in_single_line_comment = false;
+				}
+				continue;
+			} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+				if ( '/' === $char && $i + 1 < $length && '/' === $js_object_string[ $i + 1 ] ) {
+					$in_single_line_comment = true;
+					++$i; // Skip the second '/'.
+					continue;
+				}
+			}
+
+			// Skip parsing multi-line comments.
+			if ( $in_multi_line_comment ) {
+				if ( '*' === $char && $i + 1 < $length && '/' === $js_object_string[ $i + 1 ] ) {
+					$in_multi_line_comment = false;
+					++$i; // Skip the '/' that ends the multi-line comment.
+				}
+				continue;
+			} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+				if ( '/' === $char && $i + 1 < $length && '*' === $js_object_string[ $i + 1 ] ) {
+					$in_multi_line_comment = true;
+					++$i; // Skip the '*'.
+					continue;
+				}
+			}
+
+			// Skip parsing while inside a quoted string.
+			if ( $in_quotes ) {
+				if ( $quote_char === $char ) {
+					$in_quotes = false;
+				}
+				continue;
+			} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+				if ( '"' === $char || "'" === $char ) {
+					$in_quotes = true;
+					$quote_char = $char;
+					continue;
+				}
+			}
+
+			/*
+			 * Skip parsing while inside a `function abc( ... )` declaration string.
+			 * The `$key_expected` check limits search the "function" string to object values.
+			 * The check for the plain `f` reduces expensive `substr()` calls.
+			 */
+			if ( ! $key_expected ) {
+				if ( $in_function_declaration ) {
+					if ( ')' === $char ) {
+						$in_function_declaration = false;
+					}
+					continue;
+				} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+					if ( 'f' === $char && 'function' === substr( $js_object_string, $i, 8 ) ) {
+						$in_function_declaration = true;
+						$i += 7; // Skip the rest of the "function" string.
+						continue;
+					}
+				}
+			}
+
+			// Handle object depth, so that most parsing can be limited to the top level.
+			if ( '{' === $char || '[' === $char ) {
+				++$depth;
+			}
+
+			// Extract only keys at the top level.
+			if ( 1 === $depth ) {
+				if ( $key_expected ) {
+					if ( ':' === $char ) {
+						// Check for normal keys, with value after :.
+
+						// Go backwards to find the start of the key.
+						$j = $i - 1;
+						while ( $j >= 0 && preg_match( '/\s/', $js_object_string[ $j ] ) ) {
+							--$j;
+						}
+						$key_end = $j; // Position of the last character of the key (potentially with quote).
+						if ( '"' === $js_object_string[ $j ] || "'" === $js_object_string[ $j ] ) {
+							// Quoted key.
+							$quote_char = $js_object_string[ $j ];
+							--$j;
+							while ( $j >= 0 && $quote_char !== $js_object_string[ $j ] ) {
+								--$j;
+							}
+							$key_start = $j + 1;
+						} else {
+							// Unquoted key.
+							while ( $j >= 0 && preg_match( '/[\w]/', $js_object_string[ $j ] ) ) {
+								--$j;
+							}
+							$key_start = $j + 1;
+						}
+						$object_key = substr( $js_object_string, $key_start, $key_end - $key_start + 1 );
+						$object_key = trim( $object_key, "\"'" );
+						if ( '' !== $object_key && ! in_array( $object_key, $object_keys, true ) ) {
+							$object_keys[] = $object_key;
+						}
+						$key_expected = false;
+					} elseif ( ( ',' === $char || '}' === $char ) ) { // The `}` case is for the last key.
+						// Check for shorthand properties (which must be unquoted).
+
+						// Go backwards to find the start of the shorthand key.
+						$j = $i - 1;
+						while ( $j >= 0 && preg_match( '/\s/', $js_object_string[ $j ] ) ) {
+							--$j;
+						}
+						$key_end = $j; // Position of the last character of the key (without a quote).
+						while ( $j >= 0 && preg_match( '/[\w]/', $js_object_string[ $j ] ) ) {
+							--$j;
+						}
+						$key_start = $j + 1;
+						$object_key = substr( $js_object_string, $key_start, $key_end - $key_start + 1 );
+						if ( '' !== $object_key && ! in_array( $object_key, $object_keys, true ) ) {
+							$object_keys[] = $object_key;
+						}
+					} elseif ( '(' === $char ) {
+						// Detect shorthand method definitions.
+
+						// Go back to find the start of the method name.
+						$j = $i - 1;
+						while ( $j >= 0 && preg_match( '/\s/', $js_object_string[ $j ] ) ) {
+							--$j;
+						}
+						$key_end = $j;
+						while ( $j >= 0 && preg_match( '/[\w]/', $js_object_string[ $j ] ) ) {
+							--$j;
+						}
+						$key_start = $j + 1;
+						$object_key = substr( $js_object_string, $key_start, $key_end - $key_start + 1 );
+						if ( '' !== $object_key && ! in_array( $object_key, $object_keys, true ) ) {
+							$object_keys[] = $object_key;
+						}
+					}
+				}
+
+				// Reset the "key expected" flag after a comma or closing brace.
+				if ( ',' === $char || '}' === $char ) {
+					$key_expected = true;
+				}
+			}
+
+			// Handle object depth.
+			if ( '}' === $char || ']' === $char ) {
+				--$depth;
+			}
+		}
+
+		return $object_keys;
+	}
+
+	/**
+	 * Converts old DataTables 1.x CSS classes and parameters to the DataTables 2 variants.
+	 *
+	 * This function is used to modernize "Custom CSS" and "Custom Commands" for compatibility with DataTables 2.x.
+	 * It probably does not catch all possible cases.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $code Code that contains DataTables 1.x CSS classes and parameters.
+	 * @return string Updated code with DataTables 2.x CSS classes and parameters.
+	 */
+	public static function convert_datatables_api_data( string $code ): string {
+		/**
+		 * Mappings for DataTables 1.x CSS class or parameter to DataTables 2 variants.
+		 * As this array is used in `strtr()`, it's pre-sorted for descending string length of the array keys.
+		 */
+		static $datatables_api_data_mappings = array(
+			// CSS classes.
+			'.tablepress thead .sorting:hover' => '.tablepress thead .dt-orderable-asc:hover,.tablepress thead .dt-orderable-desc:hover',
+			'.tablepress thead .sorting_desc'  => '.tablepress thead .dt-ordering-desc',
+			'.dataTables_filter label input'   => '.dt-container .dt-search input',
+			'.tablepress thead .sorting_asc'   => '.tablepress thead .dt-ordering-asc',
+			'.dataTables_scrollFootInner'      => '.dt-scroll-footInner',
+			'.dataTables_scrollHeadInner'      => '.dt-scroll-headInner',
+			'.tablepress thead .sorting'       => '.tablepress thead .dt-orderable-asc,.tablepress thead .dt-orderable-desc',
+			'.dataTables_processing'           => '.dt-processing',
+			'.dataTables_scrollBody'           => '.dt-scroll-body',
+			'.dataTables_scrollFoot'           => '.dt-scroll-foot',
+			'.dataTables_scrollHead'           => '.dt-scroll-head',
+			'.dataTables_paginate'             => '.dt-paging',
+			'.tablepress .even td'             => '.tablepress>:where(tbody.row-striping)>:nth-child(odd)>*',
+			'.dataTables_wrapper'              => '.dt-container',
+			'.tablepress .odd td'              => '.tablepress>:where(tbody.row-striping)>:nth-child(even)>*',
+			'.dataTables_filter'               => '.dt-search',
+			'.dataTables_length'               => '.dt-length',
+			'.dataTables_scroll'               => '.dt-scroll',
+			'.dataTables_empty'                => '.dt-empty',
+			'.dataTables_info'                 => '.dt-info',
+			'.paginate_button'                 => '.dt-paging-button',
+			// DataTables API functions.
+			'$.fn.dataTable.'                  => 'DataTable.',
+		);
+		$code = strtr( $code, $datatables_api_data_mappings );
+
+		// HTML ID mappings, which were removed.
+		if ( str_contains( $code, '#tablepress-' ) ) {
+			$code = (string) preg_replace(
+				array(
+					'/#tablepress-([A-Za-z1-9_-]|[A-Za-z0-9_-]{2,})_paginate/',
+					'/#tablepress-([A-Za-z1-9_-]|[A-Za-z0-9_-]{2,})_filter/',
+					'/#tablepress-([A-Za-z1-9_-]|[A-Za-z0-9_-]{2,})_length/',
+					'/#tablepress-([A-Za-z1-9_-]|[A-Za-z0-9_-]{2,})_info/',
+				),
+				array(
+					'#tablepress-$1_wrapper .dt-paging',
+					'#tablepress-$1_wrapper .dt-search',
+					'#tablepress-$1_wrapper .dt-length',
+					'#tablepress-$1_wrapper .dt-info',
+				),
+				$code,
+			);
+		}
+
+		return $code;
 	}
 
 	/**
@@ -638,7 +886,7 @@ abstract class TablePress {
 				'default_active'       => false,
 			),
 			'datatables-buttons'                  => array(
-				'name'                 => __( 'Buttons', 'tablepress' ),
+				'name'                 => __( 'User Action Buttons', 'tablepress' ),
 				'description'          => __( 'Add buttons for downloading, copying, printing, and changing column visibility of tables.', 'tablepress' ),
 				'category'             => 'frontend',
 				'class'                => 'TablePress_Module_DataTables_Buttons',
@@ -665,7 +913,7 @@ abstract class TablePress {
 				'default_active'       => false,
 			),
 			'datatables-counter-column'           => array(
-				'name'                 => __( 'Counter Column', 'tablepress' ),
+				'name'                 => __( 'Index Column', 'tablepress' ),
 				'description'          => __( 'Make the first column an index or counter column with the row position.', 'tablepress' ),
 				'category'             => 'frontend',
 				'class'                => 'TablePress_Module_DataTables_Counter_Column',
@@ -685,6 +933,15 @@ abstract class TablePress {
 				'minimum_plan'         => 'pro',
 				'default_active'       => true,
 			),
+			'datatables-layout'                   => array(
+				'name'                 => __( 'Table Layout', 'tablepress' ),
+				'description'          => __( 'Customize the layout and position of features around a table.', 'tablepress' ),
+				'category'             => 'frontend',
+				'class'                => 'TablePress_Module_DataTables_Layout',
+				'incompatible_classes' => array(),
+				'minimum_plan'         => 'pro',
+				'default_active'       => true,
+			),
 			'datatables-fuzzysearch'              => array(
 				'name'                 => __( 'Fuzzy Search', 'tablepress' ),
 				'description'          => __( 'Let the search account for spelling mistakes and typos and find similar matches.', 'tablepress' ),
@@ -692,6 +949,24 @@ abstract class TablePress {
 				'class'                => 'TablePress_Module_DataTables_FuzzySearch',
 				'incompatible_classes' => array(),
 				'minimum_plan'         => 'max',
+				'default_active'       => false,
+			),
+			'datatables-inverted-filter'          => array(
+				'name'                 => __( 'Inverted Filtering', 'tablepress' ),
+				'description'          => __( 'Turn the filtering into a search and hide the table if no search term is entered.', 'tablepress' ),
+				'category'             => 'search-filter',
+				'class'                => 'TablePress_Module_DataTables_Inverted_Filter',
+				'incompatible_classes' => array(),
+				'minimum_plan'         => 'max',
+				'default_active'       => false,
+			),
+			'datatables-pagination'               => array(
+				'name'                 => __( 'Advanced Pagination Settings', 'tablepress' ),
+				'description'          => __( 'Customize the pagination settings of the table.', 'tablepress' ),
+				'category'             => 'frontend',
+				'class'                => 'TablePress_Module_DataTables_Pagination',
+				'incompatible_classes' => array(),
+				'minimum_plan'         => 'pro',
 				'default_active'       => false,
 			),
 			'datatables-rowgroup'                 => array(

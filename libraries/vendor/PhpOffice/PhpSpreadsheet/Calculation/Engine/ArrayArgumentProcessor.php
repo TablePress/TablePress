@@ -6,10 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 
 class ArrayArgumentProcessor
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\ArrayArgumentHelper
-	 */
-	private static $arrayArgumentHelper;
+	private static ArrayArgumentHelper $arrayArgumentHelper;
 
 	/**
 	 * @param mixed ...$arguments

@@ -9,43 +9,37 @@ class StringHelper
 	 *
 	 * @var string[]
 	 */
-	private static $controlCharacters = [];
+	private static array $controlCharacters = [];
 
 	/**
 	 * SYLK Characters array.
-	 * @var mixed[]
 	 */
-	private static $SYLKCharacters = [];
+	private static array $SYLKCharacters = [];
 
 	/**
 	 * Decimal separator.
-	 * @var string|null
 	 */
-	private static $decimalSeparator;
+	private static ?string $decimalSeparator;
 
 	/**
 	 * Thousands separator.
-	 * @var string|null
 	 */
-	private static $thousandsSeparator;
+	private static ?string $thousandsSeparator;
 
 	/**
 	 * Currency code.
-	 * @var string|null
 	 */
-	private static $currencyCode;
+	private static ?string $currencyCode;
 
 	/**
 	 * Is iconv extension avalable?
-	 * @var bool|null
 	 */
-	private static $isIconvEnabled;
+	private static ?bool $isIconvEnabled;
 
 	/**
 	 * iconv options.
-	 * @var string
 	 */
-	private static $iconvOptions = '//IGNORE//TRANSLIT';
+	private static string $iconvOptions = '//IGNORE//TRANSLIT';
 
 	/**
 	 * Build control characters array.

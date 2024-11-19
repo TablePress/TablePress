@@ -14,7 +14,14 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import {
+	Button,
+	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	Icon,
+	RadioControl,
+	ComboboxControl,
+	Disabled,
+	TextareaControl,
+	TextControl,
 } from '@wordpress/components';
 import { info } from '@wordpress/icons';
 import { __, _n, _x, sprintf } from '@wordpress/i18n';
@@ -45,17 +52,23 @@ if ( ! tp.import.showImportSourceServer ) {
 	delete importSources.server;
 }
 
+const importSourcesRadioOptions = Object.entries( importSources ).map( ( [ importSource, importSourceData ] ) => ( { value: importSource, label: importSourceData.label } ) );
+
 // Number of tables.
 const tablesCount = Object.keys( tp.import.tables ).length;
 
-// The <option> entries for the dropdown do not depend on the state, so they can be created once.
 const tablesSelectOptions = Object.entries( tp.import.tables ).map( ( [ tableId, tableName ] ) => {
 	if ( '' === tableName.trim() ) {
 		tableName = __( '(no name)', 'tablepress' );
 	}
 	const optionText = sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), tableId, tableName );
-	return <option key={ tableId } value={ tableId }>{ optionText }</option>;
+	return { value: tableId, label: optionText };
 } );
+
+// Custom component to conditionally disable its children, used for the ComboboxControl.
+const ConditionalDisabled = ( { condition, children } ) => (
+	condition ? ( <Disabled>{ children }</Disabled> ) : children
+);
 
 /**
  * Returns the "Import Screen" component's JSX markup.
@@ -77,44 +90,27 @@ const Screen = () => {
 	/**
 	 * Handles screen data state changes.
 	 *
-	 * @param {Object} updatedData Data in the screen data state that should be updated.
+	 * @param {Object} updatedScreenData Data in the screen data state that should be updated.
 	 */
-	const updateScreenData = ( updatedData ) => {
-		const newScreenData = {
-			...screenData,
+	const updateScreenData = ( updatedScreenData ) => {
+		setScreenData( ( currentScreenData ) => ( {
+			...currentScreenData,
 			validationHighlighting: false, // Reset with every UI state change.
-			...updatedData,
-		};
-		setScreenData( newScreenData );
+			...updatedScreenData,
+		} ) );
 	};
 
 	// References to DOM elements.
 	const importServerInput = useRef( null );
-	const appendReplaceDropdown = useRef( null );
 	const fileUploadDropzone = useRef( null );
-
-	// Initialize the jSuites dropdown when the component is mounted.
-	useEffect( () => {
-		jSuites.dropdown( appendReplaceDropdown.current, {
-			autocomplete: true,
-			placeholder: __( '— Select or type —', 'tablepress' ),
-			onchange: ( element, index, oldValue, newValue ) => {
-				// Directly update the state with an updater function, as the state is otherwise reset.
-				setScreenData( ( newScreenData ) => ( {
-					...newScreenData,
-					validationHighlighting: false,
-					importExistingTable: newValue,
-				} ) );
-			},
-		} );
-	}, [] );
 
 	// Update the validation highlighting (using APIs and DOM elements outside of the React components) when the state changes.
 	useEffect( () => {
 		document.getElementById( 'tablepress_import-import-form' ).classList.toggle( 'no-validation-highlighting', ! screenData.validationHighlighting );
 		if ( ! screenData.validationHighlighting ) {
 			importServerInput.current?.setCustomValidity( '' );
-			appendReplaceDropdown.current.previousElementSibling.querySelector( '.jdropdown-header' )?.setCustomValidity( '' );
+			// We need to use this dynamically generated ID by the ComboboxControl component. It does not (yet?) support a static ID or a ref.
+			document.getElementById( 'components-form-token-input-combobox-control-1' )?.setCustomValidity( '' );
 		}
 	}, [ screenData.validationHighlighting ] );
 
@@ -135,37 +131,22 @@ const Screen = () => {
 		|| fileUploadMultipleFilesChosen
 	);
 
-	// Disable the artificial dropdown (not inserted by React) via a class, as it can not use :disabled.
-	useEffect( () => {
-		appendReplaceDropdown.current.previousElementSibling.classList.toggle( 'disabled', appendReplaceDropdownDisabled );
-	}, [ appendReplaceDropdownDisabled ] );
-
 	return (
 		<table className="tablepress-postbox-table fixed">
 			<tbody>
 				<tr>
-					<th className="column-1" scope="row" id="import-source-header">
+					<th className="column-1" scope="row">
 						{ __( 'Import Source', 'tablepress' ) }:
 					</th>
 					<td className="column-2">
-						{
-							Object.entries( importSources ) .map( ( [ importSource, importSourceData ] ) => (
-								<label
-									key={ importSource }
-									htmlFor={ `tables-import-source-${ importSource }` }
-								>
-									<input
-										name="import[source]"
-										id={ `tables-import-source-${ importSource }` }
-										type="radio"
-										aria-labelledby="import-source-header"
-										value={ importSource }
-										checked={ importSource === screenData.importSource }
-										onChange={ ( event ) => updateScreenData( { importSource: event.target.value } ) }
-									/> { importSourceData.label }
-								</label>
-							) )
-						}
+						<RadioControl
+							name="import[source]"
+							label={ __( 'Import Source', 'tablepress' ) }
+							hideLabelFromVision={ true }
+							selected={ screenData.importSource }
+							onChange={ ( importSource ) => updateScreenData( { importSource } ) }
+							options={ importSourcesRadioOptions }
+						/>
 					</td>
 				</tr>
 				<tr className="top-border bottom-border">
@@ -214,130 +195,113 @@ const Screen = () => {
 							</div>
 						</div>
 						{ tp.import.showImportSourceUrl && 'url' === screenData.importSource &&
-							<input
+							<TextControl
+								__nextHasNoMarginBottom
 								type="url"
 								name="import[url]"
 								id="tables-import-url"
-								className="large-text code"
+								className="code"
 								required={ true }
 								value={ screenData.importUrl }
-								onChange={ ( event ) => updateScreenData( { importUrl: event.target.value } ) }
+								onChange={ ( importUrl ) => updateScreenData( { importUrl } ) }
 							/>
 						}
 						{ tp.import.showImportSourceServer && 'server' === screenData.importSource &&
-							<input
+							<TextControl
+								__nextHasNoMarginBottom
 								ref={ importServerInput }
-								type="text"
 								name="import[server]"
 								id="tables-import-server"
-								className="large-text code"
+								className="code"
 								required={ true }
 								value={ screenData.importServer }
-								onChange={ ( event ) => updateScreenData( { importServer: event.target.value } ) }
+								onChange={ ( importServer ) => updateScreenData( { importServer } ) }
 							/>
 						}
 						{ 'form-field' === screenData.importSource &&
-							<textarea
+							<TextareaControl
+								__nextHasNoMarginBottom
 								name="import[form-field]"
 								id="tables-import-form-field"
 								rows="15"
 								cols="40"
-								className="large-text code"
+								className="code"
 								required={ true }
 								value={ screenData.importFormField }
-								onChange={ ( event ) => updateScreenData( { importFormField: event.target.value } ) }
+								onChange={ ( importFormField ) => updateScreenData( { importFormField } ) }
 							/>
 						}
 						{ 'form-field' !== screenData.importSource &&
-							<p className="info-text" style={ {
-								marginTop: '0.5em',
-							} }>
+							<HStack
+								alignment="left"
+							>
 								<Icon icon={ info } />
 								<span>
 									{ __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) }
 								</span>
-							</p>
+							</HStack>
 						}
 					</td>
 				</tr>
 				<tr className="top-border">
-					<th className="column-1" scope="row" id="import-type-header">
+					<th className="column-1" scope="row">
 						{ __( 'Add, Replace, or Append?', 'tablepress' ) }:
 					</th>
 					<td className="column-2">
-						<label htmlFor="tables-import-type-add">
-							<input
-								name="import[type]"
-								id="tables-import-type-add"
-								type="radio"
-								aria-labelledby="import-type-header"
-								value="add"
-								checked={ 'add' === screenData.importType || 0 === tablesCount }
-								onChange={ ( event ) => updateScreenData( { importType: event.target.value } ) }
-							/> { __( 'Add as new table', 'tablepress' ) }
-						</label>
-						<label htmlFor="tables-import-type-replace">
-							<input
-								name="import[type]"
-								id="tables-import-type-replace"
-								type="radio"
-								aria-labelledby="import-type-header"
-								value="replace"
-								disabled={ 0 === tablesCount }
-								checked={ 'replace' === screenData.importType }
-								onChange={ ( event ) => updateScreenData( { importType: event.target.value } ) }
-							/> { __( 'Replace existing table', 'tablepress' ) }
-						</label>
-						<label htmlFor="tables-import-type-append">
-							<input
-								name="import[type]"
-								id="tables-import-type-append"
-								type="radio"
-								aria-labelledby="import-type-header"
-								value="append"
-								disabled={ 0 === tablesCount }
-								checked={ 'append' === screenData.importType }
-								onChange={ ( event ) => updateScreenData( { importType: event.target.value } ) }
-							/> { __( 'Append rows to existing table', 'tablepress' ) }
-						</label>
+						<RadioControl
+							name="import[type]"
+							label={ __( 'Import Type', 'tablepress' ) }
+							hideLabelFromVision={ true }
+							selected={ 0 === tablesCount ? 'add' : screenData.importType } // Always select "Add" if there are no tables.
+							onChange={ ( importType ) => updateScreenData( { importType } ) }
+							options={ [
+								{ value: 'add', label: __( 'Add as new table', 'tablepress' ) },
+								{ value: 'replace', label: __( 'Replace existing table', 'tablepress' ), disabled: 0 === tablesCount },
+								{ value: 'append', label: __( 'Append rows to existing table', 'tablepress' ), disabled: 0 === tablesCount },
+							] }
+						/>
 					</td>
 				</tr>
 				<tr className="top-border bottom-border">
-					<th className="column-1" scope="row">
-						<label htmlFor="tables-import-existing-table">
-							{ __( 'Table to replace or append to', 'tablepress' ) }:
-						</label>
+					<th className="column-1 top-align" scope="row">
+						<label htmlFor="tables-import-existing-table">{ __( 'Table to replace or append to', 'tablepress' ) }:</label>
 					</th>
 					<td className="column-2">
-						<select
-							ref={ appendReplaceDropdown }
-							id="tables-import-existing-table"
-							name="import[existing_table]"
-							disabled={ appendReplaceDropdownDisabled }
-							value={ screenData.importExistingTable }
+						<ConditionalDisabled
+							condition={ appendReplaceDropdownDisabled }
 						>
-							<option value="">
-								{
-									' ' // Use a space as an empty string will be printed as `&nbsp;` by jSuites.
-								}
-							</option>
-							{ tablesSelectOptions }
-						</select>
+							<ComboboxControl
+								__nextHasNoMarginBottom
+								id="tables-import-existing-table"
+								label={ __( 'Table to replace or append to', 'tablepress' ) }
+								hideLabelFromVision={ true }
+								placeholder={ __( '— Select or type —', 'tablepress' ) }
+								value={ screenData.importExistingTable }
+								options={ tablesSelectOptions }
+								onChange={ ( importExistingTable ) => updateScreenData( { importExistingTable } ) }
+							/>
+						</ConditionalDisabled>
 					</td>
 				</tr>
 				<tr className="top-border">
 					<td className="column-1"></td>
 					<td className="column-2">
 						<input
+							// Send the legacy import flag to the server, so that it can handle the import accordingly.
 							type="hidden"
 							name="import[legacy_import]"
 							value={ tp.import.legacyImport }
 						/>
 						<input
+							// Send the Table to be replaced/appended to the server, if a table was selected. The ComboboxControl is not an actual form element with a name.
+							type="hidden"
+							name="import[existing_table]"
+							value={ screenData.importExistingTable ?? '' }
+						/>
+						<Button
+							variant="primary"
 							type="submit"
-							value={ _x( 'Import', 'button', 'tablepress' ) }
-							className="button button-primary button-large"
-							id="import-submit-button"
+							text={ _x( 'Import', 'button', 'tablepress' ) }
 							onClick={ () => {
 								// Show validation :invalid CSS pseudo-selector highlighting.
 								updateScreenData( { validationHighlighting: true } );
@@ -348,9 +312,9 @@ const Screen = () => {
 								}
 
 								// If the table selection dropdown for replace or append is enabled, a table must be selected.
-								if ( ! appendReplaceDropdownDisabled && '' === screenData.importExistingTable ) {
-									// Use the jSuites dropdown input field, as the actual <select> is hidden.
-									appendReplaceDropdown.current.previousElementSibling.querySelector( '.jdropdown-header' ).setCustomValidity( __( 'You must select a table.', 'tablepress' ) );
+								if ( ! appendReplaceDropdownDisabled && ! screenData.importExistingTable ) {
+									// We need to use this dynamically generated ID by the ComboboxControl component. It does not (yet?) support a static ID or a ref.
+									document.getElementById( 'components-form-token-input-combobox-control-1' )?.setCustomValidity( __( 'You must select a table.', 'tablepress' ) );
 								}
 							} }
 						/>

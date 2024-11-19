@@ -9,8 +9,7 @@
 
 /* globals tablepress_editor_button, QTags, tb_show, jQuery */
 
-jQuery( function( $ ) {
-
+jQuery( function ( $ ) {
 	'use strict';
 
 	/**
@@ -19,9 +18,9 @@ jQuery( function( $ ) {
 	 *
 	 * @since 1.0.0
 	 */
-	window.tablepress_open_shortcode_thickbox = function() {
+	window.tablepress_open_shortcode_thickbox = function () {
 		const width = $( window ).width();
-		const W = ( 720 < width ) ? 720 : width;
+		const W = 720 < width ? 720 : width;
 		let H = $( window ).height();
 		if ( $( '#wpadminbar' ).length ) {
 			H -= parseInt( $( '#wpadminbar' ).css( 'height' ), 10 );
@@ -46,5 +45,4 @@ jQuery( function( $ ) {
 			115											// button position (here: between code and more)
 		);
 	}
-
 } );

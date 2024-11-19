@@ -247,7 +247,7 @@ class TablePress_CSS {
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
 		 */
-		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore-line
+		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore argument.type
 			ob_end_clean();
 			return false;
 		}
@@ -279,16 +279,16 @@ class TablePress_CSS {
 		// Do we have credentials already? Otherwise the form will have been rendered already.
 		if ( false === $credentials ) {
 			$form_data = ob_get_clean();
-			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data ); // @phpstan-ignore-line
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="components-button is-primary"', $form_data ); // @phpstan-ignore argument.type
 			return $form_data;
 		}
 
 		// We have received credentials, but don't know if they are valid yet.
-		if ( ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore-line
+		if ( ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore argument.type
 			// Credentials failed, so ask again (with $error flag true).
 			request_filesystem_credentials( '', '', true, '', null, false );
 			$form_data = ob_get_clean();
-			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="button button-primary button-large"', $form_data ); // @phpstan-ignore-line
+			$form_data = str_replace( 'name="upgrade" id="upgrade" class="button"', 'name="upgrade" id="upgrade" class="components-button is-primary"', $form_data ); // @phpstan-ignore argument.type
 			return $form_data;
 		}
 
@@ -329,12 +329,6 @@ class TablePress_CSS {
 		$default_css_minified = $this->load_default_css_from_file( false );
 		if ( false === $default_css_minified ) {
 			$default_css_minified = '';
-		} else {
-			// Change relative URLs to web font files to absolute URLs, as combining the CSS files and saving to another directory breaks the relative URLs.
-			$absolute_path = plugins_url( 'css/build/tablepress.', TABLEPRESS__FILE__ );
-			// Make the absolute URL protocol-relative to prevent mixed content warnings.
-			$absolute_path = str_replace( array( 'http:', 'https:' ), '', $absolute_path );
-			$default_css_minified = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css_minified );
 		}
 		$file_content = array(
 			'normal'   => $custom_css_normal,
@@ -378,7 +372,7 @@ class TablePress_CSS {
 		 * Do we have credentials already? (Otherwise the form will have been rendered, which is not supported here.)
 		 * Or, if we have credentials, are they valid?
 		 */
-		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore-line
+		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) { // @phpstan-ignore argument.type
 			ob_end_clean();
 			return false;
 		}
@@ -450,7 +444,7 @@ class TablePress_CSS {
 		}
 		// WP Fastest Cache.
 		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( array( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) ) {
-			$GLOBALS['wp_fastest_cache']->deleteCache( true ); // @phpstan-ignore-line
+			$GLOBALS['wp_fastest_cache']->deleteCache( true ); // @phpstan-ignore method.nonObject
 		}
 	}
 

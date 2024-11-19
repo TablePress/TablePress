@@ -20,10 +20,10 @@ return array(
 	'search'         => '검색:',
 	'zeroRecords'    => '검색 결과가 없습니다',
 	'paginate'       => array(
-		'first'    => '처음',
-		'previous' => '이전',
-		'next'     => '다음',
-		'last'     => '마지막',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': 오름차순 정렬',

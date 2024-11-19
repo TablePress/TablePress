@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Helper;
 
+use DOMAttr;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
@@ -532,47 +533,26 @@ class Html
 		'yellowgreen' => '9acd32',
 	];
 
-	/** @var ?string */
-	private $face;
+	private ?string $face = null;
 
-	/** @var ?string */
-	private $size;
+	private ?string $size = null;
 
-	/** @var ?string */
-	private $color;
+	private ?string $color = null;
 
-	/**
-	 * @var bool
-	 */
-	private $bold = false;
+	private bool $bold = false;
 
-	/**
-	 * @var bool
-	 */
-	private $italic = false;
+	private bool $italic = false;
 
-	/**
-	 * @var bool
-	 */
-	private $underline = false;
+	private bool $underline = false;
 
-	/**
-	 * @var bool
-	 */
-	private $superscript = false;
+	private bool $superscript = false;
 
-	/**
-	 * @var bool
-	 */
-	private $subscript = false;
+	private bool $subscript = false;
 
-	/**
-	 * @var bool
-	 */
-	private $strikethrough = false;
+	private bool $strikethrough = false;
 
 	/** @var callable[] */
-	private $startTagCallbacks = [
+	private array $startTagCallbacks = [
 		'font' => [self::class, 'startFontTag'],
 		'b' => [self::class, 'startBoldTag'],
 		'strong' => [self::class, 'startBoldTag'],
@@ -586,7 +566,7 @@ class Html
 	];
 
 	/** @var callable[] */
-	private $endTagCallbacks = [
+	private array $endTagCallbacks = [
 		'font' => [self::class, 'endFontTag'],
 		'b' => [self::class, 'endBoldTag'],
 		'strong' => [self::class, 'endBoldTag'],
@@ -607,25 +587,13 @@ class Html
 		'h6' => [self::class, 'breakTag'],
 	];
 
-	/**
-	 * @var mixed[]
-	 */
-	private $stack = [];
+	private array $stack = [];
 
-	/**
-	 * @var string
-	 */
-	public $stringData = '';
+	public string $stringData = '';
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText
-	 */
-	private $richTextObject;
+	private RichText $richTextObject;
 
-	/**
-	 * @var bool
-	 */
-	private $preserveWhiteSpace = false;
+	private bool $preserveWhiteSpace = false;
 
 	private function initialise(): void
 	{
@@ -723,7 +691,7 @@ class Html
 	{
 		preg_match_all('/\d+/', $rgbValue, $values);
 		foreach ($values[0] as &$value) {
-			$value = str_pad(dechex($value), 2, '0', STR_PAD_LEFT);
+			$value = str_pad(dechex((int) $value), 2, '0', STR_PAD_LEFT);
 		}
 
 		return implode('', $values[0]);
@@ -738,6 +706,7 @@ class Html
 	{
 		$attrs = $tag->attributes;
 		if ($attrs !== null) {
+			/** @var DOMAttr $attribute */
 			foreach ($attrs as $attribute) {
 				$attributeName = strtolower($attribute->name);
 				$attributeName = preg_replace('/^html:/', '', $attributeName) ?? $attributeName; // in case from Xml spreadsheet

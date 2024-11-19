@@ -11,10 +11,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\Wizard;
  */
 class Expression extends WizardAbstract implements WizardInterface
 {
-	/**
-	 * @var string
-	 */
-	protected $expression;
+	protected string $expression;
 
 	public function __construct(string $cellRange)
 	{
@@ -57,7 +54,7 @@ class Expression extends WizardAbstract implements WizardInterface
 	}
 
 	/**
-	 * @param mixed[] $arguments
+	 * @param string[] $arguments
 	 */
 	public function __call(string $methodName, array $arguments): self
 	{

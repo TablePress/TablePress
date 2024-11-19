@@ -82,13 +82,9 @@ class Sample
 		$regex = new RegexIterator($iterator, '/^.+\.php$/', RecursiveRegexIterator::GET_MATCH);
 
 		$files = [];
+		/** @var string[] $file */
 		foreach ($regex as $file) {
 			$file = str_replace(str_replace('\\', '/', $baseDir) . '/', '', str_replace('\\', '/', $file[0]));
-			if (is_array($file)) {
-				// @codeCoverageIgnoreStart
-				throw new RuntimeException('str_replace returned array');
-				// @codeCoverageIgnoreEnd
-			}
 			$info = pathinfo($file);
 			$category = str_replace('_', ' ', $info['dirname'] ?? '');
 			$name = str_replace('_', ' ', (string) preg_replace('/(|\.php)/', '', $info['filename']));
@@ -124,6 +120,9 @@ class Sample
 		// Write documents
 		foreach ($writers as $writerType) {
 			$path = $this->getFilename($filename, mb_strtolower($writerType));
+			if (preg_match('/(mpdf|tcpdf)$/', $path)) {
+				$path .= '.pdf';
+			}
 			$writer = IOFactory::createWriter($spreadsheet, $writerType);
 			$writer->setIncludeCharts($withCharts);
 			if ($writerCallback !== null) {
@@ -259,10 +258,10 @@ class Sample
 		?string $descriptionCell = null
 	): void {
 		if ($descriptionCell !== null) {
-			$this->log($worksheet->getCell($descriptionCell)->getValue());
+			$this->log($worksheet->getCell($descriptionCell)->getValueString());
 		}
-		$this->log($worksheet->getCell($formulaCell)->getValue());
-		$this->log(sprintf('%s() Result is ', $functionName) . $worksheet->getCell($formulaCell)->getCalculatedValue());
+		$this->log($worksheet->getCell($formulaCell)->getValueString());
+		$this->log(sprintf('%s() Result is ', $functionName) . $worksheet->getCell($formulaCell)->getCalculatedValueString());
 	}
 
 	/**

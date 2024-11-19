@@ -13,10 +13,6 @@
 	$feature-box-width: 400px;
 
 	@media screen and (min-width: 783px) {
-		@at-root #tablepress_edit-table-information {
-			width: calc(100% - $feature-box-width);
-		}
-
 		display: block;
 		position: absolute;
 		right: -$feature-box-width;
@@ -24,6 +20,10 @@
 		height: calc(100% + 42px);
 		bottom: 0;
 		margin: 0;
+
+		@at-root #tablepress_edit-table-information {
+			width: calc(100% - $feature-box-width);
+		}
 
 		.rtl & {
 			left: -$feature-box-width;
@@ -45,7 +45,6 @@
 		h2 {
 			color: transparent;
 			background-image: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 75%);
-			-webkit-background-clip: text;
 			background-clip: text;
 			font-weight: 700;
 			font-size: 19px;

@@ -25,57 +25,50 @@ class TablePress_CSSTidy_Optimise {
 	 * TablePress_CSSTidy instance.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_CSSTidy
 	 */
-	public $parser;
+	public \TablePress_CSSTidy $parser;
 
 	/**
 	 * The parsed CSS.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $css = array();
+	public array $css = array();
 
 	/**
 	 * The current sub-value.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $sub_value = '';
+	public string $sub_value = '';
 
 	/**
 	 * The current at rule (@media).
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $at = '';
+	public string $at = '';
 
 	/**
 	 * The current selector.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $selector = '';
+	public string $selector = '';
 
 	/**
 	 * The current property.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $property = '';
+	public string $property = '';
 
 	/**
 	 * The current value.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $value = '';
+	public string $value = '';
 
 	/**
 	 * Constructor.
@@ -84,7 +77,7 @@ class TablePress_CSSTidy_Optimise {
 	 *
 	 * @param TablePress_CSSTidy $csstidy Instance of the TablePress_CSSTidy class.
 	 */
-	public function __construct( $csstidy ) {
+	public function __construct( TablePress_CSSTidy $csstidy ) {
 		$this->parser = $csstidy;
 		$this->css = &$csstidy->css;
 		$this->sub_value = &$csstidy->sub_value;

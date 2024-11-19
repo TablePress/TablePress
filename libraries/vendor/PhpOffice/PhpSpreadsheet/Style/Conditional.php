@@ -73,54 +73,38 @@ class Conditional implements IComparable
 
 	/**
 	 * Condition type.
-	 * @var string
 	 */
-	private $conditionType = self::CONDITION_NONE;
+	private string $conditionType = self::CONDITION_NONE;
 
 	/**
 	 * Operator type.
-	 * @var string
 	 */
-	private $operatorType = self::OPERATOR_NONE;
+	private string $operatorType = self::OPERATOR_NONE;
 
 	/**
 	 * Text.
-	 * @var string
 	 */
-	private $text = '';
+	private string $text = '';
 
 	/**
 	 * Stop on this condition, if it matches.
-	 * @var bool
 	 */
-	private $stopIfTrue = false;
+	private bool $stopIfTrue = false;
 
 	/**
 	 * Condition.
 	 *
 	 * @var (bool|float|int|string)[]
 	 */
-	private $condition = [];
+	private array $condition = [];
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalDataBar|null
-	 */
-	private $dataBar;
+	private ?ConditionalDataBar $dataBar = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalColorScale|null
-	 */
-	private $colorScale;
+	private ?ConditionalColorScale $colorScale = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Style
-	 */
-	private $style;
+	private Style $style;
 
-	/**
-	 * @var bool
-	 */
-	private $noFormatSet = false;
+	private bool $noFormatSet = false;
 
 	/**
 	 * Create a new Conditional.

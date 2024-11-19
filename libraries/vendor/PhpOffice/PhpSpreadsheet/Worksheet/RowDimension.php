@@ -8,23 +8,20 @@ class RowDimension extends Dimension
 {
 	/**
 	 * Row index.
-	 * @var int|null
 	 */
-	private $rowIndex;
+	private ?int $rowIndex;
 
 	/**
 	 * Row height (in pt).
 	 *
 	 * When this is set to a negative value, the row height should be ignored by IWriter
-	 * @var float
 	 */
-	private $height = -1;
+	private float $height = -1;
 
 	/**
 	 * ZeroHeight for Row?
-	 * @var bool
 	 */
-	private $zeroHeight = false;
+	private bool $zeroHeight = false;
 
 	/**
 	 * Create a new RowDimension.

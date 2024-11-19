@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\TextData;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalcExp;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class CaseConvert
@@ -26,7 +27,11 @@ class CaseConvert
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $mixedCaseValue);
 		}
 
-		$mixedCaseValue = Helpers::extractString($mixedCaseValue);
+		try {
+			$mixedCaseValue = Helpers::extractString($mixedCaseValue, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
 
 		return StringHelper::strToLower($mixedCaseValue);
 	}
@@ -48,7 +53,11 @@ class CaseConvert
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $mixedCaseValue);
 		}
 
-		$mixedCaseValue = Helpers::extractString($mixedCaseValue);
+		try {
+			$mixedCaseValue = Helpers::extractString($mixedCaseValue, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
 
 		return StringHelper::strToUpper($mixedCaseValue);
 	}
@@ -70,7 +79,11 @@ class CaseConvert
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $mixedCaseValue);
 		}
 
-		$mixedCaseValue = Helpers::extractString($mixedCaseValue);
+		try {
+			$mixedCaseValue = Helpers::extractString($mixedCaseValue, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
 
 		return StringHelper::strToTitle($mixedCaseValue);
 	}

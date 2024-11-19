@@ -39,7 +39,7 @@ abstract class TablePress_Import_Base {
 			$an_array,
 			static function ( array &$row, int $col_idx ) use ( $max_columns ): void {
 				$row = array_pad( $row, $max_columns, '' );
-			}
+			},
 		);
 	}
 

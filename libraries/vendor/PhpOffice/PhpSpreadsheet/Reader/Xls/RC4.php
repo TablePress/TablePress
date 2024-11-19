@@ -5,16 +5,11 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls;
 class RC4
 {
 	/** @var int[] */
-	protected $s = []; // Context
-	/**
-	 * @var int
-	 */
-	protected $i = 0;
+	protected array $s = []; // Context
 
-	/**
-	 * @var int
-	 */
-	protected $j = 0;
+	protected int $i = 0;
+
+	protected int $j = 0;
 
 	/**
 	 * RC4 stream decryption/encryption constrcutor.

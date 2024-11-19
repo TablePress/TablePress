@@ -25,81 +25,71 @@ class TablePress_CSSTidy_Print {
 	 * TablePress_CSSTidy instance.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_CSSTidy
 	 */
-	public $parser;
+	public \TablePress_CSSTidy $parser;
 
 	/**
 	 * The parsed CSS.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $css = array();
+	public array $css = array();
 
 	/**
 	 * The output templates.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $template = array();
+	public array $template = array();
 
 	/**
 	 * The raw parsed CSS.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $tokens = array();
+	public array $tokens = array();
 
 	/**
 	 * The CSS charset.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $charset = '';
+	public string $charset = '';
 
 	/**
 	 * All @import URLs.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $import = array();
+	public array $import = array();
 
 	/**
 	 * The namespace.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $namespace = '';
+	public string $namespace = '';
 
 	/**
 	 * Saves the input CSS string.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $input_css = '';
+	public string $input_css = '';
 
 	/**
 	 * Saves the formatted CSS string.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $output_css = '';
+	public string $output_css = '';
 
 	/**
 	 * Saves the formatted CSS string (plain text).
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $output_css_plain = '';
+	public string $output_css_plain = '';
 
 	/**
 	 * Constructor.

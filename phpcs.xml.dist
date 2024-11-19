@@ -42,6 +42,7 @@
 
 	<!-- Exclude auto-generated JS build asset files that don't follow all whitespace rules. -->
 	<exclude-pattern>/admin/js/*\.asset\.php</exclude-pattern>
+	<exclude-pattern>/blocks/blocks-manifest\.php</exclude-pattern>
 	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
 
 	<!-- Exclude third-party libraries and build tools. -->
@@ -70,6 +71,7 @@
 		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
 		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
 		<exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+		<exclude name="Squiz.Commenting.VariableComment.MissingVar"/>
 		<exclude name="Squiz.PHP.CommentedOutCode.Found"/>
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound"/>
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>

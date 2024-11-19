@@ -43,7 +43,17 @@ class Unique
 		array_walk(
 			$lookupVector,
 			function (array &$value): void {
-				$value = implode(chr(0x00), $value);
+				$valuex = '';
+				$separator = '';
+				$numericIndicator = "\x01";
+				foreach ($value as $cellValue) {
+					$valuex .= $separator . $cellValue;
+					$separator = "\x00";
+					if (is_int($cellValue) || is_float($cellValue)) {
+						$valuex .= $numericIndicator;
+					}
+				}
+				$value = $valuex;
 			}
 		);
 
@@ -63,7 +73,14 @@ class Unique
 		array_walk(
 			$result,
 			function (string &$value): void {
-				$value = explode(chr(0x00), $value);
+				$value = explode("\x00", $value);
+				foreach ($value as &$stringValue) {
+					if (str_ends_with($stringValue, "\x01")) {
+						// x01 should only end a string which is otherwise a float or int,
+						// so phpstan is technically correct but what it fears should not happen.
+						$stringValue = 0 + substr($stringValue, 0, -1); //@phpstan-ignore-line
+					}
+				}
 			}
 		);
 
@@ -104,9 +121,7 @@ class Unique
 	{
 		$caseInsensitiveCounts = array_count_values(
 			array_map(
-				function (string $value) : string {
-					return StringHelper::strToUpper($value);
-				},
+				fn (string $value): string => StringHelper::strToUpper($value),
 				$caseSensitiveLookupValues
 			)
 		);
@@ -133,9 +148,7 @@ class Unique
 	{
 		return array_filter(
 			$values,
-			function ($value) : bool {
-				return $value === 1;
-			}
+			fn ($value): bool => $value === 1
 		);
 	}
 }

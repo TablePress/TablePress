@@ -50,10 +50,7 @@ class Dimension
 	 */
 	protected $size;
 
-	/**
-	 * @var string|null
-	 */
-	protected $unit;
+	protected ?string $unit = null;
 
 	/**
 	 * Phpstan bug has been fixed; this function allows us to

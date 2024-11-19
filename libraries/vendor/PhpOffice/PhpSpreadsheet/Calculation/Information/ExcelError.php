@@ -156,4 +156,14 @@ class ExcelError
 	{
 		return self::ERROR_CODES['calculation'];
 	}
+
+	/**
+	 * SPILL.
+	 *
+	 * @return string #SPILL!
+	 */
+	public static function SPILL(): string
+	{
+		return self::ERROR_CODES['spill'];
+	}
 }

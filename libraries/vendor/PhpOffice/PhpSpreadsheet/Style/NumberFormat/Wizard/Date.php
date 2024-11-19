@@ -82,12 +82,12 @@ class Date extends DateTimeWizard
 	/**
 	 * @var string[]
 	 */
-	protected $separators;
+	protected array $separators;
 
 	/**
 	 * @var string[]
 	 */
-	protected $formatBlocks;
+	protected array $formatBlocks;
 
 	/**
 	 * @param null|string|string[] $separators
@@ -97,7 +97,7 @@ class Date extends DateTimeWizard
 	 */
 	public function __construct($separators = self::SEPARATOR_DASH, string ...$formatBlocks)
 	{
-		$separators = $separators ?? self::SEPARATOR_DASH;
+		$separators ??= self::SEPARATOR_DASH;
 		$formatBlocks = (count($formatBlocks) === 0) ? self::DATE_DEFAULT : $formatBlocks;
 
 		$this->separators = $this->padSeparatorArray(

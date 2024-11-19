@@ -8,27 +8,24 @@ use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use Stringable;
 
-class StringValueBinder implements IValueBinder
+class StringValueBinder extends DefaultValueBinder implements IValueBinder
 {
-	/**
-	 * @var bool
-	 */
-	protected $convertNull = true;
+	protected bool $convertNull = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $convertBoolean = true;
+	protected bool $convertBoolean = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $convertNumeric = true;
+	protected bool $convertNumeric = true;
 
-	/**
-	 * @var bool
-	 */
-	protected $convertFormula = true;
+	protected bool $convertFormula = true;
+
+	protected bool $setIgnoredErrors = false;
+
+	public function setSetIgnoredErrors(bool $setIgnoredErrors = false): self
+	{
+		$this->setIgnoredErrors = $setIgnoredErrors;
+
+		return $this;
+	}
 
 	public function setNullConversion(bool $suppressConversion = false): self
 	{
@@ -93,19 +90,21 @@ class StringValueBinder implements IValueBinder
 			$value = StringHelper::sanitizeUTF8($value);
 		}
 
+		$ignoredErrors = false;
 		if ($value === null && $this->convertNull === false) {
 			$cell->setValueExplicit($value, DataType::TYPE_NULL);
 		} elseif (is_bool($value) && $this->convertBoolean === false) {
 			$cell->setValueExplicit($value, DataType::TYPE_BOOL);
 		} elseif ((is_int($value) || is_float($value)) && $this->convertNumeric === false) {
 			$cell->setValueExplicit($value, DataType::TYPE_NUMERIC);
-		} elseif (is_string($value) && strlen($value) > 1 && $value[0] === '=' && $this->convertFormula === false) {
+		} elseif (is_string($value) && strlen($value) > 1 && $value[0] === '=' && $this->convertFormula === false && parent::dataTypeForValue($value) === DataType::TYPE_FORMULA) {
 			$cell->setValueExplicit($value, DataType::TYPE_FORMULA);
 		} else {
-			if (is_string($value) && strlen($value) > 1 && $value[0] === '=') {
-				$cell->getStyle()->setQuotePrefix(true);
-			}
+			$ignoredErrors = is_numeric($value);
 			$cell->setValueExplicit((string) $value, DataType::TYPE_STRING);
+		}
+		if ($this->setIgnoredErrors) {
+			$cell->getIgnoredErrors()->setNumberStoredAsText($ignoredErrors);
 		}
 
 		return true;
@@ -114,15 +113,21 @@ class StringValueBinder implements IValueBinder
 	protected function bindObjectValue(Cell $cell, object $value): bool
 	{
 		// Handle any objects that might be injected
+		$ignoredErrors = false;
 		if ($value instanceof DateTimeInterface) {
 			$value = $value->format('Y-m-d H:i:s');
 			$cell->setValueExplicit($value, DataType::TYPE_STRING);
 		} elseif ($value instanceof RichText) {
 			$cell->setValueExplicit($value, DataType::TYPE_INLINE);
+			$ignoredErrors = is_numeric($value->getPlainText());
 		} elseif ((is_object($value) && method_exists($value, '__toString'))) {
 			$cell->setValueExplicit((string) $value, DataType::TYPE_STRING);
+			$ignoredErrors = is_numeric((string) $value);
 		} else {
 			throw new SpreadsheetException('Unable to bind unstringable object of type ' . get_class($value));
+		}
+		if ($this->setIgnoredErrors) {
+			$cell->getIgnoredErrors()->setNumberStoredAsText($ignoredErrors);
 		}
 
 		return true;

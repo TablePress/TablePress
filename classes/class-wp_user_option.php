@@ -98,7 +98,6 @@ class TablePress_WP_User_Option extends TablePress_WP_Option {
 		$users = get_users();
 		foreach ( $users as $user ) {
 			delete_user_option( $user->ID, $this->option_name, false );
-			// @todo Add other user options for different actions as well.
 		}
 	}
 

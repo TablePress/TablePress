@@ -1,5 +1,5 @@
 /**
- * Jspreadsheet v4.2.1
+ * Jspreadsheet v4.15.0
  *
  * Website: https://bossanova.uk/jspreadsheet/
  * Description: Create amazing web based spreadsheets.
@@ -23,7 +23,7 @@
 		// Information
 		var info = {
 			title: 'Jspreadsheet',
-			version: '4.2.1',
+			version: '4.15.0',
 			type: 'CE',
 			host: 'https://bossanova.uk/jspreadsheet',
 			license: 'MIT',
@@ -690,17 +690,7 @@
 			ads.setAttribute('href', 'https://bossanova.uk/jspreadsheet/');
 			obj.ads = document.createElement('div');
 			obj.ads.className = 'jexcel_about';
-			/* // TablePress: Remove this as it loads a file from the Jspreadsheet server.
-			try {
-				if (typeof(sessionStorage) !== "undefined" && ! sessionStorage.getItem('jexcel')) {
-					sessionStorage.setItem('jexcel', true);
-					var img = document.createElement('img');
-					img.src = '//bossanova.uk/jspreadsheet/logo.png';
-					ads.appendChild(img);
-				}
-			} catch (exception) {
-			}
-			*/
+
 			var span = document.createElement('span');
 			span.innerHTML = 'Jspreadsheet CE';
 			ads.appendChild(span);
@@ -3955,15 +3945,18 @@
 				}
 
 				// TablePress: Keep Table Head and Table Foot row at the top/bottom, if used.
-				if ( window?.tp?.table?.options?.table_head ) {
-					const first_row_idx = 0;
-					newValue = newValue.filter( ( row_idx ) => ( row_idx > first_row_idx ) );
-					newValue.unshift( first_row_idx );
+				if ( window?.tp?.table?.options?.table_head > 0 ) {
+					const last_head_row_idx = window?.tp?.table?.options?.table_head - 1;
+					newValue = newValue.filter( ( row_idx ) => ( row_idx > last_head_row_idx ) );
+					newValue.unshift( ...Array( window?.tp?.table?.options?.table_head ).keys() );
 				}
-				if ( window?.tp?.table?.options?.table_foot ) {
+				if ( window?.tp?.table?.options?.table_foot > 0) {
 					const last_row_idx = newValue.length - 1;
-					newValue = newValue.filter( ( row_idx ) => ( row_idx < last_row_idx ) );
-					newValue.push( last_row_idx );
+					const first_foot_row_idx = newValue.length - window?.tp?.table?.options?.table_foot;
+					newValue = newValue.filter( ( row_idx ) => ( row_idx < first_foot_row_idx ) );
+					for ( let idx = first_foot_row_idx; idx <= last_row_idx; idx++ ) {
+						newValue.push( idx );
+					}
 				}
 
 				// Save history

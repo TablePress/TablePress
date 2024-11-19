@@ -6,67 +6,50 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 
 class BranchPruner
 {
-	/**
-	 * @var bool
-	 */
-	protected $branchPruningEnabled;
+	protected bool $branchPruningEnabled;
 
 	/**
 	 * Used to generate unique store keys.
-	 * @var int
 	 */
-	private $branchStoreKeyCounter = 0;
+	private int $branchStoreKeyCounter = 0;
 
 	/**
 	 * currently pending storeKey (last item of the storeKeysStack.
-	 * @var string|null
 	 */
-	protected $pendingStoreKey;
+	protected ?string $pendingStoreKey = null;
 
 	/**
 	 * @var string[]
 	 */
-	protected $storeKeysStack = [];
+	protected array $storeKeysStack = [];
 
 	/**
 	 * @var bool[]
 	 */
-	protected $conditionMap = [];
+	protected array $conditionMap = [];
 
 	/**
 	 * @var bool[]
 	 */
-	protected $thenMap = [];
+	protected array $thenMap = [];
 
 	/**
 	 * @var bool[]
 	 */
-	protected $elseMap = [];
+	protected array $elseMap = [];
 
 	/**
 	 * @var int[]
 	 */
-	protected $braceDepthMap = [];
+	protected array $braceDepthMap = [];
 
-	/**
-	 * @var string|null
-	 */
-	protected $currentCondition;
+	protected ?string $currentCondition = null;
 
-	/**
-	 * @var string|null
-	 */
-	protected $currentOnlyIf;
+	protected ?string $currentOnlyIf = null;
 
-	/**
-	 * @var string|null
-	 */
-	protected $currentOnlyIfNot;
+	protected ?string $currentOnlyIfNot = null;
 
-	/**
-	 * @var string|null
-	 */
-	protected $previousStoreKey;
+	protected ?string $previousStoreKey = null;
 
 	public function __construct(bool $branchPruningEnabled)
 	{

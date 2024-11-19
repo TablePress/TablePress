@@ -27,44 +27,31 @@ class Fill extends Supervisor
 	const FILL_PATTERN_LIGHTVERTICAL = 'lightVertical';
 	const FILL_PATTERN_MEDIUMGRAY = 'mediumGray';
 
-	/**
-	 * @var int|null
-	 */
-	public $startcolorIndex;
+	public ?int $startcolorIndex = null;
 
-	/**
-	 * @var int|null
-	 */
-	public $endcolorIndex;
+	public ?int $endcolorIndex = null;
 
 	/**
 	 * Fill type.
-	 * @var string|null
 	 */
-	protected $fillType = self::FILL_NONE;
+	protected ?string $fillType = self::FILL_NONE;
 
 	/**
 	 * Rotation.
-	 * @var float
 	 */
-	protected $rotation = 0.0;
+	protected float $rotation = 0.0;
 
 	/**
 	 * Start color.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color
 	 */
-	protected $startColor;
+	protected Color $startColor;
 
 	/**
 	 * End color.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color
 	 */
-	protected $endColor;
+	protected Color $endColor;
 
-	/**
-	 * @var bool
-	 */
-	private $colorChanged = false;
+	private bool $colorChanged = false;
 
 	/**
 	 * Create a new Fill.

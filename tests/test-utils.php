@@ -144,4 +144,108 @@ class TablePress_Test_TablePress_Utils extends TablePress_TestCase {
 		$this->assertSame( 'http://example.org/wp-admin/admin.php?page=tablepress', TablePress::url( array(), false ) );
 	}
 
+	/**
+	 * Tests the extraction of top-level keys from a JavaScript object string.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @covers TablePress::extract_keys_from_js_object_string()
+	 */
+	public function test_extract_keys_from_js_object_string(): void {
+		$js_object_string = "{
+			unquotedBool: true,
+			'singleQuotedBool': true,
+			\"doubleQuotedBool\": true,
+
+			unquotedInt: 3,
+			'singleQuotedInt': 3,
+			\"doubleQuotedInt\": 3,
+
+			/* Multi-line comment \"notCapturedMultiLineComment\": 4, */
+
+			unquotedString1: \"baz\",
+			'singleQuotedString1': \"baz\",
+			\"doubleQuotedString1\": \"baz\",
+
+			unquotedString2: 'bar',
+			'singleQuotedString2': 'bar',
+			\"doubleQuotedString2\": 'bar',
+
+			// Single-line comment \"notCapturedSingleLineComment\": 'baz',
+
+			unquotedFunction: function( test ) { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			'singleQuotedFunction': function( test ) { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			\"doubleQuotedFunction\": function( test ) { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+
+			unquotedArrowFunction1: ( test ) => { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			'singleQuotedArrowFunction1': ( test ) => { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			\"doubleQuotedArrowFunction1\": ( test ) => { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+
+			unquotedArrowFunction2: test => { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			'singleQuotedArrowFunction2': test => { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			\"doubleQuotedArrowFunction2\": test => { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+
+			unquotedObject: { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" },
+			'singleQuotedObject': { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" },
+			\"doubleQuotedObject\": { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" },
+
+			unquotedArray: [ { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }, uncaptured, 3, 'test', ],
+			'singleQuotedArray': [ { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }, uncaptured, 3, 'test', ],
+			\"doubleQuotedArray\": [ { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }, uncaptured, 3, 'test', ],
+
+			shorthandProperty1,
+			'notCapturedShorthandProperty2',
+			\"notCapturedShorthandProperty3\",
+
+			unquotedShorthandMethod() { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			'notCapturedSingleQuotedShorthandMethod'() { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+			\"notCapturedDoubleQuotedShorthandMethod\"() { return { notCaptured1: 3, 'notCaptured2': 'no', \"notCaptured3\": \"no\" }; },
+
+			\"\": 'empty string key with double quotes',
+			'': 'empty string key with double quotes',
+
+			unquotedString2: 'duplicated key that should not be captured',
+			'singleQuotedString2': 'duplicated key that should not be captured',
+			\"doubleQuotedString2\": 'duplicated key that should not be captured',
+
+			shorthandAsLastKey
+		}";
+
+		$extracted_object_keys = TablePress::extract_keys_from_js_object_string( $js_object_string );
+		$expected_keys = array(
+			'unquotedBool',
+			'singleQuotedBool',
+			'doubleQuotedBool',
+			'unquotedInt',
+			'singleQuotedInt',
+			'doubleQuotedInt',
+			'unquotedString1',
+			'singleQuotedString1',
+			'doubleQuotedString1',
+			'unquotedString2',
+			'singleQuotedString2',
+			'doubleQuotedString2',
+			'unquotedFunction',
+			'singleQuotedFunction',
+			'doubleQuotedFunction',
+			'unquotedArrowFunction1',
+			'singleQuotedArrowFunction1',
+			'doubleQuotedArrowFunction1',
+			'unquotedArrowFunction2',
+			'singleQuotedArrowFunction2',
+			'doubleQuotedArrowFunction2',
+			'unquotedObject',
+			'singleQuotedObject',
+			'doubleQuotedObject',
+			'unquotedArray',
+			'singleQuotedArray',
+			'doubleQuotedArray',
+			'shorthandProperty1',
+			'unquotedShorthandMethod',
+			'shorthandAsLastKey',
+		);
+
+		$this->assertSame( $expected_keys, $extracted_object_keys );
+	}
+
 } // class TablePress_Test_TablePress_Utils

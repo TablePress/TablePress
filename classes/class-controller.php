@@ -22,39 +22,13 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 abstract class TablePress_Controller {
 
 	/**
-	 * File name of the admin screens' parent page in the admin menu.
-	 *
-	 * @since 1.0.0
-	 * @var string
-	 */
-	public $parent_page = 'middle';
-
-	/**
-	 * Whether TablePress admin screens are a top-level menu item in the admin menu.
-	 *
-	 * @since 1.0.0
-	 * @var bool
-	 */
-	public $is_top_level_page = false;
-
-	/**
-	 * Initialize all controllers, by loading Plugin and User Options, and by performing an update check.
+	 * Initializes all controllers.
 	 *
 	 * @since 1.0.0
 	 */
 	public function __construct() {
 		// Update check, in all controllers (frontend and admin), to make sure we always have up-to-date options, should be done very early.
 		$this->plugin_update_check();
-
-		/**
-		 * Filters the admin menu parent page, which is needed for the construction of plugin URLs.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string $parent_page Current admin menu parent page.
-		 */
-		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', TablePress::$model_options->get( 'admin_menu_parent_page' ) );
-		$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
 	}
 
 	/**
@@ -92,19 +66,35 @@ abstract class TablePress_Controller {
 					'message_plugin_update'     => true,
 				);
 
-				// Only write files if "Custom CSS" is to be used, and if there is "Custom CSS".
-				if ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== TablePress::$model_options->get( 'custom_css' ) ) {
-					// Re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed).
+				// If used, re-save "Custom CSS" to re-create all files (as TablePress Default CSS might have changed).
+				$custom_css = TablePress::$model_options->get( 'custom_css' );
+				if ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css ) {
 					/**
 					 * Load WP file functions to provide filesystem access functions early.
 					 */
-					require_once ABSPATH . 'wp-admin/includes/file.php';
+					require_once ABSPATH . 'wp-admin/includes/file.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
 					/**
 					 * Load WP admin template functions to provide `submit_button()` which is necessary for `request_filesystem_credentials()`.
 					 */
-					require_once ABSPATH . 'wp-admin/includes/template.php';
+					require_once ABSPATH . 'wp-admin/includes/template.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
 					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-					$result = $tablepress_css->save_custom_css_to_file( TablePress::$model_options->get( 'custom_css' ), TablePress::$model_options->get( 'custom_css_minified' ) );
+
+					$custom_css_minified = TablePress::$model_options->get( 'custom_css_minified' );
+
+					// Update "Custom CSS" to be compatible with DataTables 2, introduced in TablePress 3.0.
+					if ( $current_plugin_options_db_version < 96 ) {
+						$old_custom_css = $custom_css;
+						$custom_css = TablePress::convert_datatables_api_data( $custom_css );
+						if ( $old_custom_css !== $custom_css ) {
+							$custom_css = $tablepress_css->sanitize_css( $custom_css );
+							$custom_css_minified = $tablepress_css->minify_css( $custom_css );
+							$updated_options['custom_css'] = $custom_css;
+							$updated_options['custom_css_minified'] = $custom_css_minified;
+						}
+						unset( $old_custom_css );
+					}
+
+					$result = $tablepress_css->save_custom_css_to_file( $custom_css, $custom_css_minified );
 					// If saving was successful, use "Custom CSS" file.
 					$updated_options['use_custom_css_file'] = $result;
 					// Increase the "Custom CSS" version number for cache busting.
@@ -118,7 +108,7 @@ abstract class TablePress_Controller {
 				// Clear table caches.
 				TablePress::$model_table->invalidate_table_output_caches();
 
-				// Add mime type field to existing posts with the TablePress Custom Post Type, so that other plugins know that they are not dealing with plain text.
+				// Add mime type field to existing posts with the TablePress Custom Post Type, in TablePress 1.5.
 				if ( $current_plugin_options_db_version < 25 ) {
 					TablePress::$model_table->add_mime_type_to_posts();
 				}
@@ -126,6 +116,11 @@ abstract class TablePress_Controller {
 				// Add new access capabilities that were introduced in TablePress 2.3.2.
 				if ( $current_plugin_options_db_version < 77 ) {
 					TablePress::$model_options->add_access_capabilities_tp232();
+				}
+
+				// Update all tables' "Custom Commands" to be compatible with DataTables 2, introduced in TablePress 3.0.
+				if ( $current_plugin_options_db_version < 96 ) {
+					TablePress::$model_table->update_custom_commands_datatables_tp30();
 				}
 			}
 		}

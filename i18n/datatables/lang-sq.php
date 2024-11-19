@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Kërkoni:',
 	'zeroRecords'    => 'Asnjë e dhënë nuk është gjetur',
 	'paginate'       => array(
-		'first'    => 'E para',
-		'previous' => 'E Kaluara',
-		'next'     => 'Tjetra',
-		'last'     => 'E Fundit',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': aktivizo për të sortuar kolonën me vlera në ngritje',

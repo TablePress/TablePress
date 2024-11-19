@@ -4,16 +4,12 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
 class Row
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
 	/**
 	 * Row index.
-	 * @var int
 	 */
-	private $rowIndex;
+	private int $rowIndex;
 
 	/**
 	 * Create a new row.

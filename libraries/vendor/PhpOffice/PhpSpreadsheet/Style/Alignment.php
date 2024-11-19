@@ -91,47 +91,41 @@ class Alignment extends Supervisor
 	// Special value for Text Rotation
 	const TEXTROTATION_STACK_EXCEL = 255;
 	const TEXTROTATION_STACK_PHPSPREADSHEET = -165; // 90 - 255
+
 	/**
 	 * Horizontal alignment.
-	 * @var string|null
 	 */
-	protected $horizontal = self::HORIZONTAL_GENERAL;
+	protected ?string $horizontal = self::HORIZONTAL_GENERAL;
 
 	/**
 	 * Vertical alignment.
-	 * @var string|null
 	 */
-	protected $vertical = self::VERTICAL_BOTTOM;
+	protected ?string $vertical = self::VERTICAL_BOTTOM;
 
 	/**
 	 * Text rotation.
-	 * @var int|null
 	 */
-	protected $textRotation = 0;
+	protected ?int $textRotation = 0;
 
 	/**
 	 * Wrap text.
-	 * @var bool
 	 */
-	protected $wrapText = false;
+	protected bool $wrapText = false;
 
 	/**
 	 * Shrink to fit.
-	 * @var bool
 	 */
-	protected $shrinkToFit = false;
+	protected bool $shrinkToFit = false;
 
 	/**
 	 * Indent - only possible with horizontal alignment left and right.
-	 * @var int
 	 */
-	protected $indent = 0;
+	protected int $indent = 0;
 
 	/**
 	 * Read order.
-	 * @var int
 	 */
-	protected $readOrder = 0;
+	protected int $readOrder = 0;
 
 	/**
 	 * Create a new Alignment.

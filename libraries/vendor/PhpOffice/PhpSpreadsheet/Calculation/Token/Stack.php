@@ -7,23 +7,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\BranchPruner;
 
 class Stack
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\BranchPruner
-	 */
-	private $branchPruner;
+	private BranchPruner $branchPruner;
 
 	/**
 	 * The parser stack for formulae.
 	 *
 	 * @var mixed[]
 	 */
-	private $stack = [];
+	private array $stack = [];
 
 	/**
 	 * Count of entries in the parser stack.
-	 * @var int
 	 */
-	private $count = 0;
+	private int $count = 0;
 
 	public function __construct(BranchPruner $branchPruner)
 	{

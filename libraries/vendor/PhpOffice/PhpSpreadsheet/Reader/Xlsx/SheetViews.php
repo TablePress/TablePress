@@ -10,25 +10,13 @@ use SimpleXMLElement;
 
 class SheetViews extends BaseParserClass
 {
-	/**
-	 * @var \SimpleXMLElement
-	 */
-	private $sheetViewXml;
+	private SimpleXMLElement $sheetViewXml;
 
-	/**
-	 * @var \SimpleXMLElement
-	 */
-	private $sheetViewAttributes;
+	private SimpleXMLElement $sheetViewAttributes;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
-	/**
-	 * @var string
-	 */
-	private $activePane = '';
+	private string $activePane = '';
 
 	public function __construct(SimpleXMLElement $sheetViewXml, Worksheet $workSheet)
 	{

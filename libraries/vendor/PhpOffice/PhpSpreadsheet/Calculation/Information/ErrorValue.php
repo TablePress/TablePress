@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 
 class ErrorValue
 {
@@ -35,7 +36,7 @@ class ErrorValue
 	 * @return array|bool If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
-	public static function isError($value = '')
+	public static function isError($value = '', bool $tryNotImplemented = false)
 	{
 		if (is_array($value)) {
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $value);
@@ -43,6 +44,9 @@ class ErrorValue
 
 		if (!is_string($value)) {
 			return false;
+		}
+		if ($tryNotImplemented && $value === Functions::NOT_YET_IMPLEMENTED) {
+			return true;
 		}
 
 		return in_array($value, ExcelError::ERROR_CODES, true);

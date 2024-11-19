@@ -4,6 +4,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Cell;
 
 use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
+use Stringable;
 
 class DataType
 {
@@ -23,7 +24,7 @@ class DataType
 	 *
 	 * @var array<string, int>
 	 */
-	private static $errorCodes = [
+	private static array $errorCodes = [
 		'#NULL!' => 0,
 		'#DIV/0!' => 1,
 		'#VALUE!' => 2,
@@ -78,7 +79,7 @@ class DataType
 	 */
 	public static function checkErrorCode($value): string
 	{
-		$value = (string) $value;
+		$value = (is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) ? ((string) $value) : '#NULL!';
 
 		if (!isset(self::$errorCodes[$value])) {
 			$value = '#NULL!';

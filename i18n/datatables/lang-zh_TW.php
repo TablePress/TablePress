@@ -20,10 +20,10 @@ return array(
 	'search'         => '搜尋:',
 	'zeroRecords'    => '找不到符合條件的記錄',
 	'paginate'       => array(
-		'first'    => '第一頁',
-		'previous' => '上一頁',
-		'next'     => '下一頁',
-		'last'     => '最後一頁',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': 啟用資料行升冪排序',

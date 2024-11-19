@@ -12,27 +12,23 @@ class RowIterator implements NativeIterator
 {
 	/**
 	 * Worksheet to iterate.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
 	 */
-	private $subject;
+	private Worksheet $subject;
 
 	/**
 	 * Current iterator position.
-	 * @var int
 	 */
-	private $position = 1;
+	private int $position = 1;
 
 	/**
 	 * Start position.
-	 * @var int
 	 */
-	private $startRow = 1;
+	private int $startRow = 1;
 
 	/**
 	 * End position.
-	 * @var int
 	 */
-	private $endRow = 1;
+	private int $endRow = 1;
 
 	/**
 	 * Create a new row iterator.

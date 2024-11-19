@@ -26,12 +26,12 @@ TablePress::load_file( 'class-import-file.php', 'classes' );
 class TablePress_Import {
 
 	/**
-	 * Instance of the TablePress Legacy Importer.
+	 * Instance of the TablePress Legacy or PHPSpreadsheet Importer.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_Import_Legacy
+	 * @var TablePress_Import_Legacy|TablePress_Import_PHPSpreadsheet
 	 */
-	protected $importer;
+	protected object $importer;
 
 	/**
 	 * Import configuration (mainly the data from the Import form).
@@ -39,16 +39,15 @@ class TablePress_Import {
 	 * @since 2.0.0
 	 * @var array<string, mixed>
 	 */
-	protected $import_config = array();
+	protected array $import_config = array();
 
 	/**
 	 * Whether ZIP archive support is available (which it always is, as PclZip is used as a fallback).
 	 *
 	 * @since 1.0.0
 	 * @deprecated 2.3.0 ZIP support is now always available, either through `ZipArchive` or through `PclZip`.
-	 * @var bool
 	 */
-	public $zip_support_available = true;
+	public bool $zip_support_available = true;
 
 	/**
 	 * List of table names/IDs for use when replacing/appending existing tables (except for the JSON format).
@@ -56,7 +55,7 @@ class TablePress_Import {
 	 * @since 2.0.0
 	 * @var array<string, string[]>
 	 */
-	protected $table_names_ids = array();
+	protected array $table_names_ids = array();
 
 	/**
 	 * Runs the import process for a given import configuration.
@@ -135,7 +134,7 @@ class TablePress_Import {
 				/**
 				 * Load WP file functions to be sure that `download_url()` exists, in particular during Cron requests.
 				 */
-				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
 
 				// Download URL to local file.
 				$location = download_url( $this->import_config['url'] );
@@ -287,14 +286,14 @@ class TablePress_Import {
 	 */
 	protected function extract_zip_file_ziparchive( File $zip_file ) /* : array|WP_Error */ {
 		$archive = new ZipArchive();
-		$archive_opened = $archive->open( $zip_file->location, ZIPARCHIVE::CHECKCONS );
+		$archive_opened = $archive->open( $zip_file->location, ZipArchive::CHECKCONS );
 
-		// If the ZIP file can't be opened with ZIPARCHIVE::CHECKCONS, try again without.
+		// If the ZIP file can't be opened with ZipArchive::CHECKCONS, try again without.
 		if ( true !== $archive_opened ) {
 			$archive_opened = $archive->open( $zip_file->location );
 		}
 
-		// If the ZIP file can't even be opened without ZIPARCHIVE::CHECKCONS, bail.
+		// If the ZIP file can't even be opened without ZipArchive::CHECKCONS, bail.
 		if ( true !== $archive_opened ) {
 			return new WP_Error( 'table_import_error_zip_open', '', array( 'ziparchive_error' => $archive_opened ) );
 		}
@@ -371,10 +370,10 @@ class TablePress_Import {
 	protected function extract_zip_file_pclzip( File $zip_file ) /* : array|WP_Error */ {
 		mbstring_binary_safe_encoding();
 
-		require_once ABSPATH . 'wp-admin/includes/class-pclzip.php';
+		require_once ABSPATH . 'wp-admin/includes/class-pclzip.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
 
 		$archive = new PclZip( $zip_file->location );
-		$archive_files = $archive->extract( PCLZIP_OPT_EXTRACT_AS_STRING ); // @phpstan-ignore-line PclZip::extract() uses `func_get_args()` to handle optional arguments.
+		$archive_files = $archive->extract( PCLZIP_OPT_EXTRACT_AS_STRING ); // @phpstan-ignore arguments.count (PclZip::extract() uses `func_get_args()` to handle optional arguments.)
 
 		reset_mbstring_encoding();
 
@@ -511,8 +510,10 @@ class TablePress_Import {
 
 		// Choose the Table Import library based on the PHP version and the filter hook value.
 		if ( $use_legacy_import_class ) {
+			// @phpstan-ignore assign.propertyType (The `load_class()` method returns `object` and not a specific type.)
 			$this->importer = TablePress::load_class( 'TablePress_Import_Legacy', 'class-import-legacy.php', 'classes' );
 		} else {
+			// @phpstan-ignore assign.propertyType (The `load_class()` method returns `object` and not a specific type.)
 			$this->importer = TablePress::load_class( 'TablePress_Import_PHPSpreadsheet', 'class-import-phpspreadsheet.php', 'classes' );
 		}
 
@@ -657,7 +658,7 @@ class TablePress_Import {
 	 */
 	protected function load_table_from_file_phpspreadsheet( File $file ) /* : array|WP_Error */ {
 		// Convert File object to array, as those are not yet used outside of this class.
-		return $this->importer->import_table( $file ); // @phpstan-ignore-line
+		return $this->importer->import_table( $file ); // @phpstan-ignore return.type (This is an instance of TablePress_Import_PHPSpreadsheet which does not return false.)
 	}
 
 	/**

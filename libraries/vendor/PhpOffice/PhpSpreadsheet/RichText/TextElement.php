@@ -8,9 +8,8 @@ class TextElement implements ITextElement
 {
 	/**
 	 * Text.
-	 * @var string
 	 */
-	private $text;
+	private string $text;
 
 	/**
 	 * Create a new TextElement instance.
@@ -40,7 +39,7 @@ class TextElement implements ITextElement
 	 *
 	 * @return $this
 	 */
-	public function setText(string $text): \TablePress\PhpOffice\PhpSpreadsheet\RichText\ITextElement
+	public function setText(string $text): self
 	{
 		$this->text = $text;
 

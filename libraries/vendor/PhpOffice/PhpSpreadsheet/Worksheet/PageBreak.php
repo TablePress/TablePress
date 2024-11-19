@@ -8,20 +8,11 @@ use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class PageBreak
 {
-	/**
-	 * @var int
-	 */
-	private $breakType;
+	private int $breakType;
 
-	/**
-	 * @var string
-	 */
-	private $coordinate;
+	private string $coordinate;
 
-	/**
-	 * @var int
-	 */
-	private $maxColOrRow;
+	private int $maxColOrRow;
 
 	/**
 	 * @param array{0: int, 1: int}|CellAddress|string $coordinate

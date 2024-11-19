@@ -22,25 +22,17 @@ class Title
 
 	/**
 	 * Allow overlay of other elements?
-	 * @var bool
 	 */
-	private $overlay = true;
+	private bool $overlay = true;
 
 	/**
 	 * Title Layout.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Layout|null
 	 */
-	private $layout;
+	private ?Layout $layout;
 
-	/**
-	 * @var string
-	 */
-	private $cellReference = '';
+	private string $cellReference = '';
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Font|null
-	 */
-	private $font;
+	private ?Font $font = null;
 
 	/**
 	 * Create a new Title.

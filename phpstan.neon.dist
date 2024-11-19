@@ -21,17 +21,21 @@ parameters:
 	ignoreErrors:
 		# The `TablePress_View` and its extended classes must not have a return type, for BC reasons.
 		- '#^Method TablePress_[a-zA-Z_]*View\:\:setup\(\) has no return type specified\.$#'
-		# Turn off warnings about missing return type declarations, due to required PHP compatibility in the file.
-		- '#^Function tablepress_admin_error_notice_minimum_version_(wp|php)\(\) has no return type specified\.$#'
 		# Ignore errors caused by the ambiguous `object` return type declaration of the `TablePress::load_class()` method.
 		- '#^Call to an undefined method object\:\:[a-z_]+\(\)\.$#'
 		- '#^Access to an undefined property object\:\:\$[a-z_]+\.$#'
 		- '#^Static property TablePress[a-zA-Z_]*\:\:\$[a-z_]+ \(TablePress_[a-zA-Z_]+\) does not accept object\.$#'
 		- '#^Property TablePress[a-zA-Z_]+\:\:\$[a-z_]+ \([a-zA-Z_]+\) does not accept object\.$#'
-		# Ignore warnings around the `null` return value in `get_current_screen()`. If this fails, pages won't load, so it will be noticed.
-		- '#^Cannot access property \$id on WP_Screen\|null\.$#'
-		- '#^Cannot call method [a-z_]+\(\) on WP_Screen\|null\.$#'
 		# Ignore warnings around calling PHPSpreadsheet methods. These should only fail if a spreadsheet object is damaged or incomplete.
-		- '#^Cannot call method [a-zA-Z]+\(\) on TablePress\\PhpOffice\\PhpSpreadsheet\\(Cell|Style)\\(Cell|Font)\|null\.$#'
+		-
+			message: '#^Cannot call method [a-zA-Z]+\(\) on TablePress\\PhpOffice\\PhpSpreadsheet\\(Cell|Style)\\(Cell|Font)\|null\.$#'
+			identifier: method.nonObject
+			paths:
+				- classes/class-evaluate-phpspreadsheet.php
+				- classes/class-import-phpspreadsheet.php
+	WPCompat:
+		requiresAtLeast: '6.2'
 includes:
+	- phar://phpstan.phar/conf/bleedingEdge.neon
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
+	- vendor/johnbillion/wp-compat/extension.neon

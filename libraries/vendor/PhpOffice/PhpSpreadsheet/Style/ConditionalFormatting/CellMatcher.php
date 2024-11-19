@@ -30,50 +30,23 @@ class CellMatcher
 		Conditional::CONDITION_UNIQUE => "COUNTIF('%s'!%s,%s)=1",
 	];
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell
-	 */
-	protected $cell;
+	protected Cell $cell;
 
-	/**
-	 * @var int
-	 */
-	protected $cellRow;
+	protected int $cellRow;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	protected $worksheet;
+	protected Worksheet $worksheet;
 
-	/**
-	 * @var int
-	 */
-	protected $cellColumn;
+	protected int $cellColumn;
 
-	/**
-	 * @var string
-	 */
-	protected $conditionalRange;
+	protected string $conditionalRange;
 
-	/**
-	 * @var string
-	 */
-	protected $referenceCell;
+	protected string $referenceCell;
 
-	/**
-	 * @var int
-	 */
-	protected $referenceRow;
+	protected int $referenceRow;
 
-	/**
-	 * @var int
-	 */
-	protected $referenceColumn;
+	protected int $referenceColumn;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation
-	 */
-	protected $engine;
+	protected Calculation $engine;
 
 	public function __construct(Cell $cell, string $conditionalRange)
 	{
@@ -157,6 +130,8 @@ class CellMatcher
 	 */
 	protected function wrapCellValue()
 	{
+		$this->cell = $this->worksheet->getCell([$this->cellColumn, $this->cellRow]);
+
 		return $this->wrapValue($this->cell->getCalculatedValue());
 	}
 
@@ -264,7 +239,7 @@ class CellMatcher
 			self::COMPARISON_DUPLICATES_OPERATORS[$conditional->getConditionType()],
 			$worksheetName,
 			$this->conditionalRange,
-			$this->cellConditionCheck($this->cell->getCalculatedValue())
+			$this->cellConditionCheck($this->cell->getCalculatedValueString())
 		);
 
 		return $this->evaluateExpression($expression);

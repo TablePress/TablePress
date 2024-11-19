@@ -12,45 +12,38 @@ class Column
 {
 	/**
 	 * Table Column Index.
-	 * @var string
 	 */
-	private $columnIndex;
+	private string $columnIndex;
 
 	/**
 	 * Show Filter Button.
-	 * @var bool
 	 */
-	private $showFilterButton = true;
+	private bool $showFilterButton = true;
 
 	/**
 	 * Total Row Label.
-	 * @var string|null
 	 */
-	private $totalsRowLabel;
+	private ?string $totalsRowLabel = null;
 
 	/**
 	 * Total Row Function.
-	 * @var string|null
 	 */
-	private $totalsRowFunction;
+	private ?string $totalsRowFunction = null;
 
 	/**
 	 * Total Row Formula.
-	 * @var string|null
 	 */
-	private $totalsRowFormula;
+	private ?string $totalsRowFormula = null;
 
 	/**
 	 * Column Formula.
-	 * @var string|null
 	 */
-	private $columnFormula;
+	private ?string $columnFormula = null;
 
 	/**
 	 * Table.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table|null
 	 */
-	private $table;
+	private ?Table $table;
 
 	/**
 	 * Create a new Column.

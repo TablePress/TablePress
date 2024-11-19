@@ -18,106 +18,76 @@ class Font extends Supervisor
 	const CAP_NONE = 'none';
 	private const VALID_CAPS = [self::CAP_ALL, self::CAP_SMALL, self::CAP_NONE];
 
-	/**
-	 * @var string|null
-	 */
-	protected $cap;
+	protected ?string $cap = null;
+
+	public const DEFAULT_FONT_NAME = 'Calibri';
 
 	/**
 	 * Font Name.
-	 * @var string|null
 	 */
-	protected $name = 'Calibri';
+	protected ?string $name = self::DEFAULT_FONT_NAME;
 
 	/**
 	 * The following 7 are used only for chart titles, I think.
-	 * @var string
 	 */
-	private $latin = '';
+	private string $latin = '';
 
-	/**
-	 * @var string
-	 */
-	private $eastAsian = '';
+	private string $eastAsian = '';
 
-	/**
-	 * @var string
-	 */
-	private $complexScript = '';
+	private string $complexScript = '';
 
-	/**
-	 * @var int
-	 */
-	private $baseLine = 0;
+	private int $baseLine = 0;
 
-	/**
-	 * @var string
-	 */
-	private $strikeType = '';
+	private string $strikeType = '';
 
-	/** @var ?ChartColor */
-	private $underlineColor;
+	private ?ChartColor $underlineColor = null;
 
-	/** @var ?ChartColor */
-	private $chartColor;
+	private ?ChartColor $chartColor = null;
 	// end of chart title items
+
 	/**
 	 * Font Size.
-	 * @var float|null
 	 */
-	protected $size = 11;
+	protected ?float $size = 11;
 
 	/**
 	 * Bold.
-	 * @var bool|null
 	 */
-	protected $bold = false;
+	protected ?bool $bold = false;
 
 	/**
 	 * Italic.
-	 * @var bool|null
 	 */
-	protected $italic = false;
+	protected ?bool $italic = false;
 
 	/**
 	 * Superscript.
-	 * @var bool|null
 	 */
-	protected $superscript = false;
+	protected ?bool $superscript = false;
 
 	/**
 	 * Subscript.
-	 * @var bool|null
 	 */
-	protected $subscript = false;
+	protected ?bool $subscript = false;
 
 	/**
 	 * Underline.
-	 * @var string|null
 	 */
-	protected $underline = self::UNDERLINE_NONE;
+	protected ?string $underline = self::UNDERLINE_NONE;
 
 	/**
 	 * Strikethrough.
-	 * @var bool|null
 	 */
-	protected $strikethrough = false;
+	protected ?bool $strikethrough = false;
 
 	/**
 	 * Foreground color.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color
 	 */
-	protected $color;
+	protected Color $color;
 
-	/**
-	 * @var int|null
-	 */
-	public $colorIndex;
+	public ?int $colorIndex = null;
 
-	/**
-	 * @var string
-	 */
-	protected $scheme = '';
+	protected string $scheme = '';
 
 	/**
 	 * Create a new Font.

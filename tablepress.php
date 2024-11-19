@@ -4,15 +4,15 @@
  *
  * @package TablePress
  * @author Tobias Bäthge
- * @version 2.4.4
+ * @version 3.0
  *
  *
  * Plugin Name: TablePress
  * Plugin URI: https://tablepress.org/
  * Description: Embed beautiful and interactive tables into your WordPress website’s posts and pages, without having to write code!
- * Version: 2.4.4
- * Requires at least: 6.0
- * Requires PHP: 7.2
+ * Version: 3.0
+ * Requires at least: 6.2
+ * Requires PHP: 7.4
  * Author: Tobias Bäthge
  * Author URI: https://tablepress.org/
  * Author email: wordpress@tobias.baethge.com
@@ -34,7 +34,7 @@
  * You should have received a copy of the GNU General Public License
  * along with WordPress. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
  *
- * Note: This file must not contain PHP code that does not run on PHP < 7.2!
+ * Note: This file must not contain PHP code that does not run on PHP < 7.4!
  */
 
 // Prohibit direct script loading.
@@ -45,7 +45,7 @@ if ( ! defined( 'TABLEPRESS_IS_PLAYGROUND_PREVIEW' ) ) {
 }
 
 if ( function_exists( 'tb_tp_fs' ) ) {
-	tb_tp_fs()->set_basename( false, __FILE__ ); // @phpstan-ignore-line (Wrong variable type in Freemius function docblock.)
+	tb_tp_fs()->set_basename( false, __FILE__ ); // @phpstan-ignore argument.type (Wrong variable type in Freemius function docblock.)
 } else {
 	/**
 	 * Helper function for easier Freemius SDK access.
@@ -74,7 +74,6 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 					'contact' => false,
 					'support' => false,
 					'account' => false,
-					'pricing' => false,
 				),
 				'opt_in_moderation' => array(
 					'new'       => true,
@@ -92,25 +91,8 @@ if ( function_exists( 'tb_tp_fs' ) ) {
 	// Init Freemius.
 	tb_tp_fs();
 
-	// Load the TablePress plugin icon for the Freemius opt-in/activation screen.
-	tb_tp_fs()->add_filter(
-		'plugin_icon',
-		static function () /* No return type declaration, due to required PHP compatibility of this file! */ {
-			return __DIR__ . '/admin/img/tablepress.png';
-		}
-	);
-
-	// Hide the tabs navigation on Freemius screens.
-	tb_tp_fs()->add_filter( 'hide_account_tabs', '__return_true' );
-
-	// Hide the Powered by Freemius tab from generated pages, like "Upgrade" or "Pricing".
-	tb_tp_fs()->add_filter( 'hide_freemius_powered_by', '__return_true' );
-
-	// Use different arrow icons in the admin menu.
-	tb_tp_fs()->override_i18n( array(
-		'symbol_arrow-left'  => '&larr;',
-		'symbol_arrow-right' => '&rarr;',
-	) );
+	// Register Freemius plugin filter hooks.
+	require_once __DIR__ . '/controllers/freemius-filters.php';
 
 	// Signal that the SDK was initiated.
 	do_action( 'tb_tp_fs_loaded' );

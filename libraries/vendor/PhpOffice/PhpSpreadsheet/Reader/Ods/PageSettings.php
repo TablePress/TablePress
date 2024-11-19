@@ -8,45 +8,30 @@ use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PageSettings
 {
-	/**
-	 * @var string
-	 */
-	private $officeNs = '';
+	private string $officeNs = '';
 
-	/**
-	 * @var string
-	 */
-	private $stylesNs = '';
+	private string $stylesNs = '';
 
-	/**
-	 * @var string
-	 */
-	private $stylesFo = '';
+	private string $stylesFo = '';
 
-	/**
-	 * @var string
-	 */
-	private $tableNs = '';
+	private string $tableNs = '';
 
 	/**
 	 * @var string[]
 	 */
-	private $tableStylesCrossReference = [];
+	private array $tableStylesCrossReference = [];
 
-	/**
-	 * @var mixed[]
-	 */
-	private $pageLayoutStyles = [];
+	private array $pageLayoutStyles = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $masterStylesCrossReference = [];
+	private array $masterStylesCrossReference = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $masterPrintStylesCrossReference = [];
+	private array $masterPrintStylesCrossReference = [];
 
 	public function __construct(DOMDocument $styleDom)
 	{
@@ -70,22 +55,22 @@ class PageSettings
 
 		foreach ($styles as $styleSet) {
 			$styleName = $styleSet->getAttributeNS($this->stylesNs, 'name');
-			$pageLayoutProperties = $styleSet->getElementsByTagNameNS($this->stylesNs, 'page-layout-properties')[0];
-			$styleOrientation = $pageLayoutProperties->getAttributeNS($this->stylesNs, 'print-orientation');
-			$styleScale = $pageLayoutProperties->getAttributeNS($this->stylesNs, 'scale-to');
-			$stylePrintOrder = $pageLayoutProperties->getAttributeNS($this->stylesNs, 'print-page-order');
-			$centered = $pageLayoutProperties->getAttributeNS($this->stylesNs, 'table-centering');
+			$pageLayoutProperties = $styleSet->getElementsByTagNameNS($this->stylesNs, 'page-layout-properties')->item(0);
+			$styleOrientation = ($nullsafeVariable1 = $pageLayoutProperties) ? $nullsafeVariable1->getAttributeNS($this->stylesNs, 'print-orientation') : null;
+			$styleScale = ($nullsafeVariable2 = $pageLayoutProperties) ? $nullsafeVariable2->getAttributeNS($this->stylesNs, 'scale-to') : null;
+			$stylePrintOrder = ($nullsafeVariable3 = $pageLayoutProperties) ? $nullsafeVariable3->getAttributeNS($this->stylesNs, 'print-page-order') : null;
+			$centered = ($nullsafeVariable4 = $pageLayoutProperties) ? $nullsafeVariable4->getAttributeNS($this->stylesNs, 'table-centering') : null;
 
-			$marginLeft = $pageLayoutProperties->getAttributeNS($this->stylesFo, 'margin-left');
-			$marginRight = $pageLayoutProperties->getAttributeNS($this->stylesFo, 'margin-right');
-			$marginTop = $pageLayoutProperties->getAttributeNS($this->stylesFo, 'margin-top');
-			$marginBottom = $pageLayoutProperties->getAttributeNS($this->stylesFo, 'margin-bottom');
-			$header = $styleSet->getElementsByTagNameNS($this->stylesNs, 'header-style')[0];
-			$headerProperties = $header->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties')[0];
-			$marginHeader = isset($headerProperties) ? $headerProperties->getAttributeNS($this->stylesFo, 'min-height') : null;
-			$footer = $styleSet->getElementsByTagNameNS($this->stylesNs, 'footer-style')[0];
-			$footerProperties = $footer->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties')[0];
-			$marginFooter = isset($footerProperties) ? $footerProperties->getAttributeNS($this->stylesFo, 'min-height') : null;
+			$marginLeft = ($nullsafeVariable5 = $pageLayoutProperties) ? $nullsafeVariable5->getAttributeNS($this->stylesFo, 'margin-left') : null;
+			$marginRight = ($nullsafeVariable6 = $pageLayoutProperties) ? $nullsafeVariable6->getAttributeNS($this->stylesFo, 'margin-right') : null;
+			$marginTop = ($nullsafeVariable7 = $pageLayoutProperties) ? $nullsafeVariable7->getAttributeNS($this->stylesFo, 'margin-top') : null;
+			$marginBottom = ($nullsafeVariable8 = $pageLayoutProperties) ? $nullsafeVariable8->getAttributeNS($this->stylesFo, 'margin-bottom') : null;
+			$header = $styleSet->getElementsByTagNameNS($this->stylesNs, 'header-style')->item(0);
+			$headerProperties = ($nullsafeVariable9 = ($nullsafeVariable10 = $header) ? $nullsafeVariable10->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties') : null) ? $nullsafeVariable9->item(0) : null;
+			$marginHeader = ($nullsafeVariable11 = $headerProperties) ? $nullsafeVariable11->getAttributeNS($this->stylesFo, 'min-height') : null;
+			$footer = $styleSet->getElementsByTagNameNS($this->stylesNs, 'footer-style')->item(0);
+			$footerProperties = ($nullsafeVariable12 = ($nullsafeVariable13 = $footer) ? $nullsafeVariable13->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties') : null) ? $nullsafeVariable12->item(0) : null;
+			$marginFooter = ($nullsafeVariable14 = $footerProperties) ? $nullsafeVariable14->getAttributeNS($this->stylesFo, 'min-height') : null;
 
 			$this->pageLayoutStyles[$styleName] = (object) [
 				'orientation' => $styleOrientation ?: PageSetup::ORIENTATION_DEFAULT,

@@ -27,7 +27,7 @@ class Helpers
 		if (is_bool($value)) {
 			return self::convertBooleanValue($value);
 		}
-		if ($throwIfError && is_string($value) && ErrorValue::isError($value)) {
+		if ($throwIfError && is_string($value) && ErrorValue::isError($value, true)) {
 			throw new CalcExp($value);
 		}
 
@@ -69,6 +69,10 @@ class Helpers
 			$value = (float) $value;
 		}
 		if (!is_numeric($value)) {
+			if (is_string($value) && ErrorValue::isError($value, true)) {
+				throw new CalcExp($value);
+			}
+
 			throw new CalcExp(ExcelError::VALUE());
 		}
 
@@ -78,12 +82,18 @@ class Helpers
 	/**
 	 * @param mixed $value
 	 */
-	public static function validateInt($value): int
+	public static function validateInt($value, bool $throwIfError = false): int
 	{
 		if ($value === null) {
 			$value = 0;
 		} elseif (is_bool($value)) {
 			$value = (int) $value;
+		} elseif ($throwIfError && is_string($value) && !is_numeric($value)) {
+			if (!ErrorValue::isError($value, true)) {
+				$value = ExcelError::VALUE();
+			}
+
+			throw new CalcExp($value);
 		}
 
 		return (int) $value;

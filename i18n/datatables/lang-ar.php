@@ -18,9 +18,9 @@ return array(
 	'search'       => 'ابحث:',
 	'zeroRecords'  => 'لم يُعثر على أية سجلات',
 	'paginate'     => array(
-		'first'    => 'الأول',
-		'previous' => 'السابق',
-		'next'     => 'التالي',
-		'last'     => 'الأخير',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 );

@@ -63,19 +63,9 @@
 		}
 	}
 
-	/* Reduce height of the block placeholder (when no table has been selected) from the default 200px. */
-	.components-placeholder {
-		min-height: 160px;
-	}
-
-	/* Fix right margin, as the 1ch unit in the WP CSS does not work with the Dashicon font. */
-	.components-placeholder__label .dashicon {
-		margin-right: 10px;
-	}
-
-	/* Reduce line height of the placeholder instructions when the text is wrapped. */
-	.components-placeholder__instructions {
-		line-height: normal;
+	/* Increase the placeholder label font size. */
+	.components-placeholder__label {
+		font-size: 18px;
 	}
 
 	/* Elements inside the InspectorControls PanelBodys. */
@@ -86,10 +76,5 @@
 				opacity: 0.4;
 			}
 		}
-	}
-
-	/* Hide the "Edit" link below the table. */
-	.tablepress caption {
-		display: none;
 	}
 }

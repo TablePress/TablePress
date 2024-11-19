@@ -6,10 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 
 class XMLWriter extends \XMLWriter
 {
-	/**
-	 * @var bool
-	 */
-	public static $debugEnabled = false;
+	public static bool $debugEnabled = false;
 
 	/** Temporary storage method */
 	const STORAGE_MEMORY = 1;
@@ -17,9 +14,8 @@ class XMLWriter extends \XMLWriter
 
 	/**
 	 * Temporary filename.
-	 * @var string
 	 */
-	private $tempFileName = '';
+	private string $tempFileName = '';
 
 	/**
 	 * Create a new XMLWriter instance.

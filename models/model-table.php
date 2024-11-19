@@ -25,25 +25,22 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Instance of the Post Type Model.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_Post_Model
 	 */
-	protected $model_post;
+	protected \TablePress_Post_Model $model_post;
 
 	/**
 	 * Name of the Post Meta Field for table options.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $table_options_field_name = '_tablepress_table_options';
+	protected string $table_options_field_name = '_tablepress_table_options';
 
 	/**
 	 * Name of the Post Meta Field for table visibility.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $table_visibility_field_name = '_tablepress_table_visibility';
+	protected string $table_visibility_field_name = '_tablepress_table_visibility';
 
 	/**
 	 * Default set of tables.
@@ -54,7 +51,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *     @type array<string, int> $table_post Connections between table ID and post ID (key: table ID, value: post ID).
 	 * }
 	 */
-	protected $default_tables = array(
+	protected array $default_tables = array(
 		'last_id'    => 0,
 		'table_post' => array(),
 	);
@@ -63,9 +60,8 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * Instance of WP_Option class for the list of tables.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_WP_Option
 	 */
-	protected $tables;
+	protected \TablePress_WP_Option $tables;
 
 	/**
 	 * Init the Table model by instantiating a Post model and loading the list of tables option.
@@ -115,9 +111,6 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array<string, mixed> Post.
 	 */
 	protected function _table_to_post( array $table, int $post_id ): array {
-		// Run filters on content in each cell and other fields.
-		$table = $this->filter_content( $table );
-
 		// Sanitize each cell, table name, and table description, if the user is not allowed to work with unfiltered HTML.
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			$table = $this->sanitize( $table );
@@ -277,45 +270,6 @@ class TablePress_Table_Model extends TablePress_Model {
 		foreach ( $table['data'] as $row_idx => $row ) {
 			foreach ( $row as $column_idx => $cell_content ) {
 				$table['data'][ $row_idx ][ $column_idx ] = wp_kses_post( $cell_content ); // Equals wp_filter_post_kses(), but without the unnecessary slashes handling.
-			}
-		}
-
-		return $table;
-	}
-
-	/**
-	 * Filter/modify the content of table cells and other fields, e.g. for security hardening.
-	 *
-	 * This is similar to the `sanitize()` method, but executed for all users.
-	 * In 1.10.0, adding `rel="noopener noreferrer"` to all HTML link elements like `<a target=` was added. See https://core.trac.wordpress.org/ticket/43187.
-	 * Since 1.13.0, and on WP 5.6, only `rel="noopener"` is added. See https://core.trac.wordpress.org/ticket/49558.
-	 *
-	 * @since 1.10.0
-	 *
-	 * @param array<string, mixed> $table Table.
-	 * @return array<string, mixed> Filtered/modified table.
-	 */
-	public function filter_content( array $table ): array {
-		/**
-		 * Filters whether the contents of table cells and fields should be filtered/modified.
-		 *
-		 * @since 1.10.0
-		 *
-		 * @param bool $filter Whether to filter the content of table cells and other fields. Default true.
-		 */
-		if ( ! apply_filters( 'tablepress_filter_table_cell_content', true ) ) {
-			return $table;
-		}
-
-		// Filter the table name and description.
-		$fields = array( 'name', 'description' );
-		foreach ( $fields as $field ) {
-			$table[ $field ] = wp_targeted_link_rel( $table[ $field ] );
-		}
-
-		foreach ( $table['data'] as $row_idx => $row ) {
-			foreach ( $row as $column_idx => $cell_content ) {
-				$table['data'][ $row_idx ][ $column_idx ] = wp_targeted_link_rel( $cell_content );
 			}
 		}
 
@@ -492,7 +446,9 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 
 		$post_id = $this->_get_post_id( $table_id ); // No ! false check necessary, as this is covered by table_exists() check above.
-		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function. // @phpstan-ignore-line .
+
+		// @phpstan-ignore argument.type
+		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function.
 		if ( false === $deleted ) {
 			return new WP_Error( 'table_delete_post_could_not_be_deleted', '', $post_id );
 		}
@@ -655,11 +611,11 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// Kinsta.
 		if ( isset( $GLOBALS['kinsta_cache'] ) && ! empty( $GLOBALS['kinsta_cache']->kinsta_cache_purge ) && is_callable( array( $GLOBALS['kinsta_cache']->kinsta_cache_purge, 'purge_complete_caches' ) ) ) {
-			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches(); // @phpstan-ignore-line
+			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches(); // @phpstan-ignore method.nonObject
 		}
 		// LiteSpeed Cache.
 		if ( is_callable( array( 'LiteSpeed_Cache_Tags', 'add_purge_tag' ) ) ) {
-			LiteSpeed_Cache_Tags::add_purge_tag( '*' ); // @phpstan-ignore-line
+			LiteSpeed_Cache_Tags::add_purge_tag( '*' ); // @phpstan-ignore class.notFound
 		}
 		// Pagely.
 		if ( class_exists( 'PagelyCachePurge' ) ) {
@@ -670,21 +626,21 @@ class TablePress_Table_Model extends TablePress_Model {
 		}
 		// Pressidum.
 		if ( is_callable( array( 'Ninukis_Plugin', 'get_instance' ) ) ) {
-			$_pressidum = Ninukis_Plugin::get_instance(); // @phpstan-ignore-line
+			$_pressidum = Ninukis_Plugin::get_instance(); // @phpstan-ignore class.notFound
 			if ( is_callable( array( $_pressidum, 'purgeAllCaches' ) ) ) {
-				$_pressidum->purgeAllCaches(); // @phpstan-ignore-line
+				$_pressidum->purgeAllCaches(); // @phpstan-ignore method.nonObject
 			}
 		}
 		// Savvii.
 		if ( defined( '\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW' ) ) {
-			$_savvii = new \Savvii\CacheFlusherPlugin(); // @phpstan-ignore-line
+			$_savvii = new \Savvii\CacheFlusherPlugin(); // @phpstan-ignore class.notFound
 			if ( is_callable( array( $_savvii, 'domainflush' ) ) ) {
-				$_savvii->domainflush(); // @phpstan-ignore-line
+				$_savvii->domainflush(); // @phpstan-ignore class.notFound
 			}
 		}
 		// WP Fastest Cache.
 		if ( isset( $GLOBALS['wp_fastest_cache'] ) && is_callable( array( $GLOBALS['wp_fastest_cache'], 'deleteCache' ) ) ) {
-			$GLOBALS['wp_fastest_cache']->deleteCache( true ); // @phpstan-ignore-line
+			$GLOBALS['wp_fastest_cache']->deleteCache( true ); // @phpstan-ignore method.nonObject
 		}
 		// WP-Optimize.
 		if ( function_exists( 'WP_Optimize' ) ) {
@@ -814,8 +770,8 @@ class TablePress_Table_Model extends TablePress_Model {
 			'author'        => get_current_user_id(),
 			'options'       => array(
 				'last_editor'                 => get_current_user_id(),
-				'table_head'                  => true,
-				'table_foot'                  => false,
+				'table_head'                  => 1,
+				'table_foot'                  => 0,
 				'alternating_row_colors'      => true,
 				'row_hover'                   => true,
 				'print_name'                  => false,
@@ -913,7 +869,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			$table['data'],
 			static function ( /* string|int|float|bool|null */ &$cell_content, int $col_idx ): void {
 				$cell_content = (string) $cell_content;
-			}
+			},
 		);
 		// Table Options.
 		if ( isset( $new_table['options'] ) ) { // Options are for example not set for newly added tables.
@@ -930,6 +886,15 @@ class TablePress_Table_Model extends TablePress_Model {
 					$new_table['options']['datatables_paginate_entries'] = 10; // Default value.
 				}
 			}
+
+			// Backward compatibility: Convert boolean or numeric string "table_head" and "table_foot" options to integer.
+			if ( isset( $new_table['options']['table_head'] ) ) {
+				$new_table['options']['table_head'] = absint( $new_table['options']['table_head'] );
+			}
+			if ( isset( $new_table['options']['table_foot'] ) ) {
+				$new_table['options']['table_foot'] = absint( $new_table['options']['table_foot'] );
+			}
+
 			// Merge new options.
 			$default_table = $this->get_table_template();
 			$table['options'] = array_intersect_key( $table['options'], $default_table['options'] );
@@ -945,6 +910,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table['last_modified'] = wp_date( 'Y-m-d H:i:s' );
 		$table['options']['last_editor'] = get_current_user_id();
 
+		// Convert CSS classes and some DataTables 1.x parameters to the DataTables 2 variants.
+		if ( '' !== $table['options']['datatables_custom_commands'] ) {
+			$table['options']['datatables_custom_commands'] = TablePress::convert_datatables_api_data( $table['options']['datatables_custom_commands'] );
+		}
+
 		return $table;
 	}
 
@@ -959,7 +929,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _add_table_options( int $post_id, array $options ): bool {
 		$options = wp_json_encode( $options, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options ); // @phpstan-ignore-line
+		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options ); // @phpstan-ignore argument.type
 	}
 
 	/**
@@ -973,7 +943,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _update_table_options( int $post_id, array $options ): bool {
 		$options = wp_json_encode( $options, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options ); // @phpstan-ignore-line
+		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options ); // @phpstan-ignore argument.type
 	}
 
 	/**
@@ -989,7 +959,13 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( empty( $options ) ) {
 			return array();
 		}
-		return (array) json_decode( $options, true );
+		$options = (array) json_decode( $options, true );
+
+		// Backward compatibility: Convert boolean "table_head" and "table_foot" options to integer.
+		$options['table_head'] = absint( $options['table_head'] );
+		$options['table_foot'] = absint( $options['table_foot'] );
+
+		return $options;
 	}
 
 	/**
@@ -1003,7 +979,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _add_table_visibility( int $post_id, array $visibility ): bool {
 		$visibility = wp_json_encode( $visibility, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility ); // @phpstan-ignore-line
+		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility ); // @phpstan-ignore argument.type
 	}
 
 	/**
@@ -1017,7 +993,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _update_table_visibility( int $post_id, array $visibility ): bool {
 		$visibility = wp_json_encode( $visibility, TABLEPRESS_JSON_OPTIONS );
-		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility ); // @phpstan-ignore-line
+		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility ); // @phpstan-ignore argument.type
 	}
 
 	/**
@@ -1064,12 +1040,58 @@ class TablePress_Table_Model extends TablePress_Model {
 		// Go through all tables (this loop now uses the WP cache).
 		foreach ( $table_post as $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
+
+			/**
+			 * Filters the Table Options before they are merged with the default Table Options.
+			 *
+			 * @since 3.0.0
+			 *
+			 * @param array<string, mixed> $table_options         Table Options.
+			 * @param array<string, mixed> $default_table_options Default Table Options.
+			 * @param bool                 $remove_old_options    Whether old table options should be removed from the database.
+			 * @param int                  $post_id               Post ID of the table.
+			 */
+			$table_options = apply_filters( 'tablepress_table_options_before_merge', $table_options, $default_table['options'], $remove_old_options, $post_id );
+
 			if ( $remove_old_options ) {
 				// Remove old (i.e. no longer existing) Table Options.
 				$table_options = array_intersect_key( $table_options, $default_table['options'] );
 			}
 			// Merge current into new Table Options.
 			$table_options = array_merge( $default_table['options'], $table_options );
+			$this->_update_table_options( $post_id, $table_options );
+		}
+	}
+
+	/**
+	 * Updates all tables' "Custom Commands" to use DataTables 2 variants instead of old DataTables 1.x CSS classes and parameters
+	 *
+	 * @since 3.0.0
+	 */
+	public function update_custom_commands_datatables_tp30(): void {
+		$table_post = $this->tables->get( 'table_post' );
+		if ( empty( $table_post ) ) {
+			return;
+		}
+
+		// Prime the meta cache with the table options of all tables.
+		update_meta_cache( 'post', array_values( $table_post ) );
+
+		foreach ( $table_post as $table_id => $post_id ) {
+			$table_options = $this->_get_table_options( $post_id );
+
+			// Nothing to do if there are no "Custom Commands".
+			if ( '' === $table_options['datatables_custom_commands'] ) {
+				continue;
+			}
+			// Run search/replace.
+			$old_custom_commands = $table_options['datatables_custom_commands'];
+			$table_options['datatables_custom_commands'] = TablePress::convert_datatables_api_data( $table_options['datatables_custom_commands'] );
+			// No need to save (which runs a DB query) if nothing was replaced in the "Custom Commands".
+			if ( $old_custom_commands === $table_options['datatables_custom_commands'] ) {
+				continue;
+			}
+
 			$this->_update_table_options( $post_id, $table_options );
 		}
 	}
@@ -1206,16 +1228,16 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// Pretend that there is a `_tablepress_export_table_id` post meta field with the list of table IDs.
 		$key = '_tablepress_export_table_id';
-		$value = wxr_cdata( implode( ',', $table_ids ) ); // @phpstan-ignore-line
+		$value = wxr_cdata( implode( ',', $table_ids ) ); // @phpstan-ignore function.notFound
 
 		// Hijack the filter and print extra XML code for our faked post meta field.
 		// phpcs:disable WordPress.Security.EscapeOutput.HeredocOutputNotEscaped
 		echo <<<WXR
-		<wp:postmeta>
-			<wp:meta_key>{$key}</wp:meta_key>
-			<wp:meta_value>{$value}</wp:meta_value>
-		</wp:postmeta>\n
-WXR;
+					<wp:postmeta>
+						<wp:meta_key>{$key}</wp:meta_key>
+						<wp:meta_value>{$value}</wp:meta_value>
+					</wp:postmeta>\n
+			WXR;
 		// phpcs:enable
 
 		return $skip;

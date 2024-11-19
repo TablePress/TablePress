@@ -22,22 +22,18 @@ class Border extends Supervisor
 	const BORDER_THICK = 'thick';
 	const BORDER_THIN = 'thin';
 	const BORDER_OMIT = 'omit'; // should be used only for Conditional
+
 	/**
 	 * Border style.
-	 * @var string
 	 */
-	protected $borderStyle = self::BORDER_NONE;
+	protected string $borderStyle = self::BORDER_NONE;
 
 	/**
 	 * Border color.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color
 	 */
-	protected $color;
+	protected Color $color;
 
-	/**
-	 * @var int|null
-	 */
-	public $colorIndex;
+	public ?int $colorIndex = null;
 
 	/**
 	 * Create a new Border.

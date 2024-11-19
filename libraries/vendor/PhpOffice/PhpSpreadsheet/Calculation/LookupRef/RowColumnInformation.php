@@ -64,7 +64,7 @@ class RowColumnInformation
 			[,, $cellAddress] = Helpers::extractCellAddresses($cellAddress, true, $cell->getWorksheet(), $sheetName);
 		}
 		[, $cellAddress] = Worksheet::extractSheetTitle($cellAddress, true);
-		$cellAddress = $cellAddress ?? '';
+		$cellAddress ??= '';
 
 		if (str_contains($cellAddress, ':')) {
 			[$startAddress, $endAddress] = explode(':', $cellAddress);
@@ -159,16 +159,14 @@ class RowColumnInformation
 			[,, $cellAddress] = Helpers::extractCellAddresses($cellAddress, true, $cell->getWorksheet(), $sheetName);
 		}
 		[, $cellAddress] = Worksheet::extractSheetTitle($cellAddress, true);
-		$cellAddress = $cellAddress ?? '';
+		$cellAddress ??= '';
 		if (str_contains($cellAddress, ':')) {
 			[$startAddress, $endAddress] = explode(':', $cellAddress);
 			$startAddress = (int) (string) preg_replace('/\D/', '', $startAddress);
 			$endAddress = (int) (string) preg_replace('/\D/', '', $endAddress);
 
 			return array_map(
-				function ($value) : array {
-					return [$value];
-				},
+				fn ($value): array => [$value],
 				range($startAddress, $endAddress)
 			);
 		}

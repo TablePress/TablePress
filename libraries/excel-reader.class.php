@@ -58,33 +58,29 @@ class OLERead {
 	 * [$data description]
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $data = '';
+	protected string $data = '';
 
 	/**
 	 * [$error description]
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	public $error;
+	public int $error;
 
 	/**
 	 * [$bigBlockChain description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $bigBlockChain = array();
+	protected array $bigBlockChain = array();
 
 	/**
 	 * [$smallBlockChain description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $smallBlockChain = array();
+	protected array $smallBlockChain = array();
 
 	/**
 	 * [$entry description]
@@ -383,33 +379,29 @@ class Spreadsheet_Excel_Reader {
 	 * [$colnames description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $colnames = array();
+	public array $colnames = array();
 
 	/**
 	 * [$colindexes description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $colindexes = array();
+	public array $colindexes = array();
 
 	/**
 	 * [$standardColWidth description]
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	public $standardColWidth = 0;
+	public int $standardColWidth = 0;
 
 	/**
 	 * [$defaultColWidth description]
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	public $defaultColWidth = 0;
+	public int $defaultColWidth = 0;
 
 	/**
 	 * [$store_extended_info description]
@@ -1276,31 +1268,30 @@ class Spreadsheet_Excel_Reader {
 	// --------------
 	// END PUBLIC API
 
-	protected $boundsheets = array();
-	protected $formatRecords = array();
-	protected $fontRecords = array();
-	protected $xfRecords = array();
-	protected $colInfo = array();
-	protected $rowInfo = array();
+	protected array $boundsheets = array();
+	protected array $formatRecords = array();
+	protected array $fontRecords = array();
+	protected array $xfRecords = array();
+	protected array $colInfo = array();
+	protected array $rowInfo = array();
 
-	protected $sst = array();
-	protected $sheets = array();
+	protected array $sst = array();
+	protected array $sheets = array();
 
 	protected $data;
 	protected $_ole;
-	protected $_defaultEncoding = 'UTF-8';
-	protected $_defaultFormat = SPREADSHEET_EXCEL_READER_DEF_NUM_FORMAT;
-	protected $_columnsFormat = array();
-	protected $_rowoffset = 1;
-	protected $_coloffset = 1;
+	protected string $_defaultEncoding = 'UTF-8';
+	protected string $_defaultFormat = SPREADSHEET_EXCEL_READER_DEF_NUM_FORMAT;
+	protected array $_columnsFormat = array();
+	protected int $_rowoffset = 1;
+	protected int $_coloffset = 1;
 
 	/**
 	 * List of default date formats used by Excel
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $dateFormats = array(
+	protected array $dateFormats = array(
 		0xe  => 'm/d/Y',
 		0xf  => 'M-d-Y',
 		0x10 => 'd-M',
@@ -1319,9 +1310,8 @@ class Spreadsheet_Excel_Reader {
 	 * Default number formats used by Excel
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $numberFormats = array(
+	protected array $numberFormats = array(
 		0x1  => '0',
 		0x2  => '0.00',
 		0x3  => '#,##0',
@@ -1348,9 +1338,8 @@ class Spreadsheet_Excel_Reader {
 	 * [$colors description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $colors = array(
+	protected array $colors = array(
 		0x00   => '#000000',
 		0x01   => '#FFFFFF',
 		0x02   => '#FF0000',
@@ -1430,9 +1419,8 @@ class Spreadsheet_Excel_Reader {
 	 * [$lineStyles description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $lineStyles = array(
+	protected array $lineStyles = array(
 		0x00 => '',
 		0x01 => 'Thin',
 		0x02 => 'Medium',
@@ -1453,9 +1441,8 @@ class Spreadsheet_Excel_Reader {
 	 * [$lineStylesCss description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $lineStylesCss = array(
+	protected array $lineStylesCss = array(
 		'Thin'                       => '1px solid',
 		'Medium'                     => '2px solid',
 		'Dashed'                     => '1px dashed',

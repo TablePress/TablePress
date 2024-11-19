@@ -8,9 +8,8 @@ class PlotArea
 {
 	/**
 	 * No fill in plot area (show Excel gridlines through chart).
-	 * @var bool
 	 */
-	private $noFill = false;
+	private bool $noFill = false;
 
 	/**
 	 * PlotArea Gradient Stop list.
@@ -20,26 +19,24 @@ class PlotArea
 	 *
 	 * @var array[]
 	 */
-	private $gradientFillStops = [];
+	private array $gradientFillStops = [];
 
 	/**
 	 * PlotArea Gradient Angle.
-	 * @var float|null
 	 */
-	private $gradientFillAngle;
+	private ?float $gradientFillAngle = null;
 
 	/**
 	 * PlotArea Layout.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Layout|null
 	 */
-	private $layout;
+	private ?Layout $layout;
 
 	/**
 	 * Plot Series.
 	 *
 	 * @var DataSeries[]
 	 */
-	private $plotSeries;
+	private array $plotSeries;
 
 	/**
 	 * Create a new PlotArea.
@@ -154,20 +151,11 @@ class PlotArea
 		return $this->gradientFillStops;
 	}
 
-	/**
-	 * @var int|null
-	 */
-	private $gapWidth;
+	private ?int $gapWidth = null;
 
-	/**
-	 * @var bool
-	 */
-	private $useUpBars = false;
+	private bool $useUpBars = false;
 
-	/**
-	 * @var bool
-	 */
-	private $useDownBars = false;
+	private bool $useDownBars = false;
 
 	public function getGapWidth(): ?int
 	{

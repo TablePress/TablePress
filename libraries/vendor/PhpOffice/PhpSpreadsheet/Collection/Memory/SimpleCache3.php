@@ -13,10 +13,7 @@ use TablePress\Psr\SimpleCache\CacheInterface;
  */
 class SimpleCache3 implements CacheInterface
 {
-	/**
-	 * @var mixed[]
-	 */
-	private $cache = [];
+	private array $cache = [];
 
 	public function clear(): bool
 	{

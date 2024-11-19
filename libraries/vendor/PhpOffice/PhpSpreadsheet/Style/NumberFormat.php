@@ -99,43 +99,28 @@ class NumberFormat extends Supervisor
 	const FORMAT_SYSTIME_X = '[$-x-systime]';
 	const FORMAT_SYSTIME_F400 = '[$-F400]';
 
-	/**
-	 * @var string
-	 */
-	protected static $shortDateFormat = self::FORMAT_DATE_XLSX14_ACTUAL;
+	protected static string $shortDateFormat = self::FORMAT_DATE_XLSX14_ACTUAL;
 
-	/**
-	 * @var string
-	 */
-	protected static $longDateFormat = self::FORMAT_DATE_LONG_DATE;
+	protected static string $longDateFormat = self::FORMAT_DATE_LONG_DATE;
 
-	/**
-	 * @var string
-	 */
-	protected static $dateTimeFormat = self::FORMAT_DATE_XLSX22_ACTUAL;
+	protected static string $dateTimeFormat = self::FORMAT_DATE_XLSX22_ACTUAL;
 
-	/**
-	 * @var string
-	 */
-	protected static $timeFormat = self::FORMAT_DATE_TIME2;
+	protected static string $timeFormat = self::FORMAT_DATE_TIME2;
 
 	/**
 	 * Excel built-in number formats.
-	 * @var mixed[]
 	 */
-	protected static $builtInFormats;
+	protected static array $builtInFormats;
 
 	/**
 	 * Excel built-in number formats (flipped, for faster lookups).
-	 * @var mixed[]
 	 */
-	protected static $flippedBuiltInFormats;
+	protected static array $flippedBuiltInFormats;
 
 	/**
 	 * Format Code.
-	 * @var string|null
 	 */
-	protected $formatCode = self::FORMAT_GENERAL;
+	protected ?string $formatCode = self::FORMAT_GENERAL;
 
 	/**
 	 * Built-in format Code.

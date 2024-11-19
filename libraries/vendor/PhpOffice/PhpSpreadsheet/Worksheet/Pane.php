@@ -4,20 +4,11 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
 class Pane
 {
-	/**
-	 * @var string
-	 */
-	private $sqref;
+	private string $sqref;
 
-	/**
-	 * @var string
-	 */
-	private $activeCell;
+	private string $activeCell;
 
-	/**
-	 * @var string
-	 */
-	private $position;
+	private string $position;
 
 	public function __construct(string $position, string $sqref = '', string $activeCell = '')
 	{

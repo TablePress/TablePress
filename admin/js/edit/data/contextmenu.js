@@ -13,6 +13,7 @@
 /**
  * WordPress dependencies.
  */
+import { applyFilters } from '@wordpress/hooks';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 /**
@@ -39,7 +40,7 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 
 	// Call-by-reference object for the cell_merge_allowed() call.
 	const error_message = {
-		text: ''
+		text: '',
 	};
 
 	tp.helpers.visibility.update();
@@ -328,10 +329,11 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 			onclick: tp.callbacks.merge_cells,
 			disabled: ( 1 === num_selected_rows && 1 === num_selected_columns ) || ! tp.helpers.cell_merge_allowed( 'no-alert' ),
 			tooltip: ( 1 === num_selected_rows && 1 === num_selected_columns ) || ! tp.helpers.cell_merge_allowed( 'no-alert', error_message ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + error_message.text : '',
-		}
+		},
 	];
 
-	return items;
+	// Allow other scripts to modify the context menu.
+	return applyFilters( 'tablepress.editScreenContextMenuItems', items, obj );
 };
 
 export default contextMenu;

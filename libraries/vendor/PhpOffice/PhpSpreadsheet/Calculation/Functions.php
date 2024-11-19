@@ -26,17 +26,17 @@ class Functions
 	const RETURNDATE_PHP_DATETIME_OBJECT = 'O';
 	const RETURNDATE_EXCEL = 'E';
 
+	public const NOT_YET_IMPLEMENTED = '#Not Yet Implemented';
+
 	/**
 	 * Compatibility mode to use for error checking and responses.
-	 * @var string
 	 */
-	protected static $compatibilityMode = self::COMPATIBILITY_EXCEL;
+	protected static string $compatibilityMode = self::COMPATIBILITY_EXCEL;
 
 	/**
 	 * Data Type to use when returning date values.
-	 * @var string
 	 */
-	protected static $returnDateType = self::RETURNDATE_EXCEL;
+	protected static string $returnDateType = self::RETURNDATE_EXCEL;
 
 	/**
 	 * Set the Compatibility Mode.
@@ -125,7 +125,7 @@ class Functions
 	 */
 	public static function DUMMY(): string
 	{
-		return '#Not Yet Implemented';
+		return self::NOT_YET_IMPLEMENTED;
 	}
 
 	/**
@@ -176,8 +176,10 @@ class Functions
 
 			return str_replace('""""', '""', '=' . $condition);
 		}
-		preg_match('/(=|<[>=]?|>=?)(.*)/', $condition, $matches);
-		[, $operator, $operand] = $matches;
+		$operator = $operand = '';
+		if (1 === preg_match('/(=|<[>=]?|>=?)(.*)/', $condition, $matches)) {
+			[, $operator, $operand] = $matches;
+		}
 
 		$operand = self::operandSpecialHandling($operand);
 		if (is_numeric(trim($operand, '"'))) {

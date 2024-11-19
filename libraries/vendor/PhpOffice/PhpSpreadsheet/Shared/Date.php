@@ -10,7 +10,6 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
-use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date as SharedDate;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Date
@@ -25,7 +24,7 @@ class Date
 	 *
 	 * @var string[]
 	 */
-	public static $monthNames = [
+	public static array $monthNames = [
 		'Jan' => 'January',
 		'Feb' => 'February',
 		'Mar' => 'March',
@@ -43,7 +42,7 @@ class Date
 	/**
 	 * @var string[]
 	 */
-	public static $numberSuffixes = [
+	public static array $numberSuffixes = [
 		'st',
 		'nd',
 		'rd',
@@ -53,28 +52,26 @@ class Date
 	/**
 	 * Base calendar year to use for calculations
 	 * Value is either CALENDAR_WINDOWS_1900 (1900) or CALENDAR_MAC_1904 (1904).
-	 * @var int
 	 */
-	protected static $excelCalendar = self::CALENDAR_WINDOWS_1900;
+	protected static int $excelCalendar = self::CALENDAR_WINDOWS_1900;
 
 	/**
 	 * Default timezone to use for DateTime objects.
-	 * @var \DateTimeZone|null
 	 */
-	protected static $defaultTimeZone;
+	protected static ?DateTimeZone $defaultTimeZone = null;
 
 	/**
 	 * Set the Excel calendar (Windows 1900 or Mac 1904).
 	 *
-	 * @param int $baseYear Excel base date (1900 or 1904)
+	 * @param ?int $baseYear Excel base date (1900 or 1904)
 	 *
 	 * @return bool Success or failure
 	 */
-	public static function setExcelCalendar(int $baseYear): bool
+	public static function setExcelCalendar(?int $baseYear): bool
 	{
 		if (
-			($baseYear == self::CALENDAR_WINDOWS_1900)
-			|| ($baseYear == self::CALENDAR_MAC_1904)
+			($baseYear === self::CALENDAR_WINDOWS_1900)
+			|| ($baseYear === self::CALENDAR_MAC_1904)
 		) {
 			self::$excelCalendar = $baseYear;
 
@@ -176,7 +173,7 @@ class Date
 			throw new Exception("Invalid string $value supplied for datatype Date");
 		}
 
-		$newValue = SharedDate::PHPToExcel($date);
+		$newValue = self::PHPToExcel($date);
 		if ($newValue === false) {
 			throw new Exception("Invalid string $value supplied for datatype Date");
 		}
@@ -543,11 +540,16 @@ class Date
 		return $dtobj->format($format);
 	}
 
+	/**
+	 * Round the given DateTime object to seconds.
+	 */
 	public static function roundMicroseconds(DateTime $dti): void
 	{
 		$microseconds = (int) $dti->format('u');
-		if ($microseconds >= 500000) {
-			$dti->modify('+1 second');
+		$rounded = (int) round($microseconds, -6);
+		$modify = $rounded - $microseconds;
+		if ($modify !== 0) {
+			$dti->modify(($modify > 0 ? '+' : '') . $modify . ' microseconds');
 		}
 	}
 }

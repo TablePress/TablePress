@@ -62,6 +62,14 @@ class TablePress_Admin_Page {
 			}
 		}
 
+		/*
+		 * Register the `react-jsx-runtime` polyfill, if it is not already registered.
+		 * This is needed as a polyfill for WP < 6.6, and can be removed once WP 6.6 is the minimum requirement for TablePress.
+		 */
+		if ( ! wp_script_is( 'react-jsx-runtime', 'registered' ) ) {
+			wp_register_script( 'react-jsx-runtime', plugins_url( 'admin/js/react-jsx-runtime.min.js', TABLEPRESS__FILE__ ), array( 'react' ), TablePress::version, true );
+		}
+
 		/**
 		 * Filters the dependencies of a TablePress script file.
 		 *
@@ -109,7 +117,7 @@ class TablePress_Admin_Page {
 		// Don't use a type hint in the method declaration as many WordPress plugins use the `admin_footer_text` filter in the wrong way.
 
 		// Protect against other plugins not returning a string in their filter callbacks.
-		if ( ! is_string( $content ) ) {
+		if ( ! is_string( $content ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
 			$content = '';
 		}
 

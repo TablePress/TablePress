@@ -168,7 +168,7 @@ class Interest
 		$guess = ($guess === null) ? 0.1 : Functions::flattenSingleValue($guess);
 
 		try {
-			$numberOfPeriods = CashFlowValidations::validateInt($numberOfPeriods);
+			$numberOfPeriods = CashFlowValidations::validateFloat($numberOfPeriods);
 			$payment = CashFlowValidations::validateFloat($payment);
 			$presentValue = CashFlowValidations::validatePresentValue($presentValue);
 			$futureValue = CashFlowValidations::validateFutureValue($futureValue);
@@ -199,7 +199,7 @@ class Interest
 	/**
 	 * @return float|string
 	 */
-	private static function rateNextGuess(float $rate, int $numberOfPeriods, float $payment, float $presentValue, float $futureValue, int $type)
+	private static function rateNextGuess(float $rate, float $numberOfPeriods, float $payment, float $presentValue, float $futureValue, int $type)
 	{
 		if ($rate == 0.0) {
 			return ExcelError::NAN();

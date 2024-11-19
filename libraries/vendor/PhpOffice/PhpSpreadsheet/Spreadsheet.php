@@ -4,9 +4,11 @@ namespace TablePress\PhpOffice\PhpSpreadsheet;
 
 use JsonSerializable;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\IValueBinder;
 use TablePress\PhpOffice\PhpSpreadsheet\Document\Properties;
 use TablePress\PhpOffice\PhpSpreadsheet\Document\Security;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
@@ -31,166 +33,148 @@ class Spreadsheet implements JsonSerializable
 		self::VISIBILITY_VERY_HIDDEN,
 	];
 
+	protected int $excelCalendar = Date::CALENDAR_WINDOWS_1900;
+
 	/**
 	 * Unique ID.
-	 * @var string
 	 */
-	private $uniqueID;
+	private string $uniqueID;
 
 	/**
 	 * Document properties.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Document\Properties
 	 */
-	private $properties;
+	private Properties $properties;
 
 	/**
 	 * Document security.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Document\Security
 	 */
-	private $security;
+	private Security $security;
 
 	/**
 	 * Collection of Worksheet objects.
 	 *
 	 * @var Worksheet[]
 	 */
-	private $workSheetCollection;
+	private array $workSheetCollection;
 
 	/**
 	 * Calculation Engine.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation|null
 	 */
-	private $calculationEngine;
+	private ?Calculation $calculationEngine;
 
 	/**
 	 * Active sheet index.
-	 * @var int
 	 */
-	private $activeSheetIndex;
+	private int $activeSheetIndex;
 
 	/**
 	 * Named ranges.
 	 *
 	 * @var DefinedName[]
 	 */
-	private $definedNames;
+	private array $definedNames;
 
 	/**
 	 * CellXf supervisor.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Style
 	 */
-	private $cellXfSupervisor;
+	private Style $cellXfSupervisor;
 
 	/**
 	 * CellXf collection.
 	 *
 	 * @var Style[]
 	 */
-	private $cellXfCollection = [];
+	private array $cellXfCollection = [];
 
 	/**
 	 * CellStyleXf collection.
 	 *
 	 * @var Style[]
 	 */
-	private $cellStyleXfCollection = [];
+	private array $cellStyleXfCollection = [];
 
 	/**
 	 * hasMacros : this workbook have macros ?
-	 * @var bool
 	 */
-	private $hasMacros = false;
+	private bool $hasMacros = false;
 
 	/**
 	 * macrosCode : all macros code as binary data (the vbaProject.bin file, this include form, code,  etc.), null if no macro.
-	 * @var string|null
 	 */
-	private $macrosCode;
+	private ?string $macrosCode = null;
 
 	/**
 	 * macrosCertificate : if macros are signed, contains binary data vbaProjectSignature.bin file, null if not signed.
-	 * @var string|null
 	 */
-	private $macrosCertificate;
+	private ?string $macrosCertificate = null;
 
 	/**
 	 * ribbonXMLData : null if workbook is'nt Excel 2007 or not contain a customized UI.
 	 *
 	 * @var null|array{target: string, data: string}
 	 */
-	private $ribbonXMLData;
+	private ?array $ribbonXMLData = null;
 
 	/**
 	 * ribbonBinObjects : null if workbook is'nt Excel 2007 or not contain embedded objects (picture(s)) for Ribbon Elements
 	 * ignored if $ribbonXMLData is null.
-	 * @var mixed[]|null
 	 */
-	private $ribbonBinObjects;
+	private ?array $ribbonBinObjects = null;
 
 	/**
 	 * List of unparsed loaded data for export to same format with better compatibility.
 	 * It has to be minimized when the library start to support currently unparsed data.
-	 * @var mixed[]
 	 */
-	private $unparsedLoadedData = [];
+	private array $unparsedLoadedData = [];
 
 	/**
 	 * Controls visibility of the horizonal scroll bar in the application.
-	 * @var bool
 	 */
-	private $showHorizontalScroll = true;
+	private bool $showHorizontalScroll = true;
 
 	/**
 	 * Controls visibility of the horizonal scroll bar in the application.
-	 * @var bool
 	 */
-	private $showVerticalScroll = true;
+	private bool $showVerticalScroll = true;
 
 	/**
 	 * Controls visibility of the sheet tabs in the application.
-	 * @var bool
 	 */
-	private $showSheetTabs = true;
+	private bool $showSheetTabs = true;
 
 	/**
 	 * Specifies a boolean value that indicates whether the workbook window
 	 * is minimized.
-	 * @var bool
 	 */
-	private $minimized = false;
+	private bool $minimized = false;
 
 	/**
 	 * Specifies a boolean value that indicates whether to group dates
 	 * when presenting the user with filtering optiomd in the user
 	 * interface.
-	 * @var bool
 	 */
-	private $autoFilterDateGrouping = true;
+	private bool $autoFilterDateGrouping = true;
 
 	/**
 	 * Specifies the index to the first sheet in the book view.
-	 * @var int
 	 */
-	private $firstSheetIndex = 0;
+	private int $firstSheetIndex = 0;
 
 	/**
 	 * Specifies the visible status of the workbook.
-	 * @var string
 	 */
-	private $visibility = self::VISIBILITY_VISIBLE;
+	private string $visibility = self::VISIBILITY_VISIBLE;
 
 	/**
 	 * Specifies the ratio between the workbook tabs bar and the horizontal
 	 * scroll bar.  TabRatio is assumed to be out of 1000 of the horizontal
 	 * window width.
-	 * @var int
 	 */
-	private $tabRatio = 600;
+	private int $tabRatio = 600;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Theme
-	 */
-	private $theme;
+	private Theme $theme;
+
+	private ?IValueBinder $valueBinder = null;
 
 	public function getTheme(): Theme
 	{
@@ -277,7 +261,7 @@ class Spreadsheet implements JsonSerializable
 	 */
 	public function setRibbonXMLData($target, $xmlData): void
 	{
-		if ($target !== null && $xmlData !== null) {
+		if (is_string($target) && is_string($xmlData)) {
 			$this->ribbonXMLData = ['target' => $target, 'data' => $xmlData];
 		} else {
 			$this->ribbonXMLData = null;
@@ -368,9 +352,7 @@ class Spreadsheet implements JsonSerializable
 					&& isset($this->ribbonBinObjects['data']) && is_array($this->ribbonBinObjects['data'])
 				) {
 					$tmpTypes = array_keys($this->ribbonBinObjects['data']);
-					$ReturnData = array_unique(array_map(function (string $path) : string {
-						return pathinfo($path, PATHINFO_EXTENSION);
-					}, $tmpTypes));
+					$ReturnData = array_unique(array_map(fn (string $path): string => pathinfo($path, PATHINFO_EXTENSION), $tmpTypes));
 				} else {
 					$ReturnData = []; // the caller want an array... not null if empty
 				}
@@ -583,6 +565,9 @@ class Spreadsheet implements JsonSerializable
 			// Adjust active sheet index if necessary
 			if ($this->activeSheetIndex >= $sheetIndex) {
 				++$this->activeSheetIndex;
+			}
+			if ($this->activeSheetIndex < 0) {
+				$this->activeSheetIndex = 0;
 			}
 		}
 
@@ -840,9 +825,7 @@ class Spreadsheet implements JsonSerializable
 	{
 		return array_filter(
 			$this->definedNames,
-			function (DefinedName $definedName) : bool {
-				return $definedName->isFormula() === self::DEFINED_NAME_IS_RANGE;
-			}
+			fn (DefinedName $definedName): bool => $definedName->isFormula() === self::DEFINED_NAME_IS_RANGE
 		);
 	}
 
@@ -855,9 +838,7 @@ class Spreadsheet implements JsonSerializable
 	{
 		return array_filter(
 			$this->definedNames,
-			function (DefinedName $definedName) : bool {
-				return $definedName->isFormula() === self::DEFINED_NAME_IS_FORMULA;
-			}
+			fn (DefinedName $definedName): bool => $definedName->isFormula() === self::DEFINED_NAME_IS_FORMULA
 		);
 	}
 
@@ -1587,5 +1568,49 @@ class Spreadsheet implements JsonSerializable
 		}
 
 		return $table;
+	}
+
+	/**
+	 * @return bool Success or failure
+	 */
+	public function setExcelCalendar(int $baseYear): bool
+	{
+		if (($baseYear === Date::CALENDAR_WINDOWS_1900) || ($baseYear === Date::CALENDAR_MAC_1904)) {
+			$this->excelCalendar = $baseYear;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @return int Excel base date (1900 or 1904)
+	 */
+	public function getExcelCalendar(): int
+	{
+		return $this->excelCalendar;
+	}
+
+	public function deleteLegacyDrawing(Worksheet $worksheet): void
+	{
+		unset($this->unparsedLoadedData['sheets'][$worksheet->getCodeName()]['legacyDrawing']);
+	}
+
+	public function getLegacyDrawing(Worksheet $worksheet): ?string
+	{
+		return $this->unparsedLoadedData['sheets'][$worksheet->getCodeName()]['legacyDrawing'] ?? null;
+	}
+
+	public function getValueBinder(): ?IValueBinder
+	{
+		return $this->valueBinder;
+	}
+
+	public function setValueBinder(?IValueBinder $valueBinder): self
+	{
+		$this->valueBinder = $valueBinder;
+
+		return $this;
 	}
 }

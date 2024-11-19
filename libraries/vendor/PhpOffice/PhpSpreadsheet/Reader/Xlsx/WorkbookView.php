@@ -7,10 +7,7 @@ use SimpleXMLElement;
 
 class WorkbookView
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet
-	 */
-	private $spreadsheet;
+	private Spreadsheet $spreadsheet;
 
 	public function __construct(Spreadsheet $spreadsheet)
 	{

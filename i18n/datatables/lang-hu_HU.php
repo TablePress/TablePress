@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Keresés:',
 	'zeroRecords'    => 'Nincs a keresésnek megfelelő találat',
 	'paginate'       => array(
-		'first'    => 'Első',
-		'previous' => 'Előző',
-		'next'     => 'Következő',
-		'last'     => 'Utolsó',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': aktiválja a növekvő rendezéshez',

@@ -27,7 +27,7 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 * @var array<string, mixed>
 	 */
-	protected $table = array();
+	protected array $table = array();
 
 	/**
 	 * Table options that influence the output result.
@@ -35,7 +35,7 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 * @var array<string, mixed>
 	 */
-	protected $render_options = array();
+	protected array $render_options = array();
 
 	/**
 	 * Rendered HTML code of the table or PHP array.
@@ -51,7 +51,7 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 * @var array<string, string>
 	 */
-	protected $span_trigger = array(
+	protected array $span_trigger = array(
 		'colspan' => '#colspan#',
 		'rowspan' => '#rowspan#',
 		'span'    => '#span#',
@@ -63,7 +63,7 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 * @var int[]
 	 */
-	protected $rowspan = array();
+	protected array $rowspan = array();
 
 	/**
 	 * Buffer to store the counts of colspan per row, initialized in _render_table().
@@ -71,23 +71,28 @@ class TablePress_Render {
 	 * @since 1.0.0
 	 * @var int[]
 	 */
-	protected $colspan = array();
+	protected array $colspan = array();
+
+	/**
+	 * Whether the table has connected cells (colspan or rowspan), set in _render_table().
+	 *
+	 * @since 3.0.0
+	 */
+	protected bool $tbody_has_connected_cells = false;
 
 	/**
 	 * Index of the last row of the visible data in the table, set in _render_table().
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	protected $last_row_idx;
+	protected int $last_row_idx;
 
 	/**
 	 * Index of the last column of the visible data in the table, set in _render_table().
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	protected $last_column_idx;
+	protected int $last_column_idx;
 
 	/**
 	 * Class constructor.
@@ -462,27 +467,43 @@ class TablePress_Render {
 			$output .= $print_description_html;
 		}
 
-		$thead = '';
-		$tfoot = '';
+		$thead = array();
+		$tfoot = array();
 		$tbody = array();
 
 		$this->last_row_idx = $num_rows - 1;
 		$this->last_column_idx = $num_columns - 1;
+
 		// Loop through rows in reversed order, to search for rowspan trigger keyword.
-		for ( $row_idx = $this->last_row_idx; $row_idx >= 0; $row_idx-- ) {
-			// Last row, need to check for footer (but only if at least two rows).
-			if ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] && $num_rows > 1 ) {
-				$tfoot = $this->_render_row( $row_idx, 'th' );
-				continue;
+		$row_idx = $this->last_row_idx;
+
+		// Render the table footer rows, if there is at least one extra row.
+		if ( $this->render_options['table_foot'] > 0 && $num_rows >= $this->render_options['table_head'] + $this->render_options['table_foot'] ) { // @phpstan-ignore greaterOrEqual.invalid (`table_head` and `table_foot` are integers.)
+			$last_tbody_idx = $this->last_row_idx - $this->render_options['table_foot'];
+			while ( $row_idx > $last_tbody_idx ) {
+				$tfoot[] = $this->_render_row( $row_idx, 'th' );
+				--$row_idx;
 			}
-			// First row, need to check for head (but only if at least two rows).
-			if ( 0 === $row_idx && $this->render_options['table_head'] && $num_rows > 1 ) {
-				$thead = $this->_render_row( $row_idx, 'th' );
-				continue;
-			}
-			// Neither first nor last row (with respective head/foot enabled), so render as body row.
-			$tbody[] = $this->_render_row( $row_idx, 'td' );
+			// Reverse rows because we looped through the rows in reverse order.
+			$tfoot = array_reverse( $tfoot );
 		}
+
+		// Render the table body rows.
+		$last_thead_idx = $this->render_options['table_head'] - 1;
+		while ( $row_idx > $last_thead_idx ) {
+			$tbody[] = $this->_render_row( $row_idx, 'td' );
+			--$row_idx;
+		}
+		// Reverse rows because we looped through the rows in reverse order.
+		$tbody = array_reverse( $tbody );
+
+		// Render the table header rows, if rows are left.
+		while ( $row_idx > -1 ) {
+			$thead[] = $this->_render_row( $row_idx, 'th' );
+			--$row_idx;
+		}
+		// Reverse rows because we looped through the rows in reverse order.
+		$thead = array_reverse( $thead );
 
 		// <caption> tag.
 		/**
@@ -552,16 +573,34 @@ class TablePress_Render {
 			$colgroup = "<colgroup>\n{$colgroup}</colgroup>\n";
 		}
 
-		// <thead>, <tfoot>, and <tbody> tags.
+		/*
+		 * <thead>, <tfoot>, and <tbody> tags.
+		 */
+
 		if ( ! empty( $thead ) ) {
-			$thead = "<thead>\n{$thead}</thead>\n";
+			$thead = "<thead>\n" . implode( '', $thead ) . "</thead>\n";
+		} else {
+			$thead = '';
 		}
+
 		if ( ! empty( $tfoot ) ) {
-			$tfoot = "<tfoot>\n{$tfoot}</tfoot>\n";
+			$tfoot = "<tfoot>\n" . implode( '', $tfoot ) . "</tfoot>\n";
+		} else {
+			$tfoot = '';
 		}
-		$tbody_class = ( $this->render_options['row_hover'] ) ? ' class="row-hover"' : '';
-		// Reverse rows because we looped through the rows in reverse order.
-		$tbody = array_reverse( $tbody );
+
+		$tbody_classes = array();
+		if ( $this->render_options['alternating_row_colors'] ) {
+			$tbody_classes[] = 'row-striping';
+		}
+		if ( $this->render_options['row_hover'] ) {
+			$tbody_classes[] = 'row-hover';
+		}
+		$tbody_class = implode( ' ', $tbody_classes );
+		if ( '' !== $tbody_class ) {
+			$tbody_class = ' class="' . esc_attr( $tbody_class ) . '"';
+		}
+
 		$tbody = "<tbody{$tbody_class}>\n" . implode( '', $tbody ) . "</tbody>\n";
 
 		// Attributes for the table (HTML table element).
@@ -573,7 +612,14 @@ class TablePress_Render {
 		}
 
 		// "class" attribute.
-		$css_classes = array( 'tablepress', "tablepress-id-{$this->table['id']}", $this->render_options['extra_css_classes'] );
+		$css_classes = array(
+			'tablepress',
+			"tablepress-id-{$this->table['id']}",
+			$this->render_options['extra_css_classes'],
+		);
+		if ( $this->tbody_has_connected_cells ) {
+			$css_classes[] = 'tbody-has-connected-cells';
+		}
 		/**
 		 * Filters the CSS classes that are given to the HTML table element.
 		 *
@@ -656,10 +702,10 @@ class TablePress_Render {
 
 		// name/description below table (HTML already generated above).
 		if ( $this->render_options['print_name'] && 'below' === $this->render_options['print_name_position'] ) {
-			$output .= $print_name_html;
+			$output .= $print_name_html; // @phpstan-ignore variable.undefined (The variable is set above.)
 		}
 		if ( $this->render_options['print_description'] && 'below' === $this->render_options['print_description_position'] ) {
-			$output .= $print_description_html;
+			$output .= $print_description_html; // @phpstan-ignore variable.undefined (The variable is set above.)
 		}
 
 		/**
@@ -692,8 +738,8 @@ class TablePress_Render {
 			if ( $this->span_trigger['rowspan'] === $cell_content ) { // There will be a rowspan.
 				if ( ! (
 					( 0 === $row_idx ) // No rowspan inside first row.
-					|| ( 1 === $row_idx && $this->render_options['table_head'] ) // No rowspan into table head.
-					|| ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] ) // No rowspan out of table foot.
+					|| ( $this->render_options['table_head'] === $row_idx ) // No rowspan into table head.
+					|| ( $this->last_row_idx - $this->render_options['table_foot'] + 1 === $row_idx ) // No rowspan out of table foot.
 				) ) {
 					// Increase counter for rowspan in this column.
 					++$this->rowspan[ $col_idx ];
@@ -705,7 +751,8 @@ class TablePress_Render {
 				$cell_content = '';
 			} elseif ( $this->span_trigger['colspan'] === $cell_content ) { // There will be a colspan.
 				if ( ! (
-					( 0 === $col_idx ) // No colspan inside first column.
+					( ( 0 === $row_idx ) && 1 === $this->render_options['table_head'] && $this->render_options['use_datatables'] ) // Don't allow colspan inside a single row table head, as DataTables seems to have a bug here.
+					|| ( 0 === $col_idx ) // No colspan inside first column.
 					|| ( 1 === $col_idx && $this->render_options['first_column_th'] ) // No colspan into first column head.
 				) ) {
 					// Increase counter for colspan in this row.
@@ -719,8 +766,8 @@ class TablePress_Render {
 			} elseif ( $this->span_trigger['span'] === $cell_content ) { // There will be a combined col- and rowspan.
 				if ( ! (
 					( 0 === $row_idx ) // No rowspan inside first row.
-					|| ( 1 === $row_idx && $this->render_options['table_head'] ) // No rowspan into table head.
-					|| ( $this->last_row_idx === $row_idx && $this->render_options['table_foot'] ) // No rowspan out of table foot.
+					|| ( $this->render_options['table_head'] === $row_idx ) // No rowspan into table head.
+					|| ( $this->last_row_idx - $this->render_options['table_foot'] + 1 === $row_idx ) // No rowspan out of table foot.
 				) && ! (
 					( 0 === $col_idx ) // No colspan inside first column.
 					|| ( 1 === $col_idx && $this->render_options['first_column_th'] ) // No colspan into first column head.
@@ -737,9 +784,17 @@ class TablePress_Render {
 			// "colspan" and "rowspan" attributes.
 			if ( $this->colspan[ $row_idx ] > 1 ) { // We have colspaned cells.
 				$tag_attributes['colspan'] = (string) $this->colspan[ $row_idx ];
+				if ( ! $this->tbody_has_connected_cells && $row_idx > $this->render_options['table_head'] - 1 && $row_idx < $this->last_row_idx - $this->render_options['table_foot'] + 1 ) {
+					// Set flag that there are connected cells in the tbody.
+					$this->tbody_has_connected_cells = true;
+				}
 			}
 			if ( $this->rowspan[ $col_idx ] > 1 ) { // We have rowspaned cells.
 				$tag_attributes['rowspan'] = (string) $this->rowspan[ $col_idx ];
+				if ( ! $this->tbody_has_connected_cells && $row_idx > $this->render_options['table_head'] - 1 && $row_idx < $this->last_row_idx - $this->render_options['table_foot'] + 1 ) {
+					// Set flag that there are connected cells in the tbody.
+					$this->tbody_has_connected_cells = true;
+				}
 			}
 
 			// "class" attribute.
@@ -797,9 +852,6 @@ class TablePress_Render {
 
 		// "class" attribute.
 		$row_classes = 'row-' . ( $row_idx + 1 );
-		if ( $this->render_options['alternating_row_colors'] ) {
-			$row_classes .= ( 1 === ( $row_idx % 2 ) ) ? ' even' : ' odd';
-		}
 		/**
 		 * Filters the CSS classes that are given to a row (HTML tr element) of a table.
 		 *
@@ -853,8 +905,6 @@ class TablePress_Render {
 	/**
 	 * Possibly replace certain HTML entities and replace line breaks with HTML.
 	 *
-	 * @todo Find a better solution than this function, e.g. something like wpautop().
-	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $text The string to process.
@@ -899,6 +949,7 @@ class TablePress_Render {
 			'column_widths'               => '',
 			'convert_line_breaks'         => true,
 			'datatables_custom_commands'  => null,
+			'datatables_datetime'         => '',
 			'datatables_filter'           => null,
 			'datatables_info'             => null,
 			'datatables_lengthchange'     => null,
@@ -941,29 +992,23 @@ class TablePress_Render {
 		$default_css_minified = $tablepress_css->load_default_css_from_file( $is_rtl );
 		if ( false === $default_css_minified ) {
 			$default_css_minified = '';
-		} else {
-			// Change relative URLs to web font files to absolute URLs, as combining the CSS files and saving to another directory breaks the relative URLs.
-			$absolute_path = plugins_url( 'css/build/tablepress.', TABLEPRESS__FILE__ );
-			// Make the absolute URL protocol-relative to prevent mixed content warnings.
-			$absolute_path = str_replace( array( 'http:', 'https:' ), '', $absolute_path );
-			$default_css_minified = str_replace( 'url(tablepress.', 'url(' . $absolute_path, $default_css_minified );
 		}
 
 		$rtl_direction = $is_rtl ? "\ndirection: rtl;" : '';
 
 		return <<<CSS
-<style>
-/* iframe */
-body {
-	margin: 10px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;{$rtl_direction}
-}
-p {
-	font-size: 13px;
-}
-{$default_css_minified}
-</style>
-CSS;
+			<style>
+			/* iframe */
+			body {
+				margin: 10px;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;{$rtl_direction}
+			}
+			p {
+				font-size: 13px;
+			}
+			{$default_css_minified}
+			</style>
+			CSS;
 	}
 
 } // class TablePress_Render

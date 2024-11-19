@@ -15,63 +15,61 @@ class Comment implements IComparable
 {
 	/**
 	 * Author.
-	 * @var string
 	 */
-	private $author;
+	private string $author;
 
 	/**
 	 * Rich text comment.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText
 	 */
-	private $text;
+	private RichText $text;
 
 	/**
 	 * Comment width (CSS style, i.e. XXpx or YYpt).
-	 * @var string
 	 */
-	private $width = '96pt';
+	private string $width = '96pt';
 
 	/**
 	 * Left margin (CSS style, i.e. XXpx or YYpt).
-	 * @var string
 	 */
-	private $marginLeft = '59.25pt';
+	private string $marginLeft = '59.25pt';
 
 	/**
 	 * Top margin (CSS style, i.e. XXpx or YYpt).
-	 * @var string
 	 */
-	private $marginTop = '1.5pt';
+	private string $marginTop = '1.5pt';
 
 	/**
 	 * Visible.
-	 * @var bool
 	 */
-	private $visible = false;
+	private bool $visible = false;
 
 	/**
 	 * Comment height (CSS style, i.e. XXpx or YYpt).
-	 * @var string
 	 */
-	private $height = '55.5pt';
+	private string $height = '55.5pt';
 
 	/**
 	 * Comment fill color.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color
 	 */
-	private $fillColor;
+	private Color $fillColor;
 
 	/**
 	 * Alignment.
-	 * @var string
 	 */
-	private $alignment;
+	private string $alignment;
 
 	/**
 	 * Background image in comment.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Drawing
 	 */
-	private $backgroundImage;
+	private Drawing $backgroundImage;
+
+	public const TEXTBOX_DIRECTION_RTL = 'rtl';
+	public const TEXTBOX_DIRECTION_LTR = 'ltr';
+	// MS uses 'auto' in xml but 'context' in UI
+	public const TEXTBOX_DIRECTION_AUTO = 'auto';
+	public const TEXTBOX_DIRECTION_CONTEXT = 'auto';
+
+	private string $textboxDirection = '';
 
 	/**
 	 * Create a new Comment.
@@ -242,9 +240,6 @@ class Comment implements IComparable
 		return $this->fillColor;
 	}
 
-	/**
-	 * Set Alignment.
-	 */
 	public function setAlignment(string $alignment): self
 	{
 		$this->alignment = $alignment;
@@ -252,12 +247,21 @@ class Comment implements IComparable
 		return $this;
 	}
 
-	/**
-	 * Get Alignment.
-	 */
 	public function getAlignment(): string
 	{
 		return $this->alignment;
+	}
+
+	public function setTextboxDirection(string $textboxDirection): self
+	{
+		$this->textboxDirection = $textboxDirection;
+
+		return $this;
+	}
+
+	public function getTextboxDirection(): string
+	{
+		return $this->textboxDirection;
 	}
 
 	/**
@@ -275,6 +279,7 @@ class Comment implements IComparable
 			. ($this->visible ? 1 : 0)
 			. $this->fillColor->getHashCode()
 			. $this->alignment
+			. $this->textboxDirection
 			. ($this->hasBackgroundImage() ? $this->backgroundImage->getHashCode() : '')
 			. __CLASS__
 		);

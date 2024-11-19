@@ -31,7 +31,7 @@ import { shortcode_attrs_to_string } from './common/functions';
  * @param {string} content The Shortcode as a text string.
  * @return {Object} TablePress table block.
  */
-const convertShortcodeTextToBlock = function( content ) {
+const convertShortcodeTextToBlock = function ( content ) {
 	let shortcodeAttrs = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
 	shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
 	const id = shortcodeAttrs.named.id;

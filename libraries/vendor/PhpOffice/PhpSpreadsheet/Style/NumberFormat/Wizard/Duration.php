@@ -93,17 +93,14 @@ class Duration extends DateTimeWizard
 	/**
 	 * @var string[]
 	 */
-	protected $separators;
+	protected array $separators;
 
 	/**
 	 * @var string[]
 	 */
-	protected $formatBlocks;
+	protected array $formatBlocks;
 
-	/**
-	 * @var bool
-	 */
-	protected $durationIsSet = false;
+	protected bool $durationIsSet = false;
 
 	/**
 	 * @param null|string|string[] $separators
@@ -113,7 +110,7 @@ class Duration extends DateTimeWizard
 	 */
 	public function __construct($separators = self::SEPARATOR_COLON, string ...$formatBlocks)
 	{
-		$separators = $separators ?? self::SEPARATOR_COLON;
+		$separators ??= self::SEPARATOR_COLON;
 		$formatBlocks = (count($formatBlocks) === 0) ? self::DURATION_DEFAULT : $formatBlocks;
 
 		$this->separators = $this->padSeparatorArray(

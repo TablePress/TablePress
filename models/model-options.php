@@ -28,7 +28,7 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * @since 2.0.0 Added the "modules" option.
 	 * @var array<string, mixed>
 	 */
-	protected $default_plugin_options = array(
+	protected array $default_plugin_options = array(
 		'plugin_options_db_version' => 0,
 		'table_scheme_db_version'   => 0,
 		'prev_tablepress_version'   => '0',
@@ -48,9 +48,9 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Default User Options.
 	 *
 	 * @since 1.0.0
-	 * @var array<string, mixed>>
+	 * @var array<string, mixed>
 	 */
-	protected $default_user_options = array(
+	protected array $default_user_options = array(
 		'user_options_db_version'       => TablePress::db_version, // To prevent saving on first load.
 		'admin_menu_parent_page'        => 'middle',
 		'message_first_visit'           => true,
@@ -63,17 +63,15 @@ class TablePress_Options_Model extends TablePress_Model {
 	 * Instance of WP_Option class for Plugin Options.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_WP_Option
 	 */
-	protected $plugin_options;
+	protected \TablePress_WP_Option $plugin_options;
 
 	/**
 	 * Instance of WP_User_Option class for User Options.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_WP_User_Option
 	 */
-	protected $user_options;
+	protected \TablePress_WP_User_Option $user_options;
 
 	/**
 	 * Init Options Model by creating the object instances for the Plugin and User Options.
@@ -327,7 +325,7 @@ class TablePress_Options_Model extends TablePress_Model {
 		// Don't use a type hint for the `$cap` argument as many WordPress plugins seem to be passing `null` to capability check or admin menu functions.
 
 		// Protect against other plugins not supplying a string for the `$cap` argument.
-		if ( ! is_string( $cap ) ) {
+		if ( ! is_string( $cap ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
 			return $caps;
 		}
 

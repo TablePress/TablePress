@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Sök:',
 	'zeroRecords'    => 'Hittade inga matchande resultat',
 	'paginate'       => array(
-		'first'    => 'Första',
-		'previous' => 'Föregående',
-		'next'     => 'Nästa',
-		'last'     => 'Sista',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': aktivera för att sortera kolumnen i stigande ordning',

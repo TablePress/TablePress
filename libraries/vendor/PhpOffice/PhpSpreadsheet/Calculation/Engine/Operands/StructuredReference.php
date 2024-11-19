@@ -31,60 +31,30 @@ final class StructuredReference implements Operand
 
 	private const TABLE_REFERENCE = '/([\p{L}_\\\\][\p{L}\p{N}\._]+)?(\[(?:[^\]\[]+|(?R))*+\])/miu';
 
-	/**
-	 * @var string
-	 */
-	private $value;
+	private string $value;
 
-	/**
-	 * @var string
-	 */
-	private $tableName;
+	private string $tableName;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table
-	 */
-	private $table;
+	private Table $table;
 
-	/**
-	 * @var string
-	 */
-	private $reference;
+	private string $reference;
 
-	/**
-	 * @var int|null
-	 */
-	private $headersRow;
+	private ?int $headersRow;
 
-	/**
-	 * @var int
-	 */
-	private $firstDataRow;
+	private int $firstDataRow;
 
-	/**
-	 * @var int
-	 */
-	private $lastDataRow;
+	private int $lastDataRow;
 
-	/**
-	 * @var int|null
-	 */
-	private $totalsRow;
+	private ?int $totalsRow;
 
-	/**
-	 * @var mixed[]
-	 */
-	private $columns;
+	private array $columns;
 
 	public function __construct(string $structuredReference)
 	{
 		$this->value = $structuredReference;
 	}
 
-	/**
-	 * @return $this
-	 */
-	public static function fromParser(string $formula, int $index, array $matches): \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\Operands\Operand
+	public static function fromParser(string $formula, int $index, array $matches): self
 	{
 		$val = $matches[0];
 

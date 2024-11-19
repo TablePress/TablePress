@@ -9,23 +9,34 @@
 
 /* Red border for form fields that have invalid values */
 #tablepress-page form .postbox:not(.no-validation-highlighting) :invalid {
-	border-color: #cc0000 !important;
-	box-shadow: 0 0 0 1px #cc0000;
+	border-color: #d63638 !important;
+	box-shadow: 0 0 0 1px #d63638;
 }
 
-/* Adjust positioning of labels in relation to checkboxes/radio buttons */
-#tablepress_import-import-form .column-2 label {
-	margin-right: 24px; /* some margin on radio buttons */
+#tablepress_import-import-form {
+	/* Show RadioButtons next to each other (by default the component uses VStack). */
+	.components-radio-control__group-wrapper,
+	.components-radio-control > div > .components-v-stack { /* WP < 6.7 */
+		flex-direction: row;
+		justify-content: flex-start;
+		gap: 20px;
+	}
+
+	/* ComboboxControl can only be disabled artificially. */
+	.components-disabled .components-combobox-control {
+		opacity: 0.7;
+	}
 }
 
 .file-upload-area {
 	width: 100%;
 	position: relative;
+	margin-bottom: -8px;
 
 	.dropzone {
 		background-color: #f5f5f5;
 		border: 2px dashed #ddd;
-		border-radius: 4px;
+		border-radius: 2px;
 		font-size: 18px;
 		box-sizing: border-box;
 		padding: 20px;
@@ -61,7 +72,7 @@
 		opacity: 0;
 		cursor: pointer;
 		border: 1px solid transparent;
-		border-radius: 4px;
+		border-radius: 2px;
 
 		&:valid + .dropzone,
 		+ .dropzone.dragover {
@@ -71,77 +82,12 @@
 
 		/* :focus style after :valid style to allow for both. */
 		&:focus + .dropzone {
-			border-color: #2271b1;
+			border-color: var(--wp-admin-theme-color);
+			outline: 2px solid #00000000;
 		}
 	}
 
 	.postbox:not(.no-validation-highlighting) & #tables-import-file-upload:invalid + .dropzone {
-		border-color: #cc0000;
-	}
-}
-
-/* Style the artificial dropdown like a WP Core select field. */
-.jdropdown {
-	width: 100%;
-
-	/* Show the dropdown above WP Core UI elements on small screens (< 800px width). */
-	&.jdropdown-searchbar.jdropdown-focus {
-		z-index: 100000;
-	}
-
-	.jdropdown-header {
-		/* stylelint-disable-next-line function-url-quotes */
-		background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E") no-repeat right 5px top 55%;
-		background-size: 16px 16px;
-		padding: 0 24px 0 8px;
-		border-color: #8c8f94;
-		border-radius: 3px;
-
-		&:hover,
-		&:hover::placeholder {
-			color: #2271b1;
-		}
-
-		&:focus {
-			border-color: #2271b1;
-			color: #0a4b78;
-			box-shadow: 0 0 0 1px #2271b1;
-		}
-
-		&:focus::placeholder {
-			color: #0a4b78;
-		}
-
-		&:active {
-			border-color: #8c8f94;
-			box-shadow: none;
-		}
-	}
-
-	/* Prevent overflowing of the expanded list of options. */
-	.jdropdown-container {
-		max-width: 100%;
-	}
-
-	/* Style the disabled state via a class, as the artificial dropdown can not use :disabled. */
-	&.disabled {
-		pointer-events: none;
-
-		.jdropdown-header {
-			color: #a7aaad;
-			border-color: #dcdcde;
-			background-color: #f6f7f7;
-			/* The SVG is arrow-down-alt2 from Dashicons. */
-			/* stylelint-disable-next-line function-url-quotes */
-			background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23a0a5aa%22%2F%3E%3C%2Fsvg%3E");
-			box-shadow: none;
-			text-shadow: 0 1px 0 #ffffff;
-			cursor: default;
-			transform: none;
-
-			&::placeholder {
-				color: #a7aaad;
-			}
-		}
+		border-color: #d63638;
 	}
 }

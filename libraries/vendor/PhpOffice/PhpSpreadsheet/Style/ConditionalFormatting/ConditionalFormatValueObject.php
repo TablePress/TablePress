@@ -4,20 +4,14 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting;
 
 class ConditionalFormatValueObject
 {
-	/**
-	 * @var string
-	 */
-	private $type;
+	private string $type;
 
 	/**
 	 * @var float|int|string|null
 	 */
 	private $value;
 
-	/**
-	 * @var string|null
-	 */
-	private $cellFormula;
+	private ?string $cellFormula;
 
 	/**
 	 * @param null|float|int|string $value

@@ -9,21 +9,15 @@ class ConditionalFormattingRuleExtension
 {
 	const CONDITION_EXTENSION_DATABAR = 'dataBar';
 
-	/**
-	 * @var string
-	 */
-	private $id;
+	private string $id;
 
 	/** @var string Conditional Formatting Rule */
-	private $cfRule;
+	private string $cfRule;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalDataBarExtension
-	 */
-	private $dataBar;
+	private ConditionalDataBarExtension $dataBar;
 
 	/** @var string Sequence of References */
-	private $sqref = '';
+	private string $sqref = '';
 
 	/**
 	 * ConditionalFormattingRuleExtension constructor.

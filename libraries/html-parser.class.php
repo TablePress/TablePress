@@ -57,7 +57,7 @@ abstract class HTML_Parser {
 			return new WP_Error( 'table_import_html_dom_get_tables' );
 		}
 		libxml_clear_errors(); // Clear errors so that we only catch those inside the table in the next line.
-		$table = simplexml_import_dom( $dom_tables->item( 0 ) ); // @phpstan-ignore-line
+		$table = simplexml_import_dom( $dom_tables->item( 0 ) ); // @phpstan-ignore argument.type
 		if ( is_null( $table ) ) {
 			return new WP_Error( 'table_import_html_simplexml_import_dom_failed' );
 		}
@@ -87,18 +87,20 @@ abstract class HTML_Parser {
 			'options' => array(),
 		);
 		if ( isset( $table->thead ) ) {
-			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->thead[0]->tr ) ); // @phpstan-ignore-line
-			$html_table['options']['table_head'] = true;
+			$head_rows = self::_import_html_rows( $table->thead[0]->tr ); // @phpstan-ignore property.nonObject
+			$html_table['data'] = array_merge( $html_table['data'], $head_rows );
+			$html_table['options']['table_head'] = count( $head_rows );
 		}
 		if ( isset( $table->tbody ) ) {
-			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tbody[0]->tr ) ); // @phpstan-ignore-line
+			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tbody[0]->tr ) ); // @phpstan-ignore property.nonObject
 		}
 		if ( isset( $table->tr ) ) {
 			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tr ) );
 		}
 		if ( isset( $table->tfoot ) ) {
-			$html_table['data'] = array_merge( $html_table['data'], self::_import_html_rows( $table->tfoot[0]->tr ) ); // @phpstan-ignore-line
-			$html_table['options']['table_foot'] = true;
+			$foot_rows = self::_import_html_rows( $table->tfoot[0]->tr ); // @phpstan-ignore property.nonObject
+			$html_table['data'] = array_merge( $html_table['data'], $foot_rows );
+			$html_table['options']['table_foot'] = count( $foot_rows );
 		}
 
 		return $html_table;
@@ -133,13 +135,13 @@ abstract class HTML_Parser {
 					++$column_idx;
 				}
 
-				$cell_xml = $cell->asXml();
+				$cell_xml = $cell->asXML();
 
 				// Get content between <td>...</td>, or <th>...</th>, possibly with HTML.
 				if ( false !== $cell_xml && 1 === preg_match( '#<t[d|h].*?>(.*)</t[d|h]>#is', $cell_xml, $matches ) ) {
 					/*
 					 * Decode HTML entities again, as there might be some left especially in attributes of HTML tags in the cells,
-					 * see https://secure.php.net/manual/en/simplexmlelement.asxml.php#107137.
+					 * see https://www.php.net/manual/en/simplexmlelement.asxml.php#107137.
 					 */
 					$new_row[] = html_entity_decode( $matches[1], ENT_NOQUOTES, 'UTF-8' );
 

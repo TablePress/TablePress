@@ -22,7 +22,7 @@ function tablepress_get_table( /* string|array */ $table_query ): string {
 	} else {
 		parse_str( (string) $table_query, $atts );
 	}
-	return TablePress::$controller->shortcode_table( $atts ); // @phpstan-ignore-line
+	return TablePress::$controller->shortcode_table( $atts ); // @phpstan-ignore argument.type
 }
 
 /**
@@ -52,7 +52,7 @@ function tablepress_get_table_info( /* string|array */ $table_query ): string {
 	} else {
 		parse_str( (string) $table_query, $atts );
 	}
-	return TablePress::$controller->shortcode_table_info( $atts ); // @phpstan-ignore-line
+	return TablePress::$controller->shortcode_table_info( $atts ); // @phpstan-ignore argument.type
 }
 
 /**

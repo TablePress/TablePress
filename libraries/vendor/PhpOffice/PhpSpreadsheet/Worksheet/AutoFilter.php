@@ -8,6 +8,8 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Internal\WildcardMatch;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\CellRange;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -18,24 +20,19 @@ class AutoFilter
 {
 	/**
 	 * Autofilter Worksheet.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
-	private $workSheet;
+	private ?Worksheet $workSheet;
 	/**
 	 * Autofilter Range.
-	 * @var string
 	 */
-	private $range;
+	private string $range;
 	/**
 	 * Autofilter Column Ruleset.
 	 *
 	 * @var AutoFilter\Column[]
 	 */
-	private $columns = [];
-	/**
-	 * @var bool
-	 */
-	private $evaluated = false;
+	private array $columns = [];
+	private bool $evaluated = false;
 	public function getEvaluated(): bool
 	{
 		return $this->evaluated;
@@ -47,7 +44,7 @@ class AutoFilter
 	/**
 	 * Create a new AutoFilter.
 	 *
-	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
+	 * @param AddressRange<CellAddress>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.
@@ -94,7 +91,7 @@ class AutoFilter
 	/**
 	 * Set AutoFilter Cell Range.
 	 *
-	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
+	 * @param AddressRange<CellRange>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' or a Cell address like 'A1' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.
@@ -293,7 +290,7 @@ class AutoFilter
 	/**
 	 * Test if cell value is in the defined set of values.
 	 *
-	 * @param mixed[] $dataSet
+	 * @param array{blanks: bool, filterValues: array<string,array<string,string>>} $dataSet
 	 * @param mixed $cellValue
 	 */
 	protected static function filterTestInSimpleDataSet($cellValue, array $dataSet): bool
@@ -309,7 +306,7 @@ class AutoFilter
 	/**
 	 * Test if cell value is in the defined set of Excel date values.
 	 *
-	 * @param mixed[] $dataSet
+	 * @param array{blanks: bool, filterValues: array<string,array<string,string>>} $dataSet
 	 * @param mixed $cellValue
 	 */
 	protected static function filterTestInDateGroupSet($cellValue, array $dataSet): bool
@@ -735,9 +732,13 @@ class AutoFilter
 				sort($dataValues);
 			}
 
-			$slice = array_slice($dataValues, 0, $ruleValue);
-
-			$retVal = array_pop($slice);
+			if (is_numeric($ruleValue)) {
+				$ruleValue = (int) $ruleValue;
+			}
+			if ($ruleValue === null || is_int($ruleValue)) {
+				$slice = array_slice($dataValues, 0, $ruleValue);
+				$retVal = array_pop($slice);
+			}
 		}
 
 		return $retVal;
@@ -939,7 +940,7 @@ class AutoFilter
 						$ruleOperator = $rule->getOperator();
 					}
 					if (is_numeric($ruleValue) && $ruleOperator === Rule::AUTOFILTER_COLUMN_RULE_TOPTEN_PERCENT) {
-						$ruleValue = floor((float) $ruleValue * ($dataRowCount / 100));
+						$ruleValue = (int) floor((float) $ruleValue * ($dataRowCount / 100));
 					}
 					if (!is_array($ruleValue) && $ruleValue < 1) {
 						$ruleValue = 1;
@@ -948,6 +949,7 @@ class AutoFilter
 						$ruleValue = 500;
 					}
 
+					/** @var float|int|string */
 					$maxVal = $this->calculateTopTenValue($columnID, $rangeStart[1] + 1, (int) $rangeEnd[1], $toptenRuleType, $ruleValue);
 
 					$operator = ($toptenRuleType == Rule::AUTOFILTER_COLUMN_RULE_TOPTEN_TOP)
@@ -974,6 +976,7 @@ class AutoFilter
 				//    Execute the filter test
 				/** @var callable */
 				$temp = [self::class, $columnFilterTest['method']];
+				/** @var bool */
 				$result // $result && // phpstan says $result is always true here
 					= call_user_func_array($temp, [$cellValue, $columnFilterTest['arguments']]);
 				//    If filter test has resulted in FALSE, exit the loop straightaway rather than running any more tests

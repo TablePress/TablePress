@@ -25,9 +25,9 @@ if ( 'undefined' !== typeof tinymce ) {
 			ed.addButton( 'tablepress_insert_table', {
 				title: tablepress_editor_button.title,
 				cmd: 'TablePress_insert_table',
-				image: url.slice( 0, url.length - 8 ) + 'img/tablepress-editor-button.png'
+				image: url.slice( 0, url.length - 8 ) + 'img/tablepress-editor-button.svg',
 			} );
-		}
+		},
 	} );
 	tinymce.PluginManager.add( 'tablepress_tinymce', tinymce.plugins.TablePressPlugin );
 }

@@ -8,7 +8,7 @@
  */
 
 /* Import spinner and alert box styling. */
-@import "spinner-alert";
+@use "spinner-alert";
 
 /* Container for Table Preview, Advanced Editor, and Help Box dialogs. */
 .hidden-container {
@@ -24,6 +24,8 @@
 .postbox-header .handle-actions {
 	.button-module-help {
 		margin-right: 10px;
+		vertical-align: top;
+		margin-top: 1px;
 
 		@media screen and (max-width: 782px) {
 			line-height: 2.18181818;
@@ -106,17 +108,6 @@ body #wp-link-backdrop {
 	vertical-align: middle;
 }
 
-#table-id-shortcode-wrapper {
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	width: 99%;
-	gap: 5px 0;
-}
-#table-information-shortcode {
-	margin: 0 -1px 0 1px;
-}
-
 #tablepress_edit-table-manipulation .column-1,
 #tablepress_edit-table-manipulation .column-2 {
 	width: 50%;
@@ -127,6 +118,12 @@ body #wp-link-backdrop {
 	display: inline-block;
 	padding-left: 1.25rem; /* Checkboxes are 1rem wide + 0.25rem margin. */
 	padding-top: 8px;
+}
+
+/* Compatibility with WP < 6.6 */
+.components-checkbox-control .components-base-control__field:has(> span) {
+	display: flex;
+	align-items: center;
 }
 
 #table-editor {

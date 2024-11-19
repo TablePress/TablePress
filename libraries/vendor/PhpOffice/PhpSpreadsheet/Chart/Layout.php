@@ -8,129 +8,96 @@ class Layout
 {
 	/**
 	 * layoutTarget.
-	 * @var string|null
 	 */
-	private $layoutTarget;
+	private ?string $layoutTarget = null;
 
 	/**
 	 * X Mode.
-	 * @var string|null
 	 */
-	private $xMode;
+	private ?string $xMode = null;
 
 	/**
 	 * Y Mode.
-	 * @var string|null
 	 */
-	private $yMode;
+	private ?string $yMode = null;
 
 	/**
 	 * X-Position.
-	 * @var float|null
 	 */
-	private $xPos;
+	private ?float $xPos = null;
 
 	/**
 	 * Y-Position.
-	 * @var float|null
 	 */
-	private $yPos;
+	private ?float $yPos = null;
 
 	/**
 	 * width.
-	 * @var float|null
 	 */
-	private $width;
+	private ?float $width = null;
 
 	/**
 	 * height.
-	 * @var float|null
 	 */
-	private $height;
+	private ?float $height = null;
 
 	/**
 	 * Position - t=top.
-	 * @var string
 	 */
-	private $dLblPos = '';
+	private string $dLblPos = '';
 
-	/**
-	 * @var string
-	 */
-	private $numFmtCode = '';
+	private string $numFmtCode = '';
 
-	/**
-	 * @var bool
-	 */
-	private $numFmtLinked = false;
+	private bool $numFmtLinked = false;
 
 	/**
 	 * show legend key
 	 * Specifies that legend keys should be shown in data labels.
-	 * @var bool|null
 	 */
-	private $showLegendKey;
+	private ?bool $showLegendKey = null;
 
 	/**
 	 * show value
 	 * Specifies that the value should be shown in a data label.
-	 * @var bool|null
 	 */
-	private $showVal;
+	private ?bool $showVal = null;
 
 	/**
 	 * show category name
 	 * Specifies that the category name should be shown in the data label.
-	 * @var bool|null
 	 */
-	private $showCatName;
+	private ?bool $showCatName = null;
 
 	/**
 	 * show data series name
 	 * Specifies that the series name should be shown in the data label.
-	 * @var bool|null
 	 */
-	private $showSerName;
+	private ?bool $showSerName = null;
 
 	/**
 	 * show percentage
 	 * Specifies that the percentage should be shown in the data label.
-	 * @var bool|null
 	 */
-	private $showPercent;
+	private ?bool $showPercent = null;
 
 	/**
 	 * show bubble size.
-	 * @var bool|null
 	 */
-	private $showBubbleSize;
+	private ?bool $showBubbleSize = null;
 
 	/**
 	 * show leader lines
 	 * Specifies that leader lines should be shown for the data label.
-	 * @var bool|null
 	 */
-	private $showLeaderLines;
+	private ?bool $showLeaderLines = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor|null
-	 */
-	private $labelFillColor;
+	private ?ChartColor $labelFillColor = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor|null
-	 */
-	private $labelBorderColor;
+	private ?ChartColor $labelBorderColor = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Font|null
-	 */
-	private $labelFont;
+	private ?Font $labelFont = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Properties|null
-	 */
-	private $labelEffects;
+	private ?Properties $labelEffects = null;
 
 	/**
 	 * Create a new Layout.
@@ -482,6 +449,13 @@ class Layout
 	public function getLabelFont(): ?Font
 	{
 		return $this->labelFont;
+	}
+
+	public function setLabelFont(?Font $labelFont): self
+	{
+		$this->labelFont = $labelFont;
+
+		return $this;
 	}
 
 	public function getLabelEffects(): ?Properties

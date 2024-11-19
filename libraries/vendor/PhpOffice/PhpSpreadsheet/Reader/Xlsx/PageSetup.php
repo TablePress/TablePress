@@ -8,15 +8,9 @@ use SimpleXMLElement;
 
 class PageSetup extends BaseParserClass
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
-	/**
-	 * @var \SimpleXMLElement|null
-	 */
-	private $worksheetXml;
+	private ?SimpleXMLElement $worksheetXml;
 
 	public function __construct(Worksheet $workSheet, ?SimpleXMLElement $worksheetXml = null)
 	{

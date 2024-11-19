@@ -27,49 +27,43 @@ class File {
 	 * Local file path location of the file to import.
 	 *
 	 * @since 2.3.0
-	 * @var string
 	 */
-	public $location = '';
+	public string $location = '';
 
 	/**
 	 * File extension of the file to import.
 	 *
 	 * @since 2.3.0
-	 * @var string
 	 */
-	public $extension = '';
+	public string $extension = '';
 
 	/**
 	 * MIME type of the file to import.
 	 *
 	 * @since 2.3.0
-	 * @var string
 	 */
-	public $mime_type = '';
+	public string $mime_type = '';
 
 	/**
 	 * Name of the file to import, used as the table name.
 	 *
 	 * @since 2.3.0
-	 * @var string
 	 */
-	public $name = '';
+	public string $name = '';
 
 	/**
 	 * Error code related to the import of the file.
 	 *
 	 * @since 2.3.0
-	 * @var ?\WP_Error
 	 */
-	public $error = null;
+	public ?\WP_Error $error = null;
 
 	/**
 	 * Whether the file should be kept or deleted after import.
 	 *
 	 * @since 2.3.0
-	 * @var bool
 	 */
-	public $keep_file = false;
+	public bool $keep_file = false;
 
 	/**
 	 * Creates a new File object, from an array of file properties.

@@ -12,9 +12,14 @@
 /**
  * WordPress dependencies.
  */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
+	Button,
+	CheckboxControl,
+	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	Icon,
+	SelectControl,
+	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/components';
 import { info } from '@wordpress/icons';
 import { __, _x, sprintf } from '@wordpress/i18n';
@@ -27,21 +32,21 @@ let exportTablesSelectSize = tablesCount + 1;
 const maxExportTablesSelectSize = 12;
 exportTablesSelectSize = Math.max( exportTablesSelectSize, 3 );
 exportTablesSelectSize = Math.min( exportTablesSelectSize, maxExportTablesSelectSize );
+const exportTablesSelectMultiple = tp.export.zipSupportAvailable;
 
-// The <option> entries for the dropdowns do not depend on the state, so they can be created once.
 const tablesSelectOptions = Object.entries( tp.export.tables ).map( ( [ tableId, tableName ] ) => {
 	if ( '' === tableName.trim() ) {
 		tableName = __( '(no name)', 'tablepress' );
 	}
 	const optionText = sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), tableId, tableName );
-	return <option key={ tableId } value={ tableId }>{ optionText }</option>;
+	return { value: tableId, label: optionText };
 } );
-const exportFormatsSelectOptions = Object.entries( tp.export.exportFormats ).map( ( [ exportFormat, exportFormatName ] ) =>
-	<option key={ exportFormat } value={ exportFormat }>{ exportFormatName }</option>
-);
-const csvDelimitersSelectOptions = Object.entries( tp.export.csvDelimiters ).map( ( [ csvDelimiter, csvDelimiterName ] ) =>
-	<option key={ csvDelimiter } value={ csvDelimiter }>{ csvDelimiterName }</option>
-);
+if ( ! exportTablesSelectMultiple ) {
+	tablesSelectOptions.unshift( { value: '', label: __( '— Select —', 'tablepress' ), disabled: true } );
+}
+
+const exportFormatsSelectOptions = Object.entries( tp.export.exportFormats ).map( ( [ exportFormat, exportFormatName ] ) => ( { value: exportFormat, label: exportFormatName } ) );
+const csvDelimitersSelectOptions = Object.entries( tp.export.csvDelimiters ).map( ( [ csvDelimiter, csvDelimiterName ] ) => ( { value: csvDelimiter, label: csvDelimiterName } ) );
 
 /**
  * Returns the "Export Screen" component's JSX markup.
@@ -49,6 +54,7 @@ const csvDelimitersSelectOptions = Object.entries( tp.export.csvDelimiters ).map
  * @return {Object} Export Screen component.
  */
 const Screen = () => {
+	const tablesExportListSelect = useRef( null );
 	const [ screenData, setScreenData ] = useState( {
 		selectedTables: tp.export.selectedTables,
 		exportFormat: tp.export.exportFormat,
@@ -63,93 +69,91 @@ const Screen = () => {
 	/**
 	 * Handles screen data state changes.
 	 *
-	 * @param {Object} updatedData Data in the screen data state that should be updated.
+	 * @param {Object} updatedScreenData Data in the screen data state that should be updated.
 	 */
-	const updateScreenData = ( updatedData ) => {
-		const newScreenData = {
-			...screenData,
-			...updatedData,
-		};
-		setScreenData( newScreenData );
+	const updateScreenData = ( updatedScreenData ) => {
+		setScreenData( ( currentScreenData ) => ( {
+			...currentScreenData,
+			...updatedScreenData,
+		} ) );
 	};
+
+	/*
+	 * Set the size of the export tables dropdown to the number of tables, if ZIP file support is available.
+	 * `SelectControl` does not support the HTML `size` attribute, so that this has to be done manually with an effect.
+	 */
+	useEffect( () => {
+		tablesExportListSelect.current.size = exportTablesSelectMultiple ? exportTablesSelectSize : 1;
+	}, [] );
 
 	return (
 		<table className="tablepress-postbox-table fixed">
 			<tbody>
 				<tr>
 					<th className="column-1 top-align" scope="row">
-						<label htmlFor="tables-export-list">
-							{ __( 'Tables to Export', 'tablepress' ) }:
-						</label>
-						{ tp.export.zipSupportAvailable &&
-							<>
-								{
-									// Show a "Select all" checkbox to select all entries in the export tables dropdown.
-								}
-								<br /><br />
-								<label htmlFor="tables-export-select-all">
-									<input
-										type="checkbox"
-										id="tables-export-select-all"
+						<VStack
+							spacing="20px"
+						>
+							<label htmlFor="tables-export-list">
+								{ __( 'Tables to Export', 'tablepress' ) }:
+							</label>
+							{ exportTablesSelectMultiple &&
+								<VStack>
+									<CheckboxControl
+										// Show a "Select all" checkbox to select all entries in the export tables dropdown.
+										__nextHasNoMarginBottom
+										label={ __( 'Select all', 'tablepress' ) }
 										checked={ screenData.selectedTables.length === tablesCount }
 										onChange={ () => {
 											const selectedTables = ( screenData.selectedTables.length === tablesCount ) ? [] : Object.keys( tp.export.tables );
 											updateScreenData( { selectedTables } );
 										} }
-									/> { __( 'Select all', 'tablepress' ) }
-								</label>
-								{ tablesCount > maxExportTablesSelectSize &&
-									<>
-										{
+									/>
+									{ tablesCount > maxExportTablesSelectSize &&
+										<CheckboxControl
 											// Show a "Reverse List" checkbox if more tables are shown than what the height of the export tables dropdown holds.
-										}
-										<br /><br />
-										<label htmlFor="tables-export-reverse-list">
-											<input
-												id="tables-export-reverse-list"
-												type="checkbox"
-												checked={ screenData.reverseList }
-												onChange={ () => {
-													updateScreenData( { reverseList: ! screenData.reverseList } );
-													tablesSelectOptions.reverse();
-												} }
-											/> { __( 'Reverse list', 'tablepress' ) }
-										</label>
-									</>
-								}
-							</>
-						}
+											__nextHasNoMarginBottom
+											label={ __( 'Reverse list', 'tablepress' ) }
+											checked={ screenData.reverseList }
+											onChange={ ( reverseList ) => {
+												updateScreenData( { reverseList } );
+												tablesSelectOptions.reverse();
+											} }
+										/>
+									}
+								</VStack>
+							}
+						</VStack>
 					</th>
 					<td className="column-2">
-						<select
+						<SelectControl
+							__nextHasNoMarginBottom
+							ref={ tablesExportListSelect }
 							id="tables-export-list"
-							size={ tp.export.zipSupportAvailable ? exportTablesSelectSize : 1 }
-							multiple={ tp.export.zipSupportAvailable }
-							value={ screenData.selectedTables }
-							onChange={ ( event ) => {
-								const selectedTables = [ ...event.target.selectedOptions ].map( ( option ) => option.value );
+							// size={ exportTablesSelectMultiple ? exportTablesSelectSize : 1 } // Not supported by `SelectControl`, so done with an effect above.
+							multiple={ exportTablesSelectMultiple }
+							value={ exportTablesSelectMultiple ? screenData.selectedTables : ( screenData.selectedTables[0] ?? '' ) }
+							onChange={ ( selectedTables ) => {
+								if ( 'string' === typeof selectedTables ) {
+									selectedTables = [ selectedTables ];
+								}
 								updateScreenData( { selectedTables } );
 							} }
-							style={ {
-								width: '100%',
-							} }
-						>
-							{ tablesSelectOptions }
-						</select>
-						{ tp.export.zipSupportAvailable &&
-							<>
-								<br />
-								<p className="info-text">
-									<Icon icon={ info } />
-									<span>
-										{ sprintf(
-											__( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ),
-											window?.navigator?.platform?.includes( 'Mac' ) ? _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : _x( 'Ctrl', 'keyboard key', 'tablepress' ),
-											_x( 'Shift', 'keyboard key', 'tablepress' ) )
-										}
-									</span>
-								</p>
-							</>
+							options={ tablesSelectOptions }
+						/>
+						{ exportTablesSelectMultiple &&
+							<HStack
+								alignment="left"
+							>
+								<Icon icon={ info } />
+								<span>
+									{ sprintf(
+										__( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ),
+										window?.navigator?.platform?.includes( 'Mac' ) ? _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : _x( 'Ctrl', 'keyboard key', 'tablepress' ),
+										_x( 'Shift', 'keyboard key', 'tablepress' ) )
+									}
+								</span>
+							</HStack>
 						}
 					</td>
 				</tr>
@@ -160,14 +164,18 @@ const Screen = () => {
 						</label>
 					</th>
 					<td className="column-2">
-						<select
-							id="tables-export-format"
-							name="export[format]"
-							value={ screenData.exportFormat }
-							onChange={ ( event ) => updateScreenData( { exportFormat: event.target.value } ) }
-						>
-							{ exportFormatsSelectOptions }
-						</select>
+						<HStack>
+							<SelectControl
+								__nextHasNoMarginBottom
+								id="tables-export-format"
+								name="export[format]"
+								value={ screenData.exportFormat }
+								label={ __( 'Export Format', 'tablepress' ) }
+								hideLabelFromVision={ true }
+								onChange={ ( exportFormat ) => updateScreenData( { exportFormat } ) }
+								options={ exportFormatsSelectOptions }
+							/>
+						</HStack>
 					</td>
 				</tr>
 				<tr>
@@ -177,23 +185,26 @@ const Screen = () => {
 						</label>
 					</th>
 					<td className="column-2">
-						<select
-							id="tables-export-csv-delimiter"
-							name="export[csv_delimiter]"
-							disabled={ 'csv' !== screenData.exportFormat }
-							value={ screenData.csvDelimiter }
-							onChange={ ( event ) => updateScreenData( { csvDelimiter: event.target.value } ) }
+						<HStack
+							alignment="left"
 						>
-							{ csvDelimitersSelectOptions }
-						</select>
-						{ 'csv' !== screenData.exportFormat &&
-							<>
-								{ ' ' }
-								<span className="description">
+							<SelectControl
+								__nextHasNoMarginBottom
+								id="tables-export-csv-delimiter"
+								name="export[csv_delimiter]"
+								value={ screenData.csvDelimiter }
+								label={ __( 'CSV Delimiter', 'tablepress' ) }
+								hideLabelFromVision={ true }
+								onChange={ ( csvDelimiter ) => updateScreenData( { csvDelimiter } ) }
+								options={ csvDelimitersSelectOptions }
+								disabled={ 'csv' !== screenData.exportFormat }
+							/>
+							{ 'csv' !== screenData.exportFormat &&
+								<span>
 									{ __( '(Only needed for CSV export.)', 'tablepress' ) }
 								</span>
-							</>
-						}
+							}
+						</HStack>
 					</td>
 				</tr>
 				<tr className="bottom-border">
@@ -202,23 +213,22 @@ const Screen = () => {
 					</th>
 					<td className="column-2">
 						{ tp.export.zipSupportAvailable &&
-							<label htmlFor="tables-export-zip-file">
-								<input
-									type="checkbox"
-									id="tables-export-zip-file"
+							<HStack
+								alignment="left"
+							>
+								<CheckboxControl
+									__nextHasNoMarginBottom
+									label={ __( 'Create a ZIP archive.', 'tablepress' ) }
 									checked={ screenData.createZipFile || zipFileRequired }
 									disabled={ zipFileRequired }
-									onChange={ () => updateScreenData( { createZipFile: ! screenData.createZipFile } ) }
-								/> { __( 'Create a ZIP archive.', 'tablepress' ) }
+									onChange={ ( createZipFile ) => updateScreenData( { createZipFile } ) }
+								/>
 								{ zipFileRequired &&
-									<>
-										{ ' ' }
-										<span className="description">
-											{ __( '(Mandatory if more than one table is selected.)', 'tablepress' ) }
-										</span>
-									</>
+									<span>
+										{ __( '(Mandatory if more than one table is selected.)', 'tablepress' ) }
+									</span>
 								}
-							</label>
+							</HStack>
 						}
 						{ ! tp.export.zipSupportAvailable &&
 							__( 'Note: Support for ZIP file creation seems not to be available on this server.', 'tablepress' )
@@ -229,20 +239,22 @@ const Screen = () => {
 					<td className="column-1"></td>
 					<td className="column-2">
 						<input
+							// Send the list of tables to be exported as a string and not an array, to reduce potential issues with large arrays.
 							type="hidden"
 							name="export[tables_list]"
 							value={ screenData.selectedTables.join() }
 						/>
 						<input
+							// Send the ZIP file attribute as a hidden field, as disabled checkboxes are not sent in HTTP POST requests.
 							type="hidden"
 							name="export[zip_file]"
 							value={ screenData.createZipFile || zipFileRequired }
 						/>
-						<input
+						<Button
+							variant="primary"
 							type="submit"
-							value={ __( 'Download Export File', 'tablepress' ) }
-							className="button button-primary button-large"
 							disabled={ 0 === screenData.selectedTables.length }
+							text={ __( 'Download Export File', 'tablepress' ) }
 						/>
 					</td>
 				</tr>

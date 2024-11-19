@@ -54,11 +54,11 @@
 
 	<rule ref="PHPCompatibilityWP"/>
 
-	<!-- TablePress currently supports PHP 7.2+. -->
-	<config name="testVersion" value="7.2-"/>
+	<!-- TablePress currently supports PHP 7.4+. -->
+	<config name="testVersion" value="7.4-"/>
 
-	<!-- TablePress currently supports WP 6.0+. -->
-	<config name="minimum_wp_version" value="6.0"/>
+	<!-- TablePress currently supports WP 6.2+. -->
+	<config name="minimum_wp_version" value="6.2"/>
 
 	<!--
 	#############################################################################
@@ -68,14 +68,8 @@
 	-->
 
 	<!-- Exclude rules in third-party files that can safely be ignored. -->
-	<rule ref="PHPCompatibility.FunctionNameRestrictions.NewMagicMethods.__serializeFound">
-		<exclude-pattern>/libraries/vendor/PhpOffice/PhpSpreadsheet/Spreadsheet\.php$</exclude-pattern>
-	</rule>
 	<rule ref="PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated">
 		<exclude-pattern>/libraries/simplexlsx\.class\.php$</exclude-pattern>
-	</rule>
-	<rule ref="PHPCompatibility.ParameterValues.NewIDNVariantDefault.NotSet">
-		<exclude-pattern>/libraries/freemius/includes/class-freemius\.php$</exclude-pattern>
 	</rule>
 
 </ruleset>

@@ -13,34 +13,27 @@ class Cells
 {
 	protected const MAX_COLUMN_ID = 16384;
 
-	/**
-	 * @var \TablePress\Psr\SimpleCache\CacheInterface
-	 */
-	private $cache;
+	private CacheInterface $cache;
 
 	/**
 	 * Parent worksheet.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
-	private $parent;
+	private ?Worksheet $parent;
 
 	/**
 	 * The currently active Cell.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell|null
 	 */
-	private $currentCell;
+	private ?Cell $currentCell = null;
 
 	/**
 	 * Coordinate of the currently active Cell.
-	 * @var string|null
 	 */
-	private $currentCoordinate;
+	private ?string $currentCoordinate = null;
 
 	/**
 	 * Flag indicating whether the currently active Cell requires saving.
-	 * @var bool
 	 */
-	private $currentCellIsDirty = false;
+	private bool $currentCellIsDirty = false;
 
 	/**
 	 * An index of existing cells. int pointer to the coordinate (0-base-indexed row * 16,384 + 1-base indexed column)
@@ -48,13 +41,12 @@ class Cells
 	 *
 	 * @var int[]
 	 */
-	private $index = [];
+	private array $index = [];
 
 	/**
 	 * Prefix used to uniquely identify cache data for this worksheet.
-	 * @var string
 	 */
-	private $cachePrefix;
+	private string $cachePrefix;
 
 	/**
 	 * Initialise this new cell collection.
@@ -297,7 +289,7 @@ class Cells
 			$newCollection->index[$key] = $value;
 			$stored = $newCollection->cache->set(
 				$newCollection->cachePrefix . $key,
-				clone $this->cache->get($this->cachePrefix . $key)
+				clone $this->getCache($key)
 			);
 			if ($stored === false) {
 				$this->destructIfNeeded($newCollection, 'Failed to copy cells in cache');
@@ -419,11 +411,7 @@ class Cells
 			return null;
 		}
 
-		// Check if the entry that has been requested actually exists in the cache
-		$cell = $this->cache->get($this->cachePrefix . $cellCoordinate);
-		if ($cell === null) {
-			throw new PhpSpreadsheetException("Cell entry {$cellCoordinate} no longer exists in cache. This probably means that the cache was cleared by someone else.");
-		}
+		$cell = $this->getcache($cellCoordinate);
 
 		// Set current entry to the requested entry
 		$this->currentCoordinate = $cellCoordinate;
@@ -474,5 +462,15 @@ class Cells
 		foreach ($this->index as $coordinate => $value) {
 			yield $this->cachePrefix . $coordinate;
 		}
+	}
+
+	private function getCache(string $cellCoordinate): Cell
+	{
+		$cell = $this->cache->get($this->cachePrefix . $cellCoordinate);
+		if (!($cell instanceof Cell)) {
+			throw new PhpSpreadsheetException("Cell entry {$cellCoordinate} no longer exists in cache. This probably means that the cache was cleared by someone else.");
+		}
+
+		return $cell;
 	}
 }

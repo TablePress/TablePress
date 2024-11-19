@@ -4,30 +4,15 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls;
 
 class MD5
 {
-	/**
-	 * @var int
-	 */
-	private $a;
+	private int $a;
 
-	/**
-	 * @var int
-	 */
-	private $b;
+	private int $b;
 
-	/**
-	 * @var int
-	 */
-	private $c;
+	private int $c;
 
-	/**
-	 * @var int
-	 */
-	private $d;
+	private int $d;
 
-	/**
-	 * @var int
-	 */
-	private static $allOneBits;
+	private static int $allOneBits;
 
 	/**
 	 * MD5 stream constructor.

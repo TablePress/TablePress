@@ -171,15 +171,13 @@ class Rule
 	//    const AUTOFILTER_COLUMN_RULE_AFTER                = 'greaterThan';
 	/**
 	 * Autofilter Column.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column|null
 	 */
-	private $parent;
+	private ?Column $parent;
 
 	/**
 	 * Autofilter Rule Type.
-	 * @var string
 	 */
-	private $ruleType = self::AUTOFILTER_RULETYPE_FILTER;
+	private string $ruleType = self::AUTOFILTER_RULETYPE_FILTER;
 
 	/**
 	 * Autofilter Rule Value.
@@ -190,15 +188,13 @@ class Rule
 
 	/**
 	 * Autofilter Rule Operator.
-	 * @var string
 	 */
-	private $operator = self::AUTOFILTER_COLUMN_RULE_EQUAL;
+	private string $operator = self::AUTOFILTER_COLUMN_RULE_EQUAL;
 
 	/**
 	 * DateTimeGrouping Group Value.
-	 * @var string
 	 */
-	private $grouping = '';
+	private string $grouping = '';
 
 	/**
 	 * Create a new Rule.

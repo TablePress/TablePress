@@ -27,9 +27,8 @@ class TablePress_Evaluate_Legacy {
 	 * Instance of the EvalMath class.
 	 *
 	 * @since 1.0.0
-	 * @var EvalMath
 	 */
-	protected $evalmath;
+	protected \EvalMath $evalmath;
 
 	/**
 	 * Table data in which formulas shall be evaluated.
@@ -37,7 +36,7 @@ class TablePress_Evaluate_Legacy {
 	 * @since 1.5.0
 	 * @var array<int, array<int, string>>
 	 */
-	protected $table_data;
+	protected array $table_data;
 
 	/**
 	 * Storage for cell ranges that have been replaced in formulas.
@@ -45,7 +44,7 @@ class TablePress_Evaluate_Legacy {
 	 * @since 1.0.0
 	 * @var array<string, string>
 	 */
-	protected $known_ranges = array();
+	protected array $known_ranges = array();
 
 	/**
 	 * Initialize the Formula Evaluation class, include the EvalMath class.

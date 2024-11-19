@@ -20,10 +20,10 @@ return array(
 	'search'         => '搜索:',
 	'zeroRecords'    => '没有匹配结果',
 	'paginate'       => array(
-		'first'    => '首页',
-		'previous' => '上页',
-		'next'     => '下页',
-		'last'     => '末页',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': 以升序排列此列',

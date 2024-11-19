@@ -56,6 +56,7 @@ jobs:
 
   phpunit:
     name: WP ${{ matrix.wp }}${{ matrix.multisite && ' multisite' || '' }}, PHP ${{ matrix.php }}
+    if: github.repository == 'TablePress/TablePress'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -69,21 +70,20 @@ jobs:
           - 3306:3306
         options: >-
           --health-cmd="healthcheck.sh --connect --innodb_initialized"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-interval="10s"
+          --health-timeout="5s"
+          --health-retries="5"
     strategy:
       fail-fast: false
       matrix:
         wp:
           - trunk
+          - '6.7'
           - '6.6'
           - '6.5'
           - '6.4'
           - '6.3'
           - '6.2'
-          - '6.1'
-          - '6.0'
         php:
           - '8.4'
           - '8.3'
@@ -91,8 +91,6 @@ jobs:
           - '8.1'
           - '8.0'
           - '7.4'
-          - '7.3'
-          - '7.2'
         multisite: [ false, true ]
     env:
       PLUGIN_DIR: ./src/wp-content/plugins/tablepress
@@ -111,7 +109,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -125,7 +123,7 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           path: ${{ env.PLUGIN_DIR }}
 
@@ -144,7 +142,7 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ ( ( matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' ) && matrix.wp == '6.0' ) || ( matrix.php == '8.4' && matrix.wp != '6.0' ) }} # WP 6.0 runs into dynamic property deprecations with PHP 8.2+, WP > 6.0 runs in to nullable parameter marking deprecations with PHP 8.4+.
+        continue-on-error: ${{ matrix.php == '8.4' }} # WP > 6.2 runs in to nullable parameter marking deprecations with PHP 8.4+.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

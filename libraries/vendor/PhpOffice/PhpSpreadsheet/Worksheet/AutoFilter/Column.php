@@ -21,7 +21,7 @@ class Column
 	 *
 	 * @var string[]
 	 */
-	private static $filterTypes = [
+	private static array $filterTypes = [
 		//    Currently we're not handling
 		//        colorFilter
 		//        extLst
@@ -41,48 +41,44 @@ class Column
 	 *
 	 * @var string[]
 	 */
-	private static $ruleJoins = [
+	private static array $ruleJoins = [
 		self::AUTOFILTER_COLUMN_JOIN_AND,
 		self::AUTOFILTER_COLUMN_JOIN_OR,
 	];
 
 	/**
 	 * Autofilter.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter|null
 	 */
-	private $parent;
+	private ?AutoFilter $parent;
 
 	/**
 	 * Autofilter Column Index.
-	 * @var string
 	 */
-	private $columnIndex;
+	private string $columnIndex;
 
 	/**
 	 * Autofilter Column Filter Type.
-	 * @var string
 	 */
-	private $filterType = self::AUTOFILTER_FILTERTYPE_FILTER;
+	private string $filterType = self::AUTOFILTER_FILTERTYPE_FILTER;
 
 	/**
 	 * Autofilter Multiple Rules And/Or.
-	 * @var string
 	 */
-	private $join = self::AUTOFILTER_COLUMN_JOIN_OR;
+	private string $join = self::AUTOFILTER_COLUMN_JOIN_OR;
 
 	/**
 	 * Autofilter Column Rules.
 	 *
 	 * @var Column\Rule[]
 	 */
-	private $ruleset = [];
+	private array $ruleset = [];
 
 	/**
 	 * Autofilter Column Dynamic Attributes.
 	 *
-	 * @var mixed[]
+	 * @var (float|int|string)[]
 	 */
-	private $attributes = [];
+	private array $attributes = [];
 
 	/**
 	 * Create a new Column.
@@ -213,7 +209,7 @@ class Column
 	/**
 	 * Set AutoFilter Attributes.
 	 *
-	 * @param mixed[] $attributes
+	 * @param (float|int|string)[] $attributes
 	 *
 	 * @return $this
 	 */
@@ -229,7 +225,7 @@ class Column
 	 * Set An AutoFilter Attribute.
 	 *
 	 * @param string $name Attribute Name
-	 * @param int|string $value Attribute Value
+	 * @param float|int|string $value Attribute Value
 	 *
 	 * @return $this
 	 */
@@ -244,7 +240,7 @@ class Column
 	/**
 	 * Get AutoFilter Column Attributes.
 	 *
-	 * @return int[]|string[]
+	 * @return (float|int|string)[]
 	 */
 	public function getAttributes(): array
 	{
@@ -255,7 +251,7 @@ class Column
 	 * Get specific AutoFilter Column Attribute.
 	 *
 	 * @param string $name Attribute Name
-	 * @return int|string|null
+	 * @return float|int|string|null
 	 */
 	public function getAttribute(string $name)
 	{
@@ -365,6 +361,7 @@ class Column
 	public function __clone()
 	{
 		$vars = get_object_vars($this);
+		/** @var AutoFilter\Column\Rule[] $value */
 		foreach ($vars as $key => $value) {
 			if ($key === 'parent') {
 				// Detach from autofilter parent

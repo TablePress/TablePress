@@ -12,51 +12,43 @@ class Style extends Supervisor
 {
 	/**
 	 * Font.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Font
 	 */
-	protected $font;
+	protected Font $font;
 
 	/**
 	 * Fill.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Fill
 	 */
-	protected $fill;
+	protected Fill $fill;
 
 	/**
 	 * Borders.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Borders
 	 */
-	protected $borders;
+	protected Borders $borders;
 
 	/**
 	 * Alignment.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Alignment
 	 */
-	protected $alignment;
+	protected Alignment $alignment;
 
 	/**
 	 * Number Format.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat
 	 */
-	protected $numberFormat;
+	protected NumberFormat $numberFormat;
 
 	/**
 	 * Protection.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Protection
 	 */
-	protected $protection;
+	protected Protection $protection;
 
 	/**
 	 * Index of style in collection. Only used for real style.
-	 * @var int
 	 */
-	protected $index;
+	protected int $index;
 
 	/**
 	 * Use Quote Prefix when displaying in cell editor. Only used for real style.
-	 * @var bool
 	 */
-	protected $quotePrefix = false;
+	protected bool $quotePrefix = false;
 
 	/**
 	 * Internal cache for styles
@@ -75,7 +67,7 @@ class Style extends Supervisor
 	 *
 	 * @var null|array<string, array>
 	 */
-	private static $cachedStyles;
+	private static ?array $cachedStyles = null;
 
 	/**
 	 * Create a new Style.

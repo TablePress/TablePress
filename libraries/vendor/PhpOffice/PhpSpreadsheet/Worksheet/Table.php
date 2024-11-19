@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\DataType;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
@@ -15,54 +16,46 @@ class Table
 {
 	/**
 	 * Table Name.
-	 * @var string
 	 */
-	private $name;
+	private string $name;
 	/**
 	 * Show Header Row.
-	 * @var bool
 	 */
-	private $showHeaderRow = true;
+	private bool $showHeaderRow = true;
 	/**
 	 * Show Totals Row.
-	 * @var bool
 	 */
-	private $showTotalsRow = false;
+	private bool $showTotalsRow = false;
 	/**
 	 * Table Range.
-	 * @var string
 	 */
-	private $range = '';
+	private string $range = '';
 	/**
 	 * Table Worksheet.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
 	 */
-	private $workSheet;
+	private ?Worksheet $workSheet = null;
 	/**
 	 * Table allow filter.
-	 * @var bool
 	 */
-	private $allowFilter = true;
+	private bool $allowFilter = true;
 	/**
 	 * Table Column.
 	 *
 	 * @var Table\Column[]
 	 */
-	private $columns = [];
+	private array $columns = [];
 	/**
 	 * Table Style.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle
 	 */
-	private $style;
+	private TableStyle $style;
 	/**
 	 * Table AutoFilter.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter
 	 */
-	private $autoFilter;
+	private AutoFilter $autoFilter;
 	/**
 	 * Create a new Table.
 	 *
-	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
+	 * @param AddressRange<CellAddress>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.
@@ -251,7 +244,7 @@ class Table
 	/**
 	 * Set Table Cell Range.
 	 *
-	 * @param AddressRange|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
+	 * @param AddressRange<CellAddress>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.

@@ -25,9 +25,8 @@ class TablePress_List_View extends TablePress_View {
 	 * Object for the All Tables List Table.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_All_Tables_List_Table
 	 */
-	protected $wp_list_table;
+	protected \TablePress_All_Tables_List_Table $wp_list_table;
 
 	/**
 	 * Set up the view with data and do things that are specific for this view.
@@ -145,7 +144,7 @@ class TablePress_List_View extends TablePress_View {
 			if ( ! empty( $active_incompatible_superseded_extensions ) ) {
 				$notice_css_classes .= ' notice-error notice-large';
 
-				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired more than 2 years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>will stop working with TablePress 3</strong> later this year:', 'tablepress' ) . '</p>';
+				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired more than 2 years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>do no longer work with TablePress 3</strong>:', 'tablepress' ) . '</p>';
 				$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:16px;">';
 				foreach ( $active_incompatible_superseded_extensions as $extension ) {
 					$message .= '<li>' . esc_html( $extension ) . '</li>';
@@ -189,7 +188,7 @@ class TablePress_List_View extends TablePress_View {
 					$message .= '<li>' . __( 'Priority email support!', 'tablepress' ) . '</li>';
 					$message .= '</ul>';
 					$message .= '<p style="font-size:16px;"><strong>' . sprintf( __( 'And the best: %s', 'tablepress' ), sprintf( __( 'Use the promo code %1$s during the checkout process for a special offer!', 'tablepress' ), '<code>UPGRADE</code>' ) ) . '</strong></p>';
-					$message .= '<p style="margin-top:2em;">' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:3em;background:linear-gradient(135deg,#00d184 0%%,#0791e3 100%%);border:none;font-weight:bold;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=button&utm_content=superseded-extensions-message', __( 'Upgrade to a TablePress Premium version now!', 'tablepress' ) );
+					$message .= '<p style="margin-top:2em;">' . sprintf( '<a href="%s" class="components-button is-primary" style="font-size:14px;margin-right:3em;background:linear-gradient(135deg,#00d184 0%%,#0791e3 100%%);border:none;font-weight:bold;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=button&utm_content=superseded-extensions-message', __( 'Upgrade to a TablePress Premium version now!', 'tablepress' ) );
 				}
 				$message .= $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'superseded_extensions', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
@@ -227,7 +226,7 @@ class TablePress_List_View extends TablePress_View {
 			$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=upgrade-message' ) . '<br>'
 				. __( 'The available Pro and Max plans offer user support and many exciting and helpful features for your tables.', 'tablepress' ) . '</strong></p>';
 			$message .= '<p style="font-size:14px;">' . __( 'Sincerely, Tobias', 'tablepress' ) . '</p>';
-			$message .= '<p style="margin-top:1em;">' . sprintf( '<a href="%s" class="button button-primary" style="font-size:14px;margin-right:3em;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-message', __( 'Tell me more about the Premium features', 'tablepress' ) )
+			$message .= '<p style="margin-top:1em;">' . sprintf( '<a href="%s" class="components-button is-primary" style="font-size:14px;margin-right:3em;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-message', __( 'Tell me more about the Premium features', 'tablepress' ) )
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
 			$title = '<em>' . __( 'TablePress has more to offer!', 'tablepress' ) . '</em>';

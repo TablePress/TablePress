@@ -10,20 +10,11 @@ use Stringable;
  */
 class ColumnRange implements AddressRange
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|null
-	 */
-	protected $worksheet;
+	protected ?Worksheet $worksheet;
 
-	/**
-	 * @var int
-	 */
-	protected $from;
+	protected int $from;
 
-	/**
-	 * @var int
-	 */
-	protected $to;
+	protected int $to;
 
 	public function __construct(string $from, ?string $to = null, ?Worksheet $worksheet = null)
 	{

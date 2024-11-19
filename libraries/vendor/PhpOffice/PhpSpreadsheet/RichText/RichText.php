@@ -14,7 +14,7 @@ class RichText implements IComparable
 	 *
 	 * @var ITextElement[]
 	 */
-	private $richTextElements;
+	private array $richTextElements;
 
 	/**
 	 * Create a new RichText instance.
@@ -27,8 +27,8 @@ class RichText implements IComparable
 		// Rich-Text string attached to cell?
 		if ($cell !== null) {
 			// Add cell text and style
-			if ($cell->getValue() != '') {
-				$objRun = new Run($cell->getValue());
+			if ($cell->getValueString() !== '') {
+				$objRun = new Run($cell->getValueString());
 				$objRun->setFont(clone $cell->getWorksheet()->getStyle($cell->getCoordinate())->getFont());
 				$this->addText($objRun);
 			}

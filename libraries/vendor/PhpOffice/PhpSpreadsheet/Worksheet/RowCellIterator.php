@@ -13,27 +13,23 @@ class RowCellIterator extends CellIterator
 {
 	/**
 	 * Current iterator position.
-	 * @var int
 	 */
-	private $currentColumnIndex;
+	private int $currentColumnIndex;
 
 	/**
 	 * Row index.
-	 * @var int
 	 */
-	private $rowIndex;
+	private int $rowIndex;
 
 	/**
 	 * Start position.
-	 * @var int
 	 */
-	private $startColumnIndex = 1;
+	private int $startColumnIndex = 1;
 
 	/**
 	 * End position.
-	 * @var int
 	 */
-	private $endColumnIndex = 1;
+	private int $endColumnIndex = 1;
 
 	/**
 	 * Create a new column iterator.

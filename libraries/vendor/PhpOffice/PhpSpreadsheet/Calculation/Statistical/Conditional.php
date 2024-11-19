@@ -87,9 +87,7 @@ class Conditional
 		// Filter out any empty values that shouldn't be included in a COUNT
 		$range = array_filter(
 			Functions::flattenArray($range),
-			function ($value) : bool {
-				return $value !== null && $value !== '';
-			}
+			fn ($value): bool => $value !== null && $value !== ''
 		);
 
 		$range = array_merge([[self::CONDITION_COLUMN_NAME]], array_chunk($range, 1));
@@ -229,9 +227,7 @@ class Conditional
 
 		if (count($conditions) === 1) {
 			return array_map(
-				function ($value) : array {
-					return [$value];
-				},
+				fn ($value): array => [$value],
 				$conditions[0]
 			);
 		}

@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Etsi:',
 	'zeroRecords'    => 'Tietoja ei löytynyt',
 	'paginate'       => array(
-		'first'    => 'Ensimmäinen',
-		'previous' => 'Edellinen',
-		'next'     => 'Seuraava',
-		'last'     => 'Viimeinen',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': lajittele sarake nousevasti',

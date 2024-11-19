@@ -147,7 +147,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 			<?php _e( 'To proceed without trying to save the &#8220;Custom CSS&#8221; to a file, click the button below.', 'tablepress' ); ?>
 			<?php _e( 'Your &#8220;Custom CSS&#8221; will then be loaded inline.', 'tablepress' ); ?>
 		</p><p>
-			<a href="<?php echo TablePress::url( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) ); ?>" class="button button-large"><?php _e( 'Proceed without saving &#8220;Custom CSS&#8221; to a file', 'tablepress' ); ?></a>
+			<a href="<?php echo TablePress::url( array( 'action' => 'options', 'message' => 'success_save_error_custom_css' ) ); ?>" class="components-button is-secondary"><?php _e( 'Proceed without saving &#8220;Custom CSS&#8221; to a file', 'tablepress' ); ?></a>
 		</p>
 		<?php
 	}

@@ -4,15 +4,9 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class SharedFormula
 {
-	/**
-	 * @var string
-	 */
-	private $master;
+	private string $master;
 
-	/**
-	 * @var string
-	 */
-	private $formula;
+	private string $formula;
 
 	public function __construct(string $master, string $formula)
 	{

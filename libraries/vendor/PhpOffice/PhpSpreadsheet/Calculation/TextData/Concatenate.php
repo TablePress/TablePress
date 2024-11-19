@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\TextData;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
@@ -14,7 +15,7 @@ class Concatenate
 	use ArrayEnabled;
 
 	/**
-	 * CONCATENATE.
+	 * This implements the CONCAT function, *not* CONCATENATE.
 	 *
 	 * @param array $args
 	 */
@@ -27,7 +28,7 @@ class Concatenate
 
 		foreach ($aArgs as $arg) {
 			$value = Helpers::extractString($arg);
-			if (ErrorValue::isError($value)) {
+			if (ErrorValue::isError($value, true)) {
 				$returnValue = $value;
 
 				break;
@@ -41,6 +42,68 @@ class Concatenate
 		}
 
 		return $returnValue;
+	}
+
+	/**
+	 * This implements the CONCATENATE function.
+	 *
+	 * @param array $args data to be concatenated
+	 * @return mixed[]|string
+	 */
+	public static function actualCONCATENATE(...$args)
+	{
+		if (Functions::getCompatibilityMode() === Functions::COMPATIBILITY_GNUMERIC) {
+			return self::CONCATENATE(...$args);
+		}
+		$result = '';
+		foreach ($args as $operand2) {
+			$result = self::concatenate2Args($result, $operand2);
+			if (ErrorValue::isError($result, true) === true) {
+				break;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @param mixed[]|string $operand1
+	 * @param null|mixed[]|bool|float|int|string $operand2
+	 * @return mixed[]|string
+	 */
+	private static function concatenate2Args($operand1, $operand2)
+	{
+		if (is_array($operand1) || is_array($operand2)) {
+			$operand1 = Calculation::boolToString($operand1);
+			$operand2 = Calculation::boolToString($operand2);
+			[$rows, $columns] = Calculation::checkMatrixOperands($operand1, $operand2, 2);
+			$errorFound = false;
+			for ($row = 0; $row < $rows && !$errorFound; ++$row) {
+				for ($column = 0; $column < $columns; ++$column) {
+					if (ErrorValue::isError($operand2[$row][$column])) {
+						return $operand2[$row][$column];
+					}
+					$operand1[$row][$column]
+						= Calculation::boolToString($operand1[$row][$column])
+						. Calculation::boolToString($operand2[$row][$column]);
+					if (mb_strlen($operand1[$row][$column]) > DataType::MAX_STRING_LENGTH) {
+						$operand1 = ExcelError::CALC();
+						$errorFound = true;
+
+						break;
+					}
+				}
+			}
+		} elseif (ErrorValue::isError($operand2, true) === true) {
+			$operand1 = (string) $operand2;
+		} else {
+			$operand1 .= (string) Calculation::boolToString($operand2);
+			if (mb_strlen($operand1) > DataType::MAX_STRING_LENGTH) {
+				$operand1 = ExcelError::CALC();
+			}
+		}
+
+		return $operand1;
 	}
 
 	/**
@@ -68,12 +131,12 @@ class Concatenate
 			);
 		}
 
-		$delimiter = $delimiter ?? '';
-		$ignoreEmpty = $ignoreEmpty ?? true;
+		$delimiter ??= '';
+		$ignoreEmpty ??= true;
 		$aArgs = Functions::flattenArray($args);
 		$returnValue = self::evaluateTextJoinArray($ignoreEmpty, $aArgs);
 
-		$returnValue = $returnValue ?? implode($delimiter, $aArgs);
+		$returnValue ??= implode($delimiter, $aArgs);
 		if (StringHelper::countCharacters($returnValue) > DataType::MAX_STRING_LENGTH) {
 			$returnValue = ExcelError::CALC();
 		}
@@ -85,7 +148,7 @@ class Concatenate
 	{
 		foreach ($aArgs as $key => &$arg) {
 			$value = Helpers::extractString($arg);
-			if (ErrorValue::isError($value)) {
+			if (ErrorValue::isError($value, true)) {
 				return $value;
 			}
 
@@ -123,7 +186,7 @@ class Concatenate
 
 		if (!is_numeric($repeatCount) || $repeatCount < 0) {
 			$returnValue = ExcelError::VALUE();
-		} elseif (ErrorValue::isError($stringValue)) {
+		} elseif (ErrorValue::isError($stringValue, true)) {
 			$returnValue = $stringValue;
 		} else {
 			$returnValue = str_repeat($stringValue, (int) $repeatCount);

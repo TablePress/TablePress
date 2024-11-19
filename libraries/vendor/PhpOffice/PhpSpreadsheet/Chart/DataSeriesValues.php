@@ -19,55 +19,42 @@ class DataSeriesValues extends Properties
 
 	/**
 	 * Series Data Type.
-	 * @var string
 	 */
-	private $dataType;
+	private string $dataType;
 
 	/**
 	 * Series Data Source.
-	 * @var string|null
 	 */
-	private $dataSource;
+	private ?string $dataSource;
 
 	/**
 	 * Format Code.
-	 * @var string|null
 	 */
-	private $formatCode;
+	private ?string $formatCode;
 
 	/**
 	 * Series Point Marker.
-	 * @var string|null
 	 */
-	private $pointMarker;
+	private ?string $pointMarker;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	private $markerFillColor;
+	private ChartColor $markerFillColor;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	private $markerBorderColor;
+	private ChartColor $markerBorderColor;
 
 	/**
 	 * Series Point Size.
-	 * @var int
 	 */
-	private $pointSize = 3;
+	private int $pointSize = 3;
 
 	/**
 	 * Point Count (The number of datapoints in the dataseries).
-	 * @var int
 	 */
-	private $pointCount;
+	private int $pointCount;
 
 	/**
 	 * Data Values.
-	 * @var mixed[]|null
 	 */
-	private $dataValues;
+	private ?array $dataValues;
 
 	/**
 	 * Fill color (can be array with colors if dataseries have custom colors).
@@ -76,23 +63,14 @@ class DataSeriesValues extends Properties
 	 */
 	private $fillColor;
 
-	/**
-	 * @var bool
-	 */
-	private $scatterLines = true;
+	private bool $scatterLines = true;
 
-	/**
-	 * @var bool
-	 */
-	private $bubble3D = false;
+	private bool $bubble3D = false;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Layout|null
-	 */
-	private $labelLayout;
+	private ?Layout $labelLayout = null;
 
 	/** @var TrendLine[] */
-	private $trendLines = [];
+	private array $trendLines = [];
 
 	/**
 	 * Create a new DataSeriesValues object.
@@ -477,12 +455,14 @@ class DataSeriesValues extends Properties
 				if (($dimensions[0] == 1) || ($dimensions[1] == 1)) {
 					$this->dataValues = Functions::flattenArray($newDataValues);
 				} else {
-					$newArray = array_values(array_shift($newDataValues));
+					/** @var array<int, array> */
+					$newDataValuesx = $newDataValues;
+					$newArray = array_values(array_shift($newDataValuesx) ?? []);
 					foreach ($newArray as $i => $newDataSet) {
 						$newArray[$i] = [$newDataSet];
 					}
 
-					foreach ($newDataValues as $newDataSet) {
+					foreach ($newDataValuesx as $newDataSet) {
 						$i = 0;
 						foreach ($newDataSet as $newDataVal) {
 							array_unshift($newArray[$i++], $newDataVal);
@@ -521,9 +501,8 @@ class DataSeriesValues extends Properties
 
 	/**
 	 * Smooth Line. Must be specified for both DataSeries and DataSeriesValues.
-	 * @var bool
 	 */
-	private $smoothLine = false;
+	private bool $smoothLine = false;
 
 	/**
 	 * Get Smooth Line.

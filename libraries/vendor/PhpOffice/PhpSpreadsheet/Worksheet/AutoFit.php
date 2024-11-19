@@ -8,10 +8,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class AutoFit
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	protected $worksheet;
+	protected Worksheet $worksheet;
 
 	public function __construct(Worksheet $worksheet)
 	{

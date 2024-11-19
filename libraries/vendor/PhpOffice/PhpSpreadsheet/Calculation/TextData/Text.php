@@ -4,6 +4,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\TextData;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalcExp;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 
@@ -17,7 +18,7 @@ class Text
 	 * @param mixed $value String Value
 	 *                         Or can be an array of values
 	 *
-	 * @return array|int If an array of values is passed for the argument, then the returned result
+	 * @return array|int|string If an array of values is passed for the argument, then the returned result
 	 *            will also be an array with matching dimensions
 	 */
 	public static function length($value = '')
@@ -26,7 +27,11 @@ class Text
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $value);
 		}
 
-		$value = Helpers::extractString($value);
+		try {
+			$value = Helpers::extractString($value, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
 
 		return mb_strlen($value, 'UTF-8');
 	}
@@ -41,7 +46,7 @@ class Text
 	 * @param mixed $value2 String Value
 	 *                         Or can be an array of values
 	 *
-	 * @return array|bool If an array of values is passed for either of the arguments, then the returned result
+	 * @return array|bool|string If an array of values is passed for either of the arguments, then the returned result
 	 *            will also be an array with matching dimensions
 	 */
 	public static function exact($value1, $value2)
@@ -50,8 +55,12 @@ class Text
 			return self::evaluateArrayArguments([self::class, __FUNCTION__], $value1, $value2);
 		}
 
-		$value1 = Helpers::extractString($value1);
-		$value2 = Helpers::extractString($value2);
+		try {
+			$value1 = Helpers::extractString($value1, true);
+			$value2 = Helpers::extractString($value2, true);
+		} catch (CalcExp $e) {
+			return $e->getMessage();
+		}
 
 		return $value2 === $value1;
 	}
@@ -97,11 +106,14 @@ class Text
 	 * @param mixed $padding The value with which to pad the result.
 	 *                              The default is #N/A.
 	 *
-	 * @return array the array built from the text, split by the row and column delimiters
+	 * @return array|string the array built from the text, split by the row and column delimiters, or an error string
 	 */
-	public static function split($text, $columnDelimiter = null, $rowDelimiter = null, bool $ignoreEmpty = false, bool $matchMode = true, $padding = '#N/A'): array
+	public static function split($text, $columnDelimiter = null, $rowDelimiter = null, bool $ignoreEmpty = false, bool $matchMode = true, $padding = '#N/A')
 	{
 		$text = Functions::flattenSingleValue($text);
+		if (ErrorValue::isError($text, true)) {
+			return $text;
+		}
 
 		$flags = self::matchFlags($matchMode);
 
@@ -118,9 +130,7 @@ class Text
 		if ($ignoreEmpty === true) {
 			$rows = array_values(array_filter(
 				$rows,
-				function ($row) : bool {
-					return $row !== '';
-				}
+				fn ($row): bool => $row !== ''
 			));
 		}
 
@@ -136,9 +146,7 @@ class Text
 					if ($ignoreEmpty === true) {
 						$row = array_values(array_filter(
 							$row,
-							function ($value) : bool {
-								return $value !== '';
-							}
+							fn ($value): bool => $value !== ''
 						));
 					}
 				}
@@ -146,9 +154,7 @@ class Text
 			if ($ignoreEmpty === true) {
 				$rows = array_values(array_filter(
 					$rows,
-					function ($row) : bool {
-						return $row !== [] && $row !== [''];
-					}
+					fn ($row): bool => $row !== [] && $row !== ['']
 				));
 			}
 		}
@@ -163,9 +169,7 @@ class Text
 	{
 		$columnCount = array_reduce(
 			$rows,
-			function (int $counter, array $row) : int {
-				return max($counter, count($row));
-			},
+			fn (int $counter, array $row): int => max($counter, count($row)),
 			0
 		);
 
@@ -189,9 +193,7 @@ class Text
 
 		if (is_array($delimiter) && count($valueSet) > 1) {
 			$quotedDelimiters = array_map(
-				function ($delimiter) : string {
-					return preg_quote($delimiter ?? '', '/');
-				},
+				fn ($delimiter): string => preg_quote($delimiter ?? '', '/'),
 				$valueSet
 			);
 			$delimiters = implode('|', $quotedDelimiters);

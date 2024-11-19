@@ -6,30 +6,15 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 
 class ArrayArgumentHelper
 {
-	/**
-	 * @var int
-	 */
-	protected $indexStart = 0;
+	protected int $indexStart = 0;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $arguments;
+	protected array $arguments;
 
-	/**
-	 * @var int
-	 */
-	protected $argumentCount;
+	protected int $argumentCount;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $rows;
+	protected array $rows;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $columns;
+	protected array $columns;
 
 	public function initialise(array $arguments): void
 	{
@@ -152,9 +137,7 @@ class ArrayArgumentHelper
 	private function rows(array $arguments): array
 	{
 		return array_map(
-			function ($argument) : int {
-				return is_countable($argument) ? count($argument) : 1;
-			},
+			fn ($argument): int => is_countable($argument) ? count($argument) : 1,
 			$arguments
 		);
 	}
@@ -201,9 +184,7 @@ class ArrayArgumentHelper
 	{
 		return array_filter(
 			$array,
-			function ($value) : bool {
-				return $value > 1;
-			}
+			fn ($value): bool => $value > 1
 		);
 	}
 }

@@ -88,7 +88,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		do { // To be able to "break;" (allows for better readable code).
 			// Load table, without table data, but with options and visibility settings.
 			$existing_table = TablePress::$model_table->load( $edit_table['id'], false, true );
-			if ( is_wp_error( $existing_table ) ) { // @todo Maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+			if ( is_wp_error( $existing_table ) ) {
 				$error = new WP_Error( 'ajax_save_table_load', '', $edit_table['id'] );
 				$error->merge_from( $existing_table );
 				$error_details = TablePress::get_wp_error_string( $error );
@@ -161,7 +161,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$message = 'success_save_error_id_change';
 				$error_details = 'table_id_could_not_be_changed: capability_check_failed';
 			}
-		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early. // @phpstan-ignore-line .
+
+			// @phpstan-ignore doWhile.alwaysFalse
+		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
 
 		// Generate the response.
 
@@ -172,13 +174,13 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		);
 		if ( $success ) {
 			// For the phpstan ignores in the next lines: If this is reached, $table is guaranteed to exist and is a valid array.
-			$response['table_id'] = $table['id']; // @phpstan-ignore-line
-			$response['new_edit_nonce'] = wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ); // @phpstan-ignore-line
-			$response['new_preview_nonce'] = wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) ); // @phpstan-ignore-line
-			$response['new_copy_nonce'] = wp_create_nonce( TablePress::nonce( 'copy_table', $table['id'] ) ); // @phpstan-ignore-line
-			$response['new_delete_nonce'] = wp_create_nonce( TablePress::nonce( 'delete_table', $table['id'] ) ); // @phpstan-ignore-line
-			$response['last_modified'] = TablePress::format_datetime( $table['last_modified'] ); // @phpstan-ignore-line
-			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] ); // @phpstan-ignore-line
+			$response['table_id'] = $table['id']; // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
+			$response['new_edit_nonce'] = wp_create_nonce( TablePress::nonce( 'edit', $table['id'] ) ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
+			$response['new_preview_nonce'] = wp_create_nonce( TablePress::nonce( 'preview_table', $table['id'] ) ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
+			$response['new_copy_nonce'] = wp_create_nonce( TablePress::nonce( 'copy_table', $table['id'] ) ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
+			$response['new_delete_nonce'] = wp_create_nonce( TablePress::nonce( 'delete_table', $table['id'] ) ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
+			$response['last_modified'] = TablePress::format_datetime( $table['last_modified'] ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
+			$response['last_editor'] = TablePress::get_user_display_name( $table['options']['last_editor'] ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
 		}
 		if ( ! empty( $error_details ) ) {
 			$response['error_details'] = esc_html( $error_details );
@@ -218,7 +220,7 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 		do { // To be able to "break;" (allows for better readable code).
 			// Load table, without table data, but with options and visibility settings.
 			$existing_table = TablePress::$model_table->load( $preview_table['id'], false, true );
-			if ( is_wp_error( $existing_table ) ) { // @todo Maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
+			if ( is_wp_error( $existing_table ) ) {
 				break;
 			}
 
@@ -258,7 +260,9 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// At this point, the table data is valid and sanitized and can be rendered.
 			$success = true;
-		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early. // @phpstan-ignore-line .
+
+			// @phpstan-ignore doWhile.alwaysFalse
+		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
 
 		if ( $success ) {
 			// Create a render class instance.
@@ -268,12 +272,12 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 			/** This filter is documented in controllers/controller-frontend.php */
 			$default_render_options = apply_filters( 'tablepress_shortcode_table_default_shortcode_atts', $default_render_options );
 			// For the phpstan ignores in the next lines: If this is reached, $table is guaranteed to exist and is a valid array.
-			$render_options = shortcode_atts( $default_render_options, $table['options'] ); // @phpstan-ignore-line
+			$render_options = shortcode_atts( $default_render_options, $table['options'] ); // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
 			/** This filter is documented in controllers/controller-frontend.php */
 			$render_options = apply_filters( 'tablepress_shortcode_table_shortcode_atts', $render_options );
-			$render_options['html_id'] = "tablepress-{$table['id']}"; // @phpstan-ignore-line
+			$render_options['html_id'] = "tablepress-{$table['id']}"; // @phpstan-ignore offsetAccess.nonOffsetAccessible, variable.undefined
 			$render_options['block_preview'] = true;
-			$_render->set_input( $table, $render_options ); // @phpstan-ignore-line
+			$_render->set_input( $table, $render_options ); // @phpstan-ignore variable.undefined
 			$head_html = $_render->get_preview_css();
 			$custom_css = TablePress::$model_options->get( 'custom_css' );
 			$use_custom_css = ( TablePress::$model_options->get( 'use_custom_css' ) && '' !== $custom_css );

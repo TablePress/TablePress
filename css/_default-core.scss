@@ -14,7 +14,7 @@
 $direction: "ltr" !default;
 
 /* Default variables for the LTR CSS. */
-$align-side: left !default;
+$align-side: left;
 
 /* Variables for the RTL CSS. */
 @if "rtl" == $direction {
@@ -27,9 +27,9 @@ $align-side: left !default;
 	--head-text-color: var(--text-color);
 	--head-bg-color: #d9edf7;
 	--odd-text-color: var(--text-color);
-	--odd-bg-color: #f9f9f9;
+	--odd-bg-color: #ffffff;
 	--even-text-color: var(--text-color);
-	--even-bg-color: #ffffff;
+	--even-bg-color: #f9f9f9;
 	--hover-text-color: var(--text-color);
 	--hover-bg-color: #f3f3f3;
 	--border-color: #dddddd;
@@ -52,17 +52,17 @@ $align-side: left !default;
 		text-align: $align-side;
 		vertical-align: top;
 		float: none !important; /* Work around themes that set `float` on `.column-1` CSS classes and similar. */
-		box-sizing: content-box;
+		box-sizing: border-box;
 	}
 
 	/* Horizontal borders */
-	> * + tbody > * > *,
+	> :where(thead) + tbody > * > *,
 	> tbody > * ~ * > *,
-	> tfoot > * > * {
+	> tfoot > :where(:first-child) > * {
 		border-top: 1px solid var(--border-color);
 	}
 
-	/* Row background colors. For backwards-compatibility, using :nth-child or :nth-of-type is not feasible. */
+	/* Row background colors */
 	> :where(thead, tfoot) > * > th {
 		background-color: var(--head-bg-color);
 		color: var(--head-text-color);
@@ -74,11 +74,13 @@ $align-side: left !default;
 		> tr > * {
 			color: var(--text-color);
 		}
-		> .odd > * {
+	}
+	> :where(tbody.row-striping) {
+		> :nth-child(odd) > * {
 			background-color: var(--odd-bg-color);
 			color: var(--odd-text-color);
 		}
-		> .even > * {
+		> :nth-child(even) > * {
 			background-color: var(--even-bg-color);
 			color: var(--even-text-color);
 		}

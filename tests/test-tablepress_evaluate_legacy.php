@@ -20,9 +20,8 @@ class TablePress_Test_TablePress_Evaluate_Legacy extends TablePress_TestCase {
 	 * Instance of the TablePress_Evaluate_Legacy class.
 	 *
 	 * @since 1.5.0
-	 * @var TablePress_Evaluate_Legacy
 	 */
-	protected $evaluate;
+	protected \TablePress_Evaluate_Legacy $evaluate;
 
 	/**
 	 * Load the TablePress_Evaluate_Legacy class PHP file once for all tests.

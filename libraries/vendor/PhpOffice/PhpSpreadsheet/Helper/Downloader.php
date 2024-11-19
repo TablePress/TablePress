@@ -12,20 +12,11 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception;
  */
 class Downloader
 {
-	/**
-	 * @var string
-	 */
-	protected $filepath;
+	protected string $filepath;
 
-	/**
-	 * @var string
-	 */
-	protected $filename;
+	protected string $filename;
 
-	/**
-	 * @var string
-	 */
-	protected $filetype;
+	protected string $filetype;
 
 	protected const CONTENT_TYPES = [
 		'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -48,7 +39,7 @@ class Downloader
 			throw new Exception("{$this->filename} not found, or cannot be read");
 		}
 
-		$filetype = $filetype ?? pathinfo($filename, PATHINFO_EXTENSION);
+		$filetype ??= pathinfo($filename, PATHINFO_EXTENSION);
 		if (array_key_exists(strtolower($filetype), self::CONTENT_TYPES) === false) {
 			throw new Exception("Invalid filetype: {$filetype} cannot be downloaded");
 		}

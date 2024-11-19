@@ -4,25 +4,13 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
 class ProtectedRange
 {
-	/**
-	 * @var string
-	 */
-	private $name = '';
+	private string $name = '';
 
-	/**
-	 * @var string
-	 */
-	private $password = '';
+	private string $password = '';
 
-	/**
-	 * @var string
-	 */
-	private $sqref;
+	private string $sqref;
 
-	/**
-	 * @var string
-	 */
-	private $securityDescriptor = '';
+	private string $securityDescriptor = '';
 
 	/**
 	 * No setters aside from constructor.

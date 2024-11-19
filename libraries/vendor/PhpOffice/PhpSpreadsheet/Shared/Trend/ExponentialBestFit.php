@@ -7,9 +7,8 @@ class ExponentialBestFit extends BestFit
 	/**
 	 * Algorithm type to use for best-fit
 	 * (Name of this Trend class).
-	 * @var string
 	 */
-	protected $bestFitType = 'exponential';
+	protected string $bestFitType = 'exponential';
 
 	/**
 	 * Return the Y-Value for a specified value of X.
@@ -85,9 +84,7 @@ class ExponentialBestFit extends BestFit
 	private function exponentialRegression(array $yValues, array $xValues, bool $const): void
 	{
 		$adjustedYValues = array_map(
-			function ($value) : float {
-				return ($value < 0.0) ? 0 - log(abs($value)) : log($value);
-			},
+			fn ($value): float => ($value < 0.0) ? 0 - log(abs($value)) : log($value),
 			$yValues
 		);
 

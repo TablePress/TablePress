@@ -102,35 +102,20 @@ abstract class Properties
 	const POINTS_WIDTH_MULTIPLIER = 12700;
 	const ANGLE_MULTIPLIER = 60000; // direction and size-kx size-ky
 	const PERCENTAGE_MULTIPLIER = 100000; // size sx and sy
-	/**
-	 * @var bool
-	 */
-	protected $objectState = false; // used only for minor gridlines
 
-	/** @var ?float */
-	protected $glowSize;
+	protected bool $objectState = false; // used only for minor gridlines
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	protected $glowColor;
+	protected ?float $glowSize = null;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $softEdges = [
+	protected ChartColor $glowColor;
+
+	protected array $softEdges = [
 		'size' => null,
 	];
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $shadowProperties = self::PRESETS_OPTIONS[0];
+	protected array $shadowProperties = self::PRESETS_OPTIONS[0];
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	protected $shadowColor;
+	protected ChartColor $shadowColor;
 
 	public function __construct()
 	{
@@ -675,8 +660,16 @@ abstract class Properties
 				'alpha' => $this->shadowColor->getAlpha(),
 			];
 		}
+		$retVal = $this->getArrayElementsValue($this->shadowProperties, $elements);
+		if (is_scalar($retVal)) {
+			$retVal = (string) $retVal;
+		} elseif ($retVal !== null && !is_array($retVal)) {
+			// @codeCoverageIgnoreStart
+			throw new Exception('Unexpected value for shadowProperty');
+			// @codeCoverageIgnoreEnd
+		}
 
-		return $this->getArrayElementsValue($this->shadowProperties, $elements);
+		return $retVal;
 	}
 
 	public function getShadowArray(): array
@@ -689,15 +682,9 @@ abstract class Properties
 		return $array;
 	}
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	protected $lineColor;
+	protected ChartColor $lineColor;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $lineStyleProperties = [
+	protected array $lineStyleProperties = [
 		'width' => null, //'9525',
 		'compound' => '', //self::LINE_STYLE_COMPOUND_SIMPLE,
 		'dash' => '', //self::LINE_STYLE_DASH_SOLID,
@@ -865,7 +852,16 @@ abstract class Properties
 	 */
 	public function getLineStyleProperty($elements): ?string
 	{
-		return $this->getArrayElementsValue($this->lineStyleProperties, $elements);
+		$retVal = $this->getArrayElementsValue($this->lineStyleProperties, $elements);
+		if (is_scalar($retVal)) {
+			$retVal = (string) $retVal;
+		} elseif ($retVal !== null) {
+			// @codeCoverageIgnoreStart
+			throw new Exception('Unexpected value for lineStyleProperty');
+			// @codeCoverageIgnoreEnd
+		}
+
+		return $retVal;
 	}
 
 	protected const ARROW_SIZES = [

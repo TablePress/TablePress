@@ -29,36 +29,24 @@ class Legend
 
 	/**
 	 * Legend position.
-	 * @var string
 	 */
-	private $position = self::POSITION_RIGHT;
+	private string $position = self::POSITION_RIGHT;
 
 	/**
 	 * Allow overlay of other elements?
-	 * @var bool
 	 */
-	private $overlay = true;
+	private bool $overlay = true;
 
 	/**
 	 * Legend Layout.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\Layout|null
 	 */
-	private $layout;
+	private ?Layout $layout;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\GridLines
-	 */
-	private $borderLines;
+	private GridLines $borderLines;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\ChartColor
-	 */
-	private $fillColor;
+	private ChartColor $fillColor;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Chart\AxisText|null
-	 */
-	private $legendText;
+	private ?AxisText $legendText = null;
 
 	/**
 	 * Create a new Legend.

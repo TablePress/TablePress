@@ -11,28 +11,55 @@
  * WordPress dependencies.
  */
 import { StrictMode } from 'react';
-import { createRoot, render } from 'react-dom'; // eslint-disable-line react/no-deprecated
+import { createPortal, createRoot } from 'react-dom';
+import { addFilter } from '@wordpress/hooks';
 
 /**
  * Initializes a React component on the page.
  *
  * @param {string}    rootId    HTML ID of the root element for the component.
- * @param {Component} component JSX of the component.
+ * @param {Component} Component JSX component.
  */
-export const initializeReactComponent = ( rootId, component ) => {
+export const initializeReactComponent = ( rootId, Component ) => {
 	if ( process.env.DEVELOP ) {
-		component = <StrictMode>{ component }</StrictMode>;
+		Component = <StrictMode>{ Component }</StrictMode>;
 	}
 
 	const root = document.getElementById( rootId );
 	if ( root ) {
-		// Compatibility check for React 17 and 18.
-		if ( 'function' === typeof createRoot ) {
-			// React 18 (WP 6.2 and newer): Use createRoot().
-			createRoot( root ).render( component );
-		} else {
-			// React 17 (WP 6.1 and older): Use render().
-			render( component, root );
-		}
+		createRoot( root ).render( Component );
 	}
+};
+
+/**
+ * Initializes a React component on the page, in a React Portal, and registers its meta box.
+ *
+ * @param {string}    slug      Slug of the component/feature module.
+ * @param {string}    screen    Slug/action of the screen.
+ * @param {Component} Component JSX component.
+ */
+export const initializeReactComponentInPortal = ( slug, screen, Component ) => {
+	addFilter(
+		`tablepress.${screen}ScreenFeatures`,
+		`tp/${slug}/${screen}-screen-feature`,
+		( features ) => ( [ ...features, slug ] ),
+	);
+
+	addFilter(
+		`tablepress.${screen}ScreenPortals`,
+		`tp/${slug}/${screen}-screen-portal`,
+		( Portals ) => {
+			return ( props ) => (
+				<>
+					<Portals { ...props } />
+					{
+						createPortal(
+							<Component { ...props } />,
+							document.getElementById( `tablepress-${slug}-section` ),
+						)
+					}
+				</>
+			);
+		},
+	);
 };

@@ -24,15 +24,10 @@ class ReferenceHelper
 
 	/**
 	 * Instance of this class.
-	 *
-	 * @var ?ReferenceHelper
 	 */
-	private static $instance;
+	private static ?ReferenceHelper $instance = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\CellReferenceHelper|null
-	 */
-	private $cellReferenceHelper;
+	private ?CellReferenceHelper $cellReferenceHelper = null;
 
 	/**
 	 * Get an instance of this class.
@@ -447,7 +442,7 @@ class ReferenceHelper
 				if ($cell->getDataType() === DataType::TYPE_FORMULA) {
 					// Formula should be adjusted
 					$worksheet->getCell($newCoordinate)
-						->setValue($this->updateFormulaReferences($cell->getValue(), $beforeCellAddress, $numberOfColumns, $numberOfRows, $worksheet->getTitle(), true));
+						->setValue($this->updateFormulaReferences($cell->getValueString(), $beforeCellAddress, $numberOfColumns, $numberOfRows, $worksheet->getTitle(), true));
 				} else {
 					// Cell value should not be adjusted
 					$worksheet->getCell($newCoordinate)->setValueExplicit($cell->getValue(), $cell->getDataType());
@@ -460,7 +455,7 @@ class ReferenceHelper
 						but we do still need to adjust any formulae in those cells                    */
 				if ($cell->getDataType() === DataType::TYPE_FORMULA) {
 					// Formula should be adjusted
-					$cell->setValue($this->updateFormulaReferences($cell->getValue(), $beforeCellAddress, $numberOfColumns, $numberOfRows, $worksheet->getTitle(), true));
+					$cell->setValue($this->updateFormulaReferences($cell->getValueString(), $beforeCellAddress, $numberOfColumns, $numberOfRows, $worksheet->getTitle(), true));
 				}
 			}
 		}
@@ -584,9 +579,7 @@ class ReferenceHelper
 		bool $includeAbsoluteReferences = false,
 		bool $onlyAbsoluteReferences = false
 	): string {
-		$callback = function (array $matches) use ($worksheetName) : string {
-			return (strcasecmp(trim($matches[2], "'"), $worksheetName) === 0) ? (($matches[2][0] === "'") ? "'\u{fffc}'!" : "'\u{fffb}'!") : "'\u{fffd}'!";
-		};
+		$callback = fn (array $matches): string => (strcasecmp(trim($matches[2], "'"), $worksheetName) === 0) ? (($matches[2][0] === "'") ? "'\u{fffc}'!" : "'\u{fffb}'!") : "'\u{fffd}'!";
 		if (
 			$this->cellReferenceHelper === null
 			|| $this->cellReferenceHelper->refreshRequired($beforeCellAddress, $numberOfColumns, $numberOfRows)
@@ -766,7 +759,7 @@ class ReferenceHelper
 			$column = $columns[$splitCount][0];
 			$row = $rows[$splitCount][0];
 
-			if (!empty($column) && $column[0] !== '$') {
+			if ($column[0] !== '$') {
 				$column = ((Coordinate::columnIndexFromString($column) + $numberOfColumns) % AddressRange::MAX_COLUMN_INT) ?: AddressRange::MAX_COLUMN_INT;
 				$column = Coordinate::stringFromColumnIndex($column);
 				$rowOffset -= ($columnLength - strlen($column));
@@ -902,7 +895,7 @@ class ReferenceHelper
 			foreach ($sheet->getCoordinates(false) as $coordinate) {
 				$cell = $sheet->getCell($coordinate);
 				if ($cell->getDataType() === DataType::TYPE_FORMULA) {
-					$formula = $cell->getValue();
+					$formula = $cell->getValueString();
 					if (str_contains($formula, $oldName)) {
 						$formula = str_replace("'" . $oldName . "'!", "'" . $newName . "'!", $formula);
 						$formula = str_replace($oldName . '!', $newName . '!', $formula);

@@ -59,65 +59,57 @@ class TablePress_CSSTidy {
 	 * This array is empty if preserve_css is on.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $css = array();
+	public array $css = array();
 
 	/**
 	 * The raw parsed CSS.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $tokens = array();
+	public array $tokens = array();
 
 	/**
 	 * Instance of the CSS Printer class.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_CSSTidy_Print
 	 */
-	public $print;
+	public \TablePress_CSSTidy_Print $print;
 
 	/**
 	 * Instance of the CSS Optimiser class.
 	 *
 	 * @since 1.0.0
-	 * @var TablePress_CSSTidy_Optimise
 	 */
-	public $optimise;
+	public \TablePress_CSSTidy_Optimise $optimise;
 
 	/**
 	 * The CSS charset.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $charset = '';
+	public string $charset = '';
 
 	/**
 	 * All @import URLs.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $import = array();
+	public array $import = array();
 
 	/**
 	 * The namespace.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $namespace = '';
+	public string $namespace = '';
 
 	/**
 	 * The settings.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $settings = array();
+	protected array $settings = array();
 
 	/**
 	 * The parser-status.
@@ -131,17 +123,15 @@ class TablePress_CSSTidy {
 	 * - at = in @-block
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $status = 'is';
+	protected string $status = 'is';
 
 	/**
 	 * The current at rule (@media).
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $at = '';
+	public string $at = '';
 
 	/**
 	 * The at rule for next selector (during @font-face or other @).
@@ -155,33 +145,29 @@ class TablePress_CSSTidy {
 	 * The current selector.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $selector = '';
+	public string $selector = '';
 
 	/**
 	 * The current property.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $property = '';
+	public string $property = '';
 
 	/**
 	 * The position of , in selectors.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $sel_separate = array();
+	protected array $sel_separate = array();
 
 	/**
 	 * The current value.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $value = '';
+	public string $value = '';
 
 	/**
 	 * The current sub-value.
@@ -192,105 +178,92 @@ class TablePress_CSSTidy {
 	 * separated by whitespace.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $sub_value = '';
+	public string $sub_value = '';
 
 	/**
 	 * All sub-values for a property.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $sub_value_arr = array();
+	protected array $sub_value_arr = array();
 
 	/**
 	 * The stack of characters that opened the current strings.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $str_char = array();
+	public array $str_char = array();
 
 	/**
 	 * [$cur_string description]
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $cur_string = array();
+	public array $cur_string = array();
 
 	/**
 	 * Status from which the parser switched to ic or instr
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $from = array();
+	protected array $from = array();
 
 	/**
 	 * True if in invalid at-rule.
 	 *
 	 * @since 1.0.0
-	 * @var bool
 	 */
-	protected $invalid_at = false;
+	protected bool $invalid_at = false;
 
 	/**
 	 * True if something has been added to the current selector.
 	 *
 	 * @since 1.0.0
-	 * @var bool
 	 */
-	protected $added = false;
+	protected bool $added = false;
 
 	/**
 	 * The message log.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $log = array();
+	public array $log = array();
 
 	/**
 	 * The line number.
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	protected $line = 1;
+	protected int $line = 1;
 
 	/**
 	 * Marks if we need to leave quotes for a string.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	protected $quoted_string = array();
+	protected array $quoted_string = array();
 
 	/**
 	 * List of tokens.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected $tokens_list = '';
+	protected string $tokens_list = '';
 
 	/**
 	 * Various CSS Data for CSSTidy.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $data = array();
+	public array $data = array();
 
 	/**
 	 * The output templates.
 	 *
 	 * @since 1.0.0
-	 * @var array
 	 */
-	public $template = array();
+	public array $template = array();
 
 	/**
 	 * Loads standard template and sets default settings.

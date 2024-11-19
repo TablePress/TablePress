@@ -6,35 +6,17 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Color;
 
 class ConditionalColorScale
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject|null
-	 */
-	private $minimumConditionalFormatValueObject;
+	private ?ConditionalFormatValueObject $minimumConditionalFormatValueObject = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject|null
-	 */
-	private $midpointConditionalFormatValueObject;
+	private ?ConditionalFormatValueObject $midpointConditionalFormatValueObject = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalFormatValueObject|null
-	 */
-	private $maximumConditionalFormatValueObject;
+	private ?ConditionalFormatValueObject $maximumConditionalFormatValueObject = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color|null
-	 */
-	private $minimumColor;
+	private ?Color $minimumColor = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color|null
-	 */
-	private $midpointColor;
+	private ?Color $midpointColor = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Color|null
-	 */
-	private $maximumColor;
+	private ?Color $maximumColor = null;
 
 	public function getMinimumConditionalFormatValueObject(): ?ConditionalFormatValueObject
 	{

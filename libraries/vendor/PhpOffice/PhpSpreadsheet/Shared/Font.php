@@ -207,7 +207,7 @@ class Font
 	 *
 	 * @var array<string, array<string, string>>
 	 */
-	private static $extraFontArray = [];
+	private static array $extraFontArray = [];
 
 	/** @param array<string, array<string, string>> $extraFontArray */
 	public static function setExtraFontArray(array $extraFontArray): void
@@ -223,15 +223,13 @@ class Font
 
 	/**
 	 * AutoSize method.
-	 * @var string
 	 */
-	private static $autoSizeMethod = self::AUTOSIZE_METHOD_APPROX;
+	private static string $autoSizeMethod = self::AUTOSIZE_METHOD_APPROX;
 
 	/**
 	 * Path to folder containing TrueType font .ttf files.
-	 * @var string
 	 */
-	private static $trueTypeFontPath = '';
+	private static string $trueTypeFontPath = '';
 
 	/**
 	 * How wide is a default column for a given default font and size?

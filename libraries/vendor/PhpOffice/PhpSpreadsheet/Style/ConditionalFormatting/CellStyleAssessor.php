@@ -8,15 +8,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 
 class CellStyleAssessor
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\CellMatcher
-	 */
-	protected $cellMatcher;
+	protected CellMatcher $cellMatcher;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\StyleMerger
-	 */
-	protected $styleMerger;
+	protected StyleMerger $styleMerger;
 
 	public function __construct(Cell $cell, string $conditionalRange)
 	{

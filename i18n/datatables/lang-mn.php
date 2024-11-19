@@ -21,10 +21,10 @@ return array(
 	'search'         => 'Хайлт:',
 	'zeroRecords'    => 'Тохирох бичлэг олдсонгүй',
 	'paginate'       => array(
-		'first'    => 'Эхнийх',
-		'last'     => 'Сүүлийнх',
-		'previous' => 'Өмнөх',
-		'next'     => 'Дараах',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': цагаан толгойн дарааллаар эрэмбэлэх',

@@ -20,22 +20,18 @@ class BSE
 	/**
 	 * The parent BLIP Store Entry Container.
 	 * Property is currently unused.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer
 	 */
-	private $parent;
+	private BstoreContainer $parent;
 
 	/**
 	 * The BLIP (Big Large Image or Picture).
-	 *
-	 * @var ?BSE\Blip
 	 */
-	private $blip;
+	private ?BSE\Blip $blip = null;
 
 	/**
 	 * The BLIP type.
-	 * @var int
 	 */
-	private $blipType;
+	private int $blipType;
 
 	/**
 	 * Set parent BLIP Store Entry Container.

@@ -10,15 +10,9 @@ use SimpleXMLElement;
 
 class ColumnAndRowAttributes extends BaseParserClass
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
-	/**
-	 * @var \SimpleXMLElement|null
-	 */
-	private $worksheetXml;
+	private ?SimpleXMLElement $worksheetXml;
 
 	public function __construct(Worksheet $workSheet, ?SimpleXMLElement $worksheetXml = null)
 	{
@@ -78,7 +72,7 @@ class ColumnAndRowAttributes extends BaseParserClass
 		}
 	}
 
-	public function load(?IReadFilter $readFilter = null, bool $readDataOnly = false): void
+	public function load(?IReadFilter $readFilter = null, bool $readDataOnly = false, bool $ignoreRowsWithNoCells = false): void
 	{
 		if ($this->worksheetXml === null) {
 			return;
@@ -91,7 +85,7 @@ class ColumnAndRowAttributes extends BaseParserClass
 		}
 
 		if ($this->worksheetXml->sheetData && $this->worksheetXml->sheetData->row) {
-			$rowsAttributes = $this->readRowAttributes($this->worksheetXml->sheetData->row, $readDataOnly);
+			$rowsAttributes = $this->readRowAttributes($this->worksheetXml->sheetData->row, $readDataOnly, $ignoreRowsWithNoCells);
 		}
 
 		if ($readFilter !== null && get_class($readFilter) === DefaultReadFilter::class) {
@@ -195,13 +189,13 @@ class ColumnAndRowAttributes extends BaseParserClass
 		return false;
 	}
 
-	private function readRowAttributes(SimpleXMLElement $worksheetRow, bool $readDataOnly): array
+	private function readRowAttributes(SimpleXMLElement $worksheetRow, bool $readDataOnly, bool $ignoreRowsWithNoCells): array
 	{
 		$rowAttributes = [];
 
 		foreach ($worksheetRow as $rowx) {
 			$row = $rowx->attributes();
-			if ($row !== null) {
+			if ($row !== null && (!$ignoreRowsWithNoCells || isset($rowx->c))) {
 				if (isset($row['ht']) && !$readDataOnly) {
 					$rowAttributes[(int) $row['r']]['rowHeight'] = (float) $row['ht'];
 				}

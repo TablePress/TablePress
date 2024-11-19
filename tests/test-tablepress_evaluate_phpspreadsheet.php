@@ -20,9 +20,8 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 	 * Instance of the TablePress_Evaluate_PHPSpreadsheet class.
 	 *
 	 * @since 2.0.0
-	 * @var TablePress_Evaluate_PHPSpreadsheet
 	 */
-	protected $evaluate;
+	protected \TablePress_Evaluate_PHPSpreadsheet $evaluate;
 
 	/**
 	 * Load the TablePress_Evaluate_PHPSpreadsheet class PHP file once for all tests.

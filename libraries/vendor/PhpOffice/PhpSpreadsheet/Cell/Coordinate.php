@@ -271,8 +271,7 @@ abstract class Coordinate
 	private static function validateReferenceAndGetData($reference): array
 	{
 		$data = [];
-		preg_match(self::FULL_REFERENCE_REGEX, $reference, $matches);
-		if (count($matches) === 0) {
+		if (1 !== preg_match(self::FULL_REFERENCE_REGEX, $reference, $matches)) {
 			return ['type' => 'invalid'];
 		}
 
@@ -463,9 +462,7 @@ abstract class Coordinate
 		$cellList = array_merge(...$cells);
 
 		return array_map(
-			function ($cellAddress) use ($worksheet, $quoted) {
-				return ($worksheet !== '') ? "{$quoted}{$worksheet}{$quoted}!{$cellAddress}" : $cellAddress;
-			},
+			fn ($cellAddress) => ($worksheet !== '') ? "{$quoted}{$worksheet}{$quoted}!{$cellAddress}" : $cellAddress,
 			self::sortCellReferenceArray($cellList)
 		);
 	}
@@ -504,6 +501,44 @@ abstract class Coordinate
 		ksort($sortKeys);
 
 		return array_values($sortKeys);
+	}
+
+	/**
+	 * Get all cell references applying union and intersection.
+	 *
+	 * @param string $cellBlock A cell range e.g. A1:B5,D1:E5 B2:C4
+	 *
+	 * @return string A string without intersection operator.
+	 *   If there was no intersection to begin with, return original argument.
+	 *   Otherwise, return cells and/or cell ranges in that range separated by comma.
+	 */
+	public static function resolveUnionAndIntersection(string $cellBlock, string $implodeCharacter = ','): string
+	{
+		$cellBlock = preg_replace('/  +/', ' ', trim($cellBlock)) ?? $cellBlock;
+		$cellBlock = preg_replace('/ ,/', ',', $cellBlock) ?? $cellBlock;
+		$cellBlock = preg_replace('/, /', ',', $cellBlock) ?? $cellBlock;
+		$array1 = [];
+		$blocks = explode(',', $cellBlock);
+		foreach ($blocks as $block) {
+			$block0 = explode(' ', $block);
+			if (count($block0) === 1) {
+				$array1 = array_merge($array1, $block0);
+			} else {
+				$blockIdx = -1;
+				$array2 = [];
+				foreach ($block0 as $block00) {
+					++$blockIdx;
+					if ($blockIdx === 0) {
+						$array2 = self::getReferencesForCellBlock($block00);
+					} else {
+						$array2 = array_intersect($array2, self::getReferencesForCellBlock($block00));
+					}
+				}
+				$array1 = array_merge($array1, $array2);
+			}
+		}
+
+		return implode($implodeCharacter, $array1);
 	}
 
 	/**

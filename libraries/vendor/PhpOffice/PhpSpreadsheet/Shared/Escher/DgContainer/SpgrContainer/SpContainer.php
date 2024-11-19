@@ -8,45 +8,38 @@ class SpContainer
 {
 	/**
 	 * Parent Shape Group Container.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
 	 */
-	private $parent;
+	private SpgrContainer $parent;
 
 	/**
 	 * Is this a group shape?
-	 * @var bool
 	 */
-	private $spgr = false;
+	private bool $spgr = false;
 
 	/**
 	 * Shape type.
-	 * @var int
 	 */
-	private $spType;
+	private int $spType;
 
 	/**
 	 * Shape flag.
-	 * @var int
 	 */
-	private $spFlag;
+	private int $spFlag;
 
 	/**
 	 * Shape index (usually group shape has index 0, and the rest: 1,2,3...).
-	 * @var int
 	 */
-	private $spId;
+	private int $spId;
 
 	/**
 	 * Array of options.
-	 * @var mixed[]
 	 */
-	private $OPT = [];
+	private array $OPT = [];
 
 	/**
 	 * Cell coordinates of upper-left corner of shape, e.g. 'A1'.
-	 * @var string
 	 */
-	private $startCoordinates = '';
+	private string $startCoordinates = '';
 
 	/**
 	 * Horizontal offset of upper-left corner of shape measured in 1/1024 of column width.
@@ -62,9 +55,8 @@ class SpContainer
 
 	/**
 	 * Cell coordinates of bottom-right corner of shape, e.g. 'B2'.
-	 * @var string
 	 */
-	private $endCoordinates;
+	private string $endCoordinates;
 
 	/**
 	 * Horizontal offset of bottom-right corner of shape measured in 1/1024 of column width.

@@ -3,10 +3,12 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Security;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Reader;
-use TablePress\PhpOffice\PhpSpreadsheet\Settings;
 
 class XmlScanner
 {
+	private const ENCODING_PATTERN = '/encoding\\s*=\\s*(["\'])(.+?)\\1/s';
+	private const ENCODING_UTF7 = '/encoding\\s*=\\s*(["\'])UTF-7\\1/si';
+
 	/**
 	 * String used to identify risky xml elements.
 	 *
@@ -51,15 +53,6 @@ class XmlScanner
 	public static function threadSafeLibxmlDisableEntityLoaderAvailability(): bool
 	{
 		if (PHP_MAJOR_VERSION === 7) {
-			switch (PHP_MINOR_VERSION) {
-				case 2:
-					return PHP_RELEASE_VERSION >= 1;
-				case 1:
-					return PHP_RELEASE_VERSION >= 13;
-				case 0:
-					return PHP_RELEASE_VERSION >= 27;
-			}
-
 			return true;
 		}
 
@@ -71,7 +64,7 @@ class XmlScanner
 	 */
 	private function disableEntityLoaderCheck(): void
 	{
-		if (Settings::getLibXmlDisableEntityLoader() && \PHP_VERSION_ID < 80000) {
+		if (\PHP_VERSION_ID < 80000) {
 			$libxmlDisableEntityLoaderValue = libxml_disable_entity_loader(true);
 
 			if (self::$libxmlDisableEntityLoaderValue === null) {
@@ -115,13 +108,24 @@ class XmlScanner
 	private function toUtf8($xml)
 	{
 		$charset = $this->findCharSet($xml);
+		$foundUtf7 = $charset === 'UTF-7';
 		if ($charset !== 'UTF-8') {
+			$testStart = '/^.{0,4}\\s*<?xml/s';
+			$startWithXml1 = preg_match($testStart, $xml);
 			$xml = self::forceString(mb_convert_encoding($xml, 'UTF-8', $charset));
-
-			$charset = $this->findCharSet($xml);
-			if ($charset !== 'UTF-8') {
-				throw new Reader\Exception('Suspicious Double-encoded XML, spreadsheet file load() aborted to prevent XXE/XEE attacks');
+			if ($startWithXml1 === 1 && preg_match($testStart, $xml) !== 1) {
+				throw new Reader\Exception('Double encoding not permitted');
 			}
+			$foundUtf7 = $foundUtf7 || (preg_match(self::ENCODING_UTF7, $xml) === 1);
+			$xml = preg_replace(self::ENCODING_PATTERN, '', $xml) ?? $xml;
+		} else {
+			$foundUtf7 = $foundUtf7 || (preg_match(self::ENCODING_UTF7, $xml) === 1);
+		}
+		if ($foundUtf7) {
+			throw new Reader\Exception('UTF-7 encoding not permitted');
+		}
+		if (substr($xml, 0, Reader\Csv::UTF8_BOM_LEN) === Reader\Csv::UTF8_BOM) {
+			$xml = substr($xml, Reader\Csv::UTF8_BOM_LEN);
 		}
 
 		return $xml;
@@ -129,15 +133,16 @@ class XmlScanner
 
 	private function findCharSet(string $xml): string
 	{
-		$patterns = [
-			'/encoding\\s*=\\s*"([^"]*]?)"/',
-			"/encoding\\s*=\\s*'([^']*?)'/",
-		];
-
-		foreach ($patterns as $pattern) {
-			if (preg_match($pattern, $xml, $matches)) {
-				return strtoupper($matches[1]);
-			}
+		if (substr($xml, 0, 4) === "\x4c\x6f\xa7\x94") {
+			throw new Reader\Exception('EBCDIC encoding not permitted');
+		}
+		$encoding = Reader\Csv::guessEncodingBom('', $xml);
+		if ($encoding !== '') {
+			return $encoding;
+		}
+		$xml = str_replace("\0", '', $xml);
+		if (preg_match(self::ENCODING_PATTERN, $xml, $matches)) {
+			return strtoupper($matches[2]);
 		}
 
 		return 'UTF-8';
@@ -152,14 +157,15 @@ class XmlScanner
 	 */
 	public function scan($xml)
 	{
+		// Don't rely purely on libxml_disable_entity_loader()
+		$pattern = '/\\0*' . implode('\\0*', str_split($this->pattern)) . '\\0*/';
+
 		$xml = "$xml";
-		$this->disableEntityLoaderCheck();
+		if (preg_match($pattern, $xml)) {
+			throw new Reader\Exception('Detected use of ENTITY in XML, spreadsheet file load() aborted to prevent XXE/XEE attacks');
+		}
 
 		$xml = $this->toUtf8($xml);
-
-		// Don't rely purely on libxml_disable_entity_loader()
-		$pattern = '/\\0?' . implode('\\0?', /** @scrutinizer ignore-type */ str_split($this->pattern)) . '\\0?/';
-
 		if (preg_match($pattern, $xml)) {
 			throw new Reader\Exception('Detected use of ENTITY in XML, spreadsheet file load() aborted to prevent XXE/XEE attacks');
 		}
@@ -172,7 +178,7 @@ class XmlScanner
 	}
 
 	/**
-	 * Scan theXML for use of <!ENTITY to prevent XXE/XEE attacks.
+	 * Scan the XML for use of <!ENTITY to prevent XXE/XEE attacks.
 	 *
 	 * @param string $filestream
 	 *

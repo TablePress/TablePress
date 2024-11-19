@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Szukaj:',
 	'zeroRecords'    => 'Nie znaleziono pasujących pozycji',
 	'paginate'       => array(
-		'first'    => 'Pierwsza',
-		'previous' => 'Poprzednia',
-		'next'     => 'Następna',
-		'last'     => 'Ostatnia',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': aktywuj, by posortować kolumnę rosnąco',

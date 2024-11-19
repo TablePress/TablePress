@@ -2,7 +2,7 @@
 	"name": "tablepress/tablepress",
 	"description": "TablePress plugin for WordPress",
 	"type": "wordpress-plugin",
-	"keywords": ["wordpress", "plugin", "table"],
+	"keywords": [ "wordpress", "plugin", "table" ],
 	"homepage": "https://tablepress.org/",
 	"license": "GPL-2.0-only",
 	"authors": [
@@ -43,25 +43,27 @@
 		}
 	],
 	"require": {
-		"php": ">=7.2"
+		"php": ">=7.4"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "dev-develop",
 		"phpcompatibility/phpcompatibility-wp": "^2.1.5",
-		"yoast/phpunit-polyfills": "^1.1.1",
+		"yoast/phpunit-polyfills": "^1.1",
 		"phpcsstandards/phpcsutils": "dev-develop",
 		"phpcsstandards/phpcsextra": "dev-develop",
-		"php-parallel-lint/php-parallel-lint": "^1.4.0",
-		"php-parallel-lint/php-console-highlighter": "^1.0.0",
-		"phpstan/phpstan": "^1.10",
-		"szepeviktor/phpstan-wordpress": "^1.3.4"
+		"php-parallel-lint/php-parallel-lint": "^1.4",
+		"php-parallel-lint/php-console-highlighter": "^1.0",
+		"phpstan/phpstan": "^1.12",
+		"szepeviktor/phpstan-wordpress": "^1.3",
+		"johnbillion/wp-compat": "^0.3"
 	},
 	"config": {
 		"allow-plugins": {
 			"dangoodman/composer-for-wordpress": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		},
-		"classloader-suffix": "TablePress"
+		"classloader-suffix": "TablePress",
+		"lock": false
 	},
 	"scripts": {
 		"compat": "vendor/bin/phpcs --standard=phpcompat.xml.dist",
@@ -69,24 +71,24 @@
 		"phpcs:errors": "@phpcs -n",
 		"phpcs:full": "vendor/bin/phpcs",
 		"fix-phpcs": "vendor/bin/phpcbf --report=summary,source",
-		"php-parallel-lint": "vendor/bin/parallel-lint --exclude .git --exclude node_modules --exclude vendor --show-deprecated .",
-		"phpstan": "vendor/bin/phpstan analyze --memory-limit 2G",
+		"php-parallel-lint": "vendor/bin/parallel-lint -j 16 --exclude .git --exclude node_modules --exclude vendor --show-deprecated .",
+		"phpstan": "vendor/bin/phpstan analyze --memory-limit 2G -v",
 		"typos": "typos",
 		"update-version": "php update-version.php",
 		"build": [
+			"@php-parallel-lint",
 			"@compat",
 			"@phpcs:full",
 			"@phpstan",
-			"@php-parallel-lint",
 			"@typos"
 		],
-		"spaces-to-tabs": "find . -type f -not -path './node_modules/*' -not -path './vendor/*' \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
+		"spaces-to-tabs": "find . -type f -not -path './node_modules/*' -not -path './vendor/*' \\( -name \\*.php -o -name \\*.js -o -name \\*.jsx -o -name \\*.json -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
 		"update-phpspreadsheet": [
 			"rm -rf ./composer.lock ./libraries/composer ./libraries/vendor ./libraries/autoload.php ./vendor",
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
-			"composer config platform.php 7.2",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 2.1.1\" --no-update",
+			"composer config platform.php 7.4",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.4.0\" --no-update",
 			"composer update --no-dev",
 			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart:0.7.1 /mozart/bin/mozart compose",
 			"composer remove phpoffice/phpspreadsheet --no-update",
@@ -100,7 +102,7 @@
 			"find ./libraries -type d -exec chmod 755 {} \\;",
 			"find ./libraries -type d -exec cp -n index.php {} \\;",
 			"find ./libraries -type f \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
-			"composer require rector/rector --dev",
+			"composer require rector/rector:1.2.10 --dev",
 			"vendor/bin/rector",
 			"find ./libraries/vendor -type f -name \"*.php\" -exec sed -i '' 's/\\(\\$[a-zA-Z_][a-zA-Z0-9_]*\\) instanceof Stringable/(is_object(\\1) \\&\\& method_exists(\\1, '\\''__toString'\\''))/g' {} +",
 			"git checkout -- composer.json",

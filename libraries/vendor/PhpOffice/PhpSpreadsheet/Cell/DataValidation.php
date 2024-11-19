@@ -32,81 +32,68 @@ class DataValidation
 
 	/**
 	 * Formula 1.
-	 * @var string
 	 */
-	private $formula1 = '';
+	private string $formula1 = '';
 
 	/**
 	 * Formula 2.
-	 * @var string
 	 */
-	private $formula2 = '';
+	private string $formula2 = '';
 
 	/**
 	 * Type.
-	 * @var string
 	 */
-	private $type = self::TYPE_NONE;
+	private string $type = self::TYPE_NONE;
 
 	/**
 	 * Error style.
-	 * @var string
 	 */
-	private $errorStyle = self::STYLE_STOP;
+	private string $errorStyle = self::STYLE_STOP;
 
 	/**
 	 * Operator.
-	 * @var string
 	 */
-	private $operator = self::DEFAULT_OPERATOR;
+	private string $operator = self::DEFAULT_OPERATOR;
 
 	/**
 	 * Allow Blank.
-	 * @var bool
 	 */
-	private $allowBlank = false;
+	private bool $allowBlank = false;
 
 	/**
 	 * Show DropDown.
-	 * @var bool
 	 */
-	private $showDropDown = false;
+	private bool $showDropDown = false;
 
 	/**
 	 * Show InputMessage.
-	 * @var bool
 	 */
-	private $showInputMessage = false;
+	private bool $showInputMessage = false;
 
 	/**
 	 * Show ErrorMessage.
-	 * @var bool
 	 */
-	private $showErrorMessage = false;
+	private bool $showErrorMessage = false;
 
 	/**
 	 * Error title.
-	 * @var string
 	 */
-	private $errorTitle = '';
+	private string $errorTitle = '';
 
 	/**
 	 * Error.
-	 * @var string
 	 */
-	private $error = '';
+	private string $error = '';
 
 	/**
 	 * Prompt title.
-	 * @var string
 	 */
-	private $promptTitle = '';
+	private string $promptTitle = '';
 
 	/**
 	 * Prompt.
-	 * @var string
 	 */
-	private $prompt = '';
+	private string $prompt = '';
 
 	/**
 	 * Create a new DataValidation.
@@ -418,10 +405,7 @@ class DataValidation
 		}
 	}
 
-	/**
-	 * @var string|null
-	 */
-	private $sqref;
+	private ?string $sqref = null;
 
 	public function getSqref(): ?string
 	{

@@ -20,10 +20,10 @@ return array(
 	'search'         => 'Pretraži:',
 	'zeroRecords'    => 'Ništa nije pronađeno',
 	'paginate'       => array(
-		'first'    => 'Prva',
-		'previous' => 'Nazad',
-		'next'     => 'Naprijed',
-		'last'     => 'Zadnja',
+		'first'    => '❮❮',
+		'previous' => '❮',
+		'next'     => '❯',
+		'last'     => '❯❯',
 	),
 	'aria'           => array(
 		'sortAscending'  => ': aktiviraj za rastući poredak',

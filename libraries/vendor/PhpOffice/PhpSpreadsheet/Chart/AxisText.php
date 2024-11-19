@@ -6,15 +6,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Font;
 
 class AxisText extends Properties
 {
-	/**
-	 * @var int|null
-	 */
-	private $rotation;
+	private ?int $rotation = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Font
-	 */
-	private $font;
+	private Font $font;
 
 	public function __construct()
 	{

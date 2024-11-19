@@ -19,6 +19,7 @@ import transforms from './transforms';
 import edit from './edit';
 import save from './save';
 import example from './example';
+import icon from './icon';
 
 /**
  * Get the block name from the block.json.
@@ -33,4 +34,5 @@ registerBlockType( block.name, {
 	edit,
 	save,
 	example,
+	icon,
 } );

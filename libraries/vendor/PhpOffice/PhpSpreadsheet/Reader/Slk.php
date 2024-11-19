@@ -16,33 +16,28 @@ class Slk extends BaseReader
 {
 	/**
 	 * Sheet index to read.
-	 * @var int
 	 */
-	private $sheetIndex = 0;
+	private int $sheetIndex = 0;
 
 	/**
 	 * Formats.
-	 * @var mixed[]
 	 */
-	private $formats = [];
+	private array $formats = [];
 
 	/**
 	 * Format Count.
-	 * @var int
 	 */
-	private $format = 0;
+	private int $format = 0;
 
 	/**
 	 * Fonts.
-	 * @var mixed[]
 	 */
-	private $fonts = [];
+	private array $fonts = [];
 
 	/**
 	 * Font Count.
-	 * @var int
 	 */
-	private $fontcount = 0;
+	private int $fontcount = 0;
 
 	/**
 	 * Create a new SYLK Reader instance.
@@ -150,6 +145,7 @@ class Slk extends BaseReader
 	{
 		// Create new Spreadsheet
 		$spreadsheet = new Spreadsheet();
+		$spreadsheet->setValueBinder($this->valueBinder);
 
 		// Load into this instance
 		return $this->loadIntoExisting($filename, $spreadsheet);
@@ -273,6 +269,7 @@ class Slk extends BaseReader
 		if ($sharedFormula === true && $sharedRow >= 0 && $sharedColumn >= 0) {
 			$thisCoordinate = Coordinate::stringFromColumnIndex((int) $column) . $row;
 			$sharedCoordinate = Coordinate::stringFromColumnIndex($sharedColumn) . $sharedRow;
+			/** @var string */
 			$formula = $spreadsheet->getActiveSheet()->getCell($sharedCoordinate)->getValue();
 			$spreadsheet->getActiveSheet()->getCell($thisCoordinate)->setValue($formula);
 			$referenceHelper = ReferenceHelper::getInstance();
@@ -286,6 +283,7 @@ class Slk extends BaseReader
 			return;
 		}
 		$columnLetter = Coordinate::stringFromColumnIndex((int) $column);
+		/** @var string */
 		$cellData = Calculation::unwrapResult($cellData);
 
 		// Set cell value
@@ -452,7 +450,7 @@ class Slk extends BaseReader
 	private function processPColors(string $rowDatum, array &$formatArray): void
 	{
 		if (preg_match('/L([1-9]\\d*)/', $rowDatum, $matches)) {
-			$fontColor = $matches[1] % 8;
+			$fontColor = ((int) $matches[1]) % 8;
 			$formatArray['font']['color']['argb'] = self::COLOR_ARRAY[$fontColor];
 		}
 	}

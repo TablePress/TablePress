@@ -7,6 +7,11 @@
  * @since 1.0.0
  */
 
+/* Load WordPress color schemes, which normally are only loaded on WP admin screens that use the block editor. */
+@use "~@wordpress/base-styles/colors";
+@use "~@wordpress/base-styles/mixins";
+@include mixins.wordpress-admin-schemes();
+
 /* Move down the header when the Screen Options or Help tabs are opened. */
 #screen-meta[style$="block;"] ~ #tablepress-page {
 	margin-top: 40px;
@@ -41,13 +46,8 @@
 
 		.name {
 			border-right: 1px solid #dedae6;
-			padding: 12px 24px 6px;
-
-			img {
-				vertical-align: middle;
-				margin: 0 12px 6px 0;
-				height: 32px;
-			}
+			padding: 7px 20px;
+			line-height: 0;
 		}
 	}
 
@@ -70,7 +70,7 @@
 
 		li:hover > a,
 		li > a:focus {
-			border-bottom-color: #049cdb;
+			border-bottom-color: var(--wp-admin-theme-color);
 			background-color: #f9f9f9;
 		}
 	}
@@ -85,7 +85,7 @@
 		color: #1e1e1e;
 
 		&.active {
-			border-bottom-color: #049cdb;
+			border-bottom-color: var(--wp-admin-theme-color);
 		}
 
 		&.separator {
@@ -143,38 +143,86 @@
 		margin: 20px 0 0;
 	}
 
-	/* Styling for the "Info" icon next to descriptions/notices. */
-	.info-text {
-		display: flex;
-		gap: 6px;
+	.postbox ul {
+		list-style: disc inside;
 		margin: 0;
 
+		> li {
+			margin: 0;
+		}
+	}
+
+	/* Styling for the "Info" icon next to descriptions/notices. */
+	.components-h-stack {
 		svg {
 			min-width: 24px;
 		}
+	}
 
-		span {
-			margin-top: 2px;
+	.code input,
+	.code textarea {
+		font-family: Consolas, Monaco, monospace;
+		direction: ltr;
+		unicode-bidi: embed;
+	}
+
+	/* Reset style from postboxes that pollute components' styles. */
+	.components-panel__body {
+		> .components-panel__body-title {
+			padding: 0;
+		}
+
+		&.is-opened > .components-panel__body-title {
+			margin: -16px -16px 5px;
 		}
 	}
-}
 
-/* Styling for the "Add New Table" form. */
-#tablepress_add-add-table {
-	.form-wrap {
-		max-width: 500px;
+	.components-card {
+		box-shadow: none;
+		border-radius: 0;
+
+		.components-card-header {
+			h2 {
+				padding: 0;
+				line-height: normal;
+			}
+		}
+
+		.card-title {
+			font-size: 13px;
+			font-weight: 500;
+			padding: 0 0 18px;
+			margin-left: -8px;
+		}
 	}
 
-	.form-field {
-		margin: 0;
+	.components-checkbox-control__input,
+	.components-radio-control__input {
+		&:checked:disabled {
+			opacity: 0.4;
+		}
 
+		&:not(:checked):disabled {
+			background: #f0f0f0;
+			border-color: #cccccc;
+		}
 	}
 
-	/* Number of rows/columns in the "Add New Table" form. */
-	.form-field-small {
-		float: left;
-		width: 150px;
-		margin-right: 20px;
+	.components-text-control__input:disabled {
+		background: #f0f0f0;
+		border-color: #cccccc;
+	}
+
+	/* Alignment of selects inside of checkbox labels. */
+	.checkbox-select-in-label {
+		.components-h-stack {
+			align-items: center;
+		}
+		.components-checkbox-control__label {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
 	}
 }
 
@@ -236,7 +284,6 @@
 	th,
 	td {
 		padding: 2px;
-		word-wrap: break-word;
 	}
 	.top-border {
 		th,
@@ -263,21 +310,16 @@
 }
 
 /* Alignment of textareas and buttons in postboxes. */
-#tablepress-page textarea,
+#tablepress-page textarea:not(.components-textarea-control__input),
 .tablepress-postbox-table .button {
 	margin: 1px;
-}
-
-/* Red color for the "Uninstall TablePress" button on the "Plugin Options" screen. */
-#uninstall-tablepress {
-	color: #bc0b0b;
 }
 
 /* Styling of pills in postbox headings. */
 .postbox .postbox-header .hndle {
 	display: inline;
 
-	.beta-label {
+	.pill-label {
 		display: inline-block;
 		vertical-align: top;
 		box-sizing: border-box;
@@ -286,7 +328,7 @@
 		min-width: 18px;
 		height: 18px;
 		border-radius: 9px;
-		background-color: #049cdb;
+		background-color: var(--wp-admin-theme-color);
 		color: #ffffff;
 		font-size: 11px;
 		line-height: 1.6;

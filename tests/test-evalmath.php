@@ -20,9 +20,8 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 	 * Instance of the EvalMath class.
 	 *
 	 * @since 1.5.0
-	 * @var EvalMath
 	 */
-	protected $evalmath;
+	protected \EvalMath $evalmath;
 
 	/**
 	 * Load the EvalMath class PHP file once for all tests.
@@ -118,10 +117,10 @@ class TablePress_Test_EvalMath extends TablePress_TestCase {
 		$this->assertSame( pi() + 10, $result );
 
 		$result = $this->evalmath->evaluate( 'pi()^10' );
-		$this->assertSame( pow( pi(), 10 ), $result );
+		$this->assertSame( pi() ** 10, $result );
 
 		$result = $this->evalmath->evaluate( '-8*(5/2)^2*(1-sqrt(4))-8' );
-		$this->assertSame( -8 * pow( ( 5 / 2 ), 2 ) * ( 1 - sqrt( 4 ) ) - 8, $result );
+		$this->assertSame( -8 * ( 5 / 2 ) ** 2 * ( 1 - sqrt( 4 ) ) - 8, $result );
 	}
 
 	/**

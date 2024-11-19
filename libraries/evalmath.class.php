@@ -30,25 +30,22 @@ class EvalMath {
 	 * Note, variable and function names are case insensitive.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	protected static $name_pattern = '[a-z][a-z0-9_]*';
+	protected static string $name_pattern = '[a-z][a-z0-9_]*';
 
 	/**
 	 * Whether to suppress errors and warnings.
 	 *
 	 * @since 1.0.0
-	 * @var bool
 	 */
-	public $suppress_errors = false;
+	public bool $suppress_errors = false;
 
 	/**
 	 * The last error message that was raised.
 	 *
 	 * @since 1.0.0
-	 * @var string
 	 */
-	public $last_error = '';
+	public string $last_error = '';
 
 	/**
 	 * Variables (including constants).
@@ -56,7 +53,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 * @var array<string, mixed>
 	 */
-	public $variables = array();
+	public array $variables = array();
 
 	/**
 	 * User-defined functions.
@@ -64,7 +61,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 * @var array<string, mixed>
 	 */
-	protected $functions = array();
+	protected array $functions = array();
 
 	/**
 	 * Constants.
@@ -72,7 +69,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 * @var array<string, mixed>
 	 */
-	protected $constants = array();
+	protected array $constants = array();
 
 	/**
 	 * Built-in functions.
@@ -80,7 +77,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 * @var string[]
 	 */
-	protected $builtin_functions = array(
+	protected array $builtin_functions = array(
 		'sin',
 		'sinh',
 		'arcsin',
@@ -114,7 +111,7 @@ class EvalMath {
 	 * @since 1.0.0
 	 * @var array<string, int[]>
 	 */
-	protected $calc_functions = array(
+	protected array $calc_functions = array(
 		'average'          => array( -1 ),
 		'mean'             => array( -1 ),
 		'median'           => array( -1 ),
@@ -347,23 +344,23 @@ class EvalMath {
 					// Check the argument count, depending on what type of function we have.
 					if ( in_array( $function_name, $this->builtin_functions, true ) ) {
 						// Built-in functions.
-						if ( $arg_count > 1 ) { // @phpstan-ignore-line
+						if ( $arg_count > 1 ) { // @phpstan-ignore greater.alwaysFalse
 							$error_data = array( 'expected' => 1, 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
 					} elseif ( array_key_exists( $function_name, $this->calc_functions ) ) {
 						// Calc-emulation functions.
 						$counts = $this->calc_functions[ $function_name ];
-						// @phpstan-ignore-next-line
+						// @phpstan-ignore greater.alwaysFalse, booleanAnd.alwaysFalse
 						if ( in_array( -1, $counts, true ) && $arg_count > 0 ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 							// Everything is fine, we expected an indefinite number arguments and got some.
-						} elseif ( ! in_array( $arg_count, $counts, true ) ) { // @phpstan-ignore-line
+						} elseif ( ! in_array( $arg_count, $counts, true ) ) { // @phpstan-ignore function.impossibleType
 							$error_data = array( 'expected' => implode( '/', $this->calc_functions[ $function_name ] ), 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
 					} elseif ( array_key_exists( $function_name, $this->functions ) ) {
 						// User-defined functions.
-						if ( count( $this->functions[ $function_name ]['args'] ) !== $arg_count ) {
+						if ( count( $this->functions[ $function_name ]['args'] ) !== $arg_count ) { // @phpstan-ignore notIdentical.alwaysTrue
 							$error_data = array( 'expected' => count( $this->functions[ $function_name ]['args'] ), 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
@@ -391,7 +388,7 @@ class EvalMath {
 					return $this->raise_error( 'unexpected_comma' );
 				}
 				// Increment the argument count.
-				$stack->push( $stack->pop() + 1 ); // @phpstan-ignore-line
+				$stack->push( $stack->pop() + 1 ); // @phpstan-ignore binaryOp.invalid
 				// Put the ( back on, we'll need to pop back to it again.
 				$stack->push( '(' );
 				++$index;
@@ -575,8 +572,8 @@ class EvalMath {
 							$args[ $this->functions[ $function_name ]['args'][ $i ] ] = $arg;
 						}
 					}
-					// yay... recursion!
-					$stack->push( $this->pfx( $this->functions[ $function_name ]['func'], $args ) ); // @phpstan-ignore-line
+					// Recursion.
+					$stack->push( $this->pfx( $this->functions[ $function_name ]['func'], $args ) ); // @phpstan-ignore argument.type
 				}
 			} elseif ( in_array( $token, array( '+', '-', '*', '/', '^', '>', '<', '=', '%' ), true ) ) {
 				// If the token is a binary operator, pop two values off the stack, do the operation, and push the result back on.
@@ -741,15 +738,14 @@ class EvalMath_Stack { // phpcs:ignore Generic.Files.OneObjectStructurePerFile.M
 	 * @since 1.0.0
 	 * @var mixed[]
 	 */
-	protected $stack = array();
+	protected array $stack = array();
 
 	/**
 	 * Number of items on the stack.
 	 *
 	 * @since 1.0.0
-	 * @var int
 	 */
-	public $count = 0;
+	public int $count = 0;
 
 	/**
 	 * Push an item onto the stack.
@@ -808,9 +804,8 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * Seed for the generation of random numbers.
 	 *
 	 * @since 1.0.0
-	 * @var string|null
 	 */
-	protected static $random_seed = null;
+	protected static ?string $random_seed = null;
 
 	/**
 	 * Choose from two values based on an if-condition.
@@ -956,7 +951,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	public static function median( array ...$args ) /* : float|int */ {
 		sort( $args );
 		$middle = intdiv( count( $args ), 2 ); // Upper median for even counts.
-		return $args[ $middle ]; // @phpstan-ignore-line
+		return $args[ $middle ]; // @phpstan-ignore return.type
 	}
 
 	/**
@@ -968,9 +963,9 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * @return double|int Mode of the passed arguments.
 	 */
 	public static function mode( ...$args ) /* : float|int */ {
-		$values = array_count_values( $args );
+		$values = array_count_values( $args ); // @phpstan-ignore argument.type
 		asort( $values );
-		return array_key_last( $values ); // @phpstan-ignore-line
+		return array_key_last( $values ); // @phpstan-ignore return.type
 	}
 
 	/**
@@ -995,7 +990,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * @return double|int Maximum value of the passed arguments.
 	 */
 	public static function max( ...$args ) /* : float|int */ {
-		return max( $args );
+		return max( $args ); // @phpstan-ignore argument.type
 	}
 
 	/**
@@ -1007,7 +1002,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * @return double|int Minimum value of the passed arguments.
 	 */
 	public static function min( ...$args ) /* : float|int */ {
-		return min( $args );
+		return min( $args ); // @phpstan-ignore argument.type
 	}
 
 	/**
@@ -1171,7 +1166,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 */
 	public static function rand_float(): float {
 		$random_values = unpack( 'v', md5( self::_get_random_seed(), true ) );
-		return array_shift( $random_values ) / 65536; // @phpstan-ignore-line
+		return array_shift( $random_values ) / 65536; // @phpstan-ignore argument.type
 	}
 
 } // class EvalMath_Functions

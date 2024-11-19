@@ -88,8 +88,8 @@ class VLookup extends LookupBase
 
 		$rowNumber = null;
 		foreach ($lookupArray as $rowKey => $rowData) {
-			$bothNumeric = is_numeric($lookupValue) && is_numeric($rowData[$column]);
-			$bothNotNumeric = !is_numeric($lookupValue) && !is_numeric($rowData[$column]);
+			$bothNumeric = self::numeric($lookupValue) && self::numeric($rowData[$column]);
+			$bothNotNumeric = !self::numeric($lookupValue) && !self::numeric($rowData[$column]);
 			$cellDataLower = StringHelper::strToLower((string) $rowData[$column]);
 
 			// break if we have passed possible keys
@@ -113,5 +113,13 @@ class VLookup extends LookupBase
 		}
 
 		return $rowNumber;
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	private static function numeric($value): bool
+	{
+		return is_int($value) || is_float($value);
 	}
 }

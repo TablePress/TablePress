@@ -9,20 +9,15 @@ class DgContainer
 {
 	/**
 	 * Drawing index, 1-based.
-	 * @var int|null
 	 */
-	private $dgId;
+	private ?int $dgId = null;
 
 	/**
 	 * Last shape index in this drawing.
-	 * @var int|null
 	 */
-	private $lastSpId;
+	private ?int $lastSpId = null;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer|null
-	 */
-	private $spgrContainer;
+	private ?SpgrContainer $spgrContainer = null;
 
 	public function getDgId(): ?int
 	{

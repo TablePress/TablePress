@@ -7,15 +7,9 @@ use SimpleXMLElement;
 
 class SheetViewOptions extends BaseParserClass
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
-	/**
-	 * @var \SimpleXMLElement|null
-	 */
-	private $worksheetXml;
+	private ?SimpleXMLElement $worksheetXml;
 
 	public function __construct(Worksheet $workSheet, ?SimpleXMLElement $worksheetXml = null)
 	{
@@ -128,11 +122,12 @@ class SheetViewOptions extends BaseParserClass
 	private function printOptions(SimpleXMLElement $printOptionsx): void
 	{
 		$printOptions = $printOptionsx->attributes() ?? [];
-		if (isset($printOptions['gridLinesSet']) && self::boolean((string) $printOptions['gridLinesSet'])) {
-			$this->worksheet->setShowGridlines(true);
-		}
+		// Spec is weird. gridLines (default false)
+		// and gridLinesSet (default true) must both be true.
 		if (isset($printOptions['gridLines']) && self::boolean((string) $printOptions['gridLines'])) {
-			$this->worksheet->setPrintGridlines(true);
+			if (!isset($printOptions['gridLinesSet']) || self::boolean((string) $printOptions['gridLinesSet'])) {
+				$this->worksheet->setPrintGridlines(true);
+			}
 		}
 		if (isset($printOptions['horizontalCentered']) && self::boolean((string) $printOptions['horizontalCentered'])) {
 			$this->worksheet->getPageSetup()->setHorizontalCentered(true);

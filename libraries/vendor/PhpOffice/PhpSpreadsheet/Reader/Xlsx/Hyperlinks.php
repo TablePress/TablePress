@@ -9,15 +9,9 @@ use SimpleXMLElement;
 
 class Hyperlinks
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $worksheet;
+	private Worksheet $worksheet;
 
-	/**
-	 * @var mixed[]
-	 */
-	private $hyperlinks = [];
+	private array $hyperlinks = [];
 
 	public function __construct(Worksheet $workSheet)
 	{

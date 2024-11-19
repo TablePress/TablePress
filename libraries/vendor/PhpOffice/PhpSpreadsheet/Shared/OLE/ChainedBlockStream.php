@@ -11,28 +11,25 @@ class ChainedBlockStream
 
 	/**
 	 * The OLE container of the file that is being read.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\OLE|null
 	 */
-	public $ole;
+	public ?OLE $ole = null;
 
 	/**
 	 * Parameters specified by fopen().
-	 * @var mixed[]
 	 */
-	public $params = [];
+	public array $params = [];
 
 	/**
 	 * The binary data of the file.
-	 * @var string
 	 */
-	public $data;
+	public string $data;
 
 	/**
 	 * The file pointer.
 	 *
 	 * @var int byte offset
 	 */
-	public $pos = 0;
+	public int $pos = 0;
 
 	/**
 	 * Implements support for fopen().

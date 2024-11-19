@@ -2,14 +2,14 @@
 Contributors: TobiasBg
 Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=donate-link
 Tags: table, spreadsheet, csv, excel, tables
-Requires at least: 6.0
-Requires PHP: 7.2
-Tested up to: 6.6
-Stable tag: 2.4.4
+Requires at least: 6.2
+Requires PHP: 7.4
+Tested up to: 6.7
+Stable tag: 3.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Embed beautiful and interactive tables into your WordPress website’s posts and pages, without having to write code!
+Embed beautiful, accessible, and interactive tables into your WordPress website’s posts and pages, without having to write code!
 
 == Description ==
 
@@ -52,8 +52,9 @@ The easiest way to install TablePress is via your WordPress Dashboard:
 
 Manual installation works just as for other WordPress plugins:
 
-1. [Download the TablePress ZIP file](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip) and extract it on your computer.
-1. Move the folder "tablepress" to the "wp-content/plugins/" directory of your WordPress installation, e.g. via FTP.
+1. [Download the TablePress ZIP file](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip).
+1. Go to the “Plugins“ screen on your site and upload it by clicking “Add New” → “Upload Plugin“.
+1. Or, extract the ZIP file and move the folder “tablepress“ to the “wp-content/plugins/“ directory of your WordPress installation, e.g. via FTP.
 1. Activate "TablePress" on the "Plugins" screen of your WordPress Dashboard.
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
 1. To insert a table into a post or page, add a "TablePress table" block in the block editor and select the desired table or use Shortcodes with common page builders.
@@ -61,7 +62,7 @@ Manual installation works just as for other WordPress plugins:
 == Frequently Asked Questions ==
 
 = Where can I find answers to Frequently Asked Questions? =
-Many questions, regarding different features or styling, have been answered on the [FAQ page](https://tablepress.org/faq/) on the TablePress website.
+Many questions, regarding different features or styling, have been answered on the [FAQ page](https://tablepress.org/faq/) and in the extensive [TablePress plugin documentation](https://tablepress.org/documentation/) on the TablePress website.
 
 = Support? =
 
@@ -74,7 +75,7 @@ Users with an active TablePress Premium license plan are eligible for Priority E
 For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don't find an existing answer. Thank you!
 
 = Requirements? =
-In short: WordPress 6.0 or higher, while the latest version of WordPress is always recommended. In addition, the server must be running PHP 7.2 or newer.
+In short: WordPress 6.2 or higher, while the latest version of WordPress is always recommended. In addition, the server must be running PHP 7.4 or newer.
 
 = Languages and Localization? =
 TablePress uses the ["Translate WordPress" platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
@@ -107,78 +108,67 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 2.4.4 (October 15, 2024) =
+= Version 3.0 (November 19, 2024) =
 
-* Bugfix: The import of CSV files with special formatting characters (BOM) is working again.
-* Bugfix: The position of the Search field in the “Automatic Periodic Table Import” configuration is correct again. (TablePress Max only.)
-* *Important note*: This release also contains an important security fix that was first released in TablePress 2.4.3.
+TablePress 3.0 is a major feature update. Besides a new plugin logo and modernized admin screens, here are the highlights.
+Important: Note the list of changes that might require manual adjustments after updating TablePress on your site!
 
-= Version 2.4.3 (October 9, 2024) =
+**Heavily Improved Frontend Table Rendering**
 
-* *Security fix*: Sanitize output of evaluated formulas (CVE-2024-9595). Thanks to Max Boll and to the Wordfence team for following responsible disclosure policies when reporting this issue!
-* Bugfix: On the “Import” screen, a helpful feature pointer for new users is now shown properly again.
-* Bugfix: A check for whether combining cells on the “Edit” screen is possible was not strict enough.
-* Bugfix: The “Column Filter Dropdowns” feature module no longer shows duplicate entries in the dropdowns. (TablePress Pro and Max only.)
-* Bugfix: The “Individual Column Filtering” feature module no longer shows duplicate entries in the dropdowns. (TablePress Pro and Max only.)
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* CSS style files are only loaded if they are needed, to drastically improve the loading speed!
+* You can how have table headers with more than one row and with connected cells!
+* Tables are more accessible for visitors with disabilities or that use assistive technologies and easier to use with keyboard navigation!
+* Improved search for site visitors, like support of ! for negation as well as accents and diacritics.
+* The sorting allows returning to the unsorted order.
+* Control elements for filtering and pagination are now responsive, for superior look on small screens.
+* A new default pagination style makes it easier to navigate in long tables.
+* Automatic right alignment for numbers/dates can be turned on.
+* An improved automatic detection of date formats can be activated.
 
-= Version 2.4.2 (September 10, 2024) =
+**New Premium Feature Modules**
 
-* Bugfix: The “TablePress table” block in the WordPress Block Editor will properly show the table preview again.
-* Bugfix: Control elements like the Search again remain in place, when using the “Scroll” mode of the “Responsive Tables” feature module. (TablePress Pro and Max only.)
-* Bugfix: When the “Responsive Tables” feature module’s “Flip” is used, a “Fixed Header” row will be hidden. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* **Table Layout**
+  * Easily customize the layout and position of features around your tables.
+* **Advanced Pagination Settings**
+  * Customize the pagination settings of your tables.
+* **Inverted Filtering**
+  * Turn the filtering into a search and hide tables if no search term is entered.
 
-= Version 2.4.1 (August 13, 2024) =
+**Many New Features and Enhancements for Existing Premium Features**
 
-* Bugfix: The table width is correct again, when using the “Scroll” mode of the “Responsive Tables” feature module. (TablePress Pro and Max only.)
-* Bugfix: The “Responsive Tables” feature module’s “Stack” mode now properly handles tables with combined cells. (TablePress Pro and Max only.)
-* Bugfix: An edge case problem in the “Row Order” feature module’s multi-column sorting was fixed. (TablePress Pro and Max only.)
-* Bugfix: In the table import engine, compatibility issues with older versions of PHP were fixed.
-* Enhancement: The settings of the “Server-side Processing” and the “Automatic Filtering” feature modules are now compatible. (TablePress Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* **Default Style Customizer**
+  * You can now change colors for premium features with ease!
+* **Fixed Columns**
+  * Fixed columns have a clearer separation from scrolling columns!
+* **Individual Column Filter**
+  * Filters will be shown in an extra header or footer row!
+  * An option to configure which columns get a filter control was added!
+* **Automatic Periodic Table Import**:
+  * A "Run now" button allows triggering imports outside of the configured schedule.
+  * E-Mail error notifications: TablePress can now notify the site admin if an import fails!
+* **Row Highlighting and Cell Highlighting**
+  * The highlight term can now be provided via a URL parameter!
+* **Server-side Processing**
+  * Added caching support for POST requests
+  * Added compatibility with the "Automatic Filtering" feature module and the "Input" field mode of the "Individual Column Filtering" feature module.
 
-= Version 2.4 (July 16, 2024) =
+**Changes that Might Require Adjustments (Backwards-compatibility Breaks)**
 
-**New and improved features**
-
-* A *new “Fuzzy Search” feature module* allows the visitor to find similar and not just exact search matches. This is useful when e.g. searching for words with the same pronunciation but different spelling. (TablePress Max only.)
-* The “Column Filter Dropdowns” feature module now allows specifying which columns should get a dropdown, and it’s possible to change their order! (TablePress Pro and Max only.)
-* Similarly, the “Search Panes” feature module now allows specifying which columns should get a search pane. (TablePress Pro and Max only.)
-* The “Fixed Columns” feature module now also allows the visitor to scroll left and right by clicking arrow buttons (see below for more). (TablePress Pro and Max only.)
-* The “Row Order” feature module now allows ordering a table by multiple columns at the same time! (TablePress Pro and Max only.)
-* The “Server-side Processing” feature module can automatically refresh the shown data after a configured interval, so that the visitor will always see the latest data. (TablePress Max only.)
-* The “Row Order” and “Server-side Processing” feature modules now sort non-numeric columns “naturally” and case-insensitive. (TablePress Pro and Max only.)
-* The “REST API” feature module now supports pagination and ordering request parameters and sends corresponding HTTP headers for easier integration. (TablePress Max only.)
-
-**The “Responsive Tables” and “Fixed Columns” premium modules offer more possibilities**
-
-* The “Scroll” mode’s arrow buttons now stick to the top of the page, making them easier to use in long tables.
-* In addition, they will now only be shown if a table actually needs horizontal scrolling!
-* They also scroll the table in the expected direction now.
-* And even better: These scroll arrow buttons are now also available when using the “Fixed Columns” feature module!
-* When using the “Scroll” mode, the table name, description, and control elements like the Search now remain in place.
-* In the “Flip” mode, the sorting arrows are now properly rotated.
-* The “Stack” no longer conflicts with the “Fixed Columns” feature.
-* The Safari browser on iOS will no longer unexpectedly change font sizes.
-
-**Miscellaneous changes**
-
-* TablePress warns that certain activated but retired TablePress Extensions will stop working with TablePress 3.0, later this year.
-* TablePress actively prevents conflicts with overwritten menu items in the dashboard’s admin menu.
-* The user interface experience on the “Edit” screen was improved.
-* The size of “Custom CSS” code will be reduced even further, if the code has comments.
-* The “Automatic Table Export” feature module now properly detects automatic periodic table imports. (TablePress Max only.)
-* The “Automatic Periodic Table Import” feature module’s configuration screen now has better spacing. (TablePress Max only.)
-* The “Server-side Processing” feature module checks for potential conflicts with incompatible features. (TablePress Max only.)
+* Some outdated and retired TablePress Extensions will no longer work! [Read more!](https://tablepress.org/upgrade-extensions/?utm_source=wordpress.org&utm_medium=textlink&utm_content=readme)
+* The new structure of the table controls might require adjustments in your “Custom CSS” code!
+  * The CSS code for "Alternating Row Colors" has changed!
+  * The CSS code for changing colors of actively sorted-on column header cells has changed.
+* The sorting arrow icons look slightly different now — but are loaded faster.
+* The default pagination type now shows numbers in addition to left/right arrow icons, which also don’t show the “Previous”/”Next” texts anymore!
 
 **Behind the scenes**
 
+* **TablePress 3.0 requires WordPress 6.2 and PHP 7.4.**
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
 * Automated code compatibility checks and build tools simplify chores for easier development.
+* Support for PHP 8.4.
+* Full compatibility with WordPress 6.7.
 
 **Premium versions**
 
@@ -186,8 +176,5 @@ Changes in recent versions are shown below. For earlier changes, please see the 
 
 == Upgrade Notice ==
 
-= 2.4.4 =
-This update is a stability and maintenance release. Updating is highly recommended.
-
-= 2.4 =
-This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended.
+= 3.0 =
+This update is a major feature, stability, maintenance, and compatibility release. Updating is highly recommended after reading the release announcement!

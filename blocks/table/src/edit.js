@@ -25,6 +25,7 @@ import block from '../block.json';
  * Internal dependencies.
  */
 import { shortcode_attrs_to_string } from './common/functions';
+import TablePress_Table_Icon from './icon';
 
 /**
  * Load CSS code that only applies inside the block editor.
@@ -42,7 +43,7 @@ const ComboboxControl_options = Object.entries( tp.tables ).map( ( [ id, name ] 
 /**
  * Custom component for the "Manage your tables." link.
  */
-const ManageTablesLink = function() {
+const ManageTablesLink = function () {
 	return (
 		'' !== tp.url &&
 			<ExternalLink href={ tp.url }>
@@ -91,7 +92,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 		blockMarkup = (
 			<div { ...blockProps }>
 				<Placeholder
-					icon={ <Icon icon="list-view" /> }
+					icon={ <Icon icon={ TablePress_Table_Icon } /> }
 					label={ __( 'TablePress table', 'tablepress' ) }
 					instructions={ instructions }
 				>
@@ -110,6 +111,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 					{ 0 < ComboboxControl_options.length
 						?
 						<ComboboxControl
+							__nextHasNoMarginBottom
 							label={ __( 'Table:', 'tablepress' ) }
 							help={
 								<>
@@ -137,6 +139,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 			{ attributes.id && tp.tables.hasOwnProperty( attributes.id ) &&
 				<InspectorAdvancedControls>
 					<TextControl
+						__nextHasNoMarginBottom
 						label={ __( 'Configuration parameters:', 'tablepress' ) }
 						help={ __( 'These additional parameters can be used to modify specific table features.', 'tablepress' ) + ' ' + __( 'See the TablePress Documentation for more information.', 'tablepress' ) }
 						value={ attributes.parameters }
@@ -166,7 +169,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 	return (
 		<>
 			{ blockMarkup }
-			{ sidebarMarkup}
+			{ sidebarMarkup }
 		</>
 	);
 };

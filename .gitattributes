@@ -47,6 +47,7 @@
 *.css text
 *.scss text
 *.yml text
+*.svg text
 *.xml.dist text
 *.neon.dist text
 
@@ -58,5 +59,3 @@
 *.png binary
 *.jpg binary
 *.gif binary
-*.woff binary
-*.woff2 binary

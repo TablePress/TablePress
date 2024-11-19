@@ -13,232 +13,238 @@
 /* Default toggle variable for LTR and RTL CSS. */
 $direction: "ltr" !default;
 
+/* Import DataTables pagination code. */
+@use "default-datatables-pagination" with ($direction: $direction);
+
 /* Default variables for the LTR CSS. */
-$align-side: left !default;
-$align-side-opposite: right !default;
-$button-previous-icon: "\f053" !default;
-$button-next-icon: "\f054" !default;
-$position: "after" !default;
+$align-side: left;
+$align-side-opposite: right;
 
 /* Variables for the RTL CSS. */
 @if "rtl" == $direction {
 	$align-side: right;
 	$align-side-opposite: left;
-	$button-previous-icon: "\f054";
-	$button-next-icon: "\f053";
-	$position: "before";
 }
 
-/* Table wrapper */
-.dataTables_wrapper {
-	position: relative;
-	clear: both;
-	margin-bottom: 1rem;
-
-	.tablepress {
-		clear: both;
-		margin-bottom: 0;
-	}
-
-	/* Self clearing */
-	&:after {
-		content: "";
-		display: block;
-		clear: both;
-		visibility: hidden;
-		line-height: 0;
-		height: 0;
-	}
-
-	/* Dropdown and input style */
-	label input,
-	label select {
-		display: inline;
-		margin: 2px;
-		width: auto;
-	}
-}
-
-/* Length Change menu */
-.dataTables_length {
-	float: $align-side;
-	white-space: nowrap;
-}
-
-/* Filter/Search */
-.dataTables_filter {
-	float: $align-side-opposite;
-	white-space: nowrap;
-
-	label input {
-		margin-#{$align-side}: 0.5em;
-		margin-#{$align-side-opposite}: 0;
-	}
-}
-
-/* Table information */
-.dataTables_info {
-	clear: both;
-	float: $align-side;
-	margin: 4px 0 0;
-}
-
-/* Pagination */
-.dataTables_paginate {
-	float: $align-side-opposite;
-	margin: 4px 0 0;
-
-	.paginate_button {
-		color: #111111;
-		display: inline-block;
-		outline: none;
-		position: relative;
-		text-decoration: underline;
-		margin: 0 5px;
-
-		&:first-child {
-			margin-#{$align-side}: 0;
-		}
-		&:last-child {
-			margin-#{$align-side-opposite}: 0;
-		}
-		&:before,
-		&:after {
-			color: #d9edf7;
-		}
-		&:hover {
-			cursor: pointer;
-			text-decoration: none;
-			&:before,
-			&:after {
-				color: #049cdb;
-			}
-		}
-		&.disabled {
-			color: #999999;
-			text-decoration: none;
-			cursor: default;
-			&:before,
-			&:after {
-				color: #f9f9f9;
-			}
-		}
-		&.current {
-			font-weight: bold;
-			text-decoration: none;
-			cursor: default;
-		}
-
-	}
-
-	/* Two button pagination - previous/next */
-	&.paging_simple {
-		padding: 0 15px;
-
-		.paginate_button {
-			&.previous:before,
-			&.next:after {
-				text-align: $align-side;
-				font-family: TablePress;
-				font-size: 14px;
-				font-weight: bold;
-				-webkit-font-smoothing: antialiased;
-				content: $button-previous-icon;
-				text-shadow: 0.1em 0.1em #666666;
-				position: absolute;
-				top: 0;
-				#{$align-side-opposite}: auto;
-				bottom: 0;
-				#{$align-side}: -14px;
-				margin: auto;
-				height: 14px;
-				width: 14px;
-				line-height: 1;
-			}
-			&.next:after {
-				text-align: $align-side-opposite;
-				content: $button-next-icon;
-				#{$align-side}: auto;
-				@if "rtl" == $direction {
-					#{$align-side-opposite}: -14px;
-				}
-			}
-		}
-	}
-}
-
-/* Scrolling */
-.dataTables_scroll {
-	clear: both;
+/* Scrolling. */
+.dt-scroll {
+	width: 100%;
 
 	/* Fix for wrong alignment and width. */
 	.tablepress {
 		width: 100% !important;
 	}
 }
-/* Ensure that the table head row doesn't get a margin from some themes. */
-.dataTables_scrollHead table.tablepress {
-	margin: 0;
-}
-.dataTables_scrollBody {
-	-webkit-overflow-scrolling: touch;
 
-	/* Hide the sorting arrows in the extra table that is added for scrolling */
-	.tablepress thead th:#{$position} {
-		content: "";
+div.dt-scroll-body {
+	thead,
+	tfoot {
+		tr {
+			height: 0;
+
+			th {
+				height: 0 !important;
+				padding-top: 0 !important;
+				padding-bottom: 0 !important;
+				border-top-width: 0 !important;
+				border-bottom-width: 0 !important;
+
+				div.dt-scroll-sizing {
+					height: 0 !important;
+					overflow: hidden !important;
+				}
+			}
+		}
 	}
 }
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th > div.dataTables_sizing,
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td > div.dataTables_sizing {
-	height: 0;
+
+div.dt-scroll-body > table.dataTable > thead > tr > th {
 	overflow: hidden;
-	margin: 0 !important;
-	padding: 0 !important;
 }
 
-/* Sorting */
+/* Sorting. */
 .tablepress {
 	/* Custom properties */
 	--head-active-bg-color: #049cdb;
 	--head-active-text-color: var(--head-text-color);
+	--head-sort-arrow-color: var(--head-active-text-color);
 
-	.sorting,
-	.sorting_asc,
-	.sorting_desc {
-		position: relative;
-		padding-#{$align-side-opposite}: 20px; /* more padding for sort arrows on the opposite align side */
-		cursor: pointer;
-		outline: none;
+	thead {
+		th:active {
+			outline: none;
+		}
 
-		&:#{$position} {
-			font-family: TablePress;
-			font-weight: normal;
-			font-size: 14px;
-			-webkit-font-smoothing: antialiased;
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			#{$align-side}: auto;
-			#{$align-side-opposite}: 6px;
-			margin: auto;
-			height: 14px;
-			line-height: 1;
+		.dt-orderable-asc,
+		.dt-ordering-asc {
+			.dt-column-order:before {
+				position: absolute;
+				display: block;
+				bottom: 50%;
+				content: "\25b2" / "";
+			}
+		}
+
+		.dt-orderable-desc,
+		.dt-ordering-desc {
+			.dt-column-order:after {
+				position: absolute;
+				display: block;
+				top: 50%;
+				content: "\25bc" / "";
+			}
+		}
+
+		.dt-orderable-asc,
+		.dt-orderable-desc,
+		.dt-ordering-asc,
+		.dt-ordering-desc {
+			position: relative;
+			padding-#{$align-side-opposite}: 24px;
+
+			.dt-column-order {
+				position: absolute;
+				#{$align-side-opposite}: 6px;
+				top: 0;
+				bottom: 0;
+				width: 12px;
+				color: var(--head-sort-arrow-color);
+
+				&:before,
+				&:after {
+					opacity: 0.2;
+					line-height: 12px;
+					font-size: 12px;
+					font-family: sans-serif !important;
+				}
+			}
+		}
+
+		.dt-orderable-asc,
+		.dt-orderable-desc {
+			cursor: pointer;
+			outline-offset: -2px;
+
+			&:hover {
+				background-color: var(--head-active-bg-color);
+				color: var(--head-active-text-color);
+			}
+		}
+
+		.dt-ordering-asc,
+		.dt-ordering-desc {
+			background-color: var(--head-active-bg-color);
+			color: var(--head-active-text-color);
+		}
+
+		.dt-ordering-asc .dt-column-order:before,
+		.dt-ordering-desc .dt-column-order:after {
+			opacity: 0.8;
 		}
 	}
-	.sorting:#{$position} {
-		content: "\f0dc";
+}
+
+/* Automatic data type alignment. */
+.tablepress:where(.auto-type-alignment) {
+	.dt-type-numeric,
+	.dt-type-date,
+	/* .dt-right is used for custom dates. */
+	.dt-right {
+		text-align: $align-side-opposite;
 	}
-	.sorting_asc:#{$position} {
-		content: "\f0d8";
-		padding: 0 0 2px;
+}
+
+/* Element positioning. */
+.dt-container {
+	position: relative;
+	clear: both;
+	margin-bottom: 1rem;
+
+	.tablepress {
+		margin-bottom: 0;
 	}
-	.sorting_desc:#{$position} {
-		content: "\f0d7";
+
+	.dt-layout-row {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+
+		&.dt-layout-table {
+			.dt-layout-cell {
+				display: block;
+				width: 100%;
+			}
+		}
 	}
-	.sorting:hover,
-	.sorting_asc,
-	.sorting_desc {
-		background-color: var(--head-active-bg-color);
-		color: var(--head-active-text-color);
+
+	.dt-layout-cell {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		gap: 1em;
+		padding: 5px 0;
+
+		&.dt-layout-full {
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+
+			> *:only-child {
+				margin: auto;
+			}
+		}
+
+		&.dt-layout-start {
+			justify-content: flex-start;
+			align-items: center;
+			margin-right: auto;
+		}
+
+		&.dt-layout-end {
+			justify-content: flex-end;
+			align-items: center;
+			margin-left: auto;
+		}
+
+		&:empty {
+			display: none;
+		}
+	}
+
+	label {
+		display: inline;
+	}
+
+	/* Input and select fields. */
+	.dt-input {
+		display: inline;
+		padding: 5px;
+		width: auto;
+		font-size: inherit;
+	}
+
+	/* Search field. */
+	.dt-search {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 5px;
+	}
+
+	/* Pagination. */
+	@include default-datatables-pagination.dt-paging;
+}
+
+@media screen and (max-width: 767px) {
+	.dt-container {
+		.dt-layout-row {
+			flex-direction: column;
+		}
+
+		.dt-layout-cell {
+			flex-direction: column;
+			padding: 0.5em 0;
+		}
 	}
 }

@@ -6,10 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 
 class OLERead
 {
-	/**
-	 * @var string
-	 */
-	private $data = '';
+	private string $data = '';
 
 	// Size of a sector = 512 bytes
 	const BIG_BLOCK_SIZE = 0x200;
@@ -37,70 +34,31 @@ class OLERead
 	const START_BLOCK_POS = 0x74;
 	const SIZE_POS = 0x78;
 
-	/**
-	 * @var int|null
-	 */
-	public $wrkbook;
+	public ?int $wrkbook = null;
 
-	/**
-	 * @var int|null
-	 */
-	public $summaryInformation;
+	public ?int $summaryInformation = null;
 
-	/**
-	 * @var int|null
-	 */
-	public $documentSummaryInformation;
+	public ?int $documentSummaryInformation = null;
 
-	/**
-	 * @var int
-	 */
-	private $numBigBlockDepotBlocks;
+	private int $numBigBlockDepotBlocks;
 
-	/**
-	 * @var int
-	 */
-	private $rootStartBlock;
+	private int $rootStartBlock;
 
-	/**
-	 * @var int
-	 */
-	private $sbdStartBlock;
+	private int $sbdStartBlock;
 
-	/**
-	 * @var int
-	 */
-	private $extensionBlock;
+	private int $extensionBlock;
 
-	/**
-	 * @var int
-	 */
-	private $numExtensionBlocks;
+	private int $numExtensionBlocks;
 
-	/**
-	 * @var string
-	 */
-	private $bigBlockChain;
+	private string $bigBlockChain;
 
-	/**
-	 * @var string
-	 */
-	private $smallBlockChain;
+	private string $smallBlockChain;
 
-	/**
-	 * @var string
-	 */
-	private $entry;
+	private string $entry;
 
-	/**
-	 * @var int
-	 */
-	private $rootentry;
+	private int $rootentry;
 
-	/**
-	 * @var mixed[]
-	 */
-	private $props = [];
+	private array $props = [];
 
 	/**
 	 * Read the file.

@@ -7,15 +7,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\ArrayArgumentProcesso
 
 trait ArrayEnabled
 {
-	/**
-	 * @var bool
-	 */
-	private static $initializationNeeded = true;
+	private static bool $initializationNeeded = true;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\ArrayArgumentHelper
-	 */
-	private static $arrayArgumentHelper;
+	private static ArrayArgumentHelper $arrayArgumentHelper;
 
 	/**
 	 * @param array|false $arguments Can be changed to array for Php8.1+

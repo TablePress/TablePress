@@ -10,10 +10,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 
 class StyleMerger
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Style\Style
-	 */
-	protected $baseStyle;
+	protected Style $baseStyle;
 
 	public function __construct(Style $baseStyle)
 	{

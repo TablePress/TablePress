@@ -36,20 +36,14 @@ class CellValue extends WizardAbstract implements WizardInterface
 
 	protected const RANGE_OPERATORS = CellMatcher::COMPARISON_RANGE_OPERATORS;
 
-	/**
-	 * @var string
-	 */
-	protected $operator = Conditional::OPERATOR_EQUAL;
+	protected string $operator = Conditional::OPERATOR_EQUAL;
 
-	/**
-	 * @var mixed[]
-	 */
-	protected $operand = [0];
+	protected array $operand = [0];
 
 	/**
 	 * @var string[]
 	 */
-	protected $operandValueType = [];
+	protected array $operandValueType = [];
 
 	public function __construct(string $cellRange)
 	{
@@ -79,9 +73,8 @@ class CellValue extends WizardAbstract implements WizardInterface
 	}
 
 	/**
-	 * @return float|int|string
-	 * @param mixed $value
-	 */
+	 * @param mixed $value value to be wrapped
+	 * @return float|int|string */
 	protected function wrapValue($value, string $operandValueType)
 	{
 		if (!is_numeric($value) && !is_bool($value) && null !== $value) {
@@ -188,7 +181,9 @@ class CellValue extends WizardAbstract implements WizardInterface
 		if (count($arguments) < 2) {
 			$this->operand(0, $arguments[0]);
 		} else {
-			$this->operand(0, $arguments[0], $arguments[1]);
+			/** @var string */
+			$arg1 = $arguments[1];
+			$this->operand(0, $arguments[0], $arg1);
 		}
 
 		return $this;

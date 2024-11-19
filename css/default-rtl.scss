@@ -10,8 +10,5 @@
  * @since 1.0.0
  */
 
-/* Generate the RTL CSS. */
-$direction: "rtl";
-
-/* Import TablePress default CSS. */
-@import "default";
+/* Import TablePress default CSS for RTL. */
+@use "default" with ($direction: "rtl");

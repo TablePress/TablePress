@@ -11,15 +11,9 @@ use Stringable;
  */
 class CellRange implements AddressRange
 {
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress
-	 */
-	protected $from;
+	protected CellAddress $from;
 
-	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress
-	 */
-	protected $to;
+	protected CellAddress $to;
 
 	public function __construct(CellAddress $from, CellAddress $to)
 	{

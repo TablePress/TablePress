@@ -19,123 +19,103 @@ class Protection
 
 	/**
 	 * Autofilters are locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $autoFilter;
+	private ?bool $autoFilter = null;
 
 	/**
 	 * Deleting columns is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $deleteColumns;
+	private ?bool $deleteColumns = null;
 
 	/**
 	 * Deleting rows is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $deleteRows;
+	private ?bool $deleteRows = null;
 
 	/**
 	 * Formatting cells is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $formatCells;
+	private ?bool $formatCells = null;
 
 	/**
 	 * Formatting columns is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $formatColumns;
+	private ?bool $formatColumns = null;
 
 	/**
 	 * Formatting rows is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $formatRows;
+	private ?bool $formatRows = null;
 
 	/**
 	 * Inserting columns is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $insertColumns;
+	private ?bool $insertColumns = null;
 
 	/**
 	 * Inserting hyperlinks is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $insertHyperlinks;
+	private ?bool $insertHyperlinks = null;
 
 	/**
 	 * Inserting rows is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $insertRows;
+	private ?bool $insertRows = null;
 
 	/**
 	 * Objects are locked when sheet is protected, default false.
-	 * @var bool|null
 	 */
-	private $objects;
+	private ?bool $objects = null;
 
 	/**
 	 * Pivot tables are locked when the sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $pivotTables;
+	private ?bool $pivotTables = null;
 
 	/**
 	 * Scenarios are locked when sheet is protected, default false.
-	 * @var bool|null
 	 */
-	private $scenarios;
+	private ?bool $scenarios = null;
 
 	/**
 	 * Selection of locked cells is locked when sheet is protected, default false.
-	 * @var bool|null
 	 */
-	private $selectLockedCells;
+	private ?bool $selectLockedCells = null;
 
 	/**
 	 * Selection of unlocked cells is locked when sheet is protected, default false.
-	 * @var bool|null
 	 */
-	private $selectUnlockedCells;
+	private ?bool $selectUnlockedCells = null;
 
 	/**
 	 * Sheet is locked when sheet is protected, default false.
-	 * @var bool|null
 	 */
-	private $sheet;
+	private ?bool $sheet = null;
 
 	/**
 	 * Sorting is locked when sheet is protected, default true.
-	 * @var bool|null
 	 */
-	private $sort;
+	private ?bool $sort = null;
 
 	/**
 	 * Hashed password.
-	 * @var string
 	 */
-	private $password = '';
+	private string $password = '';
 
 	/**
 	 * Algorithm name.
-	 * @var string
 	 */
-	private $algorithm = '';
+	private string $algorithm = '';
 
 	/**
 	 * Salt value.
-	 * @var string
 	 */
-	private $salt = '';
+	private string $salt = '';
 
 	/**
 	 * Spin count.
-	 * @var int
 	 */
-	private $spinCount = 10000;
+	private int $spinCount = 10000;
 
 	/**
 	 * Create a new Protection.

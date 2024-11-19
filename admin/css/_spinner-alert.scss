@@ -25,11 +25,11 @@ body.wait * {
 		transition: opacity 2s 3s;
 
 		&:not(.tablepress-postbox-table .ajax-alert) {
-			margin: -10px 0 15px;
+			margin: 0;
 		}
 
 		&.notice-error {
-			transition-delay: 6s;
+			transition-delay: 8s;
 		}
 
 		p {

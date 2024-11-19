@@ -1,0 +1,69 @@
+/**
+ * TablePress Default CSS - DataTables-Pagination-related code.
+ *
+ * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
+ * on the "Plugin Options" screen of TablePress.
+ *
+ * @package TablePress
+ * @subpackage Frontend CSS
+ * @author Tobias Bäthge, Allan Jardine
+ * @since 3.0.0
+ */
+
+/* Default toggle variable for LTR and RTL CSS. */
+$direction: "ltr" !default;
+
+/* Default variables for the LTR CSS. */
+$align-side: left;
+
+/* Variables for the RTL CSS. */
+@if "rtl" == $direction {
+	$align-side: right;
+}
+
+/* Pagination. */
+@mixin dt-paging {
+	.dt-paging {
+		.dt-paging-button {
+			box-sizing: border-box;
+			display: inline-block;
+			min-width: 32px;
+			height: 32px;
+			padding: 0 5px;
+			margin-#{$align-side}: 2px;
+			text-align: center;
+			vertical-align: middle;
+			text-decoration: none !important;
+			cursor: pointer;
+
+			font-size: 1em;
+
+			color: inherit !important;
+			border: 1px solid transparent;
+			border-radius: 2px;
+			background: transparent;
+
+			&.current,
+			&:hover {
+				border: 1px solid #111111;
+			}
+
+			&.disabled,
+			&.disabled:hover,
+			&.disabled:active {
+				cursor: default;
+				color: rgba(0, 0, 0, 0.3) !important;
+				border: 1px solid transparent;
+				outline: none;
+			}
+		}
+
+		> .dt-paging-button:first-child {
+			margin-#{$align-side}: 0;
+		}
+
+		.ellipsis {
+			padding: 0 1em;
+		}
+	}
+}
