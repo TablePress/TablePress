@@ -15,7 +15,6 @@ use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xml\PageSettings;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xml\Properties;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xml\Style;
 use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
-use TablePress\PhpOffice\PhpSpreadsheet\Settings;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -132,9 +131,8 @@ class Xml extends BaseReader
 			}
 			if ($continue) {
 				$xml = @simplexml_load_string(
-					$this->getSecurityScannerOrThrow()->scan($data),
-					'SimpleXMLElement',
-					Settings::getLibXmlLoaderOptions()
+					$this->getSecurityScannerOrThrow()
+						->scan($data)
 				);
 			}
 		} catch (Throwable $e) {

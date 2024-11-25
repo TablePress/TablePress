@@ -910,6 +910,11 @@ class TablePress_Table_Model extends TablePress_Model {
 		$table['last_modified'] = wp_date( 'Y-m-d H:i:s' );
 		$table['options']['last_editor'] = get_current_user_id();
 
+		// Prevent issues if the "Custom Commands" field is not set, e.g. when non-admins have previously edited the table.
+		if ( ! isset( $table['options']['datatables_custom_commands'] ) ) {
+			$table['options']['datatables_custom_commands'] = '';
+		}
+
 		// Convert CSS classes and some DataTables 1.x parameters to the DataTables 2 variants.
 		if ( '' !== $table['options']['datatables_custom_commands'] ) {
 			$table['options']['datatables_custom_commands'] = TablePress::convert_datatables_api_data( $table['options']['datatables_custom_commands'] );
@@ -1079,6 +1084,13 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
+
+			// Fix tables where the "Custom Commands" entry is missing entirely.
+			if ( ! isset( $table_options['datatables_custom_commands'] ) ) {
+				$table_options['datatables_custom_commands'] = '';
+				$this->_update_table_options( $post_id, $table_options );
+				continue;
+			}
 
 			// Nothing to do if there are no "Custom Commands".
 			if ( '' === $table_options['datatables_custom_commands'] ) {

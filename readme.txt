@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.7
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,15 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.0.1 (November 25, 2024) =
+
+* Bugfix: The loading of CSS style files when using non-block themes is now working properly again.
+* Bugfix: The JavaScript file for the "Table Features for Site Visitors" is no longer loaded when it's not needed.
+* Bugfix: The table width is correct again, when using the "Responsive Tables" module's "Scroll" mode. (TablePress Pro and Max only.)
+* Improvement: Potentially corrupt table settings are detected more reliably during the update process.
+* Improved support for PHP 8.4.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 3.0 (November 19, 2024) =
 
 TablePress 3.0 is a major feature update. Besides a new plugin logo and modernized admin screens, here are the highlights.
@@ -115,7 +124,7 @@ Important: Note the list of changes that might require manual adjustments after 
 
 **Heavily Improved Frontend Table Rendering**
 
-* CSS style files are only loaded if they are needed, to drastically improve the loading speed!
+* When using a block theme on the site, CSS style files are only loaded if they are needed, to drastically improve the loading speed!
 * You can how have table headers with more than one row and with connected cells!
 * Tables are more accessible for visitors with disabilities or that use assistive technologies and easier to use with keyboard navigation!
 * Improved search for site visitors, like support of ! for negation as well as accents and diacritics.
@@ -175,6 +184,9 @@ Important: Note the list of changes that might require manual adjustments after 
 * Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=readme)
 
 == Upgrade Notice ==
+
+= 3.0.1 =
+This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 3.0 =
 This update is a major feature, stability, maintenance, and compatibility release. Updating is highly recommended after reading the release announcement!

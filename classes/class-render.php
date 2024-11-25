@@ -633,8 +633,9 @@ class TablePress_Render {
 		$css_classes = explode( ' ', implode( ' ', $css_classes ) );
 		$css_classes = array_map( array( 'TablePress', 'sanitize_css_class' ), $css_classes );
 		$css_classes = array_unique( $css_classes );
-		$css_classes = trim( implode( ' ', $css_classes ) );
-		if ( ! empty( $css_classes ) ) {
+		$css_classes = array_filter( $css_classes ); // Remove empty entries.
+		$css_classes = implode( ' ', $css_classes );
+		if ( '' !== $css_classes ) {
 			$table_attributes['class'] = $css_classes;
 		}
 

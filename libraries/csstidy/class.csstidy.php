@@ -43,15 +43,15 @@ class TablePress_CSSTidy {
 	 *
 	 * @since 1.0.0
 	 */
-	const AT_START = 1;
-	const AT_END = 2;
-	const SEL_START = 3;
-	const SEL_END = 4;
-	const PROPERTY = 5;
-	const VALUE = 6;
-	const COMMENT = 7;
-	const IMPORTANT_COMMENT = 8;
-	const DEFAULT_AT = 41;
+	public const AT_START = 1;
+	public const AT_END = 2;
+	public const SEL_START = 3;
+	public const SEL_END = 4;
+	public const PROPERTY = 5;
+	public const VALUE = 6;
+	public const COMMENT = 7;
+	public const IMPORTANT_COMMENT = 8;
+	public const DEFAULT_AT = 41;
 
 	/**
 	 * The parsed CSS.

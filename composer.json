@@ -83,12 +83,18 @@
 			"@typos"
 		],
 		"spaces-to-tabs": "find . -type f -not -path './node_modules/*' -not -path './vendor/*' \\( -name \\*.php -o -name \\*.js -o -name \\*.jsx -o -name \\*.json -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
+		"fix-nullable-type-declaration": [
+			"mkdir php-cs-fixer",
+			"composer require --dev --working-dir=php-cs-fixer friendsofphp/php-cs-fixer",
+			"PHP_CS_FIXER_IGNORE_ENV=true php-cs-fixer/vendor/bin/php-cs-fixer fix . --rules=nullable_type_declaration_for_default_null_value",
+			"rm -rf php-cs-fixer .php-cs-fixer.cache"
+		],
 		"update-phpspreadsheet": [
 			"rm -rf ./composer.lock ./libraries/composer ./libraries/vendor ./libraries/autoload.php ./vendor",
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
 			"composer config platform.php 7.4",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.4.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.5.0\" --no-update",
 			"composer update --no-dev",
 			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart:0.7.1 /mozart/bin/mozart compose",
 			"composer remove phpoffice/phpspreadsheet --no-update",

@@ -4,7 +4,6 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Document\Properties as DocumentProperties;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
-use TablePress\PhpOffice\PhpSpreadsheet\Settings;
 use SimpleXMLElement;
 
 class Properties
@@ -23,9 +22,7 @@ class Properties
 	{
 		// okay to omit namespace because everything will be processed by xpath
 		$obj = simplexml_load_string(
-			$this->securityScanner->scan($propertyData),
-			'SimpleXMLElement',
-			Settings::getLibXmlLoaderOptions()
+			$this->securityScanner->scan($propertyData)
 		);
 
 		return $obj === false ? null : $obj;

@@ -209,7 +209,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function enqueue_block_assets(): void {
 		// Load the TablePress default CSS and the user's "Custom CSS" in the block editor iframe.
 		if ( is_admin() ) {
-			TablePress::$controller->enqueue_css();
+			TablePress::$controller->maybe_enqueue_css();
 		}
 	}
 

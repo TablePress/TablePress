@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 tb_tp_fs()->add_filter(
 	'plugin_icon',
 	static function ( $icon ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
-		$icon = __DIR__ . '/admin/img/tablepress-icon.svg';
+		$icon = dirname( __DIR__ ) . '/admin/img/tablepress-icon.svg';
 		return $icon;
 	} // No trailing comma in function call, due to required PHP compatibility of this file!
 );

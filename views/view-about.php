@@ -208,6 +208,7 @@ class TablePress_About_View extends TablePress_View {
 		</p>
 		<ul>
 			<li>Website: <?php echo site_url(); ?></li>
+			<li>Block Theme: <?php echo wp_is_block_theme() ? 'yes' : 'no'; ?></li>
 			<li>TablePress: <?php echo TablePress::version; ?></li>
 			<li>TablePress (DB): <?php echo TablePress::db_version; ?></li>
 			<li>TablePress table scheme: <?php echo TablePress::table_scheme_version; ?></li>

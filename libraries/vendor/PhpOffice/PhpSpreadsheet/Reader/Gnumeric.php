@@ -11,7 +11,6 @@ use TablePress\PhpOffice\PhpSpreadsheet\Reader\Gnumeric\Styles;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use TablePress\PhpOffice\PhpSpreadsheet\ReferenceHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
-use TablePress\PhpOffice\PhpSpreadsheet\Settings;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -104,7 +103,7 @@ class Gnumeric extends BaseReader
 
 		$xml = new XMLReader();
 		$contents = $this->gzfileGetContents($filename);
-		$xml->xml($contents, null, Settings::getLibXmlLoaderOptions());
+		$xml->xml($contents);
 		$xml->setParserProperty(2, true);
 
 		$worksheetNames = [];
@@ -133,7 +132,7 @@ class Gnumeric extends BaseReader
 
 		$xml = new XMLReader();
 		$contents = $this->gzfileGetContents($filename);
-		$xml->xml($contents, null, Settings::getLibXmlLoaderOptions());
+		$xml->xml($contents);
 		$xml->setParserProperty(2, true);
 
 		$worksheetInfo = [];
@@ -251,7 +250,7 @@ class Gnumeric extends BaseReader
 
 		/** @var XmlScanner */
 		$securityScanner = $this->securityScanner;
-		$xml2 = simplexml_load_string($securityScanner->scan($gFileData), 'SimpleXMLElement', Settings::getLibXmlLoaderOptions());
+		$xml2 = simplexml_load_string($securityScanner->scan($gFileData));
 		$xml = self::testSimpleXml($xml2);
 
 		$gnmXML = $xml->children(self::NAMESPACE_GNM);

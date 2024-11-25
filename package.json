@@ -1,6 +1,6 @@
 {
 	"name": "@tablepress/tablepress",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Embed beautiful and feature-rich tables into your posts and pages, without having to write code.",
 	"author": "Tobias Bäthge",
 	"license": "GPL-2.0-only",

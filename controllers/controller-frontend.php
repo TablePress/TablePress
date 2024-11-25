@@ -22,6 +22,13 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 class TablePress_Frontend_Controller extends TablePress_Controller {
 
 	/**
+	 * Whether to use the legacy CSS loading method of enqueuing all CSS files on all pages.
+	 *
+	 * @since 3.0.1
+	 */
+	public bool $use_legacy_css_loading = false;
+
+	/**
 	 * File name of the admin screens' parent page in the admin menu.
 	 *
 	 * @since 1.0.0
@@ -52,7 +59,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	protected array $datatables_datetime_formats = array();
 
 	/**
-	 * Initiate Frontend functionality.
+	 * Initiates Frontend functionality.
 	 *
 	 * @since 1.0.0
 	 */
@@ -68,6 +75,20 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 */
 		$this->parent_page = apply_filters( 'tablepress_admin_menu_parent_page', TablePress::$model_options->get( 'admin_menu_parent_page' ) );
 		$this->is_top_level_page = in_array( $this->parent_page, array( 'top', 'middle', 'bottom' ), true );
+
+		/**
+		 * Filters whether TablePress should load its frontend CSS files on all pages.
+		 * For block themes, the default behavior is to only load the CSS files when a table is encountered on the page.
+		 *
+		 * @since 3.0.1
+		 *
+		 * @param bool $use_legacy_css_loading Whether TablePress should load its frontend CSS files on all pages.
+		 */
+		$this->use_legacy_css_loading = apply_filters( 'tablepress_frontend_legacy_css_loading', ! wp_is_block_theme() );
+
+		if ( $this->use_legacy_css_loading ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
+		}
 
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 9 ); // Priority 9 so that this runs before `_wp_footer_scripts()`.
 
@@ -110,7 +131,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Register TablePress Shortcodes.
+	 * Registers TablePress Shortcodes.
 	 *
 	 * @since 1.0.0
 	 */
@@ -120,16 +141,18 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Enqueues CSS files for TablePress default CSS and "Custom CSS" (if desired).
+	 * Checks if the CSS files for TablePress default CSS and "Custom CSS" should be loaded.
 	 *
 	 * This function is only called when a [table /] Shortcode or "TablePress Table" block is evaluated, so that CSS files are only loaded when needed.
 	 *
-	 * If styles have not been printed to the page (in the `<head>`), the TablePress CSS files will be enqueued.
-	 * If styles have already been printed to the page, the TablePress CSS files will be printed right away (likely in the `<body`>).
-	 *
-	 * @since 1.0.0
+	 * @since 3.0.0
 	 */
-	public function enqueue_css(): void {
+	public function maybe_enqueue_css(): void {
+		// Bail early if the legacy CSS loading mechanism is used, as the files will then have been enqueued already.
+		if ( $this->use_legacy_css_loading ) {
+			return;
+		}
+
 		/*
 		 * Bail early if the function is called from some action hook outside of the normal rendering process.
 		 * These are often used by e.g. SEO plugins that render the content in additional contexts, e.g. to get an excerpt via an output buffer.
@@ -146,6 +169,18 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		}
 		$css_enqueued = true;
 
+		$this->enqueue_css();
+	}
+
+	/**
+	 * Enqueues CSS files for TablePress default CSS and "Custom CSS" (if desired).
+	 *
+	 * If styles have not been printed to the page (in the `<head>`), the TablePress CSS files will be enqueued.
+	 * If styles have already been printed to the page, the TablePress CSS files will be printed right away (likely in the `<body`>).
+	 *
+	 * @since 1.0.0
+	 */
+	public function enqueue_css(): void {
 		/**
 		 * Filters whether the TablePress Default CSS code shall be loaded.
 		 *
@@ -286,7 +321,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Add JS code for invocation of DataTables JS library.
+	 * Adds the JavaScript code for the invocation of the DataTables JS library.
 	 *
 	 * @since 1.0.0
 	 */
@@ -297,12 +332,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			return;
 		}
 
+		// Bail early if there are no TablePress tables on the page.
 		if ( empty( $this->shown_tables ) ) {
-			// There are no tables with activated DataTables on the page that is currently rendered.
 			return;
 		}
-
-		$this->enqueue_datatables_files();
 
 		/*
 		 * Don't add the DataTables function calls in the scope of the block editor iframe.
@@ -315,17 +348,28 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 		}
 
+		// Filter out all tables that use DataTables.
+		$shown_tables_with_datatables = array();
+		foreach ( $this->shown_tables as $table_id => $table_store ) {
+			if ( ! empty( $table_store['instances'] ) ) {
+				$shown_tables_with_datatables[ (string) $table_id ] = $table_store;
+			}
+		}
+
+		// Bail early if there are no tables with activated DataTables on the page.
+		if ( empty( $shown_tables_with_datatables ) ) {
+			return;
+		}
+
+		$this->enqueue_datatables_files();
+
 		// Storage for the DataTables language strings.
 		$datatables_language = array();
 		// Generate the specific JS commands, depending on chosen features on the "Edit" screen and the Shortcode parameters.
 		$commands = array();
 
-		foreach ( $this->shown_tables as $table_id => $table_store ) {
+		foreach ( $shown_tables_with_datatables as $table_id => $table_store ) {
 			$table_id = (string) $table_id; // Ensure that the table ID is a string, as it comes from an array key where numeric strings are converted to integers.
-
-			if ( empty( $table_store['instances'] ) ) {
-				continue;
-			}
 
 			foreach ( $table_store['instances'] as $html_id => $js_options ) {
 				$parameters = array();
@@ -574,7 +618,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Handle Shortcode [table id=<ID> /].
+	 * Handles the  Shortcode [table id=<ID> /].
 	 *
 	 * @since 1.0.0
 	 *
@@ -584,7 +628,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	public function shortcode_table( /* array|string */ $shortcode_atts ): string {
 		$shortcode_atts = (array) $shortcode_atts;
 
-		$this->enqueue_css();
+		$this->maybe_enqueue_css();
 
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
 
@@ -850,7 +894,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Handle Shortcode [table-info id=<ID> field=<name> /].
+	 * Handles the Shortcode [table-info id=<ID> field=<name> /].
 	 *
 	 * @since 1.0.0
 	 *
@@ -1002,7 +1046,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Expand WP Search to also find posts and pages that have a search term in a table that is shown in them.
+	 * Expands the WP Search to also find posts and pages that have a search term in a table that is shown in them.
 	 *
 	 * This is done by looping through all search terms and TablePress tables and searching there for the search term,
 	 * saving all tables's IDs that have a search term and then expanding the WP query to search for posts or pages that have the
