@@ -204,7 +204,10 @@
 				// InstaWP
 				fs_ends_with( $subdomain, '.instawp.xyz' ) ||
 				// 10Web Hosting
-				( fs_ends_with( $subdomain, '-dev.10web.site' ) || fs_ends_with( $subdomain, '-dev.10web.cloud' ) )
+				( fs_ends_with( $subdomain, '-dev.10web.site' ) || fs_ends_with( $subdomain, '-dev.10web.cloud' ) ) ||
+				// WordPress VIP staging/preprod environments
+				( fs_ends_with( $subdomain, '-develop.go-vip.net' ) || fs_ends_with( $subdomain, '-preprod.go-vip.net' ) )
+				
 			);
 		}
 
