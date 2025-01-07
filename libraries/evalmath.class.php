@@ -573,7 +573,7 @@ class EvalMath {
 						}
 					}
 					// Recursion.
-					$stack->push( $this->pfx( $this->functions[ $function_name ]['func'], $args ) ); // @phpstan-ignore argument.type
+					$stack->push( $this->pfx( $this->functions[ $function_name ]['func'], $args ) );
 				}
 			} elseif ( in_array( $token, array( '+', '-', '*', '/', '^', '>', '<', '=', '%' ), true ) ) {
 				// If the token is a binary operator, pop two values off the stack, do the operation, and push the result back on.

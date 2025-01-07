@@ -149,7 +149,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 */
 	public function maybe_enqueue_css(): void {
 		// Bail early if the legacy CSS loading mechanism is used, as the files will then have been enqueued already.
-		if ( $this->use_legacy_css_loading ) {
+		if ( $this->use_legacy_css_loading && ! doing_action( 'enqueue_block_assets' ) ) {
 			return;
 		}
 

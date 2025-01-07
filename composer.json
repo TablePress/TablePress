@@ -53,16 +53,14 @@
 		"phpcsstandards/phpcsextra": "dev-develop",
 		"php-parallel-lint/php-parallel-lint": "^1.4",
 		"php-parallel-lint/php-console-highlighter": "^1.0",
-		"phpstan/phpstan": "^1.12",
-		"szepeviktor/phpstan-wordpress": "^1.3",
-		"johnbillion/wp-compat": "^0.3"
+		"phpstan/phpstan": "^2.0",
+		"szepeviktor/phpstan-wordpress": "^2.0",
+		"johnbillion/wp-compat": "^1.0"
 	},
 	"config": {
 		"allow-plugins": {
-			"dangoodman/composer-for-wordpress": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		},
-		"classloader-suffix": "TablePress",
 		"lock": false
 	},
 	"scripts": {
@@ -90,42 +88,47 @@
 			"rm -rf php-cs-fixer .php-cs-fixer.cache"
 		],
 		"update-phpspreadsheet": [
-			"rm -rf ./composer.lock ./libraries/composer ./libraries/vendor ./libraries/autoload.php ./vendor",
+			"echo '-> Install PHPSpreadsheet'",
+			"rm -rf ./libraries/vendor ./vendor",
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
-			"composer config platform.php 7.4",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.5.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.7.0\" --no-update",
 			"composer update --no-dev",
-			"docker run --rm -it -v ${PWD}:/project/ coenjacobs/mozart:0.7.1 /mozart/bin/mozart compose",
-			"composer remove phpoffice/phpspreadsheet --no-update",
-			"composer require dangoodman/composer-for-wordpress --dev --no-update",
-			"composer update",
-			"composer dump-autoload --optimize --classmap-authoritative --no-dev",
-			"rm -rf ./vendor/dangoodman ./vendor/composer/installed.*",
-			"mv ./vendor/* ./libraries",
+			"echo '-> Install Strauss, convert namespaces, and move folder'",
+			"mkdir bin",
+			"curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/latest/download/strauss.phar",
+			"php bin/strauss.phar",
+			"rm -rf ./bin",
 			"rm -rf ./vendor",
-			"find ./libraries -type f -exec chmod 644 {} \\;",
-			"find ./libraries -type d -exec chmod 755 {} \\;",
-			"find ./libraries -type d -exec cp -n index.php {} \\;",
-			"find ./libraries -type f \\( -name \\*.php -o -name \\*.js -o -name \\*.scss -o -name \\*.css \\) -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
-			"composer require rector/rector:1.2.10 --dev",
+			"echo '-> Remove unnecessary intermediate folders to simplify the directory structure'",
+			"find ./libraries/vendor -type d -name src -exec sh -c 'mv \"$1\"/* \"$1\"/..' _ {} \\;",
+			"find ./libraries/vendor -type d -name src -prune -exec rm -rf {} \\;",
+			"sed -i '' 's#/src/#/#' ./libraries/vendor/autoload-classmap.php",
+			"mv ./libraries/vendor/phpoffice/phpspreadsheet/* ./libraries/vendor",
+			"rm -rf ./libraries/vendor/phpoffice",
+			"sed -i '' 's#/phpoffice/phpspreadsheet/#/#' ./libraries/vendor/autoload-classmap.php",
+			"echo '-> Set permissions, add index.php to each folder, and fix indentation'",
+			"find ./libraries/vendor -type f -exec chmod 644 {} \\;",
+			"find ./libraries/vendor -type d -exec chmod 755 {} \\;",
+			"find ./libraries/vendor -type d -exec cp -n index.php {} \\;",
+			"find ./libraries/vendor -type f -name \\*.php -exec bash -c 'perl -pi -e \"s/(^|\\G) {4}/\t/g\" \"$0\"' {} \\;",
+			"echo '-> Ensure compatibility with older versions of PHP'",
+			"composer require rector/rector --dev --no-update",
+			"composer update",
 			"vendor/bin/rector",
 			"find ./libraries/vendor -type f -name \"*.php\" -exec sed -i '' 's/\\(\\$[a-zA-Z_][a-zA-Z0-9_]*\\) instanceof Stringable/(is_object(\\1) \\&\\& method_exists(\\1, '\\''__toString'\\''))/g' {} +",
+			"echo '-> Restore development environment'",
 			"git checkout -- composer.json",
 			"composer update --with-all-dependencies"
 		]
 	},
-	"autoload": {
-		"psr-4": {
-			"TablePress\\": "libraries/vendor/"
-		}
-	},
 	"extra": {
-		"mozart": {
-			"dep_namespace": "TablePress\\",
-			"dep_directory": "/libraries/vendor/",
-			"classmap_directory": "/libraries/vendor/",
-			"classmap_prefix": "TablePress_"
+		"strauss": {
+			"target_directory": "/libraries/vendor/",
+			"namespace_prefix": "TablePress\\",
+			"classmap_prefix": "TablePress_",
+			"constant_prefix": "TablePress_",
+			"delete_vendor_packages": true
 		}
 	}
 }

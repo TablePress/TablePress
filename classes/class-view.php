@@ -414,20 +414,10 @@ abstract class TablePress_View {
 			</h1>
 			<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
 				<div class="buttons">
-					<?php
-					$timestamp_today = strtotime( 'today' );
-					if ( strtotime( '2024-11-24' ) < $timestamp_today && $timestamp_today < strtotime( '2024-12-03' ) ) :
-						?>
-						<a href="https://tablepress.org/premium/?utm_campaign=black-week-2024&utm_source=plugin&utm_medium=button&utm_content=upgrade-button" class="tablepress-button" style="background:linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);border-color:#ffffff;font-weight:bold;font-size:20px;border-radius:6px;">
-							<span>Premium: 20% off during Black Week 2024!</span>
-							<span class="dashicons dashicons-arrow-right-alt" />
-						</a>
-					<?php else : ?>
 					<a href="<?php echo esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ); ?>" class="tablepress-button">
 						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
 						<span class="dashicons dashicons-arrow-right-alt"></span>
 					</a>
-					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		</div>

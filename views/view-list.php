@@ -87,6 +87,10 @@ class TablePress_List_View extends TablePress_View {
 					'name'       => 'TablePress Extension: DataTables FixedHeader',
 					'compatible' => true,
 				),
+				'tablepress-datatables-inverted-filter/tablepress-datatables-inverted-filter.php' => array(
+					'name'       => 'TablePress Extension: DataTables Inverted Filter',
+					'compatible' => false,
+				),
 				'tablepress-datatables-row-details/tablepress-datatables-row-details.php' => array(
 					'name'       => 'TablePress Extension: DataTables Row Details',
 					'compatible' => false,

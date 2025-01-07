@@ -1,8 +1,8 @@
 <?php
 /**
- * Excel 2007-2019/Office 365 Reader Class
+ * Excel 2007-2019/Office 365 Reader class
  *
- * Based on SimpleXLSX v1.0.21 by Sergey Shuchkin.
+ * Based on SimpleXLSX v1.1.13 by Sergey Shuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -16,7 +16,8 @@ namespace Shuchkin;
 use SimpleXMLElement;
 
 /**
- * PHP Excel 2007-2013/Office 365 Reader Class
+ * PHP Excel 2007-2013/Office 365 Reader class
+ *
  * @package TablePress
  * @subpackage Import
  * @author Sergey Shuchkin, Tobias Bäthge

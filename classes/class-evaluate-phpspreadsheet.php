@@ -28,7 +28,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 	 */
 	public function __construct() {
 		// Load PHPSpreadsheet via its autoloading mechanism.
-		TablePress::load_file( 'autoload.php', 'libraries' );
+		TablePress::load_file( 'autoload.php', 'libraries/vendor' );
 	}
 
 	/**

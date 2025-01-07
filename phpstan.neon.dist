@@ -36,6 +36,5 @@ parameters:
 	WPCompat:
 		requiresAtLeast: '6.2'
 includes:
-	- phar://phpstan.phar/conf/bleedingEdge.neon
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 	- vendor/johnbillion/wp-compat/extension.neon

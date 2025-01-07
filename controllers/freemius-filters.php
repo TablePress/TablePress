@@ -21,12 +21,21 @@ tb_tp_fs()->add_filter(
 	} // No trailing comma in function call, due to required PHP compatibility of this file!
 );
 
+// Load the TablePress style customizations for the Freemius Pricing screen.
+tb_tp_fs()->add_filter(
+	'pricing/css_path',
+	static function ( $path ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
+		$path = dirname( __DIR__ ) . '/admin/css/build/freemius-pricing.css';
+		return $path;
+	} // No trailing comma in function call, due to required PHP compatibility of this file!
+);
+
 // Hide the "Pricing" menu entry for users with a valid and active premium license.
 tb_tp_fs()->add_filter(
 	'is_submenu_visible',
 	static function ( $is_visible, $menu_id ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
 		if ( 'pricing' === $menu_id ) {
-			$is_visible = ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && ! tb_tp_fs()->is_paying_or_trial();
+			$is_visible = ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && ! tb_tp_fs()->is_paying_or_trial() && current_user_can( 'tablepress_list_tables' );
 		}
 		return $is_visible;
 	},
@@ -49,40 +58,6 @@ tb_tp_fs()->add_filter(
 			}
 		}
 		return $currency;
-	} // No trailing comma in function call, due to required PHP compatibility of this file!
-);
-
-tb_tp_fs()->add_filter(
-	'templates/pricing.php',
-	static function ( $template ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
-		$style = <<<CSS
-<style>
-#fs_pricing_app .fs-packages-tab,
-#fs_pricing_app .fs-section--packages .fs-packages-nav.fs-has-next-plan:after,
-#fs_pricing_app .fs-package.fs-free-plan,
-#fs_pricing_app .fs-selected-pricing-amount-fraction,
-#fs_pricing_app .fs-section--currencies {
-	display: none !important;
-}
-#fs_pricing_app .fs-packages {
-	width: 80% !important;
-	min-width: 590px;
-	max-width: 860px;
-}
-#fs_pricing_app .fs-packages .fs-package {
-	width: 50% !important;
-}
-#fs_pricing_app .fs-section--packages .fs-packages-nav {
-	width: 100% !important;
-}
-#fs_pricing_app .fs-package .fs-plan-description {
-	text-transform: none;
-	text-wrap: balance;
-	padding: 0 20px;
-}
-</style>
-CSS;
-		return $style . $template;
 	} // No trailing comma in function call, due to required PHP compatibility of this file!
 );
 

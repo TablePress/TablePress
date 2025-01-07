@@ -13,9 +13,7 @@ declare(strict_types=1);
 return static function ( Rector\Config\RectorConfig $rector_config ): void {
 	// Scan paths that contain externally maintained libraries.
 	$rector_config->paths( array(
-		__DIR__ . '/libraries/composer',
 		__DIR__ . '/libraries/vendor',
-		__DIR__ . '/libraries/autoload.php',
 	) );
 
 	// Set default indenting.
@@ -42,5 +40,5 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 	) );
 
 	// Set used (maximum) PHP version. This has to be at the end of the configuration, for some reason.
-	$rector_config->phpVersion( Rector\ValueObject\PhpVersion::PHP_83 );
+	$rector_config->phpVersion( Rector\ValueObject\PhpVersion::PHP_84 );
 };

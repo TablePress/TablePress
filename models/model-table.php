@@ -1240,7 +1240,12 @@ class TablePress_Table_Model extends TablePress_Model {
 
 		// Pretend that there is a `_tablepress_export_table_id` post meta field with the list of table IDs.
 		$key = '_tablepress_export_table_id';
-		$value = wxr_cdata( implode( ',', $table_ids ) ); // @phpstan-ignore function.notFound
+
+		/**
+		 * Load WP export functions.
+		 */
+		require_once ABSPATH . 'wp-admin/includes/export.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
+		$value = wxr_cdata( implode( ',', $table_ids ) );
 
 		// Hijack the filter and print extra XML code for our faked post meta field.
 		// phpcs:disable WordPress.Security.EscapeOutput.HeredocOutputNotEscaped

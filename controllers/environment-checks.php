@@ -58,7 +58,7 @@ if ( version_compare( str_replace( '-src', '', $wp_version ), '6.2', '<' ) ) { /
 /**
  * Check if the server is running PHP 7.4 or newer.
  */
-if ( PHP_VERSION_ID < 70400 ) {
+if ( PHP_VERSION_ID < 70400 ) { // @phpstan-ignore smaller.alwaysFalse (PHPStan thinks that the Composer minimum version will always be fulfilled.)
 	/**
 	 * Show an error notice to admins, if the installed version of PHP is not supported.
 	 *

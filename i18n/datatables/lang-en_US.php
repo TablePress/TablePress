@@ -14,7 +14,7 @@ return array(
 	'infoEmpty'      => 'Showing 0 to 0 of 0 entries',
 	'infoFiltered'   => '(filtered from _MAX_ total entries)',
 	'infoPostFix'    => '',
-	'lengthMenu'     => 'Show _MENU_ entries',
+	'lengthMenu'     => '_MENU_ entries per page',
 	'loadingRecords' => 'Loading...',
 	'processing'     => 'Processing...',
 	'search'         => 'Search:',

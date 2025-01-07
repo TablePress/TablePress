@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.7
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,13 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.0.2 (January 8, 2025) =
+
+* Bugfix: The “TablePress table” block in the WordPress Block Editor will properly show the table preview again, when using a non-block theme.
+* Bugfix: Prevent an error in the integration into the WordPress Export feature when using the WP-CLI command line tool.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+
 = Version 3.0.1 (November 25, 2024) =
 
 * Bugfix: The loading of CSS style files when using non-block themes is now working properly again.
@@ -185,7 +192,7 @@ Important: Note the list of changes that might require manual adjustments after 
 
 == Upgrade Notice ==
 
-= 3.0.1 =
+= 3.0.2 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 3.0 =

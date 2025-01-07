@@ -1,0 +1,38 @@
+/**
+ * CSS code for the Freemius Pricing Page.
+ *
+ * @package TablePress
+ * @subpackage Views CSS
+ * @author Tobias Bäthge
+ * @since 3.1.0
+ */
+
+#fs_pricing_app {
+	.fs-packages-tab,
+	.fs-section--packages .fs-packages-nav.fs-has-next-plan:after,
+	.fs-package.fs-free-plan,
+	.fs-selected-pricing-amount-fraction,
+	.fs-section--currencies {
+		display: none !important;
+	}
+
+	.fs-packages {
+		width: 80% !important;
+		min-width: 590px;
+		max-width: 860px;
+
+		.fs-package {
+			width: 50% !important;
+		}
+	}
+
+	.fs-section--packages .fs-packages-nav {
+		width: 100% !important;
+	}
+
+	.fs-package .fs-plan-description {
+		text-transform: none;
+		text-wrap: balance;
+		padding: 0 20px;
+	}
+}

@@ -85,6 +85,7 @@ jobs:
           - '6.3'
           - '6.2'
         php:
+          - '8.5'
           - '8.4'
           - '8.3'
           - '8.2'
@@ -97,7 +98,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@c541c155eee45413f5b09a52248675b1a2575231 # v2.31.1
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # v2.32.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -130,7 +131,7 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
         with:
-          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' ) && ' --ignore-platform-reqs' || '' }}"
+          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' || matrix.php == '8.5' ) && ' --ignore-platform-reqs' || '' }}"
 
       - name: Make Composer packages available globally
         working-directory: ${{ env.PLUGIN_DIR }}
@@ -142,7 +143,6 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ matrix.php == '8.4' }} # WP > 6.2 runs in to nullable parameter marking deprecations with PHP 8.4+.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

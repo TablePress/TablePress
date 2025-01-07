@@ -49,7 +49,7 @@ module.exports = function ( grunt ) {
 					'!admin/js/import.js',
 					'!blocks/**/src/edit.js',
 					'!blocks/**/src/save.js',
-					// Exclude built JS files from jshint checking.
+					// Exclude build JS files from jshint checking.
 					'!admin/js/build/*.js',
 					'!blocks/**/build/index.js',
 					// Exclude external libraries and scripts from jshint checking.

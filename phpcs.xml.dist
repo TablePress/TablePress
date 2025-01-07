@@ -47,10 +47,8 @@
 
 	<!-- Exclude third-party libraries and build tools. -->
 	<exclude-pattern type="relative">^\.phpstan/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/composer/*</exclude-pattern>
 	<exclude-pattern type="relative">^libraries/freemius/*</exclude-pattern>
 	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/autoload\.php$</exclude-pattern>
 	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php$</exclude-pattern>
 	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php$</exclude-pattern>
 	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>

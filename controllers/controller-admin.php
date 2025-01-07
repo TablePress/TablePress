@@ -396,6 +396,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'tablepress-datatables-column-filter-widgets/tablepress-datatables-column-filter-widgets.php',
 			'tablepress-datatables-columnfilter/tablepress-datatables-columnfilter.php',
 			'tablepress-datatables-fixedcolumns/tablepress-datatables-fixedcolumns.php',
+			'tablepress-datatables-inverted-filter/tablepress-datatables-inverted-filter.php',
 			'tablepress-datatables-row-details/tablepress-datatables-row-details.php',
 			'tablepress-datatables-rowgroup/tablepress-datatables-rowgroup.php',
 			'tablepress-responsive-tables/tablepress-responsive-tables.php',

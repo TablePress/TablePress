@@ -30,7 +30,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 	 */
 	public function __construct() {
 		// Load PHPSpreadsheet via its autoloading mechanism.
-		TablePress::load_file( 'autoload.php', 'libraries' );
+		TablePress::load_file( 'autoload.php', 'libraries/vendor' );
 	}
 
 	/**
@@ -209,7 +209,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 			if ( 'csv' === $detected_format ) {
 				$reader->setInputEncoding( \TablePress\PhpOffice\PhpSpreadsheet\Reader\Csv::GUESS_ENCODING ); // @phpstan-ignore method.notFound
-				// @phpstan-ignore method.notFound
+				// @phpstan-ignore method.notFound, smaller.alwaysFalse (PHPStan thinks that the Composer minimum version will always be fulfilled.)
 				$reader->setEscapeCharacter( ( PHP_VERSION_ID < 70400 ) ? "\x0" : '' ); // Disable the proprietary escape mechanism of PHP's fgetcsv() in PHP >= 7.4.
 			}
 
