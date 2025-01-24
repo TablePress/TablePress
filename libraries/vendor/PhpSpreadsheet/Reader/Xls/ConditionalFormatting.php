@@ -288,12 +288,12 @@ class ConditionalFormatting extends Xls
 	}
 
 	/*private function getCFProtectionStyle(string $options, Style $style, Xls $xls): void
-					{
-					}*/
-				/**
-				 * @return float|int|string|null
-				 */
-				private function readCFFormula(string $recordData, int $offset, int $size, Xls $xls)
+		{
+		}*/
+	/**
+	 * @return float|int|string|null
+	 */
+	private function readCFFormula(string $recordData, int $offset, int $size, Xls $xls)
 	{
 		try {
 			$formula = substr($recordData, $offset, $size);
@@ -311,10 +311,10 @@ class ConditionalFormatting extends Xls
 	}
 
 	/**
-				 * @param null|float|int|string $formula1
-				 * @param null|float|int|string $formula2
-				 */
-				private function setCFRules(array $cellRanges, string $type, string $operator, $formula1, $formula2, Style $style, bool $noFormatSet, Xls $xls): void
+	 * @param null|float|int|string $formula1
+	 * @param null|float|int|string $formula2
+	 */
+	private function setCFRules(array $cellRanges, string $type, string $operator, $formula1, $formula2, Style $style, bool $noFormatSet, Xls $xls): void
 	{
 		foreach ($cellRanges as $cellRange) {
 			$conditional = new Conditional();

@@ -92,7 +92,7 @@
 			"rm -rf ./libraries/vendor ./vendor",
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.7.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 3.9.0\" --no-update",
 			"composer update --no-dev",
 			"echo '-> Install Strauss, convert namespaces, and move folder'",
 			"mkdir bin",

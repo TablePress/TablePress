@@ -22,11 +22,11 @@ class Formatter extends BaseFormatter
 	private const SECTION_SPLIT = '/;(?=(?:[^"]*"[^"]*")*[^"]*\Z)/miu';
 
 	/**
-				 * @param mixed $value
-				 * @param mixed $comparisonValue
-				 * @param mixed $defaultComparisonValue
-				 */
-				private static function splitFormatComparison(
+	 * @param mixed $value
+	 * @param mixed $comparisonValue
+	 * @param mixed $defaultComparisonValue
+	 */
+	private static function splitFormatComparison(
 		$value,
 		?string $condition,
 		$comparisonValue,
@@ -39,23 +39,23 @@ class Formatter extends BaseFormatter
 		}
 
 		switch ($condition) {
-									case '>':
-										return $value > $comparisonValue;
-									case '<':
-										return $value < $comparisonValue;
-									case '<=':
-										return $value <= $comparisonValue;
-									case '<>':
-										return $value != $comparisonValue;
-									case '=':
-										return $value == $comparisonValue;
-									default:
-										return $value >= $comparisonValue;
-								}
+			case '>':
+				return $value > $comparisonValue;
+			case '<':
+				return $value < $comparisonValue;
+			case '<=':
+				return $value <= $comparisonValue;
+			case '<>':
+				return $value != $comparisonValue;
+			case '=':
+				return $value == $comparisonValue;
+			default:
+				return $value >= $comparisonValue;
+		}
 	}
 
 	/** @param mixed $value value to be formatted */
-				private static function splitFormatForSectionSelection(array $sections, $value): array
+	private static function splitFormatForSectionSelection(array $sections, $value): array
 	{
 		// Extract the relevant section depending on whether number is positive, negative, or zero?
 		// Text not supported yet.

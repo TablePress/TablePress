@@ -280,6 +280,7 @@ return array(
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Indirect' => $strauss_src . '/PhpSpreadsheet/Calculation/LookupRef/Indirect.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Helpers' => $strauss_src . '/PhpSpreadsheet/Calculation/LookupRef/Helpers.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\LookupRef\RowColumnInformation' => $strauss_src . '/PhpSpreadsheet/Calculation/LookupRef/RowColumnInformation.php',
+   'TablePress\PhpOffice\PhpSpreadsheet\Calculation\LookupRef\ChooseRowsEtc' => $strauss_src . '/PhpSpreadsheet/Calculation/LookupRef/ChooseRowsEtc.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\BinaryComparison' => $strauss_src . '/PhpSpreadsheet/Calculation/BinaryComparison.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Financial\TreasuryBill' => $strauss_src . '/PhpSpreadsheet/Calculation/Financial/TreasuryBill.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Financial\Securities\Yields' => $strauss_src . '/PhpSpreadsheet/Calculation/Financial/Securities/Yields.php',

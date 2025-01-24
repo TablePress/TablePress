@@ -326,11 +326,11 @@ class StringHelper
 	}
 
 	/**
-				 * Formats a numeric value as a string for output in various output writers forcing
-				 * point as decimal separator in case locale is other than English.
-				 * @param float|int|string|null $numericValue
-				 */
-				public static function formatNumber($numericValue): string
+	 * Formats a numeric value as a string for output in various output writers forcing
+	 * point as decimal separator in case locale is other than English.
+	 * @param float|int|string|null $numericValue
+	 */
+	public static function formatNumber($numericValue): string
 	{
 		if (is_float($numericValue)) {
 			return str_replace(',', '.', (string) $numericValue);
@@ -638,5 +638,10 @@ class StringHelper
 		$v = (float) $textValue;
 
 		return (is_numeric(substr($textValue, 0, strlen((string) $v)))) ? $v : $textValue;
+	}
+
+	public static function strlenAllowNull(?string $string): int
+	{
+		return strlen("$string");
 	}
 }

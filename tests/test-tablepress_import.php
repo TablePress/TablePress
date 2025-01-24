@@ -46,7 +46,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
-	 * Teststhat TablePress_Import class is loaded.
+	 * Tests that the TablePress_Import class is loaded.
 	 *
 	 * @since 2.0.0
 	 */

@@ -55,7 +55,7 @@ class Table
 	/**
 	 * Create a new Table.
 	 *
-	 * @param AddressRange<CellAddress>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
+	 * @param AddressRange<CellAddress>|AddressRange<int>|AddressRange<string>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.
@@ -244,7 +244,7 @@ class Table
 	/**
 	 * Set Table Cell Range.
 	 *
-	 * @param AddressRange<CellAddress>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
+	 * @param AddressRange<CellAddress>|AddressRange<int>|AddressRange<string>|array{0: int, 1: int, 2: int, 3: int}|array{0: int, 1: int}|string $range
 	 *            A simple string containing a Cell range like 'A1:E10' is permitted
 	 *              or passing in an array of [$fromColumnIndex, $fromRow, $toColumnIndex, $toRow] (e.g. [3, 5, 6, 8]),
 	 *              or an AddressRange object.

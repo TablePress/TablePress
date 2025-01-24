@@ -864,6 +864,8 @@ class Xlsx extends BaseReader
 										}
 
 										// Read cell!
+										$useFormula = isset($c->f)
+											&& ((string) $c->f !== '' || (isset($c->f->attributes()['t']) && strtolower((string) $c->f->attributes()['t']) === 'shared'));
 										switch ($cellDataType) {
 											case DataType::TYPE_STRING:
 												if ((string) $c->v != '') {
@@ -878,7 +880,7 @@ class Xlsx extends BaseReader
 
 												break;
 											case DataType::TYPE_BOOL:
-												if (!isset($c->f) || ((string) $c->f) === '') {
+												if (!$useFormula) {
 													if (isset($c->v)) {
 														$value = self::castToBoolean($c);
 													} else {
@@ -893,16 +895,16 @@ class Xlsx extends BaseReader
 
 												break;
 											case DataType::TYPE_STRING2:
-												if (isset($c->f)) {
+												if ($useFormula) {
 													$this->castToFormula($c, $r, $cellDataType, $value, $calculatedValue, 'castToString');
 													self::storeFormulaAttributes($c->f, $docSheet, $r);
 												} else {
-													 $value = self::castToString($c);
+													$value = self::castToString($c);
 												}
 
 												break;
 											case DataType::TYPE_INLINE:
-												if (isset($c->f)) {
+												if ($useFormula) {
 													$this->castToFormula($c, $r, $cellDataType, $value, $calculatedValue, 'castToError');
 													self::storeFormulaAttributes($c->f, $docSheet, $r);
 												} else {
@@ -911,7 +913,7 @@ class Xlsx extends BaseReader
 
 												break;
 											case DataType::TYPE_ERROR:
-												if (!isset($c->f)) {
+												if (!$useFormula) {
 													$value = self::castToError($c);
 												} else {
 													// Formula
@@ -926,7 +928,7 @@ class Xlsx extends BaseReader
 
 												break;
 											default:
-												if (!isset($c->f)) {
+												if (!$useFormula) {
 													$value = self::castToString($c);
 													if (is_numeric($value)) {
 														$value += 0;
