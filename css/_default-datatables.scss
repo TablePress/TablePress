@@ -10,11 +10,19 @@
  * @since 1.0.0
  */
 
+// Load the Sass string module, for use in the `unicode` function.
+@use "sass:string";
+
 /* Default toggle variable for LTR and RTL CSS. */
 $direction: "ltr" !default;
 
 /* Import DataTables pagination code. */
 @use "default-datatables-pagination" with ($direction: $direction);
+
+// Ensure that Unicode characters are embedded in ASCII-encoded form.
+@function unicode($str) {
+	@return string.unquote("\"") + string.unquote(string.insert($str, "\\", 1)) + string.unquote("\"");
+}
 
 /* Default variables for the LTR CSS. */
 $align-side: left;
@@ -80,7 +88,7 @@ div.dt-scroll-body > table.dataTable > thead > tr > th {
 				position: absolute;
 				display: block;
 				bottom: 50%;
-				content: "\25b2" / "";
+				content: unicode("25b2") / "";
 			}
 		}
 
@@ -90,7 +98,7 @@ div.dt-scroll-body > table.dataTable > thead > tr > th {
 				position: absolute;
 				display: block;
 				top: 50%;
-				content: "\25bc" / "";
+				content: unicode("25bc") / "";
 			}
 		}
 

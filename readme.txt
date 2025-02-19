@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.7
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,15 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.0.4 (February 20, 2025) =
+
+* Improvement: The “Custom Commands” text field on the “Edit” screen will now automatically resize when working with longer commands.
+* Bugfix: The “Ctrl/cmd+E” keyboard shortcut for the “Advanced Editor” on the “Edit” screen no longer loses edits that were made before pressing the keyboard shortcut.
+* Bugfix: When saving styling changes made via the “Default Style Customizer”, the required “Load this ‘Custom CSS’ code to change the table styling” setting will be turned on. (TablePress Pro and Max only.)
+* Bugfix: The styling of header cells in the table body is now correct, when using the “Responsive Tables” feature module’s “Flip” mode. (TablePress Pro and Max only.)
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+
 = Version 3.0.3 (January 27, 2025) =
 
 * Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
@@ -198,7 +207,7 @@ Important: Note the list of changes that might require manual adjustments after 
 
 == Upgrade Notice ==
 
-= 3.0.3 =
+= 3.0.4 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 3.0 =

@@ -10,6 +10,7 @@
 /**
  * WordPress dependencies.
  */
+import { useState } from 'react';
 import {
 	CheckboxControl,
 	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
@@ -26,6 +27,8 @@ import { __, sprintf } from '@wordpress/i18n';
 import { initializeReactComponentInPortal } from '../common/react-loader';
 
 const Section = ( { tableOptions, updateTableOptions } ) => {
+	const [ customCommandsExpanded, setCustomCommandsExpanded ] = useState( false );
+
 	const tableHeadEnabled = ( tableOptions.table_head > 0 );
 	const dataTablesEnabled = ( tableHeadEnabled && tableOptions.use_datatables );
 
@@ -193,11 +196,17 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 								<TextareaControl
 									__nextHasNoMarginBottom
 									id="option-datatables_custom_commands"
-									rows="1"
+									rows={
+										customCommandsExpanded && '' !== tableOptions.datatables_custom_commands
+											? Math.min( 15, tableOptions.datatables_custom_commands.split( '\n' ).length )
+											: 1
+									}
 									className="code"
 									value={ tableOptions.datatables_custom_commands }
 									disabled={ ! dataTablesEnabled }
 									onChange={ ( datatables_custom_commands ) => updateTableOptions( { datatables_custom_commands } ) }
+									onFocus={ () => setCustomCommandsExpanded( true ) }
+									onBlur={ () => setCustomCommandsExpanded( false ) }
 									help={
 										createInterpolateElement(
 											__( 'Additional parameters from the <a>DataTables documentation</a> to be added to the JS call.', 'tablepress' ) + ' ' + __( 'For advanced use only.', 'tablepress' ),

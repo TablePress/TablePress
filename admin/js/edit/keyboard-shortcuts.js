@@ -25,7 +25,7 @@ const handleKeyboardShortcuts = ( event ) => {
 	let move_type = '';
 
 	if ( event.ctrlKey || event.metaKey ) {
-		if ( 80 === event.keyCode ) {
+		if ( 80 === event.keyCode && tp.screen_options.currentUserCanPreviewTable ) {
 			// Preview: Ctrl/Cmd + P.
 			action = 'preview';
 		} else if ( 83 === event.keyCode ) {
@@ -99,6 +99,8 @@ const handleKeyboardShortcuts = ( event ) => {
 		// Only open the dialogs if an element in the table editor is focussed, to e.g. prevent multiple dialogs to be opened.
 		if ( $( '#table-editor' ).contains( document.activeElement ) ) { // eslint-disable-line @wordpress/no-global-active-element
 			const $active_textarea = ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null; // eslint-disable-line @wordpress/no-global-active-element
+			// Blur the active textarea to make sure that all change events were triggered.
+			$active_textarea?.blur(); // eslint-disable-line @wordpress/no-global-active-element
 			// Open the "Insert Link", "Insert Image", or Advanced Editor" dialog.
 			tp.callbacks[ action ].open_dialog( $active_textarea );
 		}

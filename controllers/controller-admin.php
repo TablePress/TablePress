@@ -377,7 +377,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'new-content',
 			'id'     => 'new-tablepress-table',
-			'title'  => __( 'TablePress Table', 'tablepress' ),
+			'title'  => __( 'TablePress table', 'tablepress' ),
 			'href'   => TablePress::url( array( 'action' => 'add' ) ),
 		) );
 	}
