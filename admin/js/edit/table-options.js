@@ -47,6 +47,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 											{
 												input: (
 													<NumberControl
+														size="compact"
 														id="option-table_head"
 														title={ __( 'This field must contain a non-negative number.', 'tablepress' ) }
 														isDragEnabled={ false }
@@ -81,6 +82,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 											{
 												input: (
 													<NumberControl
+														size="compact"
 														id="option-table_foot"
 														title={ __( 'This field must contain a non-negative number.', 'tablepress' ) }
 														isDragEnabled={ false }
@@ -139,6 +141,8 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 											select: (
 												<SelectControl
 													__nextHasNoMarginBottom
+													size="compact"
+													variant="minimal"
 													value={ tableOptions.print_name_position }
 													disabled={ ! tableOptions.print_name }
 													onChange={ ( print_name_position ) => updateTableOptions( { print_name_position } ) }
@@ -169,6 +173,8 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 											select: (
 												<SelectControl
 													__nextHasNoMarginBottom
+													size="compact"
+													variant="minimal"
 													value={ tableOptions.print_description_position }
 													disabled={ ! tableOptions.print_description }
 													onChange={ ( print_description_position ) => updateTableOptions( { print_description_position } ) }
@@ -192,6 +198,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 								<VStack>
 									<FormTokenField
 										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 										id="option-extra_css_classes"
 										label=""
 										className="code"
@@ -211,7 +218,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 											createInterpolateElement(
 												__( 'Additional CSS classes for styling purposes can be entered here.', 'tablepress' ) + ' ' + __( 'This is NOT the place to enter <a>Custom CSS</a> code!', 'tablepress' ),
 												{
-													a: <a href={ tp.screen_options.optionsUrl } />, // eslint-disable-line jsx-a11y/anchor-has-content
+													a: <a href={ tp.screenOptions.optionsUrl } />, // eslint-disable-line jsx-a11y/anchor-has-content
 												},
 											)
 										}

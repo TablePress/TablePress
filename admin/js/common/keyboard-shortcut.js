@@ -10,7 +10,7 @@
 /**
  * WordPress dependencies.
  */
-import { __, _x, sprintf } from '@wordpress/i18n';
+import { _x, sprintf } from '@wordpress/i18n';
 
 /**
  * Registers a "Save Changes" keyboard shortcut for a button.
@@ -19,13 +19,12 @@ import { __, _x, sprintf } from '@wordpress/i18n';
  *
  * @param {HTMLElement} $button DOM element for the button.
  */
-export const register_save_changes_keyboard_shortcut = ( $button ) => {
+export const registerSaveChangesKeyboardShortcut = ( $button ) => {
 	// Add keyboard shortcut as title attribute to the "Save Changes" button, with correct modifier key for Mac/non-Mac.
-	const modifier_key = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
+	const modifierKey = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
 		_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
 		_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
-	const shortcut = sprintf( $button.dataset.shortcut, modifier_key ); // eslint-disable-line @wordpress/valid-sprintf
-	$button.title = sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), shortcut );
+	$button.title = sprintf( $button.dataset.shortcut, modifierKey ); // eslint-disable-line @wordpress/valid-sprintf
 
 	/**
 	 * Registers keyboard events and triggers corresponding actions by emulating button clicks.
@@ -34,7 +33,7 @@ export const register_save_changes_keyboard_shortcut = ( $button ) => {
 	 *
 	 * @param {Event} event Keyboard event.
 	 */
-	const keyboard_shortcuts = ( event ) => {
+	const keyboardShortcuts = ( event ) => {
 		let action = '';
 
 		if ( event.ctrlKey || event.metaKey ) {
@@ -56,5 +55,5 @@ export const register_save_changes_keyboard_shortcut = ( $button ) => {
 		}
 	};
 	// Register keyboard shortcut handler.
-	window.addEventListener( 'keydown', keyboard_shortcuts, true );
+	window.addEventListener( 'keydown', keyboardShortcuts, true );
 };

@@ -7,59 +7,25 @@
  * @since 1.0.0
  */
 
-/* globals confirm, prompt, tb_show, ajaxurl */
-
 /**
  * WordPress dependencies.
  */
-import { __, _n } from '@wordpress/i18n';
+import { _n } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
  */
 import { $ } from './common/functions';
-
-document.querySelector( '.tablepress-all-tables' ).addEventListener( 'click', ( event ) => {
-	if ( ! event.target ) {
-		return;
-	}
-
-	/**
-	 * Show a popup box with the table's Shortcode.
-	 *
-	 * @since 1.0.0
-	 */
-	if ( event.target.matches( '.shortcode a' ) ) {
-		prompt( __( 'To embed this table into a post or page, use this Shortcode:', 'tablepress' ), event.target.title );
-		event.preventDefault();
-		return;
-	}
-
-	/**
-	 * Load a Thickbox with a table preview.
-	 *
-	 * @since 1.0.0
-	 */
-	if ( event.target.matches( '.table-preview a' ) ) {
-		const width = window.innerWidth - 120;
-		const height = window.innerHeight - 120;
-		tb_show( event.target.title, `${ event.target.href }#TB_iframe=true&height=${ height }&width=${ width }`, false );
-		event.preventDefault();
-		return;
-	}
-} );
+import { initializeReactComponent } from './common/react-loader';
+import Screen from './list/screen';
 
 /**
  * Process links with an "ajax-link" class with AJAX.
  *
  * @since 1.0.0
  */
-$( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
-	if ( ! event.target ) {
-		return;
-	}
-
-	if ( event.target.matches( '.ajax-link' ) ) {
+document.querySelectorAll( '#tablepress-page .ajax-link' ).forEach( ( link ) => {
+	link.addEventListener( 'click', ( event ) => {
 		fetch( `${ ajaxurl }?${ event.target.href.split( '?' )[1] }` ) // Append original link's query string to AJAX endpoint.
 		.then( ( response ) => response.text() )
 		.then( ( result ) => {
@@ -69,13 +35,11 @@ $( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
 
 			if ( 'hide_message' === event.target.dataset.action ) {
 				// Remove original message.
-				event.target.closest( 'div' ).remove();
+				event.target.closest( '.notice' ).remove();
 			}
 		} );
-
 		event.preventDefault();
-		return;
-	}
+	} );
 } );
 
 /**
@@ -107,3 +71,8 @@ if ( bulk_action_dropdown ) {
 		}
 	} );
 }
+
+initializeReactComponent(
+	'tablepress-list-screen',
+	<Screen />,
+);

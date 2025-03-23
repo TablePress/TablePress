@@ -7,10 +7,23 @@
  * @since 1.0.0
  */
 
+// Load the Sass string module, for use in the `unicode` function.
+@use "sass:string";
+
 /* Load WordPress color schemes, which normally are only loaded on WP admin screens that use the block editor. */
 @use "~@wordpress/base-styles/colors";
 @use "~@wordpress/base-styles/mixins";
 @include mixins.wordpress-admin-schemes();
+
+// Ensure that Unicode characters are embedded in ASCII-encoded form.
+@function unicode($str) {
+	@return string.unquote("\"") + string.unquote(string.insert($str, "\\", 1)) + string.unquote("\"");
+}
+
+/* Hour glass cursor, while waiting for AJAX requests. */
+body.wait * {
+	cursor: wait !important;
+}
 
 /* Move down the header when the Screen Options or Help tabs are opened. */
 #screen-meta[style$="block;"] ~ #tablepress-page {
@@ -138,11 +151,6 @@
 		}
 	}
 
-	/* Margins for messages on screens */
-	div.notice {
-		margin: 20px 0 0;
-	}
-
 	.postbox ul {
 		list-style: disc inside;
 		margin: 0;
@@ -208,9 +216,11 @@
 		}
 	}
 
-	.components-text-control__input:disabled {
+	.components-text-control__input:disabled,
+	.components-textarea-control__input:disabled {
 		background: #f0f0f0;
 		border-color: #cccccc;
+		box-shadow: none;
 	}
 
 	/* Alignment of selects inside of checkbox labels. */
@@ -222,6 +232,113 @@
 			display: flex;
 			gap: 8px;
 			align-items: center;
+		}
+	}
+
+
+	.components-notice {
+		&.notice {
+			margin: 20px 0 0;
+			box-shadow: none;
+			padding: 8px 12px;
+			border-top: none;
+			border-right: none;
+			border-bottom: none;
+
+			&.is-info {
+				border-left-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+			}
+
+			&.is-dismissible {
+				padding-right: 38px;
+
+				.notice-dismiss {
+					&:before {
+						content: unicode("f335") / "";
+						font-size: 32px;
+						color: #757575;
+						padding-right: 10px;
+					}
+
+					&:hover:before {
+						color: #1e1e1e;
+					}
+				}
+			}
+		}
+
+		.components-notice__content {
+			margin: 0;
+		}
+	}
+
+	/* Notices for "Preview" and "Save Changes" buttons. */
+	.components-notice-list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		.components-notice {
+			animation: fadeIn 1s; /* Fade in new notices. */
+			transition: opacity 1s; /* Fade out notices before removing them. */
+			scroll-margin-bottom: 50px; /* Scroll into view offset for error notices. */
+		}
+
+	}
+
+	.components-snackbar-list {
+		position: fixed;
+		bottom: 24px;
+		padding-left: 4px;
+	}
+}
+
+/* Table Preview (CSS for actual preview is directly in the preview HTML). */
+.table-preview-modal {
+	.components-modal__content {
+		padding: 0 16px 26px;
+	}
+
+	iframe {
+		width: 100%;
+		height: 100%;
+	}
+
+	.components-modal__header {
+		padding: 20px 26px 8px;
+
+		+ div {
+			height: 100%;
+		}
+	}
+}
+
+/* Width settings for the `Modal` component. Only for backward compatibility with WP < 6.5. */
+@media (min-width: 600px) {
+	.components-modal__frame {
+		&.has-size-small,
+		&.has-size-medium,
+		&.has-size-large {
+			width: 100%;
+		}
+
+		&.has-size-small {
+			max-width: 384px;
+		}
+		&.has-size-medium {
+			max-width: 512px;
+		}
+		&.has-size-large {
+			max-width: 840px;
 		}
 	}
 }
@@ -269,7 +386,7 @@
 	max-width: 1000px;
 	width: 100%;
 
-	/* Default column widths */
+	/* Default column widths. */
 	.column-1 {
 		width: 25%;
 	}

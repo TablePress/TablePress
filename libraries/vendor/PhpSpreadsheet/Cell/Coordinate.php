@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Cell;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Validations;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
@@ -306,6 +307,7 @@ abstract class Coordinate
 	 */
 	public static function coordinateIsInsideRange(string $range, string $coordinate): bool
 	{
+		$range = Validations::convertWholeRowColumn($range);
 		$rangeData = self::validateReferenceAndGetData($range);
 		if ($rangeData['type'] === 'invalid') {
 			throw new Exception('First argument needs to be a range');
@@ -665,7 +667,7 @@ abstract class Coordinate
 				}
 			}
 
-			if ($rowStart !== null) {
+			if ($rowStart !== null) { // @phpstan-ignore-line
 				if ($rowStart == $rowEnd) {
 					$ranges[] = $hashedValue->col . $rowStart;
 				} else {

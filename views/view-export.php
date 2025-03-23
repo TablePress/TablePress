@@ -103,23 +103,18 @@ class TablePress_Export_View extends TablePress_View {
 	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
 	public function postbox_export_form( array $data, array $box ): void {
-		$script_data = array(
-			'tables'              => $this->admin_page->convert_to_json_parse_output( $data['tables'] ),
-			'exportFormats'       => $this->admin_page->convert_to_json_parse_output( $data['export_formats'] ),
-			'csvDelimiters'       => $this->admin_page->convert_to_json_parse_output( $data['csv_delimiters'] ),
-			'zipSupportAvailable' => $this->admin_page->convert_to_json_parse_output( $data['zip_support_available'] ),
-			'selectedTables'      => $this->admin_page->convert_to_json_parse_output( $data['export_ids'] ),
-			'exportFormat'        => $this->admin_page->convert_to_json_parse_output( $data['export_format'] ),
-			'csvDelimiter'        => $this->admin_page->convert_to_json_parse_output( $data['csv_delimiter'] ),
+		$this->print_script_data_json(
+			'export',
+			array(
+				'tables'              => $data['tables'],
+				'exportFormats'       => $data['export_formats'],
+				'csvDelimiters'       => $data['csv_delimiters'],
+				'zipSupportAvailable' => $data['zip_support_available'],
+				'selectedTables'      => $data['export_ids'],
+				'exportFormat'        => $data['export_format'],
+				'csvDelimiter'        => $data['csv_delimiter'],
+			),
 		);
-
-		echo "<script>\n";
-		echo "window.tp = window.tp || {};\n";
-		echo "tp.export = {};\n";
-		foreach ( $script_data as $variable => $value ) {
-			echo "tp.export.{$variable} = {$value};\n";
-		}
-		echo "</script>\n";
 
 		echo '<div id="tablepress-export-screen"></div>';
 	}

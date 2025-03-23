@@ -7,8 +7,6 @@
  * @since 2.2.0
  */
 
-/* globals tp */
-
 /**
  * WordPress dependencies.
  */
@@ -197,6 +195,7 @@ const Screen = () => {
 						{ tp.import.showImportSourceUrl && 'url' === screenData.importSource &&
 							<TextControl
 								__nextHasNoMarginBottom
+								__next40pxDefaultSize
 								type="url"
 								name="import[url]"
 								id="tables-import-url"
@@ -209,6 +208,7 @@ const Screen = () => {
 						{ tp.import.showImportSourceServer && 'server' === screenData.importSource &&
 							<TextControl
 								__nextHasNoMarginBottom
+								__next40pxDefaultSize
 								ref={ importServerInput }
 								name="import[server]"
 								id="tables-import-server"
@@ -272,6 +272,7 @@ const Screen = () => {
 						>
 							<ComboboxControl
 								__nextHasNoMarginBottom
+								__next40pxDefaultSize
 								id="tables-import-existing-table"
 								label={ __( 'Table to replace or append to', 'tablepress' ) }
 								hideLabelFromVision={ true }

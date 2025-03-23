@@ -16,9 +16,9 @@
  * @param {Object} shortcodeAttrs The named and numeric Shortcode attributes.
  * @return {string} The attributes as a key=value string.
  */
-export const shortcode_attrs_to_string = ( shortcodeAttrs ) => {
+export const shortcodeAttrsToString = ( shortcodeAttrs ) => {
 	// Convert named attributes.
-	let shortcode_attrs_string = Object.entries( shortcodeAttrs.named ).map( ( [ attribute, value ] ) => {
+	let shortcodeAttrsString = Object.entries( shortcodeAttrs.named ).map( ( [ attribute, value ] ) => {
 		let enclose = ''; // Don't enclose values by default.
 
 		// Remove curly quotation marks around a value.
@@ -40,11 +40,11 @@ export const shortcode_attrs_to_string = ( shortcodeAttrs ) => {
 	// Convert numeric attributes.
 	shortcodeAttrs.numeric.forEach( ( value ) => {
 		if ( /\s/.test( value ) ) {
-			shortcode_attrs_string += ' "' + value + '"';
+			shortcodeAttrsString += ' "' + value + '"';
 		} else {
-			shortcode_attrs_string += ' ' + value;
+			shortcodeAttrsString += ' ' + value;
 		}
 	} );
 
-	return shortcode_attrs_string;
+	return shortcodeAttrsString;
 };

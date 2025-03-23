@@ -17,35 +17,41 @@ import {
 	__experimentalNumberControl as NumberControl, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/components';
-import { createInterpolateElement } from '@wordpress/element';
-import { __, _x, sprintf } from '@wordpress/i18n';
-
-const modifierKey = ( window?.navigator?.platform?.includes( 'Mac' ) ) ?
-	_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
-	_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
+import { createInterpolateElement, RawHTML } from '@wordpress/element';
+import { __, sprintf } from '@wordpress/i18n';
+import { displayShortcut, shortcutAriaLabel } from '@wordpress/keycodes';
 
 /**
  * Internal dependencies.
  */
 import { initializeReactComponentInPortal } from '../common/react-loader';
+import { Alert } from '../common/alert';
+import { HelpBox } from '../common/help';
 
 const Section = () => {
 	const [ columnsAppendNumber, setColumnsAppendNumber ] = useState( 1 );
 	const [ rowsAppendNumber, setRowsAppendNumber ] = useState( 1 );
+	const [ alertMoveInvalidIsShown, setAlertMoveInvalidIsShown ] = useState( false );
+	const [ alertDeleteRowsInvalidIsShown, setAlertDeleteRowsInvalidIsShown ] = useState( false );
+	const [ alertDeleteColumnsInvalidIsShown, setAlertDeleteColumnsInvalidIsShown ] = useState( false );
 
 	const move = ( direction, type ) => {
 		if ( ! tp.helpers.move_allowed( type, direction ) ) {
-			window.alert( __( 'You can not do this move, because you reached the border of the table.', 'tablepress' ) );
+			setAlertMoveInvalidIsShown( true );
 			return;
 		}
 		tp.callbacks.move( direction, type );
 	};
 
 	const remove = ( type ) => {
-		const handling_rows = ( 'rows' === type );
-		const num_rocs = handling_rows ? tp.editor.options.data.length : tp.editor.options.columns.length;
-		if ( num_rocs === tp.helpers.selection[ type ].length ) {
-			window.alert( handling_rows ? __( 'You can not delete all table rows!', 'tablepress' ) : __( 'You can not delete all table columns!', 'tablepress' ) );
+		const handlingRows = ( 'rows' === type );
+		const numRoCs = handlingRows ? tp.editor.options.data.length : tp.editor.options.columns.length;
+		if ( numRoCs === tp.helpers.selection[ type ].length ) {
+			if ( handlingRows ) {
+				setAlertDeleteRowsInvalidIsShown( true );
+			} else {
+				setAlertDeleteColumnsInvalidIsShown( true );
+			}
 			return;
 		}
 		tp.callbacks.remove( type );
@@ -69,21 +75,30 @@ const Section = () => {
 										variant="secondary"
 										size="compact"
 										text={ __( 'Insert Link', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primary( 'l' ),
+											display: displayShortcut.primary( 'l' ),
+										} }
 										onClick={ () => tp.callbacks.insert_link.open_dialog() }
 									/>
 									<Button
 										variant="secondary"
 										size="compact"
 										text={ __( 'Insert Image', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primary( 'i' ),
+											display: displayShortcut.primary( 'i' ),
+										} }
 										onClick={ () => tp.callbacks.insert_image.open_dialog() }
 									/>
 									<Button
 										variant="secondary"
 										size="compact"
 										text={ __( 'Advanced Editor', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primary( 'e' ),
+											display: displayShortcut.primary( 'e' ),
+										} }
 										onClick={ () => tp.callbacks.advanced_editor.open_dialog() }
 									/>
 								</HStack>
@@ -103,13 +118,40 @@ const Section = () => {
 											}
 										} }
 									/>
-									<Button
-										variant="secondary"
-										size="compact"
-										text={ __( '?', 'tablepress' ) }
+									<HelpBox
+										buttonProps={ {
+											size: 'compact',
+											text: __( '?', 'tablepress' ),
+											label: __( 'Help on combining cells', 'tablepress' ),
+										} }
+										modalProps={ {
+											className: 'has-size-medium', // Using size: 'medium' is only possible in WP 6.5+.
+										} }
 										title={ __( 'Help on combining cells', 'tablepress' ) }
-										onClick={ () => tp.callbacks.help_box.open_dialog( '#help-box-combine-cells' ) }
-									/>
+									>
+										<p>
+											{ __( 'Table cells can span across more than one column or row.', 'tablepress' ) }
+										</p>
+										<RawHTML>
+											{ '<p>' }
+											{ __( 'Combining consecutive cells within the same row is called &#8220;colspanning&#8221;.', 'tablepress' ) }
+											{ ' ' + __( 'Combining consecutive cells within the same column is called &#8220;rowspanning&#8221;.', 'tablepress' ) }
+											{ '</p>' }
+										</RawHTML>
+										<RawHTML>
+											{ '<p>' }
+											{ sprintf( __( 'To combine adjacent cells, select the desired cells and click the “%s” button or use the context menu.', 'tablepress' ), __( 'Combine/Merge', 'tablepress' ) ) }
+											{ ' ' + __( 'The corresponding keywords, <code>#colspan#</code> and <code>#rowspan#</code>, will then be added for you.', 'tablepress' ) }
+											{ '</p>' }
+										</RawHTML>
+										<p>
+											<strong>
+												{ __( 'Be aware that the Table Features for Site Visitors, like sorting, filtering, and pagination, will not work in tables which have combined cells in their body rows.', 'tablepress' ) }
+											</strong>
+											{ ' ' }
+											{ __( 'It is however possible to use these features in tables that have combined cells in the table header or footer rows, to allow for creating complex header and footer layouts.', 'tablepress' ) }
+										</p>
+									</HelpBox>
 								</HStack>
 							</HStack>
 						</td>
@@ -175,14 +217,20 @@ const Section = () => {
 										variant="secondary"
 										size="compact"
 										text={ __( 'Move up', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primaryShift( '↑' ),
+											display: displayShortcut.primaryShift( '↑' ),
+										} }
 										onClick={ () => move( 'up', 'rows' ) }
 									/>
 									<Button
 										variant="secondary"
 										size="compact"
 										text={ __( 'Move down', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primaryShift( '↓' ),
+											display: displayShortcut.primaryShift( '↓' ),
+										} }
 										onClick={ () => move( 'down', 'rows' ) }
 									/>
 								</HStack>
@@ -196,14 +244,20 @@ const Section = () => {
 										variant="secondary"
 										size="compact"
 										text={ __( 'Move left', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primaryShift( '←' ),
+											display: displayShortcut.primaryShift( '←' ),
+										} }
 										onClick={ () => move( 'left', 'columns' ) }
 									/>
 									<Button
 										variant="secondary"
 										size="compact"
 										text={ __( 'Move right', 'tablepress' ) }
-										title={ sprintf( __( 'Keyboard Shortcut: %s', 'tablepress' ), sprintf( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ), modifierKey ) ) }
+										shortcut={ {
+											ariaLabel: shortcutAriaLabel.primaryShift( '→' ),
+											display: displayShortcut.primaryShift( '→' ),
+										} }
 										onClick={ () => move( 'right', 'columns' ) }
 									/>
 								</HStack>
@@ -261,6 +315,7 @@ const Section = () => {
 												{
 													input: (
 														<NumberControl
+															size="compact"
 															id="rows-append-number"
 															title={ __( 'This field must contain a positive number.', 'tablepress' ) }
 															isDragEnabled={ false }
@@ -299,6 +354,7 @@ const Section = () => {
 												{
 													input: (
 														<NumberControl
+															size="compact"
 															id="columns-append-number"
 															title={ __( 'This field must contain a positive number.', 'tablepress' ) }
 															isDragEnabled={ false }
@@ -330,6 +386,30 @@ const Section = () => {
 					</tr>
 				</tbody>
 			</table>
+			{ alertMoveInvalidIsShown && (
+				<Alert
+					title={ __( 'Table Manipulation', 'tablepress' ) }
+					text={ __( 'You can not do this move, because you reached the border of the table.', 'tablepress' ) }
+					onConfirm={ () => setAlertMoveInvalidIsShown( false ) }
+					modalProps={ {
+						className: 'has-size-small', // Using size: 'small' is only possible in WP 6.5+.
+					} }
+				/>
+			) }
+			{ alertDeleteRowsInvalidIsShown && (
+				<Alert
+					title={ __( 'Table Manipulation', 'tablepress' ) }
+					text={ __( 'You can not delete all table rows!', 'tablepress' ) }
+					onConfirm={ () => setAlertDeleteRowsInvalidIsShown( false ) }
+				/>
+			) }
+			{ alertDeleteColumnsInvalidIsShown && (
+				<Alert
+					title={ __( 'Table Manipulation', 'tablepress' ) }
+					text={ __( 'You can not delete all table columns!', 'tablepress' ) }
+					onConfirm={ () => setAlertDeleteColumnsInvalidIsShown( false ) }
+				/>
+			) }
 		</VStack>
 	);
 };

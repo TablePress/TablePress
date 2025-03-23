@@ -79,12 +79,13 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		/**
 		 * Filters whether TablePress should load its frontend CSS files on all pages.
 		 * For block themes, the default behavior is to only load the CSS files when a table is encountered on the page.
+		 * If Elementor is active, the CSS is also loaded on the editor page.
 		 *
 		 * @since 3.0.1
 		 *
 		 * @param bool $use_legacy_css_loading Whether TablePress should load its frontend CSS files on all pages.
 		 */
-		$this->use_legacy_css_loading = apply_filters( 'tablepress_frontend_legacy_css_loading', ! wp_is_block_theme() );
+		$this->use_legacy_css_loading = apply_filters( 'tablepress_frontend_legacy_css_loading', ! wp_is_block_theme() || ( isset( $_GET['elementor-preview'] ) && is_plugin_active( 'elementor/elementor.php' ) ) );
 
 		if ( $this->use_legacy_css_loading ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
@@ -128,6 +129,12 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				'render_callback' => array( $this, 'table_block_render_callback' ),
 			),
 		);
+
+		/**
+		 * Register the TablePress Elementor widgets.
+		 */
+		add_action( 'elementor/widgets/register', array( $this, 'register_elementor_widgets' ) );
+		add_action( 'elementor/editor/after_enqueue_styles', array( $this, 'enqueue_elementor_editor_styles' ), 10, 0 );
 	}
 
 	/**
@@ -699,17 +706,24 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			return $message;
 		}
 
-		/**
-		 * Filters whether the "datatables_custom_commands" Shortcode parameter is disabled.
-		 *
-		 * By default, the "datatables_custom_commands" Shortcode parameter is disabled for security reasons.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param bool $disable Whether to disable the "datatables_custom_commands" Shortcode parameter. Default true.
-		 */
-		if ( ! is_null( $shortcode_atts['datatables_custom_commands'] ) && apply_filters( 'tablepress_disable_custom_commands_shortcode_parameter', true ) ) {
-			$shortcode_atts['datatables_custom_commands'] = null;
+		if ( ! is_null( $shortcode_atts['datatables_custom_commands'] ) ) {
+			/**
+			 * Filters whether the "datatables_custom_commands" Shortcode parameter is disabled.
+			 *
+			 * By default, the "datatables_custom_commands" Shortcode parameter is disabled for security reasons.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param bool $disable Whether to disable the "datatables_custom_commands" Shortcode parameter. Default true.
+			 */
+			if ( apply_filters( 'tablepress_disable_custom_commands_shortcode_parameter', true ) ) {
+				$shortcode_atts['datatables_custom_commands'] = null;
+			} else {
+				// Convert the HTML entity `&amp;` back to `&` manually, as entities in Shortcodes in normal text paragraphs are sometimes double-encoded.
+				$shortcode_atts['datatables_custom_commands'] = str_replace( '&amp;', '&', $shortcode_atts['datatables_custom_commands'] );
+				// Convert HTML entities like `&lt;`, `&lsqb;`, `&#91;`, and `&amp;` back to their respective characters.
+				$shortcode_atts['datatables_custom_commands'] = html_entity_decode( $shortcode_atts['datatables_custom_commands'], ENT_QUOTES | ENT_HTML5, get_option( 'blog_charset' ) );
+			}
 		}
 
 		// Determine options to use (if set in Shortcode, use those, otherwise use stored options, from the "Edit" screen).
@@ -1171,6 +1185,46 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		$render_attributes['id'] = $block_attributes['id'];
 
 		return $this->shortcode_table( $render_attributes );
+	}
+
+	/**
+	 * Registers the TablePress Elementor widgets.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
+	 */
+	public function register_elementor_widgets( \Elementor\Widgets_Manager $widgets_manager ): void {
+		TablePress::load_file( 'class-elementor-widget-table.php', 'classes' );
+		$widgets_manager->register( new TablePress\Elementor\TablePressTableWidget() ); // @phpstan-ignore method.notFound (Elementor methods are not in the stubs.)
+	}
+
+	/**
+	 * Enqueues the TablePress Elementor Editor CSS styles.
+	 *
+	 * @since 3.1.0
+	 */
+	public function enqueue_elementor_editor_styles(): void {
+		$svg_url = plugins_url( 'admin/img/tablepress-editor-button.svg', TABLEPRESS__FILE__ );
+		wp_register_style( 'tablepress-elementor', false ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_add_inline_style(
+			'tablepress-elementor',
+			<<<CSS
+			.elementor-panel .elementor-element .icon:has(> .tablepress-elementor-icon) {
+				height: 43.5px;
+			}
+			.tablepress-elementor-icon {
+				display: inline-block;
+				height: 28px;
+				width: 28px;
+				background-image: url({$svg_url});
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 28px auto;
+			}
+			CSS
+		);
+		wp_enqueue_style( 'tablepress-elementor' );
 	}
 
 } // class TablePress_Frontend_Controller

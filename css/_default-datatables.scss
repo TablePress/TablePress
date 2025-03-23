@@ -1,9 +1,6 @@
 /**
  * TablePress Default CSS - DataTables-related code.
  *
- * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
- * on the "Plugin Options" screen of TablePress.
- *
  * @package TablePress
  * @subpackage Frontend CSS
  * @author Tobias Bäthge, Allan Jardine
@@ -50,7 +47,8 @@ div.dt-scroll-body {
 		tr {
 			height: 0;
 
-			th {
+			th,
+			td {
 				height: 0 !important;
 				padding-top: 0 !important;
 				padding-bottom: 0 !important;
@@ -64,15 +62,18 @@ div.dt-scroll-body {
 			}
 		}
 	}
-}
 
-div.dt-scroll-body > table.dataTable > thead > tr > th {
-	overflow: hidden;
+	> table.dataTable > thead > tr {
+		> th,
+		> td {
+			overflow: hidden;
+		}
+	}
 }
 
 /* Sorting. */
 .tablepress {
-	/* Custom properties */
+	/* Custom properties. */
 	--head-active-bg-color: #049cdb;
 	--head-active-text-color: var(--head-text-color);
 	--head-sort-arrow-color: var(--head-active-text-color);
@@ -169,6 +170,11 @@ div.dt-scroll-body > table.dataTable > thead > tr > th {
 
 	.tablepress {
 		margin-bottom: 0;
+
+		/* Empty footers should be hidden for improved accessibility. */
+		tfoot:empty {
+			display: none;
+		}
 	}
 
 	.dt-layout-row {
@@ -221,6 +227,7 @@ div.dt-scroll-body > table.dataTable > thead > tr > th {
 
 	label {
 		display: inline;
+		width: auto;
 	}
 
 	/* Input and select fields. */
@@ -231,8 +238,9 @@ div.dt-scroll-body > table.dataTable > thead > tr > th {
 		font-size: inherit;
 	}
 
-	/* Search field. */
-	.dt-search {
+	/* Search and Length Change fields. */
+	.dt-search,
+	.dt-length {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;

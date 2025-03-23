@@ -105,10 +105,10 @@ class Table
 			) {
 				throw new PhpSpreadsheetException('The table name can\'t be the same as a cell reference');
 			}
-			if (!preg_match('/^[\p{L}_\\\\]/iu', $name)) {
+			if (!preg_match('/^[\p{L}_\\\]/iu', $name)) {
 				throw new PhpSpreadsheetException('The table name must begin a name with a letter, an underscore character (_), or a backslash (\)');
 			}
-			if (!preg_match('/^[\p{L}_\\\\][\p{L}\p{M}0-9\._]+$/iu', $name)) {
+			if (!preg_match('/^[\p{L}_\\\][\p{L}\p{M}0-9\._]+$/iu', $name)) {
 				throw new PhpSpreadsheetException('The table name contains invalid characters');
 			}
 
@@ -293,7 +293,7 @@ class Table
 	{
 		if ($this->workSheet !== null) {
 			$thisrange = $this->range;
-			$range = (string) preg_replace('/\\d+$/', (string) $this->workSheet->getHighestRow(), $thisrange);
+			$range = (string) preg_replace('/\d+$/', (string) $this->workSheet->getHighestRow(), $thisrange);
 			if ($range !== $thisrange) {
 				$this->setRange($range);
 			}
@@ -409,7 +409,7 @@ class Table
 	{
 		if ((is_string($columnObjectOrString)) && (!empty($columnObjectOrString))) {
 			$column = $columnObjectOrString;
-		} elseif (is_object($columnObjectOrString) && ($columnObjectOrString instanceof Table\Column)) {
+		} elseif ($columnObjectOrString instanceof Table\Column) {
 			$column = $columnObjectOrString->getColumnIndex();
 		} else {
 			throw new PhpSpreadsheetException('Column is not within the table range.');
@@ -456,7 +456,7 @@ class Table
 		$fromColumn = strtoupper($fromColumn);
 		$toColumn = strtoupper($toColumn);
 
-		if (($fromColumn !== null) && (isset($this->columns[$fromColumn])) && ($toColumn !== null)) {
+		if (isset($this->columns[$fromColumn])) {
 			$this->columns[$fromColumn]->setTable();
 			$this->columns[$fromColumn]->setColumnIndex($toColumn);
 			$this->columns[$toColumn] = $this->columns[$fromColumn];

@@ -18,7 +18,7 @@ class ExcelArrayPseudoFunctions
 	{
 		$worksheet = $cell->getWorksheet();
 
-		[$referenceWorksheetName, $referenceCellCoordinate] = Worksheet::extractSheetTitle($cellReference, true);
+		[$referenceWorksheetName, $referenceCellCoordinate] = Worksheet::extractSheetTitle($cellReference, true, true);
 		if (preg_match('/^([$]?[a-z]{1,3})([$]?([0-9]{1,7})):([$]?[a-z]{1,3})([$]?([0-9]{1,7}))$/i', "$referenceCellCoordinate", $matches) === 1) {
 			$ourRow = $cell->getRow();
 			$firstRow = (int) $matches[3];
@@ -50,7 +50,7 @@ class ExcelArrayPseudoFunctions
 		//$coordinate = $cell->getCoordinate();
 		$worksheet = $cell->getWorksheet();
 
-		[$referenceWorksheetName, $referenceCellCoordinate] = Worksheet::extractSheetTitle($cellReference, true);
+		[$referenceWorksheetName, $referenceCellCoordinate] = Worksheet::extractSheetTitle($cellReference, true, true);
 		$referenceCell = ($referenceWorksheetName === '')
 			? $worksheet->getCell((string) $referenceCellCoordinate)
 			: $worksheet->getParentOrThrow()

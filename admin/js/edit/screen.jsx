@@ -7,8 +7,6 @@
  * @since 3.0.0
  */
 
-/* globals tp */
-
 /**
  * WordPress dependencies.
  */
@@ -16,7 +14,7 @@ import { useEffect, useState } from 'react';
 import {
 	withFilters,
 } from '@wordpress/components';
-import { addAction, applyFilters, removeAction } from '@wordpress/hooks';
+import { applyFilters } from '@wordpress/hooks';
 
 /*
  * Allow other scripts to register their UI components to be rendered on the Edit Screen.
@@ -31,19 +29,20 @@ const Portals = withFilters( 'tablepress.editScreenPortals' )( () => <></> );
  * @return {Object} Edit Screen component.
  */
 const Screen = () => {
+	const [ screenData, setScreenData ] = useState( {
+		copyUrl: tp.screenOptions.copyUrl,
+		deleteUrl: tp.screenOptions.deleteUrl,
+		exportUrl: tp.screenOptions.exportUrl,
+		isSaving: false,
+		previewIsLoading: false,
+		previewIsOpen: false,
+		previewSrcDoc: '',
+		previewUrl: tp.screenOptions.previewUrl,
+		triggerPreview: false,
+		triggerSaveChanges: false,
+	} );
 	const [ tableOptions, setTableOptions ] = useState( () => ( { ...tp.table.options } ) );
 	const [ tableMeta, setTableMeta ] = useState( () => ( { ...tp.table.meta } ) );
-
-	// When the component is first rendered, register the action hook that is triggered when other options are changed.
-	useEffect( () => {
-		addAction( 'tablepress.metaUpdated', 'tp/edit-screen/handle-meta-updated', () => {
-			setTableMeta( { ...tp.table.meta } );
-		} );
-
-		return () => {
-			removeAction( 'tablepress.metaUpdated', 'tp/edit-screen/handle-meta-updated' );
-		};
-	}, [] );
 
 	// Turn off "Enable Visitor Features" if the table has merged cells.
 	useEffect( () => {
@@ -51,6 +50,14 @@ const Screen = () => {
 			updateTableOptions( { use_datatables: false } );
 		}
 	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps -- This should only run on the initial render, so no dependencies are needed.
+
+	const updateScreenData = ( updatedScreenData ) => {
+		// Use an updater function to ensure that the current state is used when updating screen data.
+		setScreenData( ( currentScreenData ) => ( {
+			...currentScreenData,
+			...updatedScreenData,
+		} ) );
+	};
 
 	const updateTableOptions = ( updatedTableOptions ) => {
 		// Use an updater function to ensure that the current state is used when updating table options.
@@ -68,10 +75,21 @@ const Screen = () => {
 		}
 	};
 
-	const updateTableMeta = ( updatedTableMeta ) => tp.helpers.meta.update( updatedTableMeta );
+	const updateTableMeta = ( updatedTableMeta ) => {
+		// Use an updater function to ensure that the current state is used when updating table meta.
+		setTableMeta( ( currentTableMeta ) => ( {
+			...currentTableMeta,
+			...updatedTableMeta,
+		} ) );
+
+		tp.table.meta = { ...tp.table.meta, ...updatedTableMeta };
+		tp.helpers.unsaved_changes.set();
+	};
 
 	return (
 		<Portals
+			screenData={ screenData }
+			updateScreenData={ updateScreenData }
 			tableMeta={ tableMeta }
 			updateTableMeta={ updateTableMeta }
 			tableOptions={ tableOptions }

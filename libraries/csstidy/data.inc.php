@@ -73,6 +73,7 @@ $data['csstidy']['at_rules'] = array(
 	'-moz-viewport'     => 'at',
 	'-ms-viewport'      => 'at',
 	'supports'          => 'at',
+	'container'         => 'at',
 );
 
 /**
@@ -839,5 +840,12 @@ $data['csstidy']['all_properties']['-webkit-backdrop-filter'] = 'CSS3.0';
 $data['csstidy']['all_properties']['backdrop-filter'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-box-orient'] = 'CSS3.0';
 $data['csstidy']['all_properties']['-webkit-line-clamp'] = 'CSS3.0';
+$data['csstidy']['all_properties']['-webkit-box-orient'] = 'CSS3.0';
+$data['csstidy']['all_properties']['contain'] = 'CSS3.0';
+$data['csstidy']['all_properties']['contain-intrinsic-size'] = 'CSS3.0';
+$data['csstidy']['all_properties']['container'] = 'CSS3.0';
+$data['csstidy']['all_properties']['container-name'] = 'CSS3.0';
+$data['csstidy']['all_properties']['container-type'] = 'CSS3.0';
+$data['csstidy']['all_properties']['content-visibility'] = 'CSS3.0';
 
 return $data;

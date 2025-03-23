@@ -25,13 +25,7 @@ const handleKeyboardShortcuts = ( event ) => {
 	let move_type = '';
 
 	if ( event.ctrlKey || event.metaKey ) {
-		if ( 80 === event.keyCode && tp.screen_options.currentUserCanPreviewTable ) {
-			// Preview: Ctrl/Cmd + P.
-			action = 'preview';
-		} else if ( 83 === event.keyCode ) {
-			// Save Changes: Ctrl/Cmd + S.
-			action = 'save-changes';
-		} else if ( 76 === event.keyCode ) {
+		if ( 76 === event.keyCode ) {
 			// Insert Link: Ctrl/Cmd + L.
 			action = 'insert_link';
 		} else if ( 73 === event.keyCode ) {
@@ -40,62 +34,49 @@ const handleKeyboardShortcuts = ( event ) => {
 		} else if ( 69 === event.keyCode ) {
 			// Advanced Editor: Ctrl/Cmd + E.
 			action = 'advanced_editor';
-		} else if ( event.shiftKey && event.altKey && 38 === event.keyCode ) {
-			// Move up: Ctrl/Cmd + Alt/Option + Shift + ↑.
-			action = 'move';
-			move_direction = 'top';
-			move_type = 'rows';
-		} else if ( event.shiftKey && event.altKey && 40 === event.keyCode ) {
-			// Move down: Ctrl/Cmd + Alt/Option + Shift + ↓.
-			action = 'move';
-			move_direction = 'bottom';
-			move_type = 'rows';
-		} else if ( event.shiftKey && event.altKey && 37 === event.keyCode ) {
-			// Move left: Ctrl/Cmd + Alt/Option + Shift + ←.
-			action = 'move';
-			move_direction = 'first';
-			move_type = 'columns';
-		} else if ( event.shiftKey && event.altKey && 39 === event.keyCode ) {
-			// Move r: Ctrl/Cmd + Alt/Option + Shift + →.
-			action = 'move';
-			move_direction = 'last';
-			move_type = 'columns';
-		} else if ( event.shiftKey && 38 === event.keyCode ) {
-			// Move up: Ctrl/Cmd + Shift + ↑.
-			action = 'move';
-			move_direction = 'up';
-			move_type = 'rows';
-		} else if ( event.shiftKey && 40 === event.keyCode ) {
-			// Move down: Ctrl/Cmd + Shift + ↓.
-			action = 'move';
-			move_direction = 'down';
-			move_type = 'rows';
-		} else if ( event.shiftKey && 37 === event.keyCode ) {
-			// Move left: Ctrl/Cmd + Shift + ←.
-			action = 'move';
-			move_direction = 'left';
-			move_type = 'columns';
-		} else if ( event.shiftKey && 39 === event.keyCode ) {
-			// Move r: Ctrl/Cmd + Shift + →.
-			action = 'move';
-			move_direction = 'right';
-			move_type = 'columns';
+		} else if ( event.shiftKey ) {
+			if ( 38 === event.keyCode ) {
+				action = 'move';
+				move_type = 'rows';
+				if ( event.altKey ) {
+					move_direction = 'top'; // Move to top: Ctrl/Cmd + Alt/Option + Shift + ↑.
+				} else {
+					move_direction = 'up'; // Move up: Ctrl/Cmd + Shift + ↑.
+				}
+			} else if ( 40 === event.keyCode ) {
+				action = 'move';
+				move_type = 'rows';
+				if ( event.altKey ) {
+					move_direction = 'bottom'; // Move to bottom: Ctrl/Cmd + Alt/Option + Shift + ↓.
+				} else {
+					move_direction = 'down'; // Move down: Ctrl/Cmd + Shift + ↓.
+				}
+			} else if ( 37 === event.keyCode ) {
+				action = 'move';
+				move_type = 'columns';
+				if ( event.altKey ) {
+					move_direction = 'first'; // Move to left end: Ctrl/Cmd + Alt/Option + Shift + ←.
+				} else {
+					move_direction = 'left'; // Move left: Ctrl/Cmd + Shift + ←.
+				}
+			} else if ( 39 === event.keyCode ) {
+				action = 'move';
+				move_type = 'columns';
+				if ( event.altKey ) {
+					move_direction = 'last'; // Move to right end: Ctrl/Cmd + Alt/Option + Shift + →.
+				} else {
+					move_direction = 'right'; // Move right: Ctrl/Cmd + Shift + →.
+				}
+			}
 		}
 	}
 
-	if ( 'save-changes' === action || 'preview' === action ) {
-		// Blur the focussed element to make sure that all change events were triggered.
-		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
+	// Return early if no action was triggered.
+	if ( '' === action ) {
+		return;
+	}
 
-		/*
-		 * Emulate a click on the button corresponding to the action.
-		 * This way, things like notices will be shown, compared to directly calling the buttons' callbacks.
-		 */
-		document.querySelector( `#tablepress-tablepress_edit-buttons-2-section .button-${ action }` ).click();
-
-		// Prevent the browser's native handling of the shortcut, i.e. showing the Save or Print dialogs.
-		event.preventDefault();
-	} else if ( 'insert_link' === action || 'insert_image' === action || 'advanced_editor' === action ) {
+	if ( 'insert_link' === action || 'insert_image' === action || 'advanced_editor' === action ) {
 		// Only open the dialogs if an element in the table editor is focussed, to e.g. prevent multiple dialogs to be opened.
 		if ( $( '#table-editor' ).contains( document.activeElement ) ) { // eslint-disable-line @wordpress/no-global-active-element
 			const $active_textarea = ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null; // eslint-disable-line @wordpress/no-global-active-element

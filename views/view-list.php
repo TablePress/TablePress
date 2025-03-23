@@ -42,7 +42,6 @@ class TablePress_List_View extends TablePress_View {
 
 		parent::setup( $action, $data );
 
-		add_thickbox(); // For the table preview.
 		$this->admin_page->enqueue_script( 'list' );
 
 		if ( $data['messages']['superseded_extensions'] ) {
@@ -146,7 +145,7 @@ class TablePress_List_View extends TablePress_View {
 			$notice_css_classes = 'not-dismissible';
 
 			if ( ! empty( $active_incompatible_superseded_extensions ) ) {
-				$notice_css_classes .= ' notice-error notice-large';
+				$notice_css_classes .= ' is-error';
 
 				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired more than 2 years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>do no longer work with TablePress 3</strong>:', 'tablepress' ) . '</p>';
 				$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:16px;">';
@@ -170,7 +169,7 @@ class TablePress_List_View extends TablePress_View {
 					$message .= '</ul>';
 				}
 			} elseif ( ! empty( $active_compatible_superseded_extensions ) && tb_tp_fs()->is_free_plan() ) {
-				$notice_css_classes .= ' notice-warning notice-alt';
+				$notice_css_classes .= ' is-warning';
 
 				$message .= '<p style="font-size:14px;"><strong>' . __( 'You are using TablePress Extension plugins on this website that have been retired and will no longer receive updates or support:', 'tablepress' ) . '</strong></p>';
 				$message .= '<ul style="list-style:disc;margin:0.5em 1em;">';
@@ -214,7 +213,7 @@ class TablePress_List_View extends TablePress_View {
 
 			$title = '<em>' . __( 'Welcome!', 'tablepress' ) . '</em>';
 
-			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
+			$this->add_header_message( $message, 'is-info not-dismissible', $title );
 		}
 
 		if ( $data['messages']['donation_nag'] ) {
@@ -235,7 +234,7 @@ class TablePress_List_View extends TablePress_View {
 
 			$title = '<em>' . __( 'TablePress has more to offer!', 'tablepress' ) . '</em>';
 
-			$this->add_header_message( $message, 'notice-success not-dismissible', $title );
+			$this->add_header_message( $message, 'is-success not-dismissible', $title );
 		}
 
 		if ( $data['messages']['plugin_update'] ) {
@@ -249,14 +248,20 @@ class TablePress_List_View extends TablePress_View {
 
 			$title = '<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>';
 
-			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
+			$this->add_header_message( $message, 'is-info not-dismissible', $title );
 		}
 
 		$this->process_action_messages( array(
 			'success_delete'              => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 1, 'tablepress' ),
 			'success_delete_plural'       => _n( 'The table was deleted successfully.', 'The tables were deleted successfully.', 2, 'tablepress' ),
 			'error_delete'                => __( 'Error: The table could not be deleted.', 'tablepress' ),
-			'success_copy'                => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' ) . ( ( false !== $data['table_id'] ) ? ' ' . sprintf( __( 'The copied table has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table_id'] ) ) : '' ),
+			'success_copy'                => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 1, 'tablepress' )
+				. ( ( false !== $data['table_id'] )
+					? ' ' . ( current_user_can( 'tablepress_edit_table', $data['table_id'] )
+						? sprintf( __( 'You can now <a href="%1$s">edit the copied table</a>, which has the table ID “%2$s”.', 'tablepress' ), esc_url( TablePress::url( array( 'action' => 'edit', 'table_id' => $data['table_id'] ) ) ), $data['table_id'] )
+						: sprintf( __( 'The copied table has the table ID &#8220;%s&#8221;.', 'tablepress' ), esc_html( $data['table_id'] ) ) )
+					: ''
+				),
 			'success_copy_plural'         => _n( 'The table was copied successfully.', 'The tables were copied successfully.', 2, 'tablepress' ),
 			'error_copy'                  => __( 'Error: The table could not be copied.', 'tablepress' ),
 			'error_no_table'              => __( 'Error: You did not specify a valid table ID.', 'tablepress' ),
@@ -345,8 +350,10 @@ class TablePress_List_View extends TablePress_View {
 		_e( 'This is a list of your tables.', 'tablepress' );
 		echo ' ';
 		// Show the instructions string depending on whether the Block Editor is used on the site or not.
-		if ( $data['site_uses_block_editor'] ) {
+		if ( 'block' === $data['site_used_editor'] ) {
 			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} elseif ( 'elementor' === $data['site_used_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” widget in the Elementor editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
 		} else {
 			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
 			echo ' ';
@@ -383,6 +390,7 @@ class TablePress_List_View extends TablePress_View {
 		$this->wp_list_table->display();
 		?>
 </form>
+<div id="tablepress-list-screen"></div>
 		<?php
 	}
 

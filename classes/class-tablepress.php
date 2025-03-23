@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	public const version = '3.0.4'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const version = '3.1'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	public const db_version = 100; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const db_version = 108; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -778,20 +778,23 @@ abstract class TablePress {
 	}
 
 	/**
-	 * Determines whether the site uses the block editor, so that certain text and input fields referring to Shortcodes can be displayed or not.
+	 * Determines the editor that the site uses, so that certain text and input fields referring to Shortcodes can be displayed or not.
 	 *
-	 * @since 2.0.1
+	 * @since 3.1.0
 	 *
-	 * @return bool True if the site uses the block editor, false otherwise.
+	 * @return string The editor that the site uses, either "block", "elementor", or "other".
 	 */
-	public static function site_uses_block_editor(): bool {
+	public static function site_used_editor(): string {
+		if ( is_plugin_active( 'elementor/elementor.php' ) ) {
+			return 'elementor';
+		}
+
+		// Checking for Elementor is not needed anymore in this condition.
 		$site_uses_block_editor = use_block_editor_for_post_type( 'post' )
-			&& ! is_plugin_active( 'beaver-builder-lite-version/fl-builder.php' )
 			&& ! is_plugin_active( 'classic-editor/classic-editor.php' )
 			&& ! is_plugin_active( 'classic-editor-addon/classic-editor-addon.php' )
-			&& ! is_plugin_active( 'elementor/elementor.php' )
-			&& ! is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' );
-
+			&& ! is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' )
+			&& ! is_plugin_active( 'beaver-builder-lite-version/fl-builder.php' );
 		/**
 		 * Filters the outcome of the check whether the site uses the block editor.
 		 *
@@ -802,8 +805,11 @@ abstract class TablePress {
 		 * @param bool $site_uses_block_editor True if the site uses the block editor, false otherwise.
 		 */
 		$site_uses_block_editor = (bool) apply_filters( 'tablepress_site_uses_block_editor', $site_uses_block_editor );
+		if ( $site_uses_block_editor ) {
+			return 'block';
+		}
 
-		return $site_uses_block_editor;
+		return 'other';
 	}
 
 	/**
@@ -812,6 +818,10 @@ abstract class TablePress {
 	 * @since 2.1.0
 	 */
 	public static function init_modules(): void {
+		if ( ! empty( self::$modules ) ) {
+			return;
+		}
+
 		self::$modules = array(
 			'advanced-access-rights'              => array(
 				'name'                 => __( 'Advanced Access Rights', 'tablepress' ),
@@ -1022,6 +1032,15 @@ abstract class TablePress {
 				'incompatible_classes' => array(),
 				'minimum_plan'         => 'pro',
 				'default_active'       => true,
+			),
+			'email-notifications'                 => array(
+				'name'                 => __( 'Email Notifications', 'tablepress' ),
+				'description'          => __( 'Get email notifications when certain actions are performed on tables.', 'tablepress' ),
+				'category'             => 'backend',
+				'class'                => 'TablePress_Module_Email_Notifications',
+				'incompatible_classes' => array(),
+				'minimum_plan'         => 'max',
+				'default_active'       => false,
 			),
 			'responsive-tables'                   => array(
 				'name'                 => __( 'Responsive Tables', 'tablepress' ),

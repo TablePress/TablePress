@@ -13,7 +13,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Font;
 
 class Html
 {
-	private const COLOUR_MAP = [
+	protected const COLOUR_MAP = [
 		'aliceblue' => 'f0f8ff',
 		'antiquewhite' => 'faebd7',
 		'antiquewhite1' => 'ffefdb',
@@ -552,42 +552,10 @@ class Html
 	private bool $strikethrough = false;
 
 	/** @var callable[] */
-	private array $startTagCallbacks = [
-		'font' => [self::class, 'startFontTag'],
-		'b' => [self::class, 'startBoldTag'],
-		'strong' => [self::class, 'startBoldTag'],
-		'i' => [self::class, 'startItalicTag'],
-		'em' => [self::class, 'startItalicTag'],
-		'u' => [self::class, 'startUnderlineTag'],
-		'ins' => [self::class, 'startUnderlineTag'],
-		'del' => [self::class, 'startStrikethruTag'],
-		's' => [self::class, 'startStrikethruTag'],
-		'sup' => [self::class, 'startSuperscriptTag'],
-		'sub' => [self::class, 'startSubscriptTag'],
-	];
+	protected array $startTagCallbacks;
 
 	/** @var callable[] */
-	private array $endTagCallbacks = [
-		'font' => [self::class, 'endFontTag'],
-		'b' => [self::class, 'endBoldTag'],
-		'strong' => [self::class, 'endBoldTag'],
-		'i' => [self::class, 'endItalicTag'],
-		'em' => [self::class, 'endItalicTag'],
-		'u' => [self::class, 'endUnderlineTag'],
-		'ins' => [self::class, 'endUnderlineTag'],
-		'del' => [self::class, 'endStrikethruTag'],
-		's' => [self::class, 'endStrikethruTag'],
-		'sup' => [self::class, 'endSuperscriptTag'],
-		'sub' => [self::class, 'endSubscriptTag'],
-		'br' => [self::class, 'breakTag'],
-		'p' => [self::class, 'breakTag'],
-		'h1' => [self::class, 'breakTag'],
-		'h2' => [self::class, 'breakTag'],
-		'h3' => [self::class, 'breakTag'],
-		'h4' => [self::class, 'breakTag'],
-		'h5' => [self::class, 'breakTag'],
-		'h6' => [self::class, 'breakTag'],
-	];
+	protected array $endTagCallbacks;
 
 	private array $stack = [];
 
@@ -596,6 +564,48 @@ class Html
 	private RichText $richTextObject;
 
 	private bool $preserveWhiteSpace = false;
+
+	public function __construct()
+	{
+		if (!isset($this->startTagCallbacks)) {
+			$this->startTagCallbacks = [
+				'font' => \Closure::fromCallable([$this, 'startFontTag']),
+				'b' => \Closure::fromCallable([$this, 'startBoldTag']),
+				'strong' => \Closure::fromCallable([$this, 'startBoldTag']),
+				'i' => \Closure::fromCallable([$this, 'startItalicTag']),
+				'em' => \Closure::fromCallable([$this, 'startItalicTag']),
+				'u' => \Closure::fromCallable([$this, 'startUnderlineTag']),
+				'ins' => \Closure::fromCallable([$this, 'startUnderlineTag']),
+				'del' => \Closure::fromCallable([$this, 'startStrikethruTag']),
+				's' => \Closure::fromCallable([$this, 'startStrikethruTag']),
+				'sup' => \Closure::fromCallable([$this, 'startSuperscriptTag']),
+				'sub' => \Closure::fromCallable([$this, 'startSubscriptTag']),
+			];
+		}
+		if (!isset($this->endTagCallbacks)) {
+			$this->endTagCallbacks = [
+				'font' => \Closure::fromCallable([$this, 'endFontTag']),
+				'b' => \Closure::fromCallable([$this, 'endBoldTag']),
+				'strong' => \Closure::fromCallable([$this, 'endBoldTag']),
+				'i' => \Closure::fromCallable([$this, 'endItalicTag']),
+				'em' => \Closure::fromCallable([$this, 'endItalicTag']),
+				'u' => \Closure::fromCallable([$this, 'endUnderlineTag']),
+				'ins' => \Closure::fromCallable([$this, 'endUnderlineTag']),
+				'del' => \Closure::fromCallable([$this, 'endStrikethruTag']),
+				's' => \Closure::fromCallable([$this, 'endStrikethruTag']),
+				'sup' => \Closure::fromCallable([$this, 'endSuperscriptTag']),
+				'sub' => \Closure::fromCallable([$this, 'endSubscriptTag']),
+				'br' => \Closure::fromCallable([$this, 'breakTag']),
+				'p' => \Closure::fromCallable([$this, 'breakTag']),
+				'h1' => \Closure::fromCallable([$this, 'breakTag']),
+				'h2' => \Closure::fromCallable([$this, 'breakTag']),
+				'h3' => \Closure::fromCallable([$this, 'breakTag']),
+				'h4' => \Closure::fromCallable([$this, 'breakTag']),
+				'h5' => \Closure::fromCallable([$this, 'breakTag']),
+				'h6' => \Closure::fromCallable([$this, 'breakTag']),
+			];
+		}
+	}
 
 	private function initialise(): void
 	{
@@ -701,30 +711,28 @@ class Html
 
 	public static function colourNameLookup(string $colorName): string
 	{
-		return self::COLOUR_MAP[$colorName] ?? '';
+		return static::COLOUR_MAP[$colorName] ?? '';
 	}
 
 	protected function startFontTag(DOMElement $tag): void
 	{
 		$attrs = $tag->attributes;
-		if ($attrs !== null) {
-			/** @var DOMAttr $attribute */
-			foreach ($attrs as $attribute) {
-				$attributeName = strtolower($attribute->name);
-				$attributeName = preg_replace('/^html:/', '', $attributeName) ?? $attributeName; // in case from Xml spreadsheet
-				$attributeValue = $attribute->value;
+		/** @var DOMAttr $attribute */
+		foreach ($attrs as $attribute) {
+			$attributeName = strtolower($attribute->name);
+			$attributeName = preg_replace('/^html:/', '', $attributeName) ?? $attributeName; // in case from Xml spreadsheet
+			$attributeValue = $attribute->value;
 
-				if ($attributeName == 'color') {
-					if (preg_match('/rgb\s*\(/', $attributeValue)) {
-						$this->$attributeName = $this->rgbToColour($attributeValue);
-					} elseif (str_starts_with(trim($attributeValue), '#')) {
-						$this->$attributeName = ltrim($attributeValue, '#');
-					} else {
-						$this->$attributeName = static::colourNameLookup($attributeValue);
-					}
+			if ($attributeName === 'color') {
+				if (preg_match('/rgb\s*\(/', $attributeValue)) {
+					$this->$attributeName = $this->rgbToColour($attributeValue);
+				} elseif (str_starts_with(trim($attributeValue), '#')) {
+					$this->$attributeName = ltrim($attributeValue, '#');
 				} else {
-					$this->$attributeName = $attributeValue;
+					$this->$attributeName = static::colourNameLookup($attributeValue);
 				}
+			} elseif ($attributeName === 'face' || $attributeName === 'size') {
+				$this->$attributeName = $attributeValue;
 			}
 		}
 	}
@@ -829,9 +837,7 @@ class Html
 	{
 		if (isset($callbacks[$callbackTag])) {
 			$elementHandler = $callbacks[$callbackTag];
-			if (is_callable($elementHandler)) {
-				call_user_func($elementHandler, $element, $this);
-			}
+			call_user_func($elementHandler, $element, $this);
 		}
 	}
 

@@ -129,7 +129,7 @@ jobs:
           path: ${{ env.PLUGIN_DIR }}
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
+        uses: ramsey/composer-install@a2636af0004d1c0499ffca16ac0b4cc94df70565 # v3.1.0
         with:
           composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' || matrix.php == '8.5' ) && ' --ignore-platform-reqs' || '' }}"
 

@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ListFunctions extends Xls
 {
@@ -124,6 +125,7 @@ class ListFunctions extends Xls
 			$tmpInfo['lastColumnIndex'] = 0;
 			$tmpInfo['totalRows'] = 0;
 			$tmpInfo['totalColumns'] = 0;
+			$tmpInfo['sheetState'] = $sheet['sheetState'];
 
 			$xls->pos = $sheet['offset'];
 

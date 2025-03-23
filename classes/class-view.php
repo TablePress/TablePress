@@ -83,7 +83,7 @@ abstract class TablePress_View {
 	protected array $wp_pointers = array();
 
 	/**
-	 * Initialize the View class, by setting the correct screen columns and adding help texts.
+	 * Initializes the View class, by setting the correct screen columns and adding help texts.
 	 *
 	 * @since 1.0.0
 	 */
@@ -123,7 +123,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Change the value of the user option "screen_layout_{$screen->id}" through a filter.
+	 * Changes the value of the user option "screen_layout_{$screen->id}" through a filter.
 	 *
 	 * @since 1.0.0
 	 *
@@ -142,7 +142,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Set up the view with data and do things that are necessary for all views.
+	 * Sets up the view with data and do things that are necessary for all views.
 	 *
 	 * @since 1.0.0
 	 *
@@ -179,7 +179,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Register a header message for the view.
+	 * Registers a header message for the view.
 	 *
 	 * @since 1.0.0
 	 *
@@ -187,7 +187,7 @@ abstract class TablePress_View {
 	 * @param string $css_class Optional. Additional CSS class for the header message.
 	 * @param string $title     Optional. Text for the header title.
 	 */
-	protected function add_header_message( string $text, string $css_class = 'notice-success', string $title = '' ): void {
+	protected function add_header_message( string $text, string $css_class = 'is-success', string $title = '' ): void {
 		if ( ! str_contains( $css_class, 'not-dismissible' ) ) {
 			$css_class .= ' is-dismissible';
 		}
@@ -198,11 +198,11 @@ abstract class TablePress_View {
 		if ( '' !== $text && ! str_starts_with( $text, '<p' ) ) {
 			$text = "<p>{$text}</p>";
 		}
-		$this->header_messages[] = "<div class=\"notice {$css_class}\">{$title}{$text}</div>\n";
+		$this->header_messages[] = "<div class=\"notice components-notice {$css_class}\"><div class=\"components-notice__content\">{$title}{$text}</div></div>\n";
 	}
 
 	/**
-	 * Process header action messages, i.e. check if a message should be added to the page.
+	 * Processes header action messages, i.e. check if a message should be added to the page.
 	 *
 	 * @since 1.0.0
 	 *
@@ -210,7 +210,7 @@ abstract class TablePress_View {
 	 */
 	protected function process_action_messages( array $action_messages ): void {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
-			$class = ( str_starts_with( $this->data['message'], 'error' ) ) ? 'notice-error' : 'notice-success';
+			$class = ( str_starts_with( $this->data['message'], 'error' ) ) ? 'is-error' : 'is-success';
 
 			if ( '' !== $this->data['error_details'] ) {
 				$this->data['error_details'] = '</p><p>' . sprintf( __( 'Error code: %s', 'tablepress' ), '<code>' . esc_html( $this->data['error_details'] ) . '</code>' );
@@ -221,7 +221,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Register a text box for the view.
+	 * Registers a text box for the view.
 	 *
 	 * @since 1.0.0
 	 *
@@ -245,7 +245,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Register a post meta box for the view, that is drag/droppable with WordPress functionality.
+	 * Registers a post meta box for the view, that is drag/droppable with WordPress functionality.
 	 *
 	 * @since 1.0.0
 	 *
@@ -262,7 +262,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render all text boxes for the given context.
+	 * Renders all text boxes for the given context.
 	 *
 	 * @since 1.0.0
 	 *
@@ -285,7 +285,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render all post meta boxes for the given context, if there are post meta boxes.
+	 * Renders all post meta boxes for the given context, if there are post meta boxes.
 	 *
 	 * @since 1.0.0
 	 *
@@ -298,7 +298,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Print hidden fields with nonces for post meta box AJAX handling, if there are post meta boxes on the screen.
+	 * Prints hidden fields with nonces for post meta box AJAX handling, if there are post meta boxes on the screen.
 	 *
 	 * The check is possible as this function is executed after post meta boxes have to be registered.
 	 *
@@ -318,7 +318,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Print hidden field with a nonce for the screen's action, to be transmitted in HTTP requests.
+	 * Prints hidden field with a nonce for the screen's action, to be transmitted in HTTP requests.
 	 *
 	 * @since 1.0.0
 	 *
@@ -331,7 +331,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Print hidden field with the screen action.
+	 * Prints hidden field with the screen action.
 	 *
 	 * @since 1.0.0
 	 *
@@ -343,7 +343,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render the current view.
+	 * Renders the current view.
 	 *
 	 * @since 1.0.0
 	 */
@@ -399,7 +399,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Render the navigation menu with links to the possible actions, highlighting the current one.
+	 * Renders the navigation menu with links to the possible actions, highlighting the current one.
 	 *
 	 * @since 1.0.0
 	 */
@@ -453,17 +453,19 @@ abstract class TablePress_View {
 	 */
 	public function textbox_no_javascript( array $data, array $box ): void {
 		?>
-		<div class="notice notice-error notice-alt notice-large hide-if-js">
-			<h3><em>
-				<?php _e( 'Attention: Unfortunately, there is a problem!', 'tablepress' ); ?>
-			</em></h3>
-			<p style="font-size:14px">
-				<strong><?php _e( 'This screen requires JavaScript. Please enable JavaScript in your browser settings.', 'tablepress' ); ?></strong><br>
-				<?php _e( 'For help, please follow <a href="https://www.enable-javascript.com/">the instructions on how to enable JavaScript in your browser</a>.', 'tablepress' ); ?>
-			</p>
-			<p>
-				<?php echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'list' ) ) ) . '">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
-			</p>
+		<div class="notice components-notice is-error hide-if-js">
+			<div class="components-notice__content">
+				<h3><em>
+					<?php _e( 'Attention: Unfortunately, there is a problem!', 'tablepress' ); ?>
+				</em></h3>
+				<p style="font-size:14px">
+					<strong><?php _e( 'This screen requires JavaScript. Please enable JavaScript in your browser settings.', 'tablepress' ); ?></strong><br>
+					<?php _e( 'For help, please follow <a href="https://www.enable-javascript.com/">the instructions on how to enable JavaScript in your browser</a>.', 'tablepress' ); ?>
+				</p>
+				<p>
+					<?php echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'list' ) ) ) . '">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
+				</p>
+			</div>
 		</div>
 		<?php
 	}
@@ -485,7 +487,46 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Return the content for the help tab for this screen.
+	 * Returns a safe JSON representation of a variable for printing inside of JavaScript code.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param mixed $data Variable to convert to JSON.
+	 * @return string Safe JSON representation of a variable for printing inside of JavaScript code.
+	 */
+	public function convert_to_json_parse_output( /* string|array|bool|int|float|null */ $data ): string {
+		$json = wp_json_encode( $data, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES );
+		if ( false === $json ) {
+			// JSON encoding failed, return an error object. Use a prefixed "_error" key to avoid conflicts with intentionally added "error" keys.
+			$json = '{ "_error": "The data could not be encoded to JSON!" }';
+		}
+		// Print the JSON data inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `\` and `'`.
+		$json = str_replace( array( '\\', "'" ), array( '\\\\', "\'" ), $json );
+		return "JSON.parse( '{$json}' )";
+	}
+
+	/**
+	 * Prints JavaScript variables for the screen.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param string               $variable Name of the JavaScript variable.
+	 * @param array<string, mixed> $data     Information about the text box.
+	 */
+	protected function print_script_data_json( string $variable, array $data ): void {
+		echo "<script>\n";
+		echo "window.tp = window.tp || {};\n";
+		echo "tp.{$variable} = {\n";
+		foreach ( $data as $key => $value ) {
+			$value = $this->convert_to_json_parse_output( $value );
+			echo "\t{$key}: {$value},\n";
+		}
+		echo "};\n";
+		echo "</script>\n";
+	}
+
+	/**
+	 * Returns the content for the help tab for this screen.
 	 *
 	 * Has to be implemented for every view that is visible in the WP Dashboard!
 	 *
@@ -499,7 +540,7 @@ abstract class TablePress_View {
 	}
 
 	/**
-	 * Initialize the WP feature pointers for TablePress.
+	 * Initializes the WP feature pointers for TablePress.
 	 *
 	 * @since 1.0.0
 	 */

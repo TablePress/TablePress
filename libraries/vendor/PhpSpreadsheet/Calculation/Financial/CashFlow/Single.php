@@ -78,9 +78,9 @@ class Single
 	 *
 	 * Calculates the interest rate required for an investment to grow to a specified future value .
 	 *
-	 * @param array|float $periods The number of periods over which the investment is made
-	 * @param array|float $presentValue Present Value
-	 * @param array|float $futureValue Future Value
+	 * @param mixed $periods The number of periods over which the investment is made, expect array|float
+	 * @param mixed $presentValue Present Value, expect array|float
+	 * @param mixed $futureValue Future Value, expect array|float
 	 *
 	 * @return float|string Result, or a string containing an error
 	 */

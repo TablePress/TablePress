@@ -24,10 +24,12 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 	/**
 	 * File/Data Formats that are available for import.
 	 *
+	 * The constructor also adds 'html', if the PHP prerequisites are met.
+	 *
 	 * @since 1.0.0
-	 * @var array<string, string>
+	 * @var string[]
 	 */
-	public array $import_formats = array();
+	public array $import_formats = array( 'csv', 'json', 'xls', 'xlsx' );
 
 	/**
 	 * Whether HTML import support is available in the PHP installation on the server.
@@ -61,15 +63,9 @@ class TablePress_Import_Legacy extends TablePress_Import_Base {
 			$this->html_import_support_available = true;
 		}
 
-		// Initiate here, because function call not possible outside a class method.
-		$this->import_formats = array();
-		$this->import_formats['csv'] = __( 'CSV - Character-Separated Values', 'tablepress' );
 		if ( $this->html_import_support_available ) {
-			$this->import_formats['html'] = __( 'HTML - Hypertext Markup Language', 'tablepress' );
+			$this->import_formats[] = 'html';
 		}
-		$this->import_formats['json'] = __( 'JSON - JavaScript Object Notation', 'tablepress' );
-		$this->import_formats['xls'] = __( 'XLS - Microsoft Excel 97-2003 (experimental)', 'tablepress' );
-		$this->import_formats['xlsx'] = __( 'XLSX - Microsoft Excel 2007-2019 (experimental)', 'tablepress' );
 	}
 
 	/**

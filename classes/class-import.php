@@ -635,7 +635,7 @@ class TablePress_Import {
 			$format = 'csv';
 		}
 
-		if ( ! isset( $this->importer->import_formats[ $format ] ) ) {
+		if ( ! in_array( $format, $this->importer->import_formats, true ) ) { // @phpstan-ignore property.notFound (`$this->importer` is an instance of `TablePress_Import_Legacy` which has the property `import_formats`.)
 			return new WP_Error( 'table_import_legacy_unknown_format', '', $file->name );
 		}
 

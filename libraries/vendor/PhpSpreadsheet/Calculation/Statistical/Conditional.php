@@ -9,6 +9,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database\DMin;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database\DSum;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalcException;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 
 class Conditional
 {
@@ -24,7 +25,7 @@ class Conditional
 	 * Excel Function:
 	 *        AVERAGEIF(range,condition[, average_range])
 	 *
-	 * @param mixed $range Data values
+	 * @param mixed $range Data values, expect array
 	 * @param null|array|string $condition the criteria that defines which cells will be checked
 	 * @param mixed $averageRange Data values
 	 * @return float|int|string|null
@@ -32,6 +33,11 @@ class Conditional
 	public static function AVERAGEIF($range, $condition, $averageRange = [])
 	{
 		if (!is_array($range) || !is_array($averageRange) || array_key_exists(0, $range) || array_key_exists(0, $averageRange)) {
+			$refError = ExcelError::REF();
+			if (in_array($refError, [$range, $averageRange], true)) {
+				return $refError;
+			}
+
 			throw new CalcException('Must specify range of cells, not any kind of literal');
 		}
 		$database = self::databaseFromRangeAndValue($range, $averageRange);
@@ -78,12 +84,22 @@ class Conditional
 	 * Excel Function:
 	 *        COUNTIF(range,condition)
 	 *
-	 * @param mixed[] $range Data values
+	 * @param mixed $range Data values, expect array
 	 * @param null|array|string $condition the criteria that defines which cells will be counted
 	 * @return int|string
 	 */
-	public static function COUNTIF(array $range, $condition)
+	public static function COUNTIF($range, $condition)
 	{
+		if (
+			!is_array($range)
+			|| array_key_exists(0, $range)
+		) {
+			if ($range === ExcelError::REF()) {
+				return $range;
+			}
+
+			throw new CalcException('Must specify range of cells, not any kind of literal');
+		}
 		// Filter out any empty values that shouldn't be included in a COUNT
 		$range = array_filter(
 			Functions::flattenArray($range),
@@ -175,12 +191,26 @@ class Conditional
 	 * Excel Function:
 	 *        SUMIF(range, criteria, [sum_range])
 	 *
-	 * @param array $range Data values
+	 * @param mixed $range Data values, expecting array
+	 * @param mixed $sumRange Data values, expecting array
 	 * @return float|string|null
 	 * @param mixed $condition
 	 */
-	public static function SUMIF(array $range, $condition, array $sumRange = [])
+	public static function SUMIF($range, $condition, $sumRange = [])
 	{
+		if (
+			!is_array($range)
+			|| array_key_exists(0, $range)
+			|| !is_array($sumRange)
+			|| array_key_exists(0, $sumRange)
+		) {
+			$refError = ExcelError::REF();
+			if (in_array($refError, [$range, $sumRange], true)) {
+				return $refError;
+			}
+
+			throw new CalcException('Must specify range of cells, not any kind of literal');
+		}
 		$database = self::databaseFromRangeAndValue($range, $sumRange);
 		$condition = [[self::CONDITION_COLUMN_NAME, self::VALUE_COLUMN_NAME], [$condition, null]];
 

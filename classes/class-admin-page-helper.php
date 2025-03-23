@@ -177,23 +177,4 @@ class TablePress_Admin_Page {
 		<?php
 	}
 
-	/**
-	 * Returns a safe JSON representation of a variable for printing inside of JavaScript code.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param mixed $data Variable to convert to JSON.
-	 * @return string Safe JSON representation of a variable for printing inside of JavaScript code.
-	 */
-	public function convert_to_json_parse_output( /* string|array|bool|int|float|null */ $data ): string {
-		$json = wp_json_encode( $data, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES );
-		if ( false === $json ) {
-			// JSON encoding failed, return an error object. Use a prefixed "_error" key to avoid conflicts with intentionally added "error" keys.
-			$json = '{ "_error": "The data could not be encoded to JSON!" }';
-		}
-		// Print the JSON data inside a `JSON.parse()` call in JS for speed gains, with necessary escaping of `\` and `'`.
-		$json = str_replace( array( '\\', "'" ), array( '\\\\', "\'" ), $json );
-		return "JSON.parse( '{$json}' )";
-	}
-
 } // class TablePress_Admin_Page

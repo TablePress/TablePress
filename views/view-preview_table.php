@@ -64,8 +64,10 @@ class TablePress_Preview_Table_View extends TablePress_View {
 		<?php _e( 'This is a preview of your table.', 'tablepress' ); ?> <?php _e( 'Because of CSS styling in your theme, the table might look different on your page!', 'tablepress' ); ?> <?php _e( 'The Table Features for Site Visitors, like sorting, filtering, and pagination, are also not available in this preview!', 'tablepress' ); ?><br>
 		<?php
 		// Show the instructions string depending on whether the Block Editor is used on the site or not.
-		if ( $this->data['site_uses_block_editor'] ) {
+		if ( 'block' === $this->data['site_used_editor'] ) {
 			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} elseif ( 'elementor' === $this->data['site_used_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” widget in the Elementor editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
 		} else {
 			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
 			echo ' ';

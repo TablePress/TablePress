@@ -18,7 +18,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies.
  */
 import { $ } from './common/functions';
-import { register_save_changes_keyboard_shortcut } from './common/keyboard-shortcut';
+import { registerSaveChangesKeyboardShortcut } from './common/keyboard-shortcut';
 
 /**
  * Enable/disable the regular textarea according to state of "Load Custom CSS" checkbox.
@@ -42,18 +42,21 @@ $( '#tablepress-page-form' ).addEventListener( 'submit', function () {
 	this.querySelectorAll( ':scope input, :scope select, :scope textarea' ).forEach( ( field ) => ( field.disabled = false ) );
 } );
 
-register_save_changes_keyboard_shortcut( $( '#tablepress-options-save-changes' ) );
+registerSaveChangesKeyboardShortcut( $( '#tablepress-options-save-changes' ) );
 
 /**
  * Require double confirmation when wanting to uninstall TablePress.
  *
  * @since 1.0.0
  */
-$( '#uninstall-tablepress' ).addEventListener( 'click', ( event ) => {
-	if (
-		! confirm( __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ) ) ||
-		! confirm( __( 'Are you really sure?', 'tablepress' ) )
-	) {
-		event.preventDefault();
-	}
-} );
+const $button_uninstall = $( '#uninstall-tablepress' );
+if ( $button_uninstall ) { // The button only exists for admins!
+	$button_uninstall.addEventListener( 'click', ( event ) => {
+		if (
+			! confirm( __( 'Do you really want to uninstall TablePress and delete ALL data?', 'tablepress' ) ) ||
+			! confirm( __( 'Are you really sure?', 'tablepress' ) )
+		) {
+			event.preventDefault();
+		}
+	} );
+}

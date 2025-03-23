@@ -18,6 +18,6 @@ add_action(
 		if ( 'tablepress_import' !== get_current_screen()->id ) {
 			return;
 		}
-		echo '<div class="notice notice-warning notice-alt"><p><strong>Important notice:</strong><br>Due to how this in-browser demo works behind the scenes, import from URLs might not work for all URLs! It will however work fine on a real WordPress installation!</p></div>';
+		echo '<div class="notice components-notice is-warning"><div class="components-notice__content"><p><strong>Important notice:</strong><br>Due to how this in-browser demo works behind the scenes, import from URLs might not work for all URLs! It will however work fine on a real WordPress installation!</p></div></div>';
 	}
 );

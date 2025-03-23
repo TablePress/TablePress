@@ -66,6 +66,7 @@ const Screen = () => {
 					>
 						<TextControl
 							__nextHasNoMarginBottom
+							__next40pxDefaultSize
 							name="table[name]"
 							label={ __( 'Table Name', 'tablepress' ) }
 							help={ __( 'The name or title of your table.', 'tablepress' ) }
@@ -89,6 +90,7 @@ const Screen = () => {
 								width: '150px',
 							} }>
 								<NumberControl
+									__next40pxDefaultSize
 									name="table[rows]"
 									label={ __( 'Number of Rows', 'tablepress' ) }
 									help={ __( 'The number of rows in your table.', 'tablepress' ) }
@@ -105,6 +107,7 @@ const Screen = () => {
 								width: '150px',
 							} }>
 								<NumberControl
+									__next40pxDefaultSize
 									name="table[columns]"
 									label={ __( 'Number of Columns', 'tablepress' ) }
 									help={ __( 'The number of columns in your table.', 'tablepress' ) }

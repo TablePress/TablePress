@@ -7,15 +7,13 @@
  * @since 2.0.0
  */
 
-/* globals tp, wp, ajaxurl, JSON, jspreadsheet, jexcel, wpLink, jQuery */
+/* globals jexcel, jQuery, jspreadsheet, tp, wp, wpLink */
 /* eslint-disable jsdoc/check-param-names, jsdoc/valid-types */
 
 /**
  * WordPress dependencies.
  */
-import { applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
-import { buildQueryString } from '@wordpress/url';
 
 /**
  * Internal dependencies.
@@ -66,21 +64,6 @@ tp.helpers.unsaved_changes.set = function () {
 tp.helpers.unsaved_changes.unset = function () {
 	tp.made_changes = false;
 	window.removeEventListener( 'beforeunload', tp.helpers.unsaved_changes.unload_dialog );
-};
-
-tp.helpers.meta = tp.helpers.meta || {};
-
-/**
- * Sets table meta to new values and triggers the necessary updates.
- *
- * @param {Object} meta The meta data ({metaName: value}) to update.
- */
-tp.helpers.meta.update = function ( meta ) {
-	tp.table.meta = { ...tp.table.meta, ...meta };
-
-	// Trigger the "metaUpdated" action for the updated meta keys.
-	doAction( 'tablepress.metaUpdated', meta );
-	tp.helpers.unsaved_changes.set();
 };
 
 tp.helpers.visibility = tp.helpers.visibility || {};
@@ -191,7 +174,7 @@ tp.helpers.move_allowed = function ( type, direction ) {
  * @return {boolean} Whether the merge is allowed or not.
  */
 tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
-	const alert_on_error = ( 'alert' === errors );
+	const alertOnError = ( 'alert' === errors );
 
 	const first_selected_row_idx = tp.helpers.selection.rows[0];
 	const last_selected_row_idx = tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ];
@@ -203,7 +186,8 @@ tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 	if ( tp.table.options.table_head > 0 && tp.table.options.use_datatables && ! ( first_selected_row_idx < first_body_row_idx && last_selected_row_idx < first_body_row_idx ) && ! ( first_selected_row_idx > last_body_row_idx && last_selected_row_idx > last_body_row_idx ) ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Enable Visitor Features', 'tablepress' ), __( 'Table Features for Site Visitors', 'tablepress' ) ) +
 				' ' + __( 'When the Table Features for Site Visitors are used, merging is only allowed in the table header and footer rows.', 'tablepress' );
-		if ( alert_on_error ) {
+		if ( alertOnError ) {
+			// This alert can not be replaced by the `Alert` component, as that does not pause the code execution.
 			window.alert( error_message.text );
 		}
 		return false;
@@ -212,7 +196,8 @@ tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 	// If table header rows are used, and a header row and at least one adjacent body row are selected, disable merging cells.
 	if ( first_selected_row_idx < first_body_row_idx && last_selected_row_idx >= first_body_row_idx ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” setting in the “%2$s” section is active.', 'tablepress' ), __( 'Table Header', 'tablepress' ), __( 'Table Options', 'tablepress' ) );
-		if ( alert_on_error ) {
+		if ( alertOnError ) {
+			// This alert can not be replaced by the `Alert` component, as that does not pause the code execution.
 			window.alert( error_message.text );
 		}
 		return false;
@@ -221,7 +206,8 @@ tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 	// If table footer rows are used, and a footer row and at least one adjacent body row are selected, disable merging cells.
 	if ( first_selected_row_idx <= last_body_row_idx && last_selected_row_idx > last_body_row_idx ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” setting in the “%2$s” section is active.', 'tablepress' ), __( 'Table Footer', 'tablepress' ), __( 'Table Options', 'tablepress' ) );
-		if ( alert_on_error ) {
+		if ( alertOnError ) {
+			// This alert can not be replaced by the `Alert` component, as that does not pause the code execution.
 			window.alert( error_message.text );
 		}
 		return false;
@@ -562,350 +548,6 @@ tp.callbacks.advanced_editor.confirm_save = function () {
 	jQuery( this ).wpdialog( 'close' );
 };
 
-tp.callbacks.help_box = {};
-
-/**
- * Open the wpdialog for a help box.
- *
- * @param {string|Event} helpbox [description]
- */
-tp.callbacks.help_box.open_dialog = function ( helpbox ) {
-	if ( 'string' !== typeof helpbox ) {
-		helpbox = helpbox.target.dataset.helpBox;
-	}
-	const $helpbox = $( helpbox );
-	jQuery( $helpbox ).wpdialog( {
-		height: $helpbox.dataset.height,
-		width: $helpbox.dataset.width,
-		minWidth: 260,
-		modal: true,
-		closeOnEscape: true,
-		buttons: [
-			{
-				text: __( 'OK', 'tablepress' ),
-				class: 'button button-ok',
-				click() {
-					jQuery( this ).wpdialog( 'close' );
-				},
-			},
-		],
-		open( /* event, ui */ ) {
-			jQuery( this ).next().find( '.button-ok' ).trigger( 'focus' );
-		},
-	} );
-};
-
-tp.callbacks.table_preview = {};
-
-/**
- * Handle showing the table preview.
- *
- * @param {Event} event [description]
- */
-tp.callbacks.table_preview.process = function ( event ) {
-	// Never follow the link of the Preview button, everything is handled with JS.
-	event.preventDefault();
-
-	let table_name = tp.table.meta.name;
-	if ( '' === table_name.trim() ) {
-		table_name = __( '(no name)', 'tablepress' );
-	}
-
-	// Initialize the Table Preview wpdialog.
-	tp.callbacks.table_preview.$dialog = jQuery( '#table-preview' ).wpdialog( {
-		autoOpen: false,
-		width: window.innerWidth - 80,
-		height: window.innerHeight - 80,
-		modal: true,
-		title: sprintf( __( 'Preview of table “%1$s” (ID %2$s)', 'tablepress' ), table_name, tp.table.id ),
-		closeOnEscape: true,
-		buttons: [
-			{
-				text: __( 'OK', 'tablepress' ),
-				class: 'button button-ok',
-				click() {
-					jQuery( this ).wpdialog( 'close' );
-				},
-			},
-		],
-	} );
-
-	// For tables without unsaved changes, show an externally rendered table from a URL in an iframe in a wpdialog.
-	if ( ! tp.made_changes ) {
-		const $iframe = $( '#table-preview-iframe' );
-		$iframe.src = event.target.href;
-		$iframe.removeAttribute( 'srcdoc' );
-		tp.callbacks.table_preview.$dialog.wpdialog( 'open' );
-		return;
-	}
-
-	// For tables with unsaved changes, get the table preview HTML code for the iframe via AJAX.
-
-	// Update information about hidden rows and columns.
-	tp.helpers.visibility.update();
-
-	// Prepare the data for the AJAX request.
-	const request_data = {
-		action: 'tablepress_preview_table',
-		_ajax_nonce: tp.nonces.preview_table,
-		tablepress: {
-			id: tp.table.id,
-			new_id: tp.table.meta.newId,
-			name: tp.table.meta.name,
-			description: tp.table.meta.description,
-			data: JSON.stringify( tp.editor.options.data ),
-			options: JSON.stringify( tp.table.options ),
-			visibility: JSON.stringify( tp.table.visibility ),
-			number: {
-				rows: tp.editor.options.data.length,
-				columns: tp.editor.options.columns.length,
-			},
-		},
-	};
-
-	// Add spinner, disable "Preview" buttons, and change cursor.
-	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-table-preview" class="spinner-table-preview spinner is-active" title="${ __( 'The Table Preview is being loaded …', 'tablepress' ) }"></span>` );
-	$( '.button-preview' ).forEach( ( button ) => button.classList.add( 'disabled' ) );
-	document.body.classList.add( 'wait' );
-
-	// Load the table preview data from the server via an AJAX request.
-	fetch( ajaxurl, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			Accept: 'application/json',
-		},
-		body: buildQueryString( request_data ),
-	} )
-	// Check for HTTP connection problems.
-	.then( ( response ) => {
-		if ( ! response.ok ) {
-			throw new Error( `There was a problem with the server, HTTP response code ${ response.status } (${ response.statusText }).` );
-		}
-		return response.json();
-	} )
-	// Check for problems with the transmitted data.
-	.then( ( data ) => {
-		if ( 'undefined' === typeof data || null === data || '-1' === data || 'undefined' === typeof data.success ) {
-			throw new Error( 'The JSON data returned from the server is unclear or incomplete.' );
-		}
-
-		if ( true !== data.success ) {
-			throw new Error( 'The preview could not be loaded.' );
-		}
-
-		tp.callbacks.table_preview.success( data );
-	} )
-	// Handle errors.
-	.catch( ( error ) => tp.callbacks.table_preview.error( error.message ) )
-	.finally( () => {
-		$( '#spinner-table-preview' ).remove();
-		$( '.button-preview' ).forEach( ( button ) => button.classList.remove( 'disabled' ) );
-		document.body.classList.remove( 'wait' );
-	} );
-};
-
-/**
- * [success description]
- *
- * @param {[type]} data [description]
- */
-tp.callbacks.table_preview.success = function ( data ) {
-	const $iframe = $( '#table-preview-iframe' );
-	$iframe.src = '';
-	$iframe.srcdoc = `<!DOCTYPE html><html><head>${ data.head_html }</head><body>${ data.body_html }</body></html>`;
-
-	tp.callbacks.table_preview.$dialog.wpdialog( 'open' );
-};
-
-/**
- * [error description]
- *
- * @param {[type]} message [description]
- */
-tp.callbacks.table_preview.error = function ( message ) {
-	message = __( 'Attention: Unfortunately, an error occurred.', 'tablepress' ) + ' ' + message + '<br>' + sprintf( __( 'Please see the <a href="%s" target="_blank">TablePress FAQ page</a> for suggestions.', 'tablepress' ), 'https://tablepress.org/faq/common-errors/' );
-	const div_id = `show-preview-${ Date.now() }`;
-
-	$( '#spinner-table-preview' ).parentNode.insertAdjacentHTML( 'afterend', `<div id="${ div_id }" class="ajax-alert notice notice-error"><p>${ message }</p></div>` );
-
-	const $notice = $( `#${ div_id }` );
-	void $notice.offsetWidth; // Trick browser layout engine. Necessary to make CSS transition work.
-	$notice.style.opacity = 0;
-	$notice.addEventListener( 'transitionend', ( event ) => {
-		if ( event.target.matches( '.notice' ) ) {
-			$notice.remove();
-		}
-	} );
-};
-
-tp.callbacks.save_changes = {};
-
-/**
- * Save Changes to the server.
- *
- * @param {Event} event [description]
- */
-tp.callbacks.save_changes.process = function ( event ) {
-	// Validate input fields.
-	if ( ! applyFilters( 'tablepress.optionsValidateFields', true, tp.table.options ) ) {
-		return;
-	}
-
-	// Collect information about hidden rows and columns.
-	tp.helpers.visibility.update();
-
-	// Prepare the data for the AJAX request.
-	const request_data = {
-		action: 'tablepress_save_table',
-		_ajax_nonce: tp.nonces.edit_table,
-		tablepress: {
-			id: tp.table.id,
-			new_id: tp.table.meta.newId,
-			name: tp.table.meta.name,
-			description: tp.table.meta.description,
-			data: JSON.stringify( tp.editor.options.data ),
-			options: JSON.stringify( tp.table.options ),
-			visibility: JSON.stringify( tp.table.visibility ),
-			number: {
-				rows: tp.editor.options.data.length,
-				columns: tp.editor.options.columns.length,
-			},
-		},
-	};
-
-	// Add spinner, disable "Save Changes" buttons, and change cursor.
-	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"></span>` );
-	$( '.button-save-changes' ).forEach( ( button ) => ( button.disabled = true ) );
-	document.body.classList.add( 'wait' );
-
-	// Save the table data to the server via an AJAX request.
-	fetch( ajaxurl, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			Accept: 'application/json',
-		},
-		body: buildQueryString( request_data ),
-	} )
-	// Check for HTTP connection problems.
-	.then( ( response ) => {
-		if ( ! response.ok ) {
-			throw new Error( `There was a problem with the server, HTTP response code ${ response.status } (${ response.statusText }).` );
-		}
-		return response.json();
-	} )
-	// Check for problems with the transmitted data.
-	.then( ( data ) => {
-		if ( 'undefined' === typeof data || null === data || '-1' === data || 'undefined' === typeof data.success ) {
-			throw new Error( 'The JSON data returned from the server is unclear or incomplete.' );
-		}
-
-		if ( true !== data.success ) {
-			const error_introduction = __( 'These errors were encountered:', 'tablepress' );
-			const debug_html = data.error_details ? `</p><p>${ error_introduction }</p><pre>${ data.error_details }</pre><p>` : '';
-			throw new Error( `The table could not be saved to the database properly.${ debug_html }` );
-		}
-
-		tp.callbacks.save_changes.success( data );
-	} )
-	// Handle errors.
-	.catch( ( error ) => tp.callbacks.save_changes.error( error.message ) )
-	.finally( () => {
-		$( '#spinner-save-changes' ).remove();
-		$( '.button-save-changes' ).forEach( ( button ) => ( button.disabled = false ) );
-		document.body.classList.remove( 'wait' );
-	} );
-};
-
-/**
- * [success description]
- *
- * @param {[type]} data [description]
- */
-tp.callbacks.save_changes.success = function ( data ) {
-	// Saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurrences.
-	if ( tp.table.id !== data.table_id && window?.history?.pushState ) {
-		// Update URL, but only if the table ID changed, to not get dummy entries in the browser history.
-		window.history.pushState( '', '', window.location.href.replace( /table_id=[a-zA-Z0-9_-]+/gi, `table_id=${ data.table_id }` ) );
-	}
-
-	tp.table.id = data.table_id;
-
-	tp.helpers.meta.update( {
-		newId: data.table_id,
-		lastModified: data.last_modified,
-		lastEditor: data.last_editor,
-	} );
-
-	// Update the nonces.
-	tp.nonces.edit_table = data.new_edit_nonce;
-	tp.nonces.preview_table = data.new_preview_nonce;
-	tp.nonces.copy_table = data.new_copy_nonce;
-	tp.nonces.delete_table = data.new_delete_nonce;
-
-	// Update URLs in Preview, Copy, and Delete links/buttons.
-	[ 'preview', 'copy', 'delete' ].forEach( ( action ) => {
-		$( `.button-${ action }` ).forEach( ( button ) => {
-			button.href = button.href
-				.replace( /item=[a-zA-Z0-9_-]+/g, `item=${ data.table_id }` ) // Updates both the "item" and the "return_item" parameters.
-				.replace( /&_wpnonce=[a-zA-Z0-9]+/g, `&_wpnonce=${ data[ `new_${ action }_nonce` ] }` );
-		} );
-	} );
-
-	// Update URL in Export links/buttons.
-	$( '.button-export' ).forEach( ( button ) => {
-		button.href = button.href
-			.replace( /table_id=[a-zA-Z0-9_-]+/g, `table_id=${ data.table_id }` );
-	} );
-
-	tp.helpers.unsaved_changes.unset();
-
-	const action_messages = {};
-	action_messages.success_save = __( 'The table was saved successfully.', 'tablepress' );
-	action_messages.success_save_success_id_change = action_messages.success_save + ' ' + __( 'The table ID was changed.', 'tablepress' );
-	action_messages.success_save_error_id_change = action_messages.success_save + ' ' + __( 'The table ID could not be changed, probably because the new ID is already in use!', 'tablepress' );
-
-	if ( 'success_save_error_id_change' === data.message && data.error_details ) {
-		const error_introduction = __( 'These errors were encountered:', 'tablepress' );
-		action_messages.success_save_error_id_change += `</p><p>${ error_introduction }</p><pre>${ data.error_details }</pre><p>`;
-	}
-
-	const type = ( data.message.includes( 'error' ) ) ? 'error' : 'success';
-	tp.callbacks.save_changes.after_saving_notice( type, action_messages[ data.message ] );
-};
-
-/**
- * [error description]
- *
- * @param {[type]} message [description]
- */
-tp.callbacks.save_changes.error = function ( message ) {
-	message = __( 'Attention: Unfortunately, an error occurred.', 'tablepress' ) + ' ' + message + '<br>' + sprintf( __( 'Please see the <a href="%s" target="_blank">TablePress FAQ page</a> for suggestions.', 'tablepress' ), 'https://tablepress.org/faq/common-errors/' );
-	tp.callbacks.save_changes.after_saving_notice( 'error', message );
-};
-
-/**
- * [after_saving_notice description]
- *
- * @param {[type]} type    [description]
- * @param {[type]} message [description]
- */
-tp.callbacks.save_changes.after_saving_notice = function ( type, message ) {
-	const div_id = `save-changes-${ Date.now() }`;
-
-	$( '#spinner-save-changes' ).parentNode.insertAdjacentHTML( 'afterend', `<div id="${ div_id }" class="ajax-alert notice notice-${ type }"><p>${ message }</p></div>` );
-
-	const $notice = $( `#${ div_id }` );
-	void $notice.offsetWidth; // Trick browser layout engine. Necessary to make CSS transition work.
-	$notice.style.opacity = 0;
-	$notice.addEventListener( 'transitionend', ( event ) => {
-		if ( event.target.matches( '.notice' ) ) {
-			$notice.remove();
-		}
-	} );
-};
-
 /**
  * Inserts or duplicates rows or columns before each currently selected row/column.
  *
@@ -1098,7 +740,7 @@ tp.editor = jspreadsheet( $( '#table-editor' ), {
 	columnSorting: true,
 	columnDrag: true,
 	columnResize: true,
-	defaultColWidth: tp.screen_options.table_editor_column_width,
+	defaultColWidth: tp.screenOptions.table_editor_column_width,
 	defaultColAlign: 'left',
 	parseFormulas: false,
 	allowExport: false,
@@ -1121,18 +763,8 @@ tp.editor = jspreadsheet( $( '#table-editor' ), {
 	onsort: tp.callbacks.editor.onsort,
 } );
 
-// Register click callbacks for the "Help" buttons.
-$( '#tablepress-page' ).addEventListener( 'click', ( event ) => {
-	if ( event?.target?.matches( '.button-show-help-box' ) ) {
-		tp.callbacks.help_box.open_dialog( event );
-	}
-} );
-
 // Register callback for inserting a link into a cell after it has been constructed in the wpLink dialog.
 jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_helper_textarea ); // This must use jQuery, as wpLink triggers jQuery events, which can not be observed by native JS listeners.
-
-// Move all "Help" buttons inside the postbox header.
-document.querySelectorAll( '#tablepress-body .button-module-help' ).forEach( ( $button ) => ( $button.closest( '.postbox' ).querySelector( '.handle-actions' ).prepend( $button ) ) );
 
 // This code requires jQuery, and it must run when the DOM is ready.
 jQuery( () => {

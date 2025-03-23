@@ -133,7 +133,7 @@ class AutoFilter
 		$this->evaluated = false;
 		if ($this->workSheet !== null) {
 			$thisrange = $this->range;
-			$range = (string) preg_replace('/\\d+$/', (string) $this->workSheet->getHighestRow(), $thisrange);
+			$range = (string) preg_replace('/\d+$/', (string) $this->workSheet->getHighestRow(), $thisrange);
 			if ($range !== $thisrange) {
 				$this->setRange($range);
 			}
@@ -275,7 +275,7 @@ class AutoFilter
 		$fromColumn = strtoupper($fromColumn);
 		$toColumn = strtoupper($toColumn);
 
-		if (($fromColumn !== null) && (isset($this->columns[$fromColumn])) && ($toColumn !== null)) {
+		if (isset($this->columns[$fromColumn])) {
 			$this->columns[$fromColumn]->setParent();
 			$this->columns[$fromColumn]->setColumnIndex($toColumn);
 			$this->columns[$toColumn] = $this->columns[$fromColumn];
@@ -297,7 +297,7 @@ class AutoFilter
 	{
 		$dataSetValues = $dataSet['filterValues'];
 		$blanks = $dataSet['blanks'];
-		if (($cellValue == '') || ($cellValue === null)) {
+		if (($cellValue === '') || ($cellValue === null)) {
 			return $blanks;
 		}
 
@@ -313,7 +313,7 @@ class AutoFilter
 	{
 		$dateSet = $dataSet['filterValues'];
 		$blanks = $dataSet['blanks'];
-		if (($cellValue == '') || ($cellValue === null)) {
+		if (($cellValue === '') || ($cellValue === null)) {
 			return $blanks;
 		}
 		$timeZone = new DateTimeZone('UTC');
@@ -359,7 +359,7 @@ class AutoFilter
 
 		if (!$customRuleForBlanks) {
 			//    Blank cells are always ignored, so return a FALSE
-			if (($cellValue == '') || ($cellValue === null)) {
+			if (($cellValue === '') || ($cellValue === null)) {
 				return false;
 			}
 		}
@@ -405,10 +405,10 @@ class AutoFilter
 			} elseif ($ruleValue == '') {
 				switch ($ruleOperator) {
 					case Rule::AUTOFILTER_COLUMN_RULE_EQUAL:
-						$retVal = ($cellValue == '') || ($cellValue === null);
+						$retVal = ($cellValue === '') || ($cellValue === null);
 						break;
 					case Rule::AUTOFILTER_COLUMN_RULE_NOTEQUAL:
-						$retVal = ($cellValue != '') && ($cellValue !== null);
+						$retVal = $cellValue != '';
 						break;
 					default:
 						$retVal = true;
@@ -472,7 +472,7 @@ class AutoFilter
 	protected static function filterTestInPeriodDateSet($cellValue, array $monthSet): bool
 	{
 		//    Blank cells are always ignored, so return a FALSE
-		if (($cellValue == '') || ($cellValue === null)) {
+		if (($cellValue === '') || ($cellValue === null)) {
 			return false;
 		}
 
@@ -698,7 +698,7 @@ class AutoFilter
 		//    Val is lowest permitted value.
 		//    Maxval is greater than highest permitted value
 		$val = $maxval = 0;
-		if (is_callable($callBack)) {
+		if (is_callable($callBack)) { //* @phpstan-ignore-line
 			[$val, $maxval] = $callBack();
 		}
 		$val = Date::dateTimeToExcel($val);

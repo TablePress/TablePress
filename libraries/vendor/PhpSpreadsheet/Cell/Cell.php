@@ -58,7 +58,7 @@ class Cell
 	 *
 	 * @var null|array<string, string>
 	 */
-	private $formulaAttributes = null;
+	private ?array $formulaAttributes = null;
 	private IgnoredErrors $ignoredErrors;
 	/**
 	 * Update the cell into the cell collection.
@@ -396,9 +396,6 @@ class Cell
 		$oldAttributesT = $oldAttributes['t'] ?? '';
 		$coordinate = $this->getCoordinate();
 		$oldAttributesRef = $oldAttributes['ref'] ?? $coordinate;
-		if (!str_contains($oldAttributesRef, ':')) {
-			$oldAttributesRef .= ":$oldAttributesRef";
-		}
 		$originalValue = $this->value;
 		$originalDataType = $this->dataType;
 		$this->formulaAttributes = [];
@@ -421,6 +418,14 @@ class Cell
 					while (is_array($result)) {
 						$result = array_shift($result);
 					}
+				}
+				if (
+					!is_array($result)
+					&& $calculation->getInstanceArrayReturnType() === Calculation::RETURN_ARRAY_AS_ARRAY
+					&& $oldAttributesT === 'array'
+					&& ($oldAttributesRef === $coordinate || $oldAttributesRef === "$coordinate:$coordinate")
+				) {
+					$result = [$result];
 				}
 				// if return_as_array for formula like '=sheet!cell'
 				if (is_array($result) && count($result) === 1) {
@@ -548,6 +553,8 @@ class Cell
 			SharedDate::setExcelCalendar($currentCalendar);
 
 			if ($result === Functions::NOT_YET_IMPLEMENTED) {
+				$this->formulaAttributes = $oldAttributes;
+
 				return $this->calculatedValue; // Fallback if calculation engine does not support the formula.
 			}
 

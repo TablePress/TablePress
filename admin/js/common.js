@@ -7,12 +7,7 @@
  * @since 1.0.0
  */
 
-/* globals confirm, postboxes, pagenow, jQuery */
-
-/**
- * WordPress dependencies.
- */
-import { _n } from '@wordpress/i18n';
+/* globals postboxes, pagenow, jQuery */
 
 /**
  * Enable toggle/order functionality for post meta boxes.
@@ -30,26 +25,3 @@ postboxes.add_postbox_toggles( pagenow );
  * @since 2.1.0
  */
 jQuery( '.postbox .hndle' ).off( 'click.postboxes', postboxes.handle_click );
-
-document.getElementById( 'tablepress-page' ).addEventListener( 'click', ( event ) => {
-	if ( ! event.target ) {
-		return;
-	}
-
-	/**
-	 * Show an AYS warning when a "Delete" link is clicked.
-	 *
-	 * @since 1.0.0
-	 */
-	if ( event.target.matches( '.delete-link' ) ) {
-		if ( ! confirm( _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ) ) ) {
-			event.preventDefault();
-			return;
-		}
-
-		// Prevent onunload warning, by calling unset method from edit.js (if defined).
-		window?.tp?.helpers?.unsaved_changes?.unset?.();
-
-		return;
-	}
-} );

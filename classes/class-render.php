@@ -752,8 +752,7 @@ class TablePress_Render {
 				$cell_content = '';
 			} elseif ( $this->span_trigger['colspan'] === $cell_content ) { // There will be a colspan.
 				if ( ! (
-					( ( 0 === $row_idx ) && 1 === $this->render_options['table_head'] && $this->render_options['use_datatables'] ) // Don't allow colspan inside a single row table head, as DataTables seems to have a bug here.
-					|| ( 0 === $col_idx ) // No colspan inside first column.
+					( 0 === $col_idx ) // No colspan inside first column.
 					|| ( 1 === $col_idx && $this->render_options['first_column_th'] ) // No colspan into first column head.
 				) ) {
 					// Increase counter for colspan in this row.
@@ -839,11 +838,15 @@ class TablePress_Render {
 			$tag_attributes = apply_filters( 'tablepress_cell_tag_attributes', $tag_attributes, $this->table['id'], $cell_content, $row_idx + 1, $col_idx + 1, $this->colspan[ $row_idx ], $this->rowspan[ $col_idx ] );
 			$tag_attributes = $this->_attributes_array_to_string( $tag_attributes );
 
-			if ( $this->render_options['first_column_th'] && 0 === $col_idx ) {
-				$tag = 'th';
+			if ( '' === $cell_content ) {
+				$cell_tag = 'td'; // For accessibility, empty cells should use `td` and not `th` tags.
+			} elseif ( $this->render_options['first_column_th'] && 0 === $col_idx ) {
+				$cell_tag = 'th'; // Non-empty cells in the first column should use `th` tags, if enabled.
+			} else {
+				$cell_tag = $tag; // Otherwise, use the tag that was passed in as the default for the row.
 			}
 
-			$row_cells[] = "<{$tag}{$tag_attributes}>{$cell_content}</{$tag}>";
+			$row_cells[] = "<{$cell_tag}{$tag_attributes}>{$cell_content}</{$cell_tag}>";
 			$this->colspan[ $row_idx ] = 1; // Reset.
 			$this->rowspan[ $col_idx ] = 1; // Reset.
 		}

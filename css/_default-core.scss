@@ -1,9 +1,6 @@
 /**
  * TablePress Default CSS - Core CSS without DataTables styling.
  *
- * Attention: Do not modify this file directly, but use the "Custom CSS" textarea
- * on the "Plugin Options" screen of TablePress.
- *
  * @package TablePress
  * @subpackage Frontend CSS
  * @author Tobias Bäthge
@@ -22,7 +19,7 @@ $align-side: left;
 }
 
 .tablepress {
-	/* Custom properties */
+	/* Custom properties. */
 	--text-color: #111111;
 	--head-text-color: var(--text-color);
 	--head-bg-color: #d9edf7;
@@ -35,7 +32,7 @@ $align-side: left;
 	--border-color: #dddddd;
 	--padding: 0.5rem;
 
-	/* General table style */
+	/* General table style. */
 	table-layout: auto;
 	width: 100%;
 	margin: 0 auto 1rem;
@@ -44,7 +41,7 @@ $align-side: left;
 	border-spacing: 0;
 	border: none;
 
-	/* General table cell style */
+	/* General table cell style. */
 	> :not(caption) > * > * {
 		padding: var(--padding);
 		border: none;
@@ -55,15 +52,15 @@ $align-side: left;
 		box-sizing: border-box;
 	}
 
-	/* Horizontal borders */
-	> :where(thead) + tbody > * > *,
-	> tbody > * ~ * > *,
+	/* Horizontal borders, except for child rows in the tbody. */
+	> :where(thead) + tbody > :where(:not(.child)) > *,
+	> tbody > * ~ :where(:not(.child)) > *,
 	> tfoot > :where(:first-child) > * {
 		border-top: 1px solid var(--border-color);
 	}
 
-	/* Row background colors */
-	> :where(thead, tfoot) > * > th {
+	/* Row background colors. */
+	> :where(thead, tfoot) > tr > * {
 		background-color: var(--head-bg-color);
 		color: var(--head-text-color);
 		font-weight: bold;
@@ -76,21 +73,31 @@ $align-side: left;
 		}
 	}
 	> :where(tbody.row-striping) {
-		> :nth-child(odd) > * {
-			background-color: var(--odd-bg-color);
-			color: var(--odd-text-color);
+		> :nth-child(odd of :not(.child, .dtrg-group)) { /* Ignore child and group rows. */
+			> *,
+			+ :where(.child) > * { /* Give child rows the same style. */
+				background-color: var(--odd-bg-color);
+				color: var(--odd-text-color);
+			}
 		}
-		> :nth-child(even) > * {
-			background-color: var(--even-bg-color);
-			color: var(--even-text-color);
+		> :nth-child(even of :not(.child, .dtrg-group)) { /* Ignore child and group rows. */
+			> *,
+			+ :where(.child) > * { /* Give child rows the same style. */
+				background-color: var(--even-bg-color);
+				color: var(--even-text-color);
+			}
 		}
 	}
-	> .row-hover > tr:hover > * {
-		background-color: var(--hover-bg-color);
-		color: var(--hover-text-color);
+	> .row-hover > tr {
+		&:where(:not(.dtrg-group)):hover > *, /* Ignore group rows. */
+		&:hover + :where(.child) > *, /* Give child rows the same style. */
+		&:has(+ .child:hover) > * { /* Highlight the parent row when a child row is hovered. */
+			background-color: var(--hover-bg-color);
+			color: var(--hover-text-color);
+		}
 	}
 
-	/* Reset image layout in tables */
+	/* Reset image layout in tables. */
 	img {
 		margin: 0;
 		padding: 0;
@@ -98,7 +105,7 @@ $align-side: left;
 		max-width: none;
 	}
 
-	/* Table description */
+	/* Table description. */
 	&-table-description {
 		clear: both;
 		display: block;

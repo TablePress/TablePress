@@ -7,15 +7,12 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\IValueBinder;
 use TablePress\PhpOffice\PhpSpreadsheet\Document\Properties;
 use TablePress\PhpOffice\PhpSpreadsheet\Document\Security;
-use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
-use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Iterator;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use TablePress\PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 
 class Spreadsheet implements JsonSerializable
 {
@@ -201,10 +198,8 @@ class Spreadsheet implements JsonSerializable
 
 	/**
 	 * Set the macros code.
-	 *
-	 * @param string $macroCode string|null
 	 */
-	public function setMacrosCode(string $macroCode): void
+	public function setMacrosCode(?string $macroCode): void
 	{
 		$this->macrosCode = $macroCode;
 		$this->setHasMacros($macroCode !== null);
@@ -1068,24 +1063,81 @@ class Spreadsheet implements JsonSerializable
 	 */
 	public function copy(): self
 	{
-		$filename = File::temporaryFilename();
-		$writer = new XlsxWriter($this);
-		$writer->setIncludeCharts(true);
-		$writer->save($filename);
-
-		$reader = new XlsxReader();
-		$reader->setIncludeCharts(true);
-		$reloadedSpreadsheet = $reader->load($filename);
-		unlink($filename);
-
-		return $reloadedSpreadsheet;
+		return unserialize(serialize($this));
 	}
 
+	/**
+	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
+	 */
 	public function __clone()
 	{
-		throw new Exception(
-			'Do not use clone on spreadsheet. Use spreadsheet->copy() instead.'
-		);
+		$this->uniqueID = uniqid('', true);
+
+		$usedKeys = [];
+		// I don't now why new Style rather than clone.
+		$this->cellXfSupervisor = new Style(true);
+		//$this->cellXfSupervisor = clone $this->cellXfSupervisor;
+		$this->cellXfSupervisor->bindParent($this);
+		$usedKeys['cellXfSupervisor'] = true;
+
+		$oldCalc = $this->calculationEngine;
+		$this->calculationEngine = new Calculation($this);
+		if ($oldCalc !== null) {
+			$this->calculationEngine
+				->setInstanceArrayReturnType(
+					$oldCalc->getInstanceArrayReturnType()
+				);
+		}
+		$usedKeys['calculationEngine'] = true;
+
+		$currentCollection = $this->cellStyleXfCollection;
+		$this->cellStyleXfCollection = [];
+		foreach ($currentCollection as $item) {
+			$clone = $item->exportArray();
+			$style = (new Style())->applyFromArray($clone);
+			$this->addCellStyleXf($style);
+		}
+		$usedKeys['cellStyleXfCollection'] = true;
+
+		$currentCollection = $this->cellXfCollection;
+		$this->cellXfCollection = [];
+		foreach ($currentCollection as $item) {
+			$clone = $item->exportArray();
+			$style = (new Style())->applyFromArray($clone);
+			$this->addCellXf($style);
+		}
+		$usedKeys['cellXfCollection'] = true;
+
+		$currentCollection = $this->workSheetCollection;
+		$this->workSheetCollection = [];
+		foreach ($currentCollection as $item) {
+			$clone = clone $item;
+			$clone->setParent($this);
+			$this->workSheetCollection[] = $clone;
+		}
+		$usedKeys['workSheetCollection'] = true;
+
+		foreach (get_object_vars($this) as $key => $val) {
+			if (isset($usedKeys[$key])) {
+				continue;
+			}
+			switch ($key) {
+				// arrays of objects not covered above
+				case 'definedNames':
+					$currentCollection = $val;
+					$this->$key = [];
+					foreach ($currentCollection as $item) {
+						$clone = clone $item;
+						$this->{$key}[] = $clone;
+					}
+
+					break;
+				default:
+					if (is_object($val)) {
+						$this->$key = clone $val;
+					}
+			}
+		}
 	}
 
 	/**
@@ -1549,14 +1601,6 @@ class Spreadsheet implements JsonSerializable
 
 	/**
 	 * @throws Exception
-	 */
-	public function __serialize(): array
-	{
-		throw new Exception('Spreadsheet objects cannot be serialized');
-	}
-
-	/**
-	 * @throws Exception
 	 * @return mixed
 	 */
 	#[\ReturnTypeWillChange]
@@ -1642,5 +1686,53 @@ class Spreadsheet implements JsonSerializable
 		$this->valueBinder = $valueBinder;
 
 		return $this;
+	}
+
+	/**
+	 * All the PDF writers treat charts as if they occupy a single cell.
+	 * This will be better most of the time.
+	 * It is not needed for any other output type.
+	 * It changes the contents of the spreadsheet, so you might
+	 * be better off cloning the spreadsheet and then using
+	 * this method on, and then writing, the clone.
+	 */
+	public function mergeChartCellsForPdf(): void
+	{
+		foreach ($this->workSheetCollection as $worksheet) {
+			foreach ($worksheet->getChartCollection() as $chart) {
+				$br = $chart->getBottomRightCell();
+				$tl = $chart->getTopLeftCell();
+				if ($br !== '' && $br !== $tl) {
+					if (!$worksheet->cellExists($br)) {
+						$worksheet->getCell($br)->setValue(' ');
+					}
+					$worksheet->mergeCells("$tl:$br");
+				}
+			}
+		}
+	}
+
+	/**
+	 * All the PDF writers do better with drawings than charts.
+	 * This will be better some of the time.
+	 * It is not needed for any other output type.
+	 * It changes the contents of the spreadsheet, so you might
+	 * be better off cloning the spreadsheet and then using
+	 * this method on, and then writing, the clone.
+	 */
+	public function mergeDrawingCellsForPdf(): void
+	{
+		foreach ($this->workSheetCollection as $worksheet) {
+			foreach ($worksheet->getDrawingCollection() as $drawing) {
+				$br = $drawing->getCoordinates2();
+				$tl = $drawing->getCoordinates();
+				if ($br !== '' && $br !== $tl) {
+					if (!$worksheet->cellExists($br)) {
+						$worksheet->getCell($br)->setValue(' ');
+					}
+					$worksheet->mergeCells("$tl:$br");
+				}
+			}
+		}
 	}
 }

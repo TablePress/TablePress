@@ -37,10 +37,10 @@ const update = ( event ) => {
 	}
 
 	if ( 'table_editor_column_width' === event.target.id ) {
-		tp.screen_options.table_editor_column_width = parseInt( event.target.value, 10 );
-		tp.screen_options.table_editor_column_width = Math.max( tp.screen_options.table_editor_column_width, 30 ); // Ensure a minimum column width of 30 pixesl.
-		tp.screen_options.table_editor_column_width = Math.min( tp.screen_options.table_editor_column_width, 9999 ); // Ensure a maximum column width of 9999 pixesl.
-		tp.editor.colgroup.forEach( ( col ) => col.setAttribute( 'width', tp.screen_options.table_editor_column_width ) );
+		tp.screenOptions.table_editor_column_width = parseInt( event.target.value, 10 );
+		tp.screenOptions.table_editor_column_width = Math.max( tp.screenOptions.table_editor_column_width, 30 ); // Ensure a minimum column width of 30 pixesl.
+		tp.screenOptions.table_editor_column_width = Math.min( tp.screenOptions.table_editor_column_width, 9999 ); // Ensure a maximum column width of 9999 pixesl.
+		tp.editor.colgroup.forEach( ( col ) => col.setAttribute( 'width', tp.screenOptions.table_editor_column_width ) );
 		tp.editor.updateCornerPosition();
 		return;
 	}
@@ -83,7 +83,7 @@ const save = ( event ) => {
 	};
 
 	// Add spinner and change cursor.
-	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner-save-changes spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }"></span>` );
+	event.target.parentNode.insertAdjacentHTML( 'beforeend', `<span id="spinner-save-changes" class="spinner is-active" title="${ __( 'Changes are being saved …', 'tablepress' ) }" style="float:none;margin:0 0 0 6px;"></span>` );
 	document.body.classList.add( 'wait' );
 
 	// Save the table data to the server via an AJAX request.

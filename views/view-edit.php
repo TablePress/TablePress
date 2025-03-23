@@ -57,12 +57,16 @@ class TablePress_Edit_View extends TablePress_View {
 			'error_delete'   => __( 'Error: The table could not be deleted.', 'tablepress' ),
 		) );
 
+		// For the Advanced Editor.
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_style( 'editor-buttons' );
-		wp_enqueue_script( 'wpdialogs' ); // For the Advanced Editor, Table Preview, and Help Boxes.
+		wp_enqueue_script( 'wpdialogs' );
+		// For the "Insert Image" dialog.
 		add_filter( 'media_view_strings', array( $this, 'change_media_view_strings' ) );
 		wp_enqueue_media();
-		wp_enqueue_script( 'wplink' ); // JS for the "Insert Link" button.
+		// For the "Insert Link" dialog.
+		wp_enqueue_script( 'wplink' );
+
 		$this->admin_page->enqueue_style( 'jspreadsheet' );
 		$this->admin_page->enqueue_style( 'jsuites', array( 'tablepress-jspreadsheet' ) );
 		$this->admin_page->enqueue_style( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites' ) );
@@ -74,14 +78,14 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->admin_page->enqueue_script( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites', 'jquery-core' ) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
-		$this->add_text_box( 'buttons-1', array( $this, 'textbox_buttons' ), 'normal' );
+		$this->add_text_box( 'buttons-top', array( $this, 'textbox_buttons' ), 'normal' );
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( $this, 'postbox_table_information' ), 'normal' );
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( $this, 'postbox_table_data' ), 'normal' );
 		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( $this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( $this, 'postbox_table_options' ), 'normal' );
 		$this->add_meta_box( 'datatables-features', __( 'Table Features for Site Visitors', 'tablepress' ), array( $this, 'postbox_datatables_features' ), 'normal' );
 		$this->add_text_box( 'hidden-containers', array( $this, 'textbox_hidden_containers' ), 'additional' );
-		$this->add_text_box( 'buttons-2', array( $this, 'textbox_buttons' ), 'additional' );
+		$this->add_text_box( 'buttons-bottom', array( $this, 'textbox_buttons' ), 'additional' );
 		$this->add_text_box( 'other-actions', array( $this, 'textbox_other_actions' ), 'submit' );
 
 		add_filter( 'screen_settings', array( $this, 'add_screen_options_output' ), 10, 2 );
@@ -197,7 +201,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	#[\Override]
 	protected function action_nonce_field( array $data, array $box ): void {
-		// Intentionally left empty. Nonces for this view are generated in postbox_table_data().
+		// Intentionally left empty. Nonces for this view are generated in `print_javascript_data()`.
 	}
 
 	/**
@@ -209,20 +213,21 @@ class TablePress_Edit_View extends TablePress_View {
 		echo "<script>\n";
 		echo "window.tp = window.tp || {};\n";
 
-		echo "tp.nonces = {};\n";
-		echo "tp.nonces.edit_table = '" . wp_create_nonce( TablePress::nonce( $this->action, $this->data['table']['id'] ) ) . "';\n";
-		echo "tp.nonces.preview_table = '" . wp_create_nonce( TablePress::nonce( 'preview_table', $this->data['table']['id'] ) ) . "';\n";
-		echo "tp.nonces.copy_table = '" . wp_create_nonce( TablePress::nonce( 'copy_table', $this->data['table']['id'] ) ) . "';\n";
-		echo "tp.nonces.delete_table = '" . wp_create_nonce( TablePress::nonce( 'delete_table', $this->data['table']['id'] ) ) . "';\n";
-		echo "tp.nonces.screen_options = '" . wp_create_nonce( TablePress::nonce( 'screen_options' ) ) . "';\n";
+		echo "tp.nonces = {\n";
+		echo "\tedit_table: '" . wp_create_nonce( TablePress::nonce( $this->action, $this->data['table']['id'] ) ) . "',\n";
+		echo "\tpreview_table: '" . wp_create_nonce( TablePress::nonce( 'preview_table', $this->data['table']['id'] ) ) . "',\n";
+		echo "\tcopy_table: '" . wp_create_nonce( TablePress::nonce( 'copy_table', $this->data['table']['id'] ) ) . "',\n";
+		echo "\tdelete_table: '" . wp_create_nonce( TablePress::nonce( 'delete_table', $this->data['table']['id'] ) ) . "',\n";
+		echo "\tscreen_options: '" . wp_create_nonce( TablePress::nonce( 'screen_options' ) ) . "',\n";
+		echo "};\n";
 
-		echo "tp.table = {};\n";
-		echo "tp.table.shortcode = '" . esc_js( TablePress::$shortcode ) . "';\n";
-		echo "tp.table.id = '{$this->data['table']['id']}';\n";
+		echo "tp.table = {\n";
+		echo "\tid: '{$this->data['table']['id']}',\n";
+		echo "\tshortcode: '" . esc_js( TablePress::$shortcode ) . "',\n";
 
 		// Add the table meta data.
 		$this->data['table']['meta'] = array(
-			'newId'        => $this->data['table']['id'],
+			'id'           => $this->data['table']['id'],
 			'name'         => $this->data['table']['name'],
 			'description'  => $this->data['table']['description'],
 			'lastModified' => TablePress::format_datetime( $this->data['table']['last_modified'] ),
@@ -231,17 +236,26 @@ class TablePress_Edit_View extends TablePress_View {
 
 		// JSON-encode array items separately to save some PHP memory.
 		foreach ( array( 'meta', 'data', 'options', 'visibility' ) as $item ) {
-			$json = $this->admin_page->convert_to_json_parse_output( $this->data['table'][ $item ] );
-			printf( 'tp.table.%1$s = %2$s;' . "\n", $item, $json );
+			$json = $this->convert_to_json_parse_output( $this->data['table'][ $item ] );
+			echo "\t{$item}: {$json},\n";
 		}
+		echo "};\n";
 
-		echo "tp.screen_options = {};\n";
-		echo 'tp.screen_options.table_editor_column_width = ' . absint( TablePress::$model_options->get( 'table_editor_column_width' ) ) . ";\n";
-		echo 'tp.screen_options.showCustomCommands = ' . ( current_user_can( 'unfiltered_html' ) ? 'true' : 'false' ) . ";\n";
-		echo "tp.screen_options.optionsUrl = '" . TablePress::url( array( 'action' => 'options' ) ) . "';\n";
-		echo 'tp.screen_options.currentUserCanEditTableId = ' . ( current_user_can( 'tablepress_edit_table_id', $this->data['table']['id'] ) ? 'true' : 'false' ) . ";\n";
-		echo 'tp.screen_options.currentUserCanPreviewTable = ' . ( current_user_can( 'tablepress_preview_table', $this->data['table']['id'] ) ? 'true' : 'false' ) . ";\n";
-		echo "tp.screen_options.previewUrl = '" . str_replace( '&amp;', '&', TablePress::url( array( 'action' => 'preview_table', 'item' => $this->data['table']['id'], 'return' => 'edit', 'return_item' => $this->data['table']['id'] ), true, 'admin-post.php' ) ) . "';\n";
+		echo "tp.screenOptions = {\n";
+		echo "\ttable_editor_column_width: " . absint( TablePress::$model_options->get( 'table_editor_column_width' ) ) . ",\n";
+		echo "\tshowCustomCommands: " . ( current_user_can( 'unfiltered_html' ) ? 'true' : 'false' ) . ",\n";
+		echo "\toptionsUrl: '" . TablePress::url( array( 'action' => 'options' ) ) . "',\n";
+		echo "\tcurrentUserCanEditTableId: " . ( current_user_can( 'tablepress_edit_table_id', $this->data['table']['id'] ) ? 'true' : 'false' ) . ",\n";
+		echo "\tcurrentUserCanCopyTable: " . ( current_user_can( 'tablepress_copy_table', $this->data['table']['id'] ) ? 'true' : 'false' ) . ",\n";
+		echo "\tcurrentUserCanDeleteTable: " . ( current_user_can( 'tablepress_delete_table', $this->data['table']['id'] ) ? 'true' : 'false' ) . ",\n";
+		echo "\tcurrentUserCanExportTable: " . ( current_user_can( 'tablepress_export_table', $this->data['table']['id'] ) ? 'true' : 'false' ) . ",\n";
+		echo "\tcurrentUserCanPreviewTable: " . ( current_user_can( 'tablepress_preview_table', $this->data['table']['id'] ) ? 'true' : 'false' ) . ",\n";
+		echo "\tcopyUrl: '" . str_replace( '&amp;', '&', TablePress::url( array( 'action' => 'copy_table', 'item' => $this->data['table']['id'], 'return' => 'edit' ), true, 'admin-post.php' ) ) . "',\n";
+		echo "\tdeleteUrl: '" . str_replace( '&amp;', '&', TablePress::url( array( 'action' => 'delete_table', 'item' => $this->data['table']['id'], 'return' => 'edit', 'return_item' => $this->data['table']['id'] ), true, 'admin-post.php' ) ) . "',\n";
+		echo "\texportUrl: '" . str_replace( '&amp;', '&', TablePress::url( array( 'action' => 'export', 'table_id' => $this->data['table']['id'] ) ) ) . "',\n";
+		echo "\tpreviewUrl: '" . str_replace( '&amp;', '&', TablePress::url( array( 'action' => 'preview_table', 'item' => $this->data['table']['id'], 'return' => 'edit', 'return_item' => $this->data['table']['id'] ), true, 'admin-post.php' ) ) . "',\n";
+		echo "};\n";
+
 		echo "</script>\n";
 
 		echo '<div id="tablepress-edit-screen"></div>'; // React container.
@@ -326,11 +340,12 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array<string, mixed> $box  Information about the text box.
 	 */
 	public function textbox_buttons( array $data, array $box ): void {
-		echo '<div id="tablepress-' . $box['id'] . '-section"></div>';
+		echo '<div id="tablepress-' . $box['id'] . '-section" class="section-has-react-loading-text">';
+		echo '</div>';
 	}
 
 	/**
-	 * Prints the "Delete Table" and "Export Table" buttons.
+	 * Prints the container for the "Copy Table, "Export Table", and "Delete Table" buttons.
 	 *
 	 * @since 1.0.0
 	 *
@@ -338,26 +353,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array<string, mixed> $box  Information about the text box.
 	 */
 	public function textbox_other_actions( array $data, array $box ): void {
-		$user_can_copy_table = current_user_can( 'tablepress_copy_table', $data['table']['id'] );
-		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
-		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
-
-		if ( ! $user_can_copy_table && ! $user_can_export_table && ! $user_can_delete_table ) {
-			return;
-		}
-
-		echo '<p class="submit">';
-		echo __( 'Other Actions', 'tablepress' ) . ':&nbsp; ';
-		if ( $user_can_copy_table ) {
-			echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'copy_table', 'item' => $data['table']['id'], 'return' => 'edit' ), true, 'admin-post.php' ) ) . '" class="components-button is-secondary is-compact button-copy">' . __( 'Copy Table', 'tablepress' ) . '</a> ';
-		}
-		if ( $user_can_export_table ) {
-			echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ) ) . '" class="components-button is-secondary is-compact button-export">' . __( 'Export Table', 'tablepress' ) . '</a> ';
-		}
-		if ( $user_can_delete_table ) {
-			echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) ) . '" class="components-button is-secondary is-compact button-delete delete-link">' . __( 'Delete Table', 'tablepress' ) . '</a>';
-		}
-		echo '</p>';
+		echo '<div id="tablepress-other-actions-section"></div>';
 	}
 
 	/**
@@ -370,6 +366,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_hidden_containers( array $data, array $box ): void {
 		?>
+<div id="tablepress-table-preview-section"></div>
 <div class="hidden-container">
 	<div id="advanced-editor">
 		<label id="advanced-editor-label" for="advanced-editor-content" class="screen-reader-text"><?php esc_html_e( 'Advanced Editor', 'tablepress' ); ?></label>
@@ -384,25 +381,7 @@ class TablePress_Edit_View extends TablePress_View {
 		wp_editor( '', 'advanced-editor-content', $wp_editor_options );
 		?>
 	</div>
-</div>
-<div id="preview-container" class="hidden-container">
-	<div id="table-preview">
-		<iframe id="table-preview-iframe" src="about:blank"></iframe>
-	</div>
-</div>
-<div class="hidden-container">
 	<textarea id="textarea-insert-helper" class="hidden"></textarea>
-</div>
-<div id="help-box-combine-cells" class="help-box hidden-container" title="<?php esc_attr_e( 'Help on combining cells', 'tablepress' ); ?>" data-height="420" data-width="500">
-		<?php
-		echo '<p>' . __( 'Table cells can span across more than one column or row.', 'tablepress' ) . '</p>';
-		echo '<p>' . __( 'Combining consecutive cells within the same row is called &#8220;colspanning&#8221;.', 'tablepress' )
-		. ' ' . __( 'Combining consecutive cells within the same column is called &#8220;rowspanning&#8221;.', 'tablepress' ) . '</p>';
-		echo '<p>' . sprintf( __( 'To combine adjacent cells, select the desired cells and click the “%s” button or use the context menu.', 'tablepress' ), __( 'Combine/Merge', 'tablepress' ) )
-		. ' ' . __( 'The corresponding keywords, <code>#colspan#</code> and <code>#rowspan#</code>, will then be added for you.', 'tablepress' ) . '</p>';
-		echo '<p><strong>' . __( 'Be aware that the Table Features for Site Visitors, like sorting, filtering, and pagination, will not work in tables which have combined cells in their body rows.', 'tablepress' ) . '</strong>'
-		. ' ' . __( 'It is however possible to use these features in tables that have combined cells in the table header or footer rows, to allow for creating complex header and footer layouts.', 'tablepress' ) . '</p>';
-		?>
 </div>
 		<?php
 	}
@@ -441,27 +420,29 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_corrupted_table( array $data, array $box ): void {
 		?>
-		<div class="notice notice-error notice-large">
-			<h3><em>
-				<?php _e( 'Attention: Unfortunately, an error occurred.', 'tablepress' ); ?>
-			</em></h3>
-			<p>
-				<?php
-					printf( __( 'The internal data of table &#8220;%1$s&#8221; (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );
-					echo ' ';
-					printf( __( 'The following error was registered: %s.', 'tablepress' ), '<code>' . esc_html( $data['table']['json_error'] ) . '</code>' );
-				?>
-			</p>
-			<p>
-				<?php
-					_e( 'Because of this error, the table can not be edited at this time, to prevent possible further data loss.', 'tablepress' );
-					echo ' ';
-					printf( __( 'Please see the <a href="%s">TablePress FAQ page</a> for further instructions.', 'tablepress' ), 'https://tablepress.org/faq/corrupted-tables/' );
-				?>
-			</p>
-			<p>
-				<?php echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'list' ) ) ) . '" class="components-button is-secondary is-compact">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
-			</p>
+		<div class="notice components-notice is-error">
+			<div class="components-notice__content">
+				<h3><em>
+					<?php _e( 'Attention: Unfortunately, an error occurred.', 'tablepress' ); ?>
+				</em></h3>
+				<p>
+					<?php
+						printf( __( 'The internal data of table &#8220;%1$s&#8221; (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );
+						echo ' ';
+						printf( __( 'The following error was registered: %s.', 'tablepress' ), '<code>' . esc_html( $data['table']['json_error'] ) . '</code>' );
+					?>
+				</p>
+				<p>
+					<?php
+						_e( 'Because of this error, the table can not be edited at this time, to prevent possible further data loss.', 'tablepress' );
+						echo ' ';
+						printf( __( 'Please see the <a href="%s">TablePress FAQ page</a> for further instructions.', 'tablepress' ), 'https://tablepress.org/faq/corrupted-tables/' );
+					?>
+				</p>
+				<p>
+					<?php echo '<a href="' . esc_url( TablePress::url( array( 'action' => 'list' ) ) ) . '" class="components-button is-secondary is-compact">' . __( 'Back to the List of Tables', 'tablepress' ) . '</a>'; ?>
+				</p>
+			</div>
 		</div>
 		<?php
 	}
@@ -479,8 +460,10 @@ class TablePress_Edit_View extends TablePress_View {
 		_e( 'To edit the content or modify the structure of this table, use the input fields and buttons below.', 'tablepress' );
 		echo ' ';
 		// Show the instructions string depending on whether the Block Editor is used on the site or not.
-		if ( $data['site_uses_block_editor'] ) {
+		if ( 'block' === $data['site_used_editor'] ) {
 			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} elseif ( 'elementor' === $data['site_used_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” widget in the Elementor editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
 		} else {
 			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
 		}

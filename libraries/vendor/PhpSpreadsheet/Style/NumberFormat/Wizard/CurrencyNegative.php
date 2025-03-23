@@ -16,7 +16,7 @@ class CurrencyNegative
 				return '-';
 			case self::parentheses:
 			case self::redParentheses:
-				return '\\(';
+				return '\(';
 		}
 	}
 	public function end(): string
@@ -27,7 +27,7 @@ class CurrencyNegative
 				return '';
 			case self::parentheses:
 			case self::redParentheses:
-				return '\\)';
+				return '\)';
 		}
 	}
 	public function color(): string

@@ -113,6 +113,9 @@ class TablePress_Options_Model extends TablePress_Model {
 
 		$plugin_options = $this->plugin_options->get();
 		$user_options = $this->user_options->get();
+
+		$old_options = array_merge( $plugin_options, $user_options );
+
 		foreach ( $new_options as $name => $value ) {
 			if ( isset( $this->default_plugin_options[ $name ] ) ) {
 				$plugin_options[ $name ] = $value;
@@ -125,6 +128,15 @@ class TablePress_Options_Model extends TablePress_Model {
 
 		$this->plugin_options->update( $plugin_options );
 		$this->user_options->update( $user_options );
+
+		/**
+		 * Fires after the options have been saved.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array<string, mixed> $old_options Array of all options before the update.
+		 */
+		do_action( 'tablepress_event_updated_options', $old_options );
 	}
 
 	/**

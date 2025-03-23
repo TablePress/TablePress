@@ -78,7 +78,7 @@ class TablePress_About_View extends TablePress_View {
 	<p>
 		<?php _e( 'TablePress allows you to create and manage tables in the admin area of WordPress.', 'tablepress' ); ?>
 		<?php _e( 'Tables may contain text, numbers, formulas, and even HTML code (e.g. to include images or links).', 'tablepress' ); ?>
-		<?php _e( 'You can embed the tables into posts, pages, or other site areas using a block in the block editor.', 'tablepress' ); ?>
+		<?php _e( 'You can embed the tables into posts, pages, or other site areas using a block in the block editor, a widget in the Elementor page builder, or a Shortcode.', 'tablepress' ); ?>
 	</p>
 		<?php
 	}
@@ -105,8 +105,10 @@ class TablePress_About_View extends TablePress_View {
 	<p>
 		<?php
 		// Show the instructions string depending on whether the Block Editor is used on the site or not.
-		if ( $data['site_uses_block_editor'] ) {
+		if ( 'block' === $data['site_used_editor'] ) {
 			printf( __( 'To insert a table into a post or page, add a “%1$s” block in the block editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
+		} elseif ( 'elementor' === $data['site_used_editor'] ) {
+			printf( __( 'To insert a table into a post or page, add a “%1$s” widget in the Elementor editor and select the desired table.', 'tablepress' ), __( 'TablePress table', 'tablepress' ) );
 		} else {
 			_e( 'To insert a table into a post or page, paste its Shortcode at the desired place in the editor.', 'tablepress' );
 			echo ' ';

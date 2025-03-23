@@ -26,20 +26,20 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
  * @return {Array} Context menu items.
  */
 const contextMenu = ( obj /*, x, y, e */ ) => {
-	const num_rows = tp.editor.options.data.length;
-	const num_columns = tp.editor.options.columns.length;
-	const num_selected_rows = tp.helpers.selection.rows.length;
-	const num_selected_columns = tp.helpers.selection.columns.length;
-	const is_mac = window?.navigator?.platform?.includes( 'Mac' );
-	const meta_key = is_mac ?
+	const numRows = tp.editor.options.data.length;
+	const numColumns = tp.editor.options.columns.length;
+	const numSelectedRows = tp.helpers.selection.rows.length;
+	const numSelectedColumns = tp.helpers.selection.columns.length;
+	const isMac = window?.navigator?.platform?.includes( 'Mac' );
+	const metaKey = isMac ?
 		_x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) :
 		_x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' );
-	const option_key = is_mac ?
+	const optionKey = isMac ?
 		_x( '⌥', 'keyboard shortcut option key on a Mac keyboard', 'tablepress' ) :
 		_x( 'Alt+', 'keyboard shortcut Alt key on a non-Mac keyboard', 'tablepress' );
 
 	// Call-by-reference object for the cell_merge_allowed() call.
-	const error_message = {
+	const errorMessage = {
 		text: '',
 	};
 
@@ -49,13 +49,13 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 		// Undo/Redo.
 		{
 			title: __( 'Undo', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sZ', 'keyboard shortcut for Undo', 'tablepress' ), metaKey ),
 			onclick: obj.undo,
 			disabled: ( -1 === obj.historyIndex ),
 		},
 		{
 			title: __( 'Redo', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sY', 'keyboard shortcut for Redo', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sY', 'keyboard shortcut for Redo', 'tablepress' ), metaKey ),
 			onclick: obj.redo,
 			disabled: ( obj.historyIndex === obj.history.length - 1 ),
 		},
@@ -66,7 +66,7 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 		},
 		{
 			title: __( 'Cut', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sX', 'keyboard shortcut for Cut', 'tablepress' ), metaKey ),
 			onclick() {
 				/* eslint-disable @wordpress/no-global-active-element */
 				if ( 'TEXTAREA' === document.activeElement.tagName && document.activeElement.selectionStart !== document.activeElement.selectionEnd ) {
@@ -83,7 +83,7 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 		},
 		{
 			title: __( 'Copy', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sC', 'keyboard shortcut for Copy', 'tablepress' ), metaKey ),
 			onclick() {
 				if ( 'TEXTAREA' === document.activeElement.tagName && document.activeElement.selectionStart !== document.activeElement.selectionEnd ) { // eslint-disable-line @wordpress/no-global-active-element
 					document.execCommand( 'copy' ); // If text is selected in the actively edited cell, only copy that.
@@ -94,7 +94,7 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 		},
 		{
 			title: __( 'Paste', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sV', 'keyboard shortcut for Paste', 'tablepress' ), metaKey ),
 			onclick() {
 				/* eslint-disable @wordpress/no-global-active-element */
 				if ( 'TEXTAREA' === document.activeElement.tagName ) {
@@ -125,17 +125,17 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 		},
 		{
 			title: __( 'Insert Link', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sL', 'keyboard shortcut for Insert Link', 'tablepress' ), metaKey ),
 			onclick: tp.callbacks.insert_link.open_dialog.bind( null, ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null ), // eslint-disable-line @wordpress/no-global-active-element
 		},
 		{
 			title: __( 'Insert Image', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sI', 'keyboard shortcut for Insert Image', 'tablepress' ), metaKey ),
 			onclick: tp.callbacks.insert_image.open_dialog.bind( null, ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null ), // eslint-disable-line @wordpress/no-global-active-element
 		},
 		{
 			title: __( 'Advanced Editor', 'tablepress' ),
-			shortcut: sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), meta_key ),
+			shortcut: sprintf( _x( '%1$sE', 'keyboard shortcut for Advanced Editor', 'tablepress' ), metaKey ),
 			onclick: tp.callbacks.advanced_editor.open_dialog.bind( null, ( 'TEXTAREA' === document.activeElement.tagName ) ? document.activeElement : null ), // eslint-disable-line @wordpress/no-global-active-element
 		},
 
@@ -147,11 +147,11 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 			title: __( 'Duplicate …', 'tablepress' ),
 			submenu: [
 				{
-					title: _n( 'Duplicate row', 'Duplicate rows', num_selected_rows, 'tablepress' ),
+					title: _n( 'Duplicate row', 'Duplicate rows', numSelectedRows, 'tablepress' ),
 					onclick: tp.callbacks.insert_duplicate.bind( null, 'duplicate', 'rows' ),
 				},
 				{
-					title: _n( 'Duplicate column', 'Duplicate columns', num_selected_columns, 'tablepress' ),
+					title: _n( 'Duplicate column', 'Duplicate columns', numSelectedColumns, 'tablepress' ),
 					onclick: tp.callbacks.insert_duplicate.bind( null, 'duplicate', 'columns' ),
 				},
 			],
@@ -160,19 +160,19 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 			title: __( 'Insert …', 'tablepress' ),
 			submenu: [
 				{
-					title: _n( 'Insert row above', 'Insert rows above', num_selected_rows, 'tablepress' ),
+					title: _n( 'Insert row above', 'Insert rows above', numSelectedRows, 'tablepress' ),
 					onclick: tp.callbacks.insert_duplicate.bind( null, 'insert', 'rows', 'before' ),
 				},
 				{
-					title: _n( 'Insert row below', 'Insert rows below', num_selected_rows, 'tablepress' ),
+					title: _n( 'Insert row below', 'Insert rows below', numSelectedRows, 'tablepress' ),
 					onclick: tp.callbacks.insert_duplicate.bind( null, 'insert', 'rows', 'after' ),
 				},
 				{
-					title: _n( 'Insert column on the left', 'Insert columns on the left', num_selected_columns, 'tablepress' ),
+					title: _n( 'Insert column on the left', 'Insert columns on the left', numSelectedColumns, 'tablepress' ),
 					onclick: tp.callbacks.insert_duplicate.bind( null, 'insert', 'columns', 'before' ),
 				},
 				{
-					title: _n( 'Insert column on the right', 'Insert columns on the right', num_selected_columns, 'tablepress' ),
+					title: _n( 'Insert column on the right', 'Insert columns on the right', numSelectedColumns, 'tablepress' ),
 					onclick: tp.callbacks.insert_duplicate.bind( null, 'insert', 'columns', 'after' ),
 				},
 			],
@@ -194,16 +194,16 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 			title: __( 'Delete …', 'tablepress' ),
 			submenu: [
 				{
-					title: _n( 'Delete row', 'Delete rows', num_selected_rows, 'tablepress' ),
+					title: _n( 'Delete row', 'Delete rows', numSelectedRows, 'tablepress' ),
 					onclick: tp.callbacks.remove.bind( null, 'rows' ),
-					disabled: num_rows === num_selected_rows,
-					tooltip: num_rows === num_selected_rows ? __( 'This option is disabled.', 'tablepress' ) + ' ' + __( 'You can not delete all table rows!', 'tablepress' ) : '',
+					disabled: numRows === numSelectedRows,
+					tooltip: numRows === numSelectedRows ? __( 'This option is disabled.', 'tablepress' ) + ' ' + __( 'You can not delete all table rows!', 'tablepress' ) : '',
 				},
 				{
-					title: _n( 'Delete column', 'Delete columns', num_selected_columns, 'tablepress' ),
+					title: _n( 'Delete column', 'Delete columns', numSelectedColumns, 'tablepress' ),
 					onclick: tp.callbacks.remove.bind( null, 'columns' ),
-					disabled: num_columns === num_selected_columns,
-					tooltip: num_columns === num_selected_columns ? __( 'This option is disabled.', 'tablepress' ) + ' ' + __( 'You can not delete all table columns!', 'tablepress' ) : '',
+					disabled: numColumns === numSelectedColumns,
+					tooltip: numColumns === numSelectedColumns ? __( 'This option is disabled.', 'tablepress' ) + ' ' + __( 'You can not delete all table columns!', 'tablepress' ) : '',
 				},
 			],
 		},
@@ -216,26 +216,26 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 			title: __( 'Move …', 'tablepress' ),
 			submenu: [
 				{
-					title: _n( 'Move row up', 'Move rows up', num_selected_rows, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), meta_key ),
+					title: _n( 'Move row up', 'Move rows up', numSelectedRows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), metaKey ),
 					onclick: tp.callbacks.move.bind( null, 'up', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'up' ),
 				},
 				{
-					title: _n( 'Move row down', 'Move rows down', num_selected_rows, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), meta_key ),
+					title: _n( 'Move row down', 'Move rows down', numSelectedRows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), metaKey ),
 					onclick: tp.callbacks.move.bind( null, 'down', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'down' ),
 				},
 				{
-					title: _n( 'Move column left', 'Move columns left', num_selected_columns, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ), meta_key ),
+					title: _n( 'Move column left', 'Move columns left', numSelectedColumns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧←', 'keyboard shortcut for Move left', 'tablepress' ), metaKey ),
 					onclick: tp.callbacks.move.bind( null, 'left', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'left' ),
 				},
 				{
-					title: _n( 'Move column right', 'Move columns right', num_selected_columns, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ), meta_key ),
+					title: _n( 'Move column right', 'Move columns right', numSelectedColumns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s⇧→', 'keyboard shortcut for Move right', 'tablepress' ), metaKey ),
 					onclick: tp.callbacks.move.bind( null, 'right', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'right' ),
 				},
@@ -243,26 +243,26 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 					type: 'divisor',
 				},
 				{
-					title: _n( 'Move row to the top', 'Move rows to the top', num_selected_rows, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s%2$s⇧↑', 'keyboard shortcut for Move to the top', 'tablepress' ), meta_key, option_key ),
+					title: _n( 'Move row to the top', 'Move rows to the top', numSelectedRows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧↑', 'keyboard shortcut for Move to the top', 'tablepress' ), metaKey, optionKey ),
 					onclick: tp.callbacks.move.bind( null, 'top', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'top' ),
 				},
 				{
-					title: _n( 'Move row to the bottom', 'Move rows to the bottom', num_selected_rows, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s%2$s⇧↓', 'keyboard shortcut for Move to the bottom', 'tablepress' ), meta_key, option_key ),
+					title: _n( 'Move row to the bottom', 'Move rows to the bottom', numSelectedRows, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧↓', 'keyboard shortcut for Move to the bottom', 'tablepress' ), metaKey, optionKey ),
 					onclick: tp.callbacks.move.bind( null, 'bottom', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'bottom' ),
 				},
 				{
-					title: _n( 'Move column to first', 'Move columns to first', num_selected_columns, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s%2$s⇧←', 'keyboard shortcut for Move to first', 'tablepress' ), meta_key, option_key ),
+					title: _n( 'Move column to first', 'Move columns to first', numSelectedColumns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧←', 'keyboard shortcut for Move to first', 'tablepress' ), metaKey, optionKey ),
 					onclick: tp.callbacks.move.bind( null, 'first', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'first' ),
 				},
 				{
-					title: _n( 'Move column to last', 'Move columns to last', num_selected_columns, 'tablepress' ),
-					shortcut: sprintf( _x( '%1$s%2$s⇧→', 'keyboard shortcut for Move to last', 'tablepress' ), meta_key, option_key ),
+					title: _n( 'Move column to last', 'Move columns to last', numSelectedColumns, 'tablepress' ),
+					shortcut: sprintf( _x( '%1$s%2$s⇧→', 'keyboard shortcut for Move to last', 'tablepress' ), metaKey, optionKey ),
 					onclick: tp.callbacks.move.bind( null, 'last', 'columns' ),
 					disabled: ! tp.helpers.move_allowed( 'columns', 'last' ),
 				},
@@ -274,14 +274,14 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 				{
 					title: __( 'Sort by column ascending', 'tablepress' ),
 					onclick: tp.callbacks.sort.bind( null, 'asc' ),
-					disabled: 1 !== num_selected_columns,
-					tooltip: 1 !== num_selected_columns ? __( 'This option is disabled because more than one column was selected.', 'tablepress' ) : '',
+					disabled: 1 !== numSelectedColumns,
+					tooltip: 1 !== numSelectedColumns ? __( 'This option is disabled because more than one column was selected.', 'tablepress' ) : '',
 				},
 				{
 					title: __( 'Sort by column descending', 'tablepress' ),
 					onclick: tp.callbacks.sort.bind( null, 'desc' ),
-					disabled: 1 !== num_selected_columns,
-					tooltip: 1 !== num_selected_columns ? __( 'This option is disabled because more than one column was selected.', 'tablepress' ) : '',
+					disabled: 1 !== numSelectedColumns,
+					tooltip: 1 !== numSelectedColumns ? __( 'This option is disabled because more than one column was selected.', 'tablepress' ) : '',
 				},
 			],
 		},
@@ -294,25 +294,25 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 			title: __( 'Hide/Show …', 'tablepress' ),
 			submenu: [
 				{
-					title: _n( 'Hide row', 'Hide rows', num_selected_rows, 'tablepress' ),
+					title: _n( 'Hide row', 'Hide rows', numSelectedRows, 'tablepress' ),
 					onclick: tp.callbacks.hide_unhide.bind( null, 'hide', 'rows' ),
 					disabled: ! tp.helpers.visibility.selection_contains( 'rows', 1 ),
 					tooltip: ! tp.helpers.visibility.selection_contains( 'rows', 1 ) ? __( 'This option is disabled because no visible rows were selected.', 'tablepress' ) : '',
 				},
 				{
-					title: _n( 'Hide column', 'Hide columns', num_selected_columns, 'tablepress' ),
+					title: _n( 'Hide column', 'Hide columns', numSelectedColumns, 'tablepress' ),
 					onclick: tp.callbacks.hide_unhide.bind( null, 'hide', 'columns' ),
 					disabled: ! tp.helpers.visibility.selection_contains( 'columns', 1 ),
 					tooltip: ! tp.helpers.visibility.selection_contains( 'columns', 1 ) ? __( 'This option is disabled because no visible columns were selected.', 'tablepress' ) : '',
 				},
 				{
-					title: _n( 'Show row', 'Show rows', num_selected_rows, 'tablepress' ),
+					title: _n( 'Show row', 'Show rows', numSelectedRows, 'tablepress' ),
 					onclick: tp.callbacks.hide_unhide.bind( null, 'unhide', 'rows' ),
 					disabled: ! tp.helpers.visibility.selection_contains( 'rows', 0 ),
 					tooltip: ! tp.helpers.visibility.selection_contains( 'rows', 0 ) ? __( 'This option is disabled because no hidden rows were selected.', 'tablepress' ) : '',
 				},
 				{
-					title: _n( 'Show column', 'Show columns', num_selected_columns, 'tablepress' ),
+					title: _n( 'Show column', 'Show columns', numSelectedColumns, 'tablepress' ),
 					onclick: tp.callbacks.hide_unhide.bind( null, 'unhide', 'columns' ),
 					disabled: ! tp.helpers.visibility.selection_contains( 'columns', 0 ),
 					tooltip: ! tp.helpers.visibility.selection_contains( 'columns', 0 ) ? __( 'This option is disabled because no hidden columns were selected.', 'tablepress' ) : '',
@@ -327,8 +327,8 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 		{
 			title: __( 'Combine/Merge cells', 'tablepress' ),
 			onclick: tp.callbacks.merge_cells,
-			disabled: ( 1 === num_selected_rows && 1 === num_selected_columns ) || ! tp.helpers.cell_merge_allowed( 'no-alert' ),
-			tooltip: ( 1 === num_selected_rows && 1 === num_selected_columns ) || ! tp.helpers.cell_merge_allowed( 'no-alert', error_message ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + error_message.text : '',
+			disabled: ( 1 === numSelectedRows && 1 === numSelectedColumns ) || ! tp.helpers.cell_merge_allowed( 'no-alert' ),
+			tooltip: ( 1 === numSelectedRows && 1 === numSelectedColumns ) || ! tp.helpers.cell_merge_allowed( 'no-alert', errorMessage ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + errorMessage.text : '',
 		},
 	];
 

@@ -25,9 +25,53 @@ import { __, sprintf } from '@wordpress/i18n';
  * Internal dependencies.
  */
 import { initializeReactComponentInPortal } from '../common/react-loader';
+import { Alert } from '../common/alert';
+
+// Wrap the "Custom Commands" in a separate component, to keep internal states at a lower level.
+const CustomCommandsControl = ( { tableOptionCustomCommands, dataTablesEnabled, updateTableOptions } ) => {
+	const [ customCommands, setCustomCommands ] = useState( tableOptionCustomCommands );
+	const [ customCommandsExpanded, setCustomCommandsExpanded ] = useState( false );
+
+	/*
+	// Updating the state variable when the table option changes is not necessary, as it's never modified externally.
+	useEffect( () => {
+		setCustomCommands( tableOptionCustomCommands );
+	}, [ tableOptionCustomCommands ] );
+	*/
+
+	return (
+		<TextareaControl
+			__nextHasNoMarginBottom
+			id="option-datatables_custom_commands"
+			rows={
+				customCommandsExpanded && '' !== customCommands
+					? Math.min( 15, customCommands.split( '\n' ).length )
+					: 1
+			}
+			className="code"
+			value={ customCommands }
+			disabled={ ! dataTablesEnabled }
+			onChange={ ( newCustomCommands ) => setCustomCommands( newCustomCommands ) }
+			onBlur={ () => {
+				if ( customCommands !== tableOptionCustomCommands ) {
+					updateTableOptions( { datatables_custom_commands: customCommands } );
+				}
+			} }
+			onFocus={ () => setCustomCommandsExpanded( true ) }
+			help={
+				createInterpolateElement(
+					__( 'Additional parameters from the <a>DataTables documentation</a> to be added to the JS call.', 'tablepress' ) + ' ' + __( 'For advanced use only.', 'tablepress' ),
+					{
+						a: <a href="https://datatables.net/" />, // eslint-disable-line jsx-a11y/anchor-has-content
+					},
+				)
+			}
+		/>
+	);
+};
 
 const Section = ( { tableOptions, updateTableOptions } ) => {
-	const [ customCommandsExpanded, setCustomCommandsExpanded ] = useState( false );
+	const [ alertEnableDataTablesMergedCellsIsShown, setAlertEnableDataTablesMergedCellsIsShown ] = useState( false );
 
 	const tableHeadEnabled = ( tableOptions.table_head > 0 );
 	const dataTablesEnabled = ( tableHeadEnabled && tableOptions.use_datatables );
@@ -65,17 +109,27 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 								checked={ tableOptions.use_datatables }
 								disabled={ ! tableHeadEnabled }
 								onChange={ ( use_datatables ) => {
-									// Turn off "Enable Visitor Features" if the table has merged cells.
+									// Don't turn on "Enable Visitor Features" if the table has merged cells.
 									if ( use_datatables ) {
 										tp.helpers.visibility.update(); // Update information about hidden rows and columns.
 										if ( tp.helpers.editor.has_merged_body_cells() ) {
-											use_datatables = false;
-											window.alert( __( 'You can not enable the Table Features for Site Visitors, because your table’s body rows contain combined/merged cells.', 'tablepress' ) );
+											setAlertEnableDataTablesMergedCellsIsShown( true );
+											return;
 										}
 									}
 									updateTableOptions( { use_datatables } );
 								} }
 							/>
+							{ alertEnableDataTablesMergedCellsIsShown && (
+								<Alert
+									title={ __( 'Enable Visitor Features', 'tablepress' ) }
+									text={ __( 'You can not enable the Table Features for Site Visitors, because your table’s body rows contain combined/merged cells.', 'tablepress' ) }
+									onConfirm={ () => setAlertEnableDataTablesMergedCellsIsShown( false ) }
+									modalProps={ {
+										className: 'has-size-medium', // Using size: 'medium' is only possible in WP 6.5+.
+									} }
+								/>
+							) }
 						</td>
 					</tr>
 					<tr className="top-border">
@@ -130,6 +184,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 											{
 												input: (
 													<NumberControl
+														size="compact"
 														id="option-datatables_paginate_entries"
 														title={ __( 'This field must contain a non-negative number.', 'tablepress' ) }
 														isDragEnabled={ false }
@@ -177,7 +232,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 							/>
 						</td>
 					</tr>
-					<tr className={ tp.screen_options.showCustomCommands ? 'bottom-border' : undefined }>
+					<tr className={ tp.screenOptions.showCustomCommands ? 'bottom-border' : undefined }>
 						<th className="column-1" scope="row">{ __( 'Horizontal Scrolling', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
@@ -189,32 +244,14 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 							/>
 						</td>
 					</tr>
-					{ ( tp.screen_options.showCustomCommands ) && (
+					{ ( tp.screenOptions.showCustomCommands ) && (
 						<tr className="top-border">
 							<th className="column-1 top-align" scope="row"><label htmlFor="option-datatables_custom_commands">{ __( 'Custom Commands', 'tablepress' ) }:</label></th>
 							<td className="column-2">
-								<TextareaControl
-									__nextHasNoMarginBottom
-									id="option-datatables_custom_commands"
-									rows={
-										customCommandsExpanded && '' !== tableOptions.datatables_custom_commands
-											? Math.min( 15, tableOptions.datatables_custom_commands.split( '\n' ).length )
-											: 1
-									}
-									className="code"
-									value={ tableOptions.datatables_custom_commands }
-									disabled={ ! dataTablesEnabled }
-									onChange={ ( datatables_custom_commands ) => updateTableOptions( { datatables_custom_commands } ) }
-									onFocus={ () => setCustomCommandsExpanded( true ) }
-									onBlur={ () => setCustomCommandsExpanded( false ) }
-									help={
-										createInterpolateElement(
-											__( 'Additional parameters from the <a>DataTables documentation</a> to be added to the JS call.', 'tablepress' ) + ' ' + __( 'For advanced use only.', 'tablepress' ),
-											{
-												a: <a href="https://datatables.net/" />, // eslint-disable-line jsx-a11y/anchor-has-content
-											},
-										)
-									}
+								<CustomCommandsControl
+									tableOptionCustomCommands={ tableOptions.datatables_custom_commands }
+									updateTableOptions={ updateTableOptions }
+									dataTablesEnabled={ dataTablesEnabled }
 								/>
 							</td>
 						</tr>

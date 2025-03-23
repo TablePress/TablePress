@@ -23,7 +23,28 @@ import block from '../block.json';
 /**
  * Internal dependencies.
  */
-import { shortcode_attrs_to_string } from './common/functions';
+import { shortcodeAttrsToString } from './common/functions';
+
+/**
+ * Converts a set of parsed Shortcode attributes to a parameters string.
+ *
+ * @param {Object} shortcodeAttrs The Shortcode attributes.
+ * @return {string} The parameters string.
+ */
+const convertShortcodeAttrsToParametersString = ( shortcodeAttrs ) => {
+	// Remove the `id` attribute from the Shortcode parameters, as it is handled separately.
+	delete shortcodeAttrs.named.id;
+
+	let parameters = shortcodeAttrsToString( shortcodeAttrs );
+
+	// Replace curly quotation marks around a value with normal ones.
+	parameters = parameters.replace( /=“([^”]*)”/g, '="$1"' );
+
+	// Decode HTML entities like `&amp;`, `&lt;`, `&gt;`, `&lsqb;`, and `&rsqb;` that were encoded in the Shortcode.
+	parameters = parameters.replaceAll( '&amp;', '&' ).replaceAll( '&lt;', '<' ).replaceAll( '&gt;', '>' ).replaceAll( '&lsqb;', '[' ).replaceAll( '&rsqb;', ']' );
+
+	return parameters;
+};
 
 /**
  * Converts a textual Shortcode to a TablePress table block.
@@ -31,13 +52,11 @@ import { shortcode_attrs_to_string } from './common/functions';
  * @param {string} content The Shortcode as a text string.
  * @return {Object} TablePress table block.
  */
-const convertShortcodeTextToBlock = function ( content ) {
+const convertShortcodeTextToBlock = ( content ) => {
 	let shortcodeAttrs = shortcode.next( tp.table.shortcode, content ).shortcode.attrs;
 	shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
 	const id = shortcodeAttrs.named.id;
-	delete shortcodeAttrs.named.id;
-	let parameters = shortcode_attrs_to_string( shortcodeAttrs );
-	parameters = parameters.replace( /=“([^”]*)”/g, '="$1"' ); // Replace curly quotation marks around a value with normal ones.
+	const parameters = convertShortcodeAttrsToParametersString( shortcodeAttrs );
 	return createBlock( block.name, { id, parameters } );
 };
 
@@ -58,8 +77,7 @@ const transforms = {
 					type: 'string',
 					shortcode: ( shortcodeAttrs ) => {
 						shortcodeAttrs = { named: { ...shortcodeAttrs.named }, numeric: [ ...shortcodeAttrs.numeric ] }; // Use object destructuring to get a clone of the object.
-						delete shortcodeAttrs.named.id;
-						return shortcode_attrs_to_string( shortcodeAttrs );
+						return convertShortcodeAttrsToParametersString( shortcodeAttrs );
 					},
 				},
 			},
@@ -93,6 +111,8 @@ const transforms = {
 				parameters = parameters.trim();
 				if ( '' !== parameters ) {
 					parameters += ' ';
+					// Encode characters that cause problems in Shortcodes, e.g. due to sanitization, like `&`, `<`, `>`, `[`, and `]` to HTML entities.
+					parameters = parameters.replaceAll( '&', '&amp;' ).replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ).replaceAll( '[', '&lsqb;' ).replaceAll( ']', '&rsqb;' );
 				}
 				const text = `[${ tp.table.shortcode } id=${ id } ${ parameters }/]`;
 				return createBlock( 'core/shortcode', { text } );

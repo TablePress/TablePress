@@ -7,32 +7,18 @@
  * @since 1.0.0
  */
 
-/* Import spinner and alert box styling. */
-@use "spinner-alert";
-
-/* Container for Table Preview, Advanced Editor, and Help Box dialogs. */
+/* Container for Advanced Editor and Help Box dialogs. */
 .hidden-container {
 	display: none;
 }
 
-.help-box {
-	padding-top: 0;
-	padding-bottom: 0;
-}
-
 /* Positioning of the "Help" button in the header section of a postbox. */
 .postbox-header .handle-actions {
-	.button-module-help {
-		margin-right: 10px;
-		vertical-align: top;
-		margin-top: 1px;
+	display: flex;
+	align-items: center;
 
-		@media screen and (max-width: 782px) {
-			line-height: 2.18181818;
-			vertical-align: top;
-			min-height: auto;
-			margin-bottom: 0;
-		}
+	.help-container {
+		margin-right: 0.5em;
 	}
 
 	/* Backward compatibility with WP < 6.5. */
@@ -59,13 +45,11 @@ body #wp-link-backdrop {
 	z-index: 100103;
 }
 
-/* Table Preview (CSS for actual preview is directly in the preview HTML). */
-#table-preview {
-	padding: 0;
-
-	&-iframe {
-		width: 100%;
-		height: 100%;
+/* Background color for the readonly Shortcode text field. */
+#table-information-shortcode {
+	&,
+	+ .components-input-control__suffix {
+		background-color: #f0f0f1;
 	}
 }
 
@@ -89,7 +73,7 @@ body #wp-link-backdrop {
 	}
 }
 
-/* Content of the Advanced Editor wpdialog */
+/* Content of the Advanced Editor wpdialog. */
 #advanced-editor {
 	padding: 5px;
 
@@ -103,36 +87,24 @@ body #wp-link-backdrop {
 	min-width: 99.9%; /* but use the full width, minus approx. 1px as the box is wider than the others otherwise. */
 }
 
-/* Button positioning inside tables in postboxes, like "Table Manipulation". */
-.tablepress-postbox-table .button {
-	vertical-align: middle;
-}
-
 #tablepress_edit-table-manipulation .column-1,
 #tablepress_edit-table-manipulation .column-2 {
 	width: 50%;
 }
 
-/* Align with checkbox labels */
-.checkbox-left {
-	display: inline-block;
-	padding-left: 1.25rem; /* Checkboxes are 1rem wide + 0.25rem margin. */
-	padding-top: 8px;
-}
-
-/* Compatibility with WP < 6.6 */
+/* Compatibility with WP < 6.6. */
 .components-checkbox-control .components-base-control__field:has(> span) {
 	display: flex;
 	align-items: center;
 }
 
+/* Jspreadsheet CSS. */
+
 #table-editor {
 	font-size: 14px;
 }
 
-/* Jspreadsheet CSS * /
-
-/* Minimum row height, using :after to keep resize animation */
+/* Minimum row height, using :after to keep resize animation. */
 .jexcel > tbody > tr:after {
 	content: "";
 	display: inline-block;
@@ -293,7 +265,7 @@ body #wp-link-backdrop {
 		background: transparent;
 	}
 }
-/* WP Feature Pointers */
+/* WP Feature Pointers. */
 .pointer-tp21_edit_screen_options .wp-pointer-arrow {
 	left: 225px;
 }

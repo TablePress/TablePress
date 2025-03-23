@@ -7,8 +7,6 @@
  * @since 2.2.0
  */
 
-/* globals tp */
-
 /**
  * WordPress dependencies.
  */
@@ -128,6 +126,7 @@ const Screen = () => {
 					<td className="column-2">
 						<SelectControl
 							__nextHasNoMarginBottom
+							__next40pxDefaultSize
 							ref={ tablesExportListSelect }
 							id="tables-export-list"
 							// size={ exportTablesSelectMultiple ? exportTablesSelectSize : 1 } // Not supported by `SelectControl`, so done with an effect above.
@@ -167,6 +166,7 @@ const Screen = () => {
 						<HStack>
 							<SelectControl
 								__nextHasNoMarginBottom
+								__next40pxDefaultSize
 								id="tables-export-format"
 								name="export[format]"
 								value={ screenData.exportFormat }
@@ -190,6 +190,7 @@ const Screen = () => {
 						>
 							<SelectControl
 								__nextHasNoMarginBottom
+								__next40pxDefaultSize
 								id="tables-export-csv-delimiter"
 								name="export[csv_delimiter]"
 								value={ screenData.csvDelimiter }
