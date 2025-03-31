@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 3.1
+Stable tag: 3.1.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,9 +108,14 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.1.1 (April 1, 2025) =
+
+* The CSS code for styling individual table rows will now be applied again.
+* Users of the Elementor page builder can now properly delete a “TablePress table“ widget again.
+
 = Version 3.1 (March 25, 2025) =
 
-TablePress 3.1 is a major feature update, here are the highlights:
+TablePress 3.1 is a major feature, stability, maintenance, compatibility, and security update. Here are the highlights:
 
 **Improved Frontend Table Performance**
 
@@ -138,6 +143,7 @@ TablePress 3.1 is a major feature update, here are the highlights:
 
 **Behind the scenes**
 
+* **Security fix**: Authenticated Stored XSS (CVE-2025-2685). Thanks to SavPhill and the Wordfence team for following responsible disclosure policies when reporting this issue!
 * Several minor bugs and inconsistencies have been fixed and improved!
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
@@ -149,6 +155,9 @@ TablePress 3.1 is a major feature update, here are the highlights:
 * Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=readme)
 
 == Upgrade Notice ==
+
+= 3.1.1 =
+This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
 
 = 3.1 =
 This update is a major feature, stability, maintenance, and compatibility release. Updating is highly recommended!

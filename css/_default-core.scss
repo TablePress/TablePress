@@ -73,14 +73,14 @@ $align-side: left;
 		}
 	}
 	> :where(tbody.row-striping) {
-		> :nth-child(odd of :not(.child, .dtrg-group)) { /* Ignore child and group rows. */
+		> :nth-child(odd of :where(:not(.child, .dtrg-group))) { /* Ignore child and group rows. */
 			> *,
 			+ :where(.child) > * { /* Give child rows the same style. */
 				background-color: var(--odd-bg-color);
 				color: var(--odd-text-color);
 			}
 		}
-		> :nth-child(even of :not(.child, .dtrg-group)) { /* Ignore child and group rows. */
+		> :nth-child(even of :where(:not(.child, .dtrg-group))) { /* Ignore child and group rows. */
 			> *,
 			+ :where(.child) > * { /* Give child rows the same style. */
 				background-color: var(--even-bg-color);

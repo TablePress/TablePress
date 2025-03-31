@@ -52,6 +52,7 @@ const TablePreview = ( { title, url, onRequestClose } ) => {
 			headerActions={
 				<Button
 					icon={ external }
+					size="compact"
 					label={ __( 'Open the preview in a new tab', 'tablepress' ) }
 					href={ url }
 					target="_blank"

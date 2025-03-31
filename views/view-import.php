@@ -56,7 +56,9 @@ class TablePress_Import_View extends TablePress_View {
 		$this->add_meta_box( 'import-form', __( 'Import Tables', 'tablepress' ), array( $this, 'postbox_import_form' ), 'normal' );
 		$screen = get_current_screen();
 		add_filter( "postbox_classes_{$screen->id}_tablepress_{$this->action}-import-form", array( $this, 'postbox_classes' ) ); // @phpstan-ignore property.nonObject
-		$this->add_meta_box( 'tables-auto-import', __( 'Automatic Periodic Table Import', 'tablepress' ), array( $this, 'postbox_auto_import' ), 'additional' );
+		if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW ) {
+			$this->add_meta_box( 'tables-auto-import', __( 'Automatic Periodic Table Import', 'tablepress' ), array( $this, 'postbox_auto_import' ), 'additional' );
+		}
 	}
 
 	/**

@@ -192,7 +192,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 		$tables = apply_filters( 'tablepress_block_editor_tables_list', $tables );
 
 		$this->add_control( // @phpstan-ignore method.notFound
-			'id',
+			'table_id',
 			array(
 				'label'       => esc_html__( 'Table:', 'tablepress' ),
 				'show_label'  => false,
@@ -245,8 +245,16 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 		$settings = $this->get_settings_for_display(); // @phpstan-ignore method.notFound (Elementor methods are not in the stubs.)
 
 		// Don't return anything if no table was selected.
-		if ( empty( $settings['id'] ) ) {
-			return;
+		if ( empty( $settings['table_id'] ) ) {
+			/*
+			 * In TablePress 3.1 (before 3.1.1), the widget control was named "id" instead of "table_id", which however caused problems.
+			 * To ensure that tables will continue to be shown, if the widget was created with 3.1, the "table_id" is set to the "id" value, if only that exists.
+			 */
+			if ( empty( $settings['id'] ) ) {
+				return;
+			} else {
+				$settings['table_id'] = $settings['id'];
+			}
 		}
 
 		if ( '' !== trim( $settings['parameters'] ) ) {
@@ -254,13 +262,13 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 		} else {
 			$render_attributes = array();
 		}
-		$render_attributes['id'] = $settings['id'];
+		$render_attributes['id'] = $settings['table_id'];
 
 		/*
 		 * It would be nice to print only the Shortcode, for better data portability, e.g. if a site switches away from Elementor.
 		 * However, the editor will then only render the Shortcode itself, which is not very helpful.
 		 * Due to this, the table HTML code is rendered.
-		 * echo '[' . \TablePress::$shortcode . " id={$settings['id']} {$settings['parameters']} /]";
+		 * echo '[' . \TablePress::$shortcode . " id={$settings['table_id']} {$settings['parameters']} /]";
 		 */
 
 		echo \TablePress::$controller->shortcode_table( $render_attributes );

@@ -47,7 +47,7 @@
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "dev-develop",
-		"phpcompatibility/phpcompatibility-wp": "^2.1.5",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
 		"yoast/phpunit-polyfills": "^1.1",
 		"phpcsstandards/phpcsutils": "dev-develop",
 		"phpcsstandards/phpcsextra": "dev-develop",

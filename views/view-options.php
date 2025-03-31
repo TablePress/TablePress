@@ -53,7 +53,9 @@ class TablePress_Options_View extends TablePress_View {
 				$this->admin_page->enqueue_script( 'codemirror' );
 			}
 
-			$this->add_meta_box( 'default-style', sprintf( __( 'Default Styling %s', 'tablepress' ), tb_tp_fs()->is_free_plan() ? '<span class="pill-label">' . __( 'Premium', 'tablepress' ) . '</span>' : '' ), array( $this, 'postbox_default_style_customizer_screen' ), 'normal' );
+			if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW ) {
+				$this->add_meta_box( 'default-style', sprintf( __( 'Default Styling %s', 'tablepress' ), tb_tp_fs()->is_free_plan() ? '<span class="pill-label">' . __( 'Premium', 'tablepress' ) . '</span>' : '' ), array( $this, 'postbox_default_style_customizer_screen' ), 'normal' );
+			}
 			$this->add_meta_box( 'frontend-options', __( 'Custom Styling', 'tablepress' ), array( $this, 'postbox_frontend_options' ), 'normal' );
 		}
 		$this->add_meta_box( 'user-options', __( 'User Options', 'tablepress' ), array( $this, 'postbox_user_options' ), 'normal' );
