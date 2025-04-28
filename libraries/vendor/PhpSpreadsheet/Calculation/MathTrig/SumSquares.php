@@ -9,17 +9,17 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class SumSquares
 {
 	/**
-	 * SUMSQ.
-	 *
-	 * SUMSQ returns the sum of the squares of the arguments
-	 *
-	 * Excel Function:
-	 *        SUMSQ(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function sumSquare(...$args)
+				 * SUMSQ.
+				 *
+				 * SUMSQ returns the sum of the squares of the arguments
+				 *
+				 * Excel Function:
+				 *        SUMSQ(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function sumSquare(...$args)
 	{
 		try {
 			$returnValue = 0;
@@ -47,22 +47,22 @@ class SumSquares
 	}
 
 	/**
-	 * These functions accept only numeric arguments, not even strings which are numeric.
-	 * @param mixed $item
-	 */
-	private static function numericNotString($item): bool
+				 * These functions accept only numeric arguments, not even strings which are numeric.
+				 * @param mixed $item
+				 */
+				private static function numericNotString($item): bool
 	{
 		return is_numeric($item) && !is_string($item);
 	}
 
 	/**
-	 * SUMX2MY2.
-	 *
-	 * @param mixed[] $matrixData1 Matrix #1
-	 * @param mixed[] $matrixData2 Matrix #2
-	 * @return float|int|string
-	 */
-	public static function sumXSquaredMinusYSquared(array $matrixData1, array $matrixData2)
+				 * SUMX2MY2.
+				 *
+				 * @param mixed[] $matrixData1 Matrix #1
+				 * @param mixed[] $matrixData2 Matrix #2
+				 * @return float|int|string
+				 */
+				public static function sumXSquaredMinusYSquared(array $matrixData1, array $matrixData2)
 	{
 		try {
 			$array1 = Functions::flattenArray($matrixData1);
@@ -83,13 +83,13 @@ class SumSquares
 	}
 
 	/**
-	 * SUMX2PY2.
-	 *
-	 * @param mixed[] $matrixData1 Matrix #1
-	 * @param mixed[] $matrixData2 Matrix #2
-	 * @return float|int|string
-	 */
-	public static function sumXSquaredPlusYSquared(array $matrixData1, array $matrixData2)
+				 * SUMX2PY2.
+				 *
+				 * @param mixed[] $matrixData1 Matrix #1
+				 * @param mixed[] $matrixData2 Matrix #2
+				 * @return float|int|string
+				 */
+				public static function sumXSquaredPlusYSquared(array $matrixData1, array $matrixData2)
 	{
 		try {
 			$array1 = Functions::flattenArray($matrixData1);
@@ -110,13 +110,13 @@ class SumSquares
 	}
 
 	/**
-	 * SUMXMY2.
-	 *
-	 * @param mixed[] $matrixData1 Matrix #1
-	 * @param mixed[] $matrixData2 Matrix #2
-	 * @return float|int|string
-	 */
-	public static function sumXMinusYSquared(array $matrixData1, array $matrixData2)
+				 * SUMXMY2.
+				 *
+				 * @param mixed[] $matrixData1 Matrix #1
+				 * @param mixed[] $matrixData2 Matrix #2
+				 * @return float|int|string
+				 */
+				public static function sumXMinusYSquared(array $matrixData1, array $matrixData2)
 	{
 		try {
 			$array1 = Functions::flattenArray($matrixData1);

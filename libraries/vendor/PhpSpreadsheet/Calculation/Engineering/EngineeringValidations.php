@@ -8,9 +8,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class EngineeringValidations
 {
 	/**
-	 * @param mixed $value
-	 */
-	public static function validateFloat($value): float
+				 * @param mixed $value
+				 */
+				public static function validateFloat($value): float
 	{
 		if (!is_numeric($value)) {
 			throw new Exception(ExcelError::VALUE());
@@ -20,9 +20,9 @@ class EngineeringValidations
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public static function validateInt($value): int
+				 * @param mixed $value
+				 */
+				public static function validateInt($value): int
 	{
 		if (!is_numeric($value)) {
 			throw new Exception(ExcelError::VALUE());

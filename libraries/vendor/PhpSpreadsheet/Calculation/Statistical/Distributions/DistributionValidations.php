@@ -9,9 +9,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Statistical\StatisticalValid
 class DistributionValidations extends StatisticalValidations
 {
 	/**
-	 * @param mixed $probability
-	 */
-	public static function validateProbability($probability): float
+				 * @param mixed $probability
+				 */
+				public static function validateProbability($probability): float
 	{
 		$probability = self::validateFloat($probability);
 

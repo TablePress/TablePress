@@ -404,16 +404,16 @@ class AutoFilter
 				}
 			} elseif ($ruleValue == '') {
 				switch ($ruleOperator) {
-					case Rule::AUTOFILTER_COLUMN_RULE_EQUAL:
-						$retVal = ($cellValue === '') || ($cellValue === null);
-						break;
-					case Rule::AUTOFILTER_COLUMN_RULE_NOTEQUAL:
-						$retVal = $cellValue != '';
-						break;
-					default:
-						$retVal = true;
-						break;
-				}
+														case Rule::AUTOFILTER_COLUMN_RULE_EQUAL:
+															$retVal = ($cellValue === '') || ($cellValue === null);
+															break;
+														case Rule::AUTOFILTER_COLUMN_RULE_NOTEQUAL:
+															$retVal = $cellValue != '';
+															break;
+														default:
+															$retVal = true;
+															break;
+													}
 			} else {
 				//    String values are always tested for equality, factoring in for wildcards (hence a regexp test)
 				switch ($ruleOperator) {
@@ -1035,7 +1035,7 @@ class AutoFilter
 				//    The columns array of \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet\AutoFilter objects
 				$this->{$key} = [];
 				foreach ($value as $k => $v) {
-					$this->{$key}[$k] = clone $v;
+					$this->{$key}[$k] = clone $v; //* @phpstan-ignore-line
 					// attach the new cloned Column to this new cloned Autofilter object
 					$this->{$key}[$k]->setParent($this);
 				}

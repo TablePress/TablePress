@@ -230,10 +230,10 @@ class Layout
 	}
 
 	/**
-	 * Get X-Position.
-	 * @return float|int|null
-	 */
-	public function getXPosition()
+				 * Get X-Position.
+				 * @return float|int|null
+				 */
+				public function getXPosition()
 	{
 		return $this->xPos;
 	}

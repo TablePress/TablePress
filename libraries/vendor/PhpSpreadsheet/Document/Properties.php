@@ -34,16 +34,16 @@ class Properties
 	private string $lastModifiedBy;
 
 	/**
-	 * Created.
-	 * @var float|int
-	 */
-	private $created;
+				 * Created.
+				 * @var float|int
+				 */
+				private $created;
 
 	/**
-	 * Modified.
-	 * @var float|int
-	 */
-	private $modified;
+				 * Modified.
+				 * @var float|int
+				 */
+				private $modified;
 
 	/**
 	 * Title.
@@ -143,10 +143,10 @@ class Properties
 	}
 
 	/**
-	 * @param null|bool|float|int|string $timestamp
-	 * @return float|int
-	 */
-	private static function intOrFloatTimestamp($timestamp)
+				 * @param null|bool|float|int|string $timestamp
+				 * @return float|int
+				 */
+				private static function intOrFloatTimestamp($timestamp)
 	{
 		if ($timestamp === null || is_bool($timestamp)) {
 			$timestamp = (float) (new DateTime())->format('U');
@@ -165,21 +165,21 @@ class Properties
 	}
 
 	/**
-	 * Get Created.
-	 * @return float|int
-	 */
-	public function getCreated()
+				 * Get Created.
+				 * @return float|int
+				 */
+				public function getCreated()
 	{
 		return $this->created;
 	}
 
 	/**
-	 * Set Created.
-	 *
-	 * @return $this
-	 * @param null|float|int|string $timestamp
-	 */
-	public function setCreated($timestamp): self
+				 * Set Created.
+				 *
+				 * @return $this
+				 * @param null|float|int|string $timestamp
+				 */
+				public function setCreated($timestamp): self
 	{
 		$this->created = self::intOrFloatTimestamp($timestamp);
 
@@ -187,21 +187,21 @@ class Properties
 	}
 
 	/**
-	 * Get Modified.
-	 * @return float|int
-	 */
-	public function getModified()
+				 * Get Modified.
+				 * @return float|int
+				 */
+				public function getModified()
 	{
 		return $this->modified;
 	}
 
 	/**
-	 * Set Modified.
-	 *
-	 * @return $this
-	 * @param null|float|int|string $timestamp
-	 */
-	public function setModified($timestamp): self
+				 * Set Modified.
+				 *
+				 * @return $this
+				 * @param null|float|int|string $timestamp
+				 */
+				public function setModified($timestamp): self
 	{
 		$this->modified = self::intOrFloatTimestamp($timestamp);
 
@@ -367,10 +367,10 @@ class Properties
 	}
 
 	/**
-	 * Get a Custom Property Value.
-	 * @return bool|float|int|string|null
-	 */
-	public function getCustomPropertyValue(string $propertyName)
+				 * Get a Custom Property Value.
+				 * @return bool|float|int|string|null
+				 */
+				public function getCustomPropertyValue(string $propertyName)
 	{
 		if (isset($this->customProperties[$propertyName])) {
 			return $this->customProperties[$propertyName]['value'];
@@ -388,9 +388,9 @@ class Properties
 	}
 
 	/**
-	 * @param bool|int|float|string|null $propertyValue
-	 */
-	private function identifyPropertyType($propertyValue): string
+				 * @param bool|int|float|string|null $propertyValue
+				 */
+				private function identifyPropertyType($propertyValue): string
 	{
 		if (is_float($propertyValue)) {
 			return self::PROPERTY_TYPE_FLOAT;
@@ -406,14 +406,14 @@ class Properties
 	}
 
 	/**
-	 * Set a Custom Property.
-	 *
-	 * @param ?string $propertyType see `self::VALID_PROPERTY_TYPE_LIST`
-	 *
-	 * @return $this
-	 * @param bool|int|float|string|null $propertyValue
-	 */
-	public function setCustomProperty(string $propertyName, $propertyValue = '', ?string $propertyType = null): self
+				 * Set a Custom Property.
+				 *
+				 * @param ?string $propertyType see `self::VALID_PROPERTY_TYPE_LIST`
+				 *
+				 * @return $this
+				 * @param bool|int|float|string|null $propertyValue
+				 */
+				public function setCustomProperty(string $propertyName, $propertyValue = '', ?string $propertyType = null): self
 	{
 		if (($propertyType === null) || (!in_array($propertyType, self::VALID_PROPERTY_TYPE_LIST))) {
 			$propertyType = $this->identifyPropertyType($propertyValue);
@@ -462,21 +462,21 @@ class Properties
 	];
 
 	/**
-	 * Convert property to form desired by Excel.
-	 * @param bool|int|float|string|null $propertyValue
-	 * @return bool|float|int|string|null
-	 */
-	public static function convertProperty($propertyValue, string $propertyType)
+				 * Convert property to form desired by Excel.
+				 * @param bool|int|float|string|null $propertyValue
+				 * @return bool|float|int|string|null
+				 */
+				public static function convertProperty($propertyValue, string $propertyType)
 	{
 		return self::SPECIAL_TYPES[$propertyType] ?? self::convertProperty2($propertyValue, $propertyType);
 	}
 
 	/**
-	 * Convert property to form desired by Excel.
-	 * @param bool|int|float|string|null $propertyValue
-	 * @return bool|float|int|string|null
-	 */
-	private static function convertProperty2($propertyValue, string $type)
+				 * Convert property to form desired by Excel.
+				 * @param bool|int|float|string|null $propertyValue
+				 * @return bool|float|int|string|null
+				 */
+				private static function convertProperty2($propertyValue, string $type)
 	{
 		$propertyType = self::convertPropertyType($type);
 		switch ($propertyType) {

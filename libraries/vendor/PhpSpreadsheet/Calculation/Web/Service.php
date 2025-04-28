@@ -53,17 +53,17 @@ class Service
 	}
 
 	/**
-	 * URLENCODE.
-	 *
-	 * Returns data from a web service on the Internet or Intranet.
-	 *
-	 * Excel Function:
-	 *        urlEncode(text)
-	 *
-	 * @return string the url encoded output
-	 * @param mixed $text
-	 */
-	public static function urlEncode($text): string
+				 * URLENCODE.
+				 *
+				 * Returns data from a web service on the Internet or Intranet.
+				 *
+				 * Excel Function:
+				 *        urlEncode(text)
+				 *
+				 * @return string the url encoded output
+				 * @param mixed $text
+				 */
+				public static function urlEncode($text): string
 	{
 		if (!is_string($text)) {
 			return ExcelError::VALUE();

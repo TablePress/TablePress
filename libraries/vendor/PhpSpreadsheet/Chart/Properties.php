@@ -178,9 +178,9 @@ abstract class Properties
 	}
 
 	/**
-	 * @param null|float|int|string $alpha
-	 */
-	protected function setColorProperties(?string $color, $alpha, ?string $colorType): array
+				 * @param null|float|int|string $alpha
+				 */
+				protected function setColorProperties(?string $color, $alpha, ?string $colorType): array
 	{
 		return [
 			'type' => $colorType,
@@ -403,11 +403,11 @@ abstract class Properties
 	}
 
 	/**
-	 * Get value of array element.
-	 * @param mixed[]|int|string $elements
-	 * @return mixed
-	 */
-	protected function getArrayElementsValue(array $properties, $elements)
+				 * Get value of array element.
+				 * @param mixed[]|int|string $elements
+				 * @return mixed
+				 */
+				protected function getArrayElementsValue(array $properties, $elements)
 	{
 		$reference = &$properties;
 		if (!is_array($elements)) {
@@ -439,11 +439,11 @@ abstract class Properties
 	}
 
 	/**
-	 * Get Glow Property.
-	 * @param mixed[]|string $property
-	 * @return mixed[]|float|int|string|null
-	 */
-	public function getGlowProperty($property)
+				 * Get Glow Property.
+				 * @param mixed[]|string $property
+				 * @return mixed[]|float|int|string|null
+				 */
+				public function getGlowProperty($property)
 	{
 		$retVal = null;
 		if ($property === 'size') {
@@ -462,10 +462,10 @@ abstract class Properties
 	}
 
 	/**
-	 * Get Glow Color Property.
-	 * @return int|string|null
-	 */
-	public function getGlowColor(string $propertyName)
+				 * Get Glow Color Property.
+				 * @return int|string|null
+				 */
+				public function getGlowColor(string $propertyName)
 	{
 		return $this->glowColor->getColorProperty($propertyName);
 	}
@@ -515,9 +515,9 @@ abstract class Properties
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public function setShadowProperty(string $propertyName, $value): self
+				 * @param mixed $value
+				 */
+				public function setShadowProperty(string $propertyName, $value): self
 	{
 		$this->activateObject();
 		if ($propertyName === 'color' && is_array($value)) {
@@ -530,10 +530,10 @@ abstract class Properties
 	}
 
 	/**
-	 * Set Shadow Properties.
-	 * @param null|float|int|string $colorAlpha
-	 */
-	public function setShadowProperties(int $presets, ?string $colorValue = null, ?string $colorType = null, $colorAlpha = null, ?float $blur = null, ?int $angle = null, ?float $distance = null): void
+				 * Set Shadow Properties.
+				 * @param null|float|int|string $colorAlpha
+				 */
+				public function setShadowProperties(int $presets, ?string $colorValue = null, ?string $colorType = null, $colorAlpha = null, ?float $blur = null, ?int $angle = null, ?float $distance = null): void
 	{
 		$this->activateObject()->setShadowPresetsProperties((int) $presets);
 		if ($presets === 0) {
@@ -612,12 +612,12 @@ abstract class Properties
 	}
 
 	/**
-	 * Set Shadow Angle.
-	 *
-	 * @return $this
-	 * @param null|float|int|string $angle
-	 */
-	protected function setShadowAngle($angle)
+				 * Set Shadow Angle.
+				 *
+				 * @return $this
+				 * @param null|float|int|string $angle
+				 */
+				protected function setShadowAngle($angle)
 	{
 		if (is_numeric($angle)) {
 			$this->shadowProperties['direction'] = $angle;
@@ -646,12 +646,12 @@ abstract class Properties
 	}
 
 	/**
-	 * Get Shadow Property.
-	 *
-	 * @param string|string[] $elements
-	 * @return mixed[]|string|null
-	 */
-	public function getShadowProperty($elements)
+				 * Get Shadow Property.
+				 *
+				 * @param string|string[] $elements
+				 * @return mixed[]|string|null
+				 */
+				public function getShadowProperty($elements)
 	{
 		if ($elements === 'color') {
 			return [
@@ -737,19 +737,19 @@ abstract class Properties
 	}
 
 	/**
-	 * Get Line Color Property.
-	 * @return int|string|null
-	 */
-	public function getLineColorProperty(string $propertyName)
+				 * Get Line Color Property.
+				 * @return int|string|null
+				 */
+				public function getLineColorProperty(string $propertyName)
 	{
 		return $this->lineColor->getColorProperty($propertyName);
 	}
 
 	/**
-	 * Set Line Style Properties.
-	 * @param null|float|int|string $lineWidth
-	 */
-	public function setLineStyleProperties(
+				 * Set Line Style Properties.
+				 * @param null|float|int|string $lineWidth
+				 */
+				public function setLineStyleProperties(
 		$lineWidth = null,
 		?string $compoundType = '',
 		?string $dashType = '',
@@ -836,9 +836,9 @@ abstract class Properties
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public function setLineStyleProperty(string $propertyName, $value): self
+				 * @param mixed $value
+				 */
+				public function setLineStyleProperty(string $propertyName, $value): self
 	{
 		$this->activateObject();
 		$this->lineStyleProperties[$propertyName] = $value;
@@ -847,10 +847,10 @@ abstract class Properties
 	}
 
 	/**
-	 * Get Line Style Property.
-	 * @param mixed[]|string $elements
-	 */
-	public function getLineStyleProperty($elements): ?string
+				 * Get Line Style Property.
+				 * @param mixed[]|string $elements
+				 */
+				public function getLineStyleProperty($elements): ?string
 	{
 		$retVal = $this->getArrayElementsValue($this->lineStyleProperties, $elements);
 		if (is_scalar($retVal)) {

@@ -4,6 +4,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\Token;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Engine\BranchPruner;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class Stack
 {
@@ -12,7 +13,7 @@ class Stack
 	/**
 	 * The parser stack for formulae.
 	 *
-	 * @var mixed[]
+	 * @var array<int, array>
 	 */
 	private array $stack = [];
 
@@ -35,16 +36,16 @@ class Stack
 	}
 
 	/**
-	 * Push a new entry onto the stack.
-	 * @param mixed $value
-	 */
-	public function push(string $type, $value, ?string $reference = null): void
+				 * Push a new entry onto the stack.
+				 * @param mixed $value
+				 */
+				public function push(string $type, $value, ?string $reference = null): void
 	{
 		$stackItem = $this->getStackItem($type, $value, $reference);
 		$this->stack[$this->count++] = $stackItem;
 
 		if ($type === 'Function') {
-			$localeFunction = Calculation::localeFunc($value);
+			$localeFunction = Calculation::localeFunc(StringHelper::convertToString($value));
 			if ($localeFunction != $value) {
 				$this->stack[($this->count - 1)]['localeValue'] = $localeFunction;
 			}
@@ -57,9 +58,9 @@ class Stack
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public function getStackItem(string $type, $value, ?string $reference = null): array
+				 * @param mixed $value
+				 */
+				public function getStackItem(string $type, $value, ?string $reference = null): array
 	{
 		$stackItem = [
 			'type' => $type,

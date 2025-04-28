@@ -19,11 +19,11 @@ class Helpers
 	}
 
 	/**
-	 * Many functions accept null/false/true argument treated as 0/0/1.
-	 * @return float|int
-	 * @param mixed $number
-	 */
-	public static function validateNumericNullBool($number)
+				 * Many functions accept null/false/true argument treated as 0/0/1.
+				 * @return float|int
+				 * @param mixed $number
+				 */
+				public static function validateNumericNullBool($number)
 	{
 		$number = Functions::flattenSingleValue($number);
 		if ($number === null) {
@@ -40,12 +40,12 @@ class Helpers
 	}
 
 	/**
-	 * Validate numeric, but allow substitute for null.
-	 * @param null|float|int $substitute
-	 * @return float|int
-	 * @param mixed $number
-	 */
-	public static function validateNumericNullSubstitution($number, $substitute)
+				 * Validate numeric, but allow substitute for null.
+				 * @param null|float|int $substitute
+				 * @return float|int
+				 * @param mixed $number
+				 */
+				public static function validateNumericNullSubstitution($number, $substitute)
 	{
 		$number = Functions::flattenSingleValue($number);
 		if ($number === null && $substitute !== null) {
@@ -59,10 +59,10 @@ class Helpers
 	}
 
 	/**
-	 * Confirm number >= 0.
-	 * @param float|int $number
-	 */
-	public static function validateNotNegative($number, ?string $except = null): void
+				 * Confirm number >= 0.
+				 * @param float|int $number
+				 */
+				public static function validateNotNegative($number, ?string $except = null): void
 	{
 		if ($number >= 0) {
 			return;
@@ -72,10 +72,10 @@ class Helpers
 	}
 
 	/**
-	 * Confirm number > 0.
-	 * @param float|int $number
-	 */
-	public static function validatePositive($number, ?string $except = null): void
+				 * Confirm number > 0.
+				 * @param float|int $number
+				 */
+				public static function validatePositive($number, ?string $except = null): void
 	{
 		if ($number > 0) {
 			return;
@@ -85,10 +85,10 @@ class Helpers
 	}
 
 	/**
-	 * Confirm number != 0.
-	 * @param float|int $number
-	 */
-	public static function validateNotZero($number): void
+				 * Confirm number != 0.
+				 * @param float|int $number
+				 */
+				public static function validateNotZero($number): void
 	{
 		if ($number) {
 			return;
@@ -110,10 +110,10 @@ class Helpers
 	}
 
 	/**
-	 * Return NAN or value depending on argument.
-	 * @return float|string
-	 */
-	public static function numberOrNan(float $result)
+				 * Return NAN or value depending on argument.
+				 * @return float|string
+				 */
+				public static function numberOrNan(float $result)
 	{
 		return is_nan($result) ? ExcelError::NAN() : $result;
 	}

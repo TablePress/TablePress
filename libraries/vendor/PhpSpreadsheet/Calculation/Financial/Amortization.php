@@ -91,11 +91,11 @@ class Amortization
 
 			if ($fRest < 0.0) {
 				switch ($period - $n) {
-					case 1:
-						return round($cost * 0.5, 0);
-					default:
-						return 0.0;
-				}
+																	case 1:
+																		return round($cost * 0.5, 0);
+																	default:
+																		return 0.0;
+																}
 			}
 			$cost -= $fNRate;
 		}
@@ -173,9 +173,13 @@ class Amortization
 		if (
 			$basis == FinancialConstants::BASIS_DAYS_PER_YEAR_ACTUAL
 			&& $yearFrac < 1
-			&& DateTimeExcel\Helpers::isLeapYear(Functions::scalar($purchasedYear))
 		) {
-			$yearFrac *= 365 / 366;
+			$temp = Functions::scalar($purchasedYear);
+			if (is_int($temp) || is_string($temp)) {
+				if (DateTimeExcel\Helpers::isLeapYear($temp)) {
+					$yearFrac *= 365 / 366;
+				}
+			}
 		}
 
 		$f0Rate = $yearFrac * $rate * $cost;

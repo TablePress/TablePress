@@ -46,20 +46,20 @@ class Arabic
 	}
 
 	/**
-	 * ARABIC.
-	 *
-	 * Converts a Roman numeral to an Arabic numeral.
-	 *
-	 * Excel Function:
-	 *        ARABIC(text)
-	 *
-	 * @param mixed $roman Should be a string, or can be an array of strings
-	 *
-	 * @return array|int|string the arabic numberal contrived from the roman numeral
-	 *         If an array of numbers is passed as the argument, then the returned result will also be an array
-	 *            with the same dimensions
-	 */
-	public static function evaluate($roman)
+				 * ARABIC.
+				 *
+				 * Converts a Roman numeral to an Arabic numeral.
+				 *
+				 * Excel Function:
+				 *        ARABIC(text)
+				 *
+				 * @param mixed $roman Should be a string, or can be an array of strings
+				 *
+				 * @return array|int|string the arabic numberal contrived from the roman numeral
+				 *         If an array of numbers is passed as the argument, then the returned result will also be an array
+				 *            with the same dimensions
+				 */
+				public static function evaluate($roman)
 	{
 		if (is_array($roman)) {
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $roman);

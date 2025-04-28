@@ -45,11 +45,11 @@ class ErfC
 	private const ONE_SQRT_PI = 0.564189583547756287;
 
 	/**
-	 * Method to calculate the erfc value.
-	 * @param float|int|string $value
-	 * @return float|int
-	 */
-	private static function erfcValue($value)
+				 * Method to calculate the erfc value.
+				 * @param float|int|string $value
+				 * @return float|int
+				 */
+				private static function erfcValue($value)
 	{
 		$value = (float) $value;
 		if (abs($value) < 2.2) {

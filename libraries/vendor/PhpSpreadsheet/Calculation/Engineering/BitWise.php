@@ -13,12 +13,12 @@ class BitWise
 	const SPLIT_DIVISOR = 2 ** 24;
 
 	/**
-	 * Split a number into upper and lower portions for full 32-bit support.
-	 *
-	 * @return int[]
-	 * @param float|int $number
-	 */
-	private static function splitNumber($number): array
+				 * Split a number into upper and lower portions for full 32-bit support.
+				 *
+				 * @return int[]
+				 * @param float|int $number
+				 */
+				private static function splitNumber($number): array
 	{
 		return [(int) floor($number / self::SPLIT_DIVISOR), (int) fmod($number, self::SPLIT_DIVISOR)];
 	}
@@ -192,10 +192,10 @@ class BitWise
 	}
 
 	/**
-	 * Validate arguments passed to the bitwise functions.
-	 * @param mixed $value
-	 */
-	private static function validateBitwiseArgument($value): float
+				 * Validate arguments passed to the bitwise functions.
+				 * @param mixed $value
+				 */
+				private static function validateBitwiseArgument($value): float
 	{
 		$value = self::nullFalseTrueToNumber($value);
 
@@ -216,10 +216,10 @@ class BitWise
 	}
 
 	/**
-	 * Validate arguments passed to the bitwise functions.
-	 * @param mixed $value
-	 */
-	private static function validateShiftAmount($value): int
+				 * Validate arguments passed to the bitwise functions.
+				 * @param mixed $value
+				 */
+				private static function validateShiftAmount($value): int
 	{
 		$value = self::nullFalseTrueToNumber($value);
 
@@ -235,11 +235,11 @@ class BitWise
 	}
 
 	/**
-	 * Many functions accept null/false/true argument treated as 0/0/1.
-	 * @param mixed $number
-	 * @return mixed
-	 */
-	private static function nullFalseTrueToNumber(&$number)
+				 * Many functions accept null/false/true argument treated as 0/0/1.
+				 * @param mixed $number
+				 * @return mixed
+				 */
+				private static function nullFalseTrueToNumber(&$number)
 	{
 		if ($number === null) {
 			$number = 0;

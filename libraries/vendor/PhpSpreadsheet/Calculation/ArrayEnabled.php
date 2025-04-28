@@ -39,13 +39,13 @@ trait ArrayEnabled
 	}
 
 	/**
-	 * Handles array argument processing when the function accepts multiple arguments,
-	 *     and any of them can be an array argument.
-	 * Example use for:
-	 *         ROUND() or DATE().
-	 * @param mixed ...$arguments
-	 */
-	protected static function evaluateArrayArguments(callable $method, ...$arguments): array
+				 * Handles array argument processing when the function accepts multiple arguments,
+				 *     and any of them can be an array argument.
+				 * Example use for:
+				 *         ROUND() or DATE().
+				 * @param mixed ...$arguments
+				 */
+				protected static function evaluateArrayArguments(callable $method, ...$arguments): array
 	{
 		self::initialiseHelper($arguments);
 		$arguments = self::$arrayArgumentHelper->arguments();
@@ -54,14 +54,14 @@ trait ArrayEnabled
 	}
 
 	/**
-	 * Handles array argument processing when the function accepts multiple arguments,
-	 *     but only the first few (up to limit) can be an array arguments.
-	 * Example use for:
-	 *         NETWORKDAYS() or CONCATENATE(), where the last argument is a matrix (or a series of values) that need
-	 *                                         to be treated as a such rather than as an array arguments.
-	 * @param mixed ...$arguments
-	 */
-	protected static function evaluateArrayArgumentsSubset(callable $method, int $limit, ...$arguments): array
+				 * Handles array argument processing when the function accepts multiple arguments,
+				 *     but only the first few (up to limit) can be an array arguments.
+				 * Example use for:
+				 *         NETWORKDAYS() or CONCATENATE(), where the last argument is a matrix (or a series of values) that need
+				 *                                         to be treated as a such rather than as an array arguments.
+				 * @param mixed ...$arguments
+				 */
+				protected static function evaluateArrayArgumentsSubset(callable $method, int $limit, ...$arguments): array
 	{
 		self::initialiseHelper(array_slice($arguments, 0, $limit));
 		$trailingArguments = array_slice($arguments, $limit);
@@ -72,22 +72,22 @@ trait ArrayEnabled
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	private static function testFalse($value): bool
+				 * @param mixed $value
+				 */
+				private static function testFalse($value): bool
 	{
 		return $value === false;
 	}
 
 	/**
-	 * Handles array argument processing when the function accepts multiple arguments,
-	 *     but only the last few (from start) can be an array arguments.
-	 * Example use for:
-	 *         Z.TEST() or INDEX(), where the first argument 1 is a matrix that needs to be treated as a dataset
-	 *                   rather than as an array argument.
-	 * @param mixed ...$arguments
-	 */
-	protected static function evaluateArrayArgumentsSubsetFrom(callable $method, int $start, ...$arguments): array
+				 * Handles array argument processing when the function accepts multiple arguments,
+				 *     but only the last few (from start) can be an array arguments.
+				 * Example use for:
+				 *         Z.TEST() or INDEX(), where the first argument 1 is a matrix that needs to be treated as a dataset
+				 *                   rather than as an array argument.
+				 * @param mixed ...$arguments
+				 */
+				protected static function evaluateArrayArgumentsSubsetFrom(callable $method, int $start, ...$arguments): array
 	{
 		$arrayArgumentsSubset = array_combine(
 			range($start, count($arguments) - $start),
@@ -106,14 +106,14 @@ trait ArrayEnabled
 	}
 
 	/**
-	 * Handles array argument processing when the function accepts multiple arguments,
-	 *     and any of them can be an array argument except for the one specified by ignore.
-	 * Example use for:
-	 *         HLOOKUP() and VLOOKUP(), where argument 1 is a matrix that needs to be treated as a database
-	 *                                  rather than as an array argument.
-	 * @param mixed ...$arguments
-	 */
-	protected static function evaluateArrayArgumentsIgnore(callable $method, int $ignore, ...$arguments): array
+				 * Handles array argument processing when the function accepts multiple arguments,
+				 *     and any of them can be an array argument except for the one specified by ignore.
+				 * Example use for:
+				 *         HLOOKUP() and VLOOKUP(), where argument 1 is a matrix that needs to be treated as a database
+				 *                                  rather than as an array argument.
+				 * @param mixed ...$arguments
+				 */
+				protected static function evaluateArrayArgumentsIgnore(callable $method, int $ignore, ...$arguments): array
 	{
 		$leadingArguments = array_slice($arguments, 0, $ignore);
 		$ignoreArgument = array_slice($arguments, $ignore, 1);

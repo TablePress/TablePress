@@ -41,9 +41,9 @@ class WorkbookView
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public static function testSimpleXml($value): SimpleXMLElement
+				 * @param mixed $value
+				 */
+				public static function testSimpleXml($value): SimpleXMLElement
 	{
 		return ($value instanceof SimpleXMLElement)
 			? $value

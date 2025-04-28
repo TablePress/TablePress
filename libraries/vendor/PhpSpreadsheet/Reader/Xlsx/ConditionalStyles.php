@@ -193,6 +193,13 @@ class ConditionalStyles
 			// N.B. In Excel UI, intersection is space and union is comma.
 			// But in Xml, intersection is comma and union is space.
 			$cellRangeReference = str_replace(['$', ' ', ',', '^'], ['', '^', ' ', ','], strtoupper($cellRangeReference));
+
+			foreach ($conditionalStyles as $cs) {
+				$scale = $cs->getColorScale();
+				if ($scale !== null) {
+					$scale->setSqRef($cellRangeReference, $worksheet);
+				}
+			}
 			$worksheet->getStyle($cellRangeReference)->setConditionalStyles($conditionalStyles);
 		}
 	}
@@ -287,9 +294,9 @@ class ConditionalStyles
 	}
 
 	/**
-	 * @param \SimpleXMLElement|\stdClass $cfRule
-	 */
-	private function readColorScale($cfRule): ConditionalColorScale
+				 * @param \SimpleXMLElement|\stdClass $cfRule
+				 */
+				private function readColorScale($cfRule): ConditionalColorScale
 	{
 		$colorScale = new ConditionalColorScale();
 		$count = count($cfRule->colorScale->cfvo);

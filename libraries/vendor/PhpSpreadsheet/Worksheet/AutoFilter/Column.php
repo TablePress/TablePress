@@ -248,12 +248,12 @@ class Column
 	}
 
 	/**
-	 * Get specific AutoFilter Column Attribute.
-	 *
-	 * @param string $name Attribute Name
-	 * @return float|int|string|null
-	 */
-	public function getAttribute(string $name)
+				 * Get specific AutoFilter Column Attribute.
+				 *
+				 * @param string $name Attribute Name
+				 * @return float|int|string|null
+				 */
+				public function getAttribute(string $name)
 	{
 		if (isset($this->attributes[$name])) {
 			return $this->attributes[$name];

@@ -12,19 +12,19 @@ class VLookup extends LookupBase
 	use ArrayEnabled;
 
 	/**
-	 * VLOOKUP
-	 * The VLOOKUP function searches for value in the left-most column of lookup_array and returns the value
-	 *     in the same row based on the index_number.
-	 *
-	 * @param mixed $lookupValue The value that you want to match in lookup_array
-	 * @param mixed $lookupArray The range of cells being searched
-	 * @param mixed $indexNumber The column number in table_array from which the matching value must be returned.
-	 *                                The first column is 1.
-	 * @param mixed $notExactMatch determines if you are looking for an exact match based on lookup_value
-	 *
-	 * @return mixed The value of the found cell
-	 */
-	public static function lookup($lookupValue, $lookupArray, $indexNumber, $notExactMatch = true)
+				 * VLOOKUP
+				 * The VLOOKUP function searches for value in the left-most column of lookup_array and returns the value
+				 *     in the same row based on the index_number.
+				 *
+				 * @param mixed $lookupValue The value that you want to match in lookup_array
+				 * @param array $lookupArray The range of cells being searched
+				 * @param mixed $indexNumber The column number in table_array from which the matching value must be returned.
+				 *                                The first column is 1.
+				 * @param mixed $notExactMatch determines if you are looking for an exact match based on lookup_value
+				 *
+				 * @return mixed The value of the found cell
+				 */
+				public static function lookup($lookupValue, $lookupArray, $indexNumber, $notExactMatch = true)
 	{
 		if (is_array($lookupValue) || is_array($indexNumber)) {
 			return self::evaluateArrayArgumentsIgnore([self::class, __FUNCTION__], 1, $lookupValue, $lookupArray, $indexNumber, $notExactMatch);
@@ -84,7 +84,7 @@ class VLookup extends LookupBase
 	 */
 	private static function vLookupSearch($lookupValue, array $lookupArray, $column, bool $notExactMatch): ?int
 	{
-		$lookupLower = StringHelper::strToLower((string) $lookupValue);
+		$lookupLower = StringHelper::strToLower(StringHelper::convertToString($lookupValue));
 
 		$rowNumber = null;
 		foreach ($lookupArray as $rowKey => $rowData) {
@@ -116,9 +116,9 @@ class VLookup extends LookupBase
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	private static function numeric($value): bool
+				 * @param mixed $value
+				 */
+				private static function numeric($value): bool
 	{
 		return is_int($value) || is_float($value);
 	}

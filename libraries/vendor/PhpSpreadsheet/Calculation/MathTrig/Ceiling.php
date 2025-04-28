@@ -144,10 +144,10 @@ class Ceiling
 	}
 
 	/**
-	 * Avoid Scrutinizer problems concerning complexity.
-	 * @return float|string
-	 */
-	private static function argumentsOk(float $number, float $significance)
+				 * Avoid Scrutinizer problems concerning complexity.
+				 * @return float|string
+				 */
+				private static function argumentsOk(float $number, float $significance)
 	{
 		if (empty($number * $significance)) {
 			return 0.0;

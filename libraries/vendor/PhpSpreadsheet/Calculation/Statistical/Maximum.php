@@ -8,18 +8,18 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 class Maximum extends MaxMinBase
 {
 	/**
-	 * MAX.
-	 *
-	 * MAX returns the value of the element of the values passed that has the highest value,
-	 *        with negative numbers considered smaller than positive numbers.
-	 *
-	 * Excel Function:
-	 *        MAX(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function max(...$args)
+				 * MAX.
+				 *
+				 * MAX returns the value of the element of the values passed that has the highest value,
+				 *        with negative numbers considered smaller than positive numbers.
+				 *
+				 * Excel Function:
+				 *        MAX(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function max(...$args)
 	{
 		$returnValue = null;
 
@@ -47,17 +47,17 @@ class Maximum extends MaxMinBase
 	}
 
 	/**
-	 * MAXA.
-	 *
-	 * Returns the greatest value in a list of arguments, including numbers, text, and logical values
-	 *
-	 * Excel Function:
-	 *        MAXA(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function maxA(...$args)
+				 * MAXA.
+				 *
+				 * Returns the greatest value in a list of arguments, including numbers, text, and logical values
+				 *
+				 * Excel Function:
+				 *        MAXA(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function maxA(...$args)
 	{
 		$returnValue = null;
 

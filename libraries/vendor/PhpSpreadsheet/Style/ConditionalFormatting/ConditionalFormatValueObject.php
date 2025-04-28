@@ -7,16 +7,16 @@ class ConditionalFormatValueObject
 	private string $type;
 
 	/**
-	 * @var float|int|string|null
-	 */
-	private $value;
+				 * @var float|int|string|null
+				 */
+				private $value;
 
 	private ?string $cellFormula;
 
 	/**
-	 * @param null|float|int|string $value
-	 */
-	public function __construct(string $type, $value = null, ?string $cellFormula = null)
+				 * @param null|float|int|string $value
+				 */
+				public function __construct(string $type, $value = null, ?string $cellFormula = null)
 	{
 		$this->type = $type;
 		$this->value = $value;
@@ -36,17 +36,17 @@ class ConditionalFormatValueObject
 	}
 
 	/**
-	 * @return float|int|string|null
-	 */
-	public function getValue()
+				 * @return float|int|string|null
+				 */
+				public function getValue()
 	{
 		return $this->value;
 	}
 
 	/**
-	 * @param null|float|int|string $value
-	 */
-	public function setValue($value): self
+				 * @param null|float|int|string $value
+				 */
+				public function setValue($value): self
 	{
 		$this->value = $value;
 

@@ -7,6 +7,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalcExp;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class Helpers
 {
@@ -31,13 +32,13 @@ class Helpers
 			throw new CalcExp($value);
 		}
 
-		return (string) $value;
+		return StringHelper::convertToString($value);
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public static function extractInt($value, int $minValue, int $gnumericNull = 0, bool $ooBoolOk = false): int
+				 * @param mixed $value
+				 */
+				public static function extractInt($value, int $minValue, int $gnumericNull = 0, bool $ooBoolOk = false): int
 	{
 		if ($value === null) {
 			// usually 0, but sometimes 1 for Gnumeric
@@ -58,9 +59,9 @@ class Helpers
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public static function extractFloat($value): float
+				 * @param mixed $value
+				 */
+				public static function extractFloat($value): float
 	{
 		if ($value === null) {
 			$value = 0.0;
@@ -80,9 +81,9 @@ class Helpers
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	public static function validateInt($value, bool $throwIfError = false): int
+				 * @param mixed $value
+				 */
+				public static function validateInt($value, bool $throwIfError = false): int
 	{
 		if ($value === null) {
 			$value = 0;
@@ -96,6 +97,6 @@ class Helpers
 			throw new CalcExp($value);
 		}
 
-		return (int) $value;
+		return (int) StringHelper::convertToString($value);
 	}
 }

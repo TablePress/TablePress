@@ -34,22 +34,22 @@ class Dollar
 	}
 
 	/**
-	 * DOLLARDE.
-	 *
-	 * Converts a dollar price expressed as an integer part and a fraction
-	 *        part into a dollar price expressed as a decimal number.
-	 * Fractional dollar numbers are sometimes used for security prices.
-	 *
-	 * Excel Function:
-	 *        DOLLARDE(fractional_dollar,fraction)
-	 *
-	 * @param mixed $fractionalDollar Fractional Dollar
-	 *              Or can be an array of values
-	 * @param mixed $fraction Fraction
-	 *              Or can be an array of values
-	 * @return mixed[]|float|string
-	 */
-	public static function decimal($fractionalDollar = null, $fraction = 0)
+				 * DOLLARDE.
+				 *
+				 * Converts a dollar price expressed as an integer part and a fraction
+				 *        part into a dollar price expressed as a decimal number.
+				 * Fractional dollar numbers are sometimes used for security prices.
+				 *
+				 * Excel Function:
+				 *        DOLLARDE(fractional_dollar,fraction)
+				 *
+				 * @param mixed $fractionalDollar Fractional Dollar
+				 *              Or can be an array of values
+				 * @param mixed $fraction Fraction
+				 *              Or can be an array of values
+				 * @return mixed[]|float|string
+				 */
+				public static function decimal($fractionalDollar = null, $fraction = 0)
 	{
 		if (is_array($fractionalDollar) || is_array($fraction)) {
 			return self::evaluateArrayArguments([self::class, __FUNCTION__], $fractionalDollar, $fraction);
@@ -81,22 +81,22 @@ class Dollar
 	}
 
 	/**
-	 * DOLLARFR.
-	 *
-	 * Converts a dollar price expressed as a decimal number into a dollar price
-	 *        expressed as a fraction.
-	 * Fractional dollar numbers are sometimes used for security prices.
-	 *
-	 * Excel Function:
-	 *        DOLLARFR(decimal_dollar,fraction)
-	 *
-	 * @param mixed $decimalDollar Decimal Dollar
-	 *              Or can be an array of values
-	 * @param mixed $fraction Fraction
-	 *              Or can be an array of values
-	 * @return mixed[]|float|string
-	 */
-	public static function fractional($decimalDollar = null, $fraction = 0)
+				 * DOLLARFR.
+				 *
+				 * Converts a dollar price expressed as a decimal number into a dollar price
+				 *        expressed as a fraction.
+				 * Fractional dollar numbers are sometimes used for security prices.
+				 *
+				 * Excel Function:
+				 *        DOLLARFR(decimal_dollar,fraction)
+				 *
+				 * @param mixed $decimalDollar Decimal Dollar
+				 *              Or can be an array of values
+				 * @param mixed $fraction Fraction
+				 *              Or can be an array of values
+				 * @return mixed[]|float|string
+				 */
+				public static function fractional($decimalDollar = null, $fraction = 0)
 	{
 		if (is_array($decimalDollar) || is_array($fraction)) {
 			return self::evaluateArrayArguments([self::class, __FUNCTION__], $decimalDollar, $fraction);

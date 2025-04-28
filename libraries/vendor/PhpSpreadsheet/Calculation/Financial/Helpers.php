@@ -14,7 +14,7 @@ class Helpers
 	 *
 	 * Returns the number of days in a specified year, as defined by the "basis" value
 	 *
-	 * @param int|string $year The year against which we're testing
+	 * @param mixed $year The year against which we're testing, expect int|string
 	 * @param int|string $basis The type of day count:
 	 *                              0 or omitted US (NASD)   360
 	 *                              1                        Actual (365 or 366 in a leap year)
@@ -26,6 +26,9 @@ class Helpers
 	 */
 	public static function daysPerYear($year, $basis = 0)
 	{
+		if (!is_int($year) && !is_string($year)) {
+			return ExcelError::VALUE();
+		}
 		if (!is_numeric($basis)) {
 			return ExcelError::NAN();
 		}

@@ -72,19 +72,19 @@ class Border extends Supervisor
 		$sharedComponent = $parent->getSharedComponent();
 
 		switch ($this->parentPropertyName) {
-			case 'bottom':
-				return $sharedComponent->getBottom();
-			case 'diagonal':
-				return $sharedComponent->getDiagonal();
-			case 'left':
-				return $sharedComponent->getLeft();
-			case 'right':
-				return $sharedComponent->getRight();
-			case 'top':
-				return $sharedComponent->getTop();
-			default:
-				throw new PhpSpreadsheetException('Cannot get shared component for a pseudo-border.');
-		}
+									case 'bottom':
+										return $sharedComponent->getBottom();
+									case 'diagonal':
+										return $sharedComponent->getDiagonal();
+									case 'left':
+										return $sharedComponent->getLeft();
+									case 'right':
+										return $sharedComponent->getRight();
+									case 'top':
+										return $sharedComponent->getTop();
+									default:
+										throw new PhpSpreadsheetException('Cannot get shared component for a pseudo-border.');
+								}
 	}
 
 	/**

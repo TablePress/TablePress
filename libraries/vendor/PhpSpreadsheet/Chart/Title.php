@@ -35,10 +35,10 @@ class Title
 	private ?Font $font = null;
 
 	/**
-	 * Create a new Title.
-	 * @param mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string $caption
-	 */
-	public function __construct($caption = '', ?Layout $layout = null, bool $overlay = false)
+				 * Create a new Title.
+				 * @param mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string $caption
+				 */
+				public function __construct($caption = '', ?Layout $layout = null, bool $overlay = false)
 	{
 		$this->caption = $caption;
 		$this->layout = $layout;
@@ -46,10 +46,10 @@ class Title
 	}
 
 	/**
-	 * Get caption.
-	 * @return mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string
-	 */
-	public function getCaption()
+				 * Get caption.
+				 * @return mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string
+				 */
+				public function getCaption()
 	{
 		return $this->caption;
 	}
@@ -84,12 +84,12 @@ class Title
 	}
 
 	/**
-	 * Set caption.
-	 *
-	 * @return $this
-	 * @param mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string $caption
-	 */
-	public function setCaption($caption)
+				 * Set caption.
+				 *
+				 * @return $this
+				 * @param mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string $caption
+				 */
+				public function setCaption($caption)
 	{
 		$this->caption = $caption;
 

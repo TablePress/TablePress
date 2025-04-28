@@ -6,14 +6,11 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Statistical;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 
 class Subtotal
 {
-	/**
-	 * @param mixed $cellReference
-	 * @param mixed $args
-	 */
-	protected static function filterHiddenArgs($cellReference, $args): array
+	protected static function filterHiddenArgs(Cell $cellReference, array $args): array
 	{
 		return array_filter(
 			$args,
@@ -24,17 +21,13 @@ class Subtotal
 					return true;
 				}
 
-				return $cellReference->getWorksheet()->getRowDimension($row)->getVisible();
+				return $cellReference->getWorksheet()->getRowDimension((int) $row)->getVisible();
 			},
 			ARRAY_FILTER_USE_KEY
 		);
 	}
 
-	/**
-	 * @param mixed $cellReference
-	 * @param mixed $args
-	 */
-	protected static function filterFormulaArgs($cellReference, $args): array
+	protected static function filterFormulaArgs(Cell $cellReference, array $args): array
 	{
 		return array_filter(
 			$args,
@@ -48,7 +41,7 @@ class Subtotal
 					$isFormula = $cellReference->getWorksheet()->getCell($column . $row)->isFormula();
 					$cellFormula = !preg_match(
 						'/^=.*\b(SUBTOTAL|AGGREGATE)\s*\(/i',
-						$cellReference->getWorksheet()->getCell($column . $row)->getValue() ?? ''
+						$cellReference->getWorksheet()->getCell($column . $row)->getValueString()
 					);
 
 					$retVal = !$isFormula || $cellFormula;
@@ -78,22 +71,23 @@ class Subtotal
 	];
 
 	/**
-	 * SUBTOTAL.
-	 *
-	 * Returns a subtotal in a list or database.
-	 *
-	 * @param mixed $functionType
-	 *            A number 1 to 11 that specifies which function to
-	 *                    use in calculating subtotals within a range
-	 *                    list
-	 *            Numbers 101 to 111 shadow the functions of 1 to 11
-	 *                    but ignore any values in the range that are
-	 *                    in hidden rows
-	 * @param mixed[] $args A mixed data series of values
-	 * @return float|int|string
-	 */
-	public static function evaluate($functionType, ...$args)
+				 * SUBTOTAL.
+				 *
+				 * Returns a subtotal in a list or database.
+				 *
+				 * @param mixed $functionType
+				 *            A number 1 to 11 that specifies which function to
+				 *                    use in calculating subtotals within a range
+				 *                    list
+				 *            Numbers 101 to 111 shadow the functions of 1 to 11
+				 *                    but ignore any values in the range that are
+				 *                    in hidden rows
+				 * @param mixed[] $args A mixed data series of values
+				 * @return float|int|string
+				 */
+				public static function evaluate($functionType, ...$args)
 	{
+		/** @var Cell */
 		$cellReference = array_pop($args);
 		$bArgs = Functions::flattenArrayIndexed($args);
 		$aArgs = [];
@@ -128,7 +122,7 @@ class Subtotal
 		if (array_key_exists($subtotal, self::CALL_FUNCTIONS)) {
 			$call = self::CALL_FUNCTIONS[$subtotal];
 
-			return call_user_func_array($call, $aArgs);
+			return call_user_func_array($call, $aArgs); //* @phpstan-ignore-line
 		}
 
 		return ExcelError::VALUE();

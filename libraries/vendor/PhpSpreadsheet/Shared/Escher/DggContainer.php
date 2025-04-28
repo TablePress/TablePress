@@ -99,23 +99,23 @@ class DggContainer
 	}
 
 	/**
-	 * Set an option for the drawing group.
-	 *
-	 * @param int $property The number specifies the option
-	 * @param mixed $value
-	 */
-	public function setOPT(int $property, $value): void
+				 * Set an option for the drawing group.
+				 *
+				 * @param int $property The number specifies the option
+				 * @param mixed $value
+				 */
+				public function setOPT(int $property, $value): void
 	{
 		$this->OPT[$property] = $value;
 	}
 
 	/**
-	 * Get an option for the drawing group.
-	 *
-	 * @param int $property The number specifies the option
-	 * @return mixed
-	 */
-	public function getOPT(int $property)
+				 * Get an option for the drawing group.
+				 *
+				 * @param int $property The number specifies the option
+				 * @return mixed
+				 */
+				public function getOPT(int $property)
 	{
 		if (isset($this->OPT[$property])) {
 			return $this->OPT[$property];

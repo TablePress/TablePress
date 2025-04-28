@@ -125,9 +125,9 @@ class SheetView
 	}
 
 	/**
-	 * @return static
-	 */
-	public function setZoomScalePageLayoutView(int $zoomScalePageLayoutView)
+				 * @return static
+				 */
+				public function setZoomScalePageLayoutView(int $zoomScalePageLayoutView)
 	{
 		if ($zoomScalePageLayoutView >= 1) {
 			$this->zoomScalePageLayoutView = $zoomScalePageLayoutView;
@@ -144,9 +144,9 @@ class SheetView
 	}
 
 	/**
-	 * @return static
-	 */
-	public function setZoomScaleSheetLayoutView(int $zoomScaleSheetLayoutView)
+				 * @return static
+				 */
+				public function setZoomScaleSheetLayoutView(int $zoomScaleSheetLayoutView)
 	{
 		if ($zoomScaleSheetLayoutView >= 1) {
 			$this->zoomScaleSheetLayoutView = $zoomScaleSheetLayoutView;

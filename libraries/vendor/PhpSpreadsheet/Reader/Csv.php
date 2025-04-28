@@ -257,8 +257,7 @@ class Csv extends BaseReader
 	 */
 	protected function loadSpreadsheetFromFile(string $filename): Spreadsheet
 	{
-		// Create new Spreadsheet
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = $this->newSpreadsheet();
 		$spreadsheet->setValueBinder($this->valueBinder);
 
 		// Load into this instance
@@ -270,8 +269,7 @@ class Csv extends BaseReader
 	 */
 	public function loadSpreadsheetFromString(string $contents): Spreadsheet
 	{
-		// Create new Spreadsheet
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = $this->newSpreadsheet();
 		$spreadsheet->setValueBinder($this->valueBinder);
 
 		// Load into this instance
@@ -456,10 +454,10 @@ class Csv extends BaseReader
 	}
 
 	/**
-	 * Convert string true/false to boolean, and null to null-string.
-	 * @param mixed $rowDatum
-	 */
-	private function convertBoolean(&$rowDatum): void
+				 * Convert string true/false to boolean, and null to null-string.
+				 * @param mixed $rowDatum
+				 */
+				private function convertBoolean(&$rowDatum): void
 	{
 		if (is_string($rowDatum)) {
 			if (strcasecmp($this->getTrue, $rowDatum) === 0 || strcasecmp('true', $rowDatum) === 0) {
@@ -473,10 +471,10 @@ class Csv extends BaseReader
 	}
 
 	/**
-	 * Convert numeric strings to int or float values.
-	 * @param mixed $rowDatum
-	 */
-	private function convertFormattedNumber(&$rowDatum): string
+				 * Convert numeric strings to int or float values.
+				 * @param mixed $rowDatum
+				 */
+				private function convertFormattedNumber(&$rowDatum): string
 	{
 		$numberFormatMask = '';
 		if ($this->castFormattedNumberToNumeric === true && is_string($rowDatum)) {

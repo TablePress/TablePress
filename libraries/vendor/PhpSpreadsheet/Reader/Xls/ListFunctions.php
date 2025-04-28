@@ -32,22 +32,22 @@ class ListFunctions extends Xls
 			$code = self::getUInt2d($xls->data, $xls->pos);
 
 			switch ($code) {
-				case self::XLS_TYPE_BOF:
-					$xls->readBof();
-					break;
-				case self::XLS_TYPE_SHEET:
-					$xls->readSheet();
-					break;
-				case self::XLS_TYPE_EOF:
-					$xls->readDefault();
-					break;
-				case self::XLS_TYPE_CODEPAGE:
-					$xls->readCodepage();
-					break;
-				default:
-					$xls->readDefault();
-					break;
-			}
+													case self::XLS_TYPE_BOF:
+														$xls->readBof();
+														break;
+													case self::XLS_TYPE_SHEET:
+														$xls->readSheet();
+														break;
+													case self::XLS_TYPE_EOF:
+														$xls->readDefault();
+														break;
+													case self::XLS_TYPE_CODEPAGE:
+														$xls->readCodepage();
+														break;
+													default:
+														$xls->readDefault();
+														break;
+												}
 
 			if ($code === self::XLS_TYPE_EOF) {
 				break;
@@ -88,22 +88,22 @@ class ListFunctions extends Xls
 			$code = self::getUInt2d($xls->data, $xls->pos);
 
 			switch ($code) {
-				case self::XLS_TYPE_BOF:
-					$xls->readBof();
-					break;
-				case self::XLS_TYPE_SHEET:
-					$xls->readSheet();
-					break;
-				case self::XLS_TYPE_EOF:
-					$xls->readDefault();
-					break;
-				case self::XLS_TYPE_CODEPAGE:
-					$xls->readCodepage();
-					break;
-				default:
-					$xls->readDefault();
-					break;
-			}
+													case self::XLS_TYPE_BOF:
+														$xls->readBof();
+														break;
+													case self::XLS_TYPE_SHEET:
+														$xls->readSheet();
+														break;
+													case self::XLS_TYPE_EOF:
+														$xls->readDefault();
+														break;
+													case self::XLS_TYPE_CODEPAGE:
+														$xls->readCodepage();
+														break;
+													default:
+														$xls->readDefault();
+														break;
+												}
 
 			if ($code === self::XLS_TYPE_EOF) {
 				break;

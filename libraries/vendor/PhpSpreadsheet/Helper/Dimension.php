@@ -53,11 +53,11 @@ class Dimension
 	protected ?string $unit = null;
 
 	/**
-	 * Phpstan bug has been fixed; this function allows us to
-	 * pass Phpstan whether fixed or not.
-	 * @param mixed[]|int|null $value
-	 */
-	private static function stanBugFixed($value): array
+				 * Phpstan bug has been fixed; this function allows us to
+				 * pass Phpstan whether fixed or not.
+				 * @param mixed[]|int|null $value
+				 */
+				private static function stanBugFixed($value): array
 	{
 		return is_array($value) ? $value : [null, null];
 	}

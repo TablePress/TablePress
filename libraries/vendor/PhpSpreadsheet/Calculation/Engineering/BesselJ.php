@@ -59,13 +59,13 @@ class BesselJ
 	private static function calculate(float $x, int $ord): float
 	{
 		switch ($ord) {
-			case 0:
-				return self::besselJ0($x);
-			case 1:
-				return self::besselJ1($x);
-			default:
-				return self::besselJ2($x, $ord);
-		}
+									case 0:
+										return self::besselJ0($x);
+									case 1:
+										return self::besselJ1($x);
+									default:
+										return self::besselJ2($x, $ord);
+								}
 	}
 
 	private static function besselJ0(float $x): float

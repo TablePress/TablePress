@@ -45,12 +45,12 @@ class Concatenate
 	}
 
 	/**
-	 * This implements the CONCATENATE function.
-	 *
-	 * @param array $args data to be concatenated
-	 * @return mixed[]|string
-	 */
-	public static function actualCONCATENATE(...$args)
+				 * This implements the CONCATENATE function.
+				 *
+				 * @param array $args data to be concatenated
+				 * @return mixed[]|string
+				 */
+				public static function actualCONCATENATE(...$args)
 	{
 		if (Functions::getCompatibilityMode() === Functions::COMPATIBILITY_GNUMERIC) {
 			return self::CONCATENATE(...$args);
@@ -67,11 +67,11 @@ class Concatenate
 	}
 
 	/**
-	 * @param mixed[]|string $operand1
-	 * @param null|mixed[]|bool|float|int|string $operand2
-	 * @return mixed[]|string
-	 */
-	private static function concatenate2Args($operand1, $operand2)
+				 * @param mixed[]|string $operand1
+				 * @param null|mixed[]|bool|float|int|string $operand2
+				 * @return mixed[]|string
+				 */
+				private static function concatenate2Args($operand1, $operand2)
 	{
 		if (is_array($operand1) || is_array($operand2)) {
 			$operand1 = Calculation::boolToString($operand1);
@@ -84,8 +84,8 @@ class Concatenate
 						return $operand2[$row][$column];
 					}
 					$operand1[$row][$column]
-						= Calculation::boolToString($operand1[$row][$column])
-						. Calculation::boolToString($operand2[$row][$column]);
+						= StringHelper::convertToString($operand1[$row][$column], true, '', true)
+						. StringHelper::convertToString($operand2[$row][$column], true, '', true);
 					if (mb_strlen($operand1[$row][$column]) > DataType::MAX_STRING_LENGTH) {
 						$operand1 = ExcelError::CALC();
 						$errorFound = true;
@@ -97,7 +97,7 @@ class Concatenate
 		} elseif (ErrorValue::isError($operand2, true) === true) {
 			$operand1 = (string) $operand2;
 		} else {
-			$operand1 .= (string) Calculation::boolToString($operand2);
+			$operand1 .= StringHelper::convertToString($operand2, true, '', true);
 			if (mb_strlen($operand1) > DataType::MAX_STRING_LENGTH) {
 				$operand1 = ExcelError::CALC();
 			}
@@ -109,9 +109,9 @@ class Concatenate
 	/**
 	 * TEXTJOIN.
 	 *
-	 * @param mixed $delimiter The delimter to use between the joined arguments
+	 * @param null|string|string[] $delimiter The delimiter to use between the joined arguments
 	 *                         Or can be an array of values
-	 * @param mixed $ignoreEmpty true/false Flag indicating whether empty arguments should be skipped
+	 * @param null|bool|bool[] $ignoreEmpty true/false Flag indicating whether empty arguments should be skipped
 	 *                         Or can be an array of values
 	 * @param mixed $args The values to join
 	 *
@@ -133,6 +133,7 @@ class Concatenate
 
 		$delimiter ??= '';
 		$ignoreEmpty ??= true;
+		/** @var array */
 		$aArgs = Functions::flattenArray($args);
 		$returnValue = self::evaluateTextJoinArray($ignoreEmpty, $aArgs);
 

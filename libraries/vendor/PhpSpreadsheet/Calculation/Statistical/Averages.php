@@ -44,6 +44,8 @@ class Averages extends AggregateBase
 				return ExcelError::VALUE();
 			}
 			if (self::isAcceptedCountable($arg, $k)) {
+				/** @var float|int|numeric-string $arg */
+				/** @var float|int|numeric-string $aMean */
 				$returnValue += abs($arg - $aMean);
 				++$aCount;
 			}
@@ -83,6 +85,7 @@ class Averages extends AggregateBase
 				return ExcelError::VALUE();
 			}
 			if (self::isAcceptedCountable($arg, $k)) {
+				/** @var float|int|numeric-string $arg */
 				$returnValue += $arg;
 				++$aCount;
 			}
@@ -208,11 +211,11 @@ class Averages extends AggregateBase
 	}
 
 	/**
-	 * Special variant of array_count_values that isn't limited to strings and integers,
-	 * but can work with floating point numbers as values.
-	 * @return float|string
-	 */
-	private static function modeCalc(array $data)
+				 * Special variant of array_count_values that isn't limited to strings and integers,
+				 * but can work with floating point numbers as values.
+				 * @return float|string
+				 */
+				private static function modeCalc(array $data)
 	{
 		$frequencyArray = [];
 		$index = 0;

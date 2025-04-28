@@ -88,12 +88,16 @@ class Date
 	}
 
 	/**
-	 * Convert year from multiple formats to int.
-	 * @param mixed $year
-	 */
-	private static function getYear($year, int $baseYear): int
+				 * Convert year from multiple formats to int.
+				 * @param mixed $year
+				 */
+				private static function getYear($year, int $baseYear): int
 	{
-		$year = ($year !== null) ? StringHelper::testStringAsNumeric((string) $year) : 0;
+		if ($year === null) {
+			$year = 0;
+		} elseif (is_scalar($year)) {
+			$year = StringHelper::testStringAsNumeric((string) $year);
+		}
 		if (!is_numeric($year)) {
 			throw new Exception(ExcelError::VALUE());
 		}
@@ -114,16 +118,20 @@ class Date
 	}
 
 	/**
-	 * Convert month from multiple formats to int.
-	 * @param mixed $month
-	 */
-	private static function getMonth($month): int
+				 * Convert month from multiple formats to int.
+				 * @param mixed $month
+				 */
+				private static function getMonth($month): int
 	{
-		if (($month !== null) && (!is_numeric($month))) {
-			$month = SharedDateHelper::monthStringToNumber($month);
+		if (is_string($month)) {
+			if (!is_numeric($month)) {
+				$month = SharedDateHelper::monthStringToNumber($month);
+			}
+		} elseif ($month === null) {
+			$month = 0;
+		} elseif (is_bool($month)) {
+			$month = (int) $month;
 		}
-
-		$month = ($month !== null) ? StringHelper::testStringAsNumeric((string) $month) : 0;
 		if (!is_numeric($month)) {
 			throw new Exception(ExcelError::VALUE());
 		}
@@ -132,16 +140,20 @@ class Date
 	}
 
 	/**
-	 * Convert day from multiple formats to int.
-	 * @param mixed $day
-	 */
-	private static function getDay($day): int
+				 * Convert day from multiple formats to int.
+				 * @param mixed $day
+				 */
+				private static function getDay($day): int
 	{
-		if (($day !== null) && (!is_numeric($day))) {
+		if (is_string($day) && !is_numeric($day)) {
 			$day = SharedDateHelper::dayStringToNumber($day);
 		}
 
-		$day = ($day !== null) ? StringHelper::testStringAsNumeric((string) $day) : 0;
+		if ($day === null) {
+			$day = 0;
+		} elseif (is_scalar($day)) {
+			$day = StringHelper::testStringAsNumeric((string) $day);
+		}
 		if (!is_numeric($day)) {
 			throw new Exception(ExcelError::VALUE());
 		}

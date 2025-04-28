@@ -6,15 +6,16 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 abstract class ConvertBase
 {
 	use ArrayEnabled;
 
 	/**
-	 * @param mixed $value
-	 */
-	protected static function validateValue($value): string
+				 * @param mixed $value
+				 */
+				protected static function validateValue($value): string
 	{
 		if (is_bool($value)) {
 			if (Functions::getCompatibilityMode() !== Functions::COMPATIBILITY_OPENOFFICE) {
@@ -29,13 +30,13 @@ abstract class ConvertBase
 			}
 		}
 
-		return strtoupper((string) $value);
+		return strtoupper(StringHelper::convertToString($value));
 	}
 
 	/**
-	 * @param mixed $places
-	 */
-	protected static function validatePlaces($places = null): ?int
+				 * @param mixed $places
+				 */
+				protected static function validatePlaces($places = null): ?int
 	{
 		if ($places === null) {
 			return $places;

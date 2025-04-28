@@ -168,9 +168,7 @@ class Cell
 	}
 	public function getValueString(): string
 	{
-		$value = $this->value;
-
-		return ($value === '' || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) ? "$value" : '';
+		return StringHelper::convertToString($this->value, false);
 	}
 	/**
 	 * Get cell value with formatting.
@@ -193,9 +191,9 @@ class Cell
 	 */
 	protected static function updateIfCellIsTableHeader(?Worksheet $workSheet, self $cell, $oldValue, $newValue): void
 	{
-		$oldValue = (is_scalar($oldValue) || (is_object($oldValue) && method_exists($oldValue, '__toString'))) ? ((string) $oldValue) : null;
-		$newValue = (is_scalar($newValue) || (is_object($newValue) && method_exists($newValue, '__toString'))) ? ((string) $newValue) : null;
-		if (StringHelper::strToLower($oldValue ?? '') === StringHelper::strToLower($newValue ?? '') || $workSheet === null) {
+		$oldValue = StringHelper::convertToString($oldValue, false);
+		$newValue = StringHelper::convertToString($newValue, false);
+		if (StringHelper::strToLower($oldValue) === StringHelper::strToLower($newValue) || $workSheet === null) {
 			return;
 		}
 
@@ -266,24 +264,19 @@ class Cell
 				// no break
 			case DataType::TYPE_INLINE:
 				// Rich text
-				if ($value !== null && !is_scalar($value) && !((is_object($value) && method_exists($value, '__toString')))) {
-					throw new SpreadsheetException('Invalid unstringable value for datatype Inline/String/String2');
-				}
-				$this->value = DataType::checkString(($value instanceof RichText) ? $value : ((string) $value));
+				$value2 = StringHelper::convertToString($value, true);
+				$this->value = DataType::checkString(($value instanceof RichText) ? $value : $value2);
 
 				break;
 			case DataType::TYPE_NUMERIC:
-				if (is_string($value) && !is_numeric($value)) {
+				if ($value !== null && !is_bool($value) && !is_numeric($value)) {
 					throw new SpreadsheetException('Invalid numeric value for datatype Numeric');
 				}
 				$this->value = 0 + $value;
 
 				break;
 			case DataType::TYPE_FORMULA:
-				if ($value !== null && !is_scalar($value) && !((is_object($value) && method_exists($value, '__toString')))) {
-					throw new SpreadsheetException('Invalid unstringable value for datatype Formula');
-				}
-				$this->value = (string) $value;
+				$this->value = StringHelper::convertToString($value, true);
 
 				break;
 			case DataType::TYPE_BOOL:
@@ -339,14 +332,14 @@ class Cell
 	public static function setCalculateDateTimeType(int $calculateDateTimeType): void
 	{
 		switch ($calculateDateTimeType) {
-			case self::CALCULATE_DATE_TIME_ASIS:
-			case self::CALCULATE_DATE_TIME_FLOAT:
-			case self::CALCULATE_TIME_FLOAT:
-				self::$calculateDateTimeType = $calculateDateTimeType;
-				break;
-			default:
-				throw new CalculationException("Invalid value $calculateDateTimeType for calculated date time type");
-		}
+						case self::CALCULATE_DATE_TIME_ASIS:
+						case self::CALCULATE_DATE_TIME_FLOAT:
+						case self::CALCULATE_TIME_FLOAT:
+							self::$calculateDateTimeType = $calculateDateTimeType;
+							break;
+						default:
+							throw new CalculationException("Invalid value $calculateDateTimeType for calculated date time type");
+					}
 	}
 	/**
 	 * Convert date, time, or datetime from int to float if desired.
@@ -379,7 +372,7 @@ class Cell
 			$value = array_shift($value);
 		}
 
-		return ($value === '' || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) ? "$value" : '';
+		return StringHelper::convertToString($value, false);
 	}
 	/**
 	 * Get calculated cell value.
@@ -928,7 +921,7 @@ class Cell
 	{
 		$retVal = $this->value;
 
-		return ($retVal === null || is_scalar($retVal) || (is_object($retVal) && method_exists($retVal, '__toString'))) ? ((string) $retVal) : '';
+		return StringHelper::convertToString($retVal, false);
 	}
 	public function getIgnoredErrors(): IgnoredErrors
 	{

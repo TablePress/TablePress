@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls\Color\BIFF8;
 use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Color;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
@@ -22,11 +23,11 @@ class Formatter extends BaseFormatter
 	private const SECTION_SPLIT = '/;(?=(?:[^"]*"[^"]*")*[^"]*\Z)/miu';
 
 	/**
-	 * @param mixed $value
-	 * @param mixed $comparisonValue
-	 * @param mixed $defaultComparisonValue
-	 */
-	private static function splitFormatComparison(
+				 * @param mixed $value
+				 * @param mixed $comparisonValue
+				 * @param mixed $defaultComparisonValue
+				 */
+				private static function splitFormatComparison(
 		$value,
 		?string $condition,
 		$comparisonValue,
@@ -39,23 +40,23 @@ class Formatter extends BaseFormatter
 		}
 
 		switch ($condition) {
-			case '>':
-				return $value > $comparisonValue;
-			case '<':
-				return $value < $comparisonValue;
-			case '<=':
-				return $value <= $comparisonValue;
-			case '<>':
-				return $value != $comparisonValue;
-			case '=':
-				return $value == $comparisonValue;
-			default:
-				return $value >= $comparisonValue;
-		}
+									case '>':
+										return $value > $comparisonValue;
+									case '<':
+										return $value < $comparisonValue;
+									case '<=':
+										return $value <= $comparisonValue;
+									case '<>':
+										return $value != $comparisonValue;
+									case '=':
+										return $value == $comparisonValue;
+									default:
+										return $value >= $comparisonValue;
+								}
 	}
 
 	/** @param mixed $value value to be formatted */
-	private static function splitFormatForSectionSelection(array $sections, $value): array
+				private static function splitFormatForSectionSelection(array $sections, $value): array
 	{
 		// Extract the relevant section depending on whether number is positive, negative, or zero?
 		// Text not supported yet.
@@ -140,13 +141,13 @@ class Formatter extends BaseFormatter
 		$formatx = str_replace('\"', self::QUOTE_REPLACEMENT, $format);
 		if (preg_match(self::SECTION_SPLIT, $format) === 0 && preg_match(self::SYMBOL_AT, $formatx) === 1) {
 			if (!str_contains($format, '"')) {
-				return str_replace('@', $value, $format);
+				return str_replace('@', StringHelper::convertToString($value), $format);
 			}
 			//escape any dollar signs on the string, so they are not replaced with an empty value
 			$value = str_replace(
 				['$', '"'],
 				['\$', self::QUOTE_REPLACEMENT],
-				(string) $value
+				StringHelper::convertToString($value)
 			);
 
 			return str_replace(
@@ -158,7 +159,7 @@ class Formatter extends BaseFormatter
 
 		// If we have a text value, return it "as is"
 		if (!is_numeric($value)) {
-			return (string) $value;
+			return StringHelper::convertToString($value);
 		}
 
 		// For 'General' format code, we just pass the value although this is not entirely the way Excel does it,

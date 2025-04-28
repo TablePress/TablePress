@@ -175,17 +175,17 @@ class ChiSquared
 	}
 
 	/**
-	 * CHITEST.
-	 *
-	 * Uses the chi-square test to calculate the probability that the differences between two supplied data sets
-	 *      (of observed and expected frequencies), are likely to be simply due to sampling error,
-	 *      or if they are likely to be real.
-	 *
-	 * @param mixed $actual an array of observed frequencies
-	 * @param mixed $expected an array of expected frequencies
-	 * @return float|string
-	 */
-	public static function test($actual, $expected)
+				 * CHITEST.
+				 *
+				 * Uses the chi-square test to calculate the probability that the differences between two supplied data sets
+				 *      (of observed and expected frequencies), are likely to be simply due to sampling error,
+				 *      or if they are likely to be real.
+				 *
+				 * @param array $actual an array of observed frequencies
+				 * @param array $expected an array of expected frequencies
+				 * @return float|string
+				 */
+				public static function test($actual, $expected)
 	{
 		$rows = count($actual);
 		$actual = Functions::flattenArray($actual);
@@ -210,6 +210,7 @@ class ChiSquared
 
 		$degrees = self::degrees($rows, $columns);
 
+		/** @var float|string */
 		$result = Functions::scalar(self::distributionRightTail($result, $degrees));
 
 		return $result;

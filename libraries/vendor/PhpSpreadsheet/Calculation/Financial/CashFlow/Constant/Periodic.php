@@ -11,26 +11,26 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class Periodic
 {
 	/**
-	 * FV.
-	 *
-	 * Returns the Future Value of a cash flow with constant payments and interest rate (annuities).
-	 *
-	 * Excel Function:
-	 *        FV(rate,nper,pmt[,pv[,type]])
-	 *
-	 * @param mixed $rate The interest rate per period
-	 * @param mixed $numberOfPeriods Total number of payment periods in an annuity as an integer
-	 * @param mixed $payment The payment made each period: it cannot change over the
-	 *                            life of the annuity. Typically, pmt contains principal
-	 *                            and interest but no other fees or taxes.
-	 * @param mixed $presentValue present Value, or the lump-sum amount that a series of
-	 *                            future payments is worth right now
-	 * @param mixed $type A number 0 or 1 and indicates when payments are due:
-	 *                      0 or omitted    At the end of the period.
-	 *                      1               At the beginning of the period.
-	 * @return float|string
-	 */
-	public static function futureValue(
+				 * FV.
+				 *
+				 * Returns the Future Value of a cash flow with constant payments and interest rate (annuities).
+				 *
+				 * Excel Function:
+				 *        FV(rate,nper,pmt[,pv[,type]])
+				 *
+				 * @param mixed $rate The interest rate per period
+				 * @param mixed $numberOfPeriods Total number of payment periods in an annuity as an integer
+				 * @param mixed $payment The payment made each period: it cannot change over the
+				 *                            life of the annuity. Typically, pmt contains principal
+				 *                            and interest but no other fees or taxes.
+				 * @param mixed $presentValue present Value, or the lump-sum amount that a series of
+				 *                            future payments is worth right now
+				 * @param mixed $type A number 0 or 1 and indicates when payments are due:
+				 *                      0 or omitted    At the end of the period.
+				 *                      1               At the beginning of the period.
+				 * @return float|string
+				 */
+				public static function futureValue(
 		$rate,
 		$numberOfPeriods,
 		$payment = 0.0,
@@ -176,9 +176,9 @@ class Periodic
 	}
 
 	/**
-	 * @return float|string
-	 */
-	private static function calculatePeriods(
+				 * @return float|string
+				 */
+				private static function calculatePeriods(
 		float $rate,
 		float $payment,
 		float $presentValue,

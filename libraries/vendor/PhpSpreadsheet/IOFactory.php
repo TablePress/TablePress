@@ -151,31 +151,31 @@ abstract class IOFactory
 		}
 
 		switch (strtolower($pathinfo['extension'])) {
-			case 'xlsx':
-			case 'xlsm':
-			case 'xltx':
-			case 'xltm':
-				return 'Xlsx';
-			case 'xls':
-			case 'xlt':
-				return 'Xls';
-			case 'ods':
-			case 'ots':
-				return 'Ods';
-			case 'slk':
-				return 'Slk';
-			case 'xml':
-				return 'Xml';
-			case 'gnumeric':
-				return 'Gnumeric';
-			case 'htm':
-			case 'html':
-				return 'Html';
-			case 'csv':
-				return null;
-			default:
-				return null;
-		}
+									case 'xlsx':
+									case 'xlsm':
+									case 'xltx':
+									case 'xltm':
+										return 'Xlsx';
+									case 'xls':
+									case 'xlt':
+										return 'Xls';
+									case 'ods':
+									case 'ots':
+										return 'Ods';
+									case 'slk':
+										return 'Slk';
+									case 'xml':
+										return 'Xml';
+									case 'gnumeric':
+										return 'Gnumeric';
+									case 'htm':
+									case 'html':
+										return 'Html';
+									case 'csv':
+										return null;
+									default:
+										return null;
+								}
 	}
 
 	/**

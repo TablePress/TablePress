@@ -118,9 +118,9 @@ abstract class BaseReader implements IReader
 	}
 
 	/**
-	 * @param string|mixed[]|null $sheetList
-	 */
-	public function setLoadSheetsOnly($sheetList): self
+				 * @param string|mixed[]|null $sheetList
+				 */
+				public function setLoadSheetsOnly($sheetList): self
 	{
 		if ($sheetList === null) {
 			return $this->setLoadAllSheets();
@@ -259,5 +259,10 @@ abstract class BaseReader implements IReader
 		$this->valueBinder = $valueBinder;
 
 		return $this;
+	}
+
+	protected function newSpreadsheet(): Spreadsheet
+	{
+		return new Spreadsheet();
 	}
 }

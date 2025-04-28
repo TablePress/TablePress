@@ -9,19 +9,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class InterestRate
 {
 	/**
-	 * EFFECT.
-	 *
-	 * Returns the effective interest rate given the nominal rate and the number of
-	 *        compounding payments per year.
-	 *
-	 * Excel Function:
-	 *        EFFECT(nominal_rate,npery)
-	 *
-	 * @param mixed $nominalRate Nominal interest rate as a float
-	 * @param mixed $periodsPerYear Integer number of compounding payments per year
-	 * @return float|string
-	 */
-	public static function effective($nominalRate = 0, $periodsPerYear = 0)
+				 * EFFECT.
+				 *
+				 * Returns the effective interest rate given the nominal rate and the number of
+				 *        compounding payments per year.
+				 *
+				 * Excel Function:
+				 *        EFFECT(nominal_rate,npery)
+				 *
+				 * @param mixed $nominalRate Nominal interest rate as a float
+				 * @param mixed $periodsPerYear Integer number of compounding payments per year
+				 * @return float|string
+				 */
+				public static function effective($nominalRate = 0, $periodsPerYear = 0)
 	{
 		$nominalRate = Functions::flattenSingleValue($nominalRate);
 		$periodsPerYear = Functions::flattenSingleValue($periodsPerYear);

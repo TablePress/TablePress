@@ -9,19 +9,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class Single
 {
 	/**
-	 * FVSCHEDULE.
-	 *
-	 * Returns the future value of an initial principal after applying a series of compound interest rates.
-	 * Use FVSCHEDULE to calculate the future value of an investment with a variable or adjustable rate.
-	 *
-	 * Excel Function:
-	 *        FVSCHEDULE(principal,schedule)
-	 *
-	 * @param mixed $principal the present value
-	 * @param float[] $schedule an array of interest rates to apply
-	 * @return float|string
-	 */
-	public static function futureValue($principal, array $schedule)
+				 * FVSCHEDULE.
+				 *
+				 * Returns the future value of an initial principal after applying a series of compound interest rates.
+				 * Use FVSCHEDULE to calculate the future value of an investment with a variable or adjustable rate.
+				 *
+				 * Excel Function:
+				 *        FVSCHEDULE(principal,schedule)
+				 *
+				 * @param mixed $principal the present value
+				 * @param float[] $schedule an array of interest rates to apply
+				 * @return float|string
+				 */
+				public static function futureValue($principal, array $schedule)
 	{
 		$principal = Functions::flattenSingleValue($principal);
 		$schedule = Functions::flattenArray($schedule);

@@ -250,11 +250,11 @@ class Spreadsheet implements JsonSerializable
 	}
 
 	/**
-	 * set ribbon XML data.
-	 * @param mixed $target
-	 * @param mixed $xmlData
-	 */
-	public function setRibbonXMLData($target, $xmlData): void
+				 * set ribbon XML data.
+				 * @param mixed $target
+				 * @param mixed $xmlData
+				 */
+				public function setRibbonXMLData($target, $xmlData): void
 	{
 		if (is_string($target) && is_string($xmlData)) {
 			$this->ribbonXMLData = ['target' => $target, 'data' => $xmlData];
@@ -264,10 +264,10 @@ class Spreadsheet implements JsonSerializable
 	}
 
 	/**
-	 * retrieve ribbon XML Data.
-	 * @return mixed[]|string|null
-	 */
-	public function getRibbonXMLData(string $what = 'all') //we need some constants here...
+				 * retrieve ribbon XML Data.
+				 * @return mixed[]|string|null
+				 */
+				public function getRibbonXMLData(string $what = 'all') //we need some constants here...
 	{
 		$returnData = null;
 		$what = strtolower($what);
@@ -289,11 +289,11 @@ class Spreadsheet implements JsonSerializable
 	}
 
 	/**
-	 * store binaries ribbon objects (pictures).
-	 * @param mixed $binObjectsNames
-	 * @param mixed $binObjectsData
-	 */
-	public function setRibbonBinObjects($binObjectsNames, $binObjectsData): void
+				 * store binaries ribbon objects (pictures).
+				 * @param mixed $binObjectsNames
+				 * @param mixed $binObjectsData
+				 */
+				public function setRibbonBinObjects($binObjectsNames, $binObjectsData): void
 	{
 		if ($binObjectsNames !== null && $binObjectsData !== null) {
 			$this->ribbonBinObjects = ['names' => $binObjectsNames, 'data' => $binObjectsData];
@@ -336,7 +336,7 @@ class Spreadsheet implements JsonSerializable
 				return $this->ribbonBinObjects;
 			case 'names':
 			case 'data':
-				if (is_array($this->ribbonBinObjects) && isset($this->ribbonBinObjects[$what])) {
+				if (is_array($this->ribbonBinObjects) && is_array($this->ribbonBinObjects[$what] ?? null)) {
 					$ReturnData = $this->ribbonBinObjects[$what];
 				}
 
@@ -1063,7 +1063,7 @@ class Spreadsheet implements JsonSerializable
 	 */
 	public function copy(): self
 	{
-		return unserialize(serialize($this));
+		return unserialize(serialize($this)); //* @phpstan-ignore-line
 	}
 
 	/**
@@ -1084,6 +1084,15 @@ class Spreadsheet implements JsonSerializable
 		$this->calculationEngine = new Calculation($this);
 		if ($oldCalc !== null) {
 			$this->calculationEngine
+				->setSuppressFormulaErrors(
+					$oldCalc->getSuppressFormulaErrors()
+				)
+				->setCalculationCacheEnabled(
+					$oldCalc->getCalculationCacheEnabled()
+				)
+				->setBranchPruningEnabled(
+					$oldCalc->getBranchPruningEnabled()
+				)
 				->setInstanceArrayReturnType(
 					$oldCalc->getInstanceArrayReturnType()
 				);
@@ -1124,6 +1133,7 @@ class Spreadsheet implements JsonSerializable
 			switch ($key) {
 				// arrays of objects not covered above
 				case 'definedNames':
+					/** @var DefinedName[] */
 					$currentCollection = $val;
 					$this->$key = [];
 					foreach ($currentCollection as $item) {
@@ -1600,11 +1610,11 @@ class Spreadsheet implements JsonSerializable
 	}
 
 	/**
-	 * @throws Exception
-	 * @return mixed
-	 */
-	#[\ReturnTypeWillChange]
-	public function jsonSerialize()
+				 * @throws Exception
+				 * @return mixed
+				 */
+				#[\ReturnTypeWillChange]
+				public function jsonSerialize()
 	{
 		throw new Exception('Spreadsheet objects cannot be json encoded');
 	}

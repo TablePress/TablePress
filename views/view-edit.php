@@ -278,7 +278,7 @@ class TablePress_Edit_View extends TablePress_View {
 				<div>
 					<div>
 						<div class="postbox-header">
-							<h2><span class="dashicons dashicons-heart"></span> <?php _e( 'TablePress has more to offer!', 'tablepress' ); ?></h2>
+							<h2><span class="dashicons dashicons-lightbulb"></span> <?php _e( 'TablePress has more to offer!', 'tablepress' ); ?></h2>
 						</div>
 						<div class="inside">
 						<?php

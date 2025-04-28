@@ -121,9 +121,9 @@ class Beta
 	}
 
 	/**
-	 * @return float|string
-	 */
-	private static function calculateInverse(float $probability, float $alpha, float $beta, float $rMin, float $rMax)
+				 * @return float|string
+				 */
+				private static function calculateInverse(float $probability, float $alpha, float $beta, float $rMin, float $rMax)
 	{
 		$a = 0;
 		$b = 2;

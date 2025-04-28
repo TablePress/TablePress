@@ -46,9 +46,9 @@ class Base
 	}
 
 	/**
-	 * @param mixed $minLength
-	 */
-	private static function calculate(float $number, int $radix, $minLength): string
+				 * @param mixed $minLength
+				 */
+				private static function calculate(float $number, int $radix, $minLength): string
 	{
 		if ($minLength === null || is_numeric($minLength)) {
 			if ($number < 0 || $number >= 2 ** 53 || $radix < 2 || $radix > 36) {

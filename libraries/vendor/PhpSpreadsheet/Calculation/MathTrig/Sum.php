@@ -9,17 +9,17 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class Sum
 {
 	/**
-	 * SUM, ignoring non-numeric non-error strings. This is eventually used by SUMIF.
-	 *
-	 * SUM computes the sum of all the values and cells referenced in the argument list.
-	 *
-	 * Excel Function:
-	 *        SUM(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function sumIgnoringStrings(...$args)
+				 * SUM, ignoring non-numeric non-error strings. This is eventually used by SUMIF.
+				 *
+				 * SUM computes the sum of all the values and cells referenced in the argument list.
+				 *
+				 * Excel Function:
+				 *        SUM(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function sumIgnoringStrings(...$args)
 	{
 		$returnValue = 0;
 
@@ -37,17 +37,17 @@ class Sum
 	}
 
 	/**
-	 * SUM, returning error for non-numeric strings. This is used by Excel SUM function.
-	 *
-	 * SUM computes the sum of all the values and cells referenced in the argument list.
-	 *
-	 * Excel Function:
-	 *        SUM(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return mixed[]|float|int|string
-	 */
-	public static function sumErroringStrings(...$args)
+				 * SUM, returning error for non-numeric strings. This is used by Excel SUM function.
+				 *
+				 * SUM computes the sum of all the values and cells referenced in the argument list.
+				 *
+				 * Excel Function:
+				 *        SUM(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return mixed[]|float|int|string
+				 */
+				public static function sumErroringStrings(...$args)
 	{
 		$returnValue = 0;
 		// Loop through the arguments

@@ -4,6 +4,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class Functions
 {
@@ -129,33 +130,39 @@ class Functions
 	}
 
 	/**
-	 * @param mixed $idx
-	 */
-	public static function isMatrixValue($idx): bool
+				 * @param mixed $idx
+				 */
+				public static function isMatrixValue($idx): bool
 	{
+		$idx = StringHelper::convertToString($idx);
+
 		return (substr_count($idx, '.') <= 1) || (preg_match('/\.[A-Z]/', $idx) > 0);
 	}
 
 	/**
-	 * @param mixed $idx
-	 */
-	public static function isValue($idx): bool
+				 * @param mixed $idx
+				 */
+				public static function isValue($idx): bool
 	{
+		$idx = StringHelper::convertToString($idx);
+
 		return substr_count($idx, '.') === 0;
 	}
 
 	/**
-	 * @param mixed $idx
-	 */
-	public static function isCellValue($idx): bool
+				 * @param mixed $idx
+				 */
+				public static function isCellValue($idx): bool
 	{
+		$idx = StringHelper::convertToString($idx);
+
 		return substr_count($idx, '.') > 1;
 	}
 
 	/**
-	 * @param mixed $condition
-	 */
-	public static function ifCondition($condition): string
+				 * @param mixed $condition
+				 */
+				public static function ifCondition($condition): string
 	{
 		$condition = self::flattenSingleValue($condition);
 
@@ -166,7 +173,8 @@ class Functions
 			$condition = self::operandSpecialHandling($condition);
 			if (is_bool($condition)) {
 				return '=' . ($condition ? 'TRUE' : 'FALSE');
-			} elseif (!is_numeric($condition)) {
+			}
+			if (!is_numeric($condition)) {
 				if ($condition !== '""') { // Not an empty string
 					// Escape any quotes in the string value
 					$condition = (string) preg_replace('/"/ui', '""', $condition);
@@ -174,33 +182,36 @@ class Functions
 				$condition = Calculation::wrapResult(strtoupper($condition));
 			}
 
-			return str_replace('""""', '""', '=' . $condition);
+			return str_replace('""""', '""', '=' . StringHelper::convertToString($condition));
 		}
 		$operator = $operand = '';
 		if (1 === preg_match('/(=|<[>=]?|>=?)(.*)/', $condition, $matches)) {
 			[, $operator, $operand] = $matches;
 		}
 
-		$operand = self::operandSpecialHandling($operand);
+		$operand = (string) self::operandSpecialHandling($operand);
 		if (is_numeric(trim($operand, '"'))) {
 			$operand = trim($operand, '"');
 		} elseif (!is_numeric($operand) && $operand !== 'FALSE' && $operand !== 'TRUE') {
 			$operand = str_replace('"', '""', $operand);
 			$operand = Calculation::wrapResult(strtoupper($operand));
+			$operand = StringHelper::convertToString($operand);
 		}
 
 		return str_replace('""""', '""', $operator . $operand);
 	}
 
 	/**
-	 * @param mixed $operand
-	 * @return mixed
-	 */
-	private static function operandSpecialHandling($operand)
+				 * @return bool|float|int|string
+				 * @param mixed $operand
+				 */
+				private static function operandSpecialHandling($operand)
 	{
 		if (is_numeric($operand) || is_bool($operand)) {
 			return $operand;
-		} elseif (strtoupper($operand) === Calculation::getTRUE() || strtoupper($operand) === Calculation::getFALSE()) {
+		}
+		$operand = StringHelper::convertToString($operand);
+		if (strtoupper($operand) === Calculation::getTRUE() || strtoupper($operand) === Calculation::getFALSE()) {
 			return strtoupper($operand);
 		}
 
@@ -273,10 +284,10 @@ class Functions
 	}
 
 	/**
-	 * @param mixed $value
-	 * @return mixed
-	 */
-	public static function scalar($value)
+				 * @param mixed $value
+				 * @return mixed
+				 */
+				public static function scalar($value)
 	{
 		if (!is_array($value)) {
 			return $value;
@@ -323,12 +334,12 @@ class Functions
 	}
 
 	/**
-	 * Convert an array to a single scalar value by extracting the first element.
-	 *
-	 * @param mixed $value Array or scalar value
-	 * @return mixed
-	 */
-	public static function flattenSingleValue($value)
+				 * Convert an array to a single scalar value by extracting the first element.
+				 *
+				 * @param mixed $value Array or scalar value
+				 * @return mixed
+				 */
+				public static function flattenSingleValue($value)
 	{
 		while (is_array($value)) {
 			$value = array_shift($value);

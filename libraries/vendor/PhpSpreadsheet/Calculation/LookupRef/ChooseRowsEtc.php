@@ -22,21 +22,21 @@ class ChooseRowsEtc
 	}
 
 	/** @return mixed[]
-	 * @param mixed $array */
-	private static function arrayValues($array): array
+				 * @param mixed $array */
+				private static function arrayValues($array): array
 	{
 		return is_array($array) ? array_values($array) : [$array];
 	}
 
 	/**
-	 * CHOOSECOLS.
-	 *
-	 * @param mixed $input expecting two-dimensional array
-	 *
-	 * @return mixed[]|string
-	 * @param mixed ...$args
-	 */
-	public static function chooseCols($input, ...$args)
+				 * CHOOSECOLS.
+				 *
+				 * @param mixed $input expecting two-dimensional array
+				 *
+				 * @return mixed[]|string
+				 * @param mixed ...$args
+				 */
+				public static function chooseCols($input, ...$args)
 	{
 		if (!is_array($input)) {
 			$input = [[$input]];
@@ -47,14 +47,14 @@ class ChooseRowsEtc
 	}
 
 	/**
-	 * CHOOSEROWS.
-	 *
-	 * @param mixed $input expecting two-dimensional array
-	 *
-	 * @return mixed[]|string
-	 * @param mixed ...$args
-	 */
-	public static function chooseRows($input, ...$args)
+				 * CHOOSEROWS.
+				 *
+				 * @param mixed $input expecting two-dimensional array
+				 *
+				 * @return mixed[]|string
+				 * @param mixed ...$args
+				 */
+				public static function chooseRows($input, ...$args)
 	{
 		if (!is_array($input)) {
 			$input = [[$input]];
@@ -84,10 +84,10 @@ class ChooseRowsEtc
 	}
 
 	/**
-	 * @return mixed[]|string
-	 * @param mixed $offset
-	 */
-	private static function dropRows(array $array, $offset)
+				 * @return mixed[]|string
+				 * @param mixed $offset
+				 */
+				private static function dropRows(array $array, $offset)
 	{
 		if ($offset === null) {
 			return $array;
@@ -113,15 +113,15 @@ class ChooseRowsEtc
 	}
 
 	/**
-	 * DROP.
-	 *
-	 * @param mixed $input expect two-dimensional array
-	 *
-	 * @return mixed[]|string
-	 * @param mixed $rows
-	 * @param mixed $columns
-	 */
-	public static function drop($input, $rows = null, $columns = null)
+				 * DROP.
+				 *
+				 * @param mixed $input expect two-dimensional array
+				 *
+				 * @return mixed[]|string
+				 * @param mixed $rows
+				 * @param mixed $columns
+				 */
+				public static function drop($input, $rows = null, $columns = null)
 	{
 		if (!is_array($input)) {
 			$input = [[$input]];
@@ -144,10 +144,10 @@ class ChooseRowsEtc
 	}
 
 	/**
-	 * @return mixed[]|string
-	 * @param mixed $offset
-	 */
-	private static function takeRows(array $array, $offset)
+				 * @return mixed[]|string
+				 * @param mixed $offset
+				 */
+				private static function takeRows(array $array, $offset)
 	{
 		if ($offset === null) {
 			return $array;
@@ -172,15 +172,15 @@ class ChooseRowsEtc
 	}
 
 	/**
-	 * TAKE.
-	 *
-	 * @param mixed $input expecting two-dimensional array
-	 *
-	 * @return mixed[]|string
-	 * @param mixed $rows
-	 * @param mixed $columns
-	 */
-	public static function take($input, $rows, $columns = null)
+				 * TAKE.
+				 *
+				 * @param mixed $input expecting two-dimensional array
+				 *
+				 * @return mixed[]|string
+				 * @param mixed $rows
+				 * @param mixed $columns
+				 */
+				public static function take($input, $rows, $columns = null)
 	{
 		if (!is_array($input)) {
 			$input = [[$input]];
@@ -206,16 +206,16 @@ class ChooseRowsEtc
 	}
 
 	/**
-	 * EXPAND.
-	 *
-	 * @param mixed $input expecting two-dimensional array
-	 *
-	 * @return mixed[]|string
-	 * @param mixed $rows
-	 * @param mixed $columns
-	 * @param mixed $pad
-	 */
-	public static function expand($input, $rows, $columns = null, $pad = '#N/A')
+				 * EXPAND.
+				 *
+				 * @param mixed $input expecting two-dimensional array
+				 *
+				 * @return mixed[]|string
+				 * @param mixed $rows
+				 * @param mixed $columns
+				 * @param mixed $pad
+				 */
+				public static function expand($input, $rows, $columns = null, $pad = '#N/A')
 	{
 		if (!is_array($input)) {
 			$input = [[$input]];

@@ -90,10 +90,10 @@ class Legend
 	}
 
 	/**
-	 * Get legend position as an Excel internal numeric value.
-	 * @return int|false
-	 */
-	public function getPositionXL()
+				 * Get legend position as an Excel internal numeric value.
+				 * @return int|false
+				 */
+				public function getPositionXL()
 	{
 		return array_search($this->position, self::POSITION_XLREF);
 	}

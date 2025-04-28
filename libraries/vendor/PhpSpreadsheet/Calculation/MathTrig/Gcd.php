@@ -9,19 +9,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class Gcd
 {
 	/**
-	 * Recursively determine GCD.
-	 *
-	 * Returns the greatest common divisor of a series of numbers.
-	 * The greatest common divisor is the largest integer that divides both
-	 *        number1 and number2 without a remainder.
-	 *
-	 * Excel Function:
-	 *        GCD(number1[,number2[, ...]])
-	 * @param float|int $a
-	 * @param float|int $b
-	 * @return float|int
-	 */
-	private static function evaluateGCD($a, $b)
+				 * Recursively determine GCD.
+				 *
+				 * Returns the greatest common divisor of a series of numbers.
+				 * The greatest common divisor is the largest integer that divides both
+				 *        number1 and number2 without a remainder.
+				 *
+				 * Excel Function:
+				 *        GCD(number1[,number2[, ...]])
+				 * @param float|int $a
+				 * @param float|int $b
+				 * @return float|int
+				 */
+				private static function evaluateGCD($a, $b)
 	{
 		return $b ? self::evaluateGCD($b, $a % $b) : $a;
 	}

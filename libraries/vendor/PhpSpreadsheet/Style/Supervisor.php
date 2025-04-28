@@ -39,12 +39,12 @@ abstract class Supervisor implements IComparable
 	}
 
 	/**
-	 * Bind parent. Only used for supervisor.
-	 *
-	 * @return $this
-	 * @param \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet|$this $parent
-	 */
-	public function bindParent($parent, ?string $parentPropertyName = null)
+				 * Bind parent. Only used for supervisor.
+				 *
+				 * @return $this
+				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet|$this $parent
+				 */
+				public function bindParent($parent, ?string $parentPropertyName = null)
 	{
 		$this->parent = $parent;
 		$this->parentPropertyName = $parentPropertyName;
@@ -128,15 +128,15 @@ abstract class Supervisor implements IComparable
 	abstract protected function exportArray1(): array;
 
 	/**
-	 * Populate array from exportArray1.
-	 * This method is available to anything which extends this class.
-	 * The parameter index is the key to be added to the array.
-	 * The parameter objOrValue is either a primitive type,
-	 * which is the value added to the array,
-	 * or a Style object to be recursively added via exportArray.
-	 * @param mixed $objOrValue
-	 */
-	final protected function exportArray2(array &$exportedArray, string $index, $objOrValue): void
+				 * Populate array from exportArray1.
+				 * This method is available to anything which extends this class.
+				 * The parameter index is the key to be added to the array.
+				 * The parameter objOrValue is either a primitive type,
+				 * which is the value added to the array,
+				 * or a Style object to be recursively added via exportArray.
+				 * @param mixed $objOrValue
+				 */
+				final protected function exportArray2(array &$exportedArray, string $index, $objOrValue): void
 	{
 		if ($objOrValue instanceof self) {
 			$exportedArray[$index] = $objOrValue->exportArray();
@@ -146,11 +146,11 @@ abstract class Supervisor implements IComparable
 	}
 
 	/**
-	 * Get the shared style component for the currently active cell in currently active sheet.
-	 * Only used for style supervisor.
-	 * @return mixed
-	 */
-	abstract public function getSharedComponent();
+				 * Get the shared style component for the currently active cell in currently active sheet.
+				 * Only used for style supervisor.
+				 * @return mixed
+				 */
+				abstract public function getSharedComponent();
 
 	/**
 	 * Build style array from subcomponents.

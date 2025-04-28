@@ -9,36 +9,37 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Financial\Coupons;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Financial\Helpers;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class Price
 {
 	/**
-	 * PRICE.
-	 *
-	 * Returns the price per $100 face value of a security that pays periodic interest.
-	 *
-	 * @param mixed $settlement The security's settlement date.
-	 *                              The security settlement date is the date after the issue date when the security
-	 *                              is traded to the buyer.
-	 * @param mixed $maturity The security's maturity date.
-	 *                                The maturity date is the date when the security expires.
-	 * @param mixed $rate the security's annual coupon rate
-	 * @param mixed $yield the security's annual yield
-	 * @param mixed $redemption The number of coupon payments per year.
-	 *                              For annual payments, frequency = 1;
-	 *                              for semiannual, frequency = 2;
-	 *                              for quarterly, frequency = 4.
-	 * @param mixed $basis The type of day count to use.
-	 *                         0 or omitted    US (NASD) 30/360
-	 *                         1               Actual/actual
-	 *                         2               Actual/360
-	 *                         3               Actual/365
-	 *                         4               European 30/360
-	 *
-	 * @return float|string Result, or a string containing an error
-	 * @param mixed $frequency
-	 */
-	public static function price(
+				 * PRICE.
+				 *
+				 * Returns the price per $100 face value of a security that pays periodic interest.
+				 *
+				 * @param mixed $settlement The security's settlement date.
+				 *                              The security settlement date is the date after the issue date when the security
+				 *                              is traded to the buyer.
+				 * @param mixed $maturity The security's maturity date.
+				 *                                The maturity date is the date when the security expires.
+				 * @param mixed $rate the security's annual coupon rate
+				 * @param mixed $yield the security's annual yield
+				 * @param mixed $redemption The number of coupon payments per year.
+				 *                              For annual payments, frequency = 1;
+				 *                              for semiannual, frequency = 2;
+				 *                              for quarterly, frequency = 4.
+				 * @param mixed $basis The type of day count to use.
+				 *                         0 or omitted    US (NASD) 30/360
+				 *                         1               Actual/actual
+				 *                         2               Actual/360
+				 *                         3               Actual/365
+				 *                         4               European 30/360
+				 *
+				 * @return float|string Result, or a string containing an error
+				 * @param mixed $frequency
+				 */
+				public static function price(
 		$settlement,
 		$maturity,
 		$rate,
@@ -138,7 +139,7 @@ class Price
 		$daysBetweenSettlementAndMaturity = Functions::scalar(DateTimeExcel\YearFrac::fraction($settlement, $maturity, $basis));
 		if (!is_numeric($daysBetweenSettlementAndMaturity)) {
 			//    return date error
-			return $daysBetweenSettlementAndMaturity;
+			return StringHelper::convertToString($daysBetweenSettlementAndMaturity);
 		}
 
 		return $redemption * (1 - $discount * $daysBetweenSettlementAndMaturity);
@@ -202,19 +203,19 @@ class Price
 		$daysBetweenIssueAndSettlement = Functions::scalar(DateTimeExcel\YearFrac::fraction($issue, $settlement, $basis));
 		if (!is_numeric($daysBetweenIssueAndSettlement)) {
 			//    return date error
-			return $daysBetweenIssueAndSettlement;
+			return StringHelper::convertToString($daysBetweenIssueAndSettlement);
 		}
 		$daysBetweenIssueAndSettlement *= $daysPerYear;
 		$daysBetweenIssueAndMaturity = Functions::scalar(DateTimeExcel\YearFrac::fraction($issue, $maturity, $basis));
 		if (!is_numeric($daysBetweenIssueAndMaturity)) {
 			//    return date error
-			return $daysBetweenIssueAndMaturity;
+			return StringHelper::convertToString($daysBetweenIssueAndMaturity);
 		}
 		$daysBetweenIssueAndMaturity *= $daysPerYear;
 		$daysBetweenSettlementAndMaturity = Functions::scalar(DateTimeExcel\YearFrac::fraction($settlement, $maturity, $basis));
 		if (!is_numeric($daysBetweenSettlementAndMaturity)) {
 			//    return date error
-			return $daysBetweenSettlementAndMaturity;
+			return StringHelper::convertToString($daysBetweenSettlementAndMaturity);
 		}
 		$daysBetweenSettlementAndMaturity *= $daysPerYear;
 
@@ -276,7 +277,7 @@ class Price
 		$daysBetweenSettlementAndMaturity = DateTimeExcel\YearFrac::fraction($settlement, $maturity, $basis);
 		if (!is_numeric($daysBetweenSettlementAndMaturity)) {
 			//    return date error
-			return Functions::scalar($daysBetweenSettlementAndMaturity);
+			return StringHelper::convertToString(Functions::scalar($daysBetweenSettlementAndMaturity));
 		}
 
 		return $investment / (1 - ($discount * $daysBetweenSettlementAndMaturity));

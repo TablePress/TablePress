@@ -27,10 +27,10 @@ class MemoryDrawing extends BaseDrawing
 	];
 
 	/**
-	 * Image resource.
-	 * @var null|\GdImage
-	 */
-	private $imageResource = null;
+				 * Image resource.
+				 * @var null|\GdImage
+				 */
+				private $imageResource = null;
 
 	/**
 	 * Rendering function.
@@ -168,15 +168,15 @@ class MemoryDrawing extends BaseDrawing
 	private static function identifyRenderingFunction(string $mimeType): string
 	{
 		switch ($mimeType) {
-			case self::MIMETYPE_PNG:
-				return self::RENDERING_PNG;
-			case self::MIMETYPE_JPEG:
-				return self::RENDERING_JPEG;
-			case self::MIMETYPE_GIF:
-				return self::RENDERING_GIF;
-			default:
-				return self::RENDERING_DEFAULT;
-		}
+									case self::MIMETYPE_PNG:
+										return self::RENDERING_PNG;
+									case self::MIMETYPE_JPEG:
+										return self::RENDERING_JPEG;
+									case self::MIMETYPE_GIF:
+										return self::RENDERING_GIF;
+									default:
+										return self::RENDERING_DEFAULT;
+								}
 	}
 
 	/**

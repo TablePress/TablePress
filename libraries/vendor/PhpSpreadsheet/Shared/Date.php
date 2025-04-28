@@ -155,12 +155,12 @@ class Date
 	}
 
 	/**
-	 * @param mixed $value Converts a date/time in ISO-8601 standard format date string to an Excel
-	 *                         serialized timestamp.
-	 *                     See https://en.wikipedia.org/wiki/ISO_8601 for details of the ISO-8601 standard format.
-	 * @return float|int
-	 */
-	public static function convertIsoDate($value)
+				 * @param mixed $value Converts a date/time in ISO-8601 standard format date string to an Excel
+				 *                         serialized timestamp.
+				 *                     See https://en.wikipedia.org/wiki/ISO_8601 for details of the ISO-8601 standard format.
+				 * @return float|int
+				 */
+				public static function convertIsoDate($value)
 	{
 		if (!is_string($value)) {
 			throw new Exception('Non-string value supplied for Iso Date conversion');
@@ -316,12 +316,12 @@ class Date
 	}
 
 	/**
-	 * formattedPHPToExcel.
-	 *
-	 * @return float Excel date/time value
-	 * @param float|int $seconds
-	 */
-	public static function formattedPHPToExcel(int $year, int $month, int $day, int $hours = 0, int $minutes = 0, $seconds = 0): float
+				 * formattedPHPToExcel.
+				 *
+				 * @return float Excel date/time value
+				 * @param float|int $seconds
+				 */
+				public static function formattedPHPToExcel(int $year, int $month, int $day, int $hours = 0, int $minutes = 0, $seconds = 0): float
 	{
 		if (self::$excelCalendar == self::CALENDAR_WINDOWS_1900) {
 			//
@@ -357,10 +357,10 @@ class Date
 	}
 
 	/**
-	 * Is a given cell a date/time?
-	 * @param mixed $value
-	 */
-	public static function isDateTime(Cell $cell, $value = null, bool $dateWithoutTimeOkay = true): bool
+				 * Is a given cell a date/time?
+				 * @param mixed $value
+				 */
+				public static function isDateTime(Cell $cell, $value = null, bool $dateWithoutTimeOkay = true): bool
 	{
 		$result = false;
 		$worksheet = $cell->getWorksheetOrNull();

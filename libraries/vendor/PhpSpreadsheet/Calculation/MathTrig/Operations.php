@@ -87,17 +87,17 @@ class Operations
 	}
 
 	/**
-	 * PRODUCT.
-	 *
-	 * PRODUCT returns the product of all the values and cells referenced in the argument list.
-	 *
-	 * Excel Function:
-	 *        PRODUCT(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|string
-	 */
-	public static function product(...$args)
+				 * PRODUCT.
+				 *
+				 * PRODUCT returns the product of all the values and cells referenced in the argument list.
+				 *
+				 * Excel Function:
+				 *        PRODUCT(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|string
+				 */
+				public static function product(...$args)
 	{
 		$args = array_filter(
 			Functions::flattenArray($args),

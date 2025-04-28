@@ -46,9 +46,9 @@ class SimpleCache1 implements CacheInterface
 	}
 
 	/**
-	 * @return mixed
-	 */
-	public function get($key, $default = null)
+				 * @return mixed
+				 */
+				public function get($key, $default = null)
 	{
 		if ($this->has($key)) {
 			return $this->cache[$key];

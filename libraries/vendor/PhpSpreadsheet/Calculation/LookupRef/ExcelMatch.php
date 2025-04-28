@@ -64,19 +64,19 @@ class ExcelMatch
 		}
 
 		switch ($matchType) {
-			case self::MATCHTYPE_LARGEST_VALUE:
-				$valueKey = self::matchLargestValue($lookupArray, $lookupValue, $keySet);
-				break;
-			case self::MATCHTYPE_FIRST_VALUE:
-				$valueKey = self::matchFirstValue($lookupArray, $lookupValue);
-				break;
-			default:
-				$valueKey = self::matchSmallestValue($lookupArray, $lookupValue);
-				break;
-		}
+									case self::MATCHTYPE_LARGEST_VALUE:
+										$valueKey = self::matchLargestValue($lookupArray, $lookupValue, $keySet);
+										break;
+									case self::MATCHTYPE_FIRST_VALUE:
+										$valueKey = self::matchFirstValue($lookupArray, $lookupValue);
+										break;
+									default:
+										$valueKey = self::matchSmallestValue($lookupArray, $lookupValue);
+										break;
+								}
 
 		if ($valueKey !== null) {
-			return ++$valueKey;
+			return ++$valueKey; //* @phpstan-ignore-line
 		}
 
 		// Unsuccessful in finding a match, return #N/A error value
@@ -84,10 +84,10 @@ class ExcelMatch
 	}
 
 	/**
-	 * @return int|string|null
-	 * @param mixed $lookupValue
-	 */
-	private static function matchFirstValue(array $lookupArray, $lookupValue)
+				 * @return int|string|null
+				 * @param mixed $lookupValue
+				 */
+				private static function matchFirstValue(array $lookupArray, $lookupValue)
 	{
 		if (is_string($lookupValue)) {
 			$valueIsString = true;
@@ -124,10 +124,10 @@ class ExcelMatch
 	}
 
 	/**
-	 * @param mixed $lookupValue
-	 * @return mixed
-	 */
-	private static function matchLargestValue(array $lookupArray, $lookupValue, array $keySet)
+				 * @param mixed $lookupValue
+				 * @return mixed
+				 */
+				private static function matchLargestValue(array $lookupArray, $lookupValue, array $keySet)
 	{
 		if (is_string($lookupValue)) {
 			if (Functions::getCompatibilityMode() === Functions::COMPATIBILITY_OPENOFFICE) {
@@ -162,10 +162,10 @@ class ExcelMatch
 	}
 
 	/**
-	 * @return int|string|null
-	 * @param mixed $lookupValue
-	 */
-	private static function matchSmallestValue(array $lookupArray, $lookupValue)
+				 * @return int|string|null
+				 * @param mixed $lookupValue
+				 */
+				private static function matchSmallestValue(array $lookupArray, $lookupValue)
 	{
 		$valueKey = null;
 		if (is_string($lookupValue)) {
@@ -207,9 +207,9 @@ class ExcelMatch
 	}
 
 	/**
-	 * @param mixed $lookupValue
-	 */
-	private static function validateLookupValue($lookupValue): void
+				 * @param mixed $lookupValue
+				 */
+				private static function validateLookupValue($lookupValue): void
 	{
 		// Lookup_value type has to be number, text, or logical values
 		if ((!is_numeric($lookupValue)) && (!is_string($lookupValue)) && (!is_bool($lookupValue))) {
@@ -218,9 +218,9 @@ class ExcelMatch
 	}
 
 	/**
-	 * @param mixed $matchType
-	 */
-	private static function validateMatchType($matchType): int
+				 * @param mixed $matchType
+				 */
+				private static function validateMatchType($matchType): int
 	{
 		// Match_type is 0, 1 or -1
 		// However Excel accepts other numeric values,
@@ -249,9 +249,9 @@ class ExcelMatch
 	}
 
 	/**
-	 * @param mixed $matchType
-	 */
-	private static function prepareLookupArray(array $lookupArray, $matchType): array
+				 * @param mixed $matchType
+				 */
+				private static function prepareLookupArray(array $lookupArray, $matchType): array
 	{
 		// Lookup_array should contain only number, text, or logical values, or empty (null) cells
 		foreach ($lookupArray as $i => $value) {

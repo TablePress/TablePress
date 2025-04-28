@@ -106,19 +106,19 @@ class TreasuryBill
 	}
 
 	/**
-	 * TBILLYIELD.
-	 *
-	 * Returns the yield for a Treasury bill.
-	 *
-	 * @param mixed $settlement The Treasury bill's settlement date.
-	 *                                The Treasury bill's settlement date is the date after the issue date when
-	 *                                    the Treasury bill is traded to the buyer.
-	 * @param mixed $maturity The Treasury bill's maturity date.
-	 *                                The maturity date is the date when the Treasury bill expires.
-	 * @param float|string $price The Treasury bill's price per $100 face value
-	 * @return float|string
-	 */
-	public static function yield($settlement, $maturity, $price)
+				 * TBILLYIELD.
+				 *
+				 * Returns the yield for a Treasury bill.
+				 *
+				 * @param mixed $settlement The Treasury bill's settlement date.
+				 *                                The Treasury bill's settlement date is the date after the issue date when
+				 *                                    the Treasury bill is traded to the buyer.
+				 * @param mixed $maturity The Treasury bill's maturity date.
+				 *                                The maturity date is the date when the Treasury bill expires.
+				 * @param float|string $price The Treasury bill's price per $100 face value
+				 * @return float|string
+				 */
+				public static function yield($settlement, $maturity, $price)
 	{
 		$settlement = Functions::flattenSingleValue($settlement);
 		$maturity = Functions::flattenSingleValue($maturity);

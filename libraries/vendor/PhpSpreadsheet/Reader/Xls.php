@@ -1609,19 +1609,19 @@ class Xls extends XlsBase
 		$this->pos += 4 + $length;
 
 		switch (ord($recordData[4])) {
-			case 0x00:
-				$sheetState = Worksheet::SHEETSTATE_VISIBLE;
-				break;
-			case 0x01:
-				$sheetState = Worksheet::SHEETSTATE_HIDDEN;
-				break;
-			case 0x02:
-				$sheetState = Worksheet::SHEETSTATE_VERYHIDDEN;
-				break;
-			default:
-				$sheetState = Worksheet::SHEETSTATE_VISIBLE;
-				break;
-		}
+									case 0x00:
+										$sheetState = Worksheet::SHEETSTATE_VISIBLE;
+										break;
+									case 0x01:
+										$sheetState = Worksheet::SHEETSTATE_HIDDEN;
+										break;
+									case 0x02:
+										$sheetState = Worksheet::SHEETSTATE_VERYHIDDEN;
+										break;
+									default:
+										$sheetState = Worksheet::SHEETSTATE_VISIBLE;
+										break;
+								}
 
 		// offset: 5; size: 1; sheet type
 		$sheetType = ord($recordData[5]);
@@ -4418,27 +4418,27 @@ class Xls extends XlsBase
 						$name = 'tAttrSpace';
 						$size = 4;
 						switch (ord($formulaData[2])) {
-							case 0x00:
-								$spacetype = 'type0';
-								break;
-							case 0x01:
-								$spacetype = 'type1';
-								break;
-							case 0x02:
-								$spacetype = 'type2';
-								break;
-							case 0x03:
-								$spacetype = 'type3';
-								break;
-							case 0x04:
-								$spacetype = 'type4';
-								break;
-							case 0x05:
-								$spacetype = 'type5';
-								break;
-							default:
-								throw new Exception('Unrecognized space type in tAttrSpace token');
-						}
+																									case 0x00:
+																										$spacetype = 'type0';
+																										break;
+																									case 0x01:
+																										$spacetype = 'type1';
+																										break;
+																									case 0x02:
+																										$spacetype = 'type2';
+																										break;
+																									case 0x03:
+																										$spacetype = 'type3';
+																										break;
+																									case 0x04:
+																										$spacetype = 'type4';
+																										break;
+																									case 0x05:
+																										$spacetype = 'type5';
+																										break;
+																									default:
+																										throw new Exception('Unrecognized space type in tAttrSpace token');
+																								}
 						// offset: 3; size: 1; number of inserted spaces/carriage returns
 						$spacecount = ord($formulaData[3]);
 
@@ -4657,13 +4657,13 @@ class Xls extends XlsBase
 	}
 
 	/**
-	 * Get a sheet range like Sheet1:Sheet3 from REF index
-	 * Note: If there is only one sheet in the range, one gets e.g Sheet1
-	 * It can also happen that the REF structure uses the -1 (FFFF) code to indicate deleted sheets,
-	 * in which case an Exception is thrown.
-	 * @return string|false
-	 */
-	protected function readSheetRangeByRefIndex(int $index)
+				 * Get a sheet range like Sheet1:Sheet3 from REF index
+				 * Note: If there is only one sheet in the range, one gets e.g Sheet1
+				 * It can also happen that the REF structure uses the -1 (FFFF) code to indicate deleted sheets,
+				 * in which case an Exception is thrown.
+				 * @return string|false
+				 */
+				protected function readSheetRangeByRefIndex(int $index)
 	{
 		if (isset($this->ref[$index])) {
 			$type = $this->externalBooks[$this->ref[$index]['externalBookIndex']]['type'];

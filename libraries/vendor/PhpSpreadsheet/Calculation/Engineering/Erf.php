@@ -76,18 +76,18 @@ class Erf
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	private static function makeFloat($value): float
+				 * @param mixed $value
+				 */
+				private static function makeFloat($value): float
 	{
 		return is_numeric($value) ? ((float) $value) : 0.0;
 	}
 
 	/**
-	 * Method to calculate the erf value.
-	 * @param float|int|string $value
-	 */
-	public static function erfValue($value): float
+				 * Method to calculate the erf value.
+				 * @param float|int|string $value
+				 */
+				public static function erfValue($value): float
 	{
 		$value = (float) $value;
 		if (abs($value) > 2.2) {

@@ -108,10 +108,10 @@ class HashTable
 	}
 
 	/**
-	 * Get index for hash code.
-	 * @return int|false
-	 */
-	public function getIndexForHashCode(string $hashCode)
+				 * Get index for hash code.
+				 * @return int|false
+				 */
+				public function getIndexForHashCode(string $hashCode)
 	{
 		return array_search($hashCode, $this->keyMap, true);
 	}

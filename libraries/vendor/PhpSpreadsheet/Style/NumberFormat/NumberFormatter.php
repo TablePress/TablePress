@@ -29,9 +29,9 @@ class NumberFormatter extends BaseFormatter
 	}
 
 	/**
-	 * @param mixed $number
-	 */
-	private static function processComplexNumberFormatMask($number, string $mask): string
+				 * @param mixed $number
+				 */
+				private static function processComplexNumberFormatMask($number, string $mask): string
 	{
 		/** @var string $result */
 		$result = $number;
@@ -64,9 +64,9 @@ class NumberFormatter extends BaseFormatter
 	}
 
 	/**
-	 * @param mixed $number
-	 */
-	private static function complexNumberFormatMask($number, string $mask, bool $splitOnPoint = true): string
+				 * @param mixed $number
+				 */
+				private static function complexNumberFormatMask($number, string $mask, bool $splitOnPoint = true): string
 	{
 		/** @var float $numberFloat */
 		$numberFloat = $number;
@@ -139,9 +139,9 @@ class NumberFormatter extends BaseFormatter
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	private static function formatStraightNumericValue($value, string $format, array $matches, bool $useThousands): string
+				 * @param mixed $value
+				 */
+				private static function formatStraightNumericValue($value, string $format, array $matches, bool $useThousands): string
 	{
 		/** @var float $valueFloat */
 		$valueFloat = $value;
@@ -168,9 +168,10 @@ class NumberFormatter extends BaseFormatter
 			$size = $decimals + 3;
 
 			return sprintf("%{$size}.{$decimals}E", $valueFloat);
-		} elseif (preg_match('/0([^\d\.]+)0/', $format) || substr_count($format, '.') > 1) {
+		}
+		if (preg_match('/0([^\d\.]+)0/', $format) || substr_count($format, '.') > 1) {
 			if ($valueFloat == floor($valueFloat) && substr_count($format, '.') === 1) {
-				$value *= 10 ** strlen(explode('.', $format)[1]);
+				$value *= 10 ** strlen(explode('.', $format)[1]); //* @phpstan-ignore-line
 			}
 
 			$result = self::complexNumberFormatMask($value, $format);
@@ -195,7 +196,7 @@ class NumberFormatter extends BaseFormatter
 	}
 
 	/** @param mixed $value value to be formatted */
-	public static function format($value, string $format): string
+				public static function format($value, string $format): string
 	{
 		// The "_" in this string has already been stripped out,
 		// so this test is never true. Furthermore, testing
@@ -265,9 +266,9 @@ class NumberFormatter extends BaseFormatter
 	}
 
 	/**
-	 * @param mixed[]|string $value
-	 */
-	private static function makeString($value): string
+				 * @param mixed[]|string $value
+				 */
+				private static function makeString($value): string
 	{
 		return is_array($value) ? '' : "$value";
 	}

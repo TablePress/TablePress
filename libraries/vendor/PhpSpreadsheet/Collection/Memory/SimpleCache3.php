@@ -39,10 +39,10 @@ class SimpleCache3 implements CacheInterface
 	}
 
 	/**
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function get(string $key, $default = null)
+				 * @param mixed $default
+				 * @return mixed
+				 */
+				public function get(string $key, $default = null)
 	{
 		if ($this->has($key)) {
 			return $this->cache[$key];
@@ -52,9 +52,9 @@ class SimpleCache3 implements CacheInterface
 	}
 
 	/**
-	 * @param mixed $default
-	 */
-	public function getMultiple(iterable $keys, $default = null): iterable
+				 * @param mixed $default
+				 */
+				public function getMultiple(iterable $keys, $default = null): iterable
 	{
 		$results = [];
 		foreach ($keys as $key) {
@@ -70,10 +70,10 @@ class SimpleCache3 implements CacheInterface
 	}
 
 	/**
-	 * @param null|int|\DateInterval $ttl
-	 * @param mixed $value
-	 */
-	public function set(string $key, $value, $ttl = null): bool
+				 * @param null|int|\DateInterval $ttl
+				 * @param mixed $value
+				 */
+				public function set(string $key, $value, $ttl = null): bool
 	{
 		$this->cache[$key] = $value;
 
@@ -81,9 +81,9 @@ class SimpleCache3 implements CacheInterface
 	}
 
 	/**
-	 * @param null|int|\DateInterval $ttl
-	 */
-	public function setMultiple(iterable $values, $ttl = null): bool
+				 * @param null|int|\DateInterval $ttl
+				 */
+				public function setMultiple(iterable $values, $ttl = null): bool
 	{
 		foreach ($values as $key => $value) {
 			$this->set($key, $value);

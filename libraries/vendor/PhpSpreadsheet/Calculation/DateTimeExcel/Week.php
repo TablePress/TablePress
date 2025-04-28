@@ -226,10 +226,10 @@ class Week
 	}
 
 	/**
-	 * Validate dateValue parameter.
-	 * @param mixed $dateValue
-	 */
-	private static function validateDateValue($dateValue): float
+				 * Validate dateValue parameter.
+				 * @param mixed $dateValue
+				 */
+				private static function validateDateValue($dateValue): float
 	{
 		if (is_bool($dateValue)) {
 			throw new Exception(ExcelError::VALUE());
@@ -239,10 +239,10 @@ class Week
 	}
 
 	/**
-	 * Validate method parameter.
-	 * @param mixed $method
-	 */
-	private static function validateMethod($method): int
+				 * Validate method parameter.
+				 * @param mixed $method
+				 */
+				private static function validateMethod($method): int
 	{
 		if ($method === null) {
 			$method = Constants::STARTWEEK_SUNDAY;

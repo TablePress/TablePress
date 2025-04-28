@@ -129,10 +129,10 @@ class Floor
 	}
 
 	/**
-	 * Avoid Scrutinizer problems concerning complexity.
-	 * @return float|string
-	 */
-	private static function argumentsOkPrecise(float $number, float $significance)
+				 * Avoid Scrutinizer problems concerning complexity.
+				 * @return float|string
+				 */
+				private static function argumentsOkPrecise(float $number, float $significance)
 	{
 		if ($significance == 0.0) {
 			return ExcelError::DIV0();
@@ -173,10 +173,10 @@ class Floor
 	}
 
 	/**
-	 * Avoid Scrutinizer problems concerning complexity.
-	 * @return float|string
-	 */
-	private static function argumentsOk(float $number, float $significance)
+				 * Avoid Scrutinizer problems concerning complexity.
+				 * @return float|string
+				 */
+				private static function argumentsOk(float $number, float $significance)
 	{
 		if ($significance == 0.0) {
 			return ExcelError::DIV0();

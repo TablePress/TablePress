@@ -616,10 +616,10 @@ class ConvertUOM
 	}
 
 	/**
-	 * @param float|int $value
-	 * @return float|int
-	 */
-	protected static function convertTemperature(string $fromUOM, string $toUOM, $value)
+				 * @param float|int $value
+				 * @return float|int
+				 */
+				protected static function convertTemperature(string $fromUOM, string $toUOM, $value)
 	{
 		$fromUOM = self::resolveTemperatureSynonyms($fromUOM);
 		$toUOM = self::resolveTemperatureSynonyms($toUOM);
@@ -674,14 +674,14 @@ class ConvertUOM
 	private static function resolveTemperatureSynonyms(string $uom): string
 	{
 		switch ($uom) {
-			case 'fah':
-				return 'F';
-			case 'cel':
-				return 'C';
-			case 'kel':
-				return 'K';
-			default:
-				return $uom;
-		}
+									case 'fah':
+										return 'F';
+									case 'cel':
+										return 'C';
+									case 'kel':
+										return 'K';
+									default:
+										return $uom;
+								}
 	}
 }

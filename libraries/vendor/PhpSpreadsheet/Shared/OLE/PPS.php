@@ -62,16 +62,16 @@ class PPS
 	public int $DirPps;
 
 	/**
-	 * A timestamp.
-	 * @var float|int
-	 */
-	public $Time1st;
+				 * A timestamp.
+				 * @var float|int
+				 */
+				public $Time1st;
 
 	/**
-	 * A timestamp.
-	 * @var float|int
-	 */
-	public $Time2nd;
+				 * A timestamp.
+				 * @var float|int
+				 */
+				public $Time2nd;
 
 	/**
 	 * Starting block (small or big) for this PPS's data  inside the container.
@@ -171,20 +171,22 @@ class PPS
 	}
 
 	/**
-	 * Updates index and pointers to previous, next and children PPS's for this
-	 * PPS. I don't think it'll work with Dir PPS's.
-	 *
-	 * @param array $raList Reference to the array of PPS's for the whole OLE
-	 *                          container
-	 *
-	 * @return int The index for this PPS
-	 * @param mixed $to_save
-	 */
-	public static function savePpsSetPnt(array &$raList, $to_save, int $depth = 0): int
+				 * Updates index and pointers to previous, next and children PPS's for this
+				 * PPS. I don't think it'll work with Dir PPS's.
+				 *
+				 * @param array $raList Reference to the array of PPS's for the whole OLE
+				 *                          container
+				 *
+				 * @return int The index for this PPS
+				 * @param mixed $to_save
+				 */
+				public static function savePpsSetPnt(array &$raList, $to_save, int $depth = 0): int
 	{
 		if (!is_array($to_save) || (empty($to_save))) {
 			return self::ALL_ONE_BITS;
-		} elseif (count($to_save) == 1) {
+		}
+		/** @var self[] $to_save */
+		if (count($to_save) == 1) {
 			$cnt = count($raList);
 			// If the first entry, it's the root... Don't clone it!
 			$raList[$cnt] = ($depth == 0) ? $to_save[0] : clone $to_save[0];

@@ -6,6 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Conditional;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -85,32 +86,34 @@ class CellMatcher
 		$this->cell = $this->worksheet->getCell($cellAddress);
 
 		switch ($conditional->getConditionType()) {
-			case Conditional::CONDITION_CELLIS:
-				return $this->processOperatorComparison($conditional);
-			case Conditional::CONDITION_DUPLICATES:
-			case Conditional::CONDITION_UNIQUE:
-				return $this->processDuplicatesComparison($conditional);
-			case Conditional::CONDITION_CONTAINSTEXT:
-			case Conditional::CONDITION_NOTCONTAINSTEXT:
-			case Conditional::CONDITION_BEGINSWITH:
-			case Conditional::CONDITION_ENDSWITH:
-			case Conditional::CONDITION_CONTAINSBLANKS:
-			case Conditional::CONDITION_NOTCONTAINSBLANKS:
-			case Conditional::CONDITION_CONTAINSERRORS:
-			case Conditional::CONDITION_NOTCONTAINSERRORS:
-			case Conditional::CONDITION_TIMEPERIOD:
-			case Conditional::CONDITION_EXPRESSION:
-				return $this->processExpression($conditional);
-			default:
-				return false;
-		}
+									case Conditional::CONDITION_CELLIS:
+										return $this->processOperatorComparison($conditional);
+									case Conditional::CONDITION_DUPLICATES:
+									case Conditional::CONDITION_UNIQUE:
+										return $this->processDuplicatesComparison($conditional);
+									case Conditional::CONDITION_CONTAINSTEXT:
+									case Conditional::CONDITION_NOTCONTAINSTEXT:
+									case Conditional::CONDITION_BEGINSWITH:
+									case Conditional::CONDITION_ENDSWITH:
+									case Conditional::CONDITION_CONTAINSBLANKS:
+									case Conditional::CONDITION_NOTCONTAINSBLANKS:
+									case Conditional::CONDITION_CONTAINSERRORS:
+									case Conditional::CONDITION_NOTCONTAINSERRORS:
+									case Conditional::CONDITION_TIMEPERIOD:
+									case Conditional::CONDITION_EXPRESSION:
+										return $this->processExpression($conditional);
+									case Conditional::CONDITION_COLORSCALE:
+										return $this->processColorScale($conditional);
+									default:
+										return false;
+								}
 	}
 
 	/**
-	 * @return float|int|string
-	 * @param mixed $value
-	 */
-	protected function wrapValue($value)
+				 * @return float|int|string
+				 * @param mixed $value
+				 */
+				protected function wrapValue($value)
 	{
 		if (!is_numeric($value)) {
 			if (is_bool($value)) {
@@ -119,16 +122,16 @@ class CellMatcher
 				return 'NULL';
 			}
 
-			return '"' . $value . '"';
+			return '"' . StringHelper::convertToString($value) . '"';
 		}
 
 		return $value;
 	}
 
 	/**
-	 * @return float|int|string
-	 */
-	protected function wrapCellValue()
+				 * @return float|int|string
+				 */
+				protected function wrapCellValue()
 	{
 		$this->cell = $this->worksheet->getCell([$this->cellColumn, $this->cellRow]);
 
@@ -136,14 +139,14 @@ class CellMatcher
 	}
 
 	/**
-	 * @return float|int|string
-	 */
-	protected function conditionCellAdjustment(array $matches)
+				 * @return float|int|string
+				 */
+				protected function conditionCellAdjustment(array $matches)
 	{
 		$column = $matches[6];
 		$row = $matches[7];
-
 		if (!str_contains($column, '$')) {
+			//            $column = Coordinate::stringFromColumnIndex($this->cellColumn);
 			$column = Coordinate::columnIndexFromString($column);
 			$column += $this->cellColumn - $this->referenceColumn;
 			$column = Coordinate::stringFromColumnIndex($column);
@@ -213,6 +216,15 @@ class CellMatcher
 		$expression = sprintf('%s%s%s', (string) $this->wrapCellValue(), $operator, (string) array_pop($conditions));
 
 		return $this->evaluateExpression($expression);
+	}
+
+	protected function processColorScale(Conditional $conditional): bool
+	{
+		if (is_numeric($this->wrapCellValue()) && (($nullsafeVariable1 = $conditional->getColorScale()) ? $nullsafeVariable1->colorScaleReadyForUse() : null)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected function processRangeOperator(Conditional $conditional): bool

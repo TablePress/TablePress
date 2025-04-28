@@ -327,25 +327,25 @@ class Font
 	}
 
 	/**
-	 * Pad amount for exact in pixels; use best guess if null.
-	 * @var float|int|null
-	 */
-	private static $paddingAmountExact = null;
+				 * Pad amount for exact in pixels; use best guess if null.
+				 * @var float|int|null
+				 */
+				private static $paddingAmountExact = null;
 
 	/**
-	 * Set pad amount for exact in pixels; use best guess if null.
-	 * @param null|float|int $paddingAmountExact
-	 */
-	public static function setPaddingAmountExact($paddingAmountExact): void
+				 * Set pad amount for exact in pixels; use best guess if null.
+				 * @param null|float|int $paddingAmountExact
+				 */
+				public static function setPaddingAmountExact($paddingAmountExact): void
 	{
 		self::$paddingAmountExact = $paddingAmountExact;
 	}
 
 	/**
-	 * Get pad amount for exact in pixels; or null if using best guess.
-	 * @return float|int|null
-	 */
-	public static function getPaddingAmountExact()
+				 * Get pad amount for exact in pixels; or null if using best guess.
+				 * @return float|int|null
+				 */
+				public static function getPaddingAmountExact()
 	{
 		return self::$paddingAmountExact;
 	}

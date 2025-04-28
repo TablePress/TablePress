@@ -33,10 +33,10 @@ class Indirect
 	}
 
 	/**
-	 * Convert cellAddress to string, verify not null string.
-	 * @param mixed[]|string|null $cellAddress
-	 */
-	private static function validateAddress($cellAddress): string
+				 * Convert cellAddress to string, verify not null string.
+				 * @param mixed[]|string|null $cellAddress
+				 */
+				private static function validateAddress($cellAddress): string
 	{
 		$cellAddress = Functions::flattenSingleValue($cellAddress);
 		if (!is_string($cellAddress) || !$cellAddress) {

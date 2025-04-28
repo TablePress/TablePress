@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 /**
  * Validate a cell value according to its validation rules.
@@ -55,17 +56,18 @@ class DataValidator
 	private const TWO_FORMULAS = [DataValidation::OPERATOR_BETWEEN, DataValidation::OPERATOR_NOTBETWEEN];
 
 	/**
-	 * @param mixed $formula
-	 * @return mixed
-	 */
-	private static function evaluateNumericFormula($formula, Cell $cell)
+				 * @param mixed $formula
+				 * @return mixed
+				 */
+				private static function evaluateNumericFormula($formula, Cell $cell)
 	{
 		if (!is_numeric($formula)) {
 			$calculation = Calculation::getInstance($cell->getWorksheet()->getParent());
 
 			try {
+				$formula2 = StringHelper::convertToString($formula);
 				$result = $calculation
-					->calculateFormula("=$formula", $cell->getCoordinate(), $cell);
+					->calculateFormula("=$formula2", $cell->getCoordinate(), $cell);
 				while (is_array($result)) {
 					$result = array_pop($result);
 				}
@@ -79,9 +81,9 @@ class DataValidator
 	}
 
 	/**
-	 * @param int|float $cellValue
-	 */
-	private function numericOperator(DataValidation $dataValidation, $cellValue, Cell $cell): bool
+				 * @param int|float $cellValue
+				 */
+				private function numericOperator(DataValidation $dataValidation, $cellValue, Cell $cell): bool
 	{
 		$operator = $dataValidation->getOperator();
 		$formula1 = self::evaluateNumericFormula(
@@ -98,25 +100,25 @@ class DataValidator
 		}
 
 		switch ($operator) {
-			case DataValidation::OPERATOR_BETWEEN:
-				return $cellValue >= $formula1 && $cellValue <= $formula2;
-			case DataValidation::OPERATOR_NOTBETWEEN:
-				return $cellValue < $formula1 || $cellValue > $formula2;
-			case DataValidation::OPERATOR_EQUAL:
-				return $cellValue == $formula1;
-			case DataValidation::OPERATOR_NOTEQUAL:
-				return $cellValue != $formula1;
-			case DataValidation::OPERATOR_LESSTHAN:
-				return $cellValue < $formula1;
-			case DataValidation::OPERATOR_LESSTHANOREQUAL:
-				return $cellValue <= $formula1;
-			case DataValidation::OPERATOR_GREATERTHAN:
-				return $cellValue > $formula1;
-			case DataValidation::OPERATOR_GREATERTHANOREQUAL:
-				return $cellValue >= $formula1;
-			default:
-				return false;
-		}
+									case DataValidation::OPERATOR_BETWEEN:
+										return $cellValue >= $formula1 && $cellValue <= $formula2;
+									case DataValidation::OPERATOR_NOTBETWEEN:
+										return $cellValue < $formula1 || $cellValue > $formula2;
+									case DataValidation::OPERATOR_EQUAL:
+										return $cellValue == $formula1;
+									case DataValidation::OPERATOR_NOTEQUAL:
+										return $cellValue != $formula1;
+									case DataValidation::OPERATOR_LESSTHAN:
+										return $cellValue < $formula1;
+									case DataValidation::OPERATOR_LESSTHANOREQUAL:
+										return $cellValue <= $formula1;
+									case DataValidation::OPERATOR_GREATERTHAN:
+										return $cellValue > $formula1;
+									case DataValidation::OPERATOR_GREATERTHANOREQUAL:
+										return $cellValue >= $formula1;
+									default:
+										return false;
+								}
 	}
 
 	/**

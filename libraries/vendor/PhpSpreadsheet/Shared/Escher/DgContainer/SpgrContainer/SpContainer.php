@@ -42,16 +42,16 @@ class SpContainer
 	private string $startCoordinates = '';
 
 	/**
-	 * Horizontal offset of upper-left corner of shape measured in 1/1024 of column width.
-	 * @var float|int
-	 */
-	private $startOffsetX;
+				 * Horizontal offset of upper-left corner of shape measured in 1/1024 of column width.
+				 * @var float|int
+				 */
+				private $startOffsetX;
 
 	/**
-	 * Vertical offset of upper-left corner of shape measured in 1/256 of row height.
-	 * @var float|int
-	 */
-	private $startOffsetY;
+				 * Vertical offset of upper-left corner of shape measured in 1/256 of row height.
+				 * @var float|int
+				 */
+				private $startOffsetY;
 
 	/**
 	 * Cell coordinates of bottom-right corner of shape, e.g. 'B2'.
@@ -59,16 +59,16 @@ class SpContainer
 	private string $endCoordinates;
 
 	/**
-	 * Horizontal offset of bottom-right corner of shape measured in 1/1024 of column width.
-	 * @var float|int
-	 */
-	private $endOffsetX;
+				 * Horizontal offset of bottom-right corner of shape measured in 1/1024 of column width.
+				 * @var float|int
+				 */
+				private $endOffsetX;
 
 	/**
-	 * Vertical offset of bottom-right corner of shape measured in 1/256 of row height.
-	 * @var float|int
-	 */
-	private $endOffsetY;
+				 * Vertical offset of bottom-right corner of shape measured in 1/256 of row height.
+				 * @var float|int
+				 */
+				private $endOffsetY;
 
 	/**
 	 * Set parent Shape Group Container.
@@ -151,23 +151,23 @@ class SpContainer
 	}
 
 	/**
-	 * Set an option for the Shape Group Container.
-	 *
-	 * @param int $property The number specifies the option
-	 * @param mixed $value
-	 */
-	public function setOPT(int $property, $value): void
+				 * Set an option for the Shape Group Container.
+				 *
+				 * @param int $property The number specifies the option
+				 * @param mixed $value
+				 */
+				public function setOPT(int $property, $value): void
 	{
 		$this->OPT[$property] = $value;
 	}
 
 	/**
-	 * Get an option for the Shape Group Container.
-	 *
-	 * @param int $property The number specifies the option
-	 * @return mixed
-	 */
-	public function getOPT(int $property)
+				 * Get an option for the Shape Group Container.
+				 *
+				 * @param int $property The number specifies the option
+				 * @return mixed
+				 */
+				public function getOPT(int $property)
 	{
 		if (isset($this->OPT[$property])) {
 			return $this->OPT[$property];
@@ -203,37 +203,37 @@ class SpContainer
 	}
 
 	/**
-	 * Set offset in x-direction of upper-left corner of shape measured in 1/1024 of column width.
-	 * @param int|float $startOffsetX
-	 */
-	public function setStartOffsetX($startOffsetX): void
+				 * Set offset in x-direction of upper-left corner of shape measured in 1/1024 of column width.
+				 * @param int|float $startOffsetX
+				 */
+				public function setStartOffsetX($startOffsetX): void
 	{
 		$this->startOffsetX = $startOffsetX;
 	}
 
 	/**
-	 * Get offset in x-direction of upper-left corner of shape measured in 1/1024 of column width.
-	 * @return float|int
-	 */
-	public function getStartOffsetX()
+				 * Get offset in x-direction of upper-left corner of shape measured in 1/1024 of column width.
+				 * @return float|int
+				 */
+				public function getStartOffsetX()
 	{
 		return $this->startOffsetX;
 	}
 
 	/**
-	 * Set offset in y-direction of upper-left corner of shape measured in 1/256 of row height.
-	 * @param int|float $startOffsetY
-	 */
-	public function setStartOffsetY($startOffsetY): void
+				 * Set offset in y-direction of upper-left corner of shape measured in 1/256 of row height.
+				 * @param int|float $startOffsetY
+				 */
+				public function setStartOffsetY($startOffsetY): void
 	{
 		$this->startOffsetY = $startOffsetY;
 	}
 
 	/**
-	 * Get offset in y-direction of upper-left corner of shape measured in 1/256 of row height.
-	 * @return float|int
-	 */
-	public function getStartOffsetY()
+				 * Get offset in y-direction of upper-left corner of shape measured in 1/256 of row height.
+				 * @return float|int
+				 */
+				public function getStartOffsetY()
 	{
 		return $this->startOffsetY;
 	}
@@ -257,37 +257,37 @@ class SpContainer
 	}
 
 	/**
-	 * Set offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width.
-	 * @param int|float $endOffsetX
-	 */
-	public function setEndOffsetX($endOffsetX): void
+				 * Set offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width.
+				 * @param int|float $endOffsetX
+				 */
+				public function setEndOffsetX($endOffsetX): void
 	{
 		$this->endOffsetX = $endOffsetX;
 	}
 
 	/**
-	 * Get offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width.
-	 * @return float|int
-	 */
-	public function getEndOffsetX()
+				 * Get offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width.
+				 * @return float|int
+				 */
+				public function getEndOffsetX()
 	{
 		return $this->endOffsetX;
 	}
 
 	/**
-	 * Set offset in y-direction of bottom-right corner of shape measured in 1/256 of row height.
-	 * @param int|float $endOffsetY
-	 */
-	public function setEndOffsetY($endOffsetY): void
+				 * Set offset in y-direction of bottom-right corner of shape measured in 1/256 of row height.
+				 * @param int|float $endOffsetY
+				 */
+				public function setEndOffsetY($endOffsetY): void
 	{
 		$this->endOffsetY = $endOffsetY;
 	}
 
 	/**
-	 * Get offset in y-direction of bottom-right corner of shape measured in 1/256 of row height.
-	 * @return float|int
-	 */
-	public function getEndOffsetY()
+				 * Get offset in y-direction of bottom-right corner of shape measured in 1/256 of row height.
+				 * @return float|int
+				 */
+				public function getEndOffsetY()
 	{
 		return $this->endOffsetY;
 	}

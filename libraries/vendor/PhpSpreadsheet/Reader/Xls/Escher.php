@@ -49,16 +49,16 @@ class Escher
 	private int $pos;
 
 	/**
-	 * The object to be returned by the reader. Modified during load.
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
-	 */
-	private $object;
+				 * The object to be returned by the reader. Modified during load.
+				 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
+				 */
+				private $object;
 
 	/**
-	 * Create a new Escher instance.
-	 * @param \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer $object
-	 */
-	public function __construct($object)
+				 * Create a new Escher instance.
+				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer $object
+				 */
+				public function __construct($object)
 	{
 		$this->object = $object;
 	}
@@ -85,10 +85,10 @@ class Escher
 	];
 
 	/**
-	 * Load Escher stream data. May be a partial Escher stream.
-	 * @return \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
-	 */
-	public function load(string $data)
+				 * Load Escher stream data. May be a partial Escher stream.
+				 * @return \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
+				 */
+				public function load(string $data)
 	{
 		$this->data = $data;
 
@@ -543,9 +543,9 @@ class Escher
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	private function applyAttribute(string $name, $value): void
+				 * @param mixed $value
+				 */
+				private function applyAttribute(string $name, $value): void
 	{
 		if (method_exists($this->object, $name)) {
 			$this->object->$name($value);

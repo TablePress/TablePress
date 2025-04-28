@@ -297,9 +297,9 @@ abstract class BestFit
 	}
 
 	/**
-	 * @param bool|int $const
-	 */
-	protected function calculateGoodnessOfFit(float $sumX, float $sumY, float $sumX2, float $sumY2, float $sumXY, float $meanX, float $meanY, $const): void
+				 * @param bool|int $const
+				 */
+				protected function calculateGoodnessOfFit(float $sumX, float $sumY, float $sumX2, float $sumY2, float $sumXY, float $meanX, float $meanY, $const): void
 	{
 		$SSres = $SScov = $SStot = $SSsex = 0.0;
 		foreach ($this->xValues as $xKey => $xValue) {

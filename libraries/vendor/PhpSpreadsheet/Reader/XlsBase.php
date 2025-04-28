@@ -271,12 +271,12 @@ class XlsBase extends BaseReader
 	}
 
 	/**
-	 * Reads first 8 bytes of a string and return IEEE 754 float.
-	 *
-	 * @param string $data Binary string that is at least 8 bytes long
-	 * @return float|int
-	 */
-	protected static function extractNumber(string $data)
+				 * Reads first 8 bytes of a string and return IEEE 754 float.
+				 *
+				 * @param string $data Binary string that is at least 8 bytes long
+				 * @return float|int
+				 */
+				protected static function extractNumber(string $data)
 	{
 		$rknumhigh = self::getInt4d($data, 4);
 		$rknumlow = self::getInt4d($data, 0);
@@ -302,9 +302,9 @@ class XlsBase extends BaseReader
 	}
 
 	/**
-	 * @return float|int
-	 */
-	protected static function getIEEE754(int $rknum)
+				 * @return float|int
+				 */
+				protected static function getIEEE754(int $rknum)
 	{
 		if (($rknum & 0x02) != 0) {
 			$value = $rknum >> 2;

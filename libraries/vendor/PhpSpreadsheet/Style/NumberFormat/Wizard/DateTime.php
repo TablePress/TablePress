@@ -29,9 +29,9 @@ class DateTime extends DateTimeWizard
 	}
 
 	/**
-	 * @param \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\DateTimeWizard|string $value
-	 */
-	private function mapFormatBlocks($value): string
+				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\DateTimeWizard|string $value
+				 */
+				private function mapFormatBlocks($value): string
 	{
 		// Any date masking codes are returned as lower case values
 		if (is_object($value)) {

@@ -18,19 +18,19 @@ class Conditional
 	private const CONDITIONAL_COLUMN_NAME = 'CONDITIONAL %d';
 
 	/**
-	 * AVERAGEIF.
-	 *
-	 * Returns the average value from a range of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        AVERAGEIF(range,condition[, average_range])
-	 *
-	 * @param mixed $range Data values, expect array
-	 * @param null|array|string $condition the criteria that defines which cells will be checked
-	 * @param mixed $averageRange Data values
-	 * @return float|int|string|null
-	 */
-	public static function AVERAGEIF($range, $condition, $averageRange = [])
+				 * AVERAGEIF.
+				 *
+				 * Returns the average value from a range of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        AVERAGEIF(range,condition[, average_range])
+				 *
+				 * @param mixed $range Data values, expect array
+				 * @param null|array|string $condition the criteria that defines which cells will be checked
+				 * @param mixed $averageRange Data values
+				 * @return float|int|string|null
+				 */
+				public static function AVERAGEIF($range, $condition, $averageRange = [])
 	{
 		if (!is_array($range) || !is_array($averageRange) || array_key_exists(0, $range) || array_key_exists(0, $averageRange)) {
 			$refError = ExcelError::REF();
@@ -47,22 +47,23 @@ class Conditional
 	}
 
 	/**
-	 * AVERAGEIFS.
-	 *
-	 * Counts the number of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        AVERAGEIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
-	 *
-	 * @param mixed $args Pairs of Ranges and Criteria
-	 * @return float|int|string|null
-	 */
-	public static function AVERAGEIFS(...$args)
+				 * AVERAGEIFS.
+				 *
+				 * Counts the number of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        AVERAGEIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
+				 *
+				 * @param mixed $args Pairs of Ranges and Criteria
+				 * @return float|int|string|null
+				 */
+				public static function AVERAGEIFS(...$args)
 	{
 		if (empty($args)) {
 			return 0.0;
-		} elseif (count($args) === 3) {
-			return self::AVERAGEIF($args[1], $args[2], $args[0]);
+		}
+		if (count($args) === 3) {
+			return self::AVERAGEIF($args[1], $args[2], $args[0]); //* @phpstan-ignore-line
 		}
 		foreach ($args as $arg) {
 			if (is_array($arg) && array_key_exists(0, $arg)) {
@@ -77,18 +78,18 @@ class Conditional
 	}
 
 	/**
-	 * COUNTIF.
-	 *
-	 * Counts the number of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        COUNTIF(range,condition)
-	 *
-	 * @param mixed $range Data values, expect array
-	 * @param null|array|string $condition the criteria that defines which cells will be counted
-	 * @return int|string
-	 */
-	public static function COUNTIF($range, $condition)
+				 * COUNTIF.
+				 *
+				 * Counts the number of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        COUNTIF(range,condition)
+				 *
+				 * @param mixed $range Data values, expect array
+				 * @param null|array|string $condition the criteria that defines which cells will be counted
+				 * @return int|string
+				 */
+				public static function COUNTIF($range, $condition)
 	{
 		if (
 			!is_array($range)
@@ -113,17 +114,17 @@ class Conditional
 	}
 
 	/**
-	 * COUNTIFS.
-	 *
-	 * Counts the number of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2]…)
-	 *
-	 * @param mixed $args Pairs of Ranges and Criteria
-	 * @return int|string
-	 */
-	public static function COUNTIFS(...$args)
+				 * COUNTIFS.
+				 *
+				 * Counts the number of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2]…)
+				 *
+				 * @param mixed $args Pairs of Ranges and Criteria
+				 * @return int|string
+				 */
+				public static function COUNTIFS(...$args)
 	{
 		if (empty($args)) {
 			return 0;
@@ -138,17 +139,17 @@ class Conditional
 	}
 
 	/**
-	 * MAXIFS.
-	 *
-	 * Returns the maximum value within a range of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        MAXIFS(max_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
-	 *
-	 * @param mixed $args Pairs of Ranges and Criteria
-	 * @return float|string|null
-	 */
-	public static function MAXIFS(...$args)
+				 * MAXIFS.
+				 *
+				 * Returns the maximum value within a range of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        MAXIFS(max_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
+				 *
+				 * @param mixed $args Pairs of Ranges and Criteria
+				 * @return float|string|null
+				 */
+				public static function MAXIFS(...$args)
 	{
 		if (empty($args)) {
 			return 0.0;
@@ -161,17 +162,17 @@ class Conditional
 	}
 
 	/**
-	 * MINIFS.
-	 *
-	 * Returns the minimum value within a range of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        MINIFS(min_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
-	 *
-	 * @param mixed $args Pairs of Ranges and Criteria
-	 * @return float|string|null
-	 */
-	public static function MINIFS(...$args)
+				 * MINIFS.
+				 *
+				 * Returns the minimum value within a range of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        MINIFS(min_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
+				 *
+				 * @param mixed $args Pairs of Ranges and Criteria
+				 * @return float|string|null
+				 */
+				public static function MINIFS(...$args)
 	{
 		if (empty($args)) {
 			return 0.0;
@@ -184,19 +185,19 @@ class Conditional
 	}
 
 	/**
-	 * SUMIF.
-	 *
-	 * Totals the values of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        SUMIF(range, criteria, [sum_range])
-	 *
-	 * @param mixed $range Data values, expecting array
-	 * @param mixed $sumRange Data values, expecting array
-	 * @return float|string|null
-	 * @param mixed $condition
-	 */
-	public static function SUMIF($range, $condition, $sumRange = [])
+				 * SUMIF.
+				 *
+				 * Totals the values of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        SUMIF(range, criteria, [sum_range])
+				 *
+				 * @param mixed $range Data values, expecting array
+				 * @param mixed $sumRange Data values, expecting array
+				 * @return float|string|null
+				 * @param mixed $condition
+				 */
+				public static function SUMIF($range, $condition, $sumRange = [])
 	{
 		if (
 			!is_array($range)
@@ -218,17 +219,17 @@ class Conditional
 	}
 
 	/**
-	 * SUMIFS.
-	 *
-	 * Counts the number of cells that contain numbers within the list of arguments
-	 *
-	 * Excel Function:
-	 *        SUMIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
-	 *
-	 * @param mixed $args Pairs of Ranges and Criteria
-	 * @return float|string|null
-	 */
-	public static function SUMIFS(...$args)
+				 * SUMIFS.
+				 *
+				 * Counts the number of cells that contain numbers within the list of arguments
+				 *
+				 * Excel Function:
+				 *        SUMIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
+				 *
+				 * @param mixed $args Pairs of Ranges and Criteria
+				 * @return float|string|null
+				 */
+				public static function SUMIFS(...$args)
 	{
 		if (empty($args)) {
 			return 0.0;

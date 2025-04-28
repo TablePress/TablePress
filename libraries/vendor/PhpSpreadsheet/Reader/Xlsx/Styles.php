@@ -12,6 +12,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\Font;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Protection;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table\TableDxfsStyle;
 use SimpleXMLElement;
 use stdClass;
 
@@ -306,10 +307,10 @@ class Styles extends BaseParserClass
 	}
 
 	/**
-	 * Read style.
-	 * @param \SimpleXMLElement|\stdClass $style
-	 */
-	public function readStyle(Style $docStyle, $style): void
+				 * Read style.
+				 * @param \SimpleXMLElement|\stdClass $style
+				 */
+				public function readStyle(Style $docStyle, $style): void
 	{
 		if ($style instanceof SimpleXMLElement) {
 			$this->readNumberFormat($docStyle->getNumberFormat(), $style->numFmt);
@@ -452,6 +453,46 @@ class Styles extends BaseParserClass
 		return $dxfs;
 	}
 
+	// get TableStyles
+	public function tableStyles(bool $readDataOnly = false): array
+	{
+		$tableStyles = [];
+		if (!$readDataOnly && $this->styleXml) {
+			//    Conditional Styles
+			if ($this->styleXml->tableStyles) {
+				foreach ($this->styleXml->tableStyles->tableStyle as $s) {
+					$attrs = Xlsx::getAttributes($s);
+					if (isset($attrs['name'][0])) {
+						$style = new TableDxfsStyle((string) ($attrs['name'][0]));
+						foreach ($s->tableStyleElement as $e) {
+							$a = Xlsx::getAttributes($e);
+							if (isset($a['dxfId'][0], $a['type'][0])) {
+								switch ($a['type'][0]) {
+									case 'headerRow':
+										$style->setHeaderRow((int) ($a['dxfId'][0]));
+
+										break;
+									case 'firstRowStripe':
+										$style->setFirstRowStripe((int) ($a['dxfId'][0]));
+
+										break;
+									case 'secondRowStripe':
+										$style->setSecondRowStripe((int) ($a['dxfId'][0]));
+
+										break;
+									default:
+								}
+							}
+						}
+						$tableStyles[] = $style;
+					}
+				}
+			}
+		}
+
+		return $tableStyles;
+	}
+
 	public function styles(): array
 	{
 		return $this->styles;
@@ -464,6 +505,6 @@ class Styles extends BaseParserClass
 	 */
 	private static function getArrayItem($array): ?SimpleXMLElement
 	{
-		return is_array($array) ? ($array[0] ?? null) : null;
+		return is_array($array) ? ($array[0] ?? null) : null; // @phpstan-ignore-line
 	}
 }

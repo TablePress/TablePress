@@ -147,9 +147,9 @@ class Axis extends Properties
 	}
 
 	/**
-	 * @param null|float|int|string $value
-	 */
-	public function setAxisOption(string $key, $value): void
+				 * @param null|float|int|string $value
+				 */
+				public function setAxisOption(string $key, $value): void
 	{
 		if ($value !== null && $value !== '') {
 			$this->axisOptions[$key] = (string) $value;
@@ -157,15 +157,15 @@ class Axis extends Properties
 	}
 
 	/**
-	 * Set Axis Options Properties.
-	 * @param null|float|int|string $minimum
-	 * @param null|float|int|string $maximum
-	 * @param null|float|int|string $majorUnit
-	 * @param null|float|int|string $minorUnit
-	 * @param null|float|int|string $textRotation
-	 * @param null|float|int|string $logBase
-	 */
-	public function setAxisOptionsProperties(
+				 * Set Axis Options Properties.
+				 * @param null|float|int|string $minimum
+				 * @param null|float|int|string $maximum
+				 * @param null|float|int|string $majorUnit
+				 * @param null|float|int|string $minorUnit
+				 * @param null|float|int|string $textRotation
+				 * @param null|float|int|string $logBase
+				 */
+				public function setAxisOptionsProperties(
 		string $axisLabels,
 		?string $horizontalCrossesValue = null,
 		?string $horizontalCrosses = null,

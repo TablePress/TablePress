@@ -34,9 +34,9 @@ class Unique
 	}
 
 	/**
-	 * @return mixed
-	 */
-	private static function uniqueByRow(array $lookupVector, bool $exactlyOnce)
+				 * @return mixed
+				 */
+				private static function uniqueByRow(array $lookupVector, bool $exactlyOnce)
 	{
 		// When not $byColumn, we count whole rows or values, not individual values
 		//      so implode each row into a single string value
@@ -88,9 +88,9 @@ class Unique
 	}
 
 	/**
-	 * @return mixed
-	 */
-	private static function uniqueByColumn(array $lookupVector, bool $exactlyOnce)
+				 * @return mixed
+				 */
+				private static function uniqueByColumn(array $lookupVector, bool $exactlyOnce)
 	{
 		$flattenedLookupVector = Functions::flattenArray($lookupVector);
 

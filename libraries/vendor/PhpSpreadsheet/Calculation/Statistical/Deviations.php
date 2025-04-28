@@ -8,17 +8,17 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class Deviations
 {
 	/**
-	 * DEVSQ.
-	 *
-	 * Returns the sum of squares of deviations of data points from their sample mean.
-	 *
-	 * Excel Function:
-	 *        DEVSQ(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|string
-	 */
-	public static function sumSquares(...$args)
+				 * DEVSQ.
+				 *
+				 * Returns the sum of squares of deviations of data points from their sample mean.
+				 *
+				 * Excel Function:
+				 *        DEVSQ(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|string
+				 */
+				public static function sumSquares(...$args)
 	{
 		$aArgs = Functions::flattenArrayIndexed($args);
 
@@ -49,17 +49,17 @@ class Deviations
 	}
 
 	/**
-	 * KURT.
-	 *
-	 * Returns the kurtosis of a data set. Kurtosis characterizes the relative peakedness
-	 * or flatness of a distribution compared with the normal distribution. Positive
-	 * kurtosis indicates a relatively peaked distribution. Negative kurtosis indicates a
-	 * relatively flat distribution.
-	 *
-	 * @param array ...$args Data Series
-	 * @return float|int|string
-	 */
-	public static function kurtosis(...$args)
+				 * KURT.
+				 *
+				 * Returns the kurtosis of a data set. Kurtosis characterizes the relative peakedness
+				 * or flatness of a distribution compared with the normal distribution. Positive
+				 * kurtosis indicates a relatively peaked distribution. Negative kurtosis indicates a
+				 * relatively flat distribution.
+				 *
+				 * @param array ...$args Data Series
+				 * @return float|int|string
+				 */
+				public static function kurtosis(...$args)
 	{
 		$aArgs = Functions::flattenArrayIndexed($args);
 		$mean = Averages::average($aArgs);

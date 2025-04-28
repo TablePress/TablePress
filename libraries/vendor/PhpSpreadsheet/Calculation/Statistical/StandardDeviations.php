@@ -28,17 +28,17 @@ class StandardDeviations
 	}
 
 	/**
-	 * STDEVA.
-	 *
-	 * Estimates standard deviation based on a sample, including numbers, text, and logical values
-	 *
-	 * Excel Function:
-	 *        STDEVA(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|string
-	 */
-	public static function STDEVA(...$args)
+				 * STDEVA.
+				 *
+				 * Estimates standard deviation based on a sample, including numbers, text, and logical values
+				 *
+				 * Excel Function:
+				 *        STDEVA(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|string
+				 */
+				public static function STDEVA(...$args)
 	{
 		$result = Variances::VARA(...$args);
 		if (!is_numeric($result)) {
@@ -49,17 +49,17 @@ class StandardDeviations
 	}
 
 	/**
-	 * STDEVP.
-	 *
-	 * Calculates standard deviation based on the entire population
-	 *
-	 * Excel Function:
-	 *        STDEVP(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|string
-	 */
-	public static function STDEVP(...$args)
+				 * STDEVP.
+				 *
+				 * Calculates standard deviation based on the entire population
+				 *
+				 * Excel Function:
+				 *        STDEVP(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|string
+				 */
+				public static function STDEVP(...$args)
 	{
 		$result = Variances::VARP(...$args);
 		if (!is_numeric($result)) {
@@ -70,17 +70,17 @@ class StandardDeviations
 	}
 
 	/**
-	 * STDEVPA.
-	 *
-	 * Calculates standard deviation based on the entire population, including numbers, text, and logical values
-	 *
-	 * Excel Function:
-	 *        STDEVPA(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|string
-	 */
-	public static function STDEVPA(...$args)
+				 * STDEVPA.
+				 *
+				 * Calculates standard deviation based on the entire population, including numbers, text, and logical values
+				 *
+				 * Excel Function:
+				 *        STDEVPA(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|string
+				 */
+				public static function STDEVPA(...$args)
 	{
 		$result = Variances::VARPA(...$args);
 		if (!is_numeric($result)) {

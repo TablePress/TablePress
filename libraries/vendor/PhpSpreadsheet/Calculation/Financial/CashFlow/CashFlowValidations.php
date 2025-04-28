@@ -10,9 +10,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class CashFlowValidations extends FinancialValidations
 {
 	/**
-	 * @param mixed $rate
-	 */
-	public static function validateRate($rate): float
+				 * @param mixed $rate
+				 */
+				public static function validateRate($rate): float
 	{
 		$rate = self::validateFloat($rate);
 
@@ -20,9 +20,9 @@ class CashFlowValidations extends FinancialValidations
 	}
 
 	/**
-	 * @param mixed $type
-	 */
-	public static function validatePeriodType($type): int
+				 * @param mixed $type
+				 */
+				public static function validatePeriodType($type): int
 	{
 		$rate = self::validateInt($type);
 		if (
@@ -36,17 +36,17 @@ class CashFlowValidations extends FinancialValidations
 	}
 
 	/**
-	 * @param mixed $presentValue
-	 */
-	public static function validatePresentValue($presentValue): float
+				 * @param mixed $presentValue
+				 */
+				public static function validatePresentValue($presentValue): float
 	{
 		return self::validateFloat($presentValue);
 	}
 
 	/**
-	 * @param mixed $futureValue
-	 */
-	public static function validateFutureValue($futureValue): float
+				 * @param mixed $futureValue
+				 */
+				public static function validateFutureValue($futureValue): float
 	{
 		return self::validateFloat($futureValue);
 	}

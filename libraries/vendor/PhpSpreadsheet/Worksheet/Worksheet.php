@@ -1411,6 +1411,32 @@ class Worksheet
 	}
 
 	/**
+	 * Get table styles set for the for given cell.
+	 *
+	 * @param Cell $cell
+	 *              The Cell for which the tables are retrieved
+	 */
+	public function getTablesWithStylesForCell(Cell $cell): array
+	{
+		$retVal = [];
+
+		foreach ($this->tableCollection as $table) {
+			/** @var Table $table */
+			$dxfsTableStyle = $table->getStyle()->getTableDxfsStyle();
+			if ($dxfsTableStyle !== null) {
+				if ($dxfsTableStyle->getHeaderRowStyle() !== null || $dxfsTableStyle->getFirstRowStripeStyle() !== null || $dxfsTableStyle->getSecondRowStripeStyle() !== null) {
+					$range = $table->getRange();
+					if ($cell->isInRange($range)) {
+						$retVal[] = $table;
+					}
+				}
+			}
+		}
+
+		return $retVal;
+	}
+
+	/**
 	 * Get conditional styles for a cell.
 	 *
 	 * @param string $coordinate eg: 'A1' or 'A1:A3'.
@@ -2823,13 +2849,13 @@ class Worksheet
 	}
 
 	/**
-	 * @param mixed $nullValue value to use when null
-	 *
-	 * @throws Exception
-	 * @throws \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception
-	 * @return mixed
-	 */
-	protected function cellToArray(Cell $cell, bool $calculateFormulas, bool $formatData, $nullValue)
+				 * @param mixed $nullValue value to use when null
+				 *
+				 * @throws Exception
+				 * @throws \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception
+				 * @return mixed
+				 */
+				protected function cellToArray(Cell $cell, bool $calculateFormulas, bool $formatData, $nullValue)
 	{
 		$returnValue = $nullValue;
 
@@ -2855,17 +2881,17 @@ class Worksheet
 	}
 
 	/**
-	 * Create array from a range of cells.
-	 *
-	 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
-	 * @param bool $calculateFormulas Should formulas be calculated?
-	 * @param bool $formatData Should formatting be applied to cell values?
-	 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
-	 *                             True - Return rows and columns indexed by their actual row and column IDs
-	 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
-	 *                            True - Don't return values for rows/columns that are defined as hidden.
-	 */
-	public function rangeToArray(
+				 * Create array from a range of cells.
+				 *
+				 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
+				 * @param bool $calculateFormulas Should formulas be calculated?
+				 * @param bool $formatData Should formatting be applied to cell values?
+				 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
+				 *                             True - Return rows and columns indexed by their actual row and column IDs
+				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
+				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 */
+				public function rangeToArray(
 		string $range,
 		$nullValue = null,
 		bool $calculateFormulas = true,
@@ -2886,19 +2912,53 @@ class Worksheet
 	}
 
 	/**
-	 * Create array from a range of cells, yielding each row in turn.
-	 *
-	 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
-	 * @param bool $calculateFormulas Should formulas be calculated?
-	 * @param bool $formatData Should formatting be applied to cell values?
-	 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
-	 *                             True - Return rows and columns indexed by their actual row and column IDs
-	 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
-	 *                            True - Don't return values for rows/columns that are defined as hidden.
-	 *
-	 * @return Generator<array>
-	 */
-	public function rangeToArrayYieldRows(
+				 * Create array from a multiple ranges of cells. (such as A1:A3,A15,B17:C17).
+				 *
+				 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
+				 * @param bool $calculateFormulas Should formulas be calculated?
+				 * @param bool $formatData Should formatting be applied to cell values?
+				 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
+				 *                             True - Return rows and columns indexed by their actual row and column IDs
+				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
+				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 */
+				public function rangesToArray(
+		string $ranges,
+		$nullValue = null,
+		bool $calculateFormulas = true,
+		bool $formatData = true,
+		bool $returnCellRef = false,
+		bool $ignoreHidden = false,
+		bool $reduceArrays = false
+	): array {
+		$returnValue = [];
+
+		$parts = explode(',', $ranges);
+		foreach ($parts as $part) {
+			// Loop through rows
+			foreach ($this->rangeToArrayYieldRows($part, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays) as $rowRef => $rowArray) {
+				$returnValue[$rowRef] = $rowArray;
+			}
+		}
+
+		// Return
+		return $returnValue;
+	}
+
+	/**
+				 * Create array from a range of cells, yielding each row in turn.
+				 *
+				 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
+				 * @param bool $calculateFormulas Should formulas be calculated?
+				 * @param bool $formatData Should formatting be applied to cell values?
+				 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
+				 *                             True - Return rows and columns indexed by their actual row and column IDs
+				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
+				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 *
+				 * @return Generator<array>
+				 */
+				public function rangeToArrayYieldRows(
 		string $range,
 		$nullValue = null,
 		bool $calculateFormulas = true,
@@ -3039,18 +3099,18 @@ class Worksheet
 	}
 
 	/**
-	 * Create array from a range of cells.
-	 *
-	 * @param string $definedName The Named Range that should be returned
-	 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
-	 * @param bool $calculateFormulas Should formulas be calculated?
-	 * @param bool $formatData Should formatting be applied to cell values?
-	 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
-	 *                             True - Return rows and columns indexed by their actual row and column IDs
-	 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
-	 *                            True - Don't return values for rows/columns that are defined as hidden.
-	 */
-	public function namedRangeToArray(
+				 * Create array from a range of cells.
+				 *
+				 * @param string $definedName The Named Range that should be returned
+				 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
+				 * @param bool $calculateFormulas Should formulas be calculated?
+				 * @param bool $formatData Should formatting be applied to cell values?
+				 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
+				 *                             True - Return rows and columns indexed by their actual row and column IDs
+				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
+				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 */
+				public function namedRangeToArray(
 		string $definedName,
 		$nullValue = null,
 		bool $calculateFormulas = true,
@@ -3074,17 +3134,17 @@ class Worksheet
 	}
 
 	/**
-	 * Create array from worksheet.
-	 *
-	 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
-	 * @param bool $calculateFormulas Should formulas be calculated?
-	 * @param bool $formatData Should formatting be applied to cell values?
-	 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
-	 *                             True - Return rows and columns indexed by their actual row and column IDs
-	 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
-	 *                            True - Don't return values for rows/columns that are defined as hidden.
-	 */
-	public function toArray(
+				 * Create array from worksheet.
+				 *
+				 * @param mixed $nullValue Value returned in the array entry if a cell doesn't exist
+				 * @param bool $calculateFormulas Should formulas be calculated?
+				 * @param bool $formatData Should formatting be applied to cell values?
+				 * @param bool $returnCellRef False - Return a simple array of rows and columns indexed by number counting from zero
+				 *                             True - Return rows and columns indexed by their actual row and column IDs
+				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
+				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 */
+				public function toArray(
 		$nullValue = null,
 		bool $calculateFormulas = true,
 		bool $formatData = true,
@@ -3440,10 +3500,10 @@ class Worksheet
 	}
 
 	/**
-	 * Copy worksheet (!= clone!).
-	 * @return static
-	 */
-	public function copy()
+				 * Copy worksheet (!= clone!).
+				 * @return static
+				 */
+				public function copy()
 	{
 		return clone $this;
 	}
@@ -3764,7 +3824,7 @@ class Worksheet
 			$keys = $this->cellCollection->getCoordinates();
 			foreach ($keys as $key) {
 				if ($this->getCell($key)->getDataType() === DataType::TYPE_FORMULA) {
-					if (preg_match(self::FUNCTION_LIKE_GROUPBY, $this->getCell($key)->getValue()) !== 1) {
+					if (preg_match(self::FUNCTION_LIKE_GROUPBY, $this->getCell($key)->getValueString()) !== 1) {
 						$this->getCell($key)->getCalculatedValue();
 					}
 				}

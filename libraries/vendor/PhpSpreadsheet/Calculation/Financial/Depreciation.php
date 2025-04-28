@@ -11,30 +11,30 @@ class Depreciation
 	private static float $zeroPointZero = 0.0;
 
 	/**
-	 * DB.
-	 *
-	 * Returns the depreciation of an asset for a specified period using the
-	 * fixed-declining balance method.
-	 * This form of depreciation is used if you want to get a higher depreciation value
-	 * at the beginning of the depreciation (as opposed to linear depreciation). The
-	 * depreciation value is reduced with every depreciation period by the depreciation
-	 * already deducted from the initial cost.
-	 *
-	 * Excel Function:
-	 *        DB(cost,salvage,life,period[,month])
-	 *
-	 * @param mixed $cost Initial cost of the asset
-	 * @param mixed $salvage Value at the end of the depreciation.
-	 *                             (Sometimes called the salvage value of the asset)
-	 * @param mixed $life Number of periods over which the asset is depreciated.
-	 *                           (Sometimes called the useful life of the asset)
-	 * @param mixed $period The period for which you want to calculate the
-	 *                          depreciation. Period must use the same units as life.
-	 * @param mixed $month Number of months in the first year. If month is omitted,
-	 *                         it defaults to 12.
-	 * @return float|int|string
-	 */
-	public static function DB($cost, $salvage, $life, $period, $month = 12)
+				 * DB.
+				 *
+				 * Returns the depreciation of an asset for a specified period using the
+				 * fixed-declining balance method.
+				 * This form of depreciation is used if you want to get a higher depreciation value
+				 * at the beginning of the depreciation (as opposed to linear depreciation). The
+				 * depreciation value is reduced with every depreciation period by the depreciation
+				 * already deducted from the initial cost.
+				 *
+				 * Excel Function:
+				 *        DB(cost,salvage,life,period[,month])
+				 *
+				 * @param mixed $cost Initial cost of the asset
+				 * @param mixed $salvage Value at the end of the depreciation.
+				 *                             (Sometimes called the salvage value of the asset)
+				 * @param mixed $life Number of periods over which the asset is depreciated.
+				 *                           (Sometimes called the useful life of the asset)
+				 * @param mixed $period The period for which you want to calculate the
+				 *                          depreciation. Period must use the same units as life.
+				 * @param mixed $month Number of months in the first year. If month is omitted,
+				 *                         it defaults to 12.
+				 * @return float|int|string
+				 */
+				public static function DB($cost, $salvage, $life, $period, $month = 12)
 	{
 		$cost = Functions::flattenSingleValue($cost);
 		$salvage = Functions::flattenSingleValue($salvage);
@@ -79,27 +79,27 @@ class Depreciation
 	}
 
 	/**
-	 * DDB.
-	 *
-	 * Returns the depreciation of an asset for a specified period using the
-	 * double-declining balance method or some other method you specify.
-	 *
-	 * Excel Function:
-	 *        DDB(cost,salvage,life,period[,factor])
-	 *
-	 * @param mixed $cost Initial cost of the asset
-	 * @param mixed $salvage Value at the end of the depreciation.
-	 *                                (Sometimes called the salvage value of the asset)
-	 * @param mixed $life Number of periods over which the asset is depreciated.
-	 *                                (Sometimes called the useful life of the asset)
-	 * @param mixed $period The period for which you want to calculate the
-	 *                                depreciation. Period must use the same units as life.
-	 * @param mixed $factor The rate at which the balance declines.
-	 *                                If factor is omitted, it is assumed to be 2 (the
-	 *                                double-declining balance method).
-	 * @return float|string
-	 */
-	public static function DDB($cost, $salvage, $life, $period, $factor = 2.0)
+				 * DDB.
+				 *
+				 * Returns the depreciation of an asset for a specified period using the
+				 * double-declining balance method or some other method you specify.
+				 *
+				 * Excel Function:
+				 *        DDB(cost,salvage,life,period[,factor])
+				 *
+				 * @param mixed $cost Initial cost of the asset
+				 * @param mixed $salvage Value at the end of the depreciation.
+				 *                                (Sometimes called the salvage value of the asset)
+				 * @param mixed $life Number of periods over which the asset is depreciated.
+				 *                                (Sometimes called the useful life of the asset)
+				 * @param mixed $period The period for which you want to calculate the
+				 *                                depreciation. Period must use the same units as life.
+				 * @param mixed $factor The rate at which the balance declines.
+				 *                                If factor is omitted, it is assumed to be 2 (the
+				 *                                double-declining balance method).
+				 * @return float|string
+				 */
+				public static function DDB($cost, $salvage, $life, $period, $factor = 2.0)
 	{
 		$cost = Functions::flattenSingleValue($cost);
 		$salvage = Functions::flattenSingleValue($salvage);
@@ -206,9 +206,9 @@ class Depreciation
 	}
 
 	/**
-	 * @param mixed $cost
-	 */
-	private static function validateCost($cost, bool $negativeValueAllowed = false): float
+				 * @param mixed $cost
+				 */
+				private static function validateCost($cost, bool $negativeValueAllowed = false): float
 	{
 		$cost = FinancialValidations::validateFloat($cost);
 		if ($cost < 0.0 && $negativeValueAllowed === false) {
@@ -219,9 +219,9 @@ class Depreciation
 	}
 
 	/**
-	 * @param mixed $salvage
-	 */
-	private static function validateSalvage($salvage, bool $negativeValueAllowed = false): float
+				 * @param mixed $salvage
+				 */
+				private static function validateSalvage($salvage, bool $negativeValueAllowed = false): float
 	{
 		$salvage = FinancialValidations::validateFloat($salvage);
 		if ($salvage < 0.0 && $negativeValueAllowed === false) {
@@ -232,9 +232,9 @@ class Depreciation
 	}
 
 	/**
-	 * @param mixed $life
-	 */
-	private static function validateLife($life, bool $negativeValueAllowed = false): float
+				 * @param mixed $life
+				 */
+				private static function validateLife($life, bool $negativeValueAllowed = false): float
 	{
 		$life = FinancialValidations::validateFloat($life);
 		if ($life < 0.0 && $negativeValueAllowed === false) {
@@ -245,9 +245,9 @@ class Depreciation
 	}
 
 	/**
-	 * @param mixed $period
-	 */
-	private static function validatePeriod($period, bool $negativeValueAllowed = false): float
+				 * @param mixed $period
+				 */
+				private static function validatePeriod($period, bool $negativeValueAllowed = false): float
 	{
 		$period = FinancialValidations::validateFloat($period);
 		if ($period <= 0.0 && $negativeValueAllowed === false) {
@@ -258,9 +258,9 @@ class Depreciation
 	}
 
 	/**
-	 * @param mixed $month
-	 */
-	private static function validateMonth($month): int
+				 * @param mixed $month
+				 */
+				private static function validateMonth($month): int
 	{
 		$month = FinancialValidations::validateInt($month);
 		if ($month < 1) {
@@ -271,9 +271,9 @@ class Depreciation
 	}
 
 	/**
-	 * @param mixed $factor
-	 */
-	private static function validateFactor($factor): float
+				 * @param mixed $factor
+				 */
+				private static function validateFactor($factor): float
 	{
 		$factor = FinancialValidations::validateFloat($factor);
 		if ($factor <= 0.0) {

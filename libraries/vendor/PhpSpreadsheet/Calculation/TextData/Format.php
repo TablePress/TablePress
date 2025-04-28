@@ -145,10 +145,10 @@ class Format
 	}
 
 	/**
-	 * @param mixed $value Value to check
-	 * @return mixed
-	 */
-	private static function convertValue($value, bool $spacesMeanZero = false)
+				 * @param mixed $value Value to check
+				 * @return mixed
+				 */
+				private static function convertValue($value, bool $spacesMeanZero = false)
 	{
 		$value = $value ?? 0;
 		if (is_bool($value)) {
@@ -193,6 +193,7 @@ class Format
 			return $e->getMessage();
 		}
 		if (!is_numeric($value)) {
+			$value = StringHelper::convertToString($value);
 			$numberValue = str_replace(
 				StringHelper::getThousandsSeparator(),
 				'',
@@ -213,14 +214,14 @@ class Format
 				if ($timeValue !== ExcelError::VALUE()) {
 					Functions::setReturnDateType($dateSetting);
 
-					return $timeValue;
+					return $timeValue; //* @phpstan-ignore-line
 				}
 			}
 			$dateValue = Functions::scalar(DateTimeExcel\DateValue::fromString($value));
 			if ($dateValue !== ExcelError::VALUE()) {
 				Functions::setReturnDateType($dateSetting);
 
-				return $dateValue;
+				return $dateValue; //* @phpstan-ignore-line
 			}
 			Functions::setReturnDateType($dateSetting);
 
@@ -231,16 +232,16 @@ class Format
 	}
 
 	/**
-	 * VALUETOTEXT.
-	 *
-	 * @param mixed $value The value to format
-	 *                         Or can be an array of values
-	 *
-	 * @return array|string If an array of values is passed for either of the arguments, then the returned result
-	 *            will also be an array with matching dimensions
-	 * @param mixed $format
-	 */
-	public static function valueToText($value, $format = false)
+				 * VALUETOTEXT.
+				 *
+				 * @param mixed $value The value to format
+				 *                         Or can be an array of values
+				 *
+				 * @return array|string If an array of values is passed for either of the arguments, then the returned result
+				 *            will also be an array with matching dimensions
+				 * @param mixed $format
+				 */
+				public static function valueToText($value, $format = false)
 	{
 		if (is_array($value) || is_array($format)) {
 			return self::evaluateArrayArguments([self::class, __FUNCTION__], $value, $format);
@@ -252,43 +253,43 @@ class Format
 			$value = $value->getPlainText();
 		}
 		if (is_string($value)) {
-			$value = ($format === true) ? Calculation::wrapResult($value) : $value;
+			$value = ($format === true) ? StringHelper::convertToString(Calculation::wrapResult($value)) : $value;
 			$value = str_replace("\n", '', $value);
 		} elseif (is_bool($value)) {
 			$value = Calculation::getLocaleBoolean($value ? 'TRUE' : 'FALSE');
 		}
 
-		return (string) $value;
+		return StringHelper::convertToString($value);
 	}
 
 	/**
-	 * @param mixed $decimalSeparator
-	 */
-	private static function getDecimalSeparator($decimalSeparator): string
+				 * @param mixed $decimalSeparator
+				 */
+				private static function getDecimalSeparator($decimalSeparator): string
 	{
-		return empty($decimalSeparator) ? StringHelper::getDecimalSeparator() : (string) $decimalSeparator;
+		return empty($decimalSeparator) ? StringHelper::getDecimalSeparator() : StringHelper::convertToString($decimalSeparator);
 	}
 
 	/**
-	 * @param mixed $groupSeparator
-	 */
-	private static function getGroupSeparator($groupSeparator): string
+				 * @param mixed $groupSeparator
+				 */
+				private static function getGroupSeparator($groupSeparator): string
 	{
-		return empty($groupSeparator) ? StringHelper::getThousandsSeparator() : (string) $groupSeparator;
+		return empty($groupSeparator) ? StringHelper::getThousandsSeparator() : StringHelper::convertToString($groupSeparator);
 	}
 
 	/**
-	 * NUMBERVALUE.
-	 *
-	 * @param mixed $value The value to format
-	 *                         Or can be an array of values
-	 * @param mixed $decimalSeparator A string with the decimal separator to use, defaults to locale defined value
-	 *                         Or can be an array of values
-	 * @param mixed $groupSeparator A string with the group/thousands separator to use, defaults to locale defined value
-	 *                         Or can be an array of values
-	 * @return mixed[]|float|string
-	 */
-	public static function NUMBERVALUE($value = '', $decimalSeparator = null, $groupSeparator = null)
+				 * NUMBERVALUE.
+				 *
+				 * @param mixed $value The value to format
+				 *                         Or can be an array of values
+				 * @param mixed $decimalSeparator A string with the decimal separator to use, defaults to locale defined value
+				 *                         Or can be an array of values
+				 * @param mixed $groupSeparator A string with the group/thousands separator to use, defaults to locale defined value
+				 *                         Or can be an array of values
+				 * @return mixed[]|float|string
+				 */
+				public static function NUMBERVALUE($value = '', $decimalSeparator = null, $groupSeparator = null)
 	{
 		if (is_array($value) || is_array($decimalSeparator) || is_array($groupSeparator)) {
 			return self::evaluateArrayArguments([self::class, __FUNCTION__], $value, $decimalSeparator, $groupSeparator);
@@ -302,7 +303,9 @@ class Format
 			return $e->getMessage();
 		}
 
-		if (!is_numeric($value)) {
+		/** @var null|array|scalar $value */
+		if (!is_array($value) && !is_numeric($value)) {
+			$value = StringHelper::convertToString($value);
 			$decimalPositions = Preg::matchAllWithOffsets('/' . preg_quote($decimalSeparator, '/') . '/', $value, $matches);
 			if ($decimalPositions > 1) {
 				return ExcelError::VALUE();

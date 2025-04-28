@@ -98,10 +98,8 @@ class DateFormatter
 		'[ss]' => self::SECONDS_IN_DAY,
 	];
 
-	/**
-	 * @param mixed $value
-	 */
-	private static function tryInterval(bool &$seekingBracket, string &$block, $value, string $format): void
+	/** @param mixed $value */
+				private static function tryInterval(bool &$seekingBracket, string &$block, $value, string $format): void
 	{
 		if ($seekingBracket) {
 			if (str_contains($block, $format)) {
@@ -119,7 +117,7 @@ class DateFormatter
 	}
 
 	/** @param mixed $value value to be formatted */
-	public static function format($value, string $format): string
+				public static function format($value, string $format): string
 	{
 		// strip off first part containing e.g. [$-F800] or [$USD-409]
 		// general syntax: [$<Currency string>-<language info>]

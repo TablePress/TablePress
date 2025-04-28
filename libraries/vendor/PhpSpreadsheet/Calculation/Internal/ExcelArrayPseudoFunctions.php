@@ -12,9 +12,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ExcelArrayPseudoFunctions
 {
 	/**
-	 * @return mixed
-	 */
-	public static function single(string $cellReference, Cell $cell)
+				 * @return mixed
+				 */
+				public static function single(string $cellReference, Cell $cell)
 	{
 		$worksheet = $cell->getWorksheet();
 
@@ -43,9 +43,9 @@ class ExcelArrayPseudoFunctions
 	}
 
 	/**
-	 * @return mixed[]|string
-	 */
-	public static function anchorArray(string $cellReference, Cell $cell)
+				 * @return mixed[]|string
+				 */
+				public static function anchorArray(string $cellReference, Cell $cell)
 	{
 		//$coordinate = $cell->getCoordinate();
 		$worksheet = $cell->getWorksheet();

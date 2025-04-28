@@ -12,31 +12,34 @@ class Periodic
 	const FINANCIAL_PRECISION = 1.0e-08;
 
 	/**
-	 * IRR.
-	 *
-	 * Returns the internal rate of return for a series of cash flows represented by the numbers in values.
-	 * These cash flows do not have to be even, as they would be for an annuity. However, the cash flows must occur
-	 * at regular intervals, such as monthly or annually. The internal rate of return is the interest rate received
-	 * for an investment consisting of payments (negative values) and income (positive values) that occur at regular
-	 * periods.
-	 *
-	 * Excel Function:
-	 *        IRR(values[,guess])
-	 *
-	 * @param mixed $values An array or a reference to cells that contain numbers for which you want
-	 *                                    to calculate the internal rate of return.
-	 *                                Values must contain at least one positive value and one negative value to
-	 *                                    calculate the internal rate of return.
-	 * @param mixed $guess A number that you guess is close to the result of IRR
-	 * @return float|string
-	 */
-	public static function rate($values, $guess = 0.1)
+				 * IRR.
+				 *
+				 * Returns the internal rate of return for a series of cash flows represented by the numbers in values.
+				 * These cash flows do not have to be even, as they would be for an annuity. However, the cash flows must occur
+				 * at regular intervals, such as monthly or annually. The internal rate of return is the interest rate received
+				 * for an investment consisting of payments (negative values) and income (positive values) that occur at regular
+				 * periods.
+				 *
+				 * Excel Function:
+				 *        IRR(values[,guess])
+				 *
+				 * @param mixed $values An array or a reference to cells that contain numbers for which you want
+				 *                                    to calculate the internal rate of return.
+				 *                                Values must contain at least one positive value and one negative value to
+				 *                                    calculate the internal rate of return.
+				 * @param mixed $guess A number that you guess is close to the result of IRR
+				 * @return float|string
+				 */
+				public static function rate($values, $guess = 0.1)
 	{
 		if (!is_array($values)) {
 			return ExcelError::VALUE();
 		}
 		$values = Functions::flattenArray($values);
 		$guess = Functions::flattenSingleValue($guess);
+		if (!is_numeric($guess)) {
+			return ExcelError::VALUE();
+		}
 
 		// create an initial range, with a root somewhere between 0 and guess
 		$x1 = 0.0;
@@ -104,7 +107,9 @@ class Periodic
 			return ExcelError::DIV0();
 		}
 		$values = Functions::flattenArray($values);
+		/** @var float */
 		$financeRate = Functions::flattenSingleValue($financeRate);
+		/** @var float */
 		$reinvestmentRate = Functions::flattenSingleValue($reinvestmentRate);
 		$n = count($values);
 
@@ -131,18 +136,19 @@ class Periodic
 	}
 
 	/**
-	 * NPV.
-	 *
-	 * Returns the Net Present Value of a cash flow series given a discount rate.
-	 *
-	 * @param array $args
-	 * @return float|int
-	 * @param mixed $rate
-	 */
-	public static function presentValue($rate, ...$args)
+				 * NPV.
+				 *
+				 * Returns the Net Present Value of a cash flow series given a discount rate.
+				 *
+				 * @param array $args
+				 * @return float|int
+				 * @param mixed $rate
+				 */
+				public static function presentValue($rate, ...$args)
 	{
 		$returnValue = 0;
 
+		/** @var float */
 		$rate = Functions::flattenSingleValue($rate);
 		$aArgs = Functions::flattenArray($args);
 

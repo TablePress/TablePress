@@ -279,10 +279,10 @@ class Cells
 	}
 
 	/**
-	 * Clone the cell collection.
-	 * @return static
-	 */
-	public function cloneCellCollection(Worksheet $worksheet)
+				 * Clone the cell collection.
+				 * @return static
+				 */
+				public function cloneCellCollection(Worksheet $worksheet)
 	{
 		$this->storeCurrentCell();
 		$newCollection = clone $this;

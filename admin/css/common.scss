@@ -119,30 +119,22 @@ body.wait * {
 			font-size: 14px;
 			line-height: 1;
 			text-decoration: none;
-			transition: color 0.1s, background-color 0.1s, border-color 0.1s;
 			display: inline-flex;
 			color: #ffffff;
-			background-color: #8ab547;
-			border-color: #8ab547;
+			background-color: #16a34a;
+			border-color: #16a34a;
 
 			&:hover,
 			&:active,
 			&:focus {
-				color: #ffffff;
-				background-color: #69b547;
-				border-color: #69b547;
+				span:first-child {
+					text-decoration: underline;
+				}
 			}
 
 			&.renew {
-				background-color: #dba617;
-				border-color: #dba617;
-
-				&:hover,
-				&:active,
-				&:focus {
-					background-color: #ebb72a;
-					border-color: #ebb72a;
-				}
+				background-color: #ff5100;
+				border-color: #ff5100;
 			}
 
 			.dashicons {

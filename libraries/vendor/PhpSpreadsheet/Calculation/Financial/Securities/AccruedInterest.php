@@ -6,6 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\YearFrac;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Financial\Constants as FinancialConstants;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class AccruedInterest
 {
@@ -81,12 +82,12 @@ class AccruedInterest
 		$daysBetweenIssueAndSettlement = Functions::scalar(YearFrac::fraction($issue, $settlement, $basis));
 		if (!is_numeric($daysBetweenIssueAndSettlement)) {
 			//    return date error
-			return $daysBetweenIssueAndSettlement;
+			return StringHelper::convertToString($daysBetweenIssueAndSettlement);
 		}
 		$daysBetweenFirstInterestAndSettlement = Functions::scalar(YearFrac::fraction($firstInterest, $settlement, $basis));
 		if (!is_numeric($daysBetweenFirstInterestAndSettlement)) {
 			//    return date error
-			return $daysBetweenFirstInterestAndSettlement;
+			return StringHelper::convertToString($daysBetweenFirstInterestAndSettlement);
 		}
 
 		return $parValue * $rate * $daysBetweenIssueAndSettlement;
@@ -143,7 +144,7 @@ class AccruedInterest
 		$daysBetweenIssueAndSettlement = Functions::scalar(YearFrac::fraction($issue, $settlement, $basis));
 		if (!is_numeric($daysBetweenIssueAndSettlement)) {
 			//    return date error
-			return $daysBetweenIssueAndSettlement;
+			return StringHelper::convertToString($daysBetweenIssueAndSettlement);
 		}
 
 		return $parValue * $rate * $daysBetweenIssueAndSettlement;

@@ -8,18 +8,18 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 class Minimum extends MaxMinBase
 {
 	/**
-	 * MIN.
-	 *
-	 * MIN returns the value of the element of the values passed that has the smallest value,
-	 *        with negative numbers considered smaller than positive numbers.
-	 *
-	 * Excel Function:
-	 *        MIN(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function min(...$args)
+				 * MIN.
+				 *
+				 * MIN returns the value of the element of the values passed that has the smallest value,
+				 *        with negative numbers considered smaller than positive numbers.
+				 *
+				 * Excel Function:
+				 *        MIN(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function min(...$args)
 	{
 		$returnValue = null;
 
@@ -47,17 +47,17 @@ class Minimum extends MaxMinBase
 	}
 
 	/**
-	 * MINA.
-	 *
-	 * Returns the smallest value in a list of arguments, including numbers, text, and logical values
-	 *
-	 * Excel Function:
-	 *        MINA(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function minA(...$args)
+				 * MINA.
+				 *
+				 * Returns the smallest value in a list of arguments, including numbers, text, and logical values
+				 *
+				 * Excel Function:
+				 *        MINA(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function minA(...$args)
 	{
 		$returnValue = null;
 

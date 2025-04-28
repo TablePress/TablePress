@@ -12,19 +12,19 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Statistical\Minimum;
 class Mean
 {
 	/**
-	 * GEOMEAN.
-	 *
-	 * Returns the geometric mean of an array or range of positive data. For example, you
-	 *        can use GEOMEAN to calculate average growth rate given compound interest with
-	 *        variable rates.
-	 *
-	 * Excel Function:
-	 *        GEOMEAN(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function geometric(...$args)
+				 * GEOMEAN.
+				 *
+				 * Returns the geometric mean of an array or range of positive data. For example, you
+				 *        can use GEOMEAN to calculate average growth rate given compound interest with
+				 *        variable rates.
+				 *
+				 * Excel Function:
+				 *        GEOMEAN(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function geometric(...$args)
 	{
 		$aArgs = Functions::flattenArray($args);
 
@@ -40,18 +40,18 @@ class Mean
 	}
 
 	/**
-	 * HARMEAN.
-	 *
-	 * Returns the harmonic mean of a data set. The harmonic mean is the reciprocal of the
-	 *        arithmetic mean of reciprocals.
-	 *
-	 * Excel Function:
-	 *        HARMEAN(value1[,value2[, ...]])
-	 *
-	 * @param mixed ...$args Data values
-	 * @return float|int|string
-	 */
-	public static function harmonic(...$args)
+				 * HARMEAN.
+				 *
+				 * Returns the harmonic mean of a data set. The harmonic mean is the reciprocal of the
+				 *        arithmetic mean of reciprocals.
+				 *
+				 * Excel Function:
+				 *        HARMEAN(value1[,value2[, ...]])
+				 *
+				 * @param mixed ...$args Data values
+				 * @return float|int|string
+				 */
+				public static function harmonic(...$args)
 	{
 		// Loop through arguments
 		$aArgs = Functions::flattenArray($args);
@@ -81,19 +81,19 @@ class Mean
 	}
 
 	/**
-	 * TRIMMEAN.
-	 *
-	 * Returns the mean of the interior of a data set. TRIMMEAN calculates the mean
-	 *        taken by excluding a percentage of data points from the top and bottom tails
-	 *        of a data set.
-	 *
-	 * Excel Function:
-	 *        TRIMEAN(value1[,value2[, ...]], $discard)
-	 *
-	 * @param mixed $args Data values
-	 * @return float|string
-	 */
-	public static function trim(...$args)
+				 * TRIMMEAN.
+				 *
+				 * Returns the mean of the interior of a data set. TRIMMEAN calculates the mean
+				 *        taken by excluding a percentage of data points from the top and bottom tails
+				 *        of a data set.
+				 *
+				 * Excel Function:
+				 *        TRIMEAN(value1[,value2[, ...]], $discard)
+				 *
+				 * @param mixed $args Data values
+				 * @return float|string
+				 */
+				public static function trim(...$args)
 	{
 		$aArgs = Functions::flattenArray($args);
 

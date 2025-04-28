@@ -7,11 +7,11 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 class Filter
 {
 	/**
-	 * @param mixed $matchArray
-	 * @param mixed $ifEmpty
-	 * @return mixed
-	 */
-	public static function filter(array $lookupArray, $matchArray, $ifEmpty = null)
+				 * @param mixed $matchArray
+				 * @param mixed $ifEmpty
+				 * @return mixed
+				 */
+				public static function filter(array $lookupArray, $matchArray, $ifEmpty = null)
 	{
 		if (!is_array($matchArray)) {
 			return ExcelError::VALUE();

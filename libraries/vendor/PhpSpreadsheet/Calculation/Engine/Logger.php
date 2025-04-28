@@ -72,14 +72,14 @@ class Logger
 	}
 
 	/**
-	 * Write an entry to the calculation engine debug log.
-	 * @param mixed ...$args
-	 */
-	public function writeDebugLog(string $message, ...$args): void
+				 * Write an entry to the calculation engine debug log.
+				 * @param mixed ...$args
+				 */
+				public function writeDebugLog(string $message, ...$args): void
 	{
 		//    Only write the debug log if logging is enabled
 		if ($this->writeDebugLog) {
-			$message = sprintf($message, ...$args);
+			$message = sprintf($message, ...$args); //* @phpstan-ignore-line
 			$cellReference = implode(' -> ', $this->cellStack->showStack());
 			if ($this->echoDebugLog) {
 				echo $cellReference,

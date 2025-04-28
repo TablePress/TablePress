@@ -43,7 +43,7 @@ class Sort extends LookupRefValidations
 
 		try {
 			// If $sortIndex and $sortOrder are scalars, then convert them into arrays
-			if (is_scalar($sortIndex)) {
+			if (!is_array($sortIndex)) {
 				$sortIndex = [$sortIndex];
 				$sortOrder = is_scalar($sortOrder) ? [$sortOrder] : $sortOrder;
 			}
@@ -53,6 +53,7 @@ class Sort extends LookupRefValidations
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
+		/** @var array<int> $sortOrder */
 
 		// We want a simple, enumrated array of arrays where we can reference column by its index number.
 		$sortArray = array_values(array_map('array_values', $sortArray));
@@ -119,10 +120,10 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
-	 * @param mixed $sortIndex
-	 * @param mixed $sortOrder
-	 */
-	private static function validateScalarArgumentsForSort(&$sortIndex, &$sortOrder, int $sortArraySize): void
+				 * @param mixed $sortIndex
+				 * @param mixed $sortOrder
+				 */
+				private static function validateScalarArgumentsForSort(&$sortIndex, &$sortOrder, int $sortArraySize): void
 	{
 		if (is_array($sortIndex) || is_array($sortOrder)) {
 			throw new Exception(ExcelError::VALUE());
@@ -138,9 +139,9 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
-	 * @param mixed $sortVector
-	 */
-	private static function validateSortVector($sortVector, int $sortArraySize): array
+				 * @param mixed $sortVector
+				 */
+				private static function validateSortVector($sortVector, int $sortArraySize): array
 	{
 		if (!is_array($sortVector)) {
 			throw new Exception(ExcelError::VALUE());
@@ -156,9 +157,9 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
-	 * @param mixed $sortOrder
-	 */
-	private static function validateSortOrder($sortOrder): int
+				 * @param mixed $sortOrder
+				 */
+				private static function validateSortOrder($sortOrder): int
 	{
 		$sortOrder = self::validateInt($sortOrder);
 		if (($sortOrder == self::ORDER_ASCENDING || $sortOrder === self::ORDER_DESCENDING) === false) {
@@ -169,9 +170,9 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
-	 * @param mixed $sortOrder
-	 */
-	private static function validateArrayArgumentsForSort(array &$sortIndex, &$sortOrder, int $sortArraySize): void
+				 * @param mixed $sortOrder
+				 */
+				private static function validateArrayArgumentsForSort(array &$sortIndex, &$sortOrder, int $sortArraySize): void
 	{
 		// It doesn't matter if they're row or column vectors, it works either way
 		$sortIndex = Functions::flattenArray($sortIndex);

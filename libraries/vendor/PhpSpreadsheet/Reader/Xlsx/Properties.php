@@ -89,9 +89,9 @@ class Properties
 	}
 
 	/**
-	 * @param null|mixed[]|false $array
-	 */
-	private function getArrayItem($array): string
+				 * @param null|mixed[]|false $array
+				 */
+				private function getArrayItem($array): string
 	{
 		return is_array($array) ? (string) ($array[0] ?? '') : '';
 	}

@@ -24,6 +24,9 @@ class Trends
 	/**
 	 * @param mixed $array1 should be array, but scalar is made into one
 	 * @param mixed $array2 should be array, but scalar is made into one
+	 *
+	 * @param-out array $array1
+	 * @param-out array $array2
 	 */
 	private static function checkTrendArrays(&$array1, &$array2): void
 	{
@@ -58,15 +61,15 @@ class Trends
 	}
 
 	/**
-	 * CORREL.
-	 *
-	 * Returns covariance, the average of the products of deviations for each data point pair.
-	 *
-	 * @param mixed $yValues array of mixed Data Series Y
-	 * @param null|mixed $xValues array of mixed Data Series X
-	 * @return float|string
-	 */
-	public static function CORREL($yValues, $xValues = null)
+				 * CORREL.
+				 *
+				 * Returns covariance, the average of the products of deviations for each data point pair.
+				 *
+				 * @param mixed $yValues array of mixed Data Series Y
+				 * @param null|mixed $xValues array of mixed Data Series X
+				 * @return float|string
+				 */
+				public static function CORREL($yValues, $xValues = null)
 	{
 		if (($xValues === null) || (!is_array($yValues)) || (!is_array($xValues))) {
 			return ExcelError::VALUE();
@@ -85,15 +88,15 @@ class Trends
 	}
 
 	/**
-	 * COVAR.
-	 *
-	 * Returns covariance, the average of the products of deviations for each data point pair.
-	 *
-	 * @param mixed[] $yValues array of mixed Data Series Y
-	 * @param mixed[] $xValues array of mixed Data Series X
-	 * @return float|string
-	 */
-	public static function COVAR(array $yValues, array $xValues)
+				 * COVAR.
+				 *
+				 * Returns covariance, the average of the products of deviations for each data point pair.
+				 *
+				 * @param mixed[] $yValues array of mixed Data Series Y
+				 * @param mixed[] $xValues array of mixed Data Series X
+				 * @return float|string
+				 */
+				public static function COVAR(array $yValues, array $xValues)
 	{
 		try {
 			self::checkTrendArrays($yValues, $xValues);
@@ -173,15 +176,15 @@ class Trends
 	}
 
 	/**
-	 * INTERCEPT.
-	 *
-	 * Calculates the point at which a line will intersect the y-axis by using existing x-values and y-values.
-	 *
-	 * @param mixed[] $yValues Data Series Y
-	 * @param mixed[] $xValues Data Series X
-	 * @return float|string
-	 */
-	public static function INTERCEPT(array $yValues, array $xValues)
+				 * INTERCEPT.
+				 *
+				 * Calculates the point at which a line will intersect the y-axis by using existing x-values and y-values.
+				 *
+				 * @param mixed[] $yValues Data Series Y
+				 * @param mixed[] $xValues Data Series X
+				 * @return float|string
+				 */
+				public static function INTERCEPT(array $yValues, array $xValues)
 	{
 		try {
 			self::checkTrendArrays($yValues, $xValues);
@@ -373,15 +376,15 @@ class Trends
 	}
 
 	/**
-	 * STEYX.
-	 *
-	 * Returns the standard error of the predicted y-value for each x in the regression.
-	 *
-	 * @param mixed[] $yValues Data Series Y
-	 * @param mixed[] $xValues Data Series X
-	 * @return float|string
-	 */
-	public static function STEYX(array $yValues, array $xValues)
+				 * STEYX.
+				 *
+				 * Returns the standard error of the predicted y-value for each x in the regression.
+				 *
+				 * @param mixed[] $yValues Data Series Y
+				 * @param mixed[] $xValues Data Series X
+				 * @return float|string
+				 */
+				public static function STEYX(array $yValues, array $xValues)
 	{
 		try {
 			self::checkTrendArrays($yValues, $xValues);

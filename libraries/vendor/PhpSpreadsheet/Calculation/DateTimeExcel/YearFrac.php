@@ -62,27 +62,27 @@ class YearFrac
 		}
 
 		switch ($method) {
-			case 0:
-				return Functions::scalar(Days360::between($startDate, $endDate)) / 360;
-			case 1:
-				return self::method1($startDate, $endDate);
-			case 2:
-				return Functions::scalar(Difference::interval($startDate, $endDate)) / 360;
-			case 3:
-				return Functions::scalar(Difference::interval($startDate, $endDate)) / 365;
-			case 4:
-				return Functions::scalar(Days360::between($startDate, $endDate, true)) / 360;
-			default:
-				return ExcelError::NAN();
-		}
+									case 0:
+										return Helpers::floatOrInt(Days360::between($startDate, $endDate)) / 360;
+									case 1:
+										return self::method1($startDate, $endDate);
+									case 2:
+										return Helpers::floatOrInt(Difference::interval($startDate, $endDate)) / 360;
+									case 3:
+										return Helpers::floatOrInt(Difference::interval($startDate, $endDate)) / 365;
+									case 4:
+										return Helpers::floatOrInt(Days360::between($startDate, $endDate, true)) / 360;
+									default:
+										return ExcelError::NAN();
+								}
 	}
 
 	/**
-	 * Excel 1900 calendar treats date argument of null as 1900-01-00. Really.
-	 * @param mixed $startDate
-	 * @param mixed $endDate
-	 */
-	private static function excelBug(float $sDate, $startDate, $endDate, int $method): float
+				 * Excel 1900 calendar treats date argument of null as 1900-01-00. Really.
+				 * @param mixed $startDate
+				 * @param mixed $endDate
+				 */
+				private static function excelBug(float $sDate, $startDate, $endDate, int $method): float
 	{
 		if (Functions::getCompatibilityMode() !== Functions::COMPATIBILITY_OPENOFFICE && SharedDateHelper::getExcelCalendar() !== SharedDateHelper::CALENDAR_MAC_1904) {
 			if ($endDate === null && $startDate !== null) {
@@ -99,7 +99,7 @@ class YearFrac
 
 	private static function method1(float $startDate, float $endDate): float
 	{
-		$days = Functions::scalar(Difference::interval($startDate, $endDate));
+		$days = Helpers::floatOrInt(Difference::interval($startDate, $endDate));
 		$startYear = (int) DateParts::year($startDate);
 		$endYear = (int) DateParts::year($endDate);
 		$years = $endYear - $startYear + 1;

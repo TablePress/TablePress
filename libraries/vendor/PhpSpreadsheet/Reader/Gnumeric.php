@@ -222,9 +222,9 @@ class Gnumeric extends BaseReader
 	}
 
 	/**
-	 * @param mixed $value
-	 */
-	private static function testSimpleXml($value): SimpleXMLElement
+				 * @param mixed $value
+				 */
+				private static function testSimpleXml($value): SimpleXMLElement
 	{
 		return ($value instanceof SimpleXMLElement) ? $value : new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root></root>');
 	}
@@ -234,8 +234,7 @@ class Gnumeric extends BaseReader
 	 */
 	protected function loadSpreadsheetFromFile(string $filename): Spreadsheet
 	{
-		// Create new Spreadsheet
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = $this->newSpreadsheet();
 		$spreadsheet->setValueBinder($this->valueBinder);
 		$spreadsheet->removeSheetByIndex(0);
 

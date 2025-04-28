@@ -501,6 +501,18 @@ class Table
 		return $this;
 	}
 	/**
+	 * Get the row number on this table for given coordinates.
+	 */
+	public function getRowNumber(string $coordinate): int
+	{
+		$range = $this->getRange();
+		$coords = Coordinate::splitRange($range);
+		$firstCell = Coordinate::coordinateFromString($coords[0][0]);
+		$thisCell = Coordinate::coordinateFromString($coordinate);
+
+		return (int) $thisCell[1] - (int) $firstCell[1];
+	}
+	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
 	public function __clone()
@@ -518,6 +530,7 @@ class Table
 				//    The columns array of \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet\Table objects
 				$this->{$key} = [];
 				foreach ($value as $k => $v) {
+					/** @var Table\Column $v */
 					$this->{$key}[$k] = clone $v;
 					// attach the new cloned Column to this new cloned Table object
 					$this->{$key}[$k]->setTable($this);

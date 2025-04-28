@@ -16,6 +16,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\Helper\Dimension as CssDimension;
 use TablePress\PhpOffice\PhpSpreadsheet\Helper\Html as HelperHtml;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Border;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Color;
@@ -210,8 +211,7 @@ class Html extends BaseReader
 	 */
 	public function loadSpreadsheetFromFile(string $filename): Spreadsheet
 	{
-		// Create new Spreadsheet
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = $this->newSpreadsheet();
 		$spreadsheet->setValueBinder($this->valueBinder);
 
 		// Load into this instance
@@ -250,11 +250,13 @@ class Html extends BaseReader
 	}
 
 	/**
-	 * Flush cell.
-	 * @param int|string $row
-	 * @param mixed $cellContent
-	 */
-	protected function flushCell(Worksheet $sheet, string $column, $row, &$cellContent, array $attributeArray): void
+				 * Flush cell.
+				 *
+				 * @param-out string $cellContent In one case, it can be bool
+				 * @param int|string $row
+				 * @param mixed $cellContent
+				 */
+				protected function flushCell(Worksheet $sheet, string $column, $row, &$cellContent, array $attributeArray): void
 	{
 		if (is_string($cellContent)) {
 			//    Simple String content
@@ -275,7 +277,8 @@ class Html extends BaseReader
 						}
 					}
 					if ($datatype === DataType::TYPE_BOOL) {
-						$cellContent = self::convertBoolean($cellContent);
+						// This is the case where we can set cellContent to bool rather than string
+						$cellContent = self::convertBoolean($cellContent); //* @phpstan-ignore-line
 						if (!is_bool($cellContent)) {
 							$attributeArray['data-type'] = DataType::TYPE_STRING;
 						}
@@ -295,7 +298,7 @@ class Html extends BaseReader
 		} else {
 			//    We have a Rich Text run
 			//    TODO
-			$this->dataArray[$row][$column] = 'RICH TEXT: ' . $cellContent;
+			$this->dataArray[$row][$column] = 'RICH TEXT: ' . StringHelper::convertToString($cellContent);
 		}
 		$cellContent = (string) '';
 	}
@@ -304,9 +307,9 @@ class Html extends BaseReader
 	private static array $falseTrueArray = [];
 
 	/**
-	 * @return bool|string
-	 */
-	private static function convertBoolean(?string $cellContent)
+				 * @return bool|string
+				 */
+				private static function convertBoolean(?string $cellContent)
 	{
 		if ($cellContent === '1') {
 			return true;
@@ -628,6 +631,7 @@ class Html extends BaseReader
 		// apply inline style
 		$this->applyInlineStyle($sheet, $row, $column, $attributeArray);
 
+		/** @var string $cellContent */
 		$this->flushCell($sheet, $column, $row, $cellContent, $attributeArray);
 
 		$this->processDomElementBgcolor($sheet, $row, $column, $attributeArray);
@@ -777,22 +781,22 @@ class Html extends BaseReader
 					default:
 						if (preg_match('/^custom[.](bool|date|float|int|string)[.](.+)$/', $metaName, $matches) === 1) {
 							switch ($matches[1]) {
-								case 'bool':
-									$properties->setCustomProperty($matches[2], (bool) $metaContent, Properties::PROPERTY_TYPE_BOOLEAN);
-									break;
-								case 'float':
-									$properties->setCustomProperty($matches[2], (float) $metaContent, Properties::PROPERTY_TYPE_FLOAT);
-									break;
-								case 'int':
-									$properties->setCustomProperty($matches[2], (int) $metaContent, Properties::PROPERTY_TYPE_INTEGER);
-									break;
-								case 'date':
-									$properties->setCustomProperty($matches[2], $metaContent, Properties::PROPERTY_TYPE_DATE);
-									break;
-								default:
-									$properties->setCustomProperty($matches[2], $metaContent, Properties::PROPERTY_TYPE_STRING);
-									break;
-							}
+																													case 'bool':
+																														$properties->setCustomProperty($matches[2], (bool) $metaContent, Properties::PROPERTY_TYPE_BOOLEAN);
+																														break;
+																													case 'float':
+																														$properties->setCustomProperty($matches[2], (float) $metaContent, Properties::PROPERTY_TYPE_FLOAT);
+																														break;
+																													case 'int':
+																														$properties->setCustomProperty($matches[2], (int) $metaContent, Properties::PROPERTY_TYPE_INTEGER);
+																														break;
+																													case 'date':
+																														$properties->setCustomProperty($matches[2], $metaContent, Properties::PROPERTY_TYPE_DATE);
+																														break;
+																													default:
+																														$properties->setCustomProperty($matches[2], $metaContent, Properties::PROPERTY_TYPE_STRING);
+																														break;
+																												}
 						}
 				}
 			}
@@ -840,7 +844,7 @@ class Html extends BaseReader
 		if ($loaded === false) {
 			throw new Exception('Failed to load content as a DOM Document', 0, $e ?? null);
 		}
-		$spreadsheet = $spreadsheet ?? new Spreadsheet();
+		$spreadsheet = $spreadsheet ?? $this->newSpreadsheet();
 		$spreadsheet->setValueBinder($this->valueBinder);
 		self::loadProperties($dom, $spreadsheet);
 
@@ -1239,7 +1243,7 @@ class Html extends BaseReader
 	public function listWorksheetInfo(string $filename): array
 	{
 		$info = [];
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = $this->newSpreadsheet();
 		$this->loadIntoExisting($filename, $spreadsheet);
 		foreach ($spreadsheet->getAllSheets() as $sheet) {
 			$newEntry = ['worksheetName' => $sheet->getTitle()];

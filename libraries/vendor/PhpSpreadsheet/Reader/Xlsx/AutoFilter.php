@@ -12,16 +12,16 @@ use SimpleXMLElement;
 class AutoFilter
 {
 	/**
-	 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table|\TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
-	 */
-	private $parent;
+				 * @var \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table|\TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
+				 */
+				private $parent;
 
 	private SimpleXMLElement $worksheetXml;
 
 	/**
-	 * @param \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table|\TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $parent
-	 */
-	public function __construct($parent, SimpleXMLElement $worksheetXml)
+				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table|\TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $parent
+				 */
+				public function __construct($parent, SimpleXMLElement $worksheetXml)
 	{
 		$this->parent = $parent;
 		$this->worksheetXml = $worksheetXml;

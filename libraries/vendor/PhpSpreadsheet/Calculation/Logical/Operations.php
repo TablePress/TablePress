@@ -131,9 +131,9 @@ class Operations
 	}
 
 	/**
-	 * @return bool|string
-	 */
-	private static function countTrueValues(array $args, callable $func)
+				 * @return bool|string
+				 */
+				private static function countTrueValues(array $args, callable $func)
 	{
 		$trueValueCount = 0;
 		$count = 0;

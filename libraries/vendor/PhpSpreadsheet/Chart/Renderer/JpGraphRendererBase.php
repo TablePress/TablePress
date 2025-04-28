@@ -282,9 +282,9 @@ abstract class JpGraphRendererBase implements IRenderer
 	}
 
 	/**
-	 * @return mixed
-	 */
-	private function getDataLabel(int $groupId, int $index)
+				 * @return mixed
+				 */
+				private function getDataLabel(int $groupId, int $index)
 	{
 		$plotLabel = $this->chart->getPlotArea()->getPlotGroupByIndex($groupId)->getPlotLabelByIndex($index);
 		if (!$plotLabel) {

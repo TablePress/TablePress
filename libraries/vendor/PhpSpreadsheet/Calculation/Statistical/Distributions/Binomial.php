@@ -217,9 +217,9 @@ class Binomial
 	}
 
 	/**
-	 * @return float|int
-	 */
-	private static function calculateCumulativeBinomial(int $value, int $trials, float $probability)
+				 * @return float|int
+				 */
+				private static function calculateCumulativeBinomial(int $value, int $trials, float $probability)
 	{
 		$summer = 0;
 		for ($i = 0; $i <= $value; ++$i) {
