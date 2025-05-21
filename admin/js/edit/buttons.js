@@ -94,7 +94,7 @@ const saveTableChanges = ( { screenData, updateScreenData, tableOptions, tableMe
 
 		// Update the nonces.
 		[ 'copy', 'delete', 'edit', 'preview' ].forEach( action => {
-    		tp.nonces[ `${action}_table` ] = data[ `new_${action}_nonce` ];
+			tp.nonces[ `${action}_table` ] = data[ `new_${action}_nonce` ];
 		} );
 
 		// Update the "Export", "Copy", "Delete", and "Preview" URLs in the screen data.
@@ -204,7 +204,7 @@ const Section = ( { noticeOperations, noticeUI, screenData, updateScreenData, ta
 				margin: '1.5rem 0',
 			} }
 		>
-			<HStack	alignment="left">
+			<HStack alignment="left">
 			{
 				tp.screenOptions.currentUserCanPreviewTable && (
 					<Button

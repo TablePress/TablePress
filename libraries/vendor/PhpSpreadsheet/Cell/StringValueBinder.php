@@ -120,7 +120,7 @@ class StringValueBinder extends DefaultValueBinder implements IValueBinder
 		} elseif ($value instanceof RichText) {
 			$cell->setValueExplicit($value, DataType::TYPE_INLINE);
 			$ignoredErrors = is_numeric($value->getPlainText());
-		} elseif ((is_object($value) && method_exists($value, '__toString'))) {
+		} elseif (method_exists($value, '__toString')) {
 			$cell->setValueExplicit((string) $value, DataType::TYPE_STRING);
 			$ignoredErrors = is_numeric((string) $value);
 		} else {

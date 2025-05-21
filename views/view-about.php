@@ -230,7 +230,7 @@ class TablePress_About_View extends TablePress_View {
 			<li>WP Memory Limit: <?php echo WP_MEMORY_LIMIT; ?></li>
 			<li>Server Memory Limit: <?php echo esc_html( @ini_get( 'memory_limit' ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged ?></li>
 			<li>WP_DEBUG: <?php echo WP_DEBUG ? 'true' : 'false'; ?></li>
-			<li>WP_POST_REVISIONS: <?php echo is_bool( WP_POST_REVISIONS ) ? ( WP_POST_REVISIONS ? 'true' : 'false' ) : WP_POST_REVISIONS; // @phpstan-ignore constant.notFound ?></li>
+			<li>WP_POST_REVISIONS: <?php echo is_bool( WP_POST_REVISIONS ) ? ( WP_POST_REVISIONS ? 'true' : 'false' ) : WP_POST_REVISIONS; // @phpstan-ignore constant.notFound, phpstanWP.wpConstant.fetch, phpstanWP.wpConstant.fetch, phpstanWP.wpConstant.fetch (The constant is printed for debugging purposes.) ?></li>
 		</ul>
 		<?php
 	}

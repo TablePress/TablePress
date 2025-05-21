@@ -116,7 +116,6 @@
 			"composer require rector/rector --dev --no-update",
 			"composer update",
 			"vendor/bin/rector",
-			"find ./libraries/vendor -type f -name \"*.php\" -exec sed -i '' 's/\\(\\$[a-zA-Z_][a-zA-Z0-9_]*\\) instanceof Stringable/(is_object(\\1) \\&\\& method_exists(\\1, '\\''__toString'\\''))/g' {} +",
 			"echo '-> Restore development environment'",
 			"git checkout -- composer.json",
 			"composer update --with-all-dependencies"

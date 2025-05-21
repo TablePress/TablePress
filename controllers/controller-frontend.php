@@ -1098,6 +1098,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		// Array of all search words that were found, and the table IDs where they were found.
 		$query_result = array();
 
+		$fn_stripos = function_exists( 'mb_stripos' ) ? 'mb_stripos' : 'stripos';
+
 		foreach ( $table_ids as $table_id ) {
 			// Load table, with table data, options, and visibility settings.
 			$table = TablePress::$model_table->load( $table_id, true, true );
@@ -1113,8 +1115,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 
 			foreach ( $search_terms as $search_term ) {
-				if ( ( $table['options']['print_name'] && false !== stripos( $table['name'], (string) $search_term ) )
-					|| ( $table['options']['print_description'] && false !== stripos( $table['description'], (string) $search_term ) ) ) {
+				if ( ( $table['options']['print_name'] && false !== $fn_stripos( $table['name'], (string) $search_term ) )
+					|| ( $table['options']['print_description'] && false !== $fn_stripos( $table['description'], (string) $search_term ) ) ) {
 					// Found the search term in the name or description (and they are shown).
 					$query_result[ $search_term ][] = $table_id; // Add table ID to result list.
 					// No need to continue searching this search term in this table.
@@ -1133,7 +1135,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 							continue;
 						}
 						// @todo Cells are not evaluated here, so math formulas are searched.
-						if ( false !== stripos( $table_cell, (string) $search_term ) ) {
+						if ( false !== $fn_stripos( $table_cell, (string) $search_term ) ) {
 							// Found the search term in the cell content.
 							$query_result[ $search_term ][] = $table_id; // Add table ID to result list
 							// No need to continue searching this search term in this table.

@@ -530,14 +530,16 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 			return false;
 		}
 
+		$fn_stripos = function_exists( 'mb_stripos' ) ? 'mb_stripos' : 'stripos';
+
 		// Search from easy to hard, so that "expensive" code maybe doesn't have to run.
-		if ( false !== stripos( $item['id'], (string) $term )
-		|| false !== stripos( $item['name'], (string) $term )
-		|| false !== stripos( $item['description'], (string) $term )
-		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), (string) $term )
-		|| false !== stripos( TablePress::get_user_display_name( $item['options']['last_editor'] ), (string) $term )
-		|| false !== stripos( TablePress::format_datetime( $item['last_modified'] ), (string) $term )
-		|| false !== stripos( wp_json_encode( $item['data'], TABLEPRESS_JSON_OPTIONS ), (string) $json_encoded_term ) ) { // @phpstan-ignore argument.type
+		if ( false !== $fn_stripos( $item['id'], (string) $term )
+		|| false !== $fn_stripos( $item['name'], (string) $term )
+		|| false !== $fn_stripos( $item['description'], (string) $term )
+		|| false !== $fn_stripos( TablePress::get_user_display_name( $item['author'] ), (string) $term )
+		|| false !== $fn_stripos( TablePress::get_user_display_name( $item['options']['last_editor'] ), (string) $term )
+		|| false !== $fn_stripos( TablePress::format_datetime( $item['last_modified'] ), (string) $term )
+		|| false !== $fn_stripos( wp_json_encode( $item['data'], TABLEPRESS_JSON_OPTIONS ), (string) $json_encoded_term ) ) { // @phpstan-ignore argument.type
 			return true;
 		}
 

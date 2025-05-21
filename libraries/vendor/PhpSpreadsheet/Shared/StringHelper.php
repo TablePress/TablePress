@@ -656,7 +656,7 @@ class StringHelper
 		if ($convertBool && is_bool($value)) {
 			return $value ? Calculation::getTRUE() : Calculation::getFALSE();
 		}
-		if ($value === null || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) {
+		if ($value === null || is_scalar($value) || is_object($value) && method_exists($value, '__toString')) {
 			return (string) $value;
 		}
 

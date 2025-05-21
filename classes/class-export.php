@@ -170,8 +170,11 @@ class TablePress_Export {
 				'HYPERLINK(',
 				'WEBSERVICE(',
 			);
+
+			$fn_stripos = function_exists( 'mb_stripos' ) ? 'mb_stripos' : 'stripos';
+
 			foreach ( $functions_to_escape as $function ) {
-				if ( false !== stripos( $cell_content, $function ) ) {
+				if ( false !== $fn_stripos( $cell_content, $function ) ) {
 					$cell_content = "'" . $cell_content; // Prepend a ' to indicate that the cell format is a text string.
 					break;
 				}

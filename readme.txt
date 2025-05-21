@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,14 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.1.3 (May 22, 2025) =
+
+* **Security fix**: Authenticated Stored XSS. Thanks to Asaf Mozes and the Wordfence team for following responsible disclosure policies when reporting this issue!
+* Enhancement: Improve handling of multi-byte strings with special characters from non-Latin alphabets.
+* “Automatic Periodic Table Import“ module: Prevent tables from losing their options by always loading other modules during an automatic import. (TablePress Max only.)
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Updated external libraries to benefit from enhancements and bug fixes.
+
 = Version 3.1.2 (April 29, 2025) =
 
 * “Responsive Tables“ module: Don’t require the “Search/Filtering“ feature to be activated in order to enable the “Collapse“ or “Modal“ modes. (TablePress Pro and Max only.)
@@ -165,8 +173,8 @@ TablePress 3.1 is a major feature, stability, maintenance, compatibility, and se
 
 == Upgrade Notice ==
 
-= 3.1.2 =
-This update is a stability, maintenance, and compatibility release. Updating is highly recommended.
+= 3.1.3 =
+This update is a security and maintenance release. Updating is highly recommended!
 
 = 3.1 =
 This update is a major feature, stability, maintenance, and compatibility release. Updating is highly recommended!

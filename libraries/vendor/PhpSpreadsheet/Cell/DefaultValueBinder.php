@@ -27,7 +27,7 @@ class DefaultValueBinder implements IValueBinder
 			// No need to do anything
 		} elseif ($value instanceof DateTimeInterface) {
 			$value = $value->format('Y-m-d H:i:s');
-		} elseif ((is_object($value) && method_exists($value, '__toString'))) {
+		} elseif (is_object($value) && method_exists($value, '__toString')) {
 			$value = (string) $value;
 		} else {
 			throw new SpreadsheetException('Unable to bind unstringable ' . gettype($value));
@@ -62,7 +62,7 @@ class DefaultValueBinder implements IValueBinder
 		if ($value instanceof RichText) {
 			return DataType::TYPE_INLINE;
 		}
-		if ((is_object($value) && method_exists($value, '__toString'))) {
+		if (is_object($value) && method_exists($value, '__toString')) {
 			$value = (string) $value;
 		}
 		if (!is_string($value)) {
