@@ -42,10 +42,8 @@ class ExcelArrayPseudoFunctions
 		return $result;
 	}
 
-	/**
-				 * @return mixed[]|string
-				 */
-				public static function anchorArray(string $cellReference, Cell $cell)
+	/** @return array<mixed>|string */
+	public static function anchorArray(string $cellReference, Cell $cell)
 	{
 		//$coordinate = $cell->getCoordinate();
 		$worksheet = $cell->getWorksheet();

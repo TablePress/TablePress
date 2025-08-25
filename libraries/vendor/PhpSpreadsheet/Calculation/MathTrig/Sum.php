@@ -29,6 +29,7 @@ class Sum
 			if (is_numeric($arg)) {
 				$returnValue += $arg;
 			} elseif (ErrorValue::isError($arg)) {
+				/** @var string $arg */
 				return $arg;
 			}
 		}
@@ -37,17 +38,18 @@ class Sum
 	}
 
 	/**
-				 * SUM, returning error for non-numeric strings. This is used by Excel SUM function.
-				 *
-				 * SUM computes the sum of all the values and cells referenced in the argument list.
-				 *
-				 * Excel Function:
-				 *        SUM(value1[,value2[, ...]])
-				 *
-				 * @param mixed ...$args Data values
-				 * @return mixed[]|float|int|string
-				 */
-				public static function sumErroringStrings(...$args)
+	 * SUM, returning error for non-numeric strings. This is used by Excel SUM function.
+	 *
+	 * SUM computes the sum of all the values and cells referenced in the argument list.
+	 *
+	 * Excel Function:
+	 *        SUM(value1[,value2[, ...]])
+	 *
+	 * @param mixed ...$args Data values
+	 *
+	 * @return array<mixed>|float|int|string
+	 */
+	public static function sumErroringStrings(...$args)
 	{
 		$returnValue = 0;
 		// Loop through the arguments
@@ -59,6 +61,7 @@ class Sum
 			} elseif (is_bool($arg)) {
 				$returnValue += (int) $arg;
 			} elseif (ErrorValue::isError($arg)) {
+				/** @var string $arg */
 				return $arg;
 			} elseif ($arg !== null && !Functions::isCellValue($k)) {
 				// ignore non-numerics from cell, but fail as literals (except null)
@@ -103,6 +106,7 @@ class Sum
 				if ((!is_numeric($val)) || (is_string($val))) {
 					$val = 0;
 				}
+				/** @var array<float|int> $wrkArray */
 				$wrkArray[$i] *= $val;
 			}
 		}

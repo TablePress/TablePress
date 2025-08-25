@@ -54,9 +54,7 @@ class Price
 		$yield = Functions::flattenSingleValue($yield);
 		$redemption = Functions::flattenSingleValue($redemption);
 		$frequency = Functions::flattenSingleValue($frequency);
-		$basis = ($basis === null)
-			? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD
-			: Functions::flattenSingleValue($basis);
+		$basis = Functions::flattenSingleValue($basis) ?? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD;
 
 		try {
 			$settlement = SecurityValidations::validateSettlementDate($settlement);
@@ -121,9 +119,7 @@ class Price
 		$maturity = Functions::flattenSingleValue($maturity);
 		$discount = Functions::flattenSingleValue($discount);
 		$redemption = Functions::flattenSingleValue($redemption);
-		$basis = ($basis === null)
-			? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD
-			: Functions::flattenSingleValue($basis);
+		$basis = Functions::flattenSingleValue($basis) ?? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD;
 
 		try {
 			$settlement = SecurityValidations::validateSettlementDate($settlement);
@@ -180,9 +176,7 @@ class Price
 		$issue = Functions::flattenSingleValue($issue);
 		$rate = Functions::flattenSingleValue($rate);
 		$yield = Functions::flattenSingleValue($yield);
-		$basis = ($basis === null)
-			? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD
-			: Functions::flattenSingleValue($basis);
+		$basis = Functions::flattenSingleValue($basis) ?? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD;
 
 		try {
 			$settlement = SecurityValidations::validateSettlementDate($settlement);
@@ -256,9 +250,7 @@ class Price
 		$maturity = Functions::flattenSingleValue($maturity);
 		$investment = Functions::flattenSingleValue($investment);
 		$discount = Functions::flattenSingleValue($discount);
-		$basis = ($basis === null)
-			? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD
-			: Functions::flattenSingleValue($basis);
+		$basis = Functions::flattenSingleValue($basis) ?? FinancialConstants::BASIS_DAYS_PER_YEAR_NASD;
 
 		try {
 			$settlement = SecurityValidations::validateSettlementDate($settlement);

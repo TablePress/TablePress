@@ -7,7 +7,7 @@ class CalculationBase
 	/**
 	 * Get a list of all implemented functions as an array of function objects.
 	 *
-	 * return array<string, array<string, mixed>>
+	 * @return array<string, array{category: string, functionCall: string|string[], argumentCount: string, passCellReference?: bool, passByReference?: bool[], custom?: bool}>
 	 */
 	public static function getFunctions(): array
 	{
@@ -25,16 +25,33 @@ class CalculationBase
 	}
 
 	/**
-	 * @param array<string, array<string, mixed>> $value
+	 * @param array{category: string, functionCall: string|string[], argumentCount: string, passCellReference?: bool, passByReference?: bool[], custom?: bool} $value
 	 */
 	public static function addFunction(string $key, array $value): bool
 	{
 		$key = strtoupper($key);
-		if (array_key_exists($key, FunctionArray::$phpSpreadsheetFunctions)) {
+		if (
+			array_key_exists($key, FunctionArray::$phpSpreadsheetFunctions)
+			&& !self::isDummy($key)
+		) {
 			return false;
 		}
 		$value['custom'] = true;
 		FunctionArray::$phpSpreadsheetFunctions[$key] = $value;
+
+		return true;
+	}
+
+	private static function isDummy(string $key): bool
+	{
+		// key is already known to exist
+		$functionCall = FunctionArray::$phpSpreadsheetFunctions[$key]['functionCall'] ?? null;
+		if (!is_array($functionCall)) {
+			return false;
+		}
+		if (($functionCall[1] ?? '') !== 'DUMMY') {
+			return false;
+		}
 
 		return true;
 	}

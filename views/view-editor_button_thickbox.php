@@ -70,7 +70,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 		wp_print_styles( 'colors' );
 		wp_print_scripts( 'jquery-core' );
 		?>
-<title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
+<title><?php /* translators: %1$s: Page title, %2$s: Plugin name */ printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
 <style>
 /* Account for .wp-toolbar. */
 html {
@@ -115,7 +115,7 @@ html {
 </head>
 <body class="wp-admin wp-core-ui js iframe<?php echo is_rtl() ? ' rtl' : ''; ?>">
 <div id="tablepress-page" class="wrap">
-<h1><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h1>
+<h1><?php /* translators: %1$s: Page title, %2$s: Plugin name */ printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h1>
 <div id="poststuff">
 <p><?php _e( 'This is a list of your tables.', 'tablepress' ); ?> <?php _e( 'You may insert a table into a post or page here.', 'tablepress' ); ?></p>
 <p><?php printf( __( 'Click the “%1$s” button for the desired table to automatically insert its Shortcode into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ) ); ?></p>

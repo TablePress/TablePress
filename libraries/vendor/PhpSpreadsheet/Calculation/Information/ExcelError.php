@@ -39,12 +39,13 @@ class ExcelError
 	}
 
 	/**
-				 * ERROR_TYPE.
-				 *
-				 * @param mixed $value Value to check
-				 * @return mixed[]|int|string
-				 */
-				public static function type($value = '')
+	 * ERROR_TYPE.
+	 *
+	 * @param mixed $value Value to check
+	 *
+	 * @return array<mixed>|int|string
+	 */
+	public static function type($value = '')
 	{
 		if (is_array($value)) {
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $value);

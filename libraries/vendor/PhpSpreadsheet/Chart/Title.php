@@ -35,10 +35,11 @@ class Title
 	private ?Font $font = null;
 
 	/**
-				 * Create a new Title.
-				 * @param mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string $caption
-				 */
-				public function __construct($caption = '', ?Layout $layout = null, bool $overlay = false)
+	 * Create a new Title.
+	 *
+	 * @param array<RichText|string>|RichText|string $caption
+	 */
+	public function __construct($caption = '', ?Layout $layout = null, bool $overlay = false)
 	{
 		$this->caption = $caption;
 		$this->layout = $layout;
@@ -46,10 +47,11 @@ class Title
 	}
 
 	/**
-				 * Get caption.
-				 * @return mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string
-				 */
-				public function getCaption()
+	 * Get caption.
+	 *
+	 * @return array<RichText|string>|RichText|string
+	 */
+	public function getCaption()
 	{
 		return $this->caption;
 	}
@@ -84,12 +86,13 @@ class Title
 	}
 
 	/**
-				 * Set caption.
-				 *
-				 * @return $this
-				 * @param mixed[]|\TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText|string $caption
-				 */
-				public function setCaption($caption)
+	 * Set caption.
+	 *
+	 * @param array<RichText|string>|RichText|string $caption
+	 *
+	 * @return $this
+	 */
+	public function setCaption($caption)
 	{
 		$this->caption = $caption;
 
@@ -162,11 +165,11 @@ class Title
 		$this->layout = ($this->layout === null) ? null : clone $this->layout;
 		$this->font = ($this->font === null) ? null : clone $this->font;
 		if (is_array($this->caption)) {
-			$captions = $this->caption;
-			$this->caption = [];
-			foreach ($captions as $caption) {
-				$this->caption[] = is_object($caption) ? (clone $caption) : $caption;
+			$captions = [];
+			foreach ($this->caption as $caption) {
+				$captions[] = is_object($caption) ? (clone $caption) : $caption;
 			}
+			$this->caption = $captions;
 		} else {
 			$this->caption = is_object($this->caption) ? (clone $this->caption) : $this->caption;
 		}

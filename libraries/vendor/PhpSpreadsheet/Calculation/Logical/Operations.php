@@ -106,7 +106,7 @@ class Operations
 	 * @param mixed $logical A value or expression that can be evaluated to TRUE or FALSE
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool|string the boolean inverse of the argument
+	 * @return array<mixed>|bool|string the boolean inverse of the argument
 	 *         If an array of values is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
@@ -131,6 +131,8 @@ class Operations
 	}
 
 	/**
+				 * @param mixed[] $args
+				 * @param callable(int, int): bool $func
 				 * @return bool|string
 				 */
 				private static function countTrueValues(array $args, callable $func)

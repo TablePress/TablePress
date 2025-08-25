@@ -23,7 +23,7 @@ class ChiSquared
 	 * @param mixed $degrees Integer degrees of freedom
 	 *                      Or can be an array of values
 	 *
-	 * @return array|float|int|string If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|float|int|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function distributionRightTail($value, $degrees)
@@ -65,7 +65,7 @@ class ChiSquared
 	 * @param mixed $cumulative Boolean value indicating if we want the cdf (true) or the pdf (false)
 	 *                      Or can be an array of values
 	 *
-	 * @return array|float|int|string If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|float|int|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function distributionLeftTail($value, $degrees, $cumulative)
@@ -113,7 +113,7 @@ class ChiSquared
 	 * @param mixed $degrees Integer degrees of freedom
 	 *                      Or can be an array of values
 	 *
-	 * @return array|float|string If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|float|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function inverseRightTail($probability, $degrees)
@@ -133,7 +133,7 @@ class ChiSquared
 			return ExcelError::NAN();
 		}
 
-		$callback = fn ($value): float => 1 - (Gamma::incompleteGamma($degrees / 2, $value / 2)
+		$callback = fn (float $value): float => 1 - (Gamma::incompleteGamma($degrees / 2, $value / 2)
 					/ Gamma::gammaValue($degrees / 2));
 
 		$newtonRaphson = new NewtonRaphson($callback);
@@ -151,7 +151,7 @@ class ChiSquared
 	 * @param mixed $degrees Integer degrees of freedom
 	 *                      Or can be an array of values
 	 *
-	 * @return array|float|string If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|float|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function inverseLeftTail($probability, $degrees)
@@ -181,14 +181,16 @@ class ChiSquared
 				 *      (of observed and expected frequencies), are likely to be simply due to sampling error,
 				 *      or if they are likely to be real.
 				 *
-				 * @param array $actual an array of observed frequencies
-				 * @param array $expected an array of expected frequencies
+				 * @param float[] $actual an array of observed frequencies
+				 * @param float[] $expected an array of expected frequencies
 				 * @return float|string
 				 */
 				public static function test($actual, $expected)
 	{
 		$rows = count($actual);
+		/** @var float[] */
 		$actual = Functions::flattenArray($actual);
+		/** @var float[] */
 		$expected = Functions::flattenArray($expected);
 		$columns = intdiv(count($actual), $rows);
 

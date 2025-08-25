@@ -5,12 +5,15 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xls;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ListFunctions extends Xls
 {
 	/**
 	 * Reads names of the worksheets from a file, without parsing the whole file to a PhpSpreadsheet object.
+	 *
+	 * @return string[]
 	 */
 	protected function listWorksheetNames2(string $filename, Xls $xls): array
 	{
@@ -66,6 +69,8 @@ class ListFunctions extends Xls
 
 	/**
 	 * Return worksheet info (Name, Last Column Letter, Last Column Index, Total Rows, Total Columns).
+	 *
+	 * @return array<int, array{worksheetName: string, lastColumnLetter: string, lastColumnIndex: int, totalRows: int, totalColumns: int, sheetState: string}>
 	 */
 	protected function listWorksheetInfo2(string $filename, Xls $xls): array
 	{
@@ -120,12 +125,12 @@ class ListFunctions extends Xls
 			}
 
 			$tmpInfo = [];
-			$tmpInfo['worksheetName'] = $sheet['name'];
+			$tmpInfo['worksheetName'] = StringHelper::convertToString($sheet['name']);
 			$tmpInfo['lastColumnLetter'] = 'A';
 			$tmpInfo['lastColumnIndex'] = 0;
 			$tmpInfo['totalRows'] = 0;
 			$tmpInfo['totalColumns'] = 0;
-			$tmpInfo['sheetState'] = $sheet['sheetState'];
+			$tmpInfo['sheetState'] = StringHelper::convertToString($sheet['sheetState']);
 
 			$xls->pos = $sheet['offset'];
 

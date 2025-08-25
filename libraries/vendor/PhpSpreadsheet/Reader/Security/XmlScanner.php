@@ -173,6 +173,7 @@ class XmlScanner
 		if ($this->callback !== null) {
 			$xml = call_user_func($this->callback, $xml);
 		}
+		/** @var string $xml */
 
 		return $xml;
 	}

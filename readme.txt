@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 3.1.3
+Stable tag: 3.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,8 +53,8 @@ The easiest way to install TablePress is via your WordPress Dashboard:
 Manual installation works just as for other WordPress plugins:
 
 1. [Download the TablePress ZIP file](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip).
-1. Go to the “Plugins“ screen on your site and upload it by clicking “Add New” → “Upload Plugin“.
-1. Or, extract the ZIP file and move the folder “tablepress“ to the “wp-content/plugins/“ directory of your WordPress installation, e.g. via FTP.
+1. Go to the “Plugins” screen on your site and upload it by clicking “Add New” → “Upload Plugin”.
+1. Or, extract the ZIP file and move the folder “tablepress” to the “wp-content/plugins/” directory of your WordPress installation, e.g. via FTP.
 1. Activate "TablePress" on the "Plugins" screen of your WordPress Dashboard.
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
 1. To insert a table into a post or page, add a "TablePress table" block in the block editor or a widget in the Elementor page builder and select the desired table or use Shortcodes with other page builders.
@@ -108,59 +108,38 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 3.1.3 (May 22, 2025) =
+= Version 3.2 (August 26, 2025) =
 
-* **Security fix**: Authenticated Stored XSS. Thanks to Asaf Mozes and the Wordfence team for following responsible disclosure policies when reporting this issue!
-* Enhancement: Improve handling of multi-byte strings with special characters from non-Latin alphabets.
-* “Automatic Periodic Table Import“ module: Prevent tables from losing their options by always loading other modules during an automatic import. (TablePress Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-
-= Version 3.1.2 (April 29, 2025) =
-
-* “Responsive Tables“ module: Don’t require the “Search/Filtering“ feature to be activated in order to enable the “Collapse“ or “Modal“ modes. (TablePress Pro and Max only.)
-* “Individual Column Filtering“ module: Fix the table column widths when the “Fixed Header“ or “Fixed Columns“ features are used. (TablePress Pro and Max only.)
-* “Automatic Periodic Table Import“ module: Limit the number of revisions for automatically updated tables, to prevent database size and PHP memory issues. (TablePress Max only.)
-* “Advanced Pagination Settings“ module: Prevents problems when sites use HTML code minification. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-
-= Version 3.1.1 (April 1, 2025) =
-
-* The CSS code for styling individual table rows will now be applied again.
-* Users of the Elementor page builder can now properly delete a “TablePress table“ widget again.
-
-= Version 3.1 (March 25, 2025) =
-
-TablePress 3.1 is a major feature, stability, maintenance, compatibility, and security update. Here are the highlights:
+TablePress 3.2 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
 
 **Improved Frontend Table Performance**
 
-* Users of the Elementor page builder plugin can now use a dedicated “TablePress table“ widget that makes embedding tables even easier!
-* Showing tables in tabs or accordions will no longer break their size or add visual glitches!
 * Tables and their interactivity features are more accessible for visitors with disabilities and users of assistive technologies, with improved labelling and easier-to-use keyboard navigation!
-
-**New Premium Feature Modules**
-
-* **Email Notifications**
-  * Get email notifications when certain actions are performed on tables!
 
 **Many New Features and Enhancements for Existing Premium Features**
 
-* **Responsive Tables**
-  * The styling and highlighting of rows and child rows when using the “Collapse“ mode has been improved to make it even easier to see which data belongs together!
+* **Fixed Header**
+  * When combining the Fixed Header Row with Horizontal Scrolling, the header will scroll properly as well.
+* **Server-side Processing**
+  * It is now possible to use the “Column Filter Dropdowns”, “Individual Column Filtering”, and “Inverted Filtering” feature modules while benefitting from the fast loading of large tables from the server!
+* **Advanced Access Rights**
+  * The user interface now allows filtering for users and tables, to quickly find the right combination!
+  * Only user roles that are allowed to edit tables will be shown, making the overview much more lightweight!
+* **Index or Counter Column**
+  * The rendering performance has been improved for large tables.
+* **Row Order and Column Order**
+  * The “Random” option is now shown in the block’s feature section’s dropdown!
 * **Advanced Pagination Settings**
-  * Use a “Show more“ button instead of classical pagination for improved visitor engagement!
+  * The “Show more” button shows better scrolling behavior when using it with long tables!
 * **Column Filter Dropdowns**
-  * You can now turn on classical single-selection dropdown controls for a more solid user experience!
-* **Row Filtering**
-  * A new syntax that understands complex logic expressions gives Row Filtering superpowers!
-* **Row Highlighting and Cell Highlighting**
-  * Highlighting cells and rows is now possible with complex logic and math expressions, for even more control!
+  * The filtering dropdowns can now be used with Server-side Processing, making it a great choice for large tables!
+* **Individual Column Filtering**
+  * Besides text input fields, the dropdowns are now also supported when using Server-side Processing!
+* **Inverted Filtering**
+  * Large tables now benefit from speed improvements, when using Server-side Processing and Inverted Filtering!
 
 **Behind the scenes**
 
-* **Security fix**: Authenticated Stored XSS (CVE-2025-2685). Thanks to SavPhill and the Wordfence team for following responsible disclosure policies when reporting this issue!
 * Several minor bugs and inconsistencies have been fixed and improved!
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Updated external libraries to benefit from enhancements and bug fixes.
@@ -173,8 +152,5 @@ TablePress 3.1 is a major feature, stability, maintenance, compatibility, and se
 
 == Upgrade Notice ==
 
-= 3.1.3 =
-This update is a security and maintenance release. Updating is highly recommended!
-
-= 3.1 =
-This update is a major feature, stability, maintenance, and compatibility release. Updating is highly recommended!
+= 3.2 =
+This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

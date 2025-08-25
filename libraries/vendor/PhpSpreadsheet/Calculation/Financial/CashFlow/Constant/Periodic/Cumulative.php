@@ -42,7 +42,7 @@ class Cumulative
 		$presentValue = Functions::flattenSingleValue($presentValue);
 		$start = Functions::flattenSingleValue($start);
 		$end = Functions::flattenSingleValue($end);
-		$type = ($type === null) ? FinancialConstants::PAYMENT_END_OF_PERIOD : Functions::flattenSingleValue($type);
+		$type = Functions::flattenSingleValue($type) ?? FinancialConstants::PAYMENT_END_OF_PERIOD;
 
 		try {
 			$rate = CashFlowValidations::validateRate($rate);
@@ -106,7 +106,7 @@ class Cumulative
 		$presentValue = Functions::flattenSingleValue($presentValue);
 		$start = Functions::flattenSingleValue($start);
 		$end = Functions::flattenSingleValue($end);
-		$type = ($type === null) ? FinancialConstants::PAYMENT_END_OF_PERIOD : Functions::flattenSingleValue($type);
+		$type = Functions::flattenSingleValue($type) ?? FinancialConstants::PAYMENT_END_OF_PERIOD;
 
 		try {
 			$rate = CashFlowValidations::validateRate($rate);

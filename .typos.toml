@@ -15,4 +15,3 @@ extend-exclude = [
 [default.extend-words]
 BA = "BA"
 pn = "pn"
-Sav = "Sav" # Can be removed in TablePress 3.2

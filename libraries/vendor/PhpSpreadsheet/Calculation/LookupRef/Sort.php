@@ -36,6 +36,7 @@ class Sort extends LookupRefValidations
 			return $sortArray;
 		}
 
+		/** @var mixed[][] */
 		$sortArray = self::enumerateArrayKeys($sortArray);
 
 		$byColumn = (bool) $byColumn;
@@ -53,10 +54,13 @@ class Sort extends LookupRefValidations
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-		/** @var array<int> $sortOrder */
 
 		// We want a simple, enumrated array of arrays where we can reference column by its index number.
-		$sortArray = array_values(array_map('array_values', $sortArray));
+		/** @var callable(mixed): mixed */
+		$temp = 'array_values';
+		/** @var array<int> $sortOrder */
+		$sortArray = array_values(array_map($temp, $sortArray));
+		/** @var int[] $sortIndex */
 
 		return ($byColumn === true)
 			? self::sortByColumn($sortArray, $sortIndex, $sortOrder)
@@ -105,6 +109,11 @@ class Sort extends LookupRefValidations
 		return self::processSortBy($sortArray, $sortBy, $sortOrder);
 	}
 
+	/**
+	 * @param mixed[] $sortArray
+	 *
+	 * @return mixed[]
+	 */
 	private static function enumerateArrayKeys(array $sortArray): array
 	{
 		array_walk(
@@ -138,9 +147,8 @@ class Sort extends LookupRefValidations
 		$sortOrder = self::validateSortOrder($sortOrder);
 	}
 
-	/**
-				 * @param mixed $sortVector
-				 */
+	/** @return mixed[]
+				 * @param mixed $sortVector */
 				private static function validateSortVector($sortVector, int $sortArraySize): array
 	{
 		if (!is_array($sortVector)) {
@@ -169,9 +177,8 @@ class Sort extends LookupRefValidations
 		return $sortOrder;
 	}
 
-	/**
-				 * @param mixed $sortOrder
-				 */
+	/** @param mixed[] $sortIndex
+				 * @param mixed $sortOrder */
 				private static function validateArrayArgumentsForSort(array &$sortIndex, &$sortOrder, int $sortArraySize): void
 	{
 		// It doesn't matter if they're row or column vectors, it works either way
@@ -198,6 +205,11 @@ class Sort extends LookupRefValidations
 		}
 	}
 
+	/**
+	 * @param mixed[] $sortVector
+	 *
+	 * @return mixed[]
+	 */
 	private static function prepareSortVectorValues(array $sortVector): array
 	{
 		// Strings should be sorted case-insensitive; with booleans converted to locale-strings
@@ -216,14 +228,19 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
-	 * @param array[] $sortIndex
+	 * @param mixed[] $sortArray
+	 * @param mixed[] $sortIndex
 	 * @param int[] $sortOrder
+	 *
+	 * @return mixed[]
 	 */
 	private static function processSortBy(array $sortArray, array $sortIndex, array $sortOrder): array
 	{
 		$sortArguments = [];
+		/** @var mixed[] */
 		$sortData = [];
 		foreach ($sortIndex as $index => $sortValues) {
+			/** @var mixed[] $sortValues */
 			$sortData[] = $sortValues;
 			$sortArguments[] = self::prepareSortVectorValues($sortValues);
 			$sortArguments[] = $sortOrder[$index] === self::ORDER_ASCENDING ? SORT_ASC : SORT_DESC;
@@ -236,8 +253,11 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
+	 * @param mixed[] $sortArray
 	 * @param int[] $sortIndex
 	 * @param int[] $sortOrder
+	 *
+	 * @return mixed[]
 	 */
 	private static function sortByRow(array $sortArray, array $sortIndex, array $sortOrder): array
 	{
@@ -247,8 +267,11 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
+	 * @param mixed[] $sortArray
 	 * @param int[] $sortIndex
 	 * @param int[] $sortOrder
+	 *
+	 * @return mixed[]
 	 */
 	private static function sortByColumn(array $sortArray, array $sortIndex, array $sortOrder): array
 	{
@@ -259,8 +282,11 @@ class Sort extends LookupRefValidations
 	}
 
 	/**
+	 * @param mixed[] $sortArray
 	 * @param int[] $sortIndex
 	 * @param int[] $sortOrder
+	 *
+	 * @return mixed[]
 	 */
 	private static function buildVectorForSort(array $sortArray, array $sortIndex, array $sortOrder): array
 	{
@@ -279,6 +305,12 @@ class Sort extends LookupRefValidations
 		return $sortData;
 	}
 
+	/**
+	 * @param mixed[] $sortData
+	 * @param mixed[] $sortArguments
+	 *
+	 * @return mixed[]
+	 */
 	private static function executeVectorSortQuery(array $sortData, array $sortArguments): array
 	{
 		$sortData = Matrix::transpose($sortData);
@@ -303,6 +335,12 @@ class Sort extends LookupRefValidations
 		return $sortedData;
 	}
 
+	/**
+	 * @param mixed[] $sortArray
+	 * @param mixed[] $sortVector
+	 *
+	 * @return mixed[]
+	 */
 	private static function sortLookupArrayFromVector(array $sortArray, array $sortVector): array
 	{
 		// Building a new array in the correct (sorted) order works; but may be memory heavy for larger arrays

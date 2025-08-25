@@ -120,7 +120,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		// Remove filter that adds `rel="noopener" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
 		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
 		if ( $has_targeted_link_rel_filters ) {
-			wp_remove_targeted_link_rel_filters();
+			wp_remove_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_remove_targeted_link_rel_filtersFound
 		}
 
 		$post_id = wp_insert_post( $post, true );
@@ -132,7 +132,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			kses_init_filters();
 		}
 		if ( $has_targeted_link_rel_filters ) {
-			wp_init_targeted_link_rel_filters();
+			wp_init_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_init_targeted_link_rel_filtersFound
 		}
 
 		// In rare cases, `wp_insert_post()` returns 0 as the post ID, when an error happens, so it's converted to a WP_Error here.
@@ -187,7 +187,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		// Remove filter that adds `rel="noopener" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
 		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
 		if ( $has_targeted_link_rel_filters ) {
-			wp_remove_targeted_link_rel_filters();
+			wp_remove_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_remove_targeted_link_rel_filtersFound
 		}
 
 		$post_id = wp_update_post( $post, true );
@@ -199,7 +199,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			kses_init_filters();
 		}
 		if ( $has_targeted_link_rel_filters ) {
-			wp_init_targeted_link_rel_filters();
+			wp_init_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_init_targeted_link_rel_filtersFound
 		}
 
 		return $post_id;

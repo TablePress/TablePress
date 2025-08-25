@@ -111,6 +111,8 @@ abstract class Supervisor implements IComparable
 	 * Available to anything which extends this class:
 	 * Alignment, Border, Borders, Color, Fill, Font,
 	 * NumberFormat, Protection, and Style.
+	 *
+	 * @return mixed[]
 	 */
 	final public function exportArray(): array
 	{
@@ -124,6 +126,8 @@ abstract class Supervisor implements IComparable
 	 * This method invokes exportArray2 with the names and values
 	 * of all properties to be included in output array,
 	 * returning that array to exportArray, then to caller.
+	 *
+	 * @return mixed[]
 	 */
 	abstract protected function exportArray1(): array;
 
@@ -134,6 +138,8 @@ abstract class Supervisor implements IComparable
 				 * The parameter objOrValue is either a primitive type,
 				 * which is the value added to the array,
 				 * or a Style object to be recursively added via exportArray.
+				 *
+				 * @param mixed[] $exportedArray
 				 * @param mixed $objOrValue
 				 */
 				final protected function exportArray2(array &$exportedArray, string $index, $objOrValue): void
@@ -154,6 +160,10 @@ abstract class Supervisor implements IComparable
 
 	/**
 	 * Build style array from subcomponents.
+	 *
+	 * @param mixed[] $array
+	 *
+	 * @return mixed[]
 	 */
 	abstract public function getStyleArray(array $array): array;
 }

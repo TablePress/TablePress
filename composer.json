@@ -55,7 +55,7 @@
 		"php-parallel-lint/php-console-highlighter": "^1.0",
 		"phpstan/phpstan": "^2.1",
 		"szepeviktor/phpstan-wordpress": "^2.0",
-		"johnbillion/wp-compat": "^1.1"
+		"johnbillion/wp-compat": "^1.3"
 	},
 	"config": {
 		"allow-plugins": {
@@ -92,7 +92,7 @@
 			"rm -rf ./libraries/vendor ./vendor",
 			"composer clear-cache",
 			"sed -i '' '/\\\"require-dev\\\"/,/}/ d; /^$/d' composer.json",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 4.2.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 5.0.0\" --no-update",
 			"composer update --no-dev",
 			"echo '-> Install Strauss, convert namespaces, and move folder'",
 			"mkdir bin",

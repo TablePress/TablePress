@@ -78,6 +78,7 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '6.8'
           - '6.7'
           - '6.6'
           - '6.5'
@@ -98,7 +99,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a # v2.33.0
+        uses: shivammathur/setup-php@20529878ed81ef8e78ddf08b480401e6101a850f # v2.35.3
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -110,7 +111,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -124,12 +125,12 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           path: ${{ env.PLUGIN_DIR }}
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@a2636af0004d1c0499ffca16ac0b4cc94df70565 # v3.1.0
+        uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3.1.1
         with:
           composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' || matrix.php == '8.5' ) && ' --ignore-platform-reqs' || '' }}"
 
@@ -143,6 +144,9 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
+        continue-on-error: ${{ matrix.php == '8.5' }} # PhpSpreadsheet currently fails with newly introduces deprecations.
+        # @todo Replace the previous line with the following line, once PhpSpreadsheet doesn't show deprecations anymore.
+        # continue-on-error: ${{ matrix.php == '8.5' && ( matrix.wp == '6.2' || matrix.wp == '6.3' || matrix.wp == '6.4' || matrix.wp == '6.5' || matrix.wp == '6.6' || matrix.wp == '6.7' || matrix.wp == '6.8' ) }} # WP before 6.9 runs into non-canonical type cast deprecations.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

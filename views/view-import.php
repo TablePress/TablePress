@@ -140,7 +140,10 @@ class TablePress_Import_View extends TablePress_View {
 			<p style="font-size:14px;">
 				<span class="dashicons dashicons-info-outline"></span>
 				<strong><?php _e( 'Pro Tip:', 'tablepress' ); ?></strong>
-				<?php printf( __( 'You can automate the import of tables from URLs or server files with the <a href="%1$s">“%2$s” premium feature</a>!', 'tablepress' ), 'https://tablepress.org/modules/automatic-periodic-table-import/?utm_source=plugin&utm_medium=textlink&utm_content=import-screen', __( 'Automatic Periodic Table Import', 'tablepress' ) ); ?>
+				<?php
+					/* translators: %1$s: URL to TablePress website, %2$s: Module name */
+					printf( __( 'You can automate the import of tables from URLs or server files with the <a href="%1$s">“%2$s” premium feature</a>!', 'tablepress' ), 'https://tablepress.org/modules/automatic-periodic-table-import/?utm_source=plugin&utm_medium=textlink&utm_content=import-screen', __( 'Automatic Periodic Table Import', 'tablepress' ) );
+				?>
 			</p>
 			<?php
 		endif;

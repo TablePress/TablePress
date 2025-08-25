@@ -809,7 +809,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				'datatables_custom_commands'  => '',
 			),
 			'visibility'    => array(
-				'rows'    => array( 1 ), // One visbile row.
+				'rows'    => array( 1 ), // One visible row.
 				'columns' => array( 1 ), // One visible column.
 			),
 		);

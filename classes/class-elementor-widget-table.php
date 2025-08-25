@@ -179,6 +179,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 			if ( '' === trim( $table['name'] ) ) {
 				$table['name'] = __( '(no name)', 'tablepress' );
 			}
+			/* translators: %1$s: Table ID, %2$s: Table name */
 			$tables[ $table_id ] = esc_html( sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), $table_id, $table['name'] ) );
 		}
 
@@ -198,7 +199,11 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 				'show_label'  => false,
 				'label_block' => true,
 				'description' => esc_html__( 'Select the TablePress table that you want to embed.', 'tablepress' )
-								. ( current_user_can( 'tablepress_list_tables' ) ? sprintf( ' <a href="%1$s" target="_blank">%2$s</a>', esc_url( \TablePress::url( array( 'action' => 'list' ) ) ), esc_html__( 'Manage your tables.', 'tablepress' ) ) : '' ),
+								. ( current_user_can( 'tablepress_list_tables' ) ?
+									/* translators: %1$s: URL to tables list, %2$s: Link text */
+									sprintf( ' <a href="%1$s" target="_blank">%2$s</a>', esc_url( \TablePress::url( array( 'action' => 'list' ) ) ), esc_html__( 'Manage your tables.', 'tablepress' ) )
+									: ''
+								),
 				'type'        => \Elementor\Controls_Manager::SELECT2, // @phpstan-ignore classConstant.notFound (Elementor constants are not in the stubs.)
 				'ai'          => array( 'active' => false ),
 				'options'     => $tables,

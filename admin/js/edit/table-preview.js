@@ -34,6 +34,7 @@ const Section = ( { screenData, updateScreenData, tableMeta } ) => {
 		tableName = __( '(no name)', 'tablepress' );
 	}
 
+	/* translators: %1$s: Table name, %2$s: Table ID */
 	const title = sprintf( __( 'Preview of table “%1$s” (ID %2$s)', 'tablepress' ), tableName, tableMeta.id );
 
 	return (

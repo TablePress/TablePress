@@ -30,7 +30,7 @@ class ExcelMatch
 	 * @param mixed $matchType The number -1, 0, or 1. -1 means above, 0 means exact match, 1 means below.
 	 *                         If match_type is 1 or -1, the list has to be ordered.
 	 *
-	 * @return array|float|int|string The relative position of the found item
+	 * @return array<mixed>|float|int|string The relative position of the found item
 	 */
 	public static function MATCH($lookupValue, $lookupArray, $matchType = self::MATCHTYPE_LARGEST_VALUE)
 	{
@@ -83,10 +83,9 @@ class ExcelMatch
 		return ExcelError::NA();
 	}
 
-	/**
+	/** @param mixed[] $lookupArray
 				 * @return int|string|null
-				 * @param mixed $lookupValue
-				 */
+				 * @param mixed $lookupValue */
 				private static function matchFirstValue(array $lookupArray, $lookupValue)
 	{
 		if (is_string($lookupValue)) {
@@ -124,6 +123,8 @@ class ExcelMatch
 	}
 
 	/**
+				 * @param mixed[] $lookupArray
+				 * @param mixed[] $keySet
 				 * @param mixed $lookupValue
 				 * @return mixed
 				 */
@@ -161,10 +162,9 @@ class ExcelMatch
 		return null;
 	}
 
-	/**
+	/** @param mixed[] $lookupArray
 				 * @return int|string|null
-				 * @param mixed $lookupValue
-				 */
+				 * @param mixed $lookupValue */
 				private static function matchSmallestValue(array $lookupArray, $lookupValue)
 	{
 		$valueKey = null;
@@ -239,6 +239,7 @@ class ExcelMatch
 		return self::MATCHTYPE_FIRST_VALUE;
 	}
 
+	/** @param mixed[] $lookupArray */
 	private static function validateLookupArray(array $lookupArray): void
 	{
 		// Lookup_array should not be empty
@@ -249,6 +250,9 @@ class ExcelMatch
 	}
 
 	/**
+				 * @param mixed[] $lookupArray
+				 *
+				 * @return mixed[]
 				 * @param mixed $matchType
 				 */
 				private static function prepareLookupArray(array $lookupArray, $matchType): array

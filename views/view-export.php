@@ -90,7 +90,12 @@ class TablePress_Export_View extends TablePress_View {
 		$import_url = TablePress::url( array( 'action' => 'import' ) );
 		?>
 		<p><?php _e( 'No tables found.', 'tablepress' ); ?></p>
-		<p><?php printf( __( 'You should <a href="%1$s">add</a> or <a href="%2$s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url ); ?></p>
+		<p>
+			<?php
+			/* translators: %1$s: URL to add table page, %2$s: URL to import table page */
+			printf( __( 'You should <a href="%1$s">add</a> or <a href="%2$s">import</a> a table to get started!', 'tablepress' ), $add_url, $import_url );
+			?>
+		</p>
 		<?php
 	}
 

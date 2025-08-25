@@ -84,6 +84,8 @@ class ChooseRowsEtc
 	}
 
 	/**
+				 * @param mixed[] $array
+				 *
 				 * @return mixed[]|string
 				 * @param mixed $offset
 				 */
@@ -144,6 +146,8 @@ class ChooseRowsEtc
 	}
 
 	/**
+				 * @param mixed[] $array
+				 *
 				 * @return mixed[]|string
 				 * @param mixed $offset
 				 */

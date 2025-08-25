@@ -21,7 +21,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isBlank($value = null)
@@ -70,7 +70,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool|string If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isEven($value = null)
@@ -95,7 +95,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool|string If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool|string If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isOdd($value = null)
@@ -120,7 +120,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isNumber($value = null)
@@ -142,7 +142,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isLogical($value = null)
@@ -160,7 +160,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isText($value = null)
@@ -178,7 +178,7 @@ class Value
 	 * @param mixed $value Value to check
 	 *                      Or can be an array of values
 	 *
-	 * @return array|bool If an array of numbers is passed as an argument, then the returned result will also be an array
+	 * @return array<mixed>|bool If an array of numbers is passed as an argument, then the returned result will also be an array
 	 *            with the same dimensions
 	 */
 	public static function isNonText($value = null)
@@ -191,13 +191,14 @@ class Value
 	}
 
 	/**
-				 * ISFORMULA.
-				 *
-				 * @param mixed $cellReference The cell to check
-				 * @param ?Cell $cell The current cell (containing this formula)
-				 * @return mixed[]|bool|string
-				 */
-				public static function isFormula($cellReference = '', ?Cell $cell = null)
+	 * ISFORMULA.
+	 *
+	 * @param mixed $cellReference The cell to check
+	 * @param ?Cell $cell The current cell (containing this formula)
+	 *
+	 * @return array<mixed>|bool|string
+	 */
+	public static function isFormula($cellReference = '', ?Cell $cell = null)
 	{
 		if ($cell === null) {
 			return ExcelError::REF();

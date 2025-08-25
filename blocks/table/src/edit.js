@@ -36,6 +36,7 @@ import './editor.scss';
 const ComboboxControlOptions = Object.entries( tp.tables ).map( ( [ id, name ] ) => {
 	return {
 		value: id,
+		/* translators: %1$s: Table ID, %2$s: Table name */
 		label: sprintf( __( 'ID %1$s: “%2$s”', 'tablepress' ), id, name ),
 	};
 } );
@@ -79,6 +80,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 					/>
 				}
 				<div className="table-overlay">
+					{/* translators: %1$s: Table ID, %2$s: Table name */}
 					{ sprintf( __( 'TablePress table %1$s: “%2$s”', 'tablepress' ), attributes.id, tp.tables[ attributes.id ] ) }
 				</div>
 			</div>
@@ -87,6 +89,7 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 		let instructions = 0 < ComboboxControlOptions.length ? __( 'Select the TablePress table that you want to embed in the Settings sidebar.', 'tablepress' ) : __( 'There are no TablePress tables on this site yet.', 'tablepress' );
 		if ( attributes.id ) {
 			// Show an error message if a table could not be found (e.g. after a table was deleted). The tp.tables.hasOwnProperty( attributes.id ) check happens above.
+			/* translators: %1$s: Table ID */
 			instructions = sprintf( __( 'There is a problem: The TablePress table with the ID “%1$s” could not be found.', 'tablepress' ), attributes.id ) + ' ' + instructions;
 		}
 		blockMarkup = (

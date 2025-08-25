@@ -154,14 +154,21 @@ class TablePress_About_View extends TablePress_View {
 	public function postbox_author_license( array $data, array $box ): void {
 		?>
 	<p>
-		<?php printf( __( 'This plugin was written and developed by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'https://tobias.baethge.com/' ); ?>
+		<?php
+		/* translators: %s: Author's website URL */
+		printf( __( 'This plugin was written and developed by <a href="%s">Tobias Bäthge</a>.', 'tablepress' ), 'https://tobias.baethge.com/' );
+		?>
 		<?php _e( 'It is licensed as Free Software under GNU General Public License 2 (GPL 2).', 'tablepress' ); ?>
 	</p>
 	<p>
-		<?php printf( __( 'Please rate and review the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://wordpress.org/support/view/plugin-reviews/tablepress' ); ?>
+		<?php
+		/* translators: %s: WordPress Plugin Directory URL */
+		printf( __( 'Please rate and review the plugin in the <a href="%s">WordPress Plugin Directory</a>.', 'tablepress' ), 'https://wordpress.org/support/view/plugin-reviews/tablepress' );
+		?>
 	</p>
 		<?php
 		if ( tb_tp_fs()->is_free_plan() ) {
+			/* translators: %s: TablePress Premium website URL */
 			echo '<p><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=about-screen' ) . ' '
 			. __( 'The available Pro and Max plans offer user support and many exciting and helpful features for your tables.', 'tablepress' ) . '</strong></p>';
 		}

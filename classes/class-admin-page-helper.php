@@ -121,8 +121,10 @@ class TablePress_Admin_Page {
 			$content = '';
 		}
 
+		/* translators: %s: URL to TablePress website */
 		$content .= ' &bull; ' . sprintf( __( 'Thank you for using <a href="%s">TablePress</a>.', 'tablepress' ), 'https://tablepress.org/' );
 		if ( tb_tp_fs()->is_free_plan() ) {
+			/* translators: %s: URL to TablePress premium features */
 			$content .= ' ' . sprintf( __( 'Take a look at the <a href="%s">Premium features</a>!', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=admin-footer' );
 		}
 		return $content;

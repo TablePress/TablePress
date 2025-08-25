@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table;
 
 class TableStyle
@@ -213,6 +214,8 @@ class TableStyle
 
 	/**
 	 * Set this Style's Dxfs TableStyle.
+	 *
+	 * @param Style[] $dxfs
 	 */
 	public function setTableDxfsStyle(TableDxfsStyle $tableStyle, array $dxfs): self
 	{

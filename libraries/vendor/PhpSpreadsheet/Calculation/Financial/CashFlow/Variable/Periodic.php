@@ -118,6 +118,7 @@ class Periodic
 
 		$npvPos = $npvNeg = 0.0;
 		foreach ($values as $i => $v) {
+			/** @var float $v */
 			if ($v >= 0) {
 				$npvPos += $v / $rr ** $i;
 			} else {
@@ -140,7 +141,7 @@ class Periodic
 				 *
 				 * Returns the Net Present Value of a cash flow series given a discount rate.
 				 *
-				 * @param array $args
+				 * @param array<mixed> $args
 				 * @return float|int
 				 * @param mixed $rate
 				 */

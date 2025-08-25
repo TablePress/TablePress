@@ -124,8 +124,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( 'list' !== $action ) {
 					$slug .= '_' . $action;
 				}
-				// @phpstan-ignore argument.type, argument.type
-				$page_hook = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ), $entry['admin_menu_title'], $entry['required_cap'], $slug, $callback );
+				/* translators: %1$s: Page title, %2$s: Plugin name (TablePress) */
+				$page_hook = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ), $entry['admin_menu_title'], $entry['required_cap'], $slug, $callback ); // @phpstan-ignore argument.type, argument.type
 				if ( false !== $page_hook ) {
 					$this->page_hooks[] = $page_hook;
 				}

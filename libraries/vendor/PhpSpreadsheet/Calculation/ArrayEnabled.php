@@ -12,21 +12,25 @@ trait ArrayEnabled
 	private static ArrayArgumentHelper $arrayArgumentHelper;
 
 	/**
-	 * @param array|false $arguments Can be changed to array for Php8.1+
+	 * @param mixed[] $arguments
 	 */
-	private static function initialiseHelper($arguments): void
+	private static function initialiseHelper(array $arguments): void
 	{
 		if (self::$initializationNeeded === true) {
 			self::$arrayArgumentHelper = new ArrayArgumentHelper();
 			self::$initializationNeeded = false;
 		}
-		self::$arrayArgumentHelper->initialise(($arguments === false) ? [] : $arguments);
+		self::$arrayArgumentHelper->initialise($arguments);
 	}
 
 	/**
 	 * Handles array argument processing when the function accepts a single argument that can be an array argument.
 	 * Example use for:
 	 *         DAYOFMONTH() or FACT().
+	 *
+	 * @param mixed[] $values
+	 *
+	 * @return mixed[]
 	 */
 	protected static function evaluateSingleArgumentArray(callable $method, array $values): array
 	{
@@ -43,6 +47,8 @@ trait ArrayEnabled
 				 *     and any of them can be an array argument.
 				 * Example use for:
 				 *         ROUND() or DATE().
+				 *
+				 * @return mixed[]
 				 * @param mixed ...$arguments
 				 */
 				protected static function evaluateArrayArguments(callable $method, ...$arguments): array
@@ -59,6 +65,8 @@ trait ArrayEnabled
 				 * Example use for:
 				 *         NETWORKDAYS() or CONCATENATE(), where the last argument is a matrix (or a series of values) that need
 				 *                                         to be treated as a such rather than as an array arguments.
+				 *
+				 * @return mixed[]
 				 * @param mixed ...$arguments
 				 */
 				protected static function evaluateArrayArgumentsSubset(callable $method, int $limit, ...$arguments): array
@@ -85,6 +93,8 @@ trait ArrayEnabled
 				 * Example use for:
 				 *         Z.TEST() or INDEX(), where the first argument 1 is a matrix that needs to be treated as a dataset
 				 *                   rather than as an array argument.
+				 *
+				 * @return mixed[]
 				 * @param mixed ...$arguments
 				 */
 				protected static function evaluateArrayArgumentsSubsetFrom(callable $method, int $start, ...$arguments): array
@@ -111,6 +121,8 @@ trait ArrayEnabled
 				 * Example use for:
 				 *         HLOOKUP() and VLOOKUP(), where argument 1 is a matrix that needs to be treated as a database
 				 *                                  rather than as an array argument.
+				 *
+				 * @return mixed[]
 				 * @param mixed ...$arguments
 				 */
 				protected static function evaluateArrayArgumentsIgnore(callable $method, int $ignore, ...$arguments): array

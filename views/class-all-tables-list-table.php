@@ -491,6 +491,7 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 */
 	public function change_pagination_items_string( string $translation, string $single, string $plural, int $number, string $domain ): string {
 		if ( '%s item' === $single && '%s items' === $plural ) {
+			/* translators: %s: Number of tables */
 			$translation = _n( '%s table', '%s tables', $number, 'tablepress' );
 		}
 		return $translation;

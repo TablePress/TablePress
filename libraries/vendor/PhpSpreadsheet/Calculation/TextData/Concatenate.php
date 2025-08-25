@@ -17,7 +17,7 @@ class Concatenate
 	/**
 	 * This implements the CONCAT function, *not* CONCATENATE.
 	 *
-	 * @param array $args
+	 * @param mixed[] $args
 	 */
 	public static function CONCATENATE(...$args): string
 	{
@@ -45,12 +45,13 @@ class Concatenate
 	}
 
 	/**
-				 * This implements the CONCATENATE function.
-				 *
-				 * @param array $args data to be concatenated
-				 * @return mixed[]|string
-				 */
-				public static function actualCONCATENATE(...$args)
+	 * This implements the CONCATENATE function.
+	 *
+	 * @param mixed[] $args data to be concatenated
+	 *
+	 * @return array<string>|string
+	 */
+	public static function actualCONCATENATE(...$args)
 	{
 		if (Functions::getCompatibilityMode() === Functions::COMPATIBILITY_GNUMERIC) {
 			return self::CONCATENATE(...$args);
@@ -67,11 +68,12 @@ class Concatenate
 	}
 
 	/**
-				 * @param mixed[]|string $operand1
-				 * @param null|mixed[]|bool|float|int|string $operand2
-				 * @return mixed[]|string
-				 */
-				private static function concatenate2Args($operand1, $operand2)
+	 * @param array<string>|string $operand1
+	 * @param null|array<mixed>|bool|float|int|string $operand2
+	 *
+	 * @return array<string>|string
+	 */
+	private static function concatenate2Args($operand1, $operand2)
 	{
 		if (is_array($operand1) || is_array($operand2)) {
 			$operand1 = Calculation::boolToString($operand1);
@@ -80,9 +82,11 @@ class Concatenate
 			$errorFound = false;
 			for ($row = 0; $row < $rows && !$errorFound; ++$row) {
 				for ($column = 0; $column < $columns; ++$column) {
+					/** @var string[][] $operand2 */
 					if (ErrorValue::isError($operand2[$row][$column])) {
 						return $operand2[$row][$column];
 					}
+					/** @var string[][] $operand1 */
 					$operand1[$row][$column]
 						= StringHelper::convertToString($operand1[$row][$column], true, '', true)
 						. StringHelper::convertToString($operand2[$row][$column], true, '', true);
@@ -102,6 +106,7 @@ class Concatenate
 				$operand1 = ExcelError::CALC();
 			}
 		}
+		/** @var array<string>|string $operand1 */
 
 		return $operand1;
 	}
@@ -115,7 +120,7 @@ class Concatenate
 	 *                         Or can be an array of values
 	 * @param mixed $args The values to join
 	 *
-	 * @return array|string The joined string
+	 * @return array<mixed>|string The joined string
 	 *         If an array of values is passed for the $delimiter or $ignoreEmpty arguments, then the returned result
 	 *            will also be an array with matching dimensions
 	 */
@@ -133,7 +138,7 @@ class Concatenate
 
 		$delimiter ??= '';
 		$ignoreEmpty ??= true;
-		/** @var array */
+		/** @var mixed[] */
 		$aArgs = Functions::flattenArray($args);
 		$returnValue = self::evaluateTextJoinArray($ignoreEmpty, $aArgs);
 
@@ -145,6 +150,7 @@ class Concatenate
 		return $returnValue;
 	}
 
+	/** @param mixed[] $aArgs */
 	private static function evaluateTextJoinArray(bool $ignoreEmpty, array &$aArgs): ?string
 	{
 		foreach ($aArgs as $key => &$arg) {
@@ -173,7 +179,7 @@ class Concatenate
 	 * @param mixed $repeatCount The number of times the string value should be repeated
 	 *                         Or can be an array of values
 	 *
-	 * @return array|string The repeated string
+	 * @return array<mixed>|string The repeated string
 	 *         If an array of values is passed for the $stringValue or $repeatCount arguments, then the returned result
 	 *            will also be an array with matching dimensions
 	 */

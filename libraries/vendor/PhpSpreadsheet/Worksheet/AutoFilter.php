@@ -347,12 +347,11 @@ class AutoFilter
 	/**
 	 * Test if cell value is within a set of values defined by a ruleset.
 	 *
-	 * @param mixed[] $ruleSet
+	 * @param mixed[][] $ruleSet
 	 * @param mixed $cellValue
 	 */
 	protected static function filterTestInCustomDataSet($cellValue, array $ruleSet): bool
 	{
-		/** @var array[] $dataSet */
 		$dataSet = $ruleSet['filterRules'];
 		$join = $ruleSet['join'];
 		$customRuleForBlanks = $ruleSet['customRuleForBlanks'] ?? false;
@@ -365,11 +364,10 @@ class AutoFilter
 		}
 		$returnVal = ($join == AutoFilter\Column::AUTOFILTER_COLUMN_JOIN_AND);
 		foreach ($dataSet as $rule) {
-			/** @var string $ruleValue */
+			/** @var string[] $rule */
 			$ruleValue = $rule['value'];
-			/** @var string $ruleOperator */
 			$ruleOperator = $rule['operator'];
-			/** @var string $cellValueString */
+			/** @var string */
 			$cellValueString = $cellValue ?? '';
 			$retVal = false;
 
@@ -512,6 +510,7 @@ class AutoFilter
 		Rule::AUTOFILTER_RULETYPE_DYNAMIC_YEARTODATE => 'dynamicYearToDate',
 		Rule::AUTOFILTER_RULETYPE_DYNAMIC_YESTERDAY => 'dynamicYesterday',
 	];
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicLastMonth(): array
 	{
 		$maxval = new DateTime();
@@ -535,6 +534,7 @@ class AutoFilter
 
 		return $val;
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicLastQuarter(): array
 	{
 		$maxval = self::firstDayOfQuarter();
@@ -543,6 +543,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicLastWeek(): array
 	{
 		$val = new DateTime();
@@ -555,6 +556,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicLastYear(): array
 	{
 		$val = new DateTime();
@@ -564,6 +566,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicNextMonth(): array
 	{
 		$val = new DateTime();
@@ -577,6 +580,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicNextQuarter(): array
 	{
 		$val = self::firstDayOfQuarter();
@@ -586,6 +590,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicNextWeek(): array
 	{
 		$val = new DateTime();
@@ -598,6 +603,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicNextYear(): array
 	{
 		$val = new DateTime();
@@ -607,6 +613,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicThisMonth(): array
 	{
 		$baseDate = new DateTime();
@@ -619,6 +626,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicThisQuarter(): array
 	{
 		$val = self::firstDayOfQuarter();
@@ -627,6 +635,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicThisWeek(): array
 	{
 		$val = new DateTime();
@@ -639,6 +648,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicThisYear(): array
 	{
 		$val = new DateTime();
@@ -648,6 +658,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicToday(): array
 	{
 		$val = new DateTime();
@@ -657,6 +668,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicTomorrow(): array
 	{
 		$val = new DateTime();
@@ -667,6 +679,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicYearToDate(): array
 	{
 		$maxval = new DateTime();
@@ -676,6 +689,7 @@ class AutoFilter
 
 		return [$val, $maxval];
 	}
+	/** @return array{DateTime, DateTime} */
 	private static function dynamicYesterday(): array
 	{
 		$maxval = new DateTime();
@@ -907,6 +921,7 @@ class AutoFilter
 								if ($periodType == 'M') {
 									$ruleValues = [$period];
 								} else {
+									/** @var int $period */
 									--$period;
 									$periodEnd = (1 + $period) * 3;
 									$periodStart = 1 + $period * 3;

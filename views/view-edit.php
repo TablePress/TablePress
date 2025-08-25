@@ -128,11 +128,13 @@ class TablePress_Edit_View extends TablePress_View {
 		$screen_settings .= '<div>';
 		$screen_settings .= '<label for="table_editor_column_width">' . __( 'Default column width:', 'tablepress' ) . '</label> ';
 		$input = '<input type="number" id="table_editor_column_width" class="small-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_column_width' ) ) . '" min="30" max="9999">';
+		/* translators: %s: Input field for the number of pixels */
 		$screen_settings .= sprintf( __( '%s pixels', 'tablepress' ), $input );
 		$screen_settings .= '</div>';
 		$screen_settings .= '<div style="margin-top: 6px;">';
 		$screen_settings .= '<label for="table_editor_line_clamp">' . __( 'Maximum visible lines of text:', 'tablepress' ) . '</label> ';
 		$input = '<input type="number" id="table_editor_line_clamp" class="tiny-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_line_clamp' ) ) . '" min="0" max="999">';
+		/* translators: %s: Input field for the number of lines */
 		$screen_settings .= sprintf( __( '%s lines', 'tablepress' ), $input );
 		$screen_settings .= '</div>';
 		$screen_settings .= '</fieldset>';
@@ -427,8 +429,10 @@ class TablePress_Edit_View extends TablePress_View {
 				</em></h3>
 				<p>
 					<?php
+						/* translators: %1$s: Table name, %2$s: Table ID */
 						printf( __( 'The internal data of table &#8220;%1$s&#8221; (ID %2$s) is corrupted.', 'tablepress' ), esc_html( $data['table']['name'] ), esc_html( $data['table']['id'] ) );
 						echo ' ';
+						/* translators: %s: Error message */
 						printf( __( 'The following error was registered: %s.', 'tablepress' ), '<code>' . esc_html( $data['table']['json_error'] ) . '</code>' );
 					?>
 				</p>
@@ -436,6 +440,7 @@ class TablePress_Edit_View extends TablePress_View {
 					<?php
 						_e( 'Because of this error, the table can not be edited at this time, to prevent possible further data loss.', 'tablepress' );
 						echo ' ';
+						/* translators: %s: URL to TablePress FAQ page */
 						printf( __( 'Please see the <a href="%s">TablePress FAQ page</a> for further instructions.', 'tablepress' ), 'https://tablepress.org/faq/corrupted-tables/' );
 					?>
 				</p>

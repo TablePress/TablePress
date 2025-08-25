@@ -38,6 +38,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		$this->data = $data;
 
 		// Set page title.
+		/* translators: %1$s: Page title, %2$s: Plugin name */
 		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 		$this->add_header_message( '<strong>' . __( 'Attention: Further action is required to save the changes to your &#8220;Custom CSS&#8221;!', 'tablepress' ) . '</strong>', 'is-success' );
@@ -116,7 +117,10 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		?>
 		<p>
 			<?php _e( 'Due to the configuration of your server, TablePress was not able to automatically save your &#8220;Custom CSS&#8221; to a file.', 'tablepress' ); ?>
-			<?php printf( __( 'To try again with the same method that you use for updating plugins or themes, please fill out the &#8220;%s&#8221; form below.', 'tablepress' ), __( 'Connection Information', 'default' ) ); ?>
+			<?php
+			/* translators: %s: Connection information form label */
+			printf( __( 'To try again with the same method that you use for updating plugins or themes, please fill out the &#8220;%s&#8221; form below.', 'tablepress' ), __( 'Connection Information', 'default' ) );
+			?>
 		</p>
 		<?php
 	}

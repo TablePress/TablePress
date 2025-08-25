@@ -13,7 +13,7 @@ class Stack
 	/**
 	 * The parser stack for formulae.
 	 *
-	 * @var array<int, array>
+	 * @var array<int, array<mixed>>
 	 */
 	private array $stack = [];
 
@@ -52,14 +52,14 @@ class Stack
 		}
 	}
 
+	/** @param array<mixed> $stackItem */
 	public function pushStackItem(array $stackItem): void
 	{
 		$this->stack[$this->count++] = $stackItem;
 	}
 
-	/**
-				 * @param mixed $value
-				 */
+	/** @return array<mixed>
+				 * @param mixed $value */
 				public function getStackItem(string $type, $value, ?string $reference = null): array
 	{
 		$stackItem = [
@@ -91,6 +91,8 @@ class Stack
 
 	/**
 	 * Pop the last entry from the stack.
+	 *
+	 * @return null|array<mixed>
 	 */
 	public function pop(): ?array
 	{
@@ -103,6 +105,8 @@ class Stack
 
 	/**
 	 * Return an entry from the stack without removing it.
+	 *
+	 * @return null|array<mixed>
 	 */
 	public function last(int $n = 1): ?array
 	{
