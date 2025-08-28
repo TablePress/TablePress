@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Style;
 use TablePress\PhpOffice\PhpSpreadsheet\IComparable;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalColorScale;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalDataBar;
+use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\ConditionalIconSet;
 
 class Conditional implements IComparable
 {
@@ -25,6 +26,7 @@ class Conditional implements IComparable
 	const CONDITION_TIMEPERIOD = 'timePeriod';
 	const CONDITION_DUPLICATES = 'duplicateValues';
 	const CONDITION_UNIQUE = 'uniqueValues';
+	const CONDITION_ICONSET = 'iconSet';
 
 	private const CONDITION_TYPES = [
 		self::CONDITION_BEGINSWITH,
@@ -43,6 +45,7 @@ class Conditional implements IComparable
 		self::CONDITION_NOTCONTAINSTEXT,
 		self::CONDITION_TIMEPERIOD,
 		self::CONDITION_UNIQUE,
+		self::CONDITION_ICONSET,
 	];
 
 	// Operator types
@@ -101,6 +104,8 @@ class Conditional implements IComparable
 	private ?ConditionalDataBar $dataBar = null;
 
 	private ?ConditionalColorScale $colorScale = null;
+
+	private ?ConditionalIconSet $iconSet = null;
 
 	private Style $style;
 
@@ -325,6 +330,21 @@ class Conditional implements IComparable
 		return $this;
 	}
 
+	public function getIconSet(): ?ConditionalIconSet
+	{
+		return $this->iconSet;
+	}
+
+	/**
+				 * @return static
+				 */
+				public function setIconSet(ConditionalIconSet $iconSet)
+	{
+		$this->iconSet = $iconSet;
+
+		return $this;
+	}
+
 	/**
 	 * Get hash code.
 	 *
@@ -334,10 +354,10 @@ class Conditional implements IComparable
 	{
 		return md5(
 			$this->conditionType
-			. $this->operatorType
-			. implode(';', $this->condition)
-			. $this->style->getHashCode()
-			. __CLASS__
+				. $this->operatorType
+				. implode(';', $this->condition)
+				. $this->style->getHashCode()
+				. __CLASS__
 		);
 	}
 

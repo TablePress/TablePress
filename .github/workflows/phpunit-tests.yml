@@ -99,7 +99,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@20529878ed81ef8e78ddf08b480401e6101a850f # v2.35.3
+        uses: shivammathur/setup-php@ec406be512d7077f68eed36e63f4d91bc006edc4 # v2.35.4
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -144,9 +144,7 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ matrix.php == '8.5' }} # PhpSpreadsheet currently fails with newly introduces deprecations.
-        # @todo Replace the previous line with the following line, once PhpSpreadsheet doesn't show deprecations anymore.
-        # continue-on-error: ${{ matrix.php == '8.5' && ( matrix.wp == '6.2' || matrix.wp == '6.3' || matrix.wp == '6.4' || matrix.wp == '6.5' || matrix.wp == '6.6' || matrix.wp == '6.7' || matrix.wp == '6.8' ) }} # WP before 6.9 runs into non-canonical type cast deprecations.
+        continue-on-error: ${{ matrix.php == '8.5' && contains( fromJSON('["6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8"]'), matrix.wp ) }} # WP before 6.9 runs into non-canonical type cast deprecations.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

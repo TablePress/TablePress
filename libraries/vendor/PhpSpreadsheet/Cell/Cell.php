@@ -460,7 +460,7 @@ class Cell
 									}
 								}
 								/** @var string $newColumn */
-								++$newColumn;
+								StringHelper::stringIncrement($newColumn);
 							}
 							++$newRow;
 						} else {
@@ -472,7 +472,7 @@ class Cell
 									}
 								}
 							}
-							++$newColumn;
+							StringHelper::stringIncrement($newColumn);
 						}
 						if ($spill) {
 							break;
@@ -494,10 +494,10 @@ class Cell
 									$minCol = $matches[1];
 									$minRow = (int) $matches[2];
 									$maxCol = $matches[4];
-									++$maxCol;
+									StringHelper::stringIncrement($maxCol);
 									$maxRow = (int) $matches[5];
 									for ($row = $minRow; $row <= $maxRow; ++$row) {
-										for ($col = $minCol; $col !== $maxCol; ++$col) {
+										for ($col = $minCol; $col !== $maxCol; StringHelper::stringIncrement($col)) {
 											/** @var string $col */
 											if ("$col$row" !== $coordinate) {
 												$thisworksheet->getCell("$col$row")->setValue(null);
@@ -525,15 +525,14 @@ class Cell
 										->getCell($newColumn . $newRow)
 										->setValue($resultValue);
 								}
-								/** @var string $newColumn */
-								++$newColumn;
+								StringHelper::stringIncrement($newColumn);
 							}
 							++$newRow;
 						} else {
 							if ($row !== $newRow || $column !== $newColumn) {
 								$thisworksheet->getCell($newColumn . $newRow)->setValue($resultRow);
 							}
-							++$newColumn;
+							StringHelper::stringIncrement($newColumn);
 						}
 					}
 					$thisworksheet->getCell($column . $row);

@@ -17,6 +17,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Reader\Xml\Style;
 use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\File;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\SheetView;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -378,7 +379,7 @@ class Xml extends BaseReader
 						if (isset($columnVisible)) {
 							$spreadsheet->getActiveSheet()->getColumnDimension($columnID)->setVisible($columnVisible);
 						}
-						++$columnID;
+						StringHelper::stringIncrement($columnID);
 						--$colspan;
 					}
 				}
@@ -412,7 +413,7 @@ class Xml extends BaseReader
 						}
 
 						if (!$this->getReadFilter()->readCell($columnID, $rowID, $worksheetName)) {
-							++$columnID;
+							StringHelper::stringIncrement($columnID);
 
 							continue;
 						}
@@ -525,10 +526,9 @@ class Xml extends BaseReader
 									->applyFromArray($this->styles[$style]);
 							}
 						}
-						/** @var string $columnID */
-						++$columnID;
+						StringHelper::stringIncrement($columnID);
 						while ($additionalMergedCells > 0) {
-							++$columnID;
+							StringHelper::stringIncrement($columnID);
 							--$additionalMergedCells;
 						}
 					}

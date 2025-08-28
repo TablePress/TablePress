@@ -6,6 +6,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use Stringable;
 
@@ -174,7 +175,7 @@ final class StructuredReference implements Operand
 	}
 
 	/**
-	 * @param array<array<int|string>> $tableRange
+	 * @param array{array{string, int}, array{string, int}} $tableRange
 	 *
 	 * @return mixed[]
 	 */
@@ -184,8 +185,8 @@ final class StructuredReference implements Operand
 		$cellReference = $cell->getCoordinate();
 
 		$columns = [];
-		$lastColumn = ++$tableRange[1][0];
-		for ($column = $tableRange[0][0]; $column !== $lastColumn; ++$column) {
+		$lastColumn = StringHelper::stringIncrement($tableRange[1][0]);
+		for ($column = $tableRange[0][0]; $column !== $lastColumn; StringHelper::stringIncrement($column)) {
 			/** @var string $column */
 			$columns[$column] = $worksheet
 				->getCell($column . ($this->headersRow ?? ($this->firstDataRow - 1)))

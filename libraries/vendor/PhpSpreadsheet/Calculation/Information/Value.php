@@ -7,6 +7,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\NamedRange;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -226,8 +227,15 @@ class Value
 		$worksheet = (!empty($worksheetName))
 			? $cell->getWorksheet()->getParentOrThrow()->getSheetByName($worksheetName)
 			: $cell->getWorksheet();
+		if ($worksheet === null) {
+			return ExcelError::REF();
+		}
 
-		return ($worksheet !== null) ? $worksheet->getCell($fullCellReference)->isFormula() : ExcelError::REF();
+		try {
+			return $worksheet->getCell($fullCellReference)->isFormula();
+		} catch (SpreadsheetException $exception) {
+			return true;
+		}
 	}
 
 	/**

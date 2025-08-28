@@ -549,7 +549,7 @@ class Html extends BaseReader
 			$this->processDomElement($child, $sheet, $row, $column, $cellContent);
 			$column = $this->releaseTableStartColumn();
 			if ($this->tableLevel > 1) {
-				++$column; //* @phpstan-ignore-line
+				StringHelper::stringIncrement($column);
 			} else {
 				++$row;
 			}
@@ -563,7 +563,7 @@ class Html extends BaseReader
 	{
 		if ($child->nodeName === 'col') {
 			$this->applyInlineStyle($sheet, -1, $this->currentColumn, $attributeArray);
-			++$this->currentColumn;
+			StringHelper::stringIncrement($this->currentColumn);
 		} elseif ($child->nodeName === 'tr') {
 			$column = $this->getTableStartColumn();
 			$cellContent = '';
@@ -649,10 +649,9 @@ class Html extends BaseReader
 	{
 		while (isset($this->rowspan[$column . $row])) {
 			$temp = (string) $column;
-			++$temp;
-			$column = (string) $temp;
+			$column = StringHelper::stringIncrement($temp);
 		}
-		$this->processDomElement($child, $sheet, $row, $column, $cellContent); // ++$column above confuses Phpstan
+		$this->processDomElement($child, $sheet, $row, $column, $cellContent);
 
 		// apply inline style
 		$this->applyInlineStyle($sheet, $row, $column, $attributeArray);
@@ -671,16 +670,14 @@ class Html extends BaseReader
 			//create merging rowspan and colspan
 			$columnTo = $column;
 			for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-				/** @var string $columnTo */
-				++$columnTo;
+				StringHelper::stringIncrement($columnTo);
 			}
 			$range = $column . $row . ':' . $columnTo . ($row + (int) $attributeArray['rowspan'] - 1);
 			foreach (Coordinate::extractAllCellReferencesInRange($range) as $value) {
 				$this->rowspan[$value] = true;
 			}
 			$sheet->mergeCells($range);
-			//* @phpstan-ignore-next-line
-			$column = $columnTo; // ++$columnTo above confuses phpstan
+			$column = $columnTo;
 		} elseif (isset($attributeArray['rowspan'])) {
 			//create merging rowspan
 			$range = $column . $row . ':' . $column . ($row + (int) $attributeArray['rowspan'] - 1);
@@ -692,15 +689,13 @@ class Html extends BaseReader
 			//create merging colspan
 			$columnTo = $column;
 			for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-				/** @var string $columnTo */
-				++$columnTo;
+				StringHelper::stringIncrement($columnTo);
 			}
 			$sheet->mergeCells($column . $row . ':' . $columnTo . $row);
-			//* @phpstan-ignore-next-line
-			$column = $columnTo; // ++$columnTo above confuses phpstan
+			$column = $columnTo;
 		}
 
-		++$column; //* @phpstan-ignore-line
+		StringHelper::stringIncrement($column);
 	}
 
 	protected function processDomElement(DOMNode $element, Worksheet $sheet, int &$row, string &$column, string &$cellContent): void
@@ -948,8 +943,7 @@ class Html extends BaseReader
 		} elseif (isset($attributeArray['rowspan'], $attributeArray['colspan'])) {
 			$columnTo = $column;
 			for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-				/** @var string $columnTo */
-				++$columnTo;
+				StringHelper::stringIncrement($columnTo);
 			}
 			$range = $column . $row . ':' . $columnTo . ($row + (int) $attributeArray['rowspan'] - 1);
 			$cellStyle = $sheet->getStyle($range);
@@ -959,8 +953,7 @@ class Html extends BaseReader
 		} elseif (isset($attributeArray['colspan'])) {
 			$columnTo = $column;
 			for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-				/** @var string $columnTo */
-				++$columnTo;
+				StringHelper::stringIncrement($columnTo);
 			}
 			$range = $column . $row . ':' . $columnTo . $row;
 			$cellStyle = $sheet->getStyle($range);

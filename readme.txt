@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 3.2
+Stable tag: 3.2.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,7 +45,7 @@ Visit [tablepress.org](https://tablepress.org/) for more information, take a loo
 
 The easiest way to install TablePress is via your WordPress Dashboard:
 
-1. Go to the "Plugins" screen, click "Add New", and search for "TablePress" in the WordPress Plugin Directory.
+1. Go to the "Plugins" screen, click "Add Plugin", and search for "TablePress" in the WordPress Plugin Directory.
 1. Click "Install Now" and after that's complete, click "Activate".
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
 1. To insert a table into a post or page, add a "TablePress table" block in the block editor or a widget in the Elementor page builder and select the desired table or use Shortcodes with other page builders.
@@ -53,7 +53,7 @@ The easiest way to install TablePress is via your WordPress Dashboard:
 Manual installation works just as for other WordPress plugins:
 
 1. [Download the TablePress ZIP file](https://downloads.wordpress.org/plugin/tablepress.latest-stable.zip).
-1. Go to the “Plugins” screen on your site and upload it by clicking “Add New” → “Upload Plugin”.
+1. Go to the “Plugins” screen on your site and upload it by clicking “Add Plugin” → “Upload Plugin”.
 1. Or, extract the ZIP file and move the folder “tablepress” to the “wp-content/plugins/” directory of your WordPress installation, e.g. via FTP.
 1. Activate "TablePress" on the "Plugins" screen of your WordPress Dashboard.
 1. Create and manage tables by going to the "TablePress" screen in the admin menu.
@@ -108,6 +108,13 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.2.1 (August 28, 2025) =
+
+* **Security fix**: Authenticated Stored XSS (CVE-2025-9500). Thanks to Muhammad Yudha and the Wordfence team for following responsible disclosure policies when reporting this issue!
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Updated external libraries to benefit from enhancements and bug fixes.
+* Improved support for PHP 8.5.
+
 = Version 3.2 (August 26, 2025) =
 
 TablePress 3.2 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
@@ -151,6 +158,9 @@ TablePress 3.2 is a feature, stability, maintenance, and compatibility update. H
 * Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=readme)
 
 == Upgrade Notice ==
+
+= 3.2.1 =
+This update is a security, maintenance, and compatibility release. Updating is highly recommended!
 
 = 3.2 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

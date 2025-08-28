@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\DefaultReadFilter;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use SimpleXMLElement;
 
@@ -142,9 +143,8 @@ class ColumnAndRowAttributes extends BaseParserClass
 			if ($column !== null) {
 				$startColumn = Coordinate::stringFromColumnIndex((int) $column['min']);
 				$endColumn = Coordinate::stringFromColumnIndex((int) $column['max']);
-				++$endColumn;
-				for ($columnAddress = $startColumn; $columnAddress !== $endColumn; ++$columnAddress) {
-					/** @var string $columnAddress */
+				StringHelper::stringIncrement($endColumn);
+				for ($columnAddress = $startColumn; $columnAddress !== $endColumn; StringHelper::stringIncrement($columnAddress)) {
 					$columnAttributes[$columnAddress] = $this->readColumnRangeAttributes($column, $readDataOnly);
 
 					if ((int) ($column['max']) == 16384) {

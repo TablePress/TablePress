@@ -5,7 +5,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'tablepress/table',
-		'version' => '3.2',
+		'version' => '3.2.1',
 		'title' => 'TablePress table',
 		'category' => 'media',
 		'icon' => 'list-view',

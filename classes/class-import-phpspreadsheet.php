@@ -241,10 +241,10 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 			$max_row = $worksheet->getHighestRow();
 
 			// Adapted from \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::rangeToArray().
-			++$max_col; // Due to for-loop with characters for columns.
+			\TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper::stringIncrement( $max_col ); // Due to for-loop with characters for columns.
 			for ( $row = $min_row; $row <= $max_row; $row++ ) {
 				$row_data = array();
-				for ( $col = $min_col; $col !== $max_col; $col++ ) {
+				for ( $col = $min_col; $col !== $max_col; \TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper::stringIncrement( $col ) ) {
 					$cell_reference = $col . $row;
 					if ( ! $cell_collection->has( $cell_reference ) ) {
 						$row_data[] = '';

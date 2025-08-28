@@ -901,7 +901,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// Maybe print a list of used render options.
 		if ( $render_options['shortcode_debug'] && is_user_logged_in() ) {
-			$output .= '<pre>' . var_export( $render_options, true ) . '</pre>'; // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+			$output .= '<pre>' . esc_html( wp_json_encode( $render_options, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ) . '</pre>'; // @phpstan-ignore argument.type
 		}
 
 		return $output;

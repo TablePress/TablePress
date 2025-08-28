@@ -35,7 +35,7 @@ class Calculation extends CalculationLocale
 	//    Opening bracket
 	const CALCULATION_REGEXP_OPENBRACE = '\(';
 	//    Function (allow for the old @ symbol that could be used to prefix a function, but we'll ignore it)
-	const CALCULATION_REGEXP_FUNCTION = '@?(?:_xlfn\.)?(?:_xlws\.)?([\p{L}][\p{L}\p{N}\._]*)[\s]*\('; // TablePress: Add _ to allow the deprecated RAND_INT, RAND_FLOAT, NUMBER_FORMAT, and NUMBER_FORMAT_EU functions.
+	const CALCULATION_REGEXP_FUNCTION = '@?(?:_xlfn\.)?(?:_xlws\.)?((?:__xludf\.)?[\p{L}][\p{L}\p{N}\._]*)[\s]*\('; // TablePress: Add _ to allow the deprecated RAND_INT, RAND_FLOAT, NUMBER_FORMAT, and NUMBER_FORMAT_EU functions.
 	//    Cell reference (cell or range of cells, with or without a sheet reference)
 	const CALCULATION_REGEXP_CELLREF = '((([^\s,!&%^\/\*\+<>=:`-]*)|(\'(?:[^\']|\'[^!])+?\')|(\"(?:[^\"]|\"[^!])+?\"))!)?\$?\b([a-z]{1,3})\$?(\d{1,7})(?![\w.])';
 	// Used only to detect spill operator #
@@ -1760,6 +1760,16 @@ class Calculation extends CalculationLocale
 						break;
 					// Binary Operators
 					case ':': // Range
+						if ($operand1Data['type'] === 'Error') {
+							$stack->push($operand1Data['type'], $operand1Data['value'], null);
+
+							break;
+						}
+						if ($operand2Data['type'] === 'Error') {
+							$stack->push($operand2Data['type'], $operand2Data['value'], null);
+
+							break;
+						}
 						if ($operand1Data['type'] === 'Defined Name') {
 							/** @var array{reference: string} $operand1Data */
 							if (preg_match('/$' . self::CALCULATION_REGEXP_DEFINEDNAME . '^/mui', $operand1Data['reference']) !== false && $this->spreadsheet !== null) {
@@ -2123,6 +2133,13 @@ class Calculation extends CalculationLocale
 											$nextArg = '';
 										}
 									}
+								} elseif (($arg['type'] ?? '') === 'Error') {
+									$argValue = $arg['value'];
+									if (is_scalar($argValue)) {
+										$nextArg = $argValue;
+									} elseif (empty($argValue)) {
+										$nextArg = '';
+									}
 								}
 								$args[] = $nextArg;
 								if ($functionName !== 'MKMATRIX') {
@@ -2253,10 +2270,12 @@ class Calculation extends CalculationLocale
 						}
 					}
 					if ($namedRange === null) {
-						return $this->raiseFormulaError("undefined name '$definedName'");
+						$result = ExcelError::NAME();
+						$stack->push('Error', $result, null);
+						$this->debugLog->writeDebugLog("Error $result");
+					} else {
+						$result = $this->evaluateDefinedName($cell, $namedRange, $pCellWorksheet, $stack, $specifiedWorksheet !== '');
 					}
-
-					$result = $this->evaluateDefinedName($cell, $namedRange, $pCellWorksheet, $stack, $specifiedWorksheet !== '');
 
 					if (isset($storeKey)) {
 						$branchStore[$storeKey] = $result;
@@ -2535,6 +2554,8 @@ class Calculation extends CalculationLocale
 		$this->formulaError = $errorMessage;
 		$this->cyclicReferenceStack->clear();
 		$suppress = $this->suppressFormulaErrors;
+		$suppressed = $suppress ? ' $suppressed' : '';
+		$this->debugLog->writeDebugLog("Raise Error$suppressed $errorMessage");
 		if (!$suppress) {
 			throw new Exception($errorMessage, $code, $exception);
 		}
@@ -2719,7 +2740,6 @@ class Calculation extends CalculationLocale
 	private function addDefaultArgumentValues(array $functionCall, array $args, array $emptyArguments): array
 	{
 		$reflector = new ReflectionMethod($functionCall[0], $functionCall[1]);
-								$reflector->setAccessible(true);
 		$methodArguments = $reflector->getParameters();
 
 		if (count($methodArguments) > 0) {
@@ -2784,7 +2804,6 @@ class Calculation extends CalculationLocale
 				$methodName = $functionCall[1];
 
 				$reflectionMethod = new ReflectionMethod($className, $methodName);
-																$reflectionMethod->setAccessible(true);
 				$argumentCount = count($reflectionMethod->getParameters());
 				while (count($args) < $argumentCount - 1) {
 					$args[] = null;
@@ -2850,7 +2869,13 @@ class Calculation extends CalculationLocale
 			$this->debugLog->writeDebugLog('Evaluation Result for Named %s %s is %s', $definedNameType, $namedRange->getName(), $this->showTypeDetails($result));
 		}
 
-		$stack->push('Defined Name', $result, $namedRange->getName());
+		$y = ($nullsafeVariable2 = $namedRange->getWorksheet()) ? $nullsafeVariable2->getTitle() : null;
+		$x = $namedRange->getLocalOnly();
+		if ($x && $y !== null) {
+			$stack->push('Defined Name', $result, "'$y'!" . $namedRange->getName());
+		} else {
+			$stack->push('Defined Name', $result, $namedRange->getName());
+		}
 
 		return $result;
 	}

@@ -23,7 +23,7 @@ A demo of the frontend functionality is available at https://tablepress.org/demo
 
 The easiest way to install TablePress is via your WordPress Dashboard:
 
-1. Go to the “Plugins” screen, click “Add New”, and search for “TablePress” in the WordPress Plugin Directory.
+1. Go to the “Plugins” screen, click “Add Plugin, and search for “TablePress” in the WordPress Plugin Directory.
 1. Click “Install Now” and after that’s complete, click “Activate”.
 1. Create and manage tables by going to the “TablePress” screen in the admin menu.
 1. To insert a table into a post or page, add a “TablePress table” block in the block editor and select the desired table.
