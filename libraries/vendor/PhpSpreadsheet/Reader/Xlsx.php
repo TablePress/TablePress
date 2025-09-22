@@ -792,6 +792,7 @@ class Xlsx extends BaseReader
 
 					$charts = $chartDetails = [];
 
+					$sheetCreated = false;
 					if ($xmlWorkbookNS->sheets) {
 						foreach ($xmlWorkbookNS->sheets->sheet as $eleSheet) {
 							$eleSheetAttr = self::getAttributes($eleSheet);
@@ -818,6 +819,7 @@ class Xlsx extends BaseReader
 
 							// Load sheet
 							$docSheet = $excel->createSheet();
+							$sheetCreated = true;
 							//    Use false for $updateFormulaCellReferences to prevent adjustment of worksheet
 							//        references in formula cells... during the load, all formulae should be correct,
 							//        and we're simply bringing the worksheet name in line with the formula, not the
@@ -1283,7 +1285,7 @@ class Xlsx extends BaseReader
 												// Set comment properties
 												$comment = $docSheet->getComment([(int) $column + 1, (int) $row + 1]);
 												$comment->getFillColor()->setRGB($fillColor);
-												if (isset($drowingImages[$fillImageRelId])) {
+												if (isset($fillImageRelId, $drowingImages[$fillImageRelId])) {
 													$objDrawing = new \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 													$objDrawing->setName($fillImageTitle);
 													$imagePath = str_replace(['../', '/xl/'], 'xl/', $drowingImages[$fillImageRelId]);
@@ -1904,6 +1906,9 @@ class Xlsx extends BaseReader
 								}
 							}
 						}
+					}
+					if ($this->createBlankSheetIfNoneRead && !$sheetCreated) {
+						$excel->createSheet();
 					}
 
 					(new WorkbookView($excel))->viewSettings($xmlWorkbook, $mainNS, $mapSheetId, $this->readDataOnly);

@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,18 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.2.2 (September 23, 2025) =
+
+* Elementor integration: Support for clearing the “Element Cache” was added.
+* Elementor widget: The “Configuration Parameters” field is now shown properly again.
+* Elementor widget: “Dynamic Tags” are now supported for the “Configuration Parameters” field.
+* New feature: The “Advanced Pagination Settings” feature module now offers pagination with a select dropdown field. (TablePress Pro and Max only.)
+* Improvement: The “Individual Column Filtering” search fields now support the native Clear button. (TablePress Pro and Max only.)
+* Bug fix: Ensure that available premium translation files are loaded correctly. (TablePress Pro and Max only.)
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Updated external libraries to benefit from enhancements and bug fixes.
+* Improved support for PHP 8.5.
+
 = Version 3.2.1 (August 28, 2025) =
 
 * **Security fix**: Authenticated Stored XSS (CVE-2025-9500). Thanks to Muhammad Yudha and the Wordfence team for following responsible disclosure policies when reporting this issue!
@@ -159,8 +171,8 @@ TablePress 3.2 is a feature, stability, maintenance, and compatibility update. H
 
 == Upgrade Notice ==
 
-= 3.2.1 =
-This update is a security, maintenance, and compatibility release. Updating is highly recommended!
+= 3.2.2 =
+This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!
 
 = 3.2 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

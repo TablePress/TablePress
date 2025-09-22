@@ -627,6 +627,10 @@ class TablePress_Table_Model extends TablePress_Model {
 			do_action( $cache_flush_hook );
 		}
 
+		// Elementor.
+		if ( class_exists( 'Elementor\Core\Base\Document' ) ) {
+			delete_post_meta_by_key( Elementor\Core\Base\Document::CACHE_META_KEY );
+		}
 		// Kinsta.
 		if ( isset( $GLOBALS['kinsta_cache'] ) && ! empty( $GLOBALS['kinsta_cache']->kinsta_cache_purge ) && is_callable( array( $GLOBALS['kinsta_cache']->kinsta_cache_purge, 'purge_complete_caches' ) ) ) {
 			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches(); // @phpstan-ignore method.nonObject
@@ -642,7 +646,7 @@ class TablePress_Table_Model extends TablePress_Model {
 				$_pagely->purgeAll();
 			}
 		}
-		// Pressidum.
+		// Pressidium.
 		if ( is_callable( array( 'Ninukis_Plugin', 'get_instance' ) ) ) {
 			$_pressidum = Ninukis_Plugin::get_instance(); // @phpstan-ignore class.notFound
 			if ( is_callable( array( $_pressidum, 'purgeAllCaches' ) ) ) {

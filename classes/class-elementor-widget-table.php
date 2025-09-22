@@ -206,6 +206,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 								),
 				'type'        => \Elementor\Controls_Manager::SELECT2, // @phpstan-ignore classConstant.notFound (Elementor constants are not in the stubs.)
 				'ai'          => array( 'active' => false ),
+				'dynamic'     => array( 'active' => true ), // Elementor does not support this for the "Select2" control yet, but maybe in the future?
 				'options'     => $tables,
 			),
 		);
@@ -218,7 +219,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Advanced', 'tablepress' ),
 				'tab'       => \Elementor\Controls_Manager::TAB_CONTENT, // @phpstan-ignore classConstant.notFound (Elementor constants are not in the stubs.)
 				'condition' => array(
-					'id!' => '',
+					'table_id!' => '',
 				),
 			),
 		);
@@ -233,6 +234,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 				'input_type'  => 'text',
 				'placeholder' => '',
 				'ai'          => array( 'active' => false ),
+				'dynamic'     => array( 'active' => true ),
 			),
 		);
 

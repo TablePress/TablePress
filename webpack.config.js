@@ -169,7 +169,7 @@ const frontendCssConfig = {
 /**
  * Add a configuration to add a polyfill for the React JSX runtime.
  * WP 6.6 switched to a new mechanism for loading React, which requires this polyfill for older versions of WordPress.
- * Once WP 6.6 is the minimum required version for TablePress, this can be removed.
+ * Once WP 6.6 is the minimum required version for TablePress, this can be removed, and `clean-webpack-plugin` can be updated to `^4.0`.
  *
  * @see https://make.wordpress.org/core/2024/06/06/jsx-in-wordpress-6-6/
  * @see https://github.com/WordPress/gutenberg/issues/62202#issuecomment-2156796649

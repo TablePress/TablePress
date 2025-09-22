@@ -32,11 +32,6 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 		),
 	);
 
-	// Remove ReflectionMethod::setAccessible() calls, which are deprecated in PHP 8.5+.
-	$rector_config->rule(
-		Rector\Php81\Rector\MethodCall\RemoveReflectionSetAccessibleCallsRector::class,
-	);
-
 	// Ignore downgrade rules for functions that WordPress is polyfilling.
 	$rector_config->skip( array(
 		Rector\DowngradePhp80\Rector\FuncCall\DowngradeStrContainsRector::class, // str_contains().

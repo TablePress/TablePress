@@ -19,11 +19,8 @@ class StringHelper
 		"\x06",
 		"\x07",
 		"\x08",
-		"\x09",
-		"\x0a",
 		"\x0b",
 		"\x0c",
-		"\x0d",
 		"\x0e",
 		"\x0f",
 		"\x10",
@@ -53,11 +50,8 @@ class StringHelper
 		'_x0006_',
 		'_x0007_',
 		'_x0008_',
-		'_x0009_',
-		'_x000A_',
 		'_x000B_',
 		'_x000C_',
-		'_x000D_',
 		'_x000E_',
 		'_x000F_',
 		'_x0010_',
@@ -427,7 +421,7 @@ class StringHelper
 	 */
 	public static function convertEncoding(string $textValue, string $to, string $from): string
 	{
-		if (self::getIsIconvEnabled()) {
+		if (static::getIsIconvEnabled()) {
 			$result = iconv($from, $to . self::$iconvOptions, $textValue);
 			if (false !== $result) {
 				return $result;

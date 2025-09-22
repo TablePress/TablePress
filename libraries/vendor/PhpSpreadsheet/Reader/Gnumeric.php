@@ -272,6 +272,7 @@ class Gnumeric extends BaseReader
 		(new Properties($this->spreadsheet))->readProperties($xml, $gnmXML);
 
 		$worksheetID = 0;
+		$sheetCreated = false;
 		foreach ($gnmXML->Sheets->Sheet as $sheetOrNull) {
 			$sheet = self::testSimpleXml($sheetOrNull);
 			$worksheetName = (string) $sheet->Name;
@@ -283,6 +284,7 @@ class Gnumeric extends BaseReader
 
 			// Create new Worksheet
 			$this->spreadsheet->createSheet();
+			$sheetCreated = true;
 			$this->spreadsheet->setActiveSheetIndex($worksheetID);
 			//    Use false for $updateFormulaCellReferences to prevent adjustment of worksheet references in formula
 			//        cells... during the load, all formulae should be correct, and we're simply bringing the worksheet
@@ -331,6 +333,9 @@ class Gnumeric extends BaseReader
 
 			$this->setSelectedCells($sheet);
 			++$worksheetID;
+		}
+		if ($this->createBlankSheetIfNoneRead && !$sheetCreated) {
+			$this->spreadsheet->createSheet();
 		}
 
 		$this->processDefinedNames($gnmXML);
