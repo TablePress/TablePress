@@ -303,7 +303,7 @@ class EvalMath {
 
 				// Are we putting an operator on the stack?
 			} elseif ( ( in_array( $op, $ops, true ) || $ex ) && $expecting_operator ) {
-				// Are we expecting an operator but have a number/variable/function/opening parethesis?
+				// Are we expecting an operator but have a number/variable/function/opening parenthesis?
 				if ( $ex ) {
 					// It's an implicit multiplication.
 					$op = '*';

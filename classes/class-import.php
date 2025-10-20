@@ -131,10 +131,13 @@ class TablePress_Import {
 					return new WP_Error( 'table_import_url_host_blocked', '', array( 'url' => $this->import_config['url'], 'ip' => $ip ) );
 				}
 
+				// Automatically adjust URLs of common services to point to a direct download URL.
+				$this->import_config['url'] = $this->fix_common_url_mistakes( $this->import_config['url'] );
+
 				/**
 				 * Load WP file functions to be sure that `download_url()` exists, in particular during Cron requests.
 				 */
-				require_once ABSPATH . 'wp-admin/includes/file.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
+				require_once ABSPATH . 'wp-admin/includes/file.php';
 
 				// Download URL to local file.
 				$location = download_url( $this->import_config['url'] );
@@ -182,6 +185,43 @@ class TablePress_Import {
 		}
 
 		return $import_files;
+	}
+
+	/**
+	 * Fixes common mistakes in URLs from popular services to point to a direct download URL.
+	 *
+	 * Currently supports Google Sheets, Microsoft OneDrive, and Dropbox.
+	 * See https://tablepress.org/tutorials/ for more specific instructions on how to get the correct URL.
+	 *
+	 * @since 3.2.4
+	 *
+	 * @param string $url URL that shall be fixed.
+	 * @return string Fixed URL.
+	 */
+	protected function fix_common_url_mistakes( string $url ): string {
+		/**
+		 * Filters whether common URL mistakes shall be fixed automatically.
+		 *
+		 * @since 3.2.4
+		 *
+		 * @param bool $fix_common_url_mistakes Whether to fix common URL mistakes. Default true.
+		 */
+		if ( ! apply_filters( 'tablepress_import_fix_common_url_mistakes', true ) ) {
+			return $url;
+		}
+
+		if ( str_starts_with( $url, 'https://docs.google.com/spreadsheets/' ) && str_ends_with( $url, '/edit?usp=sharing' ) ) {
+			// Google Sheets "Sharing URL" to direct download URL.
+			$url = str_replace( '/edit?usp=sharing', '/export?format=csv', $url );
+		} elseif ( str_starts_with( $url, 'https://1drv.ms/' ) && ! str_ends_with( $url, '&download=1' ) ) {
+			// OneDrive shared link to direct download link.
+			$url .= '&download=1';
+		} elseif ( str_starts_with( $url, 'https://www.dropbox.com/' ) && str_ends_with( $url, '&dl=0' ) ) {
+			// Dropbox shared link to direct download link.
+			$url = str_replace( '&dl=0', '&dl=1', $url );
+		}
+
+		return $url;
 	}
 
 	/**
@@ -370,7 +410,7 @@ class TablePress_Import {
 	protected function extract_zip_file_pclzip( File $zip_file ) /* : array|WP_Error */ {
 		mbstring_binary_safe_encoding();
 
-		require_once ABSPATH . 'wp-admin/includes/class-pclzip.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
+		require_once ABSPATH . 'wp-admin/includes/class-pclzip.php';
 
 		$archive = new PclZip( $zip_file->location );
 		$archive_files = $archive->extract( PCLZIP_OPT_EXTRACT_AS_STRING ); // @phpstan-ignore arguments.count (PclZip::extract() uses `func_get_args()` to handle optional arguments.)

@@ -627,10 +627,6 @@ class TablePress_Table_Model extends TablePress_Model {
 			do_action( $cache_flush_hook );
 		}
 
-		// Elementor.
-		if ( class_exists( 'Elementor\Core\Base\Document' ) ) {
-			delete_post_meta_by_key( Elementor\Core\Base\Document::CACHE_META_KEY );
-		}
 		// Kinsta.
 		if ( isset( $GLOBALS['kinsta_cache'] ) && ! empty( $GLOBALS['kinsta_cache']->kinsta_cache_purge ) && is_callable( array( $GLOBALS['kinsta_cache']->kinsta_cache_purge, 'purge_complete_caches' ) ) ) {
 			$GLOBALS['kinsta_cache']->kinsta_cache_purge->purge_complete_caches(); // @phpstan-ignore method.nonObject
@@ -1266,7 +1262,7 @@ class TablePress_Table_Model extends TablePress_Model {
 		/**
 		 * Load WP export functions.
 		 */
-		require_once ABSPATH . 'wp-admin/includes/export.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
+		require_once ABSPATH . 'wp-admin/includes/export.php';
 		$value = wxr_cdata( implode( ',', $table_ids ) );
 
 		// Hijack the filter and print extra XML code for our faked post meta field.

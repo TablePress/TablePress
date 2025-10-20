@@ -72,11 +72,11 @@ abstract class TablePress_Controller {
 					/**
 					 * Load WP file functions to provide filesystem access functions early.
 					 */
-					require_once ABSPATH . 'wp-admin/includes/file.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
+					require_once ABSPATH . 'wp-admin/includes/file.php';
 					/**
 					 * Load WP admin template functions to provide `submit_button()` which is necessary for `request_filesystem_credentials()`.
 					 */
-					require_once ABSPATH . 'wp-admin/includes/template.php'; // @phpstan-ignore requireOnce.fileNotFound (This is a WordPress core file that always exists.)
+					require_once ABSPATH . 'wp-admin/includes/template.php';
 					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 
 					$custom_css_minified = TablePress::$model_options->get( 'custom_css_minified' );

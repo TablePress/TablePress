@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 3.2.3
+Stable tag: 3.2.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,13 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.2.4 (October 21, 2025) =
+
+* Improvement: Improve table import when importing URLs from external services like Google Sheets, Microsoft OneDrive, and Dropbox.
+* Bugfix: Elementor integration: Prevent an error with the “Element Cache”.
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Updated external libraries to benefit from enhancements and bug fixes.
+
 = Version 3.2.3 (September 23, 2025) =
 
 * Elementor integration: Support for clearing the “Element Cache” was added.
@@ -175,7 +182,7 @@ TablePress 3.2 is a feature, stability, maintenance, and compatibility update. H
 
 == Upgrade Notice ==
 
-= 3.2.3 =
+= 3.2.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!
 
 = 3.2 =
