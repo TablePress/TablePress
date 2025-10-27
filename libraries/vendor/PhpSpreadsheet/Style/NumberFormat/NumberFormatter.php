@@ -101,7 +101,7 @@ class NumberFormatter extends BaseFormatter
 				$numbers[1] .= str_repeat('0', $msklen - $numlen);
 			}
 			$decimalPart = strrev(self::complexNumberFormatMask(strrev($numbers[1]), strrev($masks[1]), false));
-			$decimalPart = substr($decimalPart, 0, $msklen);
+			$decimalPart = (string) substr($decimalPart, 0, $msklen);
 
 			return "{$sign}{$integerPart}.{$decimalPart}";
 		}

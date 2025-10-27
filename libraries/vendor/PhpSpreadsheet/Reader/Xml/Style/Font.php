@@ -64,7 +64,7 @@ class Font extends StyleBase
 					break;
 				case 'Color':
 					/** @var string[][][] $style */
-					$style['font']['color']['rgb'] = substr($styleAttributeValue, 1);
+					$style['font']['color']['rgb'] = (string) substr($styleAttributeValue, 1);
 
 					break;
 				case 'Bold':

@@ -2,6 +2,8 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Shared;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
+
 class Escher
 {
 	/**
@@ -23,6 +25,17 @@ class Escher
 	}
 
 	/**
+	 * Get Drawing Group Container.
+	 */
+	public function getDggContainerOrThrow(): Escher\DggContainer
+				{
+					if (!isset($this->dggContainer)) {
+						throw new SpreadsheetException('dggContainer is unexpectedly null');
+					}
+					return $this->dggContainer;
+				}
+
+	/**
 	 * Set Drawing Group Container.
 	 */
 	public function setDggContainer(Escher\DggContainer $dggContainer): Escher\DggContainer
@@ -37,6 +50,17 @@ class Escher
 	{
 		return $this->dgContainer;
 	}
+
+	/**
+	 * Get Drawing Container.
+	 */
+	public function getDgContainerOrThrow(): Escher\DgContainer
+				{
+					if (!isset($this->dgContainer)) {
+						throw new SpreadsheetException('dgContainer is unexpectedly null');
+					}
+					return $this->dgContainer;
+				}
 
 	/**
 	 * Set Drawing Container.

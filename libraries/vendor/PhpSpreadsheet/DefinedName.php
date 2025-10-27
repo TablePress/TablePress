@@ -94,7 +94,7 @@ abstract class DefinedName
 	public static function testIfFormula(string $value): bool
 	{
 		if (str_starts_with($value, '=')) {
-			$value = substr($value, 1);
+			$value = (string) substr($value, 1);
 		}
 
 		if (is_numeric($value)) {

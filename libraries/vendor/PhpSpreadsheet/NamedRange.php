@@ -48,7 +48,7 @@ class NamedRange extends DefinedName
 	{
 		$range = $this->value;
 		if (str_starts_with($range, '=')) {
-			$range = substr($range, 1);
+			$range = (string) substr($range, 1);
 		}
 
 		return Coordinate::extractAllCellReferencesInRange($range);

@@ -345,7 +345,7 @@ class Xml extends BaseReader
 					$definedValue = (string) $definedName_ss['RefersTo'];
 					$convertedValue = AddressHelper::convertFormulaToA1($definedValue);
 					if ($convertedValue[0] === '=') {
-						$convertedValue = substr($convertedValue, 1);
+						$convertedValue = (string) substr($convertedValue, 1);
 					}
 					$spreadsheet->addDefinedName(DefinedName::createInstance($name, $spreadsheet->getActiveSheet(), $convertedValue, true));
 				}
@@ -687,7 +687,7 @@ class Xml extends BaseReader
 				$definedValue = (string) $definedName_ss['RefersTo'];
 				$convertedValue = AddressHelper::convertFormulaToA1($definedValue);
 				if ($convertedValue[0] === '=') {
-					$convertedValue = substr($convertedValue, 1);
+					$convertedValue = (string) substr($convertedValue, 1);
 				}
 				$spreadsheet->addDefinedName(DefinedName::createInstance($name, $activeWorksheet, $convertedValue));
 			}

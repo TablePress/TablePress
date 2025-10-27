@@ -235,7 +235,7 @@ class OLERead
 		$entryLen = strlen($this->entry);
 		while ($offset < $entryLen) {
 			// entry data (128 bytes)
-			$d = substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);
+			$d = (string) substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);
 
 			// size in bytes of name
 			$nameSize = ord($d[self::SIZE_OF_NAME_POS]) | (ord($d[self::SIZE_OF_NAME_POS + 1]) << 8);
@@ -249,7 +249,7 @@ class OLERead
 
 			$size = self::getInt4d($d, self::SIZE_POS);
 
-			$name = str_replace("\x00", '', substr($d, 0, $nameSize));
+			$name = str_replace("\x00", '', (string) substr($d, 0, $nameSize));
 
 			$this->props[] = [
 				'name' => $name,

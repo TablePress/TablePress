@@ -565,11 +565,14 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 
 		// DataTables datetime format string handling.
 		if ( ! empty( $this->datatables_datetime_formats ) ) {
-			// Create a command like `DataTable.datetime('MM/DD/YYYY');DataTable.datetime('DD.MM.YYYY');`.
+			// Create a command like `DataTable.datetime("MM/DD/YYYY");DataTable.datetime("DD.MM.YYYY");`.
 			$datatables_datetime_command = implode(
 				'',
 				array_map(
-					static fn( string $datetime_format ): string => "DataTable.datetime('{$datetime_format}');",
+					static function ( string $datetime_format ): string {
+						$datetime_format = wp_json_encode( $datetime_format, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES );
+						return "DataTable.datetime({$datetime_format});";
+					},
 					$this->datatables_datetime_formats,
 				)
 			) . "\n";

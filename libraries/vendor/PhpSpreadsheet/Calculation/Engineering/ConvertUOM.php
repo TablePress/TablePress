@@ -583,7 +583,7 @@ class ConvertUOM
 
 		// Check 1-character standard metric multiplier prefixes
 		$multiplierType = substr($uom, 0, 1);
-		$uom = substr($uom, 1);
+		$uom = (string) substr($uom, 1);
 		if (isset(self::$conversionUnits[$uom], self::$conversionMultipliers[$multiplierType])) {
 			if (self::$conversionUnits[$uom]['AllowPrefix'] === false) {
 				throw new Exception('Prefix not allowed for UoM');
@@ -594,7 +594,7 @@ class ConvertUOM
 		}
 
 		$multiplierType .= substr($uom, 0, 1);
-		$uom = substr($uom, 1);
+		$uom = (string) substr($uom, 1);
 
 		// Check 2-character standard metric multiplier prefixes
 		if (isset(self::$conversionUnits[$uom], self::$conversionMultipliers[$multiplierType])) {

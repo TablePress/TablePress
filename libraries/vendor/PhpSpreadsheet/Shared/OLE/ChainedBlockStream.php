@@ -57,7 +57,7 @@ class ChainedBlockStream
 		}
 
 		// 25 is length of "ole-chainedblockstream://"
-		parse_str(substr($path, 25), $this->params);
+		parse_str((string) substr($path, 25), $this->params);
 		if (!isset($this->params['oleInstanceId'], $this->params['blockId'], $GLOBALS['_OLE_INSTANCES'][$this->params['oleInstanceId']])) { //* @phpstan-ignore-line
 			if ($options & STREAM_REPORT_ERRORS) {
 				trigger_error('OLE stream not found', E_USER_WARNING);
@@ -93,7 +93,7 @@ class ChainedBlockStream
 			}
 		}
 		if (isset($this->params['size'])) {
-			$this->data = substr($this->data, 0, $this->params['size']); //* @phpstan-ignore-line
+			$this->data = (string) substr($this->data, 0, $this->params['size']); //* @phpstan-ignore-line
 		}
 
 		if ($options & STREAM_USE_PATH) {
@@ -124,7 +124,7 @@ class ChainedBlockStream
 		if ($this->stream_eof()) {
 			return false;
 		}
-		$s = substr($this->data, (int) $this->pos, $count);
+		$s = (string) substr($this->data, (int) $this->pos, $count);
 		$this->pos += $count;
 
 		return $s;

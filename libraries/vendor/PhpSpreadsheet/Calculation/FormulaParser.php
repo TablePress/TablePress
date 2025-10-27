@@ -605,7 +605,7 @@ class FormulaParser
 			if ($token->getTokenType() == FormulaToken::TOKEN_TYPE_FUNCTION) {
 				if ($token->getValue() !== '') {
 					if (str_starts_with($token->getValue(), '@')) {
-						$token->setValue(substr($token->getValue(), 1));
+						$token->setValue((string) substr($token->getValue(), 1));
 					}
 				}
 			}

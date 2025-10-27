@@ -73,7 +73,7 @@ class AddressHelper
 
 	protected static function convertSpreadsheetMLFormula(string $formula): string
 	{
-		$formula = substr($formula, 3);
+		$formula = (string) substr($formula, 3);
 		$temp = explode('"', $formula);
 		$key = false;
 		foreach ($temp as &$value) {

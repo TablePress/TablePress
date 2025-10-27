@@ -74,9 +74,9 @@ abstract class WizardAbstract
 			&& str_starts_with($operand, '"')
 			&& str_ends_with($operand, '"')
 		) {
-			$operand = str_replace('""', '"', substr($operand, 1, -1));
+			$operand = str_replace('""', '"', (string) substr($operand, 1, -1));
 		} elseif ($operandValueType === Wizard::VALUE_TYPE_FORMULA && str_starts_with($operand, '=')) {
-			$operand = substr($operand, 1);
+			$operand = (string) substr($operand, 1);
 		}
 
 		return $operand;

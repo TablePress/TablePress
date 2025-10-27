@@ -302,7 +302,7 @@ class OLE
 			fseek($fh, $pos, SEEK_SET);
 			$nameUtf16 = (string) fread($fh, 64);
 			$nameLength = self::readInt2($fh);
-			$nameUtf16 = substr($nameUtf16, 0, $nameLength - 2);
+			$nameUtf16 = (string) substr($nameUtf16, 0, $nameLength - 2);
 			// Simple conversion from UTF-16LE to ISO-8859-1
 			$name = str_replace("\x00", '', $nameUtf16);
 			$type = self::readInt1($fh);

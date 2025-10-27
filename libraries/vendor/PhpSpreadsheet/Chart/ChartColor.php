@@ -90,10 +90,10 @@ class ChartColor
 		if (empty($type) && !empty($color)) {
 			if (str_starts_with($color, '*')) {
 				$type = 'schemeClr';
-				$color = substr($color, 1);
+				$color = (string) substr($color, 1);
 			} elseif (str_starts_with($color, '/')) {
 				$type = 'prstClr';
-				$color = substr($color, 1);
+				$color = (string) substr($color, 1);
 			} elseif (preg_match('/^[0-9A-Fa-f]{6}$/', $color) === 1) {
 				$type = 'srgbClr';
 			}

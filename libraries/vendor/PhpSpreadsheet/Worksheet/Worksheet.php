@@ -307,11 +307,6 @@ class Worksheet
 	private ?Color $tabColor = null;
 
 	/**
-	 * Hash.
-	 */
-	private int $hash;
-
-	/**
 	 * CodeName.
 	 */
 	private ?string $codeName = null;
@@ -323,7 +318,6 @@ class Worksheet
 	{
 		// Set parent and title
 		$this->parent = $parent;
-		$this->hash = spl_object_id($this);
 		$this->setTitle($title, false);
 		// setTitle can change $pTitle
 		$this->setCodeName($this->getTitle());
@@ -377,11 +371,6 @@ class Worksheet
 
 		$this->disconnectCells();
 		unset($this->rowDimensions, $this->columnDimensions, $this->tableCollection, $this->drawingCollection, $this->chartCollection, $this->autoFilter);
-	}
-
-	public function __wakeup(): void
-	{
-		$this->hash = spl_object_id($this);
 	}
 
 	/**
@@ -1225,7 +1214,7 @@ class Worksheet
 				}
 
 				/** @phpstan-ignore-next-line */
-				$cellCoordinate = ltrim(substr($namedRange->getValue(), strrpos($namedRange->getValue(), '!')), '!');
+				$cellCoordinate = ltrim((string) substr($namedRange->getValue(), strrpos($namedRange->getValue(), '!')), '!');
 				$finalCoordinate = str_replace('$', '', $cellCoordinate);
 			}
 		}
@@ -2944,13 +2933,16 @@ class Worksheet
 	}
 
 	/**
+				 * @param bool $calculateFormulas Whether to calculate cell's value if it is a formula.
 				 * @param mixed $nullValue value to use when null
+				 * @param bool $formatData Whether to format data according to cell's style.
+				 * @param bool $lessFloatPrecision If true, formatting unstyled floats will convert them to a more human-friendly but less computationally accurate value
 				 *
 				 * @throws Exception
 				 * @throws \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception
 				 * @return mixed
 				 */
-				protected function cellToArray(Cell $cell, bool $calculateFormulas, bool $formatData, $nullValue)
+				protected function cellToArray(Cell $cell, bool $calculateFormulas, bool $formatData, $nullValue, bool $lessFloatPrecision = false)
 	{
 		$returnValue = $nullValue;
 
@@ -2965,10 +2957,7 @@ class Worksheet
 				$style = $this->getParentOrThrow()->getCellXfByIndex($cell->getXfIndex());
 				/** @var null|bool|float|int|RichText|string */
 				$returnValuex = $returnValue;
-				$returnValue = NumberFormat::toFormattedString(
-					$returnValuex,
-					$style->getNumberFormat()->getFormatCode() ?? NumberFormat::FORMAT_GENERAL
-				);
+				$returnValue = NumberFormat::toFormattedString($returnValuex, $style->getNumberFormat()->getFormatCode() ?? NumberFormat::FORMAT_GENERAL, null, $lessFloatPrecision);
 			}
 		}
 
@@ -2985,6 +2974,8 @@ class Worksheet
 				 *                             True - Return rows and columns indexed by their actual row and column IDs
 				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
 				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 * @param bool $reduceArrays If true and result is a formula which evaluates to an array, reduce it to the top leftmost value.
+				 * @param bool $lessFloatPrecision If true, formatting unstyled floats will convert them to a more human-friendly but less computationally accurate value
 				 *
 				 * @return mixed[][]
 				 */
@@ -2995,12 +2986,14 @@ class Worksheet
 		bool $formatData = true,
 		bool $returnCellRef = false,
 		bool $ignoreHidden = false,
-		bool $reduceArrays = false
+		bool $reduceArrays = false,
+		bool $lessFloatPrecision = false
 	): array {
 		$returnValue = [];
 
 		// Loop through rows
-		foreach ($this->rangeToArrayYieldRows($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays) as $rowRef => $rowArray) {
+		foreach ($this->rangeToArrayYieldRows($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays, $lessFloatPrecision) as $rowRef => $rowArray) {
+			/** @var int $rowRef */
 			$returnValue[$rowRef] = $rowArray;
 		}
 
@@ -3018,6 +3011,8 @@ class Worksheet
 				 *                             True - Return rows and columns indexed by their actual row and column IDs
 				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
 				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 * @param bool $reduceArrays If true and result is a formula which evaluates to an array, reduce it to the top leftmost value.
+				 * @param bool $lessFloatPrecision If true, formatting unstyled floats will convert them to a more human-friendly but less computationally accurate value
 				 *
 				 * @return mixed[][]
 				 */
@@ -3028,14 +3023,16 @@ class Worksheet
 		bool $formatData = true,
 		bool $returnCellRef = false,
 		bool $ignoreHidden = false,
-		bool $reduceArrays = false
+		bool $reduceArrays = false,
+		bool $lessFloatPrecision = false
 	): array {
 		$returnValue = [];
 
 		$parts = explode(',', $ranges);
 		foreach ($parts as $part) {
 			// Loop through rows
-			foreach ($this->rangeToArrayYieldRows($part, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays) as $rowRef => $rowArray) {
+			foreach ($this->rangeToArrayYieldRows($part, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays, $lessFloatPrecision) as $rowRef => $rowArray) {
+				/** @var int $rowRef */
 				$returnValue[$rowRef] = $rowArray;
 			}
 		}
@@ -3054,6 +3051,8 @@ class Worksheet
 				 *                             True - Return rows and columns indexed by their actual row and column IDs
 				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
 				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 * @param bool $reduceArrays If true and result is a formula which evaluates to an array, reduce it to the top leftmost value.
+				 * @param bool $lessFloatPrecision If true, formatting unstyled floats will convert them to a more human-friendly but less computationally accurate value
 				 *
 				 * @return Generator<array<mixed>>
 				 */
@@ -3064,7 +3063,8 @@ class Worksheet
 		bool $formatData = true,
 		bool $returnCellRef = false,
 		bool $ignoreHidden = false,
-		bool $reduceArrays = false
+		bool $reduceArrays = false,
+		bool $lessFloatPrecision = false
 	) {
 		$range = Validations::validateCellOrCellRange($range);
 
@@ -3130,7 +3130,7 @@ class Worksheet
 						$columnRef = $returnCellRef ? $col : ($thisCol - $minColInt);
 						$cell = $this->cellCollection->get("{$col}{$thisRow}");
 						if ($cell !== null) {
-							$value = $this->cellToArray($cell, $calculateFormulas, $formatData, $nullValue);
+							$value = $this->cellToArray($cell, $calculateFormulas, $formatData, $nullValue, $lessFloatPrecision);
 							if ($reduceArrays) {
 								while (is_array($value)) {
 									$value = array_shift($value);
@@ -3206,7 +3206,7 @@ class Worksheet
 
 		if ($namedRange->getLocalOnly()) {
 			$worksheet = $namedRange->getWorksheet();
-			if ($worksheet === null || $this->hash !== $worksheet->getHashInt()) {
+			if ($worksheet === null || $this !== $worksheet) {
 				if ($returnNullIfInvalid) {
 					return null;
 				}
@@ -3231,6 +3231,8 @@ class Worksheet
 				 *                             True - Return rows and columns indexed by their actual row and column IDs
 				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
 				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 * @param bool $reduceArrays If true and result is a formula which evaluates to an array, reduce it to the top leftmost value.
+				 * @param bool $lessFloatPrecision If true, formatting unstyled floats will convert them to a more human-friendly but less computationally accurate value
 				 *
 				 * @return mixed[][]
 				 */
@@ -3241,16 +3243,17 @@ class Worksheet
 		bool $formatData = true,
 		bool $returnCellRef = false,
 		bool $ignoreHidden = false,
-		bool $reduceArrays = false
+		bool $reduceArrays = false,
+		bool $lessFloatPrecision = false
 	): array {
 		$retVal = [];
 		$namedRange = $this->validateNamedRange($definedName);
 		if ($namedRange !== null) {
-			$cellRange = ltrim(substr($namedRange->getValue(), (int) strrpos($namedRange->getValue(), '!')), '!');
+			$cellRange = ltrim((string) substr($namedRange->getValue(), (int) strrpos($namedRange->getValue(), '!')), '!');
 			$cellRange = str_replace('$', '', $cellRange);
 			$workSheet = $namedRange->getWorksheet();
 			if ($workSheet !== null) {
-				$retVal = $workSheet->rangeToArray($cellRange, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays);
+				$retVal = $workSheet->rangeToArray($cellRange, $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays, $lessFloatPrecision);
 			}
 		}
 
@@ -3267,6 +3270,8 @@ class Worksheet
 				 *                             True - Return rows and columns indexed by their actual row and column IDs
 				 * @param bool $ignoreHidden False - Return values for rows/columns even if they are defined as hidden.
 				 *                            True - Don't return values for rows/columns that are defined as hidden.
+				 * @param bool $reduceArrays If true and result is a formula which evaluates to an array, reduce it to the top leftmost value.
+				 * @param bool $lessFloatPrecision If true, formatting unstyled floats will convert them to a more human-friendly but less computationally accurate value
 				 *
 				 * @return mixed[][]
 				 */
@@ -3276,7 +3281,8 @@ class Worksheet
 		bool $formatData = true,
 		bool $returnCellRef = false,
 		bool $ignoreHidden = false,
-		bool $reduceArrays = false
+		bool $reduceArrays = false,
+		bool $lessFloatPrecision = false
 	): array {
 		// Garbage collect...
 		$this->garbageCollect();
@@ -3287,7 +3293,7 @@ class Worksheet
 		$maxRow = $this->getHighestRow();
 
 		// Return
-		return $this->rangeToArray("A1:{$maxCol}{$maxRow}", $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays);
+		return $this->rangeToArray("A1:{$maxCol}{$maxRow}", $nullValue, $calculateFormulas, $formatData, $returnCellRef, $ignoreHidden, $reduceArrays, $lessFloatPrecision);
 	}
 
 	/**
@@ -3338,11 +3344,7 @@ class Worksheet
 		}
 
 		// Cache values
-		if ($highestColumn < 1) {
-			$this->cachedHighestColumn = 1;
-		} else {
-			$this->cachedHighestColumn = $highestColumn;
-		}
+		$this->cachedHighestColumn = max(1, $highestColumn);
 		/** @var int $highestRow */
 		$this->cachedHighestRow = $highestRow;
 
@@ -3350,9 +3352,14 @@ class Worksheet
 		return $this;
 	}
 
+	/**
+	 * @deprecated 5.2.0 Serves no useful purpose. No replacement.
+	 *
+	 * @codeCoverageIgnore
+	 */
 	public function getHashInt(): int
 	{
-		return $this->hash;
+		return spl_object_id($this);
 	}
 
 	/**
@@ -3382,22 +3389,22 @@ class Worksheet
 		}
 
 		if ($returnRange) {
-			$title = substr($range, 0, $sep);
+			$title = (string) substr($range, 0, $sep);
 			if ($unapostrophize) {
 				$title = self::unApostrophizeTitle($title);
 			}
 
-			return [$title, substr($range, $sep + 1)];
+			return [$title, (string) substr($range, $sep + 1)];
 		}
 
-		return substr($range, $sep + 1);
+		return (string) substr($range, $sep + 1);
 	}
 
 	public static function unApostrophizeTitle(?string $title): string
 	{
 		$title ??= '';
 		if ($title[0] === "'" && substr($title, -1) === "'") {
-			$title = str_replace("''", "'", substr($title, 1, -1));
+			$title = str_replace("''", "'", (string) substr($title, 1, -1));
 		}
 
 		return $title;
@@ -3740,7 +3747,6 @@ class Worksheet
 				}
 			}
 		}
-		$this->hash = spl_object_id($this);
 	}
 
 	/**

@@ -376,7 +376,7 @@ class Functions
 	public static function trimSheetFromCellReference(string $coordinate): string
 	{
 		if (str_contains($coordinate, '!')) {
-			$coordinate = substr($coordinate, strrpos($coordinate, '!') + 1);
+			$coordinate = (string) substr($coordinate, strrpos($coordinate, '!') + 1);
 		}
 
 		return $coordinate;

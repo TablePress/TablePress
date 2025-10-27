@@ -93,7 +93,7 @@ class ConvertBinary extends ConvertBase
 
 		if (strlen($value) == 10 && $value[0] === '1') {
 			$high2 = substr($value, 0, 2);
-			$low8 = substr($value, 2);
+			$low8 = (string) substr($value, 2);
 			$xarr = ['00' => '00000000', '01' => '00000001', '10' => 'FFFFFFFE', '11' => 'FFFFFFFF'];
 
 			return $xarr[$high2] . strtoupper(substr('0' . dechex((int) bindec($low8)), -2));

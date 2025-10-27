@@ -110,7 +110,7 @@ class ArrayArgumentProcessor
 	}
 
 	/**
-				 * @param mixed[] $matrixIndexes
+				 * @param array<int|string> $matrixIndexes
 				 *
 				 * @return mixed[]
 				 * @param mixed ...$arguments

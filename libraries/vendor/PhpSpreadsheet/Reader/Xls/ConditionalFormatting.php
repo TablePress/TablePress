@@ -68,8 +68,8 @@ class ConditionalFormatting extends Xls
 
 		// offset: var; size: var; cell range address list with
 		$cellRangeAddressList = ($xls->version == self::XLS_BIFF8)
-			? Biff8::readBIFF8CellRangeAddressList(substr($recordData, 12))
-			: Biff5::readBIFF5CellRangeAddressList(substr($recordData, 12));
+			? Biff8::readBIFF8CellRangeAddressList((string) substr($recordData, 12))
+			: Biff5::readBIFF5CellRangeAddressList((string) substr($recordData, 12));
 		$cellRangeAddresses = $cellRangeAddressList['cellRangeAddresses'];
 
 		return $cellRangeAddresses;
@@ -130,7 +130,7 @@ class ConditionalFormatting extends Xls
 		$offset = 12;
 
 		if ($hasFontRecord === true) {
-			$fontStyle = substr($recordData, $offset, 118);
+			$fontStyle = (string) substr($recordData, $offset, 118);
 			$this->getCFFontStyle($fontStyle, $style, $xls);
 			$offset += 118;
 			$noFormatSet = false;
@@ -143,14 +143,14 @@ class ConditionalFormatting extends Xls
 		}
 
 		if ($hasBorderRecord === true) {
-			$borderStyle = substr($recordData, $offset, 8);
+			$borderStyle = (string) substr($recordData, $offset, 8);
 			$this->getCFBorderStyle($borderStyle, $style, $hasBorderLeft, $hasBorderRight, $hasBorderTop, $hasBorderBottom, $xls);
 			$offset += 8;
 			$noFormatSet = false;
 		}
 
 		if ($hasFillRecord === true) {
-			$fillStyle = substr($recordData, $offset, 4);
+			$fillStyle = (string) substr($recordData, $offset, 4);
 			$this->getCFFillStyle($fillStyle, $style, $xls);
 			$offset += 4;
 			$noFormatSet = false;
@@ -237,7 +237,7 @@ class ConditionalFormatting extends Xls
 		$leftc = ($value >> 16) & 0x7F;
 		$rightc = ($value >> 23) & 0x7F;
 		/** @var false|int[] */
-		$valueArray = unpack('V', substr($options, 4));
+		$valueArray = unpack('V', (string) substr($options, 4));
 		$value = is_array($valueArray) ? $valueArray[1] : 0;
 		$topc = $value & 0x7F;
 		$bottomc = ($value & 0x3F80) >> 7;
@@ -303,7 +303,7 @@ class ConditionalFormatting extends Xls
 				private function readCFFormula(string $recordData, int $offset, int $size, Xls $xls)
 	{
 		try {
-			$formula = substr($recordData, $offset, $size);
+			$formula = (string) substr($recordData, $offset, $size);
 			$formula = pack('v', $size) . $formula; // prepend the length
 
 			$formula = $xls->getFormulaFromStructure($formula);

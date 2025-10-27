@@ -25,8 +25,6 @@ class XlsBase extends BaseReader
 	const XLS_TYPE_FORMULA = 0x0006;
 	const XLS_TYPE_EOF = 0x000A;
 	const XLS_TYPE_PROTECT = 0x0012;
-	const XLS_TYPE_OBJECTPROTECT = 0x0063;
-	const XLS_TYPE_SCENPROTECT = 0x00DD;
 	const XLS_TYPE_PASSWORD = 0x0013;
 	const XLS_TYPE_HEADER = 0x0014;
 	const XLS_TYPE_FOOTER = 0x0015;
@@ -50,6 +48,7 @@ class XlsBase extends BaseReader
 	const XLS_TYPE_CODEPAGE = 0x0042;
 	const XLS_TYPE_DEFCOLWIDTH = 0x0055;
 	const XLS_TYPE_OBJ = 0x005D;
+	const XLS_TYPE_OBJECTPROTECT = 0x0063;
 	const XLS_TYPE_COLINFO = 0x007D;
 	const XLS_TYPE_IMDATA = 0x007F;
 	const XLS_TYPE_SHEETPR = 0x0081;
@@ -62,6 +61,7 @@ class XlsBase extends BaseReader
 	const XLS_TYPE_MULRK = 0x00BD;
 	const XLS_TYPE_MULBLANK = 0x00BE;
 	const XLS_TYPE_DBCELL = 0x00D7;
+	const XLS_TYPE_SCENPROTECT = 0x00DD;
 	const XLS_TYPE_XF = 0x00E0;
 	const XLS_TYPE_MERGEDCELLS = 0x00E5;
 	const XLS_TYPE_MSODRAWINGGROUP = 0x00EB;
@@ -70,6 +70,8 @@ class XlsBase extends BaseReader
 	const XLS_TYPE_LABELSST = 0x00FD;
 	const XLS_TYPE_EXTSST = 0x00FF;
 	const XLS_TYPE_EXTERNALBOOK = 0x01AE;
+	const XLS_TYPE_CFHEADER = 0x01B0;
+	const XLS_TYPE_CFRULE = 0x01B1;
 	const XLS_TYPE_DATAVALIDATIONS = 0x01B2;
 	const XLS_TYPE_TXO = 0x01B6;
 	const XLS_TYPE_HYPERLINK = 0x01B8;
@@ -90,13 +92,11 @@ class XlsBase extends BaseReader
 	const XLS_TYPE_FORMAT = 0x041E;
 	const XLS_TYPE_SHAREDFMLA = 0x04BC;
 	const XLS_TYPE_BOF = 0x0809;
+	const XLS_TYPE_SHEETLAYOUT = 0x0862;
 	const XLS_TYPE_SHEETPROTECTION = 0x0867;
 	const XLS_TYPE_RANGEPROTECTION = 0x0868;
-	const XLS_TYPE_SHEETLAYOUT = 0x0862;
 	const XLS_TYPE_XFEXT = 0x087D;
 	const XLS_TYPE_PAGELAYOUTVIEW = 0x088B;
-	const XLS_TYPE_CFHEADER = 0x01B0;
-	const XLS_TYPE_CFRULE = 0x01B1;
 	const XLS_TYPE_UNKNOWN = 0xFFFF;
 
 	// Encryption type
@@ -209,7 +209,7 @@ class XlsBase extends BaseReader
 		// offset: 0: size: 1; length of the string (character count)
 		$characterCount = ord($subData[0]);
 
-		$string = self::readUnicodeString(substr($subData, 1), $characterCount);
+		$string = self::readUnicodeString((string) substr($subData, 1), $characterCount);
 
 		// add 1 for the string length
 		++$string['size'];
@@ -229,7 +229,7 @@ class XlsBase extends BaseReader
 		// offset: 0: size: 2; length of the string (character count)
 		$characterCount = self::getUInt2d($subData, 0);
 
-		$string = self::readUnicodeString(substr($subData, 2), $characterCount);
+		$string = self::readUnicodeString((string) substr($subData, 2), $characterCount);
 
 		// add 2 for the string length
 		$string['size'] += 2;
@@ -259,7 +259,7 @@ class XlsBase extends BaseReader
 		// offset: 1: size: var; character array
 		// this offset assumes richtext and Asian phonetic settings are off which is generally wrong
 		// needs to be fixed
-		$value = self::encodeUTF16(substr($subData, 1, $isCompressed ? $characterCount : 2 * $characterCount), $isCompressed);
+		$value = self::encodeUTF16((string) substr($subData, 1, $isCompressed ? $characterCount : 2 * $characterCount), $isCompressed);
 
 		return [
 			'value' => $value,
@@ -372,11 +372,20 @@ class XlsBase extends BaseReader
 		return StringHelper::convertEncoding($string, 'UTF-8', $this->codepage);
 	}
 
+	protected static function confirmPos(string $data, int $pos): void
+	{
+		if ($pos >= strlen($data)) {
+			throw new PhpSpreadsheetException('File appears to be corrupt'); // @codeCoverageIgnore
+		}
+	}
+
 	/**
 	 * Read 16-bit unsigned integer.
 	 */
 	public static function getUInt2d(string $data, int $pos): int
 	{
+		self::confirmPos($data, $pos + 1);
+
 		return ord($data[$pos]) | (ord($data[$pos + 1]) << 8);
 	}
 
@@ -385,6 +394,8 @@ class XlsBase extends BaseReader
 	 */
 	public static function getInt2d(string $data, int $pos): int
 	{
+		self::confirmPos($data, $pos + 1);
+
 		return unpack('s', $data[$pos] . $data[$pos + 1])[1]; // @phpstan-ignore-line
 	}
 
@@ -393,6 +404,8 @@ class XlsBase extends BaseReader
 	 */
 	public static function getInt4d(string $data, int $pos): int
 	{
+		self::confirmPos($data, $pos + 3);
+
 		// FIX: represent numbers correctly on 64-bit system
 		// http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
 		// Changed by Andreas Rehm 2006 to ensure correct result of the <<24 block on 32 and 64bit systems

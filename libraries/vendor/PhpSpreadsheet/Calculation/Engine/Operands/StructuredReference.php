@@ -65,12 +65,12 @@ final class StructuredReference implements Operand
 			- substr_count($val, self::CLOSE_BRACE);
 		while ($srCount > 0) {
 			$srIndex = strlen($val);
-			$srStringRemainder = substr($formula, $index + $srIndex);
+			$srStringRemainder = (string) substr($formula, $index + $srIndex);
 			$closingPos = strpos($srStringRemainder, self::CLOSE_BRACE);
 			if ($closingPos === false) {
 				throw new Exception("Formula Error: No closing ']' to match opening '['");
 			}
-			$srStringRemainder = substr($srStringRemainder, 0, $closingPos + 1);
+			$srStringRemainder = (string) substr($srStringRemainder, 0, $closingPos + 1);
 			--$srCount;
 			if (str_contains($srStringRemainder, self::OPEN_BRACE)) {
 				++$srCount;

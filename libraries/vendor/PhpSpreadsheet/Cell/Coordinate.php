@@ -317,7 +317,7 @@ abstract class Coordinate
 		$worksheet = $matches['worksheet'];
 		if ($worksheet !== '') {
 			if (substr($worksheet, 0, 1) === "'" && substr($worksheet, -1, 1) === "'") {
-				$worksheet = substr($worksheet, 1, -1);
+				$worksheet = (string) substr($worksheet, 1, -1);
 			}
 			$data['worksheet'] = strtolower($worksheet);
 		}
@@ -483,7 +483,7 @@ abstract class Coordinate
 		if ($worksheet) {
 			$quoted = Worksheet::nameRequiresQuotes($worksheet) ? "'" : '';
 			if (str_starts_with($worksheet, "'") && str_ends_with($worksheet, "'")) {
-				$worksheet = substr($worksheet, 1, -1);
+				$worksheet = (string) substr($worksheet, 1, -1);
 			}
 			$worksheet = str_replace("'", "''", $worksheet);
 		}

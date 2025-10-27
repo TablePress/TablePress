@@ -173,6 +173,9 @@ class Slk extends BaseReader
 		'U' => 'underline',
 	];
 
+	/**
+	 * @param-out true $hasCalculatedValue
+	 */
 	private function processFormula(string $rowDatum, bool &$hasCalculatedValue, string &$cellDataFormula, string $row, string $column): void
 	{
 		$cellDataFormula = '=' . substr($rowDatum, 1);
@@ -234,15 +237,15 @@ class Slk extends BaseReader
 			/** @var string $rowDatum */
 			switch ($rowDatum[0]) {
 				case 'X':
-					$column = substr($rowDatum, 1);
+					$column = (string) substr($rowDatum, 1);
 
 					break;
 				case 'Y':
-					$row = substr($rowDatum, 1);
+					$row = (string) substr($rowDatum, 1);
 
 					break;
 				case 'K':
-					$cellData = substr($rowDatum, 1);
+					$cellData = (string) substr($rowDatum, 1);
 					$tryNumeric = is_numeric($cellData);
 
 					break;
@@ -251,7 +254,7 @@ class Slk extends BaseReader
 
 					break;
 				case 'A':
-					$comment = substr($rowDatum, 1);
+					$comment = (string) substr($rowDatum, 1);
 					$columnLetter = Coordinate::stringFromColumnIndex((int) $column);
 					$spreadsheet->getActiveSheet()
 						->getComment("$columnLetter$row")
@@ -320,12 +323,12 @@ class Slk extends BaseReader
 			switch ($rowDatum[0]) {
 				case 'C':
 				case 'X':
-					$column = substr($rowDatum, 1);
+					$column = (string) substr($rowDatum, 1);
 
 					break;
 				case 'R':
 				case 'Y':
-					$row = substr($rowDatum, 1);
+					$row = (string) substr($rowDatum, 1);
 
 					break;
 				case 'P':
@@ -333,7 +336,7 @@ class Slk extends BaseReader
 
 					break;
 				case 'W':
-					[$startCol, $endCol, $columnWidth] = explode(' ', substr($rowDatum, 1));
+					[$startCol, $endCol, $columnWidth] = explode(' ', (string) substr($rowDatum, 1));
 
 					break;
 				case 'S':
@@ -361,7 +364,7 @@ class Slk extends BaseReader
 	/** @param mixed[][] $styleData */
 	private function styleSettings(string $rowDatum, array &$styleData, string &$fontStyle): void
 	{
-		$styleSettings = substr($rowDatum, 1);
+		$styleSettings = (string) substr($rowDatum, 1);
 		$iMax = strlen($styleSettings);
 		for ($i = 0; $i < $iMax; ++$i) {
 			$char = $styleSettings[$i];
@@ -440,12 +443,12 @@ class Slk extends BaseReader
 		foreach ($rowData as $rowDatum) {
 			switch ($rowDatum[0]) {
 				case 'P':
-					$formatArray['numberFormat']['formatCode'] = str_replace($fromFormats, $toFormats, substr($rowDatum, 1));
+					$formatArray['numberFormat']['formatCode'] = str_replace($fromFormats, $toFormats, (string) substr($rowDatum, 1));
 
 					break;
 				case 'E':
 				case 'F':
-					$formatArray['font']['name'] = substr($rowDatum, 1);
+					$formatArray['font']['name'] = (string) substr($rowDatum, 1);
 
 					break;
 				case 'M':
@@ -478,7 +481,7 @@ class Slk extends BaseReader
 	/** @param mixed[][] $formatArray */
 	private function processPFontStyles(string $rowDatum, array &$formatArray): void
 	{
-		$styleSettings = substr($rowDatum, 1);
+		$styleSettings = (string) substr($rowDatum, 1);
 		$iMax = strlen($styleSettings);
 		for ($i = 0; $i < $iMax; ++$i) {
 			if (array_key_exists($styleSettings[$i], self::FONT_STYLE_MAPPINGS)) {
@@ -559,9 +562,9 @@ class Slk extends BaseReader
 		foreach ($rowData as $rowDatum) {
 			$char0 = $rowDatum[0];
 			if ($char0 === 'X' || $char0 == 'C') {
-				$column = substr($rowDatum, 1);
+				$column = (string) substr($rowDatum, 1);
 			} elseif ($char0 === 'Y' || $char0 == 'R') {
-				$row = substr($rowDatum, 1);
+				$row = (string) substr($rowDatum, 1);
 			}
 		}
 	}

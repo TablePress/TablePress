@@ -115,7 +115,7 @@ class CellValue extends WizardAbstract implements WizardInterface
 	protected static function unwrapString(string $condition): string
 	{
 		if ((str_starts_with($condition, '"')) && (str_starts_with(strrev($condition), '"'))) {
-			$condition = substr($condition, 1, -1);
+			$condition = (string) substr($condition, 1, -1);
 		}
 
 		return str_replace('""', '"', $condition);

@@ -726,8 +726,8 @@ class ReferenceHelper
 				if ($matchCount > 0) {
 					foreach ($matches as $match) {
 						$fromString = self::sheetnameBeforeCells($match[2], $worksheetName, "{$match[3]}:{$match[4]}");
-						$modified3 = substr($this->updateCellReference('$A' . $match[3], $includeAbsoluteReferences, $onlyAbsoluteReferences, true), 2);
-						$modified4 = substr($this->updateCellReference('$A' . $match[4], $includeAbsoluteReferences, $onlyAbsoluteReferences, false), 2);
+						$modified3 = (string) substr($this->updateCellReference('$A' . $match[3], $includeAbsoluteReferences, $onlyAbsoluteReferences, true), 2);
+						$modified4 = (string) substr($this->updateCellReference('$A' . $match[4], $includeAbsoluteReferences, $onlyAbsoluteReferences, false), 2);
 
 						if ($match[3] . ':' . $match[4] !== $modified3 . ':' . $modified4) {
 							if (self::matchSheetName($match[2], $worksheetName)) {
@@ -750,8 +750,8 @@ class ReferenceHelper
 				if ($matchCount > 0) {
 					foreach ($matches as $match) {
 						$fromString = self::sheetnameBeforeCells($match[2], $worksheetName, "{$match[3]}:{$match[4]}");
-						$modified3 = substr($this->updateCellReference($match[3] . '$1', $includeAbsoluteReferences, $onlyAbsoluteReferences, true), 0, -2);
-						$modified4 = substr($this->updateCellReference($match[4] . '$1', $includeAbsoluteReferences, $onlyAbsoluteReferences, false), 0, -2);
+						$modified3 = (string) substr($this->updateCellReference($match[3] . '$1', $includeAbsoluteReferences, $onlyAbsoluteReferences, true), 0, -2);
+						$modified4 = (string) substr($this->updateCellReference($match[4] . '$1', $includeAbsoluteReferences, $onlyAbsoluteReferences, false), 0, -2);
 
 						if ($match[3] . ':' . $match[4] !== $modified3 . ':' . $modified4) {
 							if (self::matchSheetName($match[2], $worksheetName)) {
@@ -1045,7 +1045,7 @@ class ReferenceHelper
 	{
 		$cellAddress = $definedName->getValue();
 		$asFormula = ($cellAddress[0] === '=');
-		if ($definedName->getWorksheet() !== null && $definedName->getWorksheet()->getHashInt() === $worksheet->getHashInt()) {
+		if ($definedName->getWorksheet() === $worksheet) {
 			/**
 			 * If we delete the entire range that is referenced by a Named Range, MS Excel sets the value to #REF!
 			 * PhpSpreadsheet still only does a basic adjustment, so the Named Range will still reference Cells.
@@ -1064,7 +1064,7 @@ class ReferenceHelper
 
 	private function updateNamedFormula(DefinedName $definedName, Worksheet $worksheet, string $beforeCellAddress, int $numberOfColumns, int $numberOfRows): void
 	{
-		if ($definedName->getWorksheet() !== null && $definedName->getWorksheet()->getHashInt() === $worksheet->getHashInt()) {
+		if ($definedName->getWorksheet() === $worksheet) {
 			/**
 			 * If we delete the entire range that is referenced by a Named Formula, MS Excel sets the value to #REF!
 			 * PhpSpreadsheet still only does a basic adjustment, so the Named Formula will still reference Cells.

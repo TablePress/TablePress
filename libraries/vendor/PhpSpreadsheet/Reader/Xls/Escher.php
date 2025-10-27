@@ -12,6 +12,9 @@ use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContain
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE\Blip;
 
+/**
+ * @template T of BSE|BstoreContainer|DgContainer|DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|SpContainer|SpgrContainer
+ */
 class Escher
 {
 	const DGGCONTAINER = 0xF000;
@@ -49,16 +52,18 @@ class Escher
 	private int $pos;
 
 	/**
-				 * The object to be returned by the reader. Modified during load.
-				 * @var \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
-				 */
-				private $object;
+	 * The object to be returned by the reader. Modified during load.
+	 *
+	 * @var T
+	 */
+	private $object;
 
 	/**
-				 * Create a new Escher instance.
-				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer $object
-				 */
-				public function __construct($object)
+	 * Create a new Escher instance.
+	 *
+	 * @param T $object
+	 */
+	public function __construct($object)
 	{
 		$this->object = $object;
 	}
@@ -85,10 +90,11 @@ class Escher
 	];
 
 	/**
-				 * Load Escher stream data. May be a partial Escher stream.
-				 * @return \TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer|\TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer
-				 */
-				public function load(string $data)
+	 * Load Escher stream data. May be a partial Escher stream.
+	 *
+	 * @return T
+	 */
+	public function load(string $data)
 	{
 		$this->data = $data;
 
@@ -137,7 +143,7 @@ class Escher
 	private function readDggContainer(): void
 	{
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -167,7 +173,7 @@ class Escher
 	private function readBstoreContainer(): void
 	{
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -190,7 +196,7 @@ class Escher
 		$recInstance = (0xFFF0 & Xls::getUInt2d($this->data, $this->pos)) >> 4;
 
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -238,7 +244,7 @@ class Escher
 		//$nameData = substr($recordData, 36, $cbName);
 
 		// offset: 36 + $cbName, size: var; the BLIP data
-		$blipData = substr($recordData, 36 + $cbName);
+		$blipData = (string) substr($recordData, 36 + $cbName);
 
 		// record is a container, read contents
 		$reader = new self($BSE);
@@ -256,7 +262,7 @@ class Escher
 		$recInstance = (0xFFF0 & Xls::getUInt2d($this->data, $this->pos)) >> 4;
 
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -278,7 +284,7 @@ class Escher
 		++$pos;
 
 		// offset: var; size: var; the raw image data
-		$data = substr($recordData, $pos);
+		$data = (string) substr($recordData, $pos);
 
 		$blip = new Blip();
 		$blip->setData($data);
@@ -297,7 +303,7 @@ class Escher
 		$recInstance = (0xFFF0 & Xls::getUInt2d($this->data, $this->pos)) >> 4;
 
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -319,7 +325,7 @@ class Escher
 		++$pos;
 
 		// offset: var; size: var; the raw image data
-		$data = substr($recordData, $pos);
+		$data = (string) substr($recordData, $pos);
 
 		$blip = new Blip();
 		$blip->setData($data);
@@ -338,7 +344,7 @@ class Escher
 		$recInstance = (0xFFF0 & Xls::getUInt2d($this->data, $this->pos)) >> 4;
 
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -381,7 +387,7 @@ class Escher
 	private function readDgContainer(): void
 	{
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -413,7 +419,7 @@ class Escher
 		// context is either context DgContainer or SpgrContainer
 
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -439,7 +445,7 @@ class Escher
 	private function readSpContainer(): void
 	{
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// add spContainer to spgrContainer
 		$spContainer = new SpContainer();
@@ -505,7 +511,7 @@ class Escher
 	private function readClientAnchor(): void
 	{
 		$length = Xls::getInt4d($this->data, $this->pos + 4);
-		$recordData = substr($this->data, $this->pos + 8, $length);
+		$recordData = (string) substr($this->data, $this->pos + 8, $length);
 
 		// move stream pointer to next record
 		$this->pos += 8 + $length;
@@ -572,12 +578,12 @@ class Escher
 	 */
 	private function readOfficeArtRGFOPTE(string $data, int $n): void
 	{
-		$splicedComplexData = substr($data, 6 * $n);
+		$splicedComplexData = (string) substr($data, 6 * $n);
 
 		// loop through property-value pairs
 		for ($i = 0; $i < $n; ++$i) {
 			// read 6 bytes at a time
-			$fopte = substr($data, 6 * $i, 6);
+			$fopte = (string) substr($data, 6 * $i, 6);
 
 			// offset: 0; size: 2; opid
 			$opid = Xls::getUInt2d($fopte, 0);
@@ -595,8 +601,8 @@ class Escher
 			$op = Xls::getInt4d($fopte, 2);
 
 			if ($opidFComplex) {
-				$complexData = substr($splicedComplexData, 0, $op);
-				$splicedComplexData = substr($splicedComplexData, $op);
+				$complexData = (string) substr($splicedComplexData, 0, $op);
+				$splicedComplexData = (string) substr($splicedComplexData, $op);
 
 				// we store string value with complex data
 				$value = $complexData;

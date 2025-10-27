@@ -195,7 +195,7 @@ class Style extends Supervisor
 			// Uppercase coordinate and strip any Worksheet reference from the selected range
 			$pRange = strtoupper($pRange);
 			if (str_contains($pRange, '!')) {
-				$pRangeWorksheet = StringHelper::strToUpper(substr($pRange, 0, (int) strrpos($pRange, '!')));
+				$pRangeWorksheet = StringHelper::strToUpper((string) substr($pRange, 0, (int) strrpos($pRange, '!')));
 				$pRangeWorksheet = Worksheet::unApostrophizeTitle($pRangeWorksheet);
 				if ($pRangeWorksheet !== '' && StringHelper::strToUpper($this->getActiveSheet()->getTitle()) !== $pRangeWorksheet) {
 					throw new Exception('Invalid Worksheet for specified Range');
@@ -400,6 +400,7 @@ class Style extends Supervisor
 					}
 
 					// Find existing style by hash.
+					/** @var string $styleHash */
 					$existingStyle = self::$cachedStyles['styleByHash'][$styleHash] ?? null;
 
 					if (!$existingStyle) {

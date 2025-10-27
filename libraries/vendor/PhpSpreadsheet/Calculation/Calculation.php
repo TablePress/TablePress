@@ -447,7 +447,7 @@ class Calculation extends CalculationLocale
 	{
 		if (is_string($value)) {
 			if ((isset($value[0])) && ($value[0] == self::FORMULA_STRING_QUOTE) && (substr($value, -1) == self::FORMULA_STRING_QUOTE)) {
-				return substr($value, 1, -1);
+				return (string) substr($value, 1, -1);
 			}
 			//    Convert numeric errors to NAN error
 		} elseif ((is_float($value)) && ((is_nan($value)) || (is_infinite($value)))) {
@@ -580,7 +580,7 @@ class Calculation extends CalculationLocale
 		if ((!isset($formula[0])) || ($formula[0] != '=')) {
 			return [];
 		}
-		$formula = ltrim(substr($formula, 1));
+		$formula = ltrim((string) substr($formula, 1));
 		if (!isset($formula[0])) {
 			return [];
 		}
@@ -687,7 +687,7 @@ class Calculation extends CalculationLocale
 		if ($formula === '' || $formula[0] !== '=') {
 			return self::wrapResult($formula);
 		}
-		$formula = ltrim(substr($formula, 1));
+		$formula = ltrim((string) substr($formula, 1));
 		if (!isset($formula[0])) {
 			return self::wrapResult($formula);
 		}
@@ -1116,6 +1116,10 @@ class Calculation extends CalculationLocale
 			$this->branchPruner->initialiseForLoop();
 
 			$opCharacter = $formula[$index]; //    Get the first character of the value at the current index position
+			if ($opCharacter === "\xe2") { // intersection or union
+				$opCharacter .= $formula[++$index];
+				$opCharacter .= $formula[++$index];
+			}
 
 			// Check for two-character operators (e.g. >=, <=, <>)
 			if ((isset(self::COMPARISON_OPERATORS[$opCharacter])) && (strlen($formula) > $index) && isset($formula[$index + 1], self::COMPARISON_OPERATORS[$formula[$index + 1]])) {
@@ -1123,7 +1127,7 @@ class Calculation extends CalculationLocale
 			}
 			//    Find out if we're currently at the beginning of a number, variable, cell/row/column reference,
 			//         function, defined name, structured reference, parenthesis, error or operand
-			$isOperandOrFunction = (bool) preg_match($regexpMatchString, substr($formula, $index), $match);
+			$isOperandOrFunction = (bool) preg_match($regexpMatchString, (string) substr($formula, $index), $match);
 
 			$expectingOperatorCopy = $expectingOperator;
 			if ($opCharacter === '-' && !$expectingOperator) {                //    Is it a negation instead of a minus?
@@ -1136,7 +1140,7 @@ class Calculation extends CalculationLocale
 				++$index;
 			} elseif ($opCharacter === '+' && !$expectingOperator) {            //    Positive (unary plus rather than binary operator plus) can be discarded?
 				++$index; //    Drop the redundant plus symbol
-			} elseif ((($opCharacter === '~') || ($opCharacter === '∩') || ($opCharacter === '∪')) && (!$isOperandOrFunction)) {
+			} elseif ((($opCharacter === '~') /*|| ($opCharacter === '∩') || ($opCharacter === '∪')*/) && (!$isOperandOrFunction)) {
 				//    We have to explicitly deny a tilde, union or intersect because they are legal
 				return $this->raiseFormulaError("Formula Error: Illegal character '~'"); //        on the stack but not in the input expression
 			} elseif ((isset(self::CALCULATION_OPERATORS[$opCharacter]) || $isOperandOrFunction) && $expectingOperator) {    //    Are we putting an operator on the stack?
@@ -1254,6 +1258,15 @@ class Calculation extends CalculationLocale
 					// MS Excel allows this if the content is cell references; but doesn't allow actual values,
 					//    but at this point, we can't differentiate (so allow both)
 					return $this->raiseFormulaError('Formula Error: Unexpected ,');
+					/* The following code may be a better choice, but, with
+					   the other changes for this PR, I can no longer come up
+					   with a test case that gets here
+					$stack->push('Binary Operator', '∪');
+
+					++$index;
+					$expectingOperator = false;
+
+					continue;*/
 				}
 
 				/** @var array<string, int> $d */
@@ -1292,7 +1305,7 @@ class Calculation extends CalculationLocale
 
 					$stack->push('Function', $valToUpper);
 					// tests if the function is closed right after opening
-					$ax = preg_match('/^\s*\)/u', substr($formula, $index + $length));
+					$ax = preg_match('/^\s*\)/u', (string) substr($formula, $index + $length));
 					if ($ax) {
 						$stack->push('Operand Count for Function ' . $valToUpper . ')', 0);
 						$expectingOperator = true;
@@ -1445,7 +1458,7 @@ class Calculation extends CalculationLocale
 						$val = self::EXCEL_CONSTANTS[$localeConstant];
 						$stackItemReference = $localeConstant;
 					} elseif (
-						preg_match('/^' . self::CALCULATION_REGEXP_ROW_RANGE . '/miu', substr($formula, $index), $rowRangeReference)
+						preg_match('/^' . self::CALCULATION_REGEXP_ROW_RANGE . '/miu', (string) substr($formula, $index), $rowRangeReference)
 					) {
 						$val = $rowRangeReference[1];
 						$length = strlen($rowRangeReference[1]);
@@ -1459,7 +1472,7 @@ class Calculation extends CalculationLocale
 						$val = "{$rowRangeReference[2]}{$column}{$rowRangeReference[7]}";
 						$stackItemReference = $val;
 					} elseif (
-						preg_match('/^' . self::CALCULATION_REGEXP_COLUMN_RANGE . '/miu', substr($formula, $index), $columnRangeReference)
+						preg_match('/^' . self::CALCULATION_REGEXP_COLUMN_RANGE . '/miu', (string) substr($formula, $index), $columnRangeReference)
 					) {
 						$val = $columnRangeReference[1];
 						$length = strlen($val);
@@ -1534,11 +1547,11 @@ class Calculation extends CalculationLocale
 					&& is_array($output[$countOutputMinus1])
 					&& array_key_exists('type', $output[$countOutputMinus1])
 					&& (
-						(preg_match('/^' . self::CALCULATION_REGEXP_CELLREF . '.*/miu', substr($formula, $index), $match))
+						(preg_match('/^' . self::CALCULATION_REGEXP_CELLREF . '.*/miu', (string) substr($formula, $index), $match))
 							&& ($output[$countOutputMinus1]['type'] === 'Cell Reference')
-						|| (preg_match('/^' . self::CALCULATION_REGEXP_DEFINEDNAME . '.*/miu', substr($formula, $index), $match))
+						|| (preg_match('/^' . self::CALCULATION_REGEXP_DEFINEDNAME . '.*/miu', (string) substr($formula, $index), $match))
 							&& ($output[$countOutputMinus1]['type'] === 'Defined Name' || $output[$countOutputMinus1]['type'] === 'Value')
-						|| (preg_match('/^' . self::CALCULATION_REGEXP_STRUCTURED_REFERENCE . '.*/miu', substr($formula, $index), $match))
+						|| (preg_match('/^' . self::CALCULATION_REGEXP_STRUCTURED_REFERENCE . '.*/miu', (string) substr($formula, $index), $match))
 							&& ($output[$countOutputMinus1]['type'] === Operands\StructuredReference::NAME || $output[$countOutputMinus1]['type'] === 'Value')
 					)
 				) {
@@ -1721,7 +1734,7 @@ class Calculation extends CalculationLocale
 						return $this->raiseFormulaError($e->getMessage(), $e->getCode(), $e);
 					}
 				}
-			} elseif (!is_numeric($token) && !is_object($token) && isset($token, self::BINARY_OPERATORS[$token])) {
+			} elseif (!is_numeric($token) && !is_object($token) && isset($token, self::BINARY_OPERATORS[$token])) { //* @phpstan-ignore-line
 				// if the token is a binary operator, pop the top two values off the stack, do the operation, and push the result back on the stack
 				//    We must have two operands, error if we don't
 				$operand2Data = $stack->pop();
@@ -1948,6 +1961,14 @@ class Calculation extends CalculationLocale
 							$this->debugLog->writeDebugLog('Evaluation Result is %s', $this->showTypeDetails($cellIntersect));
 							$stack->push('Value', $cellIntersect, $cellRef);
 						}
+
+						break;
+					case '∪':            //    union
+						/** @var mixed[][] $operand1 */
+						/** @var mixed[][] $operand2 */
+						$cellUnion = array_merge($operand1, $operand2);
+						$this->debugLog->writeDebugLog('Evaluation Result is %s', $this->showTypeDetails($cellUnion));
+						$stack->push('Value', $cellUnion, 'A1');
 
 						break;
 				}
@@ -2838,6 +2859,14 @@ class Calculation extends CalculationLocale
 
 		$definedNameValue = $namedRange->getValue();
 		$definedNameType = $namedRange->isFormula() ? 'Formula' : 'Range';
+		if ($definedNameType === 'Range') {
+			if (preg_match('/^(.*!)?(.*)$/', $definedNameValue, $matches) === 1) {
+				$matches2 = trim($matches[2]);
+				$matches2 = preg_replace('/ +/', ' ∩ ', $matches2) ?? $matches2;
+				$matches2 = preg_replace('/,/', ' ∪ ', $matches2) ?? $matches2;
+				$definedNameValue = $matches[1] . $matches2;
+			}
+		}
 		$definedNameWorksheet = $namedRange->getWorksheet();
 
 		if ($definedNameValue[0] !== '=') {
@@ -2935,6 +2964,7 @@ class Calculation extends CalculationLocale
 		if ($stack->count() > 0) {
 			$o2 = $stack->last();
 			if ($o2) {
+				/** @var array{value: string} $o2 */
 				if (isset(self::CALCULATION_OPERATORS[$o2['value']])) {
 					$retVal = (self::OPERATOR_PRECEDENCE[$opCharacter] ?? 0) <= self::OPERATOR_PRECEDENCE[$o2['value']];
 				}

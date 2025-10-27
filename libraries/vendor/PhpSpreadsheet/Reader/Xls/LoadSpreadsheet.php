@@ -473,7 +473,7 @@ class LoadSpreadsheet extends Xls
 
 				// get all spContainers in one long array, so they can be mapped to OBJ records
 				/** @var SpContainer[] $allSpContainers */
-				$allSpContainers = method_exists($escherWorksheet, 'getDgContainer') ? $escherWorksheet->getDgContainer()->getSpgrContainer()->getAllSpContainers() : [];
+				$allSpContainers = $escherWorksheet->getDgContainerOrThrow()->getSpgrContainerOrThrow()->getAllSpContainers();
 			}
 
 			// treat OBJ records
@@ -535,7 +535,7 @@ class LoadSpreadsheet extends Xls
 
 							if ($escherWorkbook) {
 								/** @var BSE[] */
-								$BSECollection = method_exists($escherWorkbook, 'getDggContainer') ? $escherWorkbook->getDggContainer()->getBstoreContainer()->getBSECollection() : [];
+								$BSECollection = $escherWorkbook->getDggContainerOrThrow()->getBstoreContainerOrThrow()->getBSECollection();
 								$BSE = $BSECollection[$BSEindex - 1];
 								$blipType = $BSE->getBlipType();
 
@@ -587,6 +587,7 @@ class LoadSpreadsheet extends Xls
 				foreach ($xls->sharedFormulaParts as $cell => $baseCell) {
 					/** @var int $row */
 					[$column, $row] = Coordinate::coordinateFromString($cell);
+					/** @var string $baseCell */
 					if ($xls->getReadFilter()->readCell($column, $row, $xls->phpSheet->getTitle())) {
 						/** @var string */
 						$temp = $xls->sharedFormulas[$baseCell];

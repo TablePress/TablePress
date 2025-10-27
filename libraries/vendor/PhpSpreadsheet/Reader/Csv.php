@@ -175,7 +175,7 @@ class Csv extends BaseReader
 		}
 
 		if ((strlen(trim($line, "\r\n")) == 5) && (stripos($line, 'sep=') === 0)) {
-			$this->delimiter = substr($line, 4, 1);
+			$this->delimiter = (string) substr($line, 4, 1);
 
 			return;
 		}
