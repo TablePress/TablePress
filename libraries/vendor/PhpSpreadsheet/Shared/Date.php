@@ -11,6 +11,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Throwable;
 
 class Date
 {
@@ -379,15 +380,18 @@ class Date
 						$cell->getCalculatedValue()
 					);
 				}
-				$result = is_numeric($value)
-					&& self::isDateTimeFormat(
+				if (is_numeric($value)) {
+					$result = self::isDateTimeFormat(
 						$worksheet->getStyle(
 							$cell->getCoordinate()
 						)->getNumberFormat(),
 						$dateWithoutTimeOkay
 					);
-			} catch (Exception $exception) {
-				// Result is already false, so no need to actually do anything here
+					/** @var float|int $value */
+					self::excelToDateTimeObject($value);
+				}
+			} catch (Throwable $exception) {
+				$result = false;
 			}
 			$worksheet->setSelectedCells($selected);
 			$spreadsheet->setActiveSheetIndex($index);

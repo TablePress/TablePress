@@ -4,7 +4,9 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date as SharedDateHelper;
+use Throwable;
 
 class TimeParts
 {
@@ -44,6 +46,11 @@ class TimeParts
 		}
 
 		// Execute function
+		try {
+			SharedDateHelper::excelToDateTimeObject($timeValue);
+		} catch (Throwable $exception) {
+			return ExcelError::NAN();
+		}
 		$timeValue = fmod($timeValue, 1);
 		$timeValue = SharedDateHelper::excelToDateTimeObject($timeValue);
 		SharedDateHelper::roundMicroseconds($timeValue);
@@ -85,6 +92,11 @@ class TimeParts
 		}
 
 		// Execute function
+		try {
+			SharedDateHelper::excelToDateTimeObject($timeValue);
+		} catch (Throwable $exception) {
+			return ExcelError::NAN();
+		}
 		$timeValue = fmod($timeValue, 1);
 		$timeValue = SharedDateHelper::excelToDateTimeObject($timeValue);
 		SharedDateHelper::roundMicroseconds($timeValue);
@@ -126,6 +138,11 @@ class TimeParts
 		}
 
 		// Execute function
+		try {
+			SharedDateHelper::excelToDateTimeObject($timeValue);
+		} catch (Throwable $exception) {
+			return ExcelError::NAN();
+		}
 		$timeValue = fmod($timeValue, 1);
 		$timeValue = SharedDateHelper::excelToDateTimeObject($timeValue);
 		SharedDateHelper::roundMicroseconds($timeValue);

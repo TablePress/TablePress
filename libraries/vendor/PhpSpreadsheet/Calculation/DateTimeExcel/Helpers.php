@@ -7,6 +7,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date as SharedDateHelper;
+use Throwable;
 
 class Helpers
 {
@@ -54,6 +55,12 @@ class Helpers
 			}
 		}
 		if ($dateValue < 0 && Functions::getCompatibilityMode() !== Functions::COMPATIBILITY_OPENOFFICE) {
+			throw new Exception(ExcelError::NAN());
+		}
+
+		try {
+			SharedDateHelper::excelToDateTimeObject((float) $dateValue);
+		} catch (Throwable $exception) {
 			throw new Exception(ExcelError::NAN());
 		}
 

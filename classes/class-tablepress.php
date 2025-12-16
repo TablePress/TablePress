@@ -27,7 +27,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	public const version = '3.2.5'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const version = '3.2.6'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +37,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	public const db_version = 119; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const db_version = 120; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -77,6 +77,7 @@ abstract class TablePress {
 	 * Should only be modified through the filter hook 'tablepress_table_shortcode'.
 	 *
 	 * @since 1.0.0
+	 * @var non-empty-string
 	 */
 	public static string $shortcode = 'table';
 
@@ -86,6 +87,7 @@ abstract class TablePress {
 	 * Should only be modified through the filter hook 'tablepress_table_info_shortcode'.
 	 *
 	 * @since 1.0.0
+	 * @var non-empty-string
 	 */
 	public static string $shortcode_info = 'table-info';
 
@@ -117,7 +119,7 @@ abstract class TablePress {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $shortcode The [table] Shortcode string.
+		 * @param non-empty-string $shortcode The [table] Shortcode string.
 		 */
 		self::$shortcode = apply_filters( 'tablepress_table_shortcode', self::$shortcode );
 		/**
@@ -125,7 +127,7 @@ abstract class TablePress {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $shortcode_info The [table-info] Shortcode string.
+		 * @param non-empty-string $shortcode_info The [table-info] Shortcode string.
 		 */
 		self::$shortcode_info = apply_filters( 'tablepress_table_info_shortcode', self::$shortcode_info );
 

@@ -2,7 +2,7 @@
 /**
  * Excel 2007-2019/Office 365 Reader class
  *
- * Based on SimpleXLSX v1.1.14 by Sergey Shuchkin.
+ * Based on SimpleXLSX v1.1.16 by Sergey Shuchkin.
  * @link https://github.com/shuchkin/simplexlsx/
  *
  * @package TablePress
@@ -488,6 +488,7 @@ class SimpleXLSX {
 
 			if (strpos($name, '/sheet')) { // dirty skip empty rows
 				// remove <row...> <c /><c /></row>
+				$cnt = $cnt2 = $cnt3 = null;
 				$entry_xml = preg_replace('/<row[^>]+>\s*(<c[^\/]+\/>\s*)+<\/row>/', '', $entry_xml, -1, $cnt);
 				$entry_xml .= ' ';
 				// remove <row />
@@ -759,6 +760,7 @@ class SimpleXLSX {
 
 	public function getIndex($cell = 'A1')
 	{
+		$m = null;
 
 		if (preg_match('/([A-Z]+)(\d+)/', $cell, $m)) {
 			$col = $m[1];

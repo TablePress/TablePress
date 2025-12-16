@@ -89,6 +89,8 @@ $align-side: left;
 		}
 	}
 	> .row-hover > tr {
+		content-visibility: auto; /* Improve rendering performance for the :has(+ .child:hover) selector below. */
+
 		&:where(:not(.dtrg-group)):hover > *, /* Ignore group rows. */
 		&:hover + :where(.child) > *, /* Give child rows the same style. */
 		&:has(+ .child:hover) > * { /* Highlight the parent row when a child row is hovered. */

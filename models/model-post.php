@@ -25,6 +25,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * Name of the "Custom Post Type" for the tables.
 	 *
 	 * @since 1.0.0
+	 * @var lowercase-string&non-empty-string
 	 */
 	protected string $post_type = 'tablepress_table';
 
@@ -49,7 +50,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $post_type The "Custom Post Type" that TablePress uses.
+		 * @param lowercase-string&non-empty-string $post_type The "Custom Post Type" that TablePress uses.
 		 */
 		$this->post_type = apply_filters( 'tablepress_post_type', $this->post_type );
 		$post_type_args = array(

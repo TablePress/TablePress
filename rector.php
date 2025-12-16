@@ -14,6 +14,7 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 	// Scan paths that contain externally maintained libraries.
 	$rector_config->paths( array(
 		__DIR__ . '/libraries/vendor',
+		__DIR__ . '/modules/libraries/vendor',
 	) );
 
 	// Set default indenting.
@@ -23,14 +24,6 @@ return static function ( Rector\Config\RectorConfig $rector_config ): void {
 	$rector_config->sets( array(
 		Rector\Set\ValueObject\DowngradeLevelSetList::DOWN_TO_PHP_74,
 	) );
-
-	// Add PHP attribute to prevent deprecation warnings.
-	$rector_config->ruleWithConfiguration(
-		Rector\Transform\Rector\ClassMethod\ReturnTypeWillChangeRector::class,
-		array(
-			new Rector\Transform\ValueObject\ClassMethodReference( 'JsonSerializable', 'jsonSerialize' ),
-		),
-	);
 
 	// Ignore downgrade rules for functions that WordPress is polyfilling.
 	$rector_config->skip( array(

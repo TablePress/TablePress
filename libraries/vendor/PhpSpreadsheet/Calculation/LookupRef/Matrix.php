@@ -150,7 +150,7 @@ class Matrix
 
 	/**
 				 * @param mixed[] $matrix
-				 * @param mixed[] $rowKeys
+				 * @param array<int, int> $rowKeys
 				 * @return mixed
 				 */
 				private static function extractRowValue(array $matrix, array $rowKeys, int $rowNum)
@@ -160,7 +160,7 @@ class Matrix
 		}
 
 		$rowNum = $rowKeys[--$rowNum];
-		$row = $matrix[$rowNum]; //* @phpstan-ignore-line
+		$row = $matrix[$rowNum];
 		if (is_array($row)) {
 			return [$rowNum => $row];
 		}

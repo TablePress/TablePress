@@ -15,6 +15,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Exception;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule;
 use Stringable;
+use Throwable;
 
 class AutoFilter
 {
@@ -198,7 +199,7 @@ class AutoFilter
 		return $this->columns[$column];
 	}
 	/**
-	 * Get a specified AutoFilter Column by it's offset.
+	 * Get a specified AutoFilter Column by its offset.
 	 *
 	 * @param int $columnOffset Column offset within range (starting from 0)
 	 */
@@ -319,7 +320,12 @@ class AutoFilter
 		$timeZone = new DateTimeZone('UTC');
 
 		if (is_numeric($cellValue)) {
-			$dateTime = Date::excelToDateTimeObject((float) $cellValue, $timeZone);
+			try {
+				$dateTime = Date::excelToDateTimeObject((float) $cellValue, $timeZone);
+			} catch (Throwable $exception) {
+				return false;
+			}
+
 			$cellValue = (float) $cellValue;
 			if ($cellValue < 1) {
 				//    Just the time part
@@ -475,7 +481,12 @@ class AutoFilter
 		}
 
 		if (is_numeric($cellValue)) {
-			$dateObject = Date::excelToDateTimeObject((float) $cellValue, new DateTimeZone('UTC'));
+			try {
+				$dateObject = Date::excelToDateTimeObject((float) $cellValue, new DateTimeZone('UTC'));
+			} catch (Throwable $exception) {
+				return false;
+			}
+
 			$dateValue = (int) $dateObject->format('m');
 			if (in_array($dateValue, $monthSet)) {
 				return true;
@@ -1052,7 +1063,7 @@ class AutoFilter
 				foreach ($value as $k => $v) {
 					$this->{$key}[$k] = clone $v; //* @phpstan-ignore-line
 					// attach the new cloned Column to this new cloned Autofilter object
-					$this->{$key}[$k]->setParent($this);
+					$this->{$key}[$k]->setParent($this); //* @phpstan-ignore-line
 				}
 			} else {
 				$this->{$key} = $value;
