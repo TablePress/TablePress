@@ -104,7 +104,7 @@ abstract class TablePress_View {
 
 		if ( tb_tp_fs()->is_free_plan() ) {
 			$common_content .= '<p>'
-				. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/tags/tablepress' )
+				. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/support/plugin/tablepress' )
 				. ' '
 				. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'https://tablepress.org/faq/' )
 				. '</p>';

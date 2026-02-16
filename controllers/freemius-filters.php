@@ -53,7 +53,7 @@ tb_tp_fs()->add_filter(
 		$host = wp_parse_url( site_url(), PHP_URL_HOST );
 		if ( is_string( $host ) ) {
 			$tld = strtolower( pathinfo( $host, PATHINFO_EXTENSION ) );
-			if ( in_array( $tld, array( 'at', 'be', 'bg', 'cy', 'cz', 'de', 'dk', 'ee', 'es', 'fi', 'fr', 'gr', 'hu', 'ie', 'it', 'lt', 'lu', 'lv', 'mt', 'nl', 'pl', 'pt', 'ro', 'se', 'si', 'sk', 'uk' ), true ) ) {
+			if ( in_array( $tld, array( 'at', 'be', 'bg', 'cy', 'cz', 'de', 'dk', 'ee', 'es', 'fi', 'fr', 'gb', 'gr', 'hr', 'hu', 'ie', 'it', 'lt', 'lu', 'lv', 'mt', 'nl', 'no', 'pl', 'pt', 'ro', 'se', 'si', 'sk', 'uk' ), true ) ) {
 				$currency = 'eur';
 			}
 		}

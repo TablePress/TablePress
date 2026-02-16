@@ -212,7 +212,7 @@ class TablePress_CSSTidy_Print {
 					if ( $this->parser->get_cfg( 'preserve_css' ) ) {
 						$token[1] = str_replace( ',', ",\n", $token[1] );
 					}
-					$out .= ( '@' !== $token[1][0] ) ? $template[2] . $this->_htmlsp( $token[1], $plain ) : $template[0] . $this->_htmlsp( $token[1], $plain );
+					$out .= ( '' !== $token[1] && '@' !== $token[1][0] ) ? $template[2] . $this->_htmlsp( $token[1], $plain ) : $template[0] . $this->_htmlsp( $token[1], $plain );
 					$out .= $template[3];
 					break;
 				case TablePress_CSSTidy::PROPERTY:
@@ -252,7 +252,10 @@ class TablePress_CSSTidy_Print {
 					} else {
 						$out = &$output;
 					}
-					$out .= $template[10] . $in_at_out[ $indent_level ];
+					$out .= $template[10];
+					if ( isset( $in_at_out[ $indent_level ] ) ) {
+						$out .= $in_at_out[ $indent_level ];
+					}
 					if ( TablePress_CSSTidy::AT_END !== $this->_seeknocomment( $key, 1 ) ) {
 						$out .= $template[9];
 					} else {

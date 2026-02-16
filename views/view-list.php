@@ -147,7 +147,7 @@ class TablePress_List_View extends TablePress_View {
 			if ( ! empty( $active_incompatible_superseded_extensions ) ) {
 				$notice_css_classes .= ' is-error';
 
-				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired more than 2 years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>do no longer work with TablePress 3</strong>:', 'tablepress' ) . '</p>';
+				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired many years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>do no longer work</strong>:', 'tablepress' ) . '</p>';
 				$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:16px;">';
 				foreach ( $active_incompatible_superseded_extensions as $extension ) {
 					$message .= '<li>' . esc_html( $extension ) . '</li>';

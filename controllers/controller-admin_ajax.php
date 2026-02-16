@@ -161,8 +161,6 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 				$message = 'success_save_error_id_change';
 				$error_details = 'table_id_could_not_be_changed: capability_check_failed';
 			}
-
-			// @phpstan-ignore doWhile.alwaysFalse
 		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
 
 		// Generate the response.
@@ -260,8 +258,6 @@ class TablePress_Admin_AJAX_Controller extends TablePress_Controller {
 
 			// At this point, the table data is valid and sanitized and can be rendered.
 			$success = true;
-
-			// @phpstan-ignore doWhile.alwaysFalse
 		} while ( false ); // Do-while-loop through this exactly once, to be able to "break;" early.
 
 		if ( $success ) {

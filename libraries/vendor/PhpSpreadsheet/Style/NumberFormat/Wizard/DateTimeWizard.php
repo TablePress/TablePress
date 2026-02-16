@@ -9,9 +9,9 @@ abstract class DateTimeWizard implements Wizard
 	protected const NO_ESCAPING_NEEDED = "$+-/():!^&'~{}<>= ";
 
 	/**
-	 * @param string[] $separators
+	 * @param array<?string> $separators
 	 *
-	 * @return string[]
+	 * @return array<?string>
 	 */
 	protected function padSeparatorArray(array $separators, int $count): array
 	{

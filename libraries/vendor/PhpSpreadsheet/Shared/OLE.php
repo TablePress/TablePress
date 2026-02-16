@@ -232,11 +232,10 @@ class OLE
 		} else {
 			$path .= '&blockId=' . $blockIdOrPps;
 		}
-
-		$resource = fopen($path, 'rb');
-		if ($resource === false) {
-			throw new Exception("Unable to open stream $path");
-		}
+								if (!fopen($path, 'rb')) {
+									throw new Exception("Unable to open stream $path");
+								}
+								$resource = fopen($path, 'rb');
 
 		return $resource;
 	}

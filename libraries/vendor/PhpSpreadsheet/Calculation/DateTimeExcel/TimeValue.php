@@ -3,7 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel;
 
 use TablePress\Composer\Pcre\Preg;
-use Datetime;
+use DateTime;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
@@ -45,7 +45,7 @@ class TimeValue
 	 *                                    Date information in time_text is ignored.
 	 *                         Or can be an array of date/time values
 	 *
-	 * @return array<mixed>|Datetime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
+	 * @return array<mixed>|DateTime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
 	 *                        depending on the value of the ReturnDateType flag
 	 *         If an array of numbers is passed as the argument, then the returned result will also be an array
 	 *            with the same dimensions
@@ -88,7 +88,7 @@ class TimeValue
 			} elseif ($retType === Functions::RETURNDATE_UNIX_TIMESTAMP) {
 				$retValue = (int) SharedDateHelper::excelToTimestamp($excelDateValue + 25569) - 3600;
 			} else {
-				$retValue = new Datetime('1900-01-01 ' . $PHPDateArray['hour'] . ':' . $PHPDateArray['minute'] . ':' . $PHPDateArray['second']);
+				$retValue = new DateTime('1900-01-01 ' . $PHPDateArray['hour'] . ':' . $PHPDateArray['minute'] . ':' . $PHPDateArray['second']);
 			}
 		}
 

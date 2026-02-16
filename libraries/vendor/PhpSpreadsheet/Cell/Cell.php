@@ -15,6 +15,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Style\ConditionalFormatting\CellStyleAss
 use TablePress\PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Protection;
 use TablePress\PhpOffice\PhpSpreadsheet\Style\Style;
+use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Stringable;
@@ -221,13 +222,31 @@ class Cell
 	 */
 	public function setValue($value, ?IValueBinder $binder = null): self
 	{
+		if ($this->hadHyperlink) {
+			$this->clearHyperlink();
+		}
 		// Cells?->Worksheet?->Spreadsheet
-		$binder ??= (($nullsafeVariable3 = ($nullsafeVariable4 = ($nullsafeVariable5 = $this->parent) ? $nullsafeVariable5->getParent() : null) ? $nullsafeVariable4->getParent() : null) ? $nullsafeVariable3->getValueBinder() : null) ?? self::getValueBinder();
+		$binder ??= (($nullsafeVariable3 = ($nullsafeVariable10 = ($nullsafeVariable14 = $this->parent) ? $nullsafeVariable14->getParent() : null) ? $nullsafeVariable10->getParent() : null) ? $nullsafeVariable3->getValueBinder() : null) ?? self::getValueBinder();
 		if (!$binder->bindValue($this, $value)) {
 			throw new SpreadsheetException('Value could not be bound to cell.');
 		}
 
 		return $this;
+	}
+	private bool $hadHyperlink = false;
+	/** @internal */
+	public function setHadHyperlink(bool $hadHyperlink): void
+	{
+		$this->hadHyperlink = $hadHyperlink;
+	}
+	private function clearHyperlink(): void
+	{
+		$worksheet = $this->getWorksheetOrNull();
+		if ($worksheet !== null) {
+			$coordinate = $this->getCoordinate();
+			$worksheet->setHyperlink($coordinate, null);
+		}
+		$this->hadHyperlink = false;
 	}
 	/**
 	 * Set the value for a cell, with the explicit data type passed to the method (bypassing any use of the value binder).
@@ -246,6 +265,9 @@ class Cell
 	 */
 	public function setValueExplicit($value, string $dataType = DataType::TYPE_STRING): self
 	{
+		if ($this->hadHyperlink) {
+			$this->clearHyperlink();
+		}
 		$oldValue = $this->value;
 		$quotePrefix = false;
 
@@ -268,7 +290,7 @@ class Cell
 				// Rich text
 				$value2 = StringHelper::convertToString($value, true);
 				// Cells?->Worksheet?->Spreadsheet
-				$binder = ($nullsafeVariable6 = ($nullsafeVariable7 = ($nullsafeVariable8 = $this->parent) ? $nullsafeVariable8->getParent() : null) ? $nullsafeVariable7->getParent() : null) ? $nullsafeVariable6->getValueBinder() : null;
+				$binder = ($nullsafeVariable4 = ($nullsafeVariable11 = ($nullsafeVariable15 = $this->parent) ? $nullsafeVariable15->getParent() : null) ? $nullsafeVariable11->getParent() : null) ? $nullsafeVariable4->getValueBinder() : null;
 				$preserveCr = false;
 				if ($binder !== null && method_exists($binder, 'getPreserveCr')) {
 					/** @var bool */
@@ -297,6 +319,14 @@ class Cell
 				$dataType = DataType::TYPE_NUMERIC;
 
 				break;
+			case DataType::TYPE_DRAWING_IN_CELL:
+				if ($value instanceof BaseDrawing) {
+					$this->value = $value;
+				} else {
+					throw new SpreadsheetException('Item is not a drawing');
+				}
+
+				break;
 			case DataType::TYPE_ERROR:
 				$this->value = DataType::checkErrorCode($value);
 
@@ -310,7 +340,7 @@ class Cell
 
 		$this->updateInCollection();
 		$cellCoordinate = $this->getCoordinate();
-		self::updateIfCellIsTableHeader(($nullsafeVariable9 = $this->getParent()) ? $nullsafeVariable9->getParent() : null, $this, $oldValue, $value);
+		self::updateIfCellIsTableHeader(($nullsafeVariable5 = $this->getParent()) ? $nullsafeVariable5->getParent() : null, $this, $oldValue, $value);
 		$worksheet = $this->getWorksheet();
 		$spreadsheet = $worksheet->getParent();
 		if (isset($spreadsheet) && $spreadsheet->getIndex($worksheet, true) >= 0) {
@@ -327,7 +357,7 @@ class Cell
 			}
 		}
 
-		return (($nullsafeVariable10 = $this->getParent()) ? $nullsafeVariable10->get($cellCoordinate) : null) ?? $this;
+		return (($nullsafeVariable6 = $this->getParent()) ? $nullsafeVariable6->get($cellCoordinate) : null) ?? $this;
 	}
 	public const CALCULATE_DATE_TIME_ASIS = 0;
 	public const CALCULATE_DATE_TIME_FLOAT = 1;
@@ -406,7 +436,7 @@ class Cell
 		if ($this->dataType === DataType::TYPE_FORMULA) {
 			try {
 				$currentCalendar = SharedDate::getExcelCalendar();
-				SharedDate::setExcelCalendar(($nullsafeVariable11 = $this->getWorksheet()->getParent()) ? $nullsafeVariable11->getExcelCalendar() : null);
+				SharedDate::setExcelCalendar(($nullsafeVariable7 = $this->getWorksheet()->getParent()) ? $nullsafeVariable7->getExcelCalendar() : null);
 				$thisworksheet = $this->getWorksheet();
 				$index = $thisworksheet->getParentOrThrow()->getActiveSheetIndex();
 				$selected = $thisworksheet->getSelectedCells();
@@ -725,7 +755,8 @@ class Cell
 			throw new SpreadsheetException('Cannot get hyperlink for cell that is not bound to a worksheet');
 		}
 
-		return $this->getWorksheet()->getHyperlink($this->getCoordinate());
+		return $this->getWorksheet()
+			->getHyperlink($this->getCoordinate());
 	}
 	/**
 	 * Set Hyperlink.
@@ -738,7 +769,8 @@ class Cell
 			throw new SpreadsheetException('Cannot set hyperlink for cell that is not bound to a worksheet');
 		}
 
-		$this->getWorksheet()->setHyperlink($this->getCoordinate(), $hyperlink);
+		$this->getWorksheet()
+			->setHyperlink($this->getCoordinate(), $hyperlink);
 
 		return $this->updateInCollection();
 	}
@@ -969,7 +1001,7 @@ class Cell
 	}
 	public function isLocked(): bool
 	{
-		$protected = ($nullsafeVariable12 = ($nullsafeVariable13 = ($nullsafeVariable14 = $this->parent) ? $nullsafeVariable14->getParent() : null) ? $nullsafeVariable13->getProtection() : null) ? $nullsafeVariable12->getSheet() : null;
+		$protected = ($nullsafeVariable8 = ($nullsafeVariable12 = ($nullsafeVariable16 = $this->parent) ? $nullsafeVariable16->getParent() : null) ? $nullsafeVariable12->getProtection() : null) ? $nullsafeVariable8->getSheet() : null;
 		if ($protected !== true) {
 			return false;
 		}
@@ -982,7 +1014,7 @@ class Cell
 		if ($this->getDataType() !== DataType::TYPE_FORMULA) {
 			return false;
 		}
-		$protected = ($nullsafeVariable15 = ($nullsafeVariable16 = ($nullsafeVariable17 = $this->parent) ? $nullsafeVariable17->getParent() : null) ? $nullsafeVariable16->getProtection() : null) ? $nullsafeVariable15->getSheet() : null;
+		$protected = ($nullsafeVariable9 = ($nullsafeVariable13 = ($nullsafeVariable17 = $this->parent) ? $nullsafeVariable17->getParent() : null) ? $nullsafeVariable13->getProtection() : null) ? $nullsafeVariable9->getSheet() : null;
 		if ($protected !== true) {
 			return false;
 		}

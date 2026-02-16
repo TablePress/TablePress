@@ -124,7 +124,7 @@ class TablePress_Export {
 				}
 				$tbody = "\t<tbody>\n" . implode( '', $tbody ) . "\t</tbody>\n";
 
-				$output = "<table>\n" . $thead . $tfoot . $tbody . "</table>\n";
+				$output = "<table>\n" . $thead . $tbody . $tfoot . "</table>\n";
 				break;
 			case 'json':
 				$output = wp_json_encode( $table, TABLEPRESS_JSON_OPTIONS );
@@ -159,6 +159,7 @@ class TablePress_Export {
 		if ( in_array( $cell_content[0], $active_content_triggers, true ) ) {
 			$functions_to_escape = array(
 				'cmd|',
+				'FORFILES|',
 				'rundll32',
 				'DDE(',
 				'IMPORTXML(',

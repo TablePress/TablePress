@@ -464,7 +464,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 						echo '<p style="font-size:14px;">';
 						_e( 'This TablePress Extension was retired.', 'tablepress' );
 						echo ' ';
-						_e( '<strong>The plugin does no longer work with TablePress 3</strong> and will no longer receive updates or support!', 'tablepress' );
+						_e( '<strong>The plugin does no longer work</strong> and will no longer receive updates or support!', 'tablepress' );
 						echo '<br>';
 						_e( 'Keeping it activated can lead to errors on your website!', 'tablepress' );
 						echo ' <strong>' . sprintf( __( '<a href="%s">Find out what you can do to continue using its features!</a>', 'tablepress' ), 'https://tablepress.org/upgrade-extensions/?utm_source=plugin&utm_medium=textlink&utm_content=plugins-list-table' ) . '</strong>';

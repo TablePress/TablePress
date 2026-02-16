@@ -417,6 +417,21 @@ class Spreadsheet implements JsonSerializable
 	}
 
 	/**
+	 * This workbook has in cell images.
+	 */
+	public function hasInCellDrawings(): bool
+	{
+		$sheetCount = $this->getSheetCount();
+		for ($i = 0; $i < $sheetCount; ++$i) {
+			if ($this->getSheet($i)->getInCellDrawingCollection()->count() > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Check if a sheet with a specified code name already exists.
 	 *
 	 * @param string $codeName Name of the worksheet to check
@@ -1212,6 +1227,16 @@ class Spreadsheet implements JsonSerializable
 					$this->$key = [];
 					foreach ($currentCollection as $item) {
 						$clone = clone $item;
+						$title = ($nullsafeVariable2 = $clone->getWorksheet()) ? $nullsafeVariable2->getTitle() : null;
+						if ($title !== null) {
+							$ws = $this->getSheetByName($title);
+							$clone->setWorksheet($ws);
+						}
+						$title = ($nullsafeVariable3 = $clone->getScope()) ? $nullsafeVariable3->getTitle() : null;
+						if ($title !== null) {
+							$ws = $this->getSheetByName($title);
+							$clone->setScope($ws);
+						}
 						$this->{$key}[] = $clone;
 					}
 
@@ -1856,5 +1881,26 @@ class Spreadsheet implements JsonSerializable
 		$this->calculationEngine->setInstanceArrayReturnType(
 			Calculation::RETURN_ARRAY_AS_VALUE
 		);
+	}
+
+	/** @var string[] */
+	private $domainWhiteList = [];
+
+	/**
+	 * Currently used only by WEBSERVICE function.
+	 *
+	 * @param string[] $domainWhiteList
+	 */
+	public function setDomainWhiteList(array $domainWhiteList): self
+	{
+		$this->domainWhiteList = $domainWhiteList;
+
+		return $this;
+	}
+
+	/** @return string[] */
+	public function getDomainWhiteList(): array
+	{
+		return $this->domainWhiteList;
 	}
 }

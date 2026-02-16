@@ -696,7 +696,7 @@ class TablePress_CSSTidy {
 						} elseif ( '\\' === $a_string[ $i ] ) {
 							$this->sub_value .= $this->_unicode( $a_string, $i );
 						} elseif ( ';' === $a_string[ $i ] || $pn ) {
-							if ( '@' === $this->selector[0] && isset( $at_rules[ substr( $this->selector, 1 ) ] ) && 'iv' === $at_rules[ substr( $this->selector, 1 ) ] ) {
+							if ( '' !== $this->selector && '@' === $this->selector[0] && isset( $at_rules[ substr( $this->selector, 1 ) ] ) && 'iv' === $at_rules[ substr( $this->selector, 1 ) ] ) {
 								$this->status = 'is';
 
 								switch ( $this->selector ) {

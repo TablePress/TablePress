@@ -2405,7 +2405,7 @@ class Calculation extends CalculationLocale
 		return $result;
 	}
 
-	/** @return bool|mixed[]
+	/** @return array<mixed>|bool|string
 				 * @param mixed $operand1
 				 * @param mixed $operand2 */
 				private function executeBinaryComparisonOperation($operand1, $operand2, string $operation, Stack &$stack, bool $recursingArrays = false)

@@ -14,6 +14,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { useBlockProps, InspectorControls, InspectorAdvancedControls } from '@wordpress/block-editor';
 import { ComboboxControl, ExternalLink, Icon, PanelBody, Placeholder, TextControl } from '@wordpress/components';
+import { createInterpolateElement } from '@wordpress/element';
 import shortcode from '@wordpress/shortcode';
 
 /**
@@ -146,7 +147,16 @@ const TablePressTableEdit = ( { attributes, setAttributes } ) => {
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						label={ __( 'Configuration parameters:', 'tablepress' ) }
-						help={ __( 'These additional parameters can be used to modify specific table features.', 'tablepress' ) + ' ' + __( 'See the TablePress Documentation for more information.', 'tablepress' ) }
+						help={
+							createInterpolateElement(
+								__( 'These additional parameters can be used to modify specific table features.', 'tablepress' )
+								+ ' '
+								+ __( 'See the <a>TablePress Documentation</a> for more information.', 'tablepress' ),
+								{
+									a: <a href="https://tablepress.org/faq/configuration-parameter-reference/" />, // eslint-disable-line jsx-a11y/anchor-has-content
+								},
+							)
+						}
 						value={ attributes.parameters }
 						onChange={ ( parameters ) => {
 							parameters = shortcode.replace(
