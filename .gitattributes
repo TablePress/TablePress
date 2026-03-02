@@ -7,6 +7,7 @@
 /.wordpress-org/ export-ignore
 /node_modules/ export-ignore
 /tests/ export-ignore
+/tools/ export-ignore
 /vendor/ export-ignore
 /.browserslistrc export-ignore
 /.editorconfig export-ignore
@@ -31,7 +32,6 @@
 /phpunit.xml.dist export-ignore
 /readme.md export-ignore
 /rector.php export-ignore
-/update-version.php export-ignore
 /webpack.config.js export-ignore
 
 # Set default behaviour, in case users don't have core.autocrlf set.

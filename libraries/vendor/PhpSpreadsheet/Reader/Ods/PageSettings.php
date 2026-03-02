@@ -68,11 +68,11 @@ class PageSettings
 			$marginTop = ($nullsafeVariable7 = $pageLayoutProperties) ? $nullsafeVariable7->getAttributeNS($this->stylesFo, 'margin-top') : null;
 			$marginBottom = ($nullsafeVariable8 = $pageLayoutProperties) ? $nullsafeVariable8->getAttributeNS($this->stylesFo, 'margin-bottom') : null;
 			$header = $styleSet->getElementsByTagNameNS($this->stylesNs, 'header-style')->item(0);
-			$headerProperties = ($nullsafeVariable9 = ($nullsafeVariable13 = $header) ? $nullsafeVariable13->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties') : null) ? $nullsafeVariable9->item(0) : null;
-			$marginHeader = ($nullsafeVariable10 = $headerProperties) ? $nullsafeVariable10->getAttributeNS($this->stylesFo, 'min-height') : null;
+			$headerProperties = ($nullsafeVariable9 = ($nullsafeVariable10 = $header) ? $nullsafeVariable10->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties') : null) ? $nullsafeVariable9->item(0) : null;
+			$marginHeader = ($nullsafeVariable11 = $headerProperties) ? $nullsafeVariable11->getAttributeNS($this->stylesFo, 'min-height') : null;
 			$footer = $styleSet->getElementsByTagNameNS($this->stylesNs, 'footer-style')->item(0);
-			$footerProperties = ($nullsafeVariable11 = ($nullsafeVariable14 = $footer) ? $nullsafeVariable14->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties') : null) ? $nullsafeVariable11->item(0) : null;
-			$marginFooter = ($nullsafeVariable12 = $footerProperties) ? $nullsafeVariable12->getAttributeNS($this->stylesFo, 'min-height') : null;
+			$footerProperties = ($nullsafeVariable12 = ($nullsafeVariable13 = $footer) ? $nullsafeVariable13->getElementsByTagNameNS($this->stylesNs, 'header-footer-properties') : null) ? $nullsafeVariable12->item(0) : null;
+			$marginFooter = ($nullsafeVariable14 = $footerProperties) ? $nullsafeVariable14->getAttributeNS($this->stylesFo, 'min-height') : null;
 
 			$this->pageLayoutStyles[$styleName] = (object) [
 				'orientation' => $styleOrientation ?: PageSetup::ORIENTATION_DEFAULT,

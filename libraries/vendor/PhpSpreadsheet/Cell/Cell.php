@@ -226,7 +226,7 @@ class Cell
 			$this->clearHyperlink();
 		}
 		// Cells?->Worksheet?->Spreadsheet
-		$binder ??= (($nullsafeVariable3 = ($nullsafeVariable10 = ($nullsafeVariable14 = $this->parent) ? $nullsafeVariable14->getParent() : null) ? $nullsafeVariable10->getParent() : null) ? $nullsafeVariable3->getValueBinder() : null) ?? self::getValueBinder();
+		$binder ??= (($nullsafeVariable3 = ($nullsafeVariable13 = ($nullsafeVariable17 = $this->parent) ? $nullsafeVariable17->getParent() : null) ? $nullsafeVariable13->getParent() : null) ? $nullsafeVariable3->getValueBinder() : null) ?? self::getValueBinder();
 		if (!$binder->bindValue($this, $value)) {
 			throw new SpreadsheetException('Value could not be bound to cell.');
 		}
@@ -290,7 +290,7 @@ class Cell
 				// Rich text
 				$value2 = StringHelper::convertToString($value, true);
 				// Cells?->Worksheet?->Spreadsheet
-				$binder = ($nullsafeVariable4 = ($nullsafeVariable11 = ($nullsafeVariable15 = $this->parent) ? $nullsafeVariable15->getParent() : null) ? $nullsafeVariable11->getParent() : null) ? $nullsafeVariable4->getValueBinder() : null;
+				$binder = ($nullsafeVariable4 = ($nullsafeVariable5 = ($nullsafeVariable14 = $this->parent) ? $nullsafeVariable14->getParent() : null) ? $nullsafeVariable5->getParent() : null) ? $nullsafeVariable4->getValueBinder() : null;
 				$preserveCr = false;
 				if ($binder !== null && method_exists($binder, 'getPreserveCr')) {
 					/** @var bool */
@@ -340,7 +340,7 @@ class Cell
 
 		$this->updateInCollection();
 		$cellCoordinate = $this->getCoordinate();
-		self::updateIfCellIsTableHeader(($nullsafeVariable5 = $this->getParent()) ? $nullsafeVariable5->getParent() : null, $this, $oldValue, $value);
+		self::updateIfCellIsTableHeader(($nullsafeVariable6 = $this->getParent()) ? $nullsafeVariable6->getParent() : null, $this, $oldValue, $value);
 		$worksheet = $this->getWorksheet();
 		$spreadsheet = $worksheet->getParent();
 		if (isset($spreadsheet) && $spreadsheet->getIndex($worksheet, true) >= 0) {
@@ -357,7 +357,7 @@ class Cell
 			}
 		}
 
-		return (($nullsafeVariable6 = $this->getParent()) ? $nullsafeVariable6->get($cellCoordinate) : null) ?? $this;
+		return (($nullsafeVariable7 = $this->getParent()) ? $nullsafeVariable7->get($cellCoordinate) : null) ?? $this;
 	}
 	public const CALCULATE_DATE_TIME_ASIS = 0;
 	public const CALCULATE_DATE_TIME_FLOAT = 1;
@@ -436,7 +436,7 @@ class Cell
 		if ($this->dataType === DataType::TYPE_FORMULA) {
 			try {
 				$currentCalendar = SharedDate::getExcelCalendar();
-				SharedDate::setExcelCalendar(($nullsafeVariable7 = $this->getWorksheet()->getParent()) ? $nullsafeVariable7->getExcelCalendar() : null);
+				SharedDate::setExcelCalendar(($nullsafeVariable8 = $this->getWorksheet()->getParent()) ? $nullsafeVariable8->getExcelCalendar() : null);
 				$thisworksheet = $this->getWorksheet();
 				$index = $thisworksheet->getParentOrThrow()->getActiveSheetIndex();
 				$selected = $thisworksheet->getSelectedCells();
@@ -1001,7 +1001,7 @@ class Cell
 	}
 	public function isLocked(): bool
 	{
-		$protected = ($nullsafeVariable8 = ($nullsafeVariable12 = ($nullsafeVariable16 = $this->parent) ? $nullsafeVariable16->getParent() : null) ? $nullsafeVariable12->getProtection() : null) ? $nullsafeVariable8->getSheet() : null;
+		$protected = ($nullsafeVariable9 = ($nullsafeVariable10 = ($nullsafeVariable15 = $this->parent) ? $nullsafeVariable15->getParent() : null) ? $nullsafeVariable10->getProtection() : null) ? $nullsafeVariable9->getSheet() : null;
 		if ($protected !== true) {
 			return false;
 		}
@@ -1014,7 +1014,7 @@ class Cell
 		if ($this->getDataType() !== DataType::TYPE_FORMULA) {
 			return false;
 		}
-		$protected = ($nullsafeVariable9 = ($nullsafeVariable13 = ($nullsafeVariable17 = $this->parent) ? $nullsafeVariable17->getParent() : null) ? $nullsafeVariable13->getProtection() : null) ? $nullsafeVariable9->getSheet() : null;
+		$protected = ($nullsafeVariable11 = ($nullsafeVariable12 = ($nullsafeVariable16 = $this->parent) ? $nullsafeVariable16->getParent() : null) ? $nullsafeVariable12->getProtection() : null) ? $nullsafeVariable11->getSheet() : null;
 		if ($protected !== true) {
 			return false;
 		}

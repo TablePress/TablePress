@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.9
-Stable tag: 3.2.7
+Stable tag: 3.2.8
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,14 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 == Changelog ==
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
+
+= Version 3.2.8 (March 3, 2026) =
+
+* Bugfix: Whitespace handling for the “Filter Term Separator” setting in the “Column Filter Dropdowns” feature module now works properly again. (TablePress Pro and Max only.)
+* Enhancement: The “Column Filter Dropdowns” feature module integration when using “Server-side Processing” is now more reliable. (TablePress Max only.)
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* Improved support for PHP 8.5.
 
 = Version 3.2.7 (February 17, 2026) =
 
@@ -211,7 +219,7 @@ TablePress 3.2 is a feature, stability, maintenance, and compatibility update. H
 
 == Upgrade Notice ==
 
-= 3.2.7 =
+= 3.2.8 =
 This update is an enhancement, stability, maintenance, and compatibility release. Updating is highly recommended!
 
 = 3.2 =

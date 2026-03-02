@@ -3,6 +3,7 @@
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation;
 
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Date;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
@@ -380,5 +381,48 @@ class Functions
 		}
 
 		return $coordinate;
+	}
+
+	/** @param mixed[] $array */
+	public static function convertArrayToCellRange(array $array): string
+	{
+		$retVal = '';
+		$lastRow = $lastColumn = $firstRow = $firstColumn = 0;
+		foreach ($array as $rowkey => $row) {
+			if (!is_array($row) || !is_int($rowkey) || $rowkey < 1) {
+				$firstRow = 0;
+
+				break;
+			}
+			if ($firstRow > $rowkey || $firstRow === 0) {
+				$firstRow = $rowkey;
+			}
+			if ($lastRow < $rowkey) {
+				$lastRow = $rowkey;
+			}
+			foreach ($row as $colkey => $cellValue) {
+				if (!preg_match('/^[A-Z]{1,3}$/', $colkey)) {
+					$firstRow = 0;
+
+					break 2;
+				}
+				$column = Coordinate::columnIndexFromString($colkey);
+				if ($firstColumn > $column || $firstColumn === 0) {
+					$firstColumn = $column;
+				}
+				if ($lastColumn < $column) {
+					$lastColumn = $column;
+				}
+			}
+		}
+		if ($firstRow > 0 && $firstColumn > 0 && ($firstRow !== $lastRow || $firstColumn !== $lastColumn)) {
+			$retVal = Coordinate::stringFromColumnIndex($firstColumn)
+				. $firstRow
+				. ':'
+				. Coordinate::stringFromColumnIndex($lastColumn)
+				. $lastRow;
+		}
+
+		return $retVal;
 	}
 }

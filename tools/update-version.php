@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * Helper script that updates the TablePress version number in all configured files.
@@ -100,7 +101,7 @@ $replacements = array(
 
 // Perform the replacements.
 foreach ( $replacements as $file => $replacements ) {
-	$file = __DIR__ . "/{$file}";
+	$file = dirname( __DIR__ ) . "/{$file}";
 	$content = file_get_contents( $file );
 	foreach ( $replacements as $replacement ) {
 		if ( isset( $replacement['type'] ) && 'integer' === $replacement['type'] ) {

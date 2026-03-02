@@ -4,7 +4,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Cell;
 
 use TablePress\Composer\Pcre\Preg;
 use DateTimeInterface;
-use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use TablePress\PhpOffice\PhpSpreadsheet\Calculation\CalculationParserOnly;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationException;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\RichText\RichText;
@@ -87,8 +87,7 @@ class DefaultValueBinder implements IValueBinder
 			throw new SpreadsheetException("unusable type $gettype");
 		}
 		if (strlen($value) > 1 && $value[0] === '=') {
-			$calculation = new Calculation();
-			$calculation->disableBranchPruning();
+			$calculation = CalculationParserOnly::getParserInstance();
 
 			try {
 				if (empty($calculation->parseFormula($value))) {

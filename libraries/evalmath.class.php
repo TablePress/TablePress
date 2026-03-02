@@ -399,7 +399,7 @@ class EvalMath {
 				++$index;
 
 				// Do we now have a function/variable/number?
-			} elseif ( $ex && ! $expecting_operator ) {
+			} elseif ( $ex && ! $expecting_operator ) { // @phpstan-ignore booleanNot.alwaysTrue
 				$expecting_operator = true;
 				$value = $match[1];
 				// May be a function, or variable with implicit multiplication against parentheses...

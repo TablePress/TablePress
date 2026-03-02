@@ -46,13 +46,13 @@
 	<exclude-pattern>/blocks/table/build/index\.asset\.php</exclude-pattern>
 
 	<!-- Exclude third-party libraries and build tools. -->
-	<exclude-pattern type="relative">^\.phpstan/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/freemius/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/vendor/*</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/excel-reader\.class\.php$</exclude-pattern>
-	<exclude-pattern type="relative">^libraries/simplexlsx\.class\.php$</exclude-pattern>
-	<exclude-pattern type="relative">^node_modules/*</exclude-pattern>
-	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
+	<exclude-pattern>/\.phpstan/*</exclude-pattern>
+	<exclude-pattern>/libraries/freemius/*</exclude-pattern>
+	<exclude-pattern>/libraries/vendor/*</exclude-pattern>
+	<exclude-pattern>/libraries/excel-reader\.class\.php$</exclude-pattern>
+	<exclude-pattern>/libraries/simplexlsx\.class\.php$</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<!--
 	#############################################################################

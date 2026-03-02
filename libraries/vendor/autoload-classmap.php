@@ -262,6 +262,7 @@ return array(
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database\DMax' => $strauss_src . '/PhpSpreadsheet/Calculation/Database/DMax.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database\DCount' => $strauss_src . '/PhpSpreadsheet/Calculation/Database/DCount.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database\DSum' => $strauss_src . '/PhpSpreadsheet/Calculation/Database/DSum.php',
+   'TablePress\PhpOffice\PhpSpreadsheet\Calculation\CalculationParserOnly' => $strauss_src . '/PhpSpreadsheet/Calculation/CalculationParserOnly.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\FunctionArray' => $strauss_src . '/PhpSpreadsheet/Calculation/FunctionArray.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\Info' => $strauss_src . '/PhpSpreadsheet/Calculation/Information/Info.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError' => $strauss_src . '/PhpSpreadsheet/Calculation/Information/ExcelError.php',

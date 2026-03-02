@@ -111,6 +111,7 @@ class Sum
 			}
 		}
 
+		/** @var array<float|int> $wrkArray */
 		return array_sum($wrkArray);
 	}
 }

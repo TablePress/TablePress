@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet;
 
+use TablePress\Composer\Pcre\Preg;
 use JsonSerializable;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\IValueBinder;
@@ -1064,7 +1065,7 @@ class Spreadsheet implements JsonSerializable
 			// then look for local defined name (has priority over global defined name if both names exist)
 			if ($worksheet !== null) {
 				$wsTitle = StringHelper::strToUpper($worksheet->getTitle());
-				$definedName = (string) preg_replace('/^.*!/', '', $definedName);
+				$definedName = Preg::replace('/^.*!/', '', $definedName);
 				foreach ($this->definedNames as $dn) {
 					$sheet = $dn->getScope() ?? $dn->getWorksheet();
 					$upper = StringHelper::strToUpper($dn->getName());
@@ -1869,6 +1870,37 @@ class Spreadsheet implements JsonSerializable
 		}
 	}
 
+	/**
+	 * Change all 2-digit-year date styles to use 4-digit year;
+	 * change all dd-mm-yyyy and mm-dd-yyyy styles to yyyy-mm-dd;
+	 * dd-mmm-yyyy is unambiguous and left unchanged.
+	 */
+	public function disambiguateDateStyles(): void
+	{
+		foreach ($this->cellXfCollection as $style) {
+			$numberFormat = $style->getNumberFormat();
+			$oldFormat = (string) $numberFormat->getFormatCode();
+			$newFormat = Preg::replace('/\byy\b/i', 'yyyy', $oldFormat);
+			$newFormat = Preg::replace(
+				'~\bdd?(-|/|"-"|"/")'
+					. 'mm?(-|/|"-"|"/")'
+					. 'yyyy~',
+				'yyyy-mm-dd',
+				$newFormat
+			);
+			$newFormat = Preg::replace(
+				'~\bmm?(-|/|"-"|"/")'
+					. 'dd?(-|/|"-"|"/")'
+					. 'yyyy~',
+				'yyyy-mm-dd',
+				$newFormat
+			);
+			if ($newFormat !== $oldFormat) {
+				$numberFormat->setFormatCode($newFormat);
+			}
+		}
+	}
+
 	public function returnArrayAsArray(): void
 	{
 		$this->calculationEngine->setInstanceArrayReturnType(
@@ -1902,5 +1934,26 @@ class Spreadsheet implements JsonSerializable
 	public function getDomainWhiteList(): array
 	{
 		return $this->domainWhiteList;
+	}
+
+	private bool $usesCheckBoxStyle = false;
+
+	public function getUsesCheckBoxStyle(): bool
+	{
+		return $this->usesCheckBoxStyle;
+	}
+
+	public function setUsesCheckBoxStyle(): bool
+	{
+		$this->usesCheckBoxStyle = false;
+		foreach ($this->getCellXfCollection() as $cellXf) {
+			if ($cellXf->getCheckBox()) {
+				$this->usesCheckBoxStyle = true;
+
+				break;
+			}
+		}
+
+		return $this->usesCheckBoxStyle;
 	}
 }
