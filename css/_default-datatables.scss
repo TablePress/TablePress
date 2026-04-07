@@ -89,6 +89,7 @@ div.dt-scroll-body {
 				position: absolute;
 				display: block;
 				bottom: 50%;
+				content: unicode("25b2");
 				content: unicode("25b2") / "";
 			}
 		}
@@ -99,6 +100,7 @@ div.dt-scroll-body {
 				position: absolute;
 				display: block;
 				top: 50%;
+				content: unicode("25bc");
 				content: unicode("25bc") / "";
 			}
 		}
@@ -189,13 +191,14 @@ div.dt-scroll-body {
 	clear: both;
 	margin-bottom: 1rem;
 
-	.tablepress {
+	table.tablepress {
 		margin-bottom: 0;
 
-		/* Empty footers should be hidden for improved accessibility. */
-		tfoot:empty {
-			display: none;
-		}
+	}
+
+	/* Empty footers should be hidden for improved accessibility. */
+	.tablepress tfoot:empty {
+		display: none;
 	}
 
 	.dt-layout-row {

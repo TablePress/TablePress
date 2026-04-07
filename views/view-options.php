@@ -35,7 +35,8 @@ class TablePress_Options_View extends TablePress_View {
 
 		parent::setup( $action, $data );
 
-		$this->admin_page->enqueue_script( 'options' );
+		TablePress::enqueue_script( 'common', array( 'jquery-core', 'postbox' ) );
+		TablePress::enqueue_script( 'options' );
 
 		$this->process_action_messages( array(
 			'success_save'                  => __( 'Options saved successfully.', 'tablepress' ),
@@ -49,8 +50,8 @@ class TablePress_Options_View extends TablePress_View {
 			$codemirror_settings = wp_enqueue_code_editor( array( 'type' => 'text/css' ) );
 			if ( ! empty( $codemirror_settings ) ) {
 				// Load CSS adjustments for CodeMirror and the added vertical resizing.
-				$this->admin_page->enqueue_style( 'codemirror', array( 'code-editor' ) );
-				$this->admin_page->enqueue_script( 'codemirror' );
+				TablePress::enqueue_style( 'codemirror', array( 'code-editor' ) );
+				TablePress::enqueue_script( 'codemirror' );
 			}
 
 			if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW ) {

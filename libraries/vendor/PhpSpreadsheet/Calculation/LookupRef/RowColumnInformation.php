@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
@@ -138,7 +139,7 @@ class RowColumnInformation
 				 */
 				private static function convert0ToName($result)
 	{
-		if (is_int($result) && ($result <= 0 || $result > 1048576)) {
+		if (is_int($result) && ($result <= 0 || $result > AddressRange::MAX_ROW)) {
 			return ExcelError::NAME();
 		}
 

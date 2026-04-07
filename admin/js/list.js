@@ -53,14 +53,11 @@ const bulk_action_dropdown = $( '#doaction' );
 // The bulk action dropdown is only in the DOM if at least one table is shown in the list, thus an existence check is needed.
 if ( bulk_action_dropdown ) {
 	bulk_action_dropdown.addEventListener( 'click', ( event ) => {
+		// Set the ID of the bulk action dropdown in the global variable to the correct `name` attribute of the dropdown, as the default of `action` can not be used.
+		window.bulkActionObserverIds.bulk_action = 'bulk-action-selector-top';
+
 		const action = $( '#bulk-action-selector-top' ).value;
 		const num_selected = $( '.tablepress-all-tables tbody input:checked' ).length;
-
-		// Do nothing if no action or no tables were selected.
-		if ( '-1' === action || 0 === num_selected ) {
-			event.preventDefault();
-			return;
-		}
 
 		// Show AYS prompt when deleting tables.
 		if ( 'delete' === action ) {

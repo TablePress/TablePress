@@ -49,6 +49,25 @@ body.wait * {
 		padding: 0 20px;
 	}
 
+	/* Reset artificial margin/padding for metaboxes, introduced in WP 7.0. */
+	#poststuff #post-body {
+		margin: 0;
+
+		@media only screen and (min-width: 851px) {
+			&.columns-2 {
+				margin-right: 300px;
+			}
+		}
+	}
+	.metabox-holder .postbox-container .meta-box-sortables {
+		padding: 0;
+	}
+
+	/* Metabox titles should have the same height, with and without the "?" button. */
+	.postbox-header h2 {
+		line-height: 24px;
+	}
+
 	.header {
 		background: #ffffff;
 		border-bottom: 1px solid #dedae6;
@@ -180,19 +199,25 @@ body.wait * {
 	.components-card {
 		box-shadow: none;
 		border-radius: 0;
+		border: 1px solid #c3c4c7;
 
 		.components-card-header {
+			padding: 0;
+			border-bottom: 1px solid #c3c4c7;
+
 			h2 {
-				padding: 0;
-				line-height: normal;
+				line-height: 24px;
 			}
+		}
+
+		.components-card-body {
+			padding: 16px;
 		}
 
 		.card-title {
 			font-size: 13px;
 			font-weight: 500;
-			padding: 0 0 18px;
-			margin-left: -8px;
+			padding: 0 0 16px;
 		}
 	}
 
@@ -227,10 +252,12 @@ body.wait * {
 		}
 	}
 
+	.notice {
+		margin: 20px 0 0;
+	}
 
 	.components-notice {
-		&.notice {
-			margin: 20px 0 0;
+		@at-root body[class*="branch-6-"] &.notice {
 			box-shadow: none;
 			padding: 8px 12px;
 			border-top: none;
@@ -246,10 +273,10 @@ body.wait * {
 
 				.notice-dismiss {
 					&:before {
+						content: unicode("f335");
 						content: unicode("f335") / "";
-						font-size: 32px;
-						color: #757575;
-						padding-right: 10px;
+						font-size: 24px;
+						padding-right: 4px;
 					}
 
 					&:hover:before {
@@ -314,27 +341,6 @@ body.wait * {
 	}
 }
 
-/* Width settings for the `Modal` component. Only for backward compatibility with WP < 6.5. */
-@media (min-width: 600px) {
-	.components-modal__frame {
-		&.has-size-small,
-		&.has-size-medium,
-		&.has-size-large {
-			width: 100%;
-		}
-
-		&.has-size-small {
-			max-width: 384px;
-		}
-		&.has-size-medium {
-			max-width: 512px;
-		}
-		&.has-size-large {
-			max-width: 840px;
-		}
-	}
-}
-
 /* Width of the columns on the "All Tables" list. */
 .tablepress-all-tables {
 	thead {
@@ -363,6 +369,31 @@ body.wait * {
 			display: none !important;
 			padding: 3px 8px 3px 35%;
 		}
+	}
+}
+
+/* Layout adjustments for the header row. */
+table.widefat {
+	thead,
+	tfoot {
+		td.check-column {
+			padding-top: 0;
+
+			@media screen and (max-width: 782px) {
+				padding-top: 6px;
+			}
+		}
+	}
+	th {
+		&.sortable,
+		&.sorted {
+			a {
+				line-height: 24px;
+			}
+		}
+	}
+	.sorting-indicators {
+		margin-top: 2px;
 	}
 }
 
@@ -425,7 +456,7 @@ body.wait * {
 }
 
 /* Styling of pills in postbox headings. */
-.postbox .postbox-header .hndle {
+.postbox .postbox-header .hndle:not(:has(> .help-container)) {
 	display: inline;
 
 	.pill-label {

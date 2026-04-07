@@ -34,7 +34,7 @@ parameters:
 				- classes/class-evaluate-phpspreadsheet.php
 				- classes/class-import-phpspreadsheet.php
 	WPCompat:
-		requiresAtLeast: '6.2'
+		requiresAtLeast: '6.7'
 includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 	- vendor/johnbillion/wp-compat/extension.neon

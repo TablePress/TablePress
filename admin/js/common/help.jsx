@@ -18,7 +18,6 @@ import {
 	Modal,
 } from '@wordpress/components';
 import { help } from '@wordpress/icons';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Returns the HelpBox component's JSX markup.
@@ -39,14 +38,14 @@ export const HelpBox = ( { title, buttonProps= {}, modalProps = {}, children } )
 		<>
 			<Button
 				variant="secondary"
+				icon={ help }
 				size="small"
 				onClick={ openModal }
-				text={ __( 'Help', 'tablepress' ) }
 				{ ...buttonProps }
 			/>
 			{ modalOpen && (
 				<Modal
-					className="has-size-small" // Using size="small" is only possible in WP 6.5+.
+					size="small"
 					icon={ <Icon icon={ help } style={ { display: 'flex', marginRight: '4px' } }/> }
 					title={ title }
 					onRequestClose={ closeModal }
@@ -78,7 +77,7 @@ export const Help = ( { section, title, buttonProps = {}, modalProps = {}, child
 	if ( ! helpContainer.current ) {
 		helpContainer.current = document.createElement( 'div' );
 		helpContainer.current.className = 'help-container';
-		document.getElementById( `tablepress-${section}-section` ).closest( '.postbox' ).querySelector( '.handle-actions' ).prepend( helpContainer.current );
+		document.getElementById( `tablepress-${section}-section` ).closest( '.postbox' ).querySelector( 'h2.hndle' ).appendChild( helpContainer.current );
 	}
 
 	return createPortal(

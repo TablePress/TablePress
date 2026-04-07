@@ -121,11 +121,10 @@ const Section = () => {
 									<HelpBox
 										buttonProps={ {
 											size: 'compact',
-											text: __( '?', 'tablepress' ),
 											label: __( 'Help on combining cells', 'tablepress' ),
 										} }
 										modalProps={ {
-											className: 'has-size-medium', // Using size: 'medium' is only possible in WP 6.5+.
+											size: 'medium',
 										} }
 										title={ __( 'Help on combining cells', 'tablepress' ) }
 									>
@@ -392,7 +391,7 @@ const Section = () => {
 					text={ __( 'You can not do this move, because you reached the border of the table.', 'tablepress' ) }
 					onConfirm={ () => setAlertMoveInvalidIsShown( false ) }
 					modalProps={ {
-						className: 'has-size-small', // Using size: 'small' is only possible in WP 6.5+.
+						size: 'small',
 					} }
 				/>
 			) }

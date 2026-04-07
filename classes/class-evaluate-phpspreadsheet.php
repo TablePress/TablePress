@@ -114,7 +114,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 
 								// Sanitize the output of the evaluated formula.
 								$cell_content = wp_kses_post( $cell_content ); // Equals wp_filter_post_kses(), but without the unnecessary slashes handling.
-							} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception $exception ) {
+							} catch ( \Throwable $exception ) {
 								$message = str_replace( 'Worksheet!', '', $exception->getMessage() );
 								$cell_content = "!ERROR! {$message}";
 							}
@@ -127,7 +127,7 @@ class TablePress_Evaluate_PHPSpreadsheet {
 			// Save PHP memory.
 			$spreadsheet->disconnectWorksheets();
 			unset( $cell_collection, $worksheet, $spreadsheet );
-		} catch ( \TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception $exception ) {
+		} catch ( \Throwable $exception ) {
 			$message = str_replace( 'Worksheet!', '', $exception->getMessage() );
 			$table_data = array( array( "!ERROR! {$message}" ) );
 		}

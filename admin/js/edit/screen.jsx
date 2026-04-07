@@ -37,6 +37,7 @@ const Screen = () => {
 		previewIsLoading: false,
 		previewIsOpen: false,
 		previewSrcDoc: '',
+		quickNavigationDropdownIsOpen: false,
 		previewUrl: tp.screenOptions.previewUrl,
 		triggerPreview: false,
 		triggerSaveChanges: false,

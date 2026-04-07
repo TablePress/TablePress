@@ -27,7 +27,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 2.0.0
 	 * @var string[]
 	 */
-	protected array $wp_pointers = array( 'tp20_edit_context_menu', 'tp21_edit_screen_options' );
+	protected array $wp_pointers = array( 'tp20_edit_context_menu', 'tp33_edit_quick_navigation' );
 
 	/**
 	 * Sets up the view with data and do things that are specific for this view.
@@ -42,6 +42,8 @@ class TablePress_Edit_View extends TablePress_View {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
 
 		parent::setup( $action, $data );
+
+		TablePress::enqueue_script( 'common', array( 'jquery-core', 'postbox' ) );
 
 		$this->add_text_box( 'no-javascript', array( $this, 'textbox_no_javascript' ), 'header' );
 
@@ -67,26 +69,24 @@ class TablePress_Edit_View extends TablePress_View {
 		// For the "Insert Link" dialog.
 		wp_enqueue_script( 'wplink' );
 
-		$this->admin_page->enqueue_style( 'jspreadsheet' );
-		$this->admin_page->enqueue_style( 'jsuites', array( 'tablepress-jspreadsheet' ) );
-		$this->admin_page->enqueue_style( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites' ) );
+		TablePress::enqueue_style( 'jspreadsheet' );
+		TablePress::enqueue_style( 'jsuites', array( 'tablepress-jspreadsheet' ) );
+		TablePress::enqueue_style( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites' ) );
 		if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) {
-			$this->admin_page->enqueue_style( 'edit-features', array( 'tablepress-edit' ) );
+			TablePress::enqueue_style( 'edit-features', array( 'tablepress-edit' ) );
 		}
-		$this->admin_page->enqueue_script( 'jspreadsheet' );
-		$this->admin_page->enqueue_script( 'jsuites', array( 'tablepress-jspreadsheet' ) );
-		$this->admin_page->enqueue_script( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites', 'jquery-core' ) );
+		TablePress::enqueue_script( 'jspreadsheet' );
+		TablePress::enqueue_script( 'jsuites', array( 'tablepress-jspreadsheet' ) );
+		TablePress::enqueue_script( 'edit', array( 'tablepress-jspreadsheet', 'tablepress-jsuites', 'jquery-core' ) );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
-		$this->add_text_box( 'buttons-top', array( $this, 'textbox_buttons' ), 'normal' );
+		$this->add_text_box( 'header-bar', array( $this, 'textbox_header_bar' ), 'normal' );
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( $this, 'postbox_table_information' ), 'normal' );
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( $this, 'postbox_table_data' ), 'normal' );
 		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( $this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( $this, 'postbox_table_options' ), 'normal' );
 		$this->add_meta_box( 'datatables-features', __( 'Table Features for Site Visitors', 'tablepress' ), array( $this, 'postbox_datatables_features' ), 'normal' );
 		$this->add_text_box( 'hidden-containers', array( $this, 'textbox_hidden_containers' ), 'additional' );
-		$this->add_text_box( 'buttons-bottom', array( $this, 'textbox_buttons' ), 'additional' );
-		$this->add_text_box( 'other-actions', array( $this, 'textbox_other_actions' ), 'submit' );
 
 		add_filter( 'screen_settings', array( $this, 'add_screen_options_output' ), 10, 2 );
 	}
@@ -284,7 +284,7 @@ class TablePress_Edit_View extends TablePress_View {
 						</div>
 						<div class="inside">
 						<?php
-							TablePress::init_modules();
+							TablePress::load_modules_data();
 							$random_module_slug = array_rand( TablePress::$modules );
 							$feature_module = TablePress::$modules[ $random_module_slug ];
 							$module_url = esc_url( "https://tablepress.org/modules/{$random_module_slug}/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen" );
@@ -334,28 +334,24 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Prints the container for the "Preview" and "Save Changes" buttons.
+	 * Prints the container for the sticky "Header Bar".
 	 *
-	 * @since 1.0.0
+	 * @since 3.3.0
 	 *
 	 * @param array<string, mixed> $data Data for this screen.
 	 * @param array<string, mixed> $box  Information about the text box.
 	 */
-	public function textbox_buttons( array $data, array $box ): void {
-		echo '<div id="tablepress-' . $box['id'] . '-section" class="section-has-react-loading-text">';
+	public function textbox_header_bar( array $data, array $box ): void {
+		echo '<div id="tablepress-header-bar-section" class="section-has-react-loading-text">';
+		if ( tb_tp_fs()->is_plan_or_trial__premium_only( 'pro' ) ) {
+			echo '<div class="react-loading-text" style="line-height:36px;font-weight:bold">';
+			printf(
+				__( 'The page is being loaded. If this text does not disappear soon, <a href="%1$s">click here to reload the page.</a>', 'tablepress' ),
+				esc_url( TablePress::url( array( 'action' => 'edit', 'table_id' => $data['table']['id'], 'refresh_table_options' => 'true' ) ) ),
+			);
+			echo '</div>';
+		}
 		echo '</div>';
-	}
-
-	/**
-	 * Prints the container for the "Copy Table, "Export Table", and "Delete Table" buttons.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array<string, mixed> $data Data for this screen.
-	 * @param array<string, mixed> $box  Information about the text box.
-	 */
-	public function textbox_other_actions( array $data, array $box ): void {
-		echo '<div id="tablepress-other-actions-section"></div>';
 	}
 
 	/**
@@ -484,7 +480,7 @@ class TablePress_Edit_View extends TablePress_View {
 		$content  = '<h3>' . __( 'TablePress feature: Context menu', 'tablepress' ) . '</h3>';
 		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . __( 'Right-clicking the table content fields will open a context menu for quick access to common editing tools.', 'tablepress' ) . '</p>';
 
-		$this->admin_page->print_wp_pointer_js(
+		$this->print_wp_pointer_js(
 			'tp20_edit_context_menu',
 			'#table-editor',
 			array(
@@ -495,21 +491,21 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Sets the content for the WP feature pointer about the screen options for changing the cell size.
+	 * Sets the content for the WP feature pointer about the Quick Navigation on the "Edit" screen.
 	 *
-	 * @since 2.1.0
+	 * @since 3.3.0
 	 */
-	public function wp_pointer_tp21_edit_screen_options(): void {
-		$content  = '<h3>' . __( 'TablePress feature: Column width and row height of the table editor', 'tablepress' ) . '</h3>';
-		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . sprintf( __( 'You can change the default cell size for the table editor on this “Edit” screen in the “%s”.', 'tablepress' ), __( 'Screen Options', 'default' ) ) . '</p>';
+	public function wp_pointer_tp33_edit_quick_navigation(): void {
+		$content  = '<h3>' . __( 'TablePress feature: Quick Navigation', 'tablepress' ) . '</h3>';
+		$content .= '<p style="text-wrap:balance">' . __( 'You can quickly navigate between different sections of the table editor using the Quick Navigation menu.', 'tablepress' ) . ' ' . __( 'Just click the logo or use the <kbd>%metaKey%J</kbd> keyboard shortcut!', 'tablepress' ) . '</p>';
 
-		$this->admin_page->print_wp_pointer_js(
-			'tp21_edit_screen_options',
-			'#screen-options-link-wrap',
+		$this->print_wp_pointer_js(
+			'tp33_edit_quick_navigation',
+			'#tablepress-header-bar-section',
 			array(
 				'content'      => $content,
-				'position'     => array( 'edge' => 'top', 'align' => 'right' ),
-				'pointerClass' => 'wp-pointer pointer-tp21_edit_screen_options',
+				'position'     => array( 'edge' => 'top', 'align' => is_rtl() ? 'right+16' : 'left-16' ),
+				'pointerWidth' => 330,
 			),
 		);
 	}

@@ -704,10 +704,10 @@ class TablePress_Render {
 
 		// name/description below table (HTML already generated above).
 		if ( $this->render_options['print_name'] && 'below' === $this->render_options['print_name_position'] ) {
-			$output .= $print_name_html; // @phpstan-ignore variable.undefined (The variable is set above.)
+			$output .= $print_name_html;
 		}
 		if ( $this->render_options['print_description'] && 'below' === $this->render_options['print_description_position'] ) {
-			$output .= $print_description_html; // @phpstan-ignore variable.undefined (The variable is set above.)
+			$output .= $print_description_html;
 		}
 
 		/**

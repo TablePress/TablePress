@@ -13,11 +13,12 @@
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
 /**
- * Check if the site is using WordPress 6.2 or newer.
+ * Check if the site is using WordPress 6.7 or newer.
+ * Do not use `wp_get_wp_version()` here, as it is only available since WP 6.7.
  */
 // Include an unmodified $wp_version.
 require ABSPATH . WPINC . '/version.php';
-if ( version_compare( str_replace( '-src', '', $wp_version ), '6.2', '<' ) ) { // @phpstan-ignore variable.undefined ($wp_version is a global variable, defined in the included file.)
+if ( version_compare( str_replace( '-src', '', $wp_version ), '6.7', '<' ) ) { // @phpstan-ignore variable.undefined ($wp_version is a global variable, defined in the included file.)
 	/**
 	 * Show an error notice to admins, if the installed version of WordPress is not supported.
 	 *
@@ -39,9 +40,9 @@ if ( version_compare( str_replace( '-src', '', $wp_version ), '6.2', '<' ) ) { /
 				<strong>
 				<?php
 				if ( current_user_can( 'update_core' ) ) {
-					printf( __( 'Please <a href="%1$s">update your WordPress installation</a> to at least version %2$s!', 'tablepress' ), esc_url( self_admin_url( 'update-core.php' ) ), '6.2' );
+					printf( __( 'Please <a href="%1$s">update your WordPress installation</a> to at least version %2$s!', 'tablepress' ), esc_url( self_admin_url( 'update-core.php' ) ), '6.7' );
 				} else {
-					printf( __( 'Please ask your site’s administrator to update WordPress to at least version %1$s!', 'tablepress' ), '6.2' );
+					printf( __( 'Please ask your site’s administrator to update WordPress to at least version %1$s!', 'tablepress' ), '6.7' );
 				}
 				?>
 				</strong>

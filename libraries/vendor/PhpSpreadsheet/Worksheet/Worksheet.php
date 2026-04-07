@@ -1871,6 +1871,7 @@ class Worksheet
 		}
 
 		if ($behaviour === self::MERGE_CELL_CONTENT_MERGE) {
+			/** @var string[] $leftCellValue */
 			$this->getCell($upperLeft)->setValueExplicit(implode(' ', $leftCellValue), DataType::TYPE_STRING);
 		}
 	}
@@ -1895,6 +1896,7 @@ class Worksheet
 		}
 
 		if ($behaviour === self::MERGE_CELL_CONTENT_MERGE) {
+			/** @var string[] $leftCellValue */
 			$this->getCell($upperLeft)->setValueExplicit(implode(' ', $leftCellValue), DataType::TYPE_STRING);
 		}
 	}

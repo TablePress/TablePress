@@ -42,6 +42,8 @@ class TablePress_About_View extends TablePress_View {
 
 		parent::setup( $action, $data );
 
+		TablePress::enqueue_script( 'common', array( 'jquery-core', 'postbox' ) );
+
 		$this->add_text_box( 'spacer', array( $this, 'textbox_spacer' ), 'normal' );
 		$this->add_text_box( 'spacer', array( $this, 'textbox_spacer' ), 'side' );
 		$this->add_meta_box( 'plugin-purpose', __( 'Plugin Purpose', 'tablepress' ), array( $this, 'postbox_plugin_purpose' ), 'normal' );
@@ -223,7 +225,7 @@ class TablePress_About_View extends TablePress_View {
 			<li>TablePress table scheme: <?php echo TablePress::table_scheme_version; ?></li>
 			<li>Plan: Free</li>
 			<li>Plugin installed: <?php echo wp_date( 'Y/m/d H:i:s', $data['first_activation'] ); ?></li>
-			<li>WordPress: <?php echo $GLOBALS['wp_version']; ?></li>
+			<li>WordPress: <?php echo wp_get_wp_version(); ?></li>
 			<li>Multisite: <?php echo is_multisite() ? 'yes' : 'no'; ?></li>
 			<li>PHP: <?php echo PHP_VERSION; ?></li>
 			<li>mySQL (Server): <?php echo ( isset( $GLOBALS['wpdb']->dbh ) && function_exists( 'mysqli_get_server_info' ) ) ? mysqli_get_server_info( $GLOBALS['wpdb']->dbh ) : 'no mySQL server'; // phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysqli_get_server_info ?></li>

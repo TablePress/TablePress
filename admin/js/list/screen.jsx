@@ -48,7 +48,7 @@ const TablePreview = ( { title, url, onRequestClose } ) => {
 			title={ title }
 			className="table-preview-modal"
 			onRequestClose={ onRequestClose }
-			isFullScreen={ true } // Using size="full" is only possible in WP 6.5+.
+			size="fill"
 			headerActions={
 				<Button
 					icon={ external }
@@ -150,7 +150,7 @@ const ConfirmDeleteModal = ( { title, deleteUrl, closeConfirmDeleteModal } ) => 
 
 	return (
 		<Modal
-			className="has-size-medium" // Using size="medium" is only possible in WP 6.5+.
+			size="medium"
 			icon={ <Icon icon={ TablePressIcon } size="36" style={ { display: 'flex', marginRight: '1rem' } } /> }
 			title={ title }
 			isDismissible={ false }

@@ -2,10 +2,10 @@
 Contributors: TobiasBg
 Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=donate-link
 Tags: table, spreadsheet, csv, excel, tables
-Requires at least: 6.2
+Requires at least: 6.7
 Requires PHP: 7.4
-Tested up to: 6.9
-Stable tag: 3.2.8
+Tested up to: 7.0
+Stable tag: 3.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,7 +75,7 @@ Users with an active TablePress Premium license plan are eligible for Priority E
 For support questions, bug reports, or feature requests, please use the [WordPress Support Forums](https://wordpress.org/support/plugin/tablepress/). Please search through the forums first, and only [create a new topic](https://wordpress.org/support/plugin/tablepress/#new-post) if you don't find an existing answer. Thank you!
 
 = Requirements? =
-In short: WordPress 6.2 or higher, while the latest version of WordPress is always recommended. In addition, the server must be running PHP 7.4 or newer.
+In short: WordPress 6.7 or higher, while the latest version of WordPress is always recommended. In addition, the server must be running PHP 7.4 or newer.
 
 = Languages and Localization? =
 TablePress uses the ["Translate WordPress" platform](https://translate.wordpress.org/). Please see the sidebar on the TablePress page in the [WordPress Plugin Directory](https://wordpress.org/plugins/tablepress/) for available translations.
@@ -108,110 +108,42 @@ You may also add certain features (like sorting, pagination, filtering, alternat
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 3.2.8 (March 3, 2026) =
+= Version 3.3 (April 7, 2026) =
 
-* Bugfix: Whitespace handling for the “Filter Term Separator” setting in the “Column Filter Dropdowns” feature module now works properly again. (TablePress Pro and Max only.)
-* Enhancement: The “Column Filter Dropdowns” feature module integration when using “Server-side Processing” is now more reliable. (TablePress Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-* Improved support for PHP 8.5.
+TablePress 3.3 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
 
-= Version 3.2.7 (February 17, 2026) =
+**New Sticky Header Bar on the “Edit” Screen**
 
-* Enhancement: The “Filter Term Separator” setting in the “Column Filter Dropdowns” feature module now works more reliably when using different whitespace characters. (TablePress Pro and Max only.)
-* Enhancement: The table export to the HTML format now produces output that is more consistent with the HTML standard.
-* Enhancement: The CSV export adds additional security protection against attacks against old or misconfigured spreadsheet software.
-* Bugfix: A JavaScript error that could occur when inserting a table using the “Classic Editor” plugin is now prevented.
-* Bugfix: Several issues about wrong, broken, and missing translations were fixed.
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-* Improved support for PHP 8.5.
+The “Edit” screen for tables has been enhanced with a new sticky header bar that stays visible while you scroll, making it easier to work with long tables:
 
-= Version 3.2.6 (December 16, 2025) =
+* The “Save Changes” and “Preview” buttons are now always visible in the header bar, no matter where you are on the page!
+* A new “Quick Navigation” dropdown menu lets you jump to any section of the table editor instantly. Use the Cmd/Ctrl+J keyboard shortcut for even faster access!
+* A “More actions” dropdown provides quick access to features like copying, exporting, and deleting a table, or to copy its Shortcode for easy embedding.
 
-* Improvement: The CSS code for styling hovered rows when child rows are present was improved for better performance.
-* Improvement: It's easier for developer to adjust or modify the file name or contents of automatically exported tables. (TablePress Pro and Max only.)
-* Bugfix: The "Delete Table" button at the bottom of the "Edit" screen now longer raises and error.
-* Bugfix: Don't accidentally prevent the filter term "0" in the "Row Highlighting" and "Cell Highlighting" feature modules. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-* Full compatibility with WordPress 6.9.
-* Improved support for PHP 8.5.
+**Improved Help System**
 
-= Version 3.2.5 (October 28, 2025) =
+* Help buttons are now displayed next to section titles, making help information for features easily available.
+* Help modals for premium feature modules now include animations that visually explain what a feature does. (TablePress Pro and Max only.)
 
-* **Security fix**: Authenticated Stored XSS (CVE-2025-12324). Thanks to Rafshanzani Suhada and the Wordfence team for following responsible disclosure policies when reporting this issue!
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Improved support for PHP 8.5.
+**Enhancements for Premium Features**
 
-= Version 3.2.4 (October 21, 2025) =
+* **Column Filter Dropdowns**: A new “Reset” button option allows site visitors to clear all active filters with a single click! (TablePress Pro and Max only.)
+* **Individual Column Filtering**: The calculation of column widths was improved to prevent layout shifts of header and body cells. (TablePress Pro and Max only.)
+* **Automatic Periodic Table Import**: The configuration screen is now more usable on mobile devices and small screens, with a scrollable table layout. (TablePress Max only.)
 
-* Improvement: Improve table import when importing URLs from external services like Google Sheets, Microsoft OneDrive, and Dropbox.
-* Bugfix: Elementor integration: Prevent an error with the “Element Cache”.
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
+**On-Demand Translation Loading**
 
-= Version 3.2.3 (September 23, 2025) =
-
-* Elementor integration: Support for clearing the “Element Cache” was added.
-* Elementor widget: The “Configuration Parameters” field is now shown properly again.
-* Elementor widget: “Dynamic Tags” are now supported for the “Configuration Parameters” field.
-* New feature: The “Advanced Pagination Settings” feature module now offers pagination with a select dropdown field. (TablePress Pro and Max only.)
-* Improvement: The “Individual Column Filtering” search fields now support the native Clear button. (TablePress Pro and Max only.)
-* Bug fix: Ensure that available premium translation files are loaded correctly. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Improved support for PHP 8.5.
-
-= Version 3.2.2 (September 23, 2025) =
-
-This version was not released, due to issues in the release process.
-
-= Version 3.2.1 (August 28, 2025) =
-
-* **Security fix**: Authenticated Stored XSS (CVE-2025-9500). Thanks to Muhammad Yudha and the Wordfence team for following responsible disclosure policies when reporting this issue!
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Improved support for PHP 8.5.
-
-= Version 3.2 (August 26, 2025) =
-
-TablePress 3.2 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
-
-**Improved Frontend Table Performance**
-
-* Tables and their interactivity features are more accessible for visitors with disabilities and users of assistive technologies, with improved labelling and easier-to-use keyboard navigation!
-
-**Many New Features and Enhancements for Existing Premium Features**
-
-* **Fixed Header**
-  * When combining the Fixed Header Row with Horizontal Scrolling, the header will scroll properly as well.
-* **Server-side Processing**
-  * It is now possible to use the “Column Filter Dropdowns”, “Individual Column Filtering”, and “Inverted Filtering” feature modules while benefitting from the fast loading of large tables from the server!
-* **Advanced Access Rights**
-  * The user interface now allows filtering for users and tables, to quickly find the right combination!
-  * Only user roles that are allowed to edit tables will be shown, making the overview much more lightweight!
-* **Index or Counter Column**
-  * The rendering performance has been improved for large tables.
-* **Row Order and Column Order**
-  * The “Random” option is now shown in the block’s feature section’s dropdown!
-* **Advanced Pagination Settings**
-  * The “Show more” button shows better scrolling behavior when using it with long tables!
-* **Column Filter Dropdowns**
-  * The filtering dropdowns can now be used with Server-side Processing, making it a great choice for large tables!
-* **Individual Column Filtering**
-  * Besides text input fields, the dropdowns are now also supported when using Server-side Processing!
-* **Inverted Filtering**
-  * Large tables now benefit from speed improvements, when using Server-side Processing and Inverted Filtering!
+* Premium translation files for several languages are now loaded on-demand from the TablePress Translations platform. This ensures you always have the latest translations and reduces the plugin’s file size. (TablePress Pro and Max only.)
 
 **Behind the scenes**
 
+* Full compatibility with WordPress 7.0, including an updated visual styling to match the latest WordPress design.
+* Improved error handling when evaluating math formulas in table cells.
+* Various code modernizations, removal of outdated legacy code, and optimizations for better performance.
 * Several minor bugs and inconsistencies have been fixed and improved!
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Updated external libraries to benefit from enhancements and bug fixes.
-* Automated code compatibility checks and build tools simplify chores for easier development.
-* Improved support for PHP 8.4.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* **TablePress 3.3 requires WordPress 6.7 or newer.**
 
 **Premium versions**
 
@@ -219,8 +151,5 @@ TablePress 3.2 is a feature, stability, maintenance, and compatibility update. H
 
 == Upgrade Notice ==
 
-= 3.2.8 =
-This update is an enhancement, stability, maintenance, and compatibility release. Updating is highly recommended!
-
-= 3.2 =
+= 3.3 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

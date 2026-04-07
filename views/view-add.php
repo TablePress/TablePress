@@ -41,7 +41,7 @@ class TablePress_Add_View extends TablePress_View {
 			'error_add' => __( 'Error: The table could not be added.', 'tablepress' ),
 		) );
 
-		$this->admin_page->enqueue_script( 'add' );
+		TablePress::enqueue_script( 'add' );
 
 		$this->add_text_box( 'head', array( $this, 'textbox_head' ), 'normal' );
 		$this->add_text_box( 'add-table', array( $this, 'textbox_add_table' ), 'normal' );

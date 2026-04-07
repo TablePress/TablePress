@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
+use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\DefaultReadFilter;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
@@ -157,7 +158,7 @@ class ColumnAndRowAttributes extends BaseParserClass
 				for ($columnAddress = $startColumn; $columnAddress !== $endColumn; StringHelper::stringIncrement($columnAddress)) {
 					$columnAttributes[$columnAddress] = $this->readColumnRangeAttributes($column, $readDataOnly);
 
-					if ((int) ($column['max']) == 16384) {
+					if ((int) ($column['max']) === AddressRange::MAX_COLUMN_INT) {
 						break;
 					}
 				}

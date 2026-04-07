@@ -35,6 +35,8 @@ class TablePress_Export_View extends TablePress_View {
 
 		parent::setup( $action, $data );
 
+		TablePress::enqueue_script( 'common', array( 'jquery-core', 'postbox' ) );
+
 		$this->add_text_box( 'no-javascript', array( $this, 'textbox_no_javascript' ), 'header' );
 
 		$this->process_action_messages( array(
@@ -48,7 +50,7 @@ class TablePress_Export_View extends TablePress_View {
 		if ( 0 === $data['tables_count'] ) {
 			$this->add_meta_box( 'no-tables', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_no_tables' ), 'normal' );
 		} else {
-			$this->admin_page->enqueue_script( 'export' );
+			TablePress::enqueue_script( 'export' );
 			$this->add_meta_box( 'export-form', __( 'Export Tables', 'tablepress' ), array( $this, 'postbox_export_form' ), 'normal' );
 		}
 	}

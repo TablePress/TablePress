@@ -57,8 +57,8 @@
 	<!-- TablePress currently supports PHP 7.4+. -->
 	<config name="testVersion" value="7.4-"/>
 
-	<!-- TablePress currently supports WP 6.2+. -->
-	<config name="minimum_wp_version" value="6.2"/>
+	<!-- TablePress currently supports WP 6.7+. -->
+	<config name="minimum_wp_version" value="6.7"/>
 
 	<!--
 	#############################################################################

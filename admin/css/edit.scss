@@ -12,20 +12,19 @@
 	display: none;
 }
 
-/* Positioning of the "Help" button in the header section of a postbox. */
-.postbox-header .handle-actions {
-	display: flex;
-	align-items: center;
+.postbox {
+	scroll-margin-top: 72px;
+}
 
-	.help-container {
-		margin-right: 0.5em;
+/* Positioning of the "Help" button in the header section of a postbox. */
+.postbox .postbox-header .hndle {
+	&:has(> .help-container) {
+		justify-content: flex-start;
+		gap: 12px;
 	}
 
-	/* Backward compatibility with WP < 6.5. */
-	.handle-order-higher,
-	.handle-order-lower,
-	.handlediv {
-		height: 1.62rem;
+	> .help-container {
+		height: 24px;
 	}
 }
 
@@ -43,6 +42,34 @@ div#post-body.metabox-holder.columns-1 {
 /* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog. */
 body #wp-link-backdrop {
 	z-index: 100103;
+}
+
+/* Header Bar. */
+#tablepress-header-bar-section {
+	margin-bottom: 20px;
+	padding: 8px 12px;
+	border: 1px solid #c3c4c7;
+	background: #ffffff;
+
+	/* Sticky at top of page. */
+	@media screen and (min-width: 601px) {
+		position: sticky;
+		top: calc(var(--wp-admin--admin-bar--height, 32px) - 1px); /* 1px offset to remove top border. */
+		z-index: 10001; /* Above the table editor and any WP Pointers. */
+	}
+	/* Full width on smaller screens, to prevent the table editor from being visible near the right edge when scrolling. */
+	@media screen and (min-width: 601px) and (max-width: 782px) {
+		margin-left: -11px;
+		margin-right: -21px;
+	}
+}
+
+/* Table name and ID display in header. */
+.tablepress-header-table-name,
+.tablepress-header-table-id {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* Background color for the readonly Shortcode text field. */
@@ -83,19 +110,13 @@ body #wp-link-backdrop {
 }
 
 #tablepress-page #tablepress_edit-table-data {
-	display: inline-block; /* Stretch to the width of the table. */
-	min-width: 99.9%; /* but use the full width, minus approx. 1px as the box is wider than the others otherwise. */
+	display: inline-block; /* Stretch to the width of the table... */
+	min-width: calc(100% - 2px); /* but use the full width, minus 2px to account for the borders. */
 }
 
 #tablepress_edit-table-manipulation .column-1,
 #tablepress_edit-table-manipulation .column-2 {
 	width: 50%;
-}
-
-/* Compatibility with WP < 6.6. */
-.components-checkbox-control .components-base-control__field:has(> span) {
-	display: flex;
-	align-items: center;
 }
 
 /* Jspreadsheet CSS. */
@@ -163,9 +184,12 @@ body #wp-link-backdrop {
 }
 
 /* Fixed header. */
-@media screen and (min-width: 601px) {
-	.admin-bar .jexcel > thead > tr > td {
-		top: calc(var(--wp-admin--admin-bar--height) - 1px) /* 1px offset to remove top cell border. */;
+.admin-bar .jexcel > thead > tr > td {
+	@media screen and (min-width: 601px) {
+		top: calc(var(--wp-admin--admin-bar--height) + 59px); /* Offset of 61px for the Header Bar and 2px to remove top and bottom border. */
+	}
+	@media screen and (min-width: 783px) {
+		top: calc(var(--wp-admin--admin-bar--height) + 52px); /* Offset of 54px for the Header Bar and 2px to remove top and bottom border. */
 	}
 }
 
@@ -264,8 +288,4 @@ body #wp-link-backdrop {
 	> div.jcontextmenu-disabled:hover {
 		background: transparent;
 	}
-}
-/* WP Feature Pointers. */
-.pointer-tp21_edit_screen_options .wp-pointer-arrow {
-	left: 225px;
 }

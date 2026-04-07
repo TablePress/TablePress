@@ -14,6 +14,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Cell\Cell;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\DataType;
 use TablePress\PhpOffice\PhpSpreadsheet\DefinedName;
+use TablePress\PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use TablePress\PhpOffice\PhpSpreadsheet\NamedRange;
 use TablePress\PhpOffice\PhpSpreadsheet\ReferenceHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
@@ -937,13 +938,14 @@ class Calculation extends CalculationLocale
 				$pad = $rpad = ', ';
 				foreach ($value as $row) {
 					if (is_array($row)) {
-						$returnMatrix[] = implode($pad, array_map([$this, 'showValue'], $row));
+						$returnMatrix[] = implode($pad, array_map([$this, 'showValue'], $row)); // @phpstan-ignore-line
 						$rpad = '; ';
 					} else {
 						$returnMatrix[] = $this->showValue($row);
 					}
 				}
 
+				/** @var string[] $returnMatrix */
 				return '{ ' . implode($rpad, $returnMatrix) . ' }';
 			} elseif (is_string($value) && (trim($value, self::FORMULA_STRING_QUOTE) == $value)) {
 				return self::FORMULA_STRING_QUOTE . $value . self::FORMULA_STRING_QUOTE;
@@ -1075,10 +1077,32 @@ class Calculation extends CalculationLocale
 		'>' => 0, '<' => 0, '=' => 0, '>=' => 0, '<=' => 0, '<>' => 0, //    Comparison
 	];
 
-	/** @param string[] $matches */
-	private static function unionForComma(array $matches): string
+	/** @param array<?string> $matches */
+	private function unionForComma(array $matches): string
 	{
-		return $matches[1] . str_replace(',', '∪', $matches[2]);
+		$matches5 = (string) $matches[5];
+		// Weirdly, the regexp which get us here for issue 4832
+		// only gets us here for Php8.4+. 8.4 introduced
+		// major changes for PCRE, but I cannot identify
+		// the exact change which caused this discrepancy.
+		// I do plan to update coverage to 8.4 at some point,
+		// and I can remove the coverage annotations after that.
+		// @codeCoverageIgnoreStart
+		if (str_contains($matches5, '(') && !str_contains($matches5, ')')) {
+			if ($this->spreadsheet !== null) {
+				if ($this->spreadsheet->getSheetByName($matches5) === null) {
+					$matches0 = (string) $matches[0];
+					$this->debugLog->writeDebugLog('Not Reformulating %s', $matches0);
+
+					return $matches0;
+				}
+			}
+		}
+		// @codeCoverageIgnoreEnd
+		$matches1 = (string) $matches[1];
+		$matches2 = (string) $matches[2];
+
+		return $matches1 . str_replace(',', '∪', $matches2);
 	}
 
 	private const CELL_OR_CELLRANGE_OR_DEFINED_NAME
@@ -1107,7 +1131,7 @@ class Calculation extends CalculationLocale
 		}
 
 		$oldFormula = $formula;
-		$formula = Preg::replaceCallback(self::UNIONABLE_COMMAS, \Closure::fromCallable([self::class, 'unionForComma']), $formula); // @phpstan-ignore-line
+		$formula = Preg::replaceCallback(self::UNIONABLE_COMMAS, \Closure::fromCallable([$this, 'unionForComma']), $formula);
 		if ($oldFormula !== $formula) {
 			$this->debugLog->writeDebugLog('Reformulated as %s', $formula);
 		}
@@ -1460,7 +1484,7 @@ class Calculation extends CalculationLocale
 								$refSheet = $pCellParent->getParentOrThrow()->getSheetByName($rangeSheetRef);
 							}
 
-							if (ctype_digit($val) && $val <= 1048576) {
+							if (ctype_digit($val) && $val <= AddressRange::MAX_ROW) {
 								//    Row range
 								$stackItemType = 'Row Reference';
 								$valx = $val;
@@ -2102,7 +2126,11 @@ class Calculation extends CalculationLocale
 							if ($pCellParent !== null && $this->spreadsheet !== null) {
 								$cellSheet = $this->spreadsheet->getSheetByName($matches[2]);
 								if ($cellSheet && !$cellSheet->cellExists($cellRef)) {
-									$cellSheet->setCellValue($cellRef, null);
+									try {
+										$cellSheet->setCellValue($cellRef, null);
+									} catch (SpreadsheetException $exception) {
+										// do nothing
+									}
 								}
 								if ($cellSheet && $cellSheet->cellExists($cellRef)) {
 									$cellValue = $this->extractCellRange($cellRef, $this->spreadsheet->getSheetByName($matches[2]), false);
@@ -2244,7 +2272,7 @@ class Calculation extends CalculationLocale
 					if ($functionName !== 'MKMATRIX') {
 						if ($this->debugLog->getWriteDebugLog()) {
 							krsort($argArrayVals);
-							$this->debugLog->writeDebugLog('Evaluating %s ( %s )', self::localeFunc($functionName), implode(self::$localeArgumentSeparator . ' ', Functions::flattenArray($argArrayVals)));
+							$this->debugLog->writeDebugLog('Evaluating %s ( %s )', self::localeFunc($functionName), implode(self::$localeArgumentSeparator . ' ', Functions::flattenArray($argArrayVals))); // @phpstan-ignore-line
 						}
 					}
 

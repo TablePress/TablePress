@@ -118,12 +118,6 @@ class TablePress_Post_Model extends TablePress_Model {
 			kses_remove_filters();
 		}
 
-		// Remove filter that adds `rel="noopener" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
-		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
-		if ( $has_targeted_link_rel_filters ) {
-			wp_remove_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_remove_targeted_link_rel_filtersFound
-		}
-
 		$post_id = wp_insert_post( $post, true );
 
 		// Restore removed content filters.
@@ -131,9 +125,6 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		if ( $has_kses ) {
 			kses_init_filters();
-		}
-		if ( $has_targeted_link_rel_filters ) {
-			wp_init_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_init_targeted_link_rel_filtersFound
 		}
 
 		// In rare cases, `wp_insert_post()` returns 0 as the post ID, when an error happens, so it's converted to a WP_Error here.
@@ -185,12 +176,6 @@ class TablePress_Post_Model extends TablePress_Model {
 			kses_remove_filters();
 		}
 
-		// Remove filter that adds `rel="noopener" to <a> HTML tags, but destroys JSON code. See https://core.trac.wordpress.org/ticket/46316.
-		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
-		if ( $has_targeted_link_rel_filters ) {
-			wp_remove_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_remove_targeted_link_rel_filtersFound
-		}
-
 		$post_id = wp_update_post( $post, true );
 
 		// Restore removed content filters.
@@ -198,9 +183,6 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		if ( $has_kses ) {
 			kses_init_filters();
-		}
-		if ( $has_targeted_link_rel_filters ) {
-			wp_init_targeted_link_rel_filters(); // phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_init_targeted_link_rel_filtersFound
 		}
 
 		return $post_id;
@@ -315,9 +297,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	public function add_meta_field( int $post_id, string $field, string $value ): bool {
-		// WP expects a slashed value.
-		$value = wp_slash( $value );
-		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique.
+		$success = add_post_meta( $post_id, wp_slash( $field ), wp_slash( $value ), true ); // WP expects slashed values, `true` means unique.
 		// Make sure that $success is a boolean, as add_post_meta() returns an ID or false.
 		$success = ( false === $success ) ? false : true;
 		return $success;
@@ -342,9 +322,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			return true;
 		}
 
-		// WP expects a slashed value.
-		$value = wp_slash( $value );
-		return (bool) update_post_meta( $post_id, $field, $value, $prev_value );
+		return (bool) update_post_meta( $post_id, wp_slash( $field ), wp_slash( $value ), $prev_value ); // WP expects slashed values.
 	}
 
 	/**
@@ -357,7 +335,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return string Value of the meta field.
 	 */
 	public function get_meta_field( int $post_id, string $field ): string {
-		return get_post_meta( $post_id, $field, true ); // true means single value.
+		return get_post_meta( $post_id, $field, true ); // `true` means single value.
 	}
 
 	/**
@@ -371,7 +349,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error.
 	 */
 	public function delete_meta_field( int $post_id, string $field ): bool {
-		return delete_post_meta( $post_id, $field, true ); // true means single value.
+		return delete_post_meta( $post_id, wp_slash( $field ) ); // WP expects a slashed value.
 	}
 
 	/**

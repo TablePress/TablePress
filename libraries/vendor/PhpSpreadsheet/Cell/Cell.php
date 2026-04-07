@@ -411,7 +411,7 @@ class Cell
 			$value = array_shift($value);
 		}
 
-		return StringHelper::convertToString($value, false);
+		return StringHelper::convertToString($value, false, '', true);
 	}
 	/**
 	 * Get calculated cell value.
@@ -523,7 +523,7 @@ class Cell
 							$coordinate = $this->getCoordinate();
 							$ref = $oldAttributesRef;
 							if (preg_match('/^([A-Z]{1,3})([0-9]{1,7})(:([A-Z]{1,3})([0-9]{1,7}))?$/', $ref, $matches) === 1) {
-								if (isset($matches[3])) {
+								if (isset($matches[5])) {
 									$minCol = $matches[1];
 									$minRow = (int) $matches[2];
 									$maxCol = $matches[4];

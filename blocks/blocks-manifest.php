@@ -5,7 +5,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'tablepress/table',
-		'version' => '3.2.8',
+		'version' => '3.3',
 		'title' => 'TablePress table',
 		'category' => 'media',
 		'icon' => 'list-view',
@@ -27,7 +27,8 @@ return array(
 		'supports' => array(
 			'align' => false,
 			'html' => false,
-			'customClassName' => false
+			'customClassName' => false,
+			'customCSS' => false
 		),
 		'editorScript' => 'file:build/index.js',
 		'editorStyle' => 'file:build/index.css'

@@ -239,4 +239,33 @@ class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet extends TablePress_Test
 		$this->assertSame( $expected_table, $evaluated_table );
 	}
 
+
+	/**
+	 * Test error handling for non-existing formulas.
+	 *
+	 * @since 3.3.0
+	 */
+	public function test_table_with_non_existing_formulas(): void {
+		$table_id = '123';
+		$input_table = array(
+			array( 'foo', 'bar' ),
+			array( 'Single word results in #NAME?', 'Multiple words result in PHP error' ),
+			array( '=oneword', '=two words' ),
+		);
+
+		// The returned error message depends on the version of PHP.
+		$expected_error_message = '!ERROR! array_intersect_key(): Argument #1 ($array) must be of type array, string given';
+		if ( PHP_VERSION_ID < 80000 ) {
+			$expected_error_message = '!ERROR! B3 -> array_intersect_key(): Expected parameter 1 to be an array, string given';
+		}
+
+		$expected_table = array(
+			array( 'foo', 'bar' ),
+			array( 'Single word results in #NAME?', 'Multiple words result in PHP error' ),
+			array( '#NAME?', $expected_error_message ),
+		);
+		$evaluated_table = $this->evaluate->evaluate_table_data( $input_table, $table_id );
+		$this->assertSame( $expected_table, $evaluated_table );
+	}
+
 } // class TablePress_Test_TablePress_Evaluate_PHPSpreadsheet

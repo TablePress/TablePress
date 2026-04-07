@@ -14,13 +14,13 @@ import {
 	Icon,
 	Modal,
 } from '@wordpress/components';
-import { TablePressIcon } from '../../img/tablepress-icon';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
  */
 import { initializeReactComponentInPortal } from '../common/react-loader';
+import { TablePressIcon } from '../../img/tablepress-icon';
 
 const Section = ( { screenData, updateScreenData, tableMeta } ) => {
 	// Bail early if the current user can't preview the table or the preview is not open.
@@ -43,7 +43,7 @@ const Section = ( { screenData, updateScreenData, tableMeta } ) => {
 			title={ title }
 			className="table-preview-modal"
 			onRequestClose={ () => updateScreenData( { previewIsOpen: false, previewSrcDoc: '' } ) }
-			isFullScreen={ true } // Using size="full" is only possible in WP 6.5+.
+			size="fill"
 		>
 			<iframe
 				title={ title }

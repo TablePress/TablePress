@@ -44,13 +44,6 @@ abstract class TablePress_View {
 	protected string $action = '';
 
 	/**
-	 * Instance of the Admin Page Helper Class, with necessary functions.
-	 *
-	 * @since 1.0.0
-	 */
-	protected \TablePress_Admin_Page $admin_page;
-
-	/**
 	 * List of text boxes (similar to post boxes, but just with text and without extra functionality).
 	 *
 	 * @since 1.0.0
@@ -162,16 +155,13 @@ abstract class TablePress_View {
 		// Set page title.
 		$GLOBALS['title'] = sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $this->data['view_actions'][ $this->action ]['page_title'], 'TablePress' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
-		// Admin page helpers, like script/style loading, could be moved to view.
-		$this->admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
-		$this->admin_page->enqueue_style( 'common', array( 'wp-components' ) );
+		add_filter( 'admin_footer_text', array( $this, 'add_admin_footer_text' ) );
+
+		TablePress::enqueue_style( 'common', array( 'wp-components' ) );
 		// RTL styles for the admin interface.
 		if ( is_rtl() ) {
-			$this->admin_page->enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
+			TablePress::enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
 		}
-		$this->admin_page->enqueue_script( 'common', array( 'jquery-core', 'postbox' ) );
-
-		$this->admin_page->add_admin_footer_text();
 
 		// Initialize WP feature pointers for TablePress.
 		$this->_init_wp_pointers();
@@ -180,6 +170,17 @@ abstract class TablePress_View {
 		$this->add_text_box( 'default_nonce_fields', array( $this, 'default_nonce_fields' ), 'header', false );
 		$this->add_text_box( 'action_nonce_field', array( $this, 'action_nonce_field' ), 'header', false );
 		$this->add_text_box( 'action_field', array( $this, 'action_field' ), 'header', false );
+
+		if ( tb_tp_fs()->is_plan_or_trial__premium_only( 'pro' ) && ! tb_tp_fs()->is_paying_or_trial__premium_only() ) {
+			$message = '<span class="dashicons dashicons-warning" style="color:#cc1818"></span> ';
+			$message .= '<strong>' . sprintf( __( 'Your TablePress %s premium license has expired!', 'tablepress' ), tb_tp_fs()->is_plan_or_trial( 'max', true ) ? 'Max' : 'Pro' ) . '</strong> ';
+			$message .= sprintf(
+				__( 'Please <a href="%1$s"><strong>renew your license now</strong></a> to continue receiving direct developer support, new features, and security updates for TablePress.', 'tablepress' ),
+				esc_url( tb_tp_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, false ) ),
+			);
+
+			$this->add_header_message( $message, 'is-warning not-dismissible' );
+		}
 	}
 
 	/**
@@ -544,6 +545,32 @@ abstract class TablePress_View {
 	}
 
 	/**
+	 * Adds a TablePress "Thank You" message to the admin footer content.
+	 *
+	 * @since 1.0.0
+	 * @since 3.3.0 This method was moved from the now-removed `TablePress_Admin_Page` class.
+	 *
+	 * @param string $content Current admin footer content.
+	 * @return string New admin footer content.
+	 */
+	public function add_admin_footer_text( /* string */ $content ): string {
+		// Don't use a type hint in the method declaration as many WordPress plugins use the `admin_footer_text` filter without returning a string.
+
+		// Protect against other plugins not returning a string in their filter callbacks.
+		if ( ! is_string( $content ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
+			$content = '';
+		}
+
+		/* translators: %s: URL to TablePress website */
+		$content .= ' &bull; ' . sprintf( __( 'Thank you for using <a href="%s">TablePress</a>.', 'tablepress' ), 'https://tablepress.org/' );
+		if ( tb_tp_fs()->is_free_plan() ) {
+			/* translators: %s: URL to TablePress premium features */
+			$content .= ' ' . sprintf( __( 'Take a look at the <a href="%s">Premium features</a>!', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=admin-footer' );
+		}
+		return $content;
+	}
+
+	/**
 	 * Initializes the WP feature pointers for TablePress.
 	 *
 	 * @since 1.0.0
@@ -568,6 +595,62 @@ abstract class TablePress_View {
 			wp_enqueue_style( 'wp-pointer' );
 			wp_enqueue_script( 'wp-pointer' );
 		}
+	}
+
+	/**
+	 * Prints the JavaScript code for a WP feature pointer.
+	 *
+	 * @since 1.0.0
+	 * @since 3.3.0 This method was moved from the now-removed `TablePress_Admin_Page` class.
+	 *
+	 * @param string               $pointer_id The pointer ID.
+	 * @param string               $selector   The HTML elements, on which the pointer should be attached.
+	 * @param array<string, mixed> $args       Arguments to be passed to the pointer JS (see wp-pointer.js).
+	 */
+	public function print_wp_pointer_js( string $pointer_id, string $selector, array $args ): void {
+		if ( empty( $pointer_id ) || empty( $selector ) || empty( $args['content'] ) ) {
+			return;
+		}
+
+		$keyboard_shortcut = '';
+		if ( 'tp33_edit_quick_navigation' === $pointer_id ) {
+			$keyboard_shortcut = <<<JS
+			content: options.content.replace( /%metaKey%/g, window?.navigator?.platform?.includes( 'Mac' ) ? wp.i18n._x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : wp.i18n._x( 'Ctrl+', 'keyboard shortcut modifier key on a non-Mac keyboard', 'tablepress' ) ),\n
+			JS;
+		}
+
+		/*
+		 * Print JS code for the feature pointers, extended with event handling for opened/closed "Screen Options", so that pointers can
+		 * be repositioned. 210 ms is slightly slower than jQuery's "fast" value, to allow all elements to reach their original position.
+		 */
+		?>
+<script>
+( ( $ ) => {
+	let options = <?php echo wp_json_encode( $args, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES ); ?>;
+	if ( ! options ) {
+		return;
+	}
+
+	options = {
+		...options,
+		<?php echo $keyboard_shortcut; ?>
+		close() {
+			$.post( ajaxurl, {
+				pointer: '<?php echo $pointer_id; ?>',
+				action: 'dismiss-wp-pointer'
+			} );
+			$( this ).pointer( { 'disabled': true } );
+		},
+	};
+
+	$( () => $( '<?php echo $selector; ?>' ).pointer( options ).pointer( 'open' ) );
+
+	$( document ).on( 'screen:options:open screen:options:close', () => {
+		setTimeout( () => $( '<?php echo $selector; ?>' ).pointer( 'reposition' ), 210 );
+	} );
+} )( jQuery );
+</script>
+		<?php
 	}
 
 } // class TablePress_View

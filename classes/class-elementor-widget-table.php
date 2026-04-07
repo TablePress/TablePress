@@ -264,11 +264,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 			}
 		}
 
-		if ( '' !== trim( $settings['parameters'] ) ) {
-			$render_attributes = shortcode_parse_atts( $settings['parameters'] );
-		} else {
-			$render_attributes = array();
-		}
+		$render_attributes = shortcode_parse_atts( $settings['parameters'] );
 		$render_attributes['id'] = $settings['table_id'];
 
 		/*

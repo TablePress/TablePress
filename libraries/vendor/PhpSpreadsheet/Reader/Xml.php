@@ -93,6 +93,7 @@ class Xml extends BaseReader
 		];
 
 		// Open file
+		File::assertFile($filename);
 		$data = (string) file_get_contents($filename);
 		$data = $this->getSecurityScannerOrThrow()->scan($data);
 
@@ -235,7 +236,7 @@ class Xml extends BaseReader
 				}
 			}
 
-			$tmpInfo['lastColumnLetter'] = Coordinate::stringFromColumnIndex($tmpInfo['lastColumnIndex'] + 1);
+			$tmpInfo['lastColumnLetter'] = Coordinate::stringFromColumnIndex($tmpInfo['lastColumnIndex'] + 1, true);
 			$tmpInfo['totalColumns'] = $tmpInfo['lastColumnIndex'] + 1;
 			$tmpInfo['sheetState'] = Worksheet::SHEETSTATE_VISIBLE;
 

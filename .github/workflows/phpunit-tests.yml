@@ -78,14 +78,10 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '7.0'
           - '6.9'
           - '6.8'
           - '6.7'
-          - '6.6'
-          - '6.5'
-          - '6.4'
-          - '6.3'
-          - '6.2'
         php:
           - '8.5'
           - '8.4'
@@ -100,7 +96,7 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2.36.0
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # v2.37.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -131,7 +127,7 @@ jobs:
           path: ${{ env.PLUGIN_DIR }}
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3.1.1
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v4.0.0
         with:
           composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' || matrix.php == '8.5' ) && ' --ignore-platform-reqs' || '' }}"
 
@@ -145,7 +141,7 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ matrix.php == '8.5' && contains( fromJSON('["6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8"]'), matrix.wp ) }} # WP before 6.9 runs into non-canonical type cast deprecations.
+        continue-on-error: ${{ matrix.php == '8.5' && contains( fromJSON('["6.7", "6.8"]'), matrix.wp ) }} # WP before 6.9 runs into non-canonical type cast deprecations.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

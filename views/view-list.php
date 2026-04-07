@@ -42,7 +42,7 @@ class TablePress_List_View extends TablePress_View {
 
 		parent::setup( $action, $data );
 
-		$this->admin_page->enqueue_script( 'list' );
+		TablePress::enqueue_script( 'list' );
 
 		if ( $data['messages']['superseded_extensions'] ) {
 			$superseded_extensions = array(

@@ -126,7 +126,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 									text={ __( 'You can not enable the Table Features for Site Visitors, because your table’s body rows contain combined/merged cells.', 'tablepress' ) }
 									onConfirm={ () => setAlertEnableDataTablesMergedCellsIsShown( false ) }
 									modalProps={ {
-										className: 'has-size-medium', // Using size: 'medium' is only possible in WP 6.5+.
+										size: 'medium',
 									} }
 								/>
 							) }

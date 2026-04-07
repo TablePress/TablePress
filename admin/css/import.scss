@@ -15,8 +15,7 @@
 
 #tablepress_import-import-form {
 	/* Show RadioButtons next to each other (by default the component uses VStack). */
-	.components-radio-control__group-wrapper,
-	.components-radio-control > div > .components-v-stack { /* WP < 6.7 */
+	.components-radio-control__group-wrapper {
 		flex-direction: row;
 		justify-content: flex-start;
 		gap: 20px;

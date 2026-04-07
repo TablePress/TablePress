@@ -15,10 +15,10 @@
 	@media screen and (min-width: 783px) {
 		display: block;
 		position: absolute;
-		right: -$feature-box-width;
+		right: -$feature-box-width + 1px;
 		width: calc($feature-box-width - 24px);
-		height: calc(100% + 42px);
-		bottom: 0;
+		height: calc(100% + 47px);
+		bottom: -1px;
 		margin: 0;
 
 		@at-root #tablepress_edit-table-information {

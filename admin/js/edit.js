@@ -10,13 +10,12 @@
 /**
  * Load the default "Edit" screen sections.
  */
-import './edit/buttons';
+import './edit/header-bar';
 import './edit/table-information';
 import './edit/table-manipulation';
 import './edit/table-options';
 import './edit/datatables-features';
 import './edit/table-preview';
-import './edit/other-actions';
 
 /**
  * Load the non-React "Edit" screen JavaScript code, mostly for the table data editor.

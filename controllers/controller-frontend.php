@@ -91,6 +91,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
 		}
 
+		// Register a placeholder script handle so that plugins can properly declare it as a dependency, even before the actual script is enqueued in `enqueue_datatables_files()`.
+		wp_register_script( 'tablepress-datatables', '', array(), TablePress::version, array( 'in_footer' => true ) );
+
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 9 ); // Priority 9 so that this runs before `_wp_footer_scripts()`.
 
 		// Register TablePress Shortcodes. Priority 20 is kept for backwards-compatibility purposes.
@@ -116,13 +119,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		/**
 		 * Register the tablepress/table block and its dependencies.
 		 */
-		if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
-			// wp_register_block_metadata_collection() is only available since WP 6.7.
-			wp_register_block_metadata_collection(
-				TABLEPRESS_ABSPATH . 'blocks',
-				TABLEPRESS_ABSPATH . 'blocks/blocks-manifest.php',
-			);
-		}
+		wp_register_block_metadata_collection(
+			TABLEPRESS_ABSPATH . 'blocks',
+			TABLEPRESS_ABSPATH . 'blocks/blocks-manifest.php',
+		);
 		register_block_type_from_metadata(
 			TABLEPRESS_ABSPATH . 'blocks/table/block.json',
 			array(
@@ -324,7 +324,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 */
 		$dependencies = apply_filters( 'tablepress_datatables_js_dependencies', $dependencies );
 
-		wp_enqueue_script( 'tablepress-datatables', $js_url, $dependencies, TablePress::version, true );
+		// De-register the placeholder script handle and enqueue the actual script, so that the dependencies are correct.
+		wp_deregister_script( 'tablepress-datatables' );
+		wp_enqueue_script( 'tablepress-datatables', $js_url, $dependencies, TablePress::version, array( 'in_footer' => true ) );
 	}
 
 	/**
@@ -556,12 +558,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		} // foreach table ID
 
 		// DataTables language/translation handling.
-		if ( ! empty( $datatables_language ) ) {
-			$datatables_language_command = wp_json_encode( $datatables_language, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT );
-			$datatables_language_command = "var DT_language={$datatables_language_command};\n";
-		} else {
-			$datatables_language_command = '';
-		}
+		$datatables_language_command = wp_json_encode( $datatables_language, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT );
+		$datatables_language_command = "var DT_language={$datatables_language_command};\n";
 
 		// DataTables datetime format string handling.
 		if ( ! empty( $this->datatables_datetime_formats ) ) {
@@ -632,12 +630,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<string, mixed>|string $shortcode_atts List of attributes that where included in the Shortcode. An empty string for empty Shortcodes like [table] or [table /].
+	 * @param array<string, mixed> $shortcode_atts List of attributes that where included in the Shortcode.
 	 * @return string Resulting HTML code for the table with the ID <ID>.
 	 */
-	public function shortcode_table( /* array|string */ $shortcode_atts ): string {
-		$shortcode_atts = (array) $shortcode_atts;
-
+	public function shortcode_table( array $shortcode_atts ): string {
 		$this->maybe_enqueue_css();
 
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
@@ -915,12 +911,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<string, mixed>|string $shortcode_atts List of attributes that where included in the Shortcode. An empty string for empty Shortcodes like [table] or [table /].
+	 * @param array<string, mixed> $shortcode_atts List of attributes that where included in the Shortcode.
 	 * @return string Text that replaces the Shortcode (error message or asked-for information).
 	 */
-	public function shortcode_table_info( /* array|string */ $shortcode_atts ): string {
-		$shortcode_atts = (array) $shortcode_atts;
-
+	public function shortcode_table_info( array $shortcode_atts ): string {
 		// Parse Shortcode attributes, only allow those that are specified.
 		$default_shortcode_atts = array(
 			'id'     => '',
@@ -1182,11 +1176,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			return '';
 		}
 
-		if ( '' !== trim( $block_attributes['parameters'] ) ) {
-			$render_attributes = shortcode_parse_atts( $block_attributes['parameters'] );
-		} else {
-			$render_attributes = array();
-		}
+		$render_attributes = shortcode_parse_atts( $block_attributes['parameters'] );
 		$render_attributes['id'] = $block_attributes['id'];
 
 		return $this->shortcode_table( $render_attributes );

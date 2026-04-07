@@ -16,6 +16,10 @@ import {
 import { RawHTML } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { buildQueryString } from '@wordpress/url';
+
+/**
+ * Internal dependencies.
+ */
 import { TablePressIconSimple } from '../../img/tablepress-icon';
 
 /**

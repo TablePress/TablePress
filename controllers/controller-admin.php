@@ -187,15 +187,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 2.2.0
 	 */
 	public function enqueue_block_editor_assets(): void {
-		/*
-		 * Register the `react-jsx-runtime` polyfill, if it is not already registered.
-		 * This is needed as a polyfill for WP < 6.6, and can be removed once WP 6.6 is the minimum requirement for TablePress.
-		 */
-		if ( ! wp_script_is( 'react-jsx-runtime', 'registered' ) ) {
-			wp_register_script( 'react-jsx-runtime', plugins_url( 'admin/js/react-jsx-runtime.min.js', TABLEPRESS__FILE__ ), array( 'react' ), TablePress::version, true );
-		}
-
-		// Add table information for the block editor to the page.
 		$handle = generate_block_asset_handle( 'tablepress/table', 'editorScript' );
 		$data = $this->get_block_editor_data();
 		wp_add_inline_script( $handle, $data, 'before' );
@@ -310,8 +301,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		add_thickbox(); // The files are usually already loaded by media upload functions.
-		$admin_page = TablePress::load_class( 'TablePress_Admin_Page', 'class-admin-page-helper.php', 'classes' );
-		$admin_page->enqueue_script(
+		TablePress::enqueue_script(
 			'quicktags-button',
 			array( 'quicktags', 'media-upload' ),
 			array(

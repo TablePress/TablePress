@@ -66,7 +66,7 @@ interface IReader
 	 *
 	 * @return $this
 	 */
-	public function setReadDataOnly(bool $readDataOnly): self;
+	public function setReadDataOnly(bool $readDataOnly);
 
 	/**
 	 * Read empty cells?
@@ -82,7 +82,7 @@ interface IReader
 	 *
 	 * @return $this
 	 */
-	public function setReadEmptyCells(bool $readEmptyCells): self;
+	public function setReadEmptyCells(bool $readEmptyCells);
 
 	/**
 	 * Read charts in workbook?
@@ -100,7 +100,7 @@ interface IReader
 	 *
 	 * @return $this
 	 */
-	public function setIncludeCharts(bool $includeCharts): self;
+	public function setIncludeCharts(bool $includeCharts);
 
 	/**
 	 * Get which sheets to load
@@ -120,7 +120,7 @@ interface IReader
 	 *
 	 * @return $this
 	 */
-	public function setLoadSheetsOnly($value): self;
+	public function setLoadSheetsOnly($value);
 
 	/**
 	 * Set all sheets to load
@@ -128,7 +128,7 @@ interface IReader
 	 *
 	 * @return $this
 	 */
-	public function setLoadAllSheets(): self;
+	public function setLoadAllSheets();
 
 	/**
 	 * Read filter.
@@ -140,14 +140,14 @@ interface IReader
 	 *
 	 * @return $this
 	 */
-	public function setReadFilter(IReadFilter $readFilter): self;
+	public function setReadFilter(IReadFilter $readFilter);
 
 	/**
 	 * Allow external images. Use with caution.
 	 * Improper specification of these within a spreadsheet
 	 * can subject the caller to security exploits.
 	 */
-	public function setAllowExternalImages(bool $allowExternalImages): self;
+	public function setAllowExternalImages(bool $allowExternalImages);
 
 	public function getAllowExternalImages(): bool;
 
@@ -155,7 +155,7 @@ interface IReader
 	 * Create a blank sheet if none are read,
 	 * possibly due to a typo when using LoadSheetsOnly.
 	 */
-	public function setCreateBlankSheetIfNoneRead(bool $createBlankSheetIfNoneRead): self;
+	public function setCreateBlankSheetIfNoneRead(bool $createBlankSheetIfNoneRead);
 
 	/**
 	 * Loads PhpSpreadsheet from file.
