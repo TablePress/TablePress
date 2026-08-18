@@ -87,22 +87,25 @@ body[class*="branch-7-"] #wp-link-wrap {
 }
 
 /* Styling and positioning of buttons in wpdialogs. */
-.ui-dialog {
+.wp-core-ui .ui-dialog {
 	.button {
 		box-shadow: none;
 	}
 	.ui-dialog-buttonset {
 		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.button-cancel,
 	.button-cancel:hover {
-		color: #b32d2e;
+		color: #cc1818;
 		border-color: transparent;
 		background-color: transparent;
 		text-decoration: underline;
 	}
-	.button-ok {
-		float: right;
+	.button-cancel:hover {
+		text-decoration: none;
 	}
 }
 

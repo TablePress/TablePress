@@ -240,6 +240,9 @@ body.wait * {
 
 	.notice {
 		margin: 20px 0 0;
+
+		/* Remove rounded corners in WP 7.1+, as long as notices still use non-Gutenberg style. */
+		--wpds-border-radius-lg: 0; /* stylelint-disable-line plugin-wpds/no-setting-wpds-custom-properties */
 	}
 
 	.components-notice {
@@ -353,7 +356,16 @@ body.wait * {
 	@media screen and (max-width: 782px) {
 		.column-table_id {
 			display: none !important;
+			font-size: 14px;
+		}
+		/* WordPress < 7.1. */
+		th + .column-table_id {
 			padding: 3px 8px 3px 35%;
+		}
+
+		/* WordPress >= 7.1. */
+		td + .column-table_id {
+			padding: 6px 8px 8px 32px;
 		}
 	}
 }
@@ -449,7 +461,7 @@ table.widefat {
 		display: inline-block;
 		vertical-align: top;
 		box-sizing: border-box;
-		margin: 1px 0 -1px 6px;
+		margin: 3px 0 0 6px;
 		padding: 0 5px;
 		min-width: 18px;
 		height: 18px;

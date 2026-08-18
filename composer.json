@@ -90,7 +90,7 @@
 			"composer clear-cache",
 			"sed -i '' '/\"require-dev\"/,/}/ d; /^$/d' composer.json",
 			"sed -i '' '/\"require\": {/i\\\n\\\t\"repositories\": [\\\n\\\t\\\t{\\\n\\\t\\\t\\\t\"type\": \"vcs\",\\\n\\\t\\\t\\\t\"url\": \"https://github.com/TablePress/PhpSpreadsheet.git\"\\\n\\\t\\\t}\\\n\\\t],\\\n' composer.json",
-			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 5.8.0\" --no-update",
+			"composer require \"phpoffice/phpspreadsheet:dev-tablepress as 5.9.0\" --no-update",
 			"composer update --no-dev",
 			"echo '-> Install Strauss, convert namespaces, and move folder'",
 			"mkdir bin",

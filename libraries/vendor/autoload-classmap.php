@@ -133,6 +133,7 @@ return array(
    'TablePress\PhpOffice\PhpSpreadsheet\Chart\AxisText' => $strauss_src . '/PhpSpreadsheet/Chart/AxisText.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Chart\Chart' => $strauss_src . '/PhpSpreadsheet/Chart/Chart.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Chart\PlotArea' => $strauss_src . '/PhpSpreadsheet/Chart/PlotArea.php',
+   'TablePress\PhpOffice\PhpSpreadsheet\Chart\DataTable' => $strauss_src . '/PhpSpreadsheet/Chart/DataTable.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Chart\Layout' => $strauss_src . '/PhpSpreadsheet/Chart/Layout.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Chart\TrendLine' => $strauss_src . '/PhpSpreadsheet/Chart/TrendLine.php',
    'TablePress\PhpOffice\PhpSpreadsheet\Chart\Exception' => $strauss_src . '/PhpSpreadsheet/Chart/Exception.php',

@@ -200,8 +200,7 @@ abstract class IOFactory
 	 */
 	public static function registerReader(string $readerType, string $readerClass): void
 	{
-		// We want phpstan to validate caller, but still need this test
-		if (!is_a($readerClass, IReader::class, true)) { //* @phpstan-ignore-line
+		if (!is_a($readerClass, IReader::class, true)) {
 			throw new Reader\Exception('Registered readers must implement ' . IReader::class);
 		}
 

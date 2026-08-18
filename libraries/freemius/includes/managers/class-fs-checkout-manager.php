@@ -112,6 +112,15 @@
 				}
 			}
 
+			// Override the checkout context with the add-on's purchase details so the checkout flow is initialized for the selected add-on instead of the parent product.
+			$context_params['plugin_id'] = $plugin_id;
+
+			foreach ( array( 'plan_id', 'pricing_id', 'billing_cycle', 'is_trial' ) as $param ) {
+				if ( fs_request_has( $param ) ) {
+					$context_params[ $param ] = fs_request_get( $param );
+				}
+			}
+
 			// Get site context secure params.
 			if ( $fs->is_registered() ) {
 				$site = $fs->get_site();

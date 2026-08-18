@@ -46,13 +46,23 @@ class DateValue
 			return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $dateValue);
 		}
 
+		return self::fromString2($dateValue, null);
+	}
+
+	/**
+				 * @return array<mixed>|DateTime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
+				 *                        depending on the value of the ReturnDateType flag
+				 * @param null|string|int|bool|float $dateValue
+				 */
+				public static function fromString2($dateValue, ?int $calendar = null)
+	{
 		// try to parse as date iff there is at least one digit
 		if (is_string($dateValue) && preg_match('/\d/', $dateValue) !== 1) {
 			return ExcelError::VALUE();
 		}
 
 		$dti = new DateTimeImmutable();
-		$baseYear = SharedDateHelper::getExcelCalendar();
+		$baseYear = $calendar ?? SharedDateHelper::getExcelCalendar();
 		$dateValue = trim((string) $dateValue, '"');
 		//    Strip any ordinals because they're allowed in Excel (English only)
 		$dateValue = (string) preg_replace('/(\d)(st|nd|rd|th)([ -\/])/Ui', '$1$3', $dateValue);
@@ -160,9 +170,9 @@ class DateValue
 			$day = self::getInt($PHPDateArray, 'day');
 			$year = self::getInt($PHPDateArray, 'year');
 			if (!checkdate($month, $day, $year)) {
-				return ($year === 1900 && $month === 2 && $day === 29) ? Helpers::returnIn3FormatsFloat(60.0) : ExcelError::VALUE();
+				return ($year === 1900 && $month === 2 && $day === 29) ? Helpers::returnIn3FormatsFloat(60.0, $baseYear) : ExcelError::VALUE();
 			}
-			$retValue = Helpers::returnIn3FormatsArray($PHPDateArray, true);
+			$retValue = Helpers::returnIn3FormatsArray($PHPDateArray, true, $baseYear);
 		}
 
 		return $retValue;

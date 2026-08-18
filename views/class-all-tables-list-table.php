@@ -193,6 +193,23 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Returns a clean label for the primary (Table Name) column's row header `aria-label`.
+	 *
+	 * Provides screen readers with just the table name as the row header name,
+	 * preventing them from computing the name from the full cell content.
+	 *
+	 * @since 3.3.4
+	 *
+	 * @param array<string, mixed> $item Data item for the current row.
+	 * @return string The table name.
+	 */
+	protected function get_primary_column_aria_label( /* array */ $item ): string {
+		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
+
+		return trim( $item['name'] );
+	}
+
+	/**
 	 * Render a cell in the "table_name" column.
 	 *
 	 * @since 1.0.0

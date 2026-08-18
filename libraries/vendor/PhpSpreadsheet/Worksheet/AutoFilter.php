@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Worksheet;
 
+use TablePress\Composer\Pcre\Preg;
 use DateTime;
 use DateTimeZone;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Calculation;
@@ -134,7 +135,7 @@ class AutoFilter
 		$this->evaluated = false;
 		if ($this->workSheet !== null) {
 			$thisrange = $this->range;
-			$range = (string) preg_replace('/\d+$/', (string) $this->workSheet->getHighestRow(), $thisrange);
+			$range = Preg::replace('/\d+$/', (string) $this->workSheet->getHighestRow(), $thisrange);
 			if ($range !== $thisrange) {
 				$this->setRange($range);
 			}
@@ -221,12 +222,10 @@ class AutoFilter
 	public function setColumn($columnObjectOrString)
 	{
 		$this->evaluated = false;
-		if ((is_string($columnObjectOrString)) && (!empty($columnObjectOrString))) {
+		if (is_string($columnObjectOrString)) {
 			$column = $columnObjectOrString;
-		} elseif ($columnObjectOrString instanceof AutoFilter\Column) {
-			$column = $columnObjectOrString->getColumnIndex();
 		} else {
-			throw new Exception('Column is not within the autofilter range.');
+			$column = $columnObjectOrString->getColumnIndex();
 		}
 		$this->testColumnInRange($column);
 
@@ -419,33 +418,26 @@ class AutoFilter
 															break;
 													}
 			} else {
-				//    String values are always tested for equality, factoring in for wildcards (hence a regexp test)
 				switch ($ruleOperator) {
-					case Rule::AUTOFILTER_COLUMN_RULE_EQUAL:
-						$retVal = (bool) preg_match('/^' . $ruleValue . '$/i', $cellValueString);
-
-						break;
-					case Rule::AUTOFILTER_COLUMN_RULE_NOTEQUAL:
-						$retVal = !((bool) preg_match('/^' . $ruleValue . '$/i', $cellValueString));
-
-						break;
-					case Rule::AUTOFILTER_COLUMN_RULE_GREATERTHAN:
-						$retVal = strcasecmp($cellValueString, $ruleValue) > 0;
-
-						break;
-					case Rule::AUTOFILTER_COLUMN_RULE_GREATERTHANOREQUAL:
-						$retVal = strcasecmp($cellValueString, $ruleValue) >= 0;
-
-						break;
-					case Rule::AUTOFILTER_COLUMN_RULE_LESSTHAN:
-						$retVal = strcasecmp($cellValueString, $ruleValue) < 0;
-
-						break;
-					case Rule::AUTOFILTER_COLUMN_RULE_LESSTHANOREQUAL:
-						$retVal = strcasecmp($cellValueString, $ruleValue) <= 0;
-
-						break;
-				}
+														case Rule::AUTOFILTER_COLUMN_RULE_EQUAL:
+															$retVal = Preg::isMatch('/^' . $ruleValue . '$/i', $cellValueString);
+															break;
+														case Rule::AUTOFILTER_COLUMN_RULE_NOTEQUAL:
+															$retVal = !(Preg::isMatch('/^' . $ruleValue . '$/i', $cellValueString));
+															break;
+														case Rule::AUTOFILTER_COLUMN_RULE_GREATERTHAN:
+															$retVal = strcasecmp($cellValueString, $ruleValue) > 0;
+															break;
+														case Rule::AUTOFILTER_COLUMN_RULE_GREATERTHANOREQUAL:
+															$retVal = strcasecmp($cellValueString, $ruleValue) >= 0;
+															break;
+														case Rule::AUTOFILTER_COLUMN_RULE_LESSTHAN:
+															$retVal = strcasecmp($cellValueString, $ruleValue) < 0;
+															break;
+														default:
+															$retVal = strcasecmp($cellValueString, $ruleValue) <= 0;
+															break;
+													}
 			}
 			//    If there are multiple conditions, then we need to test both using the appropriate join operator
 			switch ($join) {
@@ -718,14 +710,14 @@ class AutoFilter
 	private function dynamicFilterDateRange(string $dynamicRuleType, AutoFilter\Column &$filterColumn): array
 	{
 		$ruleValues = [];
-		$callBack = [__CLASS__, self::DATE_FUNCTIONS[$dynamicRuleType]]; // What if not found?
+					if (self::DATE_FUNCTIONS[$dynamicRuleType] === null) {
+						throw new Exception("invalid dynamic rule type $dynamicRuleType");
+					}
+		$callBack = [__CLASS__, self::DATE_FUNCTIONS[$dynamicRuleType]];
 		//    Calculate start/end dates for the required date range based on current date
 		//    Val is lowest permitted value.
 		//    Maxval is greater than highest permitted value
-		$val = $maxval = 0;
-		if (is_callable($callBack)) { //* @phpstan-ignore-line
-			[$val, $maxval] = $callBack();
-		}
+		[$val, $maxval] = $callBack();
 		$val = Date::dateTimeToExcel($val);
 		$maxval = Date::dateTimeToExcel($maxval);
 
@@ -1051,26 +1043,16 @@ class AutoFilter
 	 */
 	public function __clone()
 	{
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				if ($key === 'workSheet') {
-					//    Detach from worksheet
-					$this->{$key} = null;
-				} else {
-					$this->{$key} = clone $value;
-				}
-			} elseif ((is_array($value)) && ($key == 'columns')) {
-				//    The columns array of \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet\AutoFilter objects
-				$this->{$key} = [];
-				foreach ($value as $k => $v) {
-					$this->{$key}[$k] = clone $v; //* @phpstan-ignore-line
-					// attach the new cloned Column to this new cloned Autofilter object
-					$this->{$key}[$k]->setParent($this); //* @phpstan-ignore-line
-				}
-			} else {
-				$this->{$key} = $value;
-			}
+		// workSheet is only property which is an object
+		// detach from worksheet
+		$this->workSheet = null;
+		// columns is the only property which is an array
+		$columns = $this->columns;
+		$this->columns = [];
+		foreach ($columns as $k => $v) {
+			$this->columns[$k] = clone $v;
+			// attach the new cloned Column to this new cloned Autofilter object
+			$this->columns[$k]->setParent($this);
 		}
 	}
 	/**

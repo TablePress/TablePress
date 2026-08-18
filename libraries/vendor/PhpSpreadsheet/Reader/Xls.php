@@ -2064,7 +2064,7 @@ class Xls extends XlsBase
 						$retstr .= substr($recordData, $pos, $len);
 						$charsLeft -= $len / 2;
 						$isCompressed = false;
-					} elseif (!$isCompressed && ($option == 0)) {
+					} elseif (!$isCompressed /*&& ($option == 0)*/) {
 						// 1st fragment uncompressed
 						// this fragment compressed
 						$len = min($charsLeft, $limitpos - $pos);
@@ -2735,7 +2735,7 @@ class Xls extends XlsBase
 		$columnString = Coordinate::stringFromColumnIndex($column + 1);
 
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			// offset: 4; size: 2; index to XF record
 			$xfIndex = self::getUInt2d($recordData, 4);
 
@@ -2780,7 +2780,7 @@ class Xls extends XlsBase
 
 		$cell = null;
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			// offset: 4; size: 2; index to XF record
 			$xfIndex = self::getUInt2d($recordData, 4);
 
@@ -2881,7 +2881,7 @@ class Xls extends XlsBase
 			$columnString = Coordinate::stringFromColumnIndex($colFirst + $i);
 
 			// Read cell?
-			if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+			if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 				// offset: var; size: 2; index to XF record
 				$xfIndex = self::getUInt2d($recordData, $offset);
 
@@ -2925,7 +2925,7 @@ class Xls extends XlsBase
 		$columnString = Coordinate::stringFromColumnIndex($column + 1);
 
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			// offset 4; size: 2; index to XF record
 			$xfIndex = self::getUInt2d($recordData, 4);
 
@@ -2991,7 +2991,7 @@ class Xls extends XlsBase
 		}
 
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			if ($isPartOfSharedFormula) {
 				// formula is added to this cell after the sheet has been read
 				$this->sharedFormulaParts[$columnString . ($row + 1)] = $this->baseCell;
@@ -3157,7 +3157,7 @@ class Xls extends XlsBase
 		$columnString = Coordinate::stringFromColumnIndex($column + 1);
 
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			// offset: 4; size: 2; index to XF record
 			$xfIndex = self::getUInt2d($recordData, 4);
 
@@ -3221,7 +3221,7 @@ class Xls extends XlsBase
 				$columnString = Coordinate::stringFromColumnIndex($fc + $i + 1);
 
 				// Read cell?
-				if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+				if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 					$xfIndex = self::getUInt2d($recordData, 4 + 2 * $i);
 					if (isset($this->mapCellXfIndex[$xfIndex])) {
 						$this->phpSheet->getCell($columnString . ($row + 1))->setXfIndex($this->mapCellXfIndex[$xfIndex]);
@@ -3259,7 +3259,7 @@ class Xls extends XlsBase
 		$columnString = Coordinate::stringFromColumnIndex($column + 1);
 
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			// offset: 4; size: 2; XF index
 			$xfIndex = self::getUInt2d($recordData, 4);
 
@@ -3304,7 +3304,7 @@ class Xls extends XlsBase
 		$columnString = Coordinate::stringFromColumnIndex($col + 1);
 
 		// Read cell?
-		if ($this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
+		if ($this->readFilter->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
 			// offset: 4; size: 2; XF index
 			$xfIndex = self::getUInt2d($recordData, 4);
 
@@ -3612,7 +3612,7 @@ class Xls extends XlsBase
 		StringHelper::stringIncrement($rangeBoundaries[1][0]);
 		for ($row = $rangeBoundaries[0][1]; $row <= $rangeBoundaries[1][1]; ++$row) {
 			for ($column = $rangeBoundaries[0][0]; $column != $rangeBoundaries[1][0]; StringHelper::stringIncrement($column)) {
-				if ($this->getReadFilter()->readCell($column, $row, $this->phpSheet->getTitle())) {
+				if ($this->readFilter->readCell($column, $row, $this->phpSheet->getTitle())) {
 					$includeCellRange = true;
 
 					break 2;

@@ -161,7 +161,7 @@ class Date
 				 *                     See https://en.wikipedia.org/wiki/ISO_8601 for details of the ISO-8601 standard format.
 				 * @return float|int
 				 */
-				public static function convertIsoDate($value)
+				public static function convertIsoDate($value, ?int $calendar = null)
 	{
 		if (!is_string($value)) {
 			throw new Exception('Non-string value supplied for Iso Date conversion');
@@ -174,7 +174,7 @@ class Date
 			throw new Exception("Invalid string $value supplied for datatype Date");
 		}
 
-		$newValue = self::dateTimeToExcel($date);
+		$newValue = self::dateTimeToExcel($date, $calendar);
 
 		if (preg_match('/^\s*\d?\d:\d\d(:\d\d([.]\d+)?)?\s*(am|pm)?\s*$/i', $value) == 1) {
 			$newValue = fmod($newValue, 1.0);
@@ -195,16 +195,17 @@ class Date
 	 *
 	 * @return DateTime PHP date/time object
 	 */
-	public static function excelToDateTimeObject($excelTimestamp, $timeZone = null): DateTime
+	public static function excelToDateTimeObject($excelTimestamp, $timeZone = null, ?int $calendar = null): DateTime
 	{
+		$calendar ??= self::$excelCalendar;
 		$timeZone = ($timeZone === null) ? self::getDefaultTimezone() : self::validateTimeZone($timeZone);
 		if (Functions::getCompatibilityMode() == Functions::COMPATIBILITY_EXCEL) {
-			if ($excelTimestamp < 1 && self::$excelCalendar === self::CALENDAR_WINDOWS_1900) {
+			if ($excelTimestamp < 1 && $calendar === self::CALENDAR_WINDOWS_1900) {
 				// Unix timestamp base date
 				$baseDate = new DateTime('1970-01-01', $timeZone);
 			} else {
 				// MS Excel calendar base dates
-				if (self::$excelCalendar == self::CALENDAR_WINDOWS_1900) {
+				if ($calendar == self::CALENDAR_WINDOWS_1900) {
 					// Allow adjustment for 1900 Leap Year in MS Excel
 					$baseDate = ($excelTimestamp < 60) ? new DateTime('1899-12-31', $timeZone) : new DateTime('1899-12-30', $timeZone);
 				} else {
@@ -253,9 +254,9 @@ class Date
 	 *
 	 * @return int Unix timetamp for this date/time
 	 */
-	public static function excelToTimestamp($excelTimestamp, $timeZone = null): int
+	public static function excelToTimestamp($excelTimestamp, $timeZone = null, ?int $calendar = null): int
 	{
-		$dto = self::excelToDateTimeObject($excelTimestamp, $timeZone);
+		$dto = self::excelToDateTimeObject($excelTimestamp, $timeZone, $calendar);
 		self::roundMicroseconds($dto);
 
 		return (int) $dto->format('U');
@@ -270,14 +271,16 @@ class Date
 	 * @return false|float Excel date/time value
 	 *                                  or boolean FALSE on failure
 	 */
-	public static function PHPToExcel($dateValue)
+	public static function PHPToExcel($dateValue, ?int $calendar = null)
 	{
 		if ((is_object($dateValue)) && ($dateValue instanceof DateTimeInterface)) {
-			return self::dateTimeToExcel($dateValue);
-		} elseif (is_numeric($dateValue)) {
-			return self::timestampToExcel($dateValue);
-		} elseif (is_string($dateValue)) {
-			return self::stringToExcel($dateValue);
+			return self::dateTimeToExcel($dateValue, $calendar);
+		}
+		if (is_numeric($dateValue)) {
+			return self::timestampToExcel($dateValue, $calendar);
+		}
+		if (is_string($dateValue)) {
+			return self::stringToExcel($dateValue, $calendar);
 		}
 
 		return false;
@@ -290,7 +293,7 @@ class Date
 	 *
 	 * @return float MS Excel serialized date/time value
 	 */
-	public static function dateTimeToExcel(DateTimeInterface $dateValue): float
+	public static function dateTimeToExcel(DateTimeInterface $dateValue, ?int $calendar = null): float
 	{
 		$seconds = (float) sprintf('%d.%06d', $dateValue->format('s'), $dateValue->format('u'));
 
@@ -300,7 +303,8 @@ class Date
 			(int) $dateValue->format('d'),
 			(int) $dateValue->format('H'),
 			(int) $dateValue->format('i'),
-			$seconds
+			$seconds,
+			$calendar
 		);
 	}
 
@@ -313,13 +317,13 @@ class Date
 	 *
 	 * @return false|float MS Excel serialized date/time value
 	 */
-	public static function timestampToExcel($unixTimestamp)
+	public static function timestampToExcel($unixTimestamp, ?int $calendar = null)
 	{
 		if (!is_numeric($unixTimestamp)) {
 			return false;
 		}
 
-		return self::dateTimeToExcel(new DateTime('@' . $unixTimestamp));
+		return self::dateTimeToExcel(new DateTime('@' . $unixTimestamp), $calendar);
 	}
 
 	/**
@@ -328,9 +332,10 @@ class Date
 				 * @return float Excel date/time value
 				 * @param float|int $seconds
 				 */
-				public static function formattedPHPToExcel(int $year, int $month, int $day, int $hours = 0, int $minutes = 0, $seconds = 0): float
+				public static function formattedPHPToExcel(int $year, int $month, int $day, int $hours = 0, int $minutes = 0, $seconds = 0, ?int $calendar = null): float
 	{
-		if (self::$excelCalendar == self::CALENDAR_WINDOWS_1900) {
+		$calendar ??= self::$excelCalendar;
+		if ($calendar === self::CALENDAR_WINDOWS_1900) {
 			//
 			//    Fudge factor for the erroneous fact that the year 1900 is treated as a Leap Year in MS Excel
 			//    This affects every date following 28th February 1900
@@ -477,7 +482,7 @@ class Date
 	 *
 	 * @return false|float Excel date/time serial value
 	 */
-	public static function stringToExcel(string $dateValue)
+	public static function stringToExcel(string $dateValue, ?int $calendar = null)
 	{
 		if (strlen($dateValue) < 2) {
 			return false;
@@ -486,7 +491,7 @@ class Date
 			return false;
 		}
 
-		$dateValueNew = DateTimeExcel\DateValue::fromString($dateValue);
+		$dateValueNew = DateTimeExcel\DateValue::fromString2($dateValue, $calendar);
 
 		if (!is_float($dateValueNew)) {
 			return false;

@@ -78,11 +78,13 @@ jobs:
       matrix:
         wp:
           - trunk
+          - '7.1'
           - '7.0'
           - '6.9'
           - '6.8'
           - '6.7'
         php:
+          - '8.6'
           - '8.5'
           - '8.4'
           - '8.3'
@@ -108,7 +110,7 @@ jobs:
           composer --version
 
       - name: Checkout specified version of the WordPress development repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: WordPress/WordPress-develop
           ref: ${{ matrix.wp }}
@@ -122,14 +124,14 @@ jobs:
           sed -i "s/localhost/127.0.0.1:3306/" wp-tests-config.php
 
       - name: Checkout TablePress repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: ${{ env.PLUGIN_DIR }}
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v4.0.0
         with:
-          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}${{ ( matrix.php == '8.1' || matrix.php == '8.2' || matrix.php == '8.3' || matrix.php == '8.4' || matrix.php == '8.5' ) && ' --ignore-platform-reqs' || '' }}"
+          composer-options: "--working-dir=${{ env.PLUGIN_DIR }}"
 
       - name: Make Composer packages available globally
         working-directory: ${{ env.PLUGIN_DIR }}
@@ -141,7 +143,7 @@ jobs:
           WP_VERSION: ${{ matrix.wp }}
           WP_MULTISITE: ${{ matrix.multisite && '1' || '0' }}
         working-directory: ${{ env.PLUGIN_DIR }}
-        continue-on-error: ${{ matrix.php == '8.5' && contains( fromJSON('["6.7", "6.8"]'), matrix.wp ) }} # WP before 6.9 runs into non-canonical type cast deprecations.
+        continue-on-error: ${{ ( matrix.php == '8.5' && contains( fromJSON('["6.7", "6.8"]'), matrix.wp ) ) || ( matrix.php == '8.6' && contains( fromJSON('["6.7", "6.8", "6.9", "7.0"]'), matrix.wp ) ) }} # WP < 6.9 runs into PHP 8.5 deprecations, WP < 7.1 runs into PHP 8.6 deprecations.
         run: phpunit --verbose --exclude-group=ms-${{ matrix.multisite && 'excluded' || 'required' }}
 
       - name: Ensure version-controlled files are not modified or deleted

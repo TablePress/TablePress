@@ -4,8 +4,8 @@ Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium
 Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.7
 Requires PHP: 7.4
-Tested up to: 7.0
-Stable tag: 3.3.3
+Tested up to: 7.1
+Stable tag: 3.3.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,6 +144,13 @@ Priority email support is also included. [Check out the details on the TablePres
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.3.4 (August 19, 2026) =
+
+* Full compatibility with WordPress 7.1, including an updated visual styling to match the latest WordPress design.
+* Bugfix: Prevent a loading error of the “Default Style Customizer” module if the “Syntax Highlighting” setting is turned off in the user’s profile. (TablePress Pro and Max only.)
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 3.3.3 (July 8, 2026) =
 
 * Full compatibility with WordPress 7.0, including an updated visual styling to match the latest WordPress design.
@@ -215,7 +222,7 @@ The “Edit” screen for tables has been enhanced with a new sticky header bar 
 
 == Upgrade Notice ==
 
-= 3.3.3 =
+= 3.3.4 =
 This update is a stability, maintenance, and compatibility release. Updating is highly recommended!
 
 = 3.3 =
