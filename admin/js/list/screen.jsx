@@ -255,7 +255,7 @@ const Screen = () => {
 		return () => {
 			document.querySelector( '.tablepress-all-tables' ).removeEventListener( 'click', handleClick );
 		};
-	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps -- This should only run on the initial render, so no dependencies are needed.
+	}, [] );
 
 	return (
 		<>

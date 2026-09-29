@@ -7,6 +7,8 @@
  * @since 2.0.0
  */
 
+declare(strict_types=1);
+
 /**
  * Tests for the TablePress_Export class.
  *
@@ -24,7 +26,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	protected \TablePress_Export $exporter;
 
 	/**
-	 * Load the TablePress_Export class PHP file once for all tests.
+	 * Loads the TablePress_Export class PHP file once for all tests.
 	 *
 	 * @since 2.0.0
 	 */
@@ -35,7 +37,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	}
 
 	/**
-	 * Set up an instance of the TablePress_Export class before every test.
+	 * Sets up an instance of the TablePress_Export class before every test.
 	 *
 	 * @since 2.0.0
 	 */
@@ -46,7 +48,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test that TablePress_Export class is loaded.
+	 * Tests that TablePress_Export class is loaded.
 	 *
 	 * @since 2.0.0
 	 */
@@ -55,7 +57,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	}
 
 	/**
-	 * Test that a proper instance of the TablePress_Export class was created.
+	 * Tests that a proper instance of the TablePress_Export class was created.
 	 *
 	 * @since 2.0.0
 	 */
@@ -64,7 +66,7 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	}
 
 	/**
-	 * Provide test data for the export.
+	 * Provides test data for the export.
 	 *
 	 * @since 2.0.0
 	 *
@@ -178,38 +180,38 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 			'CSV with semicolon' => array(
 				'table'         => $export_table,
 				'export_format' => 'csv',
-				'csv_delimiter' => ';',
+				'options'       => array( 'csv_delimiter' => ';' ),
 				'expected_data' => $expected_data['csv-semicolon'],
 			),
 			'CSV with comma'     => array(
 				'table'         => $export_table,
 				'export_format' => 'csv',
-				'csv_delimiter' => ',',
+				'options'       => array( 'csv_delimiter' => ',' ),
 				'expected_data' => $expected_data['csv-comma'],
 			),
 			'CSV with tab'       => array(
 				'table'         => $export_table,
 				'export_format' => 'csv',
-				'csv_delimiter' => 'tab',
+				'options'       => array( 'csv_delimiter' => "\t" ),
 				'expected_data' => $expected_data['csv-tab'],
 			),
 			'HTML'               => array(
 				'table'         => $export_table,
 				'export_format' => 'html',
-				'csv_delimiter' => '',
+				'options'       => array(),
 				'expected_data' => $expected_data['html'],
 			),
 			'JSON'               => array(
 				'table'         => $export_table,
 				'export_format' => 'json',
-				'csv_delimiter' => '',
+				'options'       => array(),
 				'expected_data' => $expected_data['json'],
 			),
 		);
 	}
 
 	/**
-	 * Test export of tables to available export formats.
+	 * Tests export of tables to available export formats.
 	 *
 	 * @dataProvider data_table_export
 	 *
@@ -217,11 +219,11 @@ class TablePress_Test_TablePress_Export extends TablePress_TestCase {
 	 *
 	 * @param array<string, mixed> $table         Table to export.
 	 * @param string               $export_format Export format (CSV, HTML, JSON).
-	 * @param string               $csv_delimiter CSV delimiter (semicolon, comma, tab).
+	 * @param array<string, mixed> $options       Export options.
 	 * @param string               $expected_data Expected exported data.
 	 */
-	public function test_table_export( array $table, string $export_format, string $csv_delimiter, string $expected_data ): void {
-		$exported_table_data = $this->exporter->export_table( $table, $export_format, $csv_delimiter );
+	public function test_table_export( array $table, string $export_format, array $options, string $expected_data ): void {
+		$exported_table_data = $this->exporter->export_table( $table, $export_format, $options );
 
 		$this->assertSame( $expected_data, $exported_table_data );
 	}

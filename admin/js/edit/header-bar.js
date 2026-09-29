@@ -13,12 +13,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
 	Button,
-	DropdownMenu,
 	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	Icon,
 	KeyboardShortcuts,
-	MenuGroup,
-	MenuItem,
 	Modal,
 	Spinner,
 	Tooltip,
@@ -29,9 +26,10 @@ import { useCopyToClipboard } from '@wordpress/compose';
 import { useDispatch } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { arrowUp, blockTable, copy, download, info, moreVertical, pencil, settings, shortcode, siteLogo, trash } from '@wordpress/icons';
+import { arrowUp, blockTable, box, copySmall, download, info, moreVertical, settings, shortcode, siteLogo, trash } from '@wordpress/icons';
 import { displayShortcut, shortcutAriaLabel } from '@wordpress/keycodes';
 import { store as noticesStore } from '@wordpress/notices';
+import { Menu } from '@wordpress/ui';
 
 /**
  * Internal dependencies.
@@ -39,7 +37,7 @@ import { store as noticesStore } from '@wordpress/notices';
 import { initializeReactComponentInPortal } from '../common/react-loader';
 import processAjaxRequest from '../common/ajax-request';
 import { Notifications } from '../common/notifications';
-import { TablePressIcon, TablePressIconSimple } from '../../img/tablepress-icon';
+import { TablePressIconSimple } from '../../img/tablepress-icon';
 
 /**
  * Saves the table changes to the server.
@@ -233,8 +231,8 @@ const ConfirmDeleteModal = ( { title, deleteUrl, closeConfirmDeleteModal } ) => 
 
 	return (
 		<Modal
-			size="medium"
-			icon={ <Icon icon={ TablePressIcon } size="36" style={ { display: 'flex', marginRight: '1rem' } } /> }
+			size="small"
+			icon={ <Icon icon={ trash } size="36" style={ { display: 'flex' } } /> }
 			title={ title }
 			isDismissible={ false }
 			onKeyDown={ handleEnter }
@@ -300,75 +298,99 @@ const HeaderBar = ( { noticeOperations, noticeUI, screenData, updateScreenData, 
 
 	return (
 		<VStack>
-			<HStack style={ { maxWidth: '1000px' } }>
+			<HStack className="tablepress-header-bar-wrapper">
 				<HStack alignment="left" spacing={ 3 } expanded={ false }>
 					{ /* Left side: Quick Navigation, Table ID, Table name */ }
-					<DropdownMenu
-						icon={ TablePressIconSimple }
-						label={ __( 'Quick navigation', 'tablepress' ) }
+					<Menu.Root
+						modal={ false }
 						open={ screenData.quickNavigationDropdownIsOpen }
-						onToggle={ ( newQuickNavigationDropdownIsOpen ) => updateScreenData( { quickNavigationDropdownIsOpen: newQuickNavigationDropdownIsOpen } ) }
-						toggleProps={ {
-							onDoubleClick: scrollToTop, /* Scroll to Top on Double-click. (Double-click will also close the dropdown.) */
-							shortcut: {
-								ariaLabel: shortcutAriaLabel.primary( 'j' ),
-								display: displayShortcut.primary( 'j' ),
-							},
-						} }
+						onOpenChange={ ( isOpen ) => updateScreenData( { quickNavigationDropdownIsOpen: isOpen } ) }
 					>
-						{ ( { onClose: closeMenu } ) => (
-							<>
-								<MenuGroup>
-									<MenuItem
-										icon={ arrowUp }
-										onClick={ () => {
-											scrollToTop();
-											closeMenu();
-										} }
-									>
-										{ __( 'Scroll to Top', 'tablepress' ) }
-									</MenuItem>
-								</MenuGroup>
-								<MenuGroup label={ featureModules.length > 0 && __( 'Common', 'tablepress' ) }>
-									{
+						<Menu.Trigger
+							render={
+								<Button
+									icon={ TablePressIconSimple }
+									label={ __( 'Quick navigation', 'tablepress' ) }
+									onDoubleClick={ () => scrollToTop() } /* Scroll to Top on Double-click. (Double-click will also close the dropdown.) */
+									shortcut={ {
+										ariaLabel: shortcutAriaLabel.primary( 'j' ),
+										display: displayShortcut.primary( 'j' ),
+									} }
+								/>
+							}
+						/>
+						<Menu.Popup
+							positioner={ <Menu.Positioner sideOffset={ 12 } /> } // Increase the offset to not have the top border be right on top of the bottom border of the header bar.
+							style={
+								// Allow the menu to be higher than the default, so that more feature modules fit.
+								featureModules.length > 0 && {
+									maxHeight: 'min(var(--available-height), 80dvh)',
+								}
+							}
+						>
+							<Menu.Item
+								prefix={ <Menu.PrefixIcon icon={ arrowUp } /> }
+								onClick={ () => scrollToTop() }
+							>
+								<Menu.ItemLabel>
+									{ __( 'Scroll to Top', 'tablepress' ) }
+								</Menu.ItemLabel>
+							</Menu.Item>
+							<Menu.Separator />
+							<Menu.Group>
+								{ featureModules.length > 0 && (
+									<Menu.GroupLabel>
+										{ __( 'Common', 'tablepress' ) }
+									</Menu.GroupLabel>
+								) }
+								{
 										[
 											{ section: 'table-information', label: __( 'Table Information', 'tablepress' ), icon: info },
 											{ section: 'table-data', label: __( 'Table Content', 'tablepress' ), icon: blockTable },
-											{ section: 'table-manipulation', label: __( 'Table Manipulation', 'tablepress' ), icon: pencil },
 											{ section: 'table-options', label: __( 'Table Options', 'tablepress' ), icon: settings },
 											{ section: 'datatables-features', label: __( 'Table Features for Site Visitors', 'tablepress' ), icon: siteLogo },
 										].map( ( { section, label, icon } ) => (
-											<MenuItem
+											<Menu.Item
 												key={ section }
-												icon={ icon }
+												prefix={ <Menu.PrefixIcon icon={ icon } /> }
 												onClick={ () => {
 													document.getElementById( `tablepress_edit-${section}` ).scrollIntoView( { behavior: 'smooth', block: 'start' } );
-													closeMenu();
 												} }
 											>
-												{ label }
-											</MenuItem>
+												<Menu.ItemLabel>
+													{ label }
+												</Menu.ItemLabel>
+											</Menu.Item>
 										) )
 									}
-								</MenuGroup>
-								{ featureModules.length > 0 && (
-									<MenuGroup label={ __( 'Feature Modules', 'tablepress' ) }>
-										{ featureModules.map( ( { module } ) => (
-											<MenuItem
-												key={ module }
-												onClick={ () => {
-													document.getElementById( `tablepress_edit-${module}` ).scrollIntoView( { behavior: 'smooth', block: 'start' } );
-													closeMenu();
-												} }
-											>
-												{ tp.modules[ module ].name }
-											</MenuItem>
-										) ) }
-									</MenuGroup>
-								) }
-							</>
-						) }
-					</DropdownMenu>
+							</Menu.Group>
+							{
+								featureModules.length > 0 && (
+									<>
+										<Menu.Separator />
+										<Menu.Group>
+											<Menu.GroupLabel>
+												{ __( 'Feature Modules', 'tablepress' ) }
+											</Menu.GroupLabel>
+											{ featureModules.map( ( { module, name } ) => (
+												<Menu.Item
+													key={ module }
+													prefix={ <Menu.PrefixIcon icon={ box } style={ { color: 'transparent' } } /> } // The icon is needed as a placeholder to align the labels.
+													onClick={ () => {
+														document.getElementById( `tablepress_edit-${module}` ).scrollIntoView( { behavior: 'smooth', block: 'start' } );
+													} }
+												>
+													<Menu.ItemLabel>
+														{ name }
+													</Menu.ItemLabel>
+												</Menu.Item>
+											) ) }
+										</Menu.Group>
+									</>
+								)
+							}
+						</Menu.Popup>
+					</Menu.Root>
 					<span
 						className="tablepress-header-table-id"
 						style={ { flexShrink: 0 } }>
@@ -426,61 +448,70 @@ const HeaderBar = ( { noticeOperations, noticeUI, screenData, updateScreenData, 
 						accessibleWhenDisabled={ true }
 						onClick={ () => saveTableChanges( { screenData, updateScreenData, tableOptions, tableMeta, updateTableMeta, noticeOperations, noticesStoreDispatch } ) }
 					/>
-					<DropdownMenu
-						icon={ moreVertical }
-						label={ __( 'More actions', 'tablepress' ) }
-					>
-						{ ( { onClose: closeMenu } ) => (
-							<>
-								<MenuGroup>
-									<MenuItem
-										ref={ copyShortcodeButtonRef }
-										icon={ shortcode }
-										info={ shortcodeText }
-										onClick={ () => closeMenu() }
-									>
-										{ __( 'Copy Shortcode', 'tablepress' ) }
-									</MenuItem>
-								</MenuGroup>
-								{ ( tp.screenOptions.currentUserCanCopyTable || tp.screenOptions.currentUserCanExportTable ) && (
-									<MenuGroup>
-										{ tp.screenOptions.currentUserCanCopyTable && (
-											<MenuItem
-												icon={ copy }
-												href={ screenData.copyUrl }
-											>
-												{ __( 'Copy Table', 'tablepress' ) }
-											</MenuItem>
-										) }
-										{ tp.screenOptions.currentUserCanExportTable && (
-											<MenuItem
-												icon={ download }
-												href={ screenData.exportUrl }
-											>
-												{ __( 'Export Table', 'tablepress' ) }
-											</MenuItem>
-										) }
-									</MenuGroup>
-								) }
-								{ tp.screenOptions.currentUserCanDeleteTable && (
-									<MenuGroup>
-										<MenuItem
-											icon={ trash }
-											isDestructive={ true }
-											href={ screenData.deleteUrl }
-											onClick={ ( event ) => {
-												setConfirmDeleteModalIsOpen( true );
-												event.preventDefault();
-												closeMenu();
-											} }
+					<Menu.Root modal={ false }>
+						<Menu.Trigger
+							render={
+								<Button
+									icon={ moreVertical }
+									label={ __( 'More actions', 'tablepress' ) }
+								/>
+							}
+						/>
+						<Menu.Popup
+							positioner={ <Menu.Positioner sideOffset={ 12 } /> } // Increase the offset to not have the top border be right on top of the bottom border of the header bar.
+						>
+							<Menu.Item
+								ref={ copyShortcodeButtonRef }
+								prefix={ <Menu.PrefixIcon icon={ shortcode } /> }
+							>
+								<Menu.ItemLabel>
+									{ __( 'Copy Shortcode', 'tablepress' ) }
+								</Menu.ItemLabel>
+								<Menu.ItemDescription>
+									{ shortcodeText }
+								</Menu.ItemDescription>
+							</Menu.Item>
+							{ ( tp.screenOptions.currentUserCanCopyTable || tp.screenOptions.currentUserCanExportTable ) && (
+								<>
+									<Menu.Separator />
+									{ tp.screenOptions.currentUserCanCopyTable && (
+										<Menu.LinkItem
+											prefix={ <Menu.PrefixIcon icon={ copySmall } /> }
+											href={ screenData.copyUrl }
 										>
-											{ __( 'Delete Table', 'tablepress' ) }
-										</MenuItem>
-									</MenuGroup>
-								) }
-							</>
-						) }
-					</DropdownMenu>
+											<Menu.ItemLabel>
+												{ __( 'Copy Table', 'tablepress' ) }
+											</Menu.ItemLabel>
+										</Menu.LinkItem>
+									) }
+									{ tp.screenOptions.currentUserCanExportTable && (
+										<Menu.LinkItem
+											prefix={ <Menu.PrefixIcon icon={ download } /> }
+											href={ screenData.exportUrl }
+										>
+											<Menu.ItemLabel>
+												{ __( 'Export Table', 'tablepress' ) }
+											</Menu.ItemLabel>
+										</Menu.LinkItem>
+									) }
+								</>
+							) }
+							{ tp.screenOptions.currentUserCanDeleteTable && (
+								<>
+									<Menu.Separator />
+									<Menu.Item
+										prefix={ <Menu.PrefixIcon icon={ trash } style={ { color: '#cc1818' } } /> }
+										onClick={ () => setConfirmDeleteModalIsOpen( true ) }
+										style={ { color: '#cc1818' } }
+									>
+										<Menu.ItemLabel>
+											{ __( 'Delete table', 'tablepress' ) }
+										</Menu.ItemLabel>
+									</Menu.Item>
+								</>
+							) }
+						</Menu.Popup>
+					</Menu.Root>
 				</HStack>
 			</HStack>
 			{ noticeUI }

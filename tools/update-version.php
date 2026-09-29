@@ -14,6 +14,10 @@
  * @since 2.4.2
  */
 
+declare(strict_types=1);
+
+namespace TablePress\BuildTools\VersionUpdater;
+
 // Check if a new version number was provided and provide usage instructions.
 if ( ! isset( $argv[1] ) ) {
 	echo "Updates the TablePress version number across configured files.\n\n";

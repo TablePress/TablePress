@@ -68,6 +68,27 @@ body[class*="branch-7-"] #wp-link-wrap {
 		margin-left: -11px;
 		margin-right: -21px;
 	}
+
+	/* Fixed left header bar, taking into account the width of the admin menu. */
+	.tablepress-header-bar-wrapper {
+		max-width: 1000px;
+
+		body & {
+			position: sticky;
+			left: 172px;
+		}
+		body.folded & {
+			left: 48px;
+		}
+		body.auto-fold & {
+			@media only screen and (max-width: 960px) {
+				left: 48px;
+			}
+			@media screen and (max-width: 782px) {
+				left: 0;
+			}
+		}
+	}
 }
 
 /* Table name and ID display in header. */
@@ -76,6 +97,56 @@ body[class*="branch-7-"] #wp-link-wrap {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* Table Editor Toolbar. */
+#tablepress-table-editor-toolbar-section {
+	margin: -6px 0 0;
+	padding: 4px 0;
+	background: #ffffff;
+
+	/* Sticky at top of page. */
+	@media screen and (min-width: 601px) {
+		position: sticky;
+		top: calc(var(--wp-admin--admin-bar--height, 32px) + 53px);
+		z-index: 9988; /* Above the table editor, but below the admin menu, WP Pointers, and the Header Bar. */
+	}
+	@media screen and (min-width: 601px) and (max-width: 782px) {
+		top: calc(var(--wp-admin--admin-bar--height, 32px) + 60px);
+	}
+
+	/* Fixed left toolbar, taking into account the width of the admin menu. */
+	.tablepress-toolbar-scroll-wrapper {
+		body & {
+			position: sticky;
+			left: 172px;
+			width: auto;
+		}
+		body.folded & {
+			left: 48px;
+		}
+		body.auto-fold & {
+			@media only screen and (max-width: 960px) {
+				left: 48px;
+			}
+			@media screen and (max-width: 782px) {
+				left: 0;
+			}
+		}
+	}
+
+	/* Backward compatibility with WP < 6.9. */
+	.components-button.is-compact.has-icon:not(.has-text) {
+		width: auto;
+	}
+
+	.tablepress-toolbar-button-text {
+		font-weight: normal;
+
+		@media screen and (max-width: 600px) {
+			display: none;
+		}
+	}
 }
 
 /* Background color for the readonly Shortcode text field. */
@@ -123,11 +194,6 @@ body[class*="branch-7-"] #wp-link-wrap {
 	min-width: calc(100% - 2px); /* but use the full width, minus 2px to account for the borders. */
 }
 
-#tablepress_edit-table-manipulation .column-1,
-#tablepress_edit-table-manipulation .column-2 {
-	width: 50%;
-}
-
 /* Jspreadsheet CSS. */
 
 #table-editor {
@@ -171,7 +237,7 @@ body[class*="branch-7-"] #wp-link-wrap {
 
 .jexcel > tbody > tr > td {
 	vertical-align: top;
-	word-break: break-word;
+	word-break: break-word; /* stylelint-disable-line declaration-property-value-keyword-no-deprecated */
 	padding: 0;
 
 	&:first-child {
@@ -195,14 +261,14 @@ body[class*="branch-7-"] #wp-link-wrap {
 /* Fixed header. */
 .admin-bar .jexcel > thead > tr > td {
 	@media screen and (min-width: 601px) {
-		top: calc(var(--wp-admin--admin-bar--height) + 59px); /* Offset of 61px for the Header Bar and 2px to remove top and bottom border. */
+		top: calc(var(--wp-admin--admin-bar--height) + 118px); /* Offset for the Header Bar and Toolbar, minus top and bottom borders. */
 	}
 	@media screen and (min-width: 783px) {
-		top: calc(var(--wp-admin--admin-bar--height) + 52px); /* Offset of 54px for the Header Bar and 2px to remove top and bottom border. */
+		top: calc(var(--wp-admin--admin-bar--height) + 111px); /* Offset for the Header Bar and Toolbar, minus top and bottom borders. */
 	}
 }
 
-/* Fixed left column, taking into account the width of the admin bar. */
+/* Fixed left column, taking into account the width of the admin menu. */
 .jexcel > tbody > tr > .jexcel_row {
 	body & {
 		position: sticky;
@@ -278,16 +344,26 @@ body[class*="branch-7-"] #wp-link-wrap {
 .jcontextmenu {
 	margin: 1px; /* Don't trigger actions by accident */
 	z-index: 99999; /* Hover above WP Admin bar */
+	background-color: var(--wpds-color-background-surface-neutral-strong, #ffffff); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+	border-radius: 4px;
 
-	> div.header {
-		display: none !important;
-	}
-	> div a {
-		color: #111111;
-		font-size: 14px;
-	}
 	> div {
 		padding: 4px 4px 4px 16px;
+		color: var(--wpds-color-foreground-interactive-neutral, #1e1e1e); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+		font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+
+		&.header {
+			display: none !important;
+		}
+
+		&:hover {
+			background-color: var(--wpds-color-background-interactive-brand-weak-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 12%, #ffffff)); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+		}
+
+		a {
+			font-size: 13px;
+			color: #1e1e1e;
+		}
 	}
 	> .jcontextmenu-disabled,
 	> .jcontextmenu-disabled a {

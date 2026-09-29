@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -43,6 +45,8 @@ class TablePress_List_View extends TablePress_View {
 		parent::setup( $action, $data );
 
 		TablePress::enqueue_script( 'list' );
+
+		$milestone_period_ended = ( strtotime( '2026-10-10' ) < strtotime( 'today' ) );
 
 		if ( $data['messages']['superseded_extensions'] ) {
 			$superseded_extensions = array(
@@ -145,7 +149,7 @@ class TablePress_List_View extends TablePress_View {
 			$notice_css_classes = 'not-dismissible';
 
 			if ( ! empty( $active_incompatible_superseded_extensions ) ) {
-				$notice_css_classes .= ' is-error';
+				$notice_css_classes .= ' is-error notice-error';
 
 				$message .= '<p style="font-size:16px;">' . __( 'You are using <strong>TablePress Extension plugins</strong> on this website that have been retired many years ago.', 'tablepress' ) . '<br>' . __( 'For technical reasons, some or all features of these outdated plugins <strong>do no longer work</strong>:', 'tablepress' ) . '</p>';
 				$message .= '<ul style="list-style:disc;margin:0.5em 1em;font-size:16px;">';
@@ -169,7 +173,7 @@ class TablePress_List_View extends TablePress_View {
 					$message .= '</ul>';
 				}
 			} elseif ( ! empty( $active_compatible_superseded_extensions ) && tb_tp_fs()->is_free_plan() ) {
-				$notice_css_classes .= ' is-warning';
+				$notice_css_classes .= ' is-warning notice-warning';
 
 				$message .= '<p style="font-size:14px;"><strong>' . __( 'You are using TablePress Extension plugins on this website that have been retired and will no longer receive updates or support:', 'tablepress' ) . '</strong></p>';
 				$message .= '<ul style="list-style:disc;margin:0.5em 1em;">';
@@ -201,7 +205,7 @@ class TablePress_List_View extends TablePress_View {
 			}
 		}
 
-		if ( $data['messages']['first_visit'] ) {
+		if ( $data['messages']['first_visit'] && ( ! $data['messages']['plugin_update'] || $milestone_period_ended ) ) {
 			$message = '<p style="font-size:14px;"><strong>' . __( 'Thank you for choosing TablePress, the most popular table plugin for WordPress!', 'tablepress' ) . '</strong></p>';
 			/* translators: %1$s: URL to FAQ, %2$s: URL to Documentation, %3$s: URL to Support, %4$s: URL to plugin website */
 			$message .= '<p>' . sprintf( __( 'If you encounter any questions or problems, please visit the <a href="%1$s">FAQ</a>, the <a href="%2$s">Documentation</a>, and the <a href="%3$s">Support</a> section on the <a href="%4$s">plugin website</a>.', 'tablepress' ), 'https://tablepress.org/faq/', 'https://tablepress.org/documentation/', 'https://tablepress.org/support/', 'https://tablepress.org/' ) . '</p>';
@@ -217,8 +221,8 @@ class TablePress_List_View extends TablePress_View {
 			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
 		}
 
-		if ( $data['messages']['donation_nag'] ) {
-			$message = '<p style="font-size:14px;"><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=300" height="150" width="150" style="float:left;margin:2px 15px 30px 0;">'
+		if ( $data['messages']['donation_nag'] && ( ! $data['messages']['plugin_update'] || $milestone_period_ended ) ) {
+			$message = '<p style="font-size:14px;"><img alt="' . esc_attr__( 'Tobias Bäthge, developer of TablePress', 'tablepress' ) . '" src="https://secure.gravatar.com/avatar/50f1cff2e27a1f522b18ce229c057bc5?s=250" height="125" width="125" style="float:left;margin:2px 15px 30px 0;border-radius:5px;">'
 				. __( 'Hi, my name is Tobias, I&#8217;m the developer of the TablePress plugin.', 'tablepress' ) . '</p>';
 			$message .= '<p style="font-size:14px;">' . __( 'Thank you for using it!', 'tablepress' ) . ' ';
 			if ( $data['table_count'] > 0 ) {
@@ -232,26 +236,44 @@ class TablePress_List_View extends TablePress_View {
 			$message .= '<p style="font-size:14px;"><strong>' . sprintf( __( 'I would like to invite you to check out the <a href="%s">Premium versions of TablePress</a>.', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=upgrade-message' ) . '<br>'
 				. __( 'The available Pro and Max plans offer user support and many exciting and helpful features for your tables.', 'tablepress' ) . '</strong></p>';
 			$message .= '<p style="font-size:14px;">' . __( 'Sincerely, Tobias', 'tablepress' ) . '</p>';
-			$message .= '<p style="margin-top:1em;">' . sprintf( '<a href="%s" class="components-button is-primary" style="font-size:14px;margin-right:3em;">%s<span class="dashicons dashicons-arrow-right-alt" style="vertical-align:middle;margin:0 0 4px 4px"></span></a>', 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-message', __( 'Tell me more about the Premium features', 'tablepress' ) )
+			$message .= '<p style="margin-top:1em;">' . sprintf( '<a href="%s" class="components-button is-primary" style="font-size:14px;margin-right:3em;color:#ffffff;">%s<span class="dashicons dashicons-arrow-right-alt" style="margin-inline:8px 0"></span></a>', 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=button&utm_content=upgrade-message', __( 'Tell me more about the Premium features', 'tablepress' ) )
 				. $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'donation_nag', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
 			$title = '<em>' . __( 'TablePress has more to offer!', 'tablepress' ) . '</em>';
 
-			$this->add_header_message( $message, 'is-success not-dismissible', $title );
+			$this->add_header_message( $message, 'notice-success not-dismissible', $title );
 		}
 
 		if ( $data['messages']['plugin_update'] ) {
-			$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</p>';
+			if ( $milestone_period_ended ) {
+				$message = '<p>' . sprintf( __( 'To find out more about what’s new, please read the <a href="%s"><strong>release announcement</strong></a>.', 'tablepress' ), 'https://tablepress.org/news/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</p>';
 
-			if ( tb_tp_fs()->is_free_plan() ) {
-				$message .= '<p><strong>' . sprintf( __( 'More great features and priority email support are available with a Premium license plan. <a href="%s">Check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</strong></p>';
+				if ( tb_tp_fs()->is_free_plan() ) {
+					$message .= '<p><strong>' . sprintf( __( 'More great features and priority email support are available with a Premium license plan. <a href="%s">Check them out!</a>', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=plugin-update-message' ) . '</strong></p>';
+				}
+
+				$title = '<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>';
+				$class = 'notice-info not-dismissible';
+			} else {
+				$texts_german = in_array( get_user_locale(), array( 'de_DE', 'de_AT', 'de_CH' ), true );
+				if ( $texts_german ) {
+					$message = '<p style="font-size:16px;">Wir feiern <strong>25 Millionen Downloads</strong> von TablePress aus dem WordPress-Pluginverzeichnis!<br>Mach mit und <strong>spare 25&#8239;%</strong> beim Upgrade auf TablePress Pro oder TablePress Max!</p>';
+				} else {
+					$message = '<p style="font-size:16px;">We’re celebrating <strong>25 million downloads</strong> of TablePress from the WordPress Plugin Directory!<br>Join us and <strong>get 25% off</strong> your TablePress Pro or TablePress Max upgrade!</p>';
+				}
+				$url = 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=notice&utm_campaign=upgrade-message340&utm_content=button';
+				$message .= '<p style="margin-top:1em;margin-bottom:24px;">' . sprintf( '<a href="%s" class="components-button is-primary" target="_blank"><span>%s</span><span class="dashicons dashicons-arrow-right-alt" style="margin-inline:8px 0"></span></a>', $url, $texts_german ? 'Spare jetzt 25&#8239;%' : 'Get 25% off now' ) . '</p>';
+
+				$filename = $texts_german ? 'admin/img/dl-25-period.svg' : 'admin/img/dl-25-comma.svg';
+				$message .= sprintf( '<img src="%1$s" alt="%2$s">', plugins_url( $filename, TABLEPRESS__FILE__ ), $texts_german ? 'Grafik mit einer Tabelle mit „Downloads“ in der Kopfzeile und der Zahl 25.000.000 im Tabellenkörper' : 'Graphic with a table with “Downloads” in the header and the number 25,000,000 in the body' );
+
+				$title = '';
+				$class = 'notice-milestone not-dismissible';
 			}
 
 			$message .= '<p style="margin-top:1em;">' . $this->ajax_link( array( 'action' => 'hide_message', 'item' => 'plugin_update', 'return' => 'list' ), __( 'Hide this message', 'tablepress' ) ) . '</p>';
 
-			$title = '<em>' . sprintf( __( 'Thank you for updating to TablePress %s!', 'tablepress' ), TablePress::version ) . '</em>';
-
-			$this->add_header_message( $message, 'notice-info not-dismissible', $title );
+			$this->add_header_message( $message, $class, $title );
 		}
 
 		$this->process_action_messages( array(
@@ -302,6 +324,7 @@ class TablePress_List_View extends TablePress_View {
 		?>
 		<div id="tablepress-body">
 		<hr class="wp-header-end">
+		<script>document.querySelectorAll('.notice:has(~#tablepress-page)').forEach(e=>document.querySelector('.wp-header-end').after(e));</script>
 		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {

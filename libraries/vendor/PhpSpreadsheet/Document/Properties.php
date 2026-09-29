@@ -368,7 +368,7 @@ class Properties
 
 	/**
 				 * Get a Custom Property Value.
-				 * @return bool|float|int|string|null
+				 * @return bool|int|float|string|null
 				 */
 				public function getCustomPropertyValue(string $propertyName)
 	{
@@ -464,7 +464,7 @@ class Properties
 	/**
 				 * Convert property to form desired by Excel.
 				 * @param bool|int|float|string|null $propertyValue
-				 * @return bool|float|int|string|null
+				 * @return bool|int|float|string|null
 				 */
 				public static function convertProperty($propertyValue, string $propertyType)
 	{
@@ -474,7 +474,7 @@ class Properties
 	/**
 				 * Convert property to form desired by Excel.
 				 * @param bool|int|float|string|null $propertyValue
-				 * @return bool|float|int|string|null
+				 * @return bool|int|float|string|null
 				 */
 				private static function convertProperty2($propertyValue, string $type)
 	{

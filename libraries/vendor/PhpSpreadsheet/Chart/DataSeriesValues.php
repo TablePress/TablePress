@@ -344,7 +344,7 @@ class DataSeriesValues extends Properties
 
 	/**
 				 * Get line width for series.
-				 * @return float|int|null
+				 * @return null|float|int
 				 */
 				public function getLineWidth()
 	{

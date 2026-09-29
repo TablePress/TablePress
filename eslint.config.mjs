@@ -33,6 +33,7 @@ export default defineConfig( [
 			"@wordpress/i18n-translator-comments": "off",
 			"jsdoc/check-tag-names": "off",
 			"jsdoc/empty-tags": "off",
+			"jsdoc/reject-function-type": "off",
 		},
 	},
 ] );

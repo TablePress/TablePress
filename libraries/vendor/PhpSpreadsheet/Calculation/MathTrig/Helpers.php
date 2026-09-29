@@ -20,7 +20,7 @@ class Helpers
 
 	/**
 				 * Many functions accept null/false/true argument treated as 0/0/1.
-				 * @return float|int
+				 * @return int|float
 				 * @param mixed $number
 				 */
 				public static function validateNumericNullBool($number)

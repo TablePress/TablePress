@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -196,62 +198,31 @@ class TablePress_Render {
 	protected function _prepare_render_data(): void {
 		$orig_table = $this->table;
 
-		$num_rows = count( $this->table['data'] );
-		$num_columns = ( $num_rows > 0 ) ? count( $this->table['data'][0] ) : 0;
+		$counts = array(
+			'rows' => count( $this->table['data'] ),
+		);
+		$counts['columns'] = ( $counts['rows'] > 0 ) ? count( $this->table['data'][0] ) : 0;
 
 		// Evaluate show/hide_rows/columns parameters.
 		$actions = array( 'show', 'hide' );
 		$elements = array( 'rows', 'columns' );
 		foreach ( $actions as $action ) {
 			foreach ( $elements as $element ) {
-				if ( empty( $this->render_options[ "{$action}_{$element}" ] ) ) {
-					$this->render_options[ "{$action}_{$element}" ] = array();
+				$action_element = "{$action}_{$element}";
+
+				if ( empty( $this->render_options[ $action_element ] ) ) {
+					$this->render_options[ $action_element ] = array();
 					continue;
 				}
 
-				// Add all rows/columns to array if "all" value set for one of the four parameters.
-				if ( 'all' === $this->render_options[ "{$action}_{$element}" ] ) {
-					$this->render_options[ "{$action}_{$element}" ] = range( 0, ${'num_' . $element} - 1 );
+				// Add all rows/columns to array if a parameter is set to "all".
+				if ( 'all' === $this->render_options[ $action_element ] ) {
+					$this->render_options[ $action_element ] = range( 0, $counts[ $element ] - 1 );
 					continue;
 				}
 
-				// We have a list of rows/columns (possibly with ranges in it).
-				$this->render_options[ "{$action}_{$element}" ] = explode( ',', $this->render_options[ "{$action}_{$element}" ] );
-				// Support for ranges like 3-6 or A-BA.
-				$range_cells = array();
-				foreach ( $this->render_options[ "{$action}_{$element}" ] as $key => $value ) {
-					$range_dash = strpos( $value, '-' );
-					if ( false !== $range_dash ) {
-						unset( $this->render_options[ "{$action}_{$element}" ][ $key ] );
-						$start = trim( substr( $value, 0, $range_dash ) );
-						if ( ! is_numeric( $start ) ) {
-							$start = TablePress::letter_to_number( $start );
-						}
-						$end = trim( substr( $value, $range_dash + 1 ) );
-						if ( ! is_numeric( $end ) ) {
-							$end = TablePress::letter_to_number( $end );
-						}
-						$current_range = range( $start, $end );
-						$range_cells = array_merge( $range_cells, $current_range );
-					}
-				}
-				$this->render_options[ "{$action}_{$element}" ] = array_merge( $this->render_options[ "{$action}_{$element}" ], $range_cells );
-
-				/*
-				 * Parse single letters and change from regular numbering to zero-based numbering,
-				 * as rows/columns are indexed from 0 internally, but from 1 externally.
-				 */
-				foreach ( $this->render_options[ "{$action}_{$element}" ] as $key => $value ) {
-					$value = trim( $value );
-					if ( ! is_numeric( $value ) ) {
-						$value = TablePress::letter_to_number( $value );
-					}
-					$this->render_options[ "{$action}_{$element}" ][ $key ] = (int) $value - 1;
-				}
-
-				// Remove duplicate entries and sort the array.
-				$this->render_options[ "{$action}_{$element}" ] = array_unique( $this->render_options[ "{$action}_{$element}" ] );
-				sort( $this->render_options[ "{$action}_{$element}" ], SORT_NUMERIC );
+				// Convert the list to a unique, sorted, and zero-based array of integers.
+				$this->render_options[ $action_element ] = TablePress::convert_row_column_list_to_array( $this->render_options[ $action_element ], 1, $counts[ $element ], array( 'zero-based' => true ) );
 			}
 		}
 

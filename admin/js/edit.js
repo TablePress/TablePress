@@ -12,7 +12,7 @@
  */
 import './edit/header-bar';
 import './edit/table-information';
-import './edit/table-manipulation';
+import './edit/toolbar';
 import './edit/table-options';
 import './edit/datatables-features';
 import './edit/table-preview';

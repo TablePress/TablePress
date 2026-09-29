@@ -8,6 +8,8 @@
  * @since 2.3.0
  */
 
+declare(strict_types=1);
+
 namespace TablePress\Import;
 
 // Prohibit direct script loading.

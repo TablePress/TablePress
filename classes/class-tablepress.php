@@ -7,6 +7,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -27,7 +29,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const string
 	 */
-	public const version = '3.3.4'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const version = '3.4'; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress internal plugin version ("options scheme" version).
@@ -37,7 +39,7 @@ abstract class TablePress {
 	 * @since 1.0.0
 	 * @const int
 	 */
-	public const db_version = 131; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+	public const db_version = 133; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 
 	/**
 	 * TablePress "table scheme" (data format structure) version.
@@ -358,6 +360,100 @@ abstract class TablePress {
 			$number = intdiv( $number - 1, 26 );
 		}
 		return $column;
+	}
+
+	/**
+	 * Converts a range string (e.g., "1-5" or "A-E") to an array of numbers.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param string $value      The range string.
+	 * @param int    $min_number The minimum allowed number for the range, usually 0 or 1.
+	 * @param int    $max_number The maximum allowed number for the range, usually the number of rows or columns in the table.
+	 * @return int[] The array of numbers in the range.
+	 */
+	public static function convert_range_to_array( string $value, int $min_number, int $max_number ): array {
+		$parts = explode( '-', $value );
+
+		// Ignore invalid ranges, e.g., "1-5-10" or "A-".
+		if ( count( $parts ) !== 2 || '' === $parts[0] || '' === $parts[1] ) {
+			return array();
+		}
+
+		$start = trim( $parts[0] );
+		if ( ! is_numeric( $start ) ) {
+			$start = self::letter_to_number( $start );
+		}
+
+		$end = trim( $parts[1] );
+		if ( ! is_numeric( $end ) ) {
+			$end = self::letter_to_number( $end );
+		}
+
+		// Catch completely out-of-bound ranges, taking into account that the order can be reversed.
+		if ( ( $start < $min_number && $end < $min_number ) || ( $start > $max_number && $end > $max_number ) ) {
+			return array();
+		}
+
+		// Clamp the start and end values to the min and max numbers.
+		$start = max( $min_number, min( (int) $start, $max_number ) );
+		$end = max( $min_number, min( (int) $end, $max_number ) );
+
+		return range( $start, $end );
+	}
+
+	/**
+	 * Converts a comma-separated list of row/column numbers/letters/ranges to a unique and sorted array of numbers.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param string                                                 $item_list       A comma-separated list of row/column numbers/letters/ranges.
+	 * @param int                                                    $min_number      The minimum allowed number for ranges, usually 0 or 1.
+	 * @param int                                                    $max_number      The maximum allowed number for ranges, usually the number of rows or columns in the table.
+	 * @param array{ unique?: bool, sort?: bool, zero-based?: bool } $post_processing An array of post-processing operations to apply to the resulting array.
+	 * @return int[] The array of numbers in the list, unique and sorted.
+	 */
+	public static function convert_row_column_list_to_array( string $item_list, int $min_number, int $max_number, array $post_processing = array() ): array {
+		$original_item_list = explode( ',', $item_list );
+
+		$item_list = array();
+		foreach ( $original_item_list as $value ) {
+			if ( str_contains( $value, '-' ) ) {
+				// Convert ranges.
+				$range = self::convert_range_to_array( $value, $min_number, $max_number );
+				$item_list = array_merge( $item_list, $range );
+			} else {
+				// Handle single values.
+				$value = trim( $value );
+				if ( ! is_numeric( $value ) ) {
+					$value = self::letter_to_number( $value );
+				}
+				if ( $value >= $min_number && $value <= $max_number ) {
+					$item_list[] = (int) $value;
+				}
+			}
+		}
+
+		// Maybe remove duplicate entries, sort the array, or convert to zero-based numbering.
+		$post_processing['unique'] ??= true;
+		if ( $post_processing['unique'] ) {
+			$item_list = array_unique( $item_list, SORT_NUMERIC );
+		}
+
+		$post_processing['sort'] ??= true;
+		if ( $post_processing['sort'] ) {
+			sort( $item_list, SORT_NUMERIC );
+		}
+
+		$post_processing['zero-based'] ??= false;
+		if ( $post_processing['zero-based'] ) {
+			foreach ( $item_list as &$value ) {
+				--$value;
+			}
+			unset( $value ); // Unset use-by-reference parameter of foreach loop.
+		}
+
+		return $item_list;
 	}
 
 	/**
@@ -979,6 +1075,9 @@ abstract class TablePress {
 	 * @param string[]             $dependencies Optional. List of names of JS scripts that this script depends on, and which need to be included before this one.
 	 * @param array<string, mixed> $script_data  Optional. JS data that is printed to the page before the script is included. The array key will be used as the name, the value will be JSON encoded.
 	 * @param string               $path         Optional. Path to the JS file.
+	 *
+	 * @phpstan-param non-empty-string $name
+	 * @phpstan-param non-empty-string[] $dependencies
 	 */
 	public static function enqueue_script( string $name, array $dependencies = array(), array $script_data = array(), string $path = 'admin/js/build/' ): void {
 		$js_file = "{$path}{$name}.js";
@@ -1005,6 +1104,8 @@ abstract class TablePress {
 		 *
 		 * @param string[] $dependencies List of the dependencies that the $name script relies on.
 		 * @param string   $name         Name of the JS script, without extension.
+		 *
+		 * @phpstan-param non-empty-string[] $dependencies
 		 */
 		$dependencies = apply_filters( 'tablepress_admin_page_script_dependencies', $dependencies, $name );
 

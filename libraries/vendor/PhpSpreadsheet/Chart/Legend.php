@@ -91,7 +91,7 @@ class Legend
 
 	/**
 				 * Get legend position as an Excel internal numeric value.
-				 * @return int|false
+				 * @return false|int
 				 */
 				public function getPositionXL()
 	{

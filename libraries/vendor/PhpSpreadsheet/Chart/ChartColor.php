@@ -118,7 +118,7 @@ class ChartColor
 		return $this;
 	}
 
-	/** @param array{value: ?string, alpha: null|int|string, brightness?: null|int|string, type: ?string}  $color */
+	/** @param array{value: ?string, alpha?: null|int|string, brightness?: null|int|string, type?: null|string}  $color */
 	public function setColorPropertiesArray(array $color): self
 	{
 		return $this->setColorProperties(
@@ -136,7 +136,7 @@ class ChartColor
 
 	/**
 				 * Get Color Property.
-				 * @return int|string|null
+				 * @return null|int|string
 				 */
 				public function getColorProperty(string $propertyName)
 	{

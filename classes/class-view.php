@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -97,7 +99,7 @@ abstract class TablePress_View {
 
 		if ( tb_tp_fs()->is_free_plan() ) {
 			$common_content .= '<p>'
-				. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/support/plugin/tablepress' )
+				. sprintf( __( '<a href="%1$s">Support</a> is provided through the <a href="%2$s">WordPress Support Forums</a>.', 'tablepress' ), 'https://tablepress.org/support/', 'https://wordpress.org/support/plugin/tablepress/' )
 				. ' '
 				. sprintf( __( 'Before asking for support, please carefully read the <a href="%s">Frequently Asked Questions</a>, where you will find answers to the most common questions, and search through the forums.', 'tablepress' ), 'https://tablepress.org/faq/' )
 				. '</p>';
@@ -124,17 +126,21 @@ abstract class TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int|false $result Current value of the user option.
+	 * @param string|int|false $result Current value of the user option.
 	 * @return int New value for the user option.
 	 */
-	public function set_current_screen_layout_columns( /* int|false */ $result ): int {
+	public function set_current_screen_layout_columns( /* string|int|false */ $result ): int {
 		if ( false === $result ) {
 			// The user option does not yet exist.
-			$result = $this->screen_columns;
-		} elseif ( $result > $this->screen_columns ) {
+			return $this->screen_columns;
+		}
+
+		$result = (int) $result;
+		if ( $result > $this->screen_columns ) {
 			// The value of the user option is bigger than what is possible on this screen (e.g. because the number of columns was reduced in an update).
 			$result = $this->screen_columns;
 		}
+
 		return $result;
 	}
 
@@ -181,7 +187,7 @@ abstract class TablePress_View {
 	 * @param string $css_class Optional. Additional CSS class for the header message.
 	 * @param string $title     Optional. Text for the header title.
 	 */
-	protected function add_header_message( string $text, string $css_class = 'is-success', string $title = '' ): void {
+	protected function add_header_message( string $text, string $css_class = 'is-success notice-success', string $title = '' ): void {
 		if ( ! str_contains( $css_class, 'not-dismissible' ) ) {
 			$css_class .= ' is-dismissible';
 		}
@@ -204,7 +210,7 @@ abstract class TablePress_View {
 	 */
 	protected function process_action_messages( array $action_messages ): void {
 		if ( $this->data['message'] && isset( $action_messages[ $this->data['message'] ] ) ) {
-			$class = ( str_starts_with( $this->data['message'], 'error' ) ) ? 'is-error' : 'is-success';
+			$class = ( str_starts_with( $this->data['message'], 'error' ) ) ? 'is-error notice-error' : 'is-success notice-success';
 
 			if ( '' !== $this->data['error_details'] ) {
 				$this->data['error_details'] = '</p><p>' . sprintf( __( 'Error code: %s', 'tablepress' ), '<code>' . esc_html( $this->data['error_details'] ) . '</code>' );
@@ -349,6 +355,7 @@ abstract class TablePress_View {
 		?>
 		<div id="tablepress-body">
 		<hr class="wp-header-end">
+		<script>document.querySelectorAll('.notice:has(~#tablepress-page)').forEach(e=>document.querySelector('.wp-header-end').after(e));</script>
 		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
@@ -398,6 +405,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 */
 	protected function print_nav_tab_menu(): void {
+		$milestone_period_ended = ( strtotime( '2026-10-10' ) < strtotime( 'today' ) );
 		$name = __( 'TablePress', 'tablepress' );
 		$filename = 'admin/img/tablepress.svg';
 		?>
@@ -406,13 +414,23 @@ abstract class TablePress_View {
 				<img src="<?php echo plugins_url( $filename, TABLEPRESS__FILE__ ); ?>" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>">
 				<span class="screen-reader-text"><?php echo $name; ?></span>
 			</h1>
-			<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
-				<div class="buttons">
-					<a href="<?php echo esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ); ?>" class="tablepress-button">
-						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
-						<span class="dashicons dashicons-arrow-right-alt"></span>
-					</a>
-				</div>
+			<?php if ( 'list' !== $this->action || ! $this->data['messages']['plugin_update'] || $milestone_period_ended ) : ?>
+				<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
+					<div class="buttons">
+						<a href="<?php echo $milestone_period_ended ? esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ) : 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=header&utm_campaign=upgrade-message340&utm_content=button'; ?>" class="tablepress-button">
+							<span>
+								<?php
+								if ( $milestone_period_ended ) {
+									_e( 'Upgrade to Premium', 'tablepress' );
+								} else {
+									echo in_array( get_user_locale(), array( 'de_DE', 'de_AT', 'de_CH' ), true ) ? 'Premium: Spare jetzt 25&#8239;%' : 'Premium: Get 25% off now';
+								}
+								?>
+							</span>
+							<span class="dashicons dashicons-arrow-right-alt"></span>
+						</a>
+					</div>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 		<nav id="tablepress-nav">
@@ -447,7 +465,7 @@ abstract class TablePress_View {
 	 */
 	public function textbox_no_javascript( array $data, array $box ): void {
 		?>
-		<div class="notice components-notice is-error hide-if-js">
+		<div class="notice components-notice is-error notice-error hide-if-js">
 			<div class="components-notice__content">
 				<h3><em>
 					<?php _e( 'Attention: Unfortunately, there is a problem!', 'tablepress' ); ?>
@@ -632,7 +650,7 @@ abstract class TablePress_View {
 		},
 	};
 
-	$( () => $( '<?php echo $selector; ?>' ).pointer( options ).pointer( 'open' ) );
+	$( () => setTimeout( () => $( '<?php echo $selector; ?>' ).pointer( options ).pointer( 'open' ), 1 ) );
 
 	$( document ).on( 'screen:options:open screen:options:close', () => {
 		setTimeout( () => $( '<?php echo $selector; ?>' ).pointer( 'reposition' ), 210 );

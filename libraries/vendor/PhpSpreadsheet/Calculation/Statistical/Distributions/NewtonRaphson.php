@@ -19,7 +19,7 @@ class NewtonRaphson
 	}
 
 	/**
-				 * @return float|int|string
+				 * @return string|int|float
 				 */
 				public function execute(float $probability)
 	{

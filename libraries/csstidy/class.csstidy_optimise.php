@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -515,9 +517,9 @@ class TablePress_CSSTidy_Optimise {
 		$return[0] = (float) $a_string;
 		if ( abs( $return[0] ) > 0 && abs( $return[0] ) < 1 ) {
 			if ( $return[0] < 0 ) {
-				$return[0] = '-' . ltrim( substr( $return[0], 1 ), '0' );
+				$return[0] = '-' . ltrim( substr( (string) $return[0], 1 ), '0' );
 			} else {
-				$return[0] = ltrim( $return[0], '0' );
+				$return[0] = ltrim( (string) $return[0], '0' );
 			}
 		}
 

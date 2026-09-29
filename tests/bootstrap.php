@@ -7,6 +7,8 @@
  * @since 1.1.0
  */
 
+declare(strict_types=1);
+
 /*
  * If the WP unit tests location is defined (as WP_TESTS_DIR), use that location.
  * Otherwise, we assume that this plugin is installed in a WordPress Develop repository checkout.

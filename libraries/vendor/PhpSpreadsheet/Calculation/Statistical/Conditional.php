@@ -10,6 +10,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Database\DSum;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Exception as CalcException;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Functions;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
 class Conditional
 {
@@ -26,12 +27,15 @@ class Conditional
 				 *        AVERAGEIF(range,condition[, average_range])
 				 *
 				 * @param mixed $range Data values, expect array
-				 * @param null|mixed[]|string $condition the criteria that defines which cells will be checked
+				 * @param mixed $condition the criteria that defines which cells will be checked, expect null|mixed[]|string
 				 * @param mixed $averageRange Data values
-				 * @return float|int|string|null
+				 * @return null|int|float|string
 				 */
 				public static function AVERAGEIF($range, $condition, $averageRange = [])
 	{
+		if ($condition !== null && !is_array($condition)) {
+			$condition = StringHelper::convertToString($condition);
+		}
 		if (!is_array($range) || !is_array($averageRange) || array_key_exists(0, $range) || array_key_exists(0, $averageRange)) {
 			$refError = ExcelError::REF();
 			if (in_array($refError, [$range, $averageRange], true)) {
@@ -56,7 +60,7 @@ class Conditional
 				 *        AVERAGEIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return float|int|string|null
+				 * @return null|int|float|string
 				 */
 				public static function AVERAGEIFS(...$args)
 	{
@@ -64,7 +68,7 @@ class Conditional
 			return 0.0;
 		}
 		if (count($args) === 3) {
-			return self::AVERAGEIF($args[1], $args[2], $args[0]); //* @phpstan-ignore-line
+			return self::AVERAGEIF($args[1], $args[2], $args[0]);
 		}
 		foreach ($args as $arg) {
 			if (is_array($arg) && array_key_exists(0, $arg)) {
@@ -88,7 +92,7 @@ class Conditional
 				 *
 				 * @param mixed $range Data values, expect array
 				 * @param null|mixed[]|string $condition the criteria that defines which cells will be counted
-				 * @return int|string
+				 * @return string|int
 				 */
 				public static function COUNTIF($range, $condition)
 	{
@@ -149,7 +153,7 @@ class Conditional
 				 *        MAXIFS(max_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return float|string|null
+				 * @return null|float|string
 				 */
 				public static function MAXIFS(...$args)
 	{
@@ -172,7 +176,7 @@ class Conditional
 				 *        MINIFS(min_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return float|string|null
+				 * @return null|float|string
 				 */
 				public static function MINIFS(...$args)
 	{
@@ -196,7 +200,7 @@ class Conditional
 				 *
 				 * @param mixed $range Data values, expecting array
 				 * @param mixed $sumRange Data values, expecting array
-				 * @return float|string|null
+				 * @return null|float|string
 				 * @param mixed $condition
 				 */
 				public static function SUMIF($range, $condition, $sumRange = [])
@@ -230,7 +234,7 @@ class Conditional
 				 *        SUMIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return float|string|null
+				 * @return null|float|string
 				 */
 				public static function SUMIFS(...$args)
 	{

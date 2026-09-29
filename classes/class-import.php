@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 use TablePress\Import\File;
 
 // Prohibit direct script loading.

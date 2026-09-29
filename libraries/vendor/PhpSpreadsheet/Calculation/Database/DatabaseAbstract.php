@@ -24,7 +24,7 @@ abstract class DatabaseAbstract
 				 *                                        includes at least one column label and at least one cell below
 				 *                                        the column label in which you specify a condition for the
 				 *                                        column.
-				 * @return float|int|string|null
+				 * @return null|float|int|string
 				 */
 				abstract public static function evaluate(array $database, $field, array $criteria);
 
@@ -54,7 +54,7 @@ abstract class DatabaseAbstract
 
 		/** @var callable */
 		$callable = 'strtoupper';
-		$fieldNames = array_map($callable, array_shift($database)); //* @phpstan-ignore-line
+		$fieldNames = array_map($callable, array_shift($database)); //* @phpstan-ignore argument.type (array_shift can return mixed not array?)
 		if (is_numeric($field)) {
 			$field = (int) $field - 1;
 			if ($field < 0 || $field >= count($fieldNames)) {
@@ -144,7 +144,7 @@ abstract class DatabaseAbstract
 		}
 
 		$rowQuery = array_map(
-			fn ($rowValue): string => (count($rowValue) > 1) ? 'AND(' . implode(',', $rowValue) . ')' : ($rowValue[0] ?? ''), // @phpstan-ignore-line
+			fn ($rowValue): string => (count($rowValue) > 1) ? 'AND(' . implode(',', $rowValue) . ')' : ($rowValue[0] ?? ''), // @phpstan-ignore nullCoalesce.offset ($rowValue[0] always exists?)
 			$baseQuery
 		);
 

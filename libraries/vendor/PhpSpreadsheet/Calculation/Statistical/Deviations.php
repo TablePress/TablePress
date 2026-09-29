@@ -16,7 +16,7 @@ class Deviations
 				 *        DEVSQ(value1[,value2[, ...]])
 				 *
 				 * @param mixed ...$args Data values
-				 * @return float|string
+				 * @return string|float
 				 */
 				public static function sumSquares(...$args)
 	{
@@ -57,7 +57,7 @@ class Deviations
 				 * relatively flat distribution.
 				 *
 				 * @param mixed[] ...$args Data Series
-				 * @return float|int|string
+				 * @return string|int|float
 				 */
 				public static function kurtosis(...$args)
 	{

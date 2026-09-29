@@ -32,7 +32,7 @@ class Depreciation
 				 *                          depreciation. Period must use the same units as life.
 				 * @param mixed $month Number of months in the first year. If month is omitted,
 				 *                         it defaults to 12.
-				 * @return float|int|string
+				 * @return string|float|int
 				 */
 				public static function DB($cost, $salvage, $life, $period, $month = 12)
 	{

@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -147,7 +149,7 @@ class TablePress_Table_Model extends TablePress_Model {
 			'id'            => $table_id,
 			'name'          => $post->post_title,
 			'description'   => $post->post_excerpt,
-			'author'        => $post->post_author,
+			'author'        => (int) $post->post_author,
 			// 'created' => $post->post_date,
 			'last_modified' => $post->post_modified,
 		);

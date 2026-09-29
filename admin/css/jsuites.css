@@ -1572,7 +1572,7 @@ div[data-before]:before {
 
 .jeditor {
 	outline:none;
-	word-break: break-word;
+	word-break: break-word; /* stylelint-disable-line declaration-property-value-keyword-no-deprecated */
 }
 
 .jeditor-container.with-margin .jeditor {

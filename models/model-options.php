@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -85,6 +87,9 @@ class TablePress_Options_Model extends TablePress_Model {
 			'option_name'   => 'tablepress_plugin_options',
 			'default_value' => $this->default_plugin_options,
 		);
+		if ( strtotime( '2026-10-10' ) >= strtotime( 'today' ) ) {
+			$params['default_value']['message_plugin_update'] = true;
+		}
 		$this->plugin_options = TablePress::load_class( 'TablePress_WP_Option', 'class-wp_option.php', 'classes', $params );
 
 		$params = array(

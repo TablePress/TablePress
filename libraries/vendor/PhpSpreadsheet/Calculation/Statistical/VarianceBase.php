@@ -8,7 +8,7 @@ abstract class VarianceBase
 {
 	/**
 				 * @param int|float|string|bool $value
-				 * @return float|int
+				 * @return int|float
 				 */
 				protected static function datatypeAdjustmentAllowStrings($value)
 	{

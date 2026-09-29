@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -43,7 +45,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 
 		add_filter( 'admin_footer_text', array( $this, 'add_admin_footer_text' ) );
 
-		$this->add_header_message( '<strong>' . __( 'Attention: Further action is required to save the changes to your &#8220;Custom CSS&#8221;!', 'tablepress' ) . '</strong>', 'is-success' );
+		$this->add_header_message( '<strong>' . __( 'Attention: Further action is required to save the changes to your &#8220;Custom CSS&#8221;!', 'tablepress' ) . '</strong>', 'is-warning notice-warning' );
 
 		TablePress::enqueue_style( 'common', array( 'wp-components' ) );
 
@@ -66,6 +68,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 		?>
 		<div id="tablepress-body">
 		<hr class="wp-header-end">
+		<script>document.querySelectorAll('.notice:has(~#tablepress-page)').forEach(e=>document.querySelector('.wp-header-end').after(e));</script>
 		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {

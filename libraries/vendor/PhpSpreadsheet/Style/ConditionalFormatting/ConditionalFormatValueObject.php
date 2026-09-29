@@ -7,7 +7,7 @@ class ConditionalFormatValueObject
 	private string $type;
 
 	/**
-				 * @var float|int|string|null
+				 * @var null|float|int|string
 				 */
 				private $value;
 
@@ -43,7 +43,7 @@ class ConditionalFormatValueObject
 	}
 
 	/**
-				 * @return float|int|string|null
+				 * @return null|float|int|string
 				 */
 				public function getValue()
 	{

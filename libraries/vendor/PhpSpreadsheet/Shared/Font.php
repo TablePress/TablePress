@@ -328,7 +328,7 @@ class Font
 
 	/**
 				 * Pad amount for exact in pixels; use best guess if null.
-				 * @var float|int|null
+				 * @var null|float|int
 				 */
 				private static $paddingAmountExact = null;
 
@@ -343,7 +343,7 @@ class Font
 
 	/**
 				 * Get pad amount for exact in pixels; or null if using best guess.
-				 * @return float|int|null
+				 * @return null|float|int
 				 */
 				public static function getPaddingAmountExact()
 	{

@@ -7,6 +7,8 @@
  * @since 1.1.0
  */
 
+declare(strict_types=1);
+
 /**
  * Tests to test that the testing framework is working properly.
  *

@@ -7,6 +7,8 @@
  * @since 2.0.0
  */
 
+declare(strict_types=1);
+
 /**
  * Tests for the TablePress_Import class.
  *

@@ -7,6 +7,8 @@
  * @since 1.5.0
  */
 
+declare(strict_types=1);
+
 /**
  * Tests for the EvalMath class.
  *

@@ -244,7 +244,7 @@ class Helpers
 
 	/**
 				 * Many functions accept null argument treated as 0.
-				 * @return float|int
+				 * @return int|float
 				 * @param mixed $number
 				 */
 				public static function validateNumericNull($number)

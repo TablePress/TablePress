@@ -46,7 +46,7 @@ export const HelpBox = ( { title, buttonProps= {}, modalProps = {}, children } )
 			{ modalOpen && (
 				<Modal
 					size="small"
-					icon={ <Icon icon={ help } style={ { display: 'flex', marginRight: '4px' } }/> }
+					icon={ <Icon icon={ help } style={ { display: 'flex', marginRight: '4px', 'fill': 'none' } }/> }
 					title={ title }
 					onRequestClose={ closeModal }
 					{ ...modalProps }

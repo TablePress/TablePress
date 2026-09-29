@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 /**
  * Provides template tag functionality for the "table" Shortcode, to be used anywhere in the template, returns the table HTML.
  *

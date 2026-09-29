@@ -16,3 +16,4 @@ extend-exclude = [
 BA = "BA"
 pn = "pn"
 wrkbook = "wrkbook" # This seems to be a fixed term in the old .xls file format.
+oder = "oder" # This is a German word that is used in the English text of the plugin.

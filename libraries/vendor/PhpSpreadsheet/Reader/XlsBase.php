@@ -282,7 +282,7 @@ class XlsBase extends BaseReader
 				 * Reads first 8 bytes of a string and return IEEE 754 float.
 				 *
 				 * @param string $data Binary string that is at least 8 bytes long
-				 * @return float|int
+				 * @return int|float
 				 */
 				protected static function extractNumber(string $data)
 	{
@@ -396,7 +396,7 @@ class XlsBase extends BaseReader
 	{
 		self::confirmPos($data, $pos + 1);
 
-		return unpack('s', $data[$pos] . $data[$pos + 1])[1]; // @phpstan-ignore-line
+		return unpack('s', $data[$pos] . $data[$pos + 1])[1]; // @phpstan-ignore offsetAccess.nonOffsetAccessible (I don't know how this statement works), return.type (ditto)
 	}
 
 	/**

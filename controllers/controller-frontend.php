@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -92,7 +94,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		}
 
 		// Register a placeholder script handle so that plugins can properly declare it as a dependency, even before the actual script is enqueued in `enqueue_datatables_files()`.
-		wp_register_script( 'tablepress-datatables', '', array(), TablePress::version, array( 'in_footer' => true ) );
+		wp_register_script( 'tablepress-datatables', '', array(), TablePress::version, array( 'in_footer' => true ) ); // @phpstan-ignore argument.type ($src is empty, as it's a placeholder.)
 
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_datatables_calls' ), 9 ); // Priority 9 so that this runs before `_wp_footer_scripts()`.
 
@@ -321,6 +323,8 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		 * @since 3.0.0
 		 *
 		 * @param string[] $dependencies The dependencies for the DataTables JS library.
+		 *
+		 * @phpstan-param non-empty-string[] $dependencies
 		 */
 		$dependencies = apply_filters( 'tablepress_datatables_js_dependencies', $dependencies );
 

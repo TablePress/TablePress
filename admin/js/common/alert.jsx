@@ -29,13 +29,14 @@ import { TablePressIcon } from '../../img/tablepress-icon';
  * Returns the Alert component's JSX markup.
  *
  * @param {Object}   props            Component props.
+ * @param {Object}   props.icon       Icon of the alert. Defaults to the TablePress icon.
  * @param {string}   props.title      Title of the alert. No header will be shown if this is not set.
  * @param {string}   props.text       Text of the alert.
  * @param {Function} props.onConfirm  Callback to confirm the alert.
  * @param {Object}   props.modalProps Additional props for the Modal.
  * @return {Object} Alert component.
  */
-const Alert = ( { title, text, onConfirm, modalProps } ) => {
+const Alert = ( { icon = TablePressIcon, title, text, onConfirm, modalProps } ) => {
 	const confirmButtonRef = useRef();
 
 	const handleEnter = useCallback(
@@ -53,7 +54,7 @@ const Alert = ( { title, text, onConfirm, modalProps } ) => {
 
 	return (
 		<Modal
-			icon={ <Icon icon={ TablePressIcon } size="36" style={ { display: 'flex', marginRight: '1rem' } } /> }
+			icon={ <Icon icon={ icon } size={ TablePressIcon === icon ? '36' : '24' } style={ { display: 'flex', marginRight: '1rem' } } /> }
 			title={ title }
 			__experimentalHideHeader={ undefined === title }
 			isDismissible={ false }

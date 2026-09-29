@@ -245,7 +245,7 @@ class CellMatcher
 				(string) $this->wrapCellValue(),
 				self::COMPARISON_RANGE_OPERATORS[$conditional->getOperatorType()]
 			),
-			...$conditions //* @phpstan-ignore-line
+			...$conditions //* @phpstan-ignore argument.type (I don't know what is needed)
 		);
 
 		return $this->evaluateExpression($expression);

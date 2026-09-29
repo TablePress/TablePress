@@ -169,13 +169,10 @@ tp.helpers.move_allowed = function ( type, direction ) {
  *
  * This is e.g. used to give feedback in the context menu and "Combine/Merge" button.
  *
- * @param {string} errors        Whether errors should also be alert()ed.
  * @param {Object} error_message Call-by-reference object for the error message.
  * @return {boolean} Whether the merge is allowed or not.
  */
-tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
-	const alertOnError = ( 'alert' === errors );
-
+tp.helpers.cell_merge_allowed = function ( error_message = {} ) {
 	const first_selected_row_idx = tp.helpers.selection.rows[0];
 	const last_selected_row_idx = tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ];
 
@@ -186,30 +183,18 @@ tp.helpers.cell_merge_allowed = function ( errors, error_message = {} ) {
 	if ( tp.table.options.table_head > 0 && tp.table.options.use_datatables && ! ( first_selected_row_idx < first_body_row_idx && last_selected_row_idx < first_body_row_idx ) && ! ( first_selected_row_idx > last_body_row_idx && last_selected_row_idx > last_body_row_idx ) ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” checkbox in the “%2$s” section is checked.', 'tablepress' ), __( 'Enable Visitor Features', 'tablepress' ), __( 'Table Features for Site Visitors', 'tablepress' ) ) +
 				' ' + __( 'When the Table Features for Site Visitors are used, merging is only allowed in the table header and footer rows.', 'tablepress' );
-		if ( alertOnError ) {
-			// This alert can not be replaced by the `Alert` component, as that does not pause the code execution.
-			window.alert( error_message.text );
-		}
 		return false;
 	}
 
 	// If table header rows are used, and a header row and at least one adjacent body row are selected, disable merging cells.
 	if ( first_selected_row_idx < first_body_row_idx && last_selected_row_idx >= first_body_row_idx ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” setting in the “%2$s” section is active.', 'tablepress' ), __( 'Table Header', 'tablepress' ), __( 'Table Options', 'tablepress' ) );
-		if ( alertOnError ) {
-			// This alert can not be replaced by the `Alert` component, as that does not pause the code execution.
-			window.alert( error_message.text );
-		}
 		return false;
 	}
 
 	// If table footer rows are used, and a footer row and at least one adjacent body row are selected, disable merging cells.
 	if ( first_selected_row_idx <= last_body_row_idx && last_selected_row_idx > last_body_row_idx ) {
 		error_message.text = sprintf( __( 'You can not combine these cells, because the “%1$s” setting in the “%2$s” section is active.', 'tablepress' ), __( 'Table Footer', 'tablepress' ), __( 'Table Options', 'tablepress' ) );
-		if ( alertOnError ) {
-			// This alert can not be replaced by the `Alert` component, as that does not pause the code execution.
-			window.alert( error_message.text );
-		}
 		return false;
 	}
 
@@ -482,7 +467,7 @@ tp.callbacks.insert_image.open_dialog = function ( $active_textarea = null ) {
 		multiple: true,
 	} );
 	const cell_name = jexcel.getColumnNameFromId( [ tp.helpers.selection.columns[0], tp.helpers.selection.rows[0] ] );
-	document.querySelector( '#media-frame-title h1' ).textContent = sprintf( __( 'Add media to cell %1$s', 'tablepress' ), cell_name );
+	document.querySelector( '.media-frame-title h1' ).textContent = sprintf( __( 'Add media to cell %1$s', 'tablepress' ), cell_name );
 	jexcel.current = null; // This is necessary to prevent problems with the focus when the "Insert Link" dialog is called from the context menu.
 };
 
@@ -570,15 +555,29 @@ tp.callbacks.insert_duplicate = function ( action, type, position = 'before' ) {
 	} );
 	tp.helpers.unsaved_changes.set();
 
-	// Select both inserted/duplicated rows/columns if more than one were selected.
+	// Select both the inserted and the selected rows/columns if more than one were selected or when duplicating, otherwise select just the original row/column.
 	const num_selected_rocs = tp.helpers.selection[ type ].length;
-	if ( num_selected_rocs > 1 ) {
+	if ( num_selected_rocs > 1 || duplicating ) {
 		tp.editor.updateSelectionFromCoords(
 			tp.helpers.selection.columns[0],
 			tp.helpers.selection.rows[0],
 			handling_rows ? tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] : tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] + num_selected_rocs,
 			handling_rows ? tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ] + num_selected_rocs : tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ]
 		);
+	} else {
+		// eslint-disable-next-line no-lonely-if
+		if ( 'before' === position ) {
+			tp.editor.updateSelectionFromCoords(
+				handling_rows ? tp.helpers.selection.columns[0] : tp.helpers.selection.columns[0] + num_selected_rocs,
+				handling_rows ? tp.helpers.selection.rows[0] + num_selected_rocs : tp.helpers.selection.rows[0],
+				handling_rows ? tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] : tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ] + num_selected_rocs,
+				handling_rows ? tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ] + num_selected_rocs : tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ]
+			);
+		} else {
+			// Call not needed, as the selection is still set when inserting after the selected (single!) row/column.
+			// tp.helpers.editor.reselect();
+		}
+
 	}
 };
 
@@ -590,7 +589,6 @@ tp.callbacks.insert_duplicate = function ( action, type, position = 'before' ) {
 tp.callbacks.remove = function ( type ) {
 	const handling_rows = 'rows' === type;
 	const num_cors = handling_rows ? tp.editor.options.columns.length : tp.editor.options.data.length;
-	const last_roc_idx = handling_rows ? tp.editor.options.data.length - 1 : tp.editor.options.columns.length - 1;
 
 	// Visibility meta information has to be deleted manually, as otherwise the Jspreadsheet meta information can get out of sync.
 	if ( tp.editor.options.meta ) {
@@ -606,12 +604,22 @@ tp.callbacks.remove = function ( type ) {
 	delete_function( tp.helpers.selection[ type ][0], tp.helpers.selection[ type ].length );
 	tp.helpers.unsaved_changes.set();
 
+	let first_row_idx = tp.helpers.selection.rows[0];
+	let first_col_idx = tp.helpers.selection.columns[0];
+	let last_row_idx = tp.helpers.selection.rows[ tp.helpers.selection.rows.length - 1 ];
+	let last_col_idx = tp.helpers.selection.columns[ tp.helpers.selection.columns.length - 1 ];
+	const last_roc_idx = handling_rows ? tp.editor.options.data.length : tp.editor.options.columns.length; // Index of last row/column AFTER deletion!
 	// Reselect last visible row/column, if last rows/columns were deleted.
 	if ( last_roc_idx === tp.helpers.selection[ type ][ tp.helpers.selection[ type ].length - 1 ] ) {
-		const col_idx = handling_rows ? tp.helpers.selection.columns[0] : tp.helpers.selection.columns[0] - 1;
-		const row_idx = handling_rows ? tp.helpers.selection.rows[0] - 1 : tp.helpers.selection.rows[0];
-		tp.editor.updateSelectionFromCoords( col_idx, row_idx, col_idx, row_idx );
+		if ( handling_rows ) {
+			first_row_idx = Math.max( 0, first_row_idx - 1 );
+			last_row_idx = Math.max( 0, last_row_idx - 1 );
+		} else {
+			first_col_idx = Math.max( 0, first_col_idx - 1 );
+			last_col_idx = Math.max( 0, last_col_idx - 1 );
+		}
 	}
+	tp.editor.updateSelectionFromCoords( first_col_idx, first_row_idx, last_col_idx, last_row_idx );
 };
 
 /**

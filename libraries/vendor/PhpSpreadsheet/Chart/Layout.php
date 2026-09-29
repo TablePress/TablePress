@@ -275,7 +275,7 @@ class Layout
 
 	/**
 				 * Get X-Position.
-				 * @return float|int|null
+				 * @return null|float|int
 				 */
 				public function getXPosition()
 	{

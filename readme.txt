@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 3.3.4
+Stable tag: 3.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,77 +144,24 @@ Priority email support is also included. [Check out the details on the TablePres
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 3.3.4 (August 19, 2026) =
+= Version 3.4 (September 30, 2026) =
 
-* Full compatibility with WordPress 7.1, including an updated visual styling to match the latest WordPress design.
-* Bugfix: Prevent a loading error of the “Default Style Customizer” module if the “Syntax Highlighting” setting is turned off in the user’s profile. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+TablePress 3.4 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
 
-= Version 3.3.3 (July 8, 2026) =
+**New Table Editor Toolbar on the “Edit” Screen**
 
-* Full compatibility with WordPress 7.0, including an updated visual styling to match the latest WordPress design.
-* Bugfix: Properly take into account hidden rows when using a complex filter expression with the “Row Filtering” module. (TablePress Pro and Max only.)
-* Bugfix: The sorting arrow icons when using the “Responsive Tables” module’s “Flip” mode no longer break the layout when using small fonts. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+The new Table Editor Toolbar makes all editing features available right where you need them. Your mouse’s scroll wheel can rest easy now: Gone are the days of going back and forth between the Table Content and Table Manipulation sections. We already can’t imagine living without it.
 
-= Version 3.3.2 (June 10, 2026) =
-
-* **Security fix**: Reflected XSS. Thanks to Bonds and the Patchstack team for following responsible disclosure policies when reporting this issue!
-* Enhancement: When importing tables from a URL, the file format is now detected more reliably, allowing more file formats to be imported successfully.
-* Enhancement: The Cloudflare APO plugin’s cache is now cleared when a table is modified.
-* Bugfix: The “FIXED()” math function will now work as expected and in the same ways as Excel or Google Sheets.
-* Bugfix: The horizontal position of the sorting arrow icons when using the “Responsive Tables” module’s “Flip” mode is correct again. (TablePress Pro and Max only.)
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-
-= Version 3.3.1 (May 20, 2026) =
-
-* Full compatibility with WordPress 7.0, including an updated visual styling to match the latest WordPress design.
-* **Responsive Tables** and **Fixed Columns** modules: The Scroll Buttons feature now also supports tables that are shown in tabs or accordions! (TablePress Pro and Max only.)
-* Various code modernizations, removal of outdated legacy code, and optimizations for better performance.
-* The list of allowed CSS properties in “Custom CSS” has been extended to include new properties.
-* Several minor bugs and inconsistencies have been fixed and improved!
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-
-= Version 3.3 (April 7, 2026) =
-
-TablePress 3.3 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
-
-**New Sticky Header Bar on the “Edit” Screen**
-
-The “Edit” screen for tables has been enhanced with a new sticky header bar that stays visible while you scroll, making it easier to work with long tables:
-
-* The “Save Changes” and “Preview” buttons are now always visible in the header bar, no matter where you are on the page!
-* A new “Quick Navigation” dropdown menu lets you jump to any section of the table editor instantly. Use the Cmd/Ctrl+J keyboard shortcut for even faster access!
-* A “More actions” dropdown provides quick access to features like copying, exporting, and deleting a table, or to copy its Shortcode for easy embedding.
-
-**Improved Help System**
-
-* Help buttons are now displayed next to section titles, making help information for features easily available.
-* Help modals for premium feature modules now include animations that visually explain what a feature does. (TablePress Pro and Max only.)
-
-**Enhancements for Premium Features**
-
-* **Column Filter Dropdowns**: A new “Reset” button option allows site visitors to clear all active filters with a single click! (TablePress Pro and Max only.)
-* **Individual Column Filtering**: The calculation of column widths was improved to prevent layout shifts of header and body cells. (TablePress Pro and Max only.)
-* **Automatic Periodic Table Import**: The configuration screen is now more usable on mobile devices and small screens, with a scrollable table layout. (TablePress Max only.)
-
-**On-Demand Translation Loading**
-
-* Premium translation files for several languages are now loaded on-demand from the TablePress Translations platform. This ensures you always have the latest translations and reduces the plugin’s file size. (TablePress Pro and Max only.)
+* The toolbar will stick to the top of the screen so that it’s always available when your table is in view.
+* It also offers quick access to operations like Undo/Redo or Cut/Copy/Paste that have previously only been available through the right-click context menu.
+* Hovering over a button shows its name and keyboard shortcut for even quicker editing!
 
 **Behind the scenes**
 
-* Full compatibility with WordPress 7.0, including an updated visual styling to match the latest WordPress design.
-* Improved error handling when evaluating math formulas in table cells.
 * Various code modernizations, removal of outdated legacy code, and optimizations for better performance.
 * Several minor bugs and inconsistencies have been fixed and improved!
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
-* **TablePress 3.3 requires WordPress 6.7 or newer.**
 
 **Premium versions**
 
@@ -222,8 +169,5 @@ The “Edit” screen for tables has been enhanced with a new sticky header bar 
 
 == Upgrade Notice ==
 
-= 3.3.4 =
-This update is a stability, maintenance, and compatibility release. Updating is highly recommended!
-
-= 3.3 =
+= 3.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

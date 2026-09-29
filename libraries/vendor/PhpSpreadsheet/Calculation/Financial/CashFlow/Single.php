@@ -19,7 +19,7 @@ class Single
 				 *
 				 * @param mixed $principal the present value
 				 * @param float[] $schedule an array of interest rates to apply
-				 * @return float|string
+				 * @return string|float
 				 */
 				public static function futureValue($principal, array $schedule)
 	{

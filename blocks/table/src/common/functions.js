@@ -10,7 +10,7 @@
 /**
  * Converts a set of named and numeric Shortcode attributes to a string.
  *
- * This function is similar to @wordpress/shortcode's `string()` function,
+ * This function is similar to `@wordpress/shortcode`'s `string()` function,
  * but only returns the attributes string and not a full Shortcode.
  *
  * @param {Object} shortcodeAttrs The named and numeric Shortcode attributes.

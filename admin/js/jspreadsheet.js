@@ -7,7 +7,10 @@
  * This software is distributed under MIT License
  */
 
-// TablePress: var formula = ... removed.
+/* TablePress:
+ * - var formula = ... removed.
+ * - obj.updateTablePressToolbarUndoRedoState(); added
+ */
 
 ;(function (global, factory) {
 	// TablePress: Comment out next to lines to force creation of a global jspreadsheet object.
@@ -5348,7 +5351,7 @@
 							}
 
 							// Do not calculate again
-							if (eval('typeof(' + tokens[i] + ') == "undefined"')) {
+							if (typeof globalThis[tokens[i]] === 'undefined') {
 								// Coords
 								var position = jexcel.getIdFromColumnName(tokens[i], 1);
 								// Get value
@@ -6265,6 +6268,34 @@
 		}
 
 		/**
+		 * TablePress: Initialize the toolbar state for undo/redo buttons.
+		 */
+		obj.tablePressToolbarUndoRedoState = {
+			undoDisabled: true,
+			redoDisabled: true,
+		};
+
+		/**
+		 * TablePress: Updates the toolbar state for undo/redo buttons, if the state has changed.
+		 *
+		 * @return null
+		 */
+		obj.updateTablePressToolbarUndoRedoState = function() {
+			const newToolbarUndoRedoState = {
+				undoDisabled: ( -1 === obj.historyIndex ),
+				redoDisabled: ( obj.historyIndex === obj.history.length - 1 ),
+			};
+
+			if (
+				newToolbarUndoRedoState.undoDisabled !== obj.tablePressToolbarUndoRedoState.undoDisabled
+				|| newToolbarUndoRedoState.redoDisabled !== obj.tablePressToolbarUndoRedoState.redoDisabled
+			) {
+				obj.tablePressToolbarUndoRedoState = newToolbarUndoRedoState;
+				wp?.hooks?.doAction?.( 'tablepress.toolbarUndoRedoStateUpdate', newToolbarUndoRedoState );
+			}
+		};
+
+		/**
 		 * Initializes a new history record for undo/redo
 		 *
 		 * @return null
@@ -6279,6 +6310,9 @@
 
 				// Keep history
 				obj.history[index] = changes;
+
+				// TablePress: Update the toolbar state for undo/redo buttons.
+				obj.updateTablePressToolbarUndoRedoState();
 			}
 		}
 
@@ -6869,6 +6903,9 @@
 
 			// Events
 			obj.dispatch('onundo', el, historyRecord);
+
+			// TablePress: Update the toolbar state for undo/redo buttons.
+			obj.updateTablePressToolbarUndoRedoState();
 		}
 
 		/**
@@ -6936,6 +6973,9 @@
 
 			// Events
 			obj.dispatch('onredo', el, historyRecord);
+
+			// TablePress: Update the toolbar state for undo/redo buttons.
+			obj.updateTablePressToolbarUndoRedoState();
 		}
 
 		/**

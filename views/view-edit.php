@@ -8,6 +8,8 @@
  * @since 1.0.0
  */
 
+declare(strict_types=1);
+
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -27,7 +29,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @since 2.0.0
 	 * @var string[]
 	 */
-	protected array $wp_pointers = array( 'tp20_edit_context_menu', 'tp33_edit_quick_navigation' );
+	protected array $wp_pointers = array( 'tp34_edit_toolbar', 'tp33_edit_quick_navigation' );
 
 	/**
 	 * Sets up the view with data and do things that are specific for this view.
@@ -83,7 +85,6 @@ class TablePress_Edit_View extends TablePress_View {
 		$this->add_text_box( 'header-bar', array( $this, 'textbox_header_bar' ), 'normal' );
 		$this->add_meta_box( 'table-information', __( 'Table Information', 'tablepress' ), array( $this, 'postbox_table_information' ), 'normal' );
 		$this->add_meta_box( 'table-data', __( 'Table Content', 'tablepress' ), array( $this, 'postbox_table_data' ), 'normal' );
-		$this->add_meta_box( 'table-manipulation', __( 'Table Manipulation', 'tablepress' ), array( $this, 'postbox_table_manipulation' ), 'normal' );
 		$this->add_meta_box( 'table-options', __( 'Table Options', 'tablepress' ), array( $this, 'postbox_table_options' ), 'normal' );
 		$this->add_meta_box( 'datatables-features', __( 'Table Features for Site Visitors', 'tablepress' ), array( $this, 'postbox_datatables_features' ), 'normal' );
 		$this->add_text_box( 'hidden-containers', array( $this, 'textbox_hidden_containers' ), 'additional' );
@@ -160,6 +161,7 @@ class TablePress_Edit_View extends TablePress_View {
 		?>
 		<div id="tablepress-body">
 		<hr class="wp-header-end">
+		<script>document.querySelectorAll('.notice:has(~#tablepress-page)').forEach(e=>document.querySelector('.wp-header-end').after(e));</script>
 		<?php
 		// Print all header messages.
 		foreach ( $this->header_messages as $message ) {
@@ -316,21 +318,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
 	public function postbox_table_data( array $data, array $box ): void {
+		echo '<div id="tablepress-table-editor-toolbar-section"></div>';
 		$css_variables = '--table-editor-line-clamp:' . absint( TablePress::$model_options->get( 'table_editor_line_clamp' ) ) . ';';
 		$css_variables = esc_attr( $css_variables );
 		echo "<div id=\"table-editor\" style=\"{$css_variables}\"></div>";
-	}
-
-	/**
-	 * Prints the content of the "Table Manipulation" post meta box.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array<string, mixed> $data Data for this screen.
-	 * @param array<string, mixed> $box  Information about the meta box.
-	 */
-	public function postbox_table_manipulation( array $data, array $box ): void {
-		echo '<div id="tablepress-table-manipulation-section"></div>';
 	}
 
 	/**
@@ -343,14 +334,6 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_header_bar( array $data, array $box ): void {
 		echo '<div id="tablepress-header-bar-section" class="section-has-react-loading-text">';
-		if ( tb_tp_fs()->is_plan_or_trial__premium_only( 'pro' ) ) {
-			echo '<div class="react-loading-text" style="line-height:36px;font-weight:bold">';
-			printf(
-				__( 'The page is being loaded. If this text does not disappear soon, <a href="%1$s">click here to reload the page.</a>', 'tablepress' ),
-				esc_url( TablePress::url( array( 'action' => 'edit', 'table_id' => $data['table']['id'], 'refresh_table_options' => 'true' ) ) ),
-			);
-			echo '</div>';
-		}
 		echo '</div>';
 	}
 
@@ -418,7 +401,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_corrupted_table( array $data, array $box ): void {
 		?>
-		<div class="notice components-notice is-error">
+		<div class="notice components-notice is-error notice-error">
 			<div class="components-notice__content">
 				<h3><em>
 					<?php _e( 'Attention: Unfortunately, an error occurred.', 'tablepress' ); ?>
@@ -472,20 +455,21 @@ class TablePress_Edit_View extends TablePress_View {
 	}
 
 	/**
-	 * Sets the content for the WP feature pointer about the drag and drop and sort on the "Edit" screen.
+	 * Sets the content for the WP feature pointer about the Table Editor Toolbar on the "Edit" screen.
 	 *
-	 * @since 2.0.0
+	 * @since 3.4.0
 	 */
-	public function wp_pointer_tp20_edit_context_menu(): void {
-		$content  = '<h3>' . __( 'TablePress feature: Context menu', 'tablepress' ) . '</h3>';
-		$content .= '<p>' . __( 'Did you know?', 'tablepress' ) . ' ' . __( 'Right-clicking the table content fields will open a context menu for quick access to common editing tools.', 'tablepress' ) . '</p>';
+	public function wp_pointer_tp34_edit_toolbar(): void {
+		$content  = '<h3>' . __( 'TablePress feature: Toolbar', 'tablepress' ) . '</h3>';
+		$content .= '<p style="text-wrap:balance">' . __( 'Adding links or images or modifying the structure of your tables is very easy with the sticky Table Editor Toolbar!', 'tablepress' ) . '</p>';
 
 		$this->print_wp_pointer_js(
-			'tp20_edit_context_menu',
-			'#table-editor',
+			'tp34_edit_toolbar',
+			'#tablepress-table-editor-toolbar-section > div > div > div:first-child',
 			array(
-				'content'  => $content,
-				'position' => array( 'edge' => 'bottom', 'align' => 'center' ),
+				'content'      => $content,
+				'position'     => array( 'edge' => is_rtl() ? 'right' : 'left', 'align' => 'center' ),
+				'pointerWidth' => 290,
 			),
 		);
 	}

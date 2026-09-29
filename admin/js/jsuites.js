@@ -5836,7 +5836,7 @@ function Contextmenu() {
 
 				if (item.submenu) {
 					var itemIconSubmenu = document.createElement('span');
-					itemIconSubmenu.innerHTML = "&#9658;";
+					itemIconSubmenu.innerHTML = "&#10095;";
 					itemContainer.appendChild(itemIconSubmenu);
 					itemContainer.classList.add('jcontexthassubmenu');
 					var el_submenu = document.createElement('div');
