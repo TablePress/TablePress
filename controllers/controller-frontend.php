@@ -1123,8 +1123,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 
 			foreach ( $search_terms as $search_term ) {
-				if ( ( $table['options']['print_name'] && false !== $fn_stripos( $table['name'], (string) $search_term ) )
-					|| ( $table['options']['print_description'] && false !== $fn_stripos( $table['description'], (string) $search_term ) ) ) {
+				// Table data (name, description, and cells) can contain non-string values (e.g. booleans or numbers, e.g. from tables imported from spreadsheets). Cast to string so that a single malformed value cannot fatally break the site-wide search.
+				if ( ( $table['options']['print_name'] && false !== $fn_stripos( (string) $table['name'], (string) $search_term ) )
+					|| ( $table['options']['print_description'] && false !== $fn_stripos( (string) $table['description'], (string) $search_term ) ) ) {
 					// Found the search term in the name or description (and they are shown).
 					$query_result[ $search_term ][] = $table_id; // Add table ID to result list.
 					// No need to continue searching this search term in this table.
@@ -1143,7 +1144,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 							continue;
 						}
 						// @todo Cells are not evaluated here, so math formulas are searched.
-						if ( false !== $fn_stripos( $table_cell, (string) $search_term ) ) {
+						if ( false !== $fn_stripos( (string) $table_cell, (string) $search_term ) ) {
 							// Found the search term in the cell content.
 							$query_result[ $search_term ][] = $table_id; // Add table ID to result list
 							// No need to continue searching this search term in this table.
