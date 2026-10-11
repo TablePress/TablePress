@@ -129,7 +129,6 @@ body.wait * {
 			&:focus {
 				span:first-child {
 					text-decoration: underline;
-					text-decoration-thickness: 1.5px;
 				}
 			}
 
@@ -274,37 +273,6 @@ body.wait * {
 		&.notice-error {
 			background-color: #fcf0f0;
 		}
-		&.notice-milestone {
-			position: relative;
-			border-left-color: #16a34a;
-			background-color: #ffffff;
-
-			.components-button {
-				font-size: 16px;
-				margin-right: 3em;
-				color: #ffffff;
-				background: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 100%);
-				border-color: #ffffff;
-				font-weight: bold;
-				border-radius: 3px;
-
-				&:hover span:first-child {
-					text-decoration: underline;
-				}
-			}
-
-			p {
-				margin-left: 230px;
-			}
-
-			img {
-				position: absolute;
-				bottom: -1px;
-				left: 20px;
-				width: 200px;
-				height: 160px;
-			}
-		}
 		.components-notice__content {
 			margin: 0;
 		}
@@ -337,13 +305,6 @@ body.wait * {
 		position: fixed;
 		bottom: 24px;
 	}
-}
-
-#tablepress-header .buttons .tablepress-button {
-	color: #ffffff;
-	background: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 100%);
-	border-color: #ffffff !important;
-	font-weight: bold;
 }
 
 /* Table Preview (CSS for actual preview is directly in the preview HTML). */

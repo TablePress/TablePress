@@ -290,7 +290,7 @@ class EvalMath {
 			// Get the first character at the current index.
 			$op = substr( $expression, $index, 1 );
 			// Find out if we're currently at the beginning of a number/variable/function/parenthesis/operand.
-			$ex = preg_match( '/^(' . self::$name_pattern . '\(?|\d+(?:\.\d*)?(?:(e[+-]?)\d*)?|\.\d+|\()/', substr( $expression, $index ), $match );
+			$ex = preg_match( '/^(' . self::$name_pattern . '\(?|\d+(?:\.\d*)?(?:(e[+-]?)\d*)?|\.\d+|\()/', (string) substr( $expression, $index ), $match );
 
 			// Is it a negation instead of a minus (in a subtraction)?
 			if ( '-' === $op && ! $expecting_operator ) {
@@ -990,7 +990,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * @return double|int Maximum value of the passed arguments.
 	 */
 	public static function max( ...$args ) /* : float|int */ {
-		return max( $args ); // @phpstan-ignore argument.type
+		return max( $args ); // @phpstan-ignore argument.type, return.type
 	}
 
 	/**
@@ -1002,7 +1002,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * @return double|int Minimum value of the passed arguments.
 	 */
 	public static function min( ...$args ) /* : float|int */ {
-		return min( $args ); // @phpstan-ignore argument.type
+		return min( $args ); // @phpstan-ignore argument.type, return.type
 	}
 
 	/**
@@ -1151,7 +1151,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 			while ( ( $offset + $number_characters ) > strlen( $md5string ) ) { // phpcs:ignore Squiz.PHP.DisallowSizeFunctionsInLoops.Found
 				$md5string .= md5( $md5string );
 			}
-			$random_number = (int) hexdec( substr( $md5string, $offset, $number_characters ) );
+			$random_number = (int) hexdec( (string) substr( $md5string, $offset, $number_characters ) );
 			$offset += $number_characters;
 		} while ( ( $min + $random_number ) > $max );
 		return $min + $random_number;

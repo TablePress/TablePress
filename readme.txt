@@ -5,7 +5,7 @@ Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.7
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 3.4
+Stable tag: 3.4.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,6 +144,20 @@ Priority email support is also included. [Check out the details on the TablePres
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
+= Version 3.4.1 (October 12, 2026) =
+
+* Bugfix: Table data in the wrong internal data format is properly recognized and handled again.
+* Bugfix: Saving “Custom CSS” code no longer returns an unexpected error message.
+* Bugfix: An incompatibility where other plugins pass wrong data types to TablePress was solved.
+* Bugfix: The “[table-info]” Shortcode now properly returns the number of rows or columns without an error message again.
+* Bugfix: The position of the “Insert Link” dialog  on the “Edit” screen is correct again, even when other plugins interfere.
+* Bugfix: The TablePress integration into the WordPress Export functionality now works correctly when the WP-CLI tool is used.
+* Bugfix: TablePress now protects against the Elementor page builder sometimes not loading all necessary files for the integration in its editor.
+* Various code modernizations, removal of outdated legacy code, and optimizations for better performance and improved security.
+* Several minor bugs and inconsistencies have been fixed and improved!
+* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
+* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+
 = Version 3.4 (September 30, 2026) =
 
 TablePress 3.4 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
@@ -168,6 +182,9 @@ The new Table Editor Toolbar makes all editing features available right where yo
 * Even more great features for you and your site’s visitors and priority email support are available with a Premium license plan of TablePress. [Go check them out!](https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium=textlink&utm_content=readme)
 
 == Upgrade Notice ==
+
+= 3.4.1 =
+This update is a stability, maintenance, and compatibility release. Updating is highly recommended!
 
 = 3.4 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

@@ -13,11 +13,11 @@
 'use strict'; // Necessary as this file does not use "import".
 
 /**
- * Register a button for the TinyMCE (aka Visual Editor) toolbar
+ * Registers a button for the TinyMCE (aka Visual Editor) toolbar.
  *
  * @since 1.0.0
  */
-if ( 'undefined' !== typeof tinymce ) {
+if ( 'undefined' !== typeof tinymce && 'undefined' !== typeof tablepress_editor_button ) {
 	tinymce.create( 'tinymce.plugins.TablePressPlugin', {
 		init( ed, url ) {
 			ed.addCommand( 'TablePress_insert_table', window.tablepress_open_shortcode_thickbox );

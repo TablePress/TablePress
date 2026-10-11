@@ -220,14 +220,14 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 					shortcut: sprintf( _x( '%1$s⇧↑', 'keyboard shortcut for Move up', 'tablepress' ), metaKey ),
 					onclick: tp.callbacks.move.bind( null, 'up', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'up' ),
-					tooltip: ! tp.helpers.move_allowed( 'rows', 'up' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the top.', 'The selected rows are already at the top.', numSelectedRows, 'tablepress' ) : '',
+					tooltip: ! tp.helpers.move_allowed( 'rows', 'up' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the top of the table.', 'The selected rows are already at the top of the table.', numSelectedRows, 'tablepress' ) : '',
 				},
 				{
 					title: _n( 'Move row down', 'Move rows down', numSelectedRows, 'tablepress' ),
 					shortcut: sprintf( _x( '%1$s⇧↓', 'keyboard shortcut for Move down', 'tablepress' ), metaKey ),
 					onclick: tp.callbacks.move.bind( null, 'down', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'down' ),
-					tooltip: ! tp.helpers.move_allowed( 'rows', 'down' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the bottom.', 'The selected rows are already at the bottom.', numSelectedRows, 'tablepress' ) : '',
+					tooltip: ! tp.helpers.move_allowed( 'rows', 'down' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the bottom of the table.', 'The selected rows are already at the bottom of the table.', numSelectedRows, 'tablepress' ) : '',
 				},
 				{
 					title: _n( 'Move column left', 'Move columns left', numSelectedColumns, 'tablepress' ),
@@ -251,14 +251,14 @@ const contextMenu = ( obj /*, x, y, e */ ) => {
 					shortcut: sprintf( _x( '%1$s%2$s⇧↑', 'keyboard shortcut for Move to the top', 'tablepress' ), metaKey, optionKey ),
 					onclick: tp.callbacks.move.bind( null, 'top', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'top' ),
-					tooltip: ! tp.helpers.move_allowed( 'rows', 'top' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the top.', 'The selected rows are already at the top.', numSelectedRows, 'tablepress' ) : '',
+					tooltip: ! tp.helpers.move_allowed( 'rows', 'top' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the top of the table.', 'The selected rows are already at the top of the table.', numSelectedRows, 'tablepress' ) : '',
 				},
 				{
 					title: _n( 'Move row to the bottom', 'Move rows to the bottom', numSelectedRows, 'tablepress' ),
 					shortcut: sprintf( _x( '%1$s%2$s⇧↓', 'keyboard shortcut for Move to the bottom', 'tablepress' ), metaKey, optionKey ),
 					onclick: tp.callbacks.move.bind( null, 'bottom', 'rows' ),
 					disabled: ! tp.helpers.move_allowed( 'rows', 'bottom' ),
-					tooltip: ! tp.helpers.move_allowed( 'rows', 'bottom' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the bottom.', 'The selected rows are already at the bottom.', numSelectedRows, 'tablepress' ) : '',
+					tooltip: ! tp.helpers.move_allowed( 'rows', 'bottom' ) ? __( 'This option is disabled.', 'tablepress' ) + ' ' + _n( 'The selected row is already at the bottom of the table.', 'The selected rows are already at the bottom of the table.', numSelectedRows, 'tablepress' ) : '',
 				},
 				{
 					title: _n( 'Move column to first', 'Move columns to first', numSelectedColumns, 'tablepress' ),

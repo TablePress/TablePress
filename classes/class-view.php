@@ -405,7 +405,6 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 */
 	protected function print_nav_tab_menu(): void {
-		$milestone_period_ended = ( strtotime( '2026-10-10' ) < strtotime( 'today' ) );
 		$name = __( 'TablePress', 'tablepress' );
 		$filename = 'admin/img/tablepress.svg';
 		?>
@@ -414,23 +413,13 @@ abstract class TablePress_View {
 				<img src="<?php echo plugins_url( $filename, TABLEPRESS__FILE__ ); ?>" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>">
 				<span class="screen-reader-text"><?php echo $name; ?></span>
 			</h1>
-			<?php if ( 'list' !== $this->action || ! $this->data['messages']['plugin_update'] || $milestone_period_ended ) : ?>
-				<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
-					<div class="buttons">
-						<a href="<?php echo $milestone_period_ended ? esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ) : 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=header&utm_campaign=upgrade-message340&utm_content=button'; ?>" class="tablepress-button">
-							<span>
-								<?php
-								if ( $milestone_period_ended ) {
-									_e( 'Upgrade to Premium', 'tablepress' );
-								} else {
-									echo in_array( get_user_locale(), array( 'de_DE', 'de_AT', 'de_CH' ), true ) ? 'Premium: Spare jetzt 25&#8239;%' : 'Premium: Get 25% off now';
-								}
-								?>
-							</span>
-							<span class="dashicons dashicons-arrow-right-alt"></span>
-						</a>
-					</div>
-				<?php endif; ?>
+			<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
+				<div class="buttons">
+					<a href="<?php echo esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ); ?>" class="tablepress-button">
+						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
+						<span class="dashicons dashicons-arrow-right-alt"></span>
+					</a>
+				</div>
 			<?php endif; ?>
 		</div>
 		<nav id="tablepress-nav">

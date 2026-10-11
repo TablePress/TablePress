@@ -44,10 +44,15 @@ body #wp-link-backdrop {
 	z-index: 100103;
 }
 
-/* Fix height of the wpLink dialog, to prevent vertical scrolling in WP 7.0+. */
-body[class*="branch-7-"] #wp-link-wrap {
+/*
+ * Fix height of the wpLink dialog, to prevent vertical scrolling in WP 7.0+.
+ * The `div` in the selector, and properties `top` and `max-height` are set to overwrite conflicting styles by the AIOSEO plugin.
+ */
+body[class*="branch-7-"] div#wp-link-wrap {
 	height: 642px;
 	margin-top: -321px;
+	top: 50%;
+	max-height: 100%;
 }
 
 /* Header Bar. */
@@ -133,11 +138,6 @@ body[class*="branch-7-"] #wp-link-wrap {
 				left: 0;
 			}
 		}
-	}
-
-	/* Backward compatibility with WP < 6.9. */
-	.components-button.is-compact.has-icon:not(.has-text) {
-		width: auto;
 	}
 
 	.tablepress-toolbar-button-text {

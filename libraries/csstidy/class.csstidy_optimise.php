@@ -8,8 +8,6 @@
  * @since 1.0.0
  */
 
-declare(strict_types=1);
-
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
@@ -483,7 +481,7 @@ class TablePress_CSSTidy_Optimise {
 				continue;
 			}
 
-			if ( abs( $number[0] ) > 0 ) {
+			if ( abs( (float) $number[0] ) > 0 ) {
 				if ( '' === $number[1] && in_array( $this->property, $unit_values, true ) ) {
 					$number[1] = 'px';
 				}

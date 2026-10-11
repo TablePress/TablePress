@@ -17,11 +17,6 @@ namespace {
 	define( 'TABLEPRESS_ABSPATH', dirname( __DIR__ ) . '/' );
 	define( 'TABLEPRESS_BASENAME', 'tablepress/tablepress.php' );
 
-	// WordPress functions that are missing in phpstan-wordpress.
-	function wxr_cdata( $str ) {
-		return $str;
-	}
-
 	// Functions from external plugins.
 	function w3tc_minify_flush() {}
 	function WP_Optimize() {}

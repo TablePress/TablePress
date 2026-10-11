@@ -1035,9 +1035,10 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 					$output -= $table['options']['table_head'];
 					$output -= $table['options']['table_foot'];
 				}
+				$output = (string) $output;
 				break;
 			case 'number_columns':
-				$output = count( $table['data'][0] );
+				$output = (string) count( $table['data'][0] );
 				break;
 			default:
 				$output = "&#91;table-info field “{$field}” not found in table “{$table_id}” /&#93;<br />\n";
@@ -1123,8 +1124,9 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 			}
 
 			foreach ( $search_terms as $search_term ) {
-				if ( ( $table['options']['print_name'] && false !== $fn_stripos( $table['name'], (string) $search_term ) )
-					|| ( $table['options']['print_description'] && false !== $fn_stripos( $table['description'], (string) $search_term ) ) ) {
+				$search_term = (string) $search_term;
+				if ( ( $table['options']['print_name'] && false !== $fn_stripos( $table['name'], $search_term ) )
+					|| ( $table['options']['print_description'] && false !== $fn_stripos( $table['description'], $search_term ) ) ) {
 					// Found the search term in the name or description (and they are shown).
 					$query_result[ $search_term ][] = $table_id; // Add table ID to result list.
 					// No need to continue searching this search term in this table.
@@ -1143,7 +1145,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 							continue;
 						}
 						// @todo Cells are not evaluated here, so math formulas are searched.
-						if ( false !== $fn_stripos( $table_cell, (string) $search_term ) ) {
+						if ( false !== $fn_stripos( (string) $table_cell, $search_term ) ) { // The type casting is necessary to prevent PHP errors with cells that are (still) integer, which can happen with tables that have not been edited with TablePress 2.0+.
 							// Found the search term in the cell content.
 							$query_result[ $search_term ][] = $table_id; // Add table ID to result list
 							// No need to continue searching this search term in this table.

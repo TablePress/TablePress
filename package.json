@@ -1,6 +1,6 @@
 {
 	"name": "@tablepress/tablepress",
-	"version": "3.4.0",
+	"version": "3.4.1",
 	"description": "Embed beautiful and feature-rich tables into your posts and pages, without having to write code.",
 	"author": "Tobias Bäthge",
 	"license": "GPL-2.0-only",
@@ -14,14 +14,12 @@
 	"funding": "https://tablepress.org/donate/",
 	"repository": "github:TablePress/TablePress",
 	"bugs": "https://github.com/TablePress/TablePress/issues",
-	"dependencies": {
-		"@wordpress/ui": "^0.23.0"
-	},
 	"devDependencies": {
-		"eslint": "^10.11.0",
-		"@wordpress/base-styles": "^13.2.0",
-		"@wordpress/icons": "^17.0.0",
-		"@wordpress/scripts": "^36.0.0",
+		"eslint": "^10.12.0",
+		"@wordpress/base-styles": "^13.3.0",
+		"@wordpress/icons": "^18.0.0",
+		"@wordpress/scripts": "^36.1.0",
+		"@wordpress/ui": "^0.23.0",
 		"@felixarntz/wp-plugins-cli": "^0.1.1",
 		"grunt": "^1.6.3",
 		"grunt-contrib-jshint": "^3.2.0",
@@ -31,7 +29,7 @@
 	},
 	"peerDependencies": {
 		"react": "^19",
-		"@wordpress/stylelint-config": "^26.0.0"
+		"@wordpress/stylelint-config": "^26.1.0"
 	},
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",

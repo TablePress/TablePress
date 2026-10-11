@@ -96,10 +96,6 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		 */
 		$admin_menu_entry_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
 
-		if ( TablePress::$model_options->get( 'message_plugin_update' ) && strtotime( '2026-10-10' ) >= strtotime( 'today' ) ) {
-			$admin_menu_entry_name .= ' <span class="dashicons dashicons-buddicons-community" aria-hidden="true" style="color:orange"></span>';
-		}
-
 		$this->init_view_actions();
 		$min_access_cap = $this->view_actions['list']['required_cap'];
 

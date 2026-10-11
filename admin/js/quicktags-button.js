@@ -13,7 +13,7 @@
 'use strict'; // Necessary as this file does not use "import".
 
 /**
- * Open a Thickbox with the List of tables, for adding a Shortcode to the editor
+ * Opens a Thickbox with the List of tables, for adding a Shortcode to the editor
  * used by both the TinyMCE editor button and the Quicktags toolbar button.
  *
  * @since 1.0.0
@@ -32,18 +32,18 @@ window.tablepress_open_shortcode_thickbox = () => {
 };
 
 /**
- * Register a button for the Quicktags (aka HTML editor) toolbar.
+ * Registers a button for the Quicktags (aka HTML editor) toolbar.
  *
  * @since 1.0.0
  */
-if ( 'undefined' !== typeof QTags ) {
+if ( 'undefined' !== typeof QTags && 'undefined' !== typeof tablepress_editor_button ) {
 	QTags.addButton(
-		'tablepress_quicktags_button',				// ID
-		tablepress_editor_button.caption,			// button caption
-		window.tablepress_open_shortcode_thickbox,	// click callback
-		false,										// unused
-		false,										// access key
-		tablepress_editor_button.title,				// button title
-		115											// button position (here: between code and more)
+		'tablepress_quicktags_button',				// ID.
+		tablepress_editor_button.caption,			// button caption.
+		window.tablepress_open_shortcode_thickbox,	// click callback.
+		false,										// unused.
+		false,										// access key.
+		tablepress_editor_button.title,				// button title.
+		115											// button position (here: between "code" and "more").
 	);
 }

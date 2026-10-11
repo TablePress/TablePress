@@ -387,6 +387,7 @@ const Section = () => {
 											setTableSize( { rows: tp.editor.options.data.length, columns: tp.editor.options.columns.length } );
 											tp.helpers.visibility.update(); // Update information about hidden rows and columns.
 										} }
+										className="has-text" // For WP < 7.2, the class needs to be added manually.
 									>
 										<span className="tablepress-toolbar-button-text">
 											{ __( 'Rows…', 'tablepress' ) }
@@ -694,6 +695,7 @@ const Section = () => {
 											setTableSize( { rows: tp.editor.options.data.length, columns: tp.editor.options.columns.length } );
 											tp.helpers.visibility.update(); // Update information about hidden rows and columns.
 										} }
+										className="has-text" // For WP < 7.2, the class needs to be added manually.
 									>
 										<span className="tablepress-toolbar-button-text">
 											{ __( 'Columns…', 'tablepress' ) }
