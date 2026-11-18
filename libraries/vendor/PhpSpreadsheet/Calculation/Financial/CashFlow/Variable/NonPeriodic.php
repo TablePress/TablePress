@@ -24,7 +24,7 @@ class NonPeriodic
 				 * Excel Function:
 				 *        =XIRR(values,dates,guess)
 				 *
-				 * @param mixed $values A series of cash flow payments, expecting float[]
+				 * @param mixed $values     A series of cash flow payments, expecting float[]
 				 *                                The series of values must contain at least one positive value & one negative value
 				 * @param array<int, float|int|numeric-string> $dates      A series of payment dates
 				 *                                The first payment date indicates the beginning of the schedule of payments
@@ -134,7 +134,8 @@ class NonPeriodic
 
 	/**
 				 * @param mixed $values
-				 * @param mixed $dates */
+				 * @param mixed $dates
+				 */
 				private static function xirrPart1(&$values, &$dates): string
 	{
 		/** @var array<int, float|int|numeric-string> */
@@ -222,7 +223,7 @@ class NonPeriodic
 	/**
 				 * @param array<int, float|int|numeric-string> $values
 				 * @param array<int, float|int|numeric-string> $dates
-				 * @return string|float
+				 * @return float|string
 				 */
 				private static function xirrBisection(array $values, array $dates, float $x1, float $x2)
 	{
@@ -264,7 +265,8 @@ class NonPeriodic
 				 * @param mixed $values >
 				 * @return float|string
 				 * @param mixed $rate
-				 * @param mixed $dates */
+				 * @param mixed $dates
+				 */
 				private static function xnpvOrdered($rate, $values, $dates, bool $ordered = true, bool $capAtNegative1 = false)
 	{
 		$rate = Functions::flattenSingleValue($rate);

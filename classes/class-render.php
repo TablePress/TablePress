@@ -276,6 +276,7 @@ class TablePress_Render {
 
 		foreach ( $this->table['data'] as $row_idx => $row ) {
 			foreach ( $row as $col_idx => $cell_content ) {
+				$cell_content = (string) $cell_content;
 				// Print formulas that are escaped with '= (like in Excel) as text.
 				if ( str_starts_with( $cell_content, "'=" ) ) {
 					$cell_content = substr( $cell_content, 1 );
@@ -605,7 +606,7 @@ class TablePress_Render {
 		$css_classes = explode( ' ', implode( ' ', $css_classes ) );
 		$css_classes = array_map( array( 'TablePress', 'sanitize_css_class' ), $css_classes );
 		$css_classes = array_unique( $css_classes );
-		$css_classes = array_filter( $css_classes ); // Remove empty entries.
+		$css_classes = array_filter( $css_classes ); // @phpstan-ignore arrayFilter.strict (Remove empty entries.)
 		$css_classes = implode( ' ', $css_classes );
 		if ( '' !== $css_classes ) {
 			$table_attributes['class'] = $css_classes;

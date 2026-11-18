@@ -10,20 +10,21 @@
 /**
  * WordPress dependencies.
  */
-import { useCallback, useRef } from 'react';
 import {
-	Button,
-	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	Icon,
 	Modal,
-	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import {
+	Button,
+	Icon,
+	Stack,
+	Text,
+} from '@wordpress/ui';
 
 /**
  * Internal dependencies.
  */
-import { TablePressIcon } from '../../img/tablepress-icon';
+import { TablePressIcon } from '../../img/icons';
 
 /**
  * Returns the Alert component's JSX markup.
@@ -36,48 +37,30 @@ import { TablePressIcon } from '../../img/tablepress-icon';
  * @param {Object}   props.modalProps Additional props for the Modal.
  * @return {Object} Alert component.
  */
-const Alert = ( { icon = TablePressIcon, title, text, onConfirm, modalProps } ) => {
-	const confirmButtonRef = useRef();
-
-	const handleEnter = useCallback(
-		( event ) => {
-			// Avoid triggering the action when a button is focused, as this can cause a double submission.
-			const isConfirmButton = event.target === confirmButtonRef.current;
-
-			if ( ! isConfirmButton && 'Enter' === event.key ) {
-				onConfirm();
-				event.preventDefault(); // This prevents that the triggering button is "clicked" (via "Enter") again.
-			}
-		},
-		[ onConfirm ],
-	);
-
+export const Alert = ( { icon = TablePressIcon, title, text, onConfirm, modalProps } ) => {
 	return (
 		<Modal
-			icon={ <Icon icon={ icon } size={ TablePressIcon === icon ? '36' : '24' } style={ { display: 'flex', marginRight: '1rem' } } /> }
+			icon={ <Icon icon={ icon } size={ TablePressIcon === icon ? '36' : undefined } style={ { display: 'flex', marginInlineEnd: '1em' } } /> }
 			title={ title }
 			__experimentalHideHeader={ undefined === title }
 			isDismissible={ false }
 			shouldCloseOnEsc={ false }
 			shouldCloseOnClickOutside={ false }
-			onKeyDown={ handleEnter }
+			focusOnMount="firstElement"
 			{ ...modalProps }
 		>
-			<VStack spacing={ 8 }>
-				<span>
+			<Stack direction="column" gap="lg">
+				<Text>
 					{ text }
-				</span>
-				<HStack alignment="right">
+				</Text>
+				<Stack direction="row" gap="lg" justify="end">
 					<Button
-						ref={ confirmButtonRef }
-						variant="primary"
-						text={ __( 'OK', 'tablepress' ) }
 						onClick={ onConfirm }
-					/>
-				</HStack>
-			</VStack>
+					>
+						{ __( 'OK', 'tablepress' ) }
+					</Button>
+				</Stack>
+			</Stack>
 		</Modal>
 	);
 };
-
-export { Alert };

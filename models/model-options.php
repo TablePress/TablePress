@@ -87,6 +87,9 @@ class TablePress_Options_Model extends TablePress_Model {
 			'option_name'   => 'tablepress_plugin_options',
 			'default_value' => $this->default_plugin_options,
 		);
+		if ( ( strtotime( '2026-11-22' ) < strtotime( 'today' ) && strtotime( 'today' ) < strtotime( '2026-12-01' ) ) ) {
+			$params['default_value']['message_plugin_update'] = true;
+		}
 		$this->plugin_options = TablePress::load_class( 'TablePress_WP_Option', 'class-wp_option.php', 'classes', $params );
 
 		$params = array(
@@ -338,8 +341,8 @@ class TablePress_Options_Model extends TablePress_Model {
 	public function map_tablepress_meta_caps( array $caps, /* string */ $cap, int $user_id, array $args ): array {
 		// Don't use a type hint for the `$cap` argument as many WordPress plugins seem to be passing `null` to capability check or admin menu functions.
 
-		// Protect against other plugins not supplying a string for the `$cap` argument.
-		if ( ! is_string( $cap ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
+		// Protect against other plugins not supplying a string for the `$cap` argument in their filter hook callbacks.
+		if ( ! is_string( $cap ) ) {
 			return $caps;
 		}
 

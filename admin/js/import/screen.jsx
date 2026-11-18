@@ -11,18 +11,19 @@
  * WordPress dependencies.
  */
 import { useEffect, useRef, useState } from 'react';
-import {
-	Button,
-	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	Icon,
-	RadioControl,
-	ComboboxControl,
-	Disabled,
-	TextareaControl,
-	TextControl,
-} from '@wordpress/components';
+import { createInterpolateElement } from '@wordpress/element';
 import { info } from '@wordpress/icons';
 import { __, _n, _x, sprintf } from '@wordpress/i18n';
+import {
+	Button,
+	Icon,
+	InputControl,
+	RadioGroupControl,
+	SearchableSelectControl,
+	Stack,
+	Text,
+	TextareaControl,
+} from '@wordpress/ui';
 
 // Details for the available import sources.
 const importSources = {
@@ -55,18 +56,8 @@ const importSourcesRadioOptions = Object.entries( importSources ).map( ( [ impor
 // Number of tables.
 const tablesCount = Object.keys( tp.import.tables ).length;
 
-const tablesSelectOptions = Object.entries( tp.import.tables ).map( ( [ tableId, tableName ] ) => {
-	if ( '' === tableName.trim() ) {
-		tableName = __( '(no name)', 'tablepress' );
-	}
-	const optionText = sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), tableId, tableName );
-	return { value: tableId, label: optionText };
-} );
-
-// Custom component to conditionally disable its children, used for the ComboboxControl.
-const ConditionalDisabled = ( { condition, children } ) => (
-	condition ? ( <Disabled>{ children }</Disabled> ) : children
-);
+// Create an array of objects for the table selection dropdown, in the form [ { value: <id>, label: <text> }, ... ].
+const tablesSelectOptions = Object.entries( tp.import.tables ).map( ( [ value, label ] ) => ( { value, label } ) );
 
 /**
  * Returns the "Import Screen" component's JSX markup.
@@ -101,14 +92,14 @@ const Screen = () => {
 	// References to DOM elements.
 	const importServerInput = useRef( null );
 	const fileUploadDropzone = useRef( null );
+	const existingTableSelect = useRef( null );
 
 	// Update the validation highlighting (using APIs and DOM elements outside of the React components) when the state changes.
 	useEffect( () => {
 		document.getElementById( 'tablepress_import-import-form' ).classList.toggle( 'no-validation-highlighting', ! screenData.validationHighlighting );
 		if ( ! screenData.validationHighlighting ) {
 			importServerInput.current?.setCustomValidity( '' );
-			// We need to use this dynamically generated ID by the ComboboxControl component. It does not (yet?) support a static ID or a ref.
-			document.getElementById( 'components-form-token-input-combobox-control-1' )?.setCustomValidity( '' );
+			existingTableSelect.current?.parentElement?.parentElement?.querySelector( 'input' )?.setCustomValidity( '' );
 		}
 	}, [ screenData.validationHighlighting ] );
 
@@ -137,13 +128,14 @@ const Screen = () => {
 						{ __( 'Import Source', 'tablepress' ) }:
 					</th>
 					<td className="column-2">
-						<RadioControl
+						<RadioGroupControl
 							name="import[source]"
 							label={ __( 'Import Source', 'tablepress' ) }
 							hideLabelFromVision={ true }
-							selected={ screenData.importSource }
-							onChange={ ( importSource ) => updateScreenData( { importSource } ) }
-							options={ importSourcesRadioOptions }
+							className="tablepress-horizontal-radio-group" // To show the radio buttons horizontally, with CSS.
+							value={ screenData.importSource }
+							onValueChange={ ( importSource ) => updateScreenData( { importSource } ) }
+							items={ importSourcesRadioOptions }
 						/>
 					</td>
 				</tr>
@@ -154,93 +146,94 @@ const Screen = () => {
 						</label>
 					</th>
 					<td className="column-2">
-						{
-							/*
-							 * Always add the "File Upload" UI to the DOM, but hide it using `style="display: none;"` below.
-							 * This ensures that the <input type="file"> field works, as that is "uncontrolled" in React, and setting its value (files) is not possible.
-							 */
-						}
-						<div
-							className="file-upload-area"
-							style={ {
-								display: ( 'file-upload' === screenData.importSource ) ? 'block' : 'none',
-							} }
-						>
-							<input
-								name="import_file_upload[]"
-								id="tables-import-file-upload"
-								type="file"
-								multiple
-								required={ 'file-upload' === screenData.importSource }
-								onChange={ ( event ) => ( event.target.files && updateScreenData( { importFileUpload: event.target.files } ) ) }
-								onDragEnter={ () => fileUploadDropzone.current.classList.add( 'dragover' ) }
-								onDragLeave={ () => fileUploadDropzone.current.classList.remove( 'dragover' ) }
-							/>
+						<Stack direction="column" gap="xs">
+							{
+								/*
+								* Always add the "File Upload" UI to the DOM, but hide it using `style="display: none;"` below.
+								* This ensures that the <input type="file"> field works, as that is "uncontrolled" in React, and setting its value (files) is not possible.
+								*/
+							}
 							<div
-								ref={ fileUploadDropzone }
-								id="tables-import-file-upload-dropzone"
-								className="dropzone"
+								className="file-upload-area"
+								style={ {
+									display: ( 'file-upload' === screenData.importSource ) ? 'block' : 'none',
+								} }
 							>
-								<span>
-									{ 0 === screenData.importFileUpload.length && __( 'Click to select files, or drag them here.', 'tablepress' ) }
-									{ 0 < screenData.importFileUpload.length && sprintf( _n( 'You have selected %1$d file:', 'You have selected %1$d files:', screenData.importFileUpload.length, 'tablepress' ), screenData.importFileUpload.length ) }
-								</span>
-								{
-									[ ...screenData.importFileUpload ].map( ( file ) =>
-										<span key={ file.name }>{ file.name }</span>
-									)
-								}
+								<input
+									name="import_file_upload[]"
+									id="tables-import-file-upload"
+									type="file"
+									multiple
+									required={ 'file-upload' === screenData.importSource }
+									onChange={ ( event ) => ( event.target.files && updateScreenData( { importFileUpload: event.target.files } ) ) }
+									onDragEnter={ () => fileUploadDropzone.current.classList.add( 'dragover' ) }
+									onDragLeave={ () => fileUploadDropzone.current.classList.remove( 'dragover' ) }
+								/>
+								<div
+									ref={ fileUploadDropzone }
+									id="tables-import-file-upload-dropzone"
+									className="dropzone"
+								>
+									<span>
+										{ 0 === screenData.importFileUpload.length && __( 'Click to select files, or drag them here.', 'tablepress' ) }
+										{ 0 < screenData.importFileUpload.length && sprintf( _n( 'You have selected %1$d file:', 'You have selected %1$d files:', screenData.importFileUpload.length, 'tablepress' ), screenData.importFileUpload.length ) }
+									</span>
+									{
+										[ ...screenData.importFileUpload ].map( ( file ) =>
+											<span key={ file.name }>{ file.name }</span>
+										)
+									}
+								</div>
 							</div>
-						</div>
-						{ tp.import.showImportSourceUrl && 'url' === screenData.importSource &&
-							<TextControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
-								type="url"
-								name="import[url]"
-								id="tables-import-url"
-								className="code"
-								required={ true }
-								value={ screenData.importUrl }
-								onChange={ ( importUrl ) => updateScreenData( { importUrl } ) }
-							/>
-						}
-						{ tp.import.showImportSourceServer && 'server' === screenData.importSource &&
-							<TextControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
-								ref={ importServerInput }
-								name="import[server]"
-								id="tables-import-server"
-								className="code"
-								required={ true }
-								value={ screenData.importServer }
-								onChange={ ( importServer ) => updateScreenData( { importServer } ) }
-							/>
-						}
-						{ 'form-field' === screenData.importSource &&
-							<TextareaControl
-								__nextHasNoMarginBottom
-								name="import[form-field]"
-								id="tables-import-form-field"
-								rows="15"
-								cols="40"
-								className="code"
-								required={ true }
-								value={ screenData.importFormField }
-								onChange={ ( importFormField ) => updateScreenData( { importFormField } ) }
-							/>
-						}
-						{ 'form-field' !== screenData.importSource &&
-							<HStack
-								alignment="left"
-							>
-								<Icon icon={ info } />
-								<span>
-									{ __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) }
-								</span>
-							</HStack>
-						}
+							{ tp.import.showImportSourceUrl && 'url' === screenData.importSource &&
+								<InputControl
+									type="url"
+									label={ __( 'URL', 'tablepress' ) }
+									hideLabelFromVision={ true }
+									name="import[url]"
+									id="tables-import-url"
+									className="code"
+									required={ true }
+									value={ screenData.importUrl }
+									onValueChange={ ( importUrl ) => updateScreenData( { importUrl } ) }
+								/>
+							}
+							{ tp.import.showImportSourceServer && 'server' === screenData.importSource &&
+								<InputControl
+									ref={ importServerInput }
+									label={ __( 'File on server', 'tablepress' ) }
+									hideLabelFromVision={ true }
+									name="import[server]"
+									id="tables-import-server"
+									className="code"
+									required={ true }
+									value={ screenData.importServer }
+									onValueChange={ ( importServer ) => updateScreenData( { importServer } ) }
+								/>
+							}
+							{ 'form-field' === screenData.importSource &&
+								<TextareaControl
+									name="import[form-field]"
+									id="tables-import-form-field"
+									label={ __( 'Manual Input', 'tablepress' ) }
+									hideLabelFromVision={ true }
+									rows="15"
+									cols="40"
+									className="code"
+									required={ true }
+									value={ screenData.importFormField }
+									onValueChange={ ( importFormField ) => updateScreenData( { importFormField } ) }
+								/>
+							}
+							{ 'form-field' !== screenData.importSource &&
+								<Stack direction="row" gap="xs" align="center">
+									<Icon icon={ info } style={ { flexShrink: 0 } } />
+									<Text>
+										{ __( 'You can also import multiple tables by placing them in a ZIP file.', 'tablepress' ) }
+									</Text>
+								</Stack>
+							}
+						</Stack>
 					</td>
 				</tr>
 				<tr className="top-border">
@@ -248,13 +241,14 @@ const Screen = () => {
 						{ __( 'Add, Replace, or Append?', 'tablepress' ) }:
 					</th>
 					<td className="column-2">
-						<RadioControl
+						<RadioGroupControl
 							name="import[type]"
 							label={ __( 'Import Type', 'tablepress' ) }
 							hideLabelFromVision={ true }
-							selected={ 0 === tablesCount ? 'add' : screenData.importType } // Always select "Add" if there are no tables.
-							onChange={ ( importType ) => updateScreenData( { importType } ) }
-							options={ [
+							className="tablepress-horizontal-radio-group" // To show the radio buttons horizontally, with CSS.
+							value={ 0 === tablesCount ? 'add' : screenData.importType } // Always select "Add" if there are no tables.
+							onValueChange={ ( importType ) => updateScreenData( { importType } ) }
+							items={ [
 								{ value: 'add', label: __( 'Add as new table', 'tablepress' ) },
 								{ value: 'replace', label: __( 'Replace existing table', 'tablepress' ), disabled: 0 === tablesCount },
 								{ value: 'append', label: __( 'Append rows to existing table', 'tablepress' ), disabled: 0 === tablesCount },
@@ -263,25 +257,46 @@ const Screen = () => {
 					</td>
 				</tr>
 				<tr className="top-border bottom-border">
-					<th className="column-1 top-align" scope="row">
+					<th className="column-1" scope="row">
 						<label htmlFor="tables-import-existing-table">{ __( 'Table to replace or append to', 'tablepress' ) }:</label>
 					</th>
 					<td className="column-2">
-						<ConditionalDisabled
-							condition={ appendReplaceDropdownDisabled }
+						<SearchableSelectControl
+							ref={ existingTableSelect }
+							id="tables-import-existing-table"
+							name="import[existing_table]"
+							className="tables-import-existing-table-select"
+							label={ __( 'Table to replace or append to', 'tablepress' ) }
+							hideLabelFromVision={ true }
+							disabled={ appendReplaceDropdownDisabled }
+							placeholder={ __( 'Select table', 'tablepress' ) }
+							searchPlaceholder={ __( 'Search table', 'tablepress' ) }
+							value={ screenData.importExistingTable }
+							items={ tablesSelectOptions }
+							onValueChange={ ( importExistingTable ) => updateScreenData( { importExistingTable } ) }
+							autoHighlight={ true }
+							required={ ! appendReplaceDropdownDisabled }
+							itemToStringLabel={ ( item ) => sprintf( __( 'ID %1$s: %2$s', 'tablepress' ), item.value, item.label ) } // This function's return value is used for the component (trigger) label and for the search functionality.
+							emptyContent={ __( 'No tables found.', 'tablepress' ) }
 						>
-							<ComboboxControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
-								id="tables-import-existing-table"
-								label={ __( 'Table to replace or append to', 'tablepress' ) }
-								hideLabelFromVision={ true }
-								placeholder={ __( '— Select or type —', 'tablepress' ) }
-								value={ screenData.importExistingTable }
-								options={ tablesSelectOptions }
-								onChange={ ( importExistingTable ) => updateScreenData( { importExistingTable } ) }
-							/>
-						</ConditionalDisabled>
+							{
+								( item ) => (
+									<SearchableSelectControl.Item key={ item.value } value={ item }>
+										<SearchableSelectControl.ItemLabel>
+											{
+												createInterpolateElement(
+													/* translators: %1$s: Table ID, %2$s: Table name */
+													sprintf( __( 'ID <strong>%1$s</strong>: %2$s', 'tablepress' ), item.value, item.label ),
+													{
+														strong: <strong />,
+													},
+												)
+											}
+										</SearchableSelectControl.ItemLabel>
+									</SearchableSelectControl.Item>
+								)
+							}
+						</SearchableSelectControl>
 					</td>
 				</tr>
 				<tr className="top-border">
@@ -293,32 +308,25 @@ const Screen = () => {
 							name="import[legacy_import]"
 							value={ tp.import.legacyImport }
 						/>
-						<input
-							// Send the Table to be replaced/appended to the server, if a table was selected. The ComboboxControl is not an actual form element with a name.
-							type="hidden"
-							name="import[existing_table]"
-							value={ screenData.importExistingTable ?? '' }
-						/>
 						<Button
-							variant="primary"
 							type="submit"
-							text={ _x( 'Import', 'button', 'tablepress' ) }
 							onClick={ () => {
 								// Show validation :invalid CSS pseudo-selector highlighting.
 								updateScreenData( { validationHighlighting: true } );
 
 								// When importing from the server, the value must have been changed from the default (normally ABSPATH).
 								if ( 'server' === screenData.importSource && tp.import.importServer === screenData.importServer ) {
-									importServerInput.current.setCustomValidity( __( 'You must specify a path to a file on the server.', 'tablepress' ) );
+									importServerInput.current?.setCustomValidity( __( 'You must specify a path to a file on the server.', 'tablepress' ) );
 								}
 
 								// If the table selection dropdown for replace or append is enabled, a table must be selected.
 								if ( ! appendReplaceDropdownDisabled && ! screenData.importExistingTable ) {
-									// We need to use this dynamically generated ID by the ComboboxControl component. It does not (yet?) support a static ID or a ref.
-									document.getElementById( 'components-form-token-input-combobox-control-1' )?.setCustomValidity( __( 'You must select a table.', 'tablepress' ) );
+									existingTableSelect.current?.parentElement?.parentElement?.querySelector( 'input' )?.setCustomValidity( __( 'You must select a table.', 'tablepress' ) );
 								}
 							} }
-						/>
+						>
+							{ _x( 'Import', 'button', 'tablepress' ) }
+						</Button>
 					</td>
 				</tr>
 			</tbody>

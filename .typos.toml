@@ -5,6 +5,7 @@ extend-exclude = [
 	"/admin/js/build/",
 	"/admin/js/jspreadsheet.js",
 	"/admin/js/jsuites.js",
+	"/blocks/*/build/",
 	"/i18n/",
 	"/js/*.min.js",
 	"/libraries/freemius/",

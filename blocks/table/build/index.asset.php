@@ -1,5 +1,7 @@
 <?php return array(
 	'dependencies' => array(
+		'react',
+		'react-dom',
 		'react-jsx-runtime',
 		'wp-block-editor',
 		'wp-blocks',
@@ -8,7 +10,8 @@
 		'wp-i18n',
 		'wp-primitives',
 		'wp-server-side-render',
-		'wp-shortcode'
+		'wp-shortcode',
+		'wp-warning'
 	),
-	'version' => 'aa0b437df8839cea0918'
+	'version' => '5c0625c19b54d5575d12'
 );

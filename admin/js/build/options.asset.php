@@ -1,6 +1,9 @@
 <?php return array(
 	'dependencies' => array(
-		'wp-i18n'
+		'react-jsx-runtime',
+		'wp-i18n',
+		'wp-keycodes',
+		'wp-primitives'
 	),
-	'version' => 'e3d7dc416473ca2e2eef'
+	'version' => '45c4086b60dfb89b9594'
 );

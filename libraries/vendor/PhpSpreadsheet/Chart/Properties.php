@@ -181,8 +181,10 @@ abstract class Properties
 		return ((float) $value) / self::PERCENTAGE_MULTIPLIER;
 	}
 
-	/** @return array{type: ?string, value: ?string, alpha: ?int}
-				 * @param null|float|int|string $alpha */
+	/**
+				 * @return array{type: ?string, value: ?string, alpha: ?int}
+				 * @param float|int|string|null $alpha
+				 */
 				protected function setColorProperties(?string $color, $alpha, ?string $colorType): array
 	{
 		return [
@@ -473,7 +475,7 @@ abstract class Properties
 
 	/**
 				 * Get Glow Color Property.
-				 * @return null|int|string
+				 * @return int|string|null
 				 */
 				public function getGlowColor(string $propertyName)
 	{
@@ -524,7 +526,7 @@ abstract class Properties
 		return $this->softEdges['size'];
 	}
 
-	/** @param mixed $value */
+	/** @param mixed  $value */
 				public function setShadowProperty(string $propertyName, $value): self
 	{
 		$this->activateObject();
@@ -541,7 +543,7 @@ abstract class Properties
 
 	/**
 				 * Set Shadow Properties.
-				 * @param null|float|int|string $colorAlpha
+				 * @param float|int|string|null $colorAlpha
 				 */
 				public function setShadowProperties(int $presets, ?string $colorValue = null, ?string $colorType = null, $colorAlpha = null, ?float $blur = null, ?int $angle = null, ?float $distance = null): void
 	{
@@ -633,7 +635,7 @@ abstract class Properties
 				 * Set Shadow Angle.
 				 *
 				 * @return $this
-				 * @param null|float|int|string $angle
+				 * @param float|int|string|null $angle
 				 */
 				protected function setShadowAngle($angle)
 	{
@@ -759,7 +761,7 @@ abstract class Properties
 
 	/**
 				 * Get Line Color Property.
-				 * @return null|int|string
+				 * @return int|string|null
 				 */
 				public function getLineColorProperty(string $propertyName)
 	{
@@ -768,7 +770,7 @@ abstract class Properties
 
 	/**
 				 * Set Line Style Properties.
-				 * @param null|float|int|string $lineWidth
+				 * @param float|int|string|null $lineWidth
 				 */
 				public function setLineStyleProperties(
 		$lineWidth = null,

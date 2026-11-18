@@ -3,11 +3,13 @@
 		'react',
 		'react-dom',
 		'react-jsx-runtime',
-		'wp-components',
+		'wp-a11y',
 		'wp-dom-ready',
+		'wp-element',
 		'wp-hooks',
 		'wp-i18n',
-		'wp-primitives'
+		'wp-primitives',
+		'wp-warning'
 	),
-	'version' => '563bf1226eee978d900e'
+	'version' => 'c23620789aa33141c23f'
 );

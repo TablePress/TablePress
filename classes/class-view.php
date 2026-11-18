@@ -164,10 +164,6 @@ abstract class TablePress_View {
 		add_filter( 'admin_footer_text', array( $this, 'add_admin_footer_text' ) );
 
 		TablePress::enqueue_style( 'common', array( 'wp-components' ) );
-		// RTL styles for the admin interface.
-		if ( is_rtl() ) {
-			TablePress::enqueue_style( 'common-rtl', array( 'tablepress-common' ) );
-		}
 
 		// Initialize WP feature pointers for TablePress.
 		$this->_init_wp_pointers();
@@ -405,6 +401,7 @@ abstract class TablePress_View {
 	 * @since 1.0.0
 	 */
 	protected function print_nav_tab_menu(): void {
+		$in_promo_period = ( strtotime( '2026-11-22' ) < strtotime( 'today' ) && strtotime( 'today' ) < strtotime( '2026-12-01' ) );
 		$name = __( 'TablePress', 'tablepress' );
 		$filename = 'admin/img/tablepress.svg';
 		?>
@@ -413,13 +410,23 @@ abstract class TablePress_View {
 				<img src="<?php echo plugins_url( $filename, TABLEPRESS__FILE__ ); ?>" alt="<?php esc_attr_e( 'TablePress plugin logo', 'tablepress' ); ?>">
 				<span class="screen-reader-text"><?php echo $name; ?></span>
 			</h1>
-			<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) : ?>
-				<div class="buttons">
-					<a href="<?php echo esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ); ?>" class="tablepress-button">
-						<span><?php _e( 'Upgrade to Premium', 'tablepress' ); ?></span>
-						<span class="dashicons dashicons-arrow-right-alt"></span>
-					</a>
-				</div>
+			<?php if ( 'list' !== $this->action || ! $this->data['messages']['plugin_update'] || ! $in_promo_period ) : ?>
+				<?php if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW ) : ?>
+					<div class="buttons">
+						<a href="<?php echo $in_promo_period ? 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=header&utm_campaign=upgrade-message350&utm_content=button' : esc_url( tb_tp_fs()->pricing_url( WP_FS__PERIOD_ANNUALLY, false ) ); ?>" class="tablepress-button<?php echo $in_promo_period ? ' promo' : ''; ?>">
+							<span>
+								<?php
+								if ( $in_promo_period ) {
+									echo in_array( get_user_locale(), array( 'de_DE', 'de_AT', 'de_CH' ), true ) ? 'Premium: Spare zum Black Friday 25&#8239;%!' : 'Premium: 25% OFF for Black Friday!';
+								} else {
+									_e( 'Upgrade to Premium', 'tablepress' );
+								}
+								?>
+							</span>
+							<span class="dashicons dashicons-arrow-right-alt"></span>
+						</a>
+					</div>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 		<nav id="tablepress-nav">
@@ -552,14 +559,14 @@ abstract class TablePress_View {
 	public function add_admin_footer_text( /* string */ $content ): string {
 		// Don't use a type hint in the method declaration as many WordPress plugins use the `admin_footer_text` filter without returning a string.
 
-		// Protect against other plugins not returning a string in their filter callbacks.
-		if ( ! is_string( $content ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
+		// Protect against other plugins not returning a string in their filter hook callbacks.
+		if ( ! is_string( $content ) ) {
 			$content = '';
 		}
 
 		/* translators: %s: URL to TablePress website */
 		$content .= ' &bull; ' . sprintf( __( 'Thank you for using <a href="%s">TablePress</a>.', 'tablepress' ), 'https://tablepress.org/' );
-		if ( tb_tp_fs()->is_free_plan() ) {
+		if ( ! tb_tp_fs()->is_paying() ) {
 			/* translators: %s: URL to TablePress premium features */
 			$content .= ' ' . sprintf( __( 'Take a look at the <a href="%s">Premium features</a>!', 'tablepress' ), 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=admin-footer' );
 		}

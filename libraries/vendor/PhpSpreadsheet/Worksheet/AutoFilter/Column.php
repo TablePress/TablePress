@@ -251,7 +251,7 @@ class Column
 				 * Get specific AutoFilter Column Attribute.
 				 *
 				 * @param string $name Attribute Name
-				 * @return null|float|int|string
+				 * @return float|int|string|null
 				 */
 				public function getAttribute(string $name)
 	{

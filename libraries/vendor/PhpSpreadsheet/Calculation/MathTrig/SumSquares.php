@@ -17,7 +17,7 @@ class SumSquares
 				 *        SUMSQ(value1[,value2[, ...]])
 				 *
 				 * @param mixed ...$args Data values
-				 * @return string|int|float
+				 * @return float|int|string
 				 */
 				public static function sumSquare(...$args)
 	{
@@ -64,7 +64,7 @@ class SumSquares
 				 *
 				 * @param mixed[] $matrixData1 Matrix #1
 				 * @param mixed[] $matrixData2 Matrix #2
-				 * @return string|int|float
+				 * @return float|int|string
 				 */
 				public static function sumXSquaredMinusYSquared(array $matrixData1, array $matrixData2)
 	{
@@ -93,7 +93,7 @@ class SumSquares
 				 *
 				 * @param mixed[] $matrixData1 Matrix #1
 				 * @param mixed[] $matrixData2 Matrix #2
-				 * @return string|int|float
+				 * @return float|int|string
 				 */
 				public static function sumXSquaredPlusYSquared(array $matrixData1, array $matrixData2)
 	{
@@ -122,7 +122,7 @@ class SumSquares
 				 *
 				 * @param mixed[] $matrixData1 Matrix #1
 				 * @param mixed[] $matrixData2 Matrix #2
-				 * @return string|int|float
+				 * @return float|int|string
 				 */
 				public static function sumXMinusYSquared(array $matrixData1, array $matrixData2)
 	{

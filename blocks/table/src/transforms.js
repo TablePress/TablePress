@@ -16,14 +16,14 @@ import { createBlock } from '@wordpress/blocks';
 import shortcode from '@wordpress/shortcode';
 
 /**
- * Get the block name from the block.json.
- */
-import block from '../block.json';
-
-/**
  * Internal dependencies.
  */
 import { shortcodeAttrsToString } from './common/functions';
+
+/**
+ * Get the block name from the block.json.
+ */
+import block from '../block.json';
 
 /**
  * Converts a set of parsed Shortcode attributes to a parameters string.

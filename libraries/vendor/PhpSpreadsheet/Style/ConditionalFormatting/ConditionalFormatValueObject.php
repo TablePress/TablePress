@@ -7,7 +7,7 @@ class ConditionalFormatValueObject
 	private string $type;
 
 	/**
-				 * @var null|float|int|string
+				 * @var float|int|string|null
 				 */
 				private $value;
 
@@ -21,7 +21,7 @@ class ConditionalFormatValueObject
 	private ?bool $greaterThanOrEqual = null;
 
 	/**
-				 * @param null|float|int|string $value
+				 * @param float|int|string|null $value
 				 */
 				public function __construct(string $type, $value = null, ?string $cellFormula = null)
 	{
@@ -43,7 +43,7 @@ class ConditionalFormatValueObject
 	}
 
 	/**
-				 * @return null|float|int|string
+				 * @return float|int|string|null
 				 */
 				public function getValue()
 	{
@@ -51,7 +51,7 @@ class ConditionalFormatValueObject
 	}
 
 	/**
-				 * @param null|float|int|string $value
+				 * @param float|int|string|null $value
 				 */
 				public function setValue($value): self
 	{

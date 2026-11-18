@@ -13,11 +13,19 @@
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
-	Button,
-	Icon,
 	Modal,
 } from '@wordpress/components';
 import { help } from '@wordpress/icons';
+import {
+	Icon,
+	// IconButton, // Due to compatibility issues with WP < 7.0, we use a custom `IconButton` component instead of the one from the `@wordpress/ui` package.
+	Stack,
+} from '@wordpress/ui';
+
+/**
+ * Internal dependencies.
+ */
+import { IconButton } from './icon-button';
 
 /**
  * Returns the HelpBox component's JSX markup.
@@ -36,8 +44,8 @@ export const HelpBox = ( { title, buttonProps= {}, modalProps = {}, children } )
 
 	return (
 		<>
-			<Button
-				variant="secondary"
+			<IconButton
+				variant="minimal"
 				icon={ help }
 				size="small"
 				onClick={ openModal }
@@ -46,12 +54,14 @@ export const HelpBox = ( { title, buttonProps= {}, modalProps = {}, children } )
 			{ modalOpen && (
 				<Modal
 					size="small"
-					icon={ <Icon icon={ help } style={ { display: 'flex', marginRight: '4px', 'fill': 'none' } }/> }
+					icon={ <Icon icon={ help } style={ { display: 'flex', marginInlineEnd: '1em', fill: 'none' } }/> }
 					title={ title }
 					onRequestClose={ closeModal }
 					{ ...modalProps }
 				>
-					{ children }
+					<Stack direction="column" gap="md">
+						{ children }
+					</Stack>
 				</Modal>
 			) }
 		</>
@@ -77,7 +87,7 @@ export const Help = ( { section, title, buttonProps = {}, modalProps = {}, child
 	if ( ! helpContainer.current ) {
 		helpContainer.current = document.createElement( 'div' );
 		helpContainer.current.className = 'help-container';
-		document.getElementById( `tablepress-${section}-section` ).closest( '.postbox' ).querySelector( 'h2.hndle' ).appendChild( helpContainer.current );
+		document.getElementById( `tablepress-${ section }-section` ).closest( '.postbox' ).querySelector( 'h2.hndle' ).appendChild( helpContainer.current );
 	}
 
 	return createPortal(

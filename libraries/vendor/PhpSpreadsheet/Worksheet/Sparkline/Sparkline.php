@@ -20,11 +20,13 @@ class Sparkline
 	 * without any `$` absolute-reference markers.
 	 */
 	private string $location = '';
+
 	/**
 	 * The range supplying the data plotted by the sparkline, e.g. `Sheet1!B2:F2`
 	 * or `B2:F2`.
 	 */
 	private string $dataRange = '';
+
 	/**
 	 * @param CellAddress|string $location the cell the sparkline is drawn in (e.g. 'G2')
 	 * @param string $dataRange the range supplying the plotted data (e.g. 'B2:F2')
@@ -36,15 +38,17 @@ class Sparkline
 		}
 		$this->setDataRange($dataRange);
 	}
+
 	public function getLocation(): string
 	{
 		return $this->location;
 	}
+
 	/**
-	 * Set the cell the sparkline is drawn in. Must be a single cell, not a range.
-	 * @param \TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress|string $location
-	 */
-	public function setLocation($location): self
+				 * Set the cell the sparkline is drawn in. Must be a single cell, not a range.
+				 * @param string|\TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress $location
+				 */
+				public function setLocation($location): self
 	{
 		$location = (string) $location;
 		if (str_contains($location, ':')) {
@@ -61,16 +65,19 @@ class Sparkline
 
 		return $this;
 	}
+
 	public function getDataRange(): string
 	{
 		return $this->dataRange;
 	}
+
 	public function setDataRange(string $dataRange): self
 	{
 		$this->dataRange = $dataRange;
 
 		return $this;
 	}
+
 	public function __toString(): string
 	{
 		return $this->location;

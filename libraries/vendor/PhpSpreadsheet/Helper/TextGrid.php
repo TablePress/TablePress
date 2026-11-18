@@ -27,8 +27,10 @@ class TextGrid
 
 	protected TextGridRightAlign $numbersRight = TextGridRightAlign::none;
 
-	/** @param mixed[][] $matrix
-				 * @param mixed $numbersRight */
+	/**
+				 * @param mixed[][] $matrix
+				 * @param mixed $numbersRight
+				 */
 				public function __construct(array $matrix, bool $isCli = true, bool $rowDividers = false, bool $rowHeaders = true, bool $columnHeaders = true, $numbersRight = TextGridRightAlign::none)
 	{
 		$this->rows = array_keys($matrix);

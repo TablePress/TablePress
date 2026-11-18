@@ -82,8 +82,8 @@ class ChartColor
 	}
 
 	/**
-				 * @param null|float|int|string $alpha
-				 * @param null|float|int|string $brightness
+				 * @param float|int|string|null $alpha
+				 * @param float|int|string|null $brightness
 				 */
 				public function setColorProperties(?string $color, $alpha = null, ?string $type = null, $brightness = null): self
 	{
@@ -136,7 +136,7 @@ class ChartColor
 
 	/**
 				 * Get Color Property.
-				 * @return null|int|string
+				 * @return int|string|null
 				 */
 				public function getColorProperty(string $propertyName)
 	{

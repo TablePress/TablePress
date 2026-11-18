@@ -37,7 +37,7 @@ tb_tp_fs()->add_filter(
 	'is_submenu_visible',
 	static function ( $is_visible, $menu_id ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
 		if ( 'pricing' === $menu_id ) {
-			$is_visible = ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && ! tb_tp_fs()->is_paying_or_trial() && current_user_can( 'tablepress_list_tables' );
+			$is_visible = ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && ! tb_tp_fs()->is_paying() && current_user_can( 'tablepress_list_tables' );
 		}
 		return $is_visible;
 	},
@@ -71,3 +71,20 @@ tb_tp_fs()->override_i18n( array(
 	'symbol_arrow-left'  => '&larr;',
 	'symbol_arrow-right' => '&rarr;',
 ) );
+
+// Add the promo coupon to all pricing and checkout URLs.
+if ( ( strtotime( '2026-11-22' ) < strtotime( 'today' ) && strtotime( 'today' ) < strtotime( '2026-12-01' ) ) ) {
+	tb_tp_fs()->add_filter(
+		'pricing_url',
+		static function ( $url ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
+			$url = 'https://tablepress.org/premium/?utm_source=plugin&utm_medium=menu&utm_campaign=upgrade-message350&utm_content=link';
+			return $url;
+		}
+	);
+	tb_tp_fs()->add_filter(
+		'checkout_url',
+		static function ( $url ) /* No return type declaration or type hints, due to required PHP compatibility of this file! */ {
+			return $url . ( false === strpos( $url, '?' ) ? '?' : '&' ) . 'coupon=BF2026';
+		}
+	);
+}

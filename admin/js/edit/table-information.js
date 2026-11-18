@@ -11,40 +11,47 @@
  * WordPress dependencies.
  */
 import { useEffect, useState } from 'react';
-import {
-	Button,
-	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	Icon,
-	__experimentalInputControl as InputControl, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	__experimentalInputControlSuffixWrapper as InputControlSuffixWrapper, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	TextareaControl,
-	TextControl,
-	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-} from '@wordpress/components';
 import { useCopyToClipboard } from '@wordpress/compose';
 import { useDispatch } from '@wordpress/data';
 import { createInterpolateElement } from '@wordpress/element';
-import { copySmall } from '@wordpress/icons';
+import { copy } from '@wordpress/icons';
 import { __, sprintf } from '@wordpress/i18n';
 import { store as noticesStore } from '@wordpress/notices';
+import {
+	// IconButton, // Due to compatibility issues with WP < 7.0, we use a custom `IconButton` component instead of the one from the `@wordpress/ui` package.
+	InputControl,
+	InputLayout,
+	Stack,
+	TextareaControl,
+} from '@wordpress/ui';
 
 /**
  * Internal dependencies.
  */
 import { initializeReactComponentInPortal } from '../common/react-loader';
-import { TablePressIconSimple } from '../../img/tablepress-icon';
+import { IconButton } from '../common/icon-button';
+import { showNotice } from '../common/functions';
+import { useTableMeta, useUpdateTableMeta } from './context/table-meta';
 
-const Section = ( { tableMeta, updateTableMeta } ) => {
-	const { createSuccessNotice } = useDispatch( noticesStore );
+/**
+ * Returns the "Table Information" section's JSX markup.
+ *
+ * @return {Object} "Table Information" section component.
+ */
+const Section = () => {
+	const tableMeta = useTableMeta();
+	const updateTableMeta = useUpdateTableMeta();
+	const noticesStoreDispatch = useDispatch( noticesStore );
 	const [ tableId, setTableId ] = useState( tableMeta.id );
 
 	const copyShortcodeButtonRef = useCopyToClipboard( `[${ tp.table.shortcode } id=${ tableMeta.id } /]`, () => {
-		createSuccessNotice(
-			__( 'Copied Shortcode to clipboard.', 'tablepress' ),
+		showNotice(
 			{
+				status: 'success',
 				type: 'snackbar',
-				icon: <Icon icon={ TablePressIconSimple } />,
-			}
+				content: __( 'Copied Shortcode to clipboard.', 'tablepress' ),
+			},
+			noticesStoreDispatch
 		);
 	} );
 
@@ -53,8 +60,9 @@ const Section = ( { tableMeta, updateTableMeta } ) => {
 	}, [ tableMeta.id ] );
 
 	return (
-		<VStack
-			spacing="16px"
+		<Stack
+			direction="column"
+			gap="lg"
 			style={ {
 				paddingTop: '6px',
 			} }
@@ -64,15 +72,15 @@ const Section = ( { tableMeta, updateTableMeta } ) => {
 					<tr className="bottom-border">
 						<th className="column-1" scope="row"><label htmlFor="table-id">{ __( 'Table ID', 'tablepress' ) }:</label></th>
 						<td className="column-2">
-							<HStack>
-								<TextControl
-									__nextHasNoMarginBottom
-									__next40pxDefaultSize
+							<Stack direction="row" gap="md" justify="space-between" align="center">
+								<InputControl
+									label={ __( 'Table ID', 'tablepress' ) }
+									hideLabelFromVision={ true }
 									id="table-id"
 									title={ __( 'The Table ID can only consist of letters, numbers, hyphens (-), and underscores (_).', 'tablepress' ) }
 									pattern="[A-Za-z1-9_\-]|[A-Za-z0-9_\-]{2,}"
 									value={ tableId }
-									onChange={ ( newTableId ) => setTableId( newTableId.replace( /[^0-9a-zA-Z_-]/g, '' ) ) }
+									onValueChange={ ( newTableId ) => setTableId( newTableId.replace( /[^0-9a-zA-Z_-]/g, '' ) ) }
 									onBlur={ ( event ) => {
 										if ( tableMeta.id === tableId ) {
 											return;
@@ -101,48 +109,50 @@ const Section = ( { tableMeta, updateTableMeta } ) => {
 									readOnly={ ! tp.screenOptions.currentUserCanEditTableId }
 								/>
 								<label htmlFor="table-information-shortcode">
-									<HStack alignment="left">
+									<Stack direction="row" gap="sm" align="center">
 										{
 											createInterpolateElement(
 												__( 'Shortcode: <input />', 'tablepress' ),
 												{
 													input: (
 														<InputControl
-															__next40pxDefaultSize
-															type="text"
+															label={ __( 'Table Shortcode', 'tablepress' ) }
+															hideLabelFromVision={ true }
 															id="table-information-shortcode"
 															value={ `[${ tp.table.shortcode } id=${ tableMeta.id } /]` }
 															onFocus={ ( event ) => event.target.select() }
 															readOnly={ true }
 															suffix={
-																<InputControlSuffixWrapper variant="control">
-																	<Button
-																		icon={ copySmall }
+																<InputLayout.Slot padding="minimal">
+																	<IconButton
+																		label={ __( 'Copy Shortcode to clipboard', 'tablepress' ) }
+																		icon={ copy }
 																		ref={ copyShortcodeButtonRef }
 																		size="small"
-																		label={ __( 'Copy Shortcode to clipboard', 'tablepress' ) }
+																		variant="minimal"
+																		tone="neutral"
 																	/>
-																</InputControlSuffixWrapper>
+																</InputLayout.Slot>
 															}
 														/>
 													),
 												},
 											)
 										}
-									</HStack>
+									</Stack>
 								</label>
-							</HStack>
+							</Stack>
 						</td>
 					</tr>
 					<tr className="top-border">
 						<th className="column-1" scope="row"><label htmlFor="table-name">{ __( 'Table Name', 'tablepress' ) }:</label></th>
 						<td className="column-2">
-							<TextControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
+							<InputControl
+								label={ __( 'Table Name', 'tablepress' ) }
+								hideLabelFromVision={ true }
 								id="table-name"
 								value={ tableMeta.name }
-								onChange={ ( name ) => updateTableMeta( { name } ) }
+								onValueChange={ ( name ) => updateTableMeta( { name } ) }
 							/>
 						</td>
 					</tr>
@@ -150,10 +160,11 @@ const Section = ( { tableMeta, updateTableMeta } ) => {
 						<th className="column-1 top-align" scope="row"><label htmlFor="table-description">{ __( 'Description', 'tablepress' ) }:</label></th>
 						<td className="column-2">
 							<TextareaControl
-								__nextHasNoMarginBottom
 								id="table-description"
+								label={ __( 'Description', 'tablepress' ) }
+								hideLabelFromVision={ true }
 								value={ tableMeta.description }
-								onChange={ ( description ) => updateTableMeta( { description } ) }
+								onValueChange={ ( description ) => updateTableMeta( { description } ) }
 								rows="4"
 							/>
 						</td>
@@ -166,7 +177,7 @@ const Section = ( { tableMeta, updateTableMeta } ) => {
 					</tr>
 				</tbody>
 			</table>
-		</VStack>
+		</Stack>
 	);
 };
 

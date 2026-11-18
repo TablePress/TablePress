@@ -33,12 +33,25 @@ body.wait * {
 /* Move the Screen Options and Help link to their original position. Needed due to the full-width header. */
 #screen-meta-links {
 	position: absolute;
-	right: 0;
+	inset-inline-end: 0;
 	z-index: 10001; /* Ensure that the tab is always above the arrow of WP feature pointers. */
 }
 
+@property --angle {
+	syntax: "<angle>";
+	initial-value: 0deg;
+	inherits: false;
+}
+
+@keyframes rotate-gradient {
+	to {
+		--angle: 360deg;
+	}
+}
+
 #tablepress-page {
-	margin: 0 0 0 -20px;
+	margin-block: 0;
+	margin-inline: -20px 0;
 
 	#tablepress-body {
 		padding: 0 20px;
@@ -55,10 +68,11 @@ body.wait * {
 		align-items: center;
 		display: flex;
 		flex-wrap: wrap;
-		padding-right: 260px; /* Space for the screen meta links. */
+		padding-inline: 0 270px; /* Space for the screen meta links. */
 
 		.name {
-			border-right: 1px solid #dedae6;
+			border-inline-start: none;
+			border-inline-end: 1px solid #dedae6;
 			padding: 7px 20px;
 			line-height: 0;
 		}
@@ -66,7 +80,8 @@ body.wait * {
 
 	#tablepress-nav {
 		background: #ffffff;
-		padding: 0 0 0 20px;
+		padding-block: 0;
+		padding-inline: 20px 0;
 	}
 
 	.nav-menu {
@@ -107,6 +122,9 @@ body.wait * {
 	}
 
 	.buttons {
+		display: flex;
+		align-items: center;
+		gap: 8px;
 		padding: 0 12px;
 
 		.tablepress-button {
@@ -114,8 +132,8 @@ body.wait * {
 			border: 1px solid #ffffff;
 			border-radius: 3px;
 			align-items: center;
-			margin: 10px 12px;
-			padding: 6px 4px 6px 12px;
+			margin-inline: 12px;
+			padding: 6px 12px;
 			font-size: 14px;
 			line-height: 1;
 			text-decoration: none;
@@ -123,12 +141,14 @@ body.wait * {
 			color: #ffffff;
 			background-color: #16a34a;
 			border-color: #16a34a;
+			gap: 4px;
 
 			&:hover,
 			&:active,
 			&:focus {
-				span:first-child {
+				span:not(.dashicons) {
 					text-decoration: underline;
+					text-decoration-thickness: 1.5px;
 				}
 			}
 
@@ -137,8 +157,14 @@ body.wait * {
 				border-color: #ff5100;
 			}
 
-			.dashicons {
-				margin: 0 6px 0 4px;
+			&.promo {
+				padding: 0.5em 1em;
+				color: #ffffff;
+				background: #222222;
+				border-color: #ff5e30;
+				border-width: 2.5px;
+				border-radius: 6px;
+				font-weight: 600;
 			}
 		}
 	}
@@ -149,13 +175,6 @@ body.wait * {
 
 		> li {
 			margin: 0;
-		}
-	}
-
-	/* Styling for the "Info" icon next to descriptions/notices. */
-	.components-h-stack {
-		svg {
-			min-width: 24px;
 		}
 	}
 
@@ -202,35 +221,20 @@ body.wait * {
 		}
 	}
 
-	.components-checkbox-control__input,
-	.components-radio-control__input {
-		&:checked:disabled {
-			opacity: 0.4;
-		}
-
-		&:not(:checked):disabled {
-			background: #f0f0f0;
-			border-color: #cccccc;
-		}
+	/* Give all labels a pointer cursor, which @wordpress/ui already does for its own labels. */
+	label {
+		cursor: pointer;
 	}
 
-	.components-text-control__input:disabled,
-	.components-textarea-control__input:disabled {
-		background: #f0f0f0;
-		border-color: #cccccc;
-		box-shadow: none;
+	/* Let components that are embedded in text with `createInterpolateElement` flow with the text. */
+	.component-inline-flex {
+		display: inline-flex;
+		margin-inline: 4px;
 	}
 
-	/* Alignment of selects inside of checkbox labels. */
-	.checkbox-select-in-label {
-		.components-h-stack {
-			align-items: center;
-		}
-		.components-checkbox-control__label {
-			display: flex;
-			gap: 8px;
-			align-items: center;
-		}
+	/* Alignment of checkboxes with `select` components inside their labels. */
+	.checkbox-select-in-label > div {
+		align-items: center !important;
 	}
 
 	.notice {
@@ -273,16 +277,89 @@ body.wait * {
 		&.notice-error {
 			background-color: #fcf0f0;
 		}
+		&.notice-milestone {
+			max-width: 1000px;
+			border-left-color: #ff5e30;
+			background-color: #222222;
+
+			body:has(&) .wp-pointer {
+				display: none !important;
+			}
+
+			.components-notice__content {
+				display: flex;
+				gap: 20px;
+				align-items: center;
+
+				@media screen and (max-width: 540px) {
+					flex-direction: column;
+
+					> div {
+						text-align: center;
+					}
+				}
+			}
+
+			img {
+				width: 200px;
+			}
+
+			p {
+				color: #ffffff;
+			}
+
+			a {
+				color: #dddddd;
+			}
+
+			div.promo-button-wrapper {
+				display: inline-block;
+				margin: 1em 0 2em;
+				padding: 2.5px;
+				border-radius: 6px;
+				background: #ff5e30;
+
+				@media not (prefers-reduced-motion) {
+					background: conic-gradient(from var(--angle), #ff5e30, #000000, #ff5e30);
+					animation: rotate-gradient 4s linear infinite;
+				}
+
+				> a {
+					display: inline-flex;
+					align-items: center;
+					background-color: #222222;
+					color: #ffffff;
+					border-radius: 5px;
+					border-width: 0;
+					font-size: 16px;
+					font-weight: bold;
+					padding: 0.6em 1em;
+					text-decoration: none;
+					gap: 8px;
+				}
+
+				&:hover > a > span:first-child {
+					text-decoration: underline;
+				}
+			}
+		}
 		.components-notice__content {
 			margin: 0;
 		}
 	}
 
-	/* Notices for "Preview" and "Save Changes" buttons. */
-	.components-notice-list {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
+	/* Default notices. */
+	.tablepress-notice-list {
+
+		/* Hide an empty notice list as it otherwise creates an unwanted gap. */
+		&:not(:has(> .tablepress-notice)) {
+			display: none;
+		}
+
+		body.tablepress-fullscreen & {
+			padding: 8px 12px;
+			border-top: 1px solid #cccccc;
+		}
 
 		@keyframes fadeIn {
 			from {
@@ -293,17 +370,17 @@ body.wait * {
 			}
 		}
 
-		.components-notice {
+		.tablepress-notice {
 			animation: fadeIn 1s; /* Fade in new notices. */
 			transition: opacity 1s; /* Fade out notices before removing them. */
-			scroll-margin-bottom: 50px; /* Scroll into view offset for error notices. */
+			scroll-margin-block: 50px; /* Scroll into view offset for error notices. */
 		}
 
 	}
 
 	.components-snackbar-list {
 		position: fixed;
-		bottom: 24px;
+		bottom: 32px;
 	}
 }
 
@@ -415,6 +492,10 @@ table.widefat {
 	th {
 		text-align: left;
 		font-weight: normal;
+
+		.rtl & {
+			text-align: right;
+		}
 	}
 	th,
 	td {
@@ -439,17 +520,6 @@ table.widefat {
 	}
 }
 
-/* Select dropdown alignment. */
-#tablepress-page select {
-	vertical-align: baseline;
-}
-
-/* Alignment of textareas and buttons in postboxes. */
-#tablepress-page textarea:not(.components-textarea-control__input),
-.tablepress-postbox-table .button {
-	margin: 1px;
-}
-
 /* Styling of pills in postbox headings. */
 .postbox .postbox-header .hndle:not(:has(> .help-container)) {
 	display: inline;
@@ -470,4 +540,16 @@ table.widefat {
 		text-align: center;
 		z-index: 26;
 	}
+}
+
+/* Show items of RadioGroupControl horizontally. */
+.tablepress-horizontal-radio-group > div {
+	flex-direction: row !important;
+	gap: 24px !important;
+}
+
+/* RTL styling for the Shortcode input fields in Modal and on "Edit" screen */
+.rtl #table-information-shortcode {
+	direction: ltr;
+	text-align: right;
 }

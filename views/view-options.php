@@ -94,7 +94,7 @@ class TablePress_Options_View extends TablePress_View {
 	 * @param array<string, mixed> $box  Information about the meta box.
 	 */
 	public function postbox_default_style_customizer_screen( array $data, array $box ): void {
-		if ( tb_tp_fs()->is_free_plan() ) :
+		if ( ! tb_tp_fs()->is_paying() ) :
 			?>
 			<div style="display:flex;max-width:800px;gap:20px;font-size:14px;">
 				<div>
@@ -185,7 +185,7 @@ class TablePress_Options_View extends TablePress_View {
 		$entries['middle'] = __( 'Top-Level (middle)', 'tablepress' );
 		$entries['bottom'] = __( 'Top-Level (bottom)', 'tablepress' );
 
-		$select_box = '<select id="option-admin-menu-parent-page" name="options[admin_menu_parent_page]">' . "\n";
+		$select_box = '<select id="option-admin-menu-parent-page" name="options[admin_menu_parent_page]" style="font-size: inherit;">' . "\n";
 		foreach ( $entries as $page => $entry ) {
 			$select_box .= '<option' . selected( $page, $data['user_options']['parent_page'], false ) . disabled( $page, '-', false ) . ' value="' . $page . '">' . $entry . "</option>\n";
 		}

@@ -344,23 +344,22 @@ class EvalMath {
 					// Check the argument count, depending on what type of function we have.
 					if ( in_array( $function_name, $this->builtin_functions, true ) ) {
 						// Built-in functions.
-						if ( $arg_count > 1 ) { // @phpstan-ignore greater.alwaysFalse
+						if ( $arg_count > 1 ) {
 							$error_data = array( 'expected' => 1, 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
 					} elseif ( array_key_exists( $function_name, $this->calc_functions ) ) {
 						// Calc-emulation functions.
 						$counts = $this->calc_functions[ $function_name ];
-						// @phpstan-ignore greater.alwaysFalse, booleanAnd.alwaysFalse
 						if ( in_array( -1, $counts, true ) && $arg_count > 0 ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 							// Everything is fine, we expected an indefinite number arguments and got some.
-						} elseif ( ! in_array( $arg_count, $counts, true ) ) { // @phpstan-ignore function.impossibleType
+						} elseif ( ! in_array( $arg_count, $counts, true ) ) {
 							$error_data = array( 'expected' => implode( '/', $this->calc_functions[ $function_name ] ), 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
 					} elseif ( array_key_exists( $function_name, $this->functions ) ) {
 						// User-defined functions.
-						if ( count( $this->functions[ $function_name ]['args'] ) !== $arg_count ) { // @phpstan-ignore notIdentical.alwaysTrue
+						if ( count( $this->functions[ $function_name ]['args'] ) !== $arg_count ) {
 							$error_data = array( 'expected' => count( $this->functions[ $function_name ]['args'] ), 'given' => $arg_count );
 							return $this->raise_error( 'wrong_number_of_arguments', $error_data );
 						}
@@ -388,7 +387,7 @@ class EvalMath {
 					return $this->raise_error( 'unexpected_comma' );
 				}
 				// Increment the argument count.
-				$stack->push( $stack->pop() + 1 ); // @phpstan-ignore binaryOp.invalid
+				$stack->push( $stack->pop() + 1 );
 				// Put the ( back on, we'll need to pop back to it again.
 				$stack->push( '(' );
 				++$index;
@@ -399,7 +398,7 @@ class EvalMath {
 				++$index;
 
 				// Do we now have a function/variable/number?
-			} elseif ( $ex && ! $expecting_operator ) { // @phpstan-ignore booleanNot.alwaysTrue
+			} elseif ( $ex && ! $expecting_operator ) {
 				$expecting_operator = true;
 				$value = $match[1];
 				// May be a function, or variable with implicit multiplication against parentheses...
@@ -612,7 +611,7 @@ class EvalMath {
 						break;
 					case '=':
 						// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison,Universal.Operators.StrictComparisons.LooseEqual
-						$stack->push( (int) ( $op1 == $op2 ) ); // Don't use === as the variable type can differ (int/double/bool).
+						$stack->push( (int) ( $op1 == $op2 ) ); // @phpstan-ignore equal.notAllowed (Don't use === as the variable type can differ (int/double/bool).)
 						break;
 					case '%':
 						$stack->push( $op1 % $op2 );
@@ -907,7 +906,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 * @return int Counted number of non-empty elements in the passed values.
 	 */
 	public static function counta( ...$args ): int {
-		return count( array_filter( $args ) );
+		return count( array_filter( $args ) ); // @phpstan-ignore arrayFilter.strict (Remove empty entries.)
 	}
 
 	/**
@@ -978,7 +977,7 @@ class EvalMath_Functions { // phpcs:ignore Generic.Files.OneObjectStructurePerFi
 	 */
 	public static function range( ...$args ) /* : float|int */ {
 		sort( $args );
-		return end( $args ) - reset( $args );
+		return end( $args ) - reset( $args ); // @phpstan-ignore minus.leftNonNumeric, minus.rightNonNumeric (`end` and `reset` should be replaced by `array_first` and `array_last`, when WP 6.9 is required.)
 	}
 
 	/**

@@ -178,7 +178,7 @@ class Helpers
 
 	/**
 				 * Return result in one of three formats.
-				 * @return float|int|\DateTime
+				 * @return \DateTime|float|int
 				 */
 				public static function returnIn3FormatsFloat(float $excelDateValue, ?int $calendar = null)
 	{
@@ -244,7 +244,7 @@ class Helpers
 
 	/**
 				 * Many functions accept null argument treated as 0.
-				 * @return int|float
+				 * @return float|int
 				 * @param mixed $number
 				 */
 				public static function validateNumericNull($number)

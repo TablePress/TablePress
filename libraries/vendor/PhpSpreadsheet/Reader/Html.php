@@ -438,7 +438,7 @@ class Html extends BaseReader
 
 			try {
 				$sheet->setTitle($cellContent, true, true);
-				($nullsafeVariable1 = ($nullsafeVariable2 = $sheet->getParent()) ? $nullsafeVariable2->getProperties() : null) ? $nullsafeVariable1->setTitle($cellContent) : null;
+				($nullsafeVariable1 = ($nullsafeVariable3 = $sheet->getParent()) ? $nullsafeVariable3->getProperties() : null) ? $nullsafeVariable1->setTitle($cellContent) : null;
 			} catch (SpreadsheetException $exception) {
 				// leave default title if too long or illegal chars
 			}
@@ -453,6 +453,12 @@ class Html extends BaseReader
 	/** @param string[] $attributeArray */
 	private function processDomElementSpanEtc(Worksheet $sheet, int &$row, string &$column, string &$cellContent, DOMElement $child, array &$attributeArray): void
 	{
+		if ((string) $child->nodeName === 'span') {
+			$parent = $child->parentNode;
+			if ($parent instanceof DOMElement && $parent->childElementCount === 1 && ($parent->nodeName === 'td' || $parent->nodeName === 'th')) {
+				$this->applyInlineStyle($sheet, $row, $column, $attributeArray);
+			}
+		}
 		if (in_array((string) $child->nodeName, self::SPAN_ETC, true)) {
 			if (isset($attributeArray['class']) && $attributeArray['class'] === 'comment') {
 				$sheet->getComment($column . $row)
@@ -914,6 +920,10 @@ class Html extends BaseReader
 		if (!empty($dom->baseURI)) {
 			$properties->setHyperlinkBase($dom->baseURI);
 		}
+		$language = trim((string) (($nullsafeVariable2 = $dom->documentElement) ? $nullsafeVariable2->getAttribute('lang') : null));
+		if ($language !== '') {
+			$properties->setLanguage($language);
+		}
 	}
 
 	/** @param string[] $matches */
@@ -1065,7 +1075,7 @@ class Html extends BaseReader
 			$value = explode(':', $st);
 			$styleName = trim($value[0]);
 			$styleValue = isset($value[1]) ? trim($value[1]) : null;
-			$styleValueString = (string) $styleValue;
+			$styleValueString = self::cssUnescape((string) $styleValue);
 
 			if (!$styleName) {
 				continue;
@@ -1152,7 +1162,8 @@ class Html extends BaseReader
 					break;
 
 				case 'font-family':
-					$cellStyle->getFont()->setName(str_replace('\'', '', $styleValueString));
+					$cellStyle->getFont()
+						->setName(trim($styleValueString, "'"));
 
 					break;
 
@@ -1218,6 +1229,17 @@ class Html extends BaseReader
 		}
 	}
 
+	/** @param string[] $matches */
+	private static function replaceCssEscaped(array $matches): string
+	{
+		return mb_chr((int) hexdec($matches[1]));
+	}
+
+	private static function cssUnescape(string $convert): string
+	{
+		return preg_replace_callback('/\\\([0-9a-fA-F]+) ?/', \Closure::fromCallable([self::class, 'replaceCssEscaped']), $convert) ?? 'unparseable';
+	}
+
 	/**
 	 * Check if has #, so we can get clean hex.
 	 */
@@ -1261,6 +1283,8 @@ class Html extends BaseReader
 		if ($name) {
 			$drawing->setName($name);
 		}
+		// An empty alt is how HTML marks a decorative image
+		$drawing->setDecorative(($attributes['alt'] ?? null) === '');
 
 		/** @var null|scalar $width */
 		/** @var null|scalar $height */

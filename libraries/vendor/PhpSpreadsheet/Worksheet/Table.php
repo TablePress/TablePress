@@ -18,40 +18,49 @@ class Table
 	 * Table Name.
 	 */
 	private string $name;
+
 	/**
 	 * Show Header Row.
 	 */
 	private bool $showHeaderRow = true;
+
 	/**
 	 * Show Totals Row.
 	 */
 	private bool $showTotalsRow = false;
+
 	/**
 	 * Table Range.
 	 */
 	private string $range = '';
+
 	/**
 	 * Table Worksheet.
 	 */
 	private ?Worksheet $workSheet = null;
+
 	/**
 	 * Table allow filter.
 	 */
 	private bool $allowFilter = true;
+
 	/**
 	 * Table Column.
 	 *
 	 * @var Table\Column[]
 	 */
 	private array $columns = [];
+
 	/**
 	 * Table Style.
 	 */
 	private TableStyle $style;
+
 	/**
 	 * Table AutoFilter.
 	 */
 	private AutoFilter $autoFilter;
+
 	/**
 	 * Create a new Table.
 	 *
@@ -68,6 +77,7 @@ class Table
 		$this->setRange($range);
 		$this->setName($name);
 	}
+
 	/**
 	 * Code to execute when this table is unset().
 	 */
@@ -75,6 +85,7 @@ class Table
 	{
 		$this->workSheet = null;
 	}
+
 	/**
 	 * Get Table name.
 	 */
@@ -82,6 +93,7 @@ class Table
 	{
 		return $this->name;
 	}
+
 	/**
 	 * Set Table name.
 	 *
@@ -120,6 +132,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * @throws PhpSpreadsheetException
 	 */
@@ -140,6 +153,7 @@ class Table
 			}
 		}
 	}
+
 	private function updateStructuredReferences(string $name): void
 	{
 		if (!$this->workSheet || !$this->name) {
@@ -157,6 +171,7 @@ class Table
 			$this->updateStructuredReferencesInNamedFormulae($spreadsheet, $name);
 		}
 	}
+
 	private function updateStructuredReferencesInCells(Worksheet $worksheet, string $newName): void
 	{
 		$pattern = '/' . preg_quote($this->name, '/') . '\[/mui';
@@ -172,6 +187,7 @@ class Table
 			}
 		}
 	}
+
 	private function updateStructuredReferencesInNamedFormulae(Spreadsheet $spreadsheet, string $newName): void
 	{
 		$pattern = '/' . preg_quote($this->name, '/') . '\[/mui';
@@ -184,6 +200,7 @@ class Table
 			}
 		}
 	}
+
 	/**
 	 * Get show Header Row.
 	 */
@@ -191,6 +208,7 @@ class Table
 	{
 		return $this->showHeaderRow;
 	}
+
 	/**
 	 * Set show Header Row.
 	 */
@@ -200,6 +218,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get show Totals Row.
 	 */
@@ -207,15 +226,30 @@ class Table
 	{
 		return $this->showTotalsRow;
 	}
+
 	/**
 	 * Set show Totals Row.
 	 */
 	public function setShowTotalsRow(bool $showTotalsRow): self
 	{
 		$this->showTotalsRow = $showTotalsRow;
+		$this->updateTotalsRowCells();
 
 		return $this;
 	}
+
+	/**
+	 * Set the empty cells of the totals row from the totals row formula, function or label of each column.
+	 */
+	public function updateTotalsRowCells(): self
+	{
+		foreach ($this->columns as $column) {
+			$column->updateTotalsRowCell();
+		}
+
+		return $this;
+	}
+
 	/**
 	 * Get allow filter.
 	 * If false, autofiltering is disabled for the table, if true it is enabled.
@@ -224,6 +258,7 @@ class Table
 	{
 		return $this->allowFilter;
 	}
+
 	/**
 	 * Set show Autofiltering.
 	 * Disabling autofiltering has the same effect as hiding the filter button on all the columns in the table.
@@ -234,6 +269,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get Table Range.
 	 */
@@ -241,6 +277,7 @@ class Table
 	{
 		return $this->range;
 	}
+
 	/**
 	 * Set Table Cell Range.
 	 *
@@ -286,6 +323,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Set Table Cell Range to max row.
 	 */
@@ -301,6 +339,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get Table's Worksheet.
 	 */
@@ -308,6 +347,7 @@ class Table
 	{
 		return $this->workSheet;
 	}
+
 	/**
 	 * Set Table's Worksheet.
 	 */
@@ -331,6 +371,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get all Table Columns.
 	 *
@@ -340,6 +381,7 @@ class Table
 	{
 		return $this->columns;
 	}
+
 	/**
 	 * Validate that the specified column is in the Table range.
 	 *
@@ -361,6 +403,7 @@ class Table
 
 		return $columnIndex - $rangeStart[0];
 	}
+
 	/**
 	 * Get a specified Table Column Offset within the defined Table range.
 	 *
@@ -372,6 +415,7 @@ class Table
 	{
 		return $this->isColumnInRange($column);
 	}
+
 	/**
 	 * Get a specified Table Column.
 	 *
@@ -387,6 +431,7 @@ class Table
 
 		return $this->columns[$column];
 	}
+
 	/**
 	 * Get a specified Table Column by its offset.
 	 *
@@ -394,11 +439,12 @@ class Table
 	 */
 	public function getColumnByOffset(int $columnOffset): Table\Column
 	{
-		[$rangeStart, $rangeEnd] = Coordinate::rangeBoundaries($this->range);
+		[$rangeStart] = Coordinate::rangeBoundaries($this->range);
 		$pColumn = Coordinate::stringFromColumnIndex($rangeStart[0] + $columnOffset);
 
 		return $this->getColumn($pColumn);
 	}
+
 	/**
 	 * Set Table.
 	 *
@@ -426,6 +472,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Clear a specified Table Column.
 	 *
@@ -441,6 +488,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Shift a Table Column Rule to a different column.
 	 *
@@ -468,6 +516,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get table Style.
 	 */
@@ -475,6 +524,7 @@ class Table
 	{
 		return $this->style;
 	}
+
 	/**
 	 * Set table Style.
 	 */
@@ -484,6 +534,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get AutoFilter.
 	 */
@@ -491,6 +542,7 @@ class Table
 	{
 		return $this->autoFilter;
 	}
+
 	/**
 	 * Set AutoFilter.
 	 */
@@ -500,6 +552,7 @@ class Table
 
 		return $this;
 	}
+
 	/**
 	 * Get the row number on this table for given coordinates.
 	 */
@@ -512,6 +565,7 @@ class Table
 
 		return (int) $thisCell[1] - (int) $firstCell[1];
 	}
+
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */
@@ -540,6 +594,7 @@ class Table
 			}
 		}
 	}
+
 	/**
 	 * toString method replicates previous behavior by returning the range if object is
 	 * referenced as a property of its worksheet.

@@ -114,7 +114,7 @@ class TablePressTableWidget extends \Elementor\Widget_Base {
 	 */
 	protected function get_upsale_data(): array {
 		return array(
-			'condition'    => tb_tp_fs()->is_free_plan(),
+			'condition'    => ! tb_tp_fs()->is_paying(),
 			'image'        => plugins_url( 'admin/img/tablepress.svg', TABLEPRESS__FILE__ ),
 			'image_alt'    => esc_attr__( 'Upgrade to TablePress Pro!', 'tablepress' ),
 			'title'        => esc_html__( 'Upgrade to TablePress Pro!', 'tablepress' ),

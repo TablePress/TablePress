@@ -39,4 +39,4 @@ return RectorConfig::configure()
 	) )
 
 	// Set used (maximum) PHP version.
-	->withPhpVersion( PhpVersion::PHP_85 );
+	->withPhpVersion( PhpVersion::PHP_86 );

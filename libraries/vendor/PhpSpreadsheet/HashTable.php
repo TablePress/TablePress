@@ -109,7 +109,7 @@ class HashTable
 
 	/**
 				 * Get index for hash code.
-				 * @return false|int
+				 * @return int|false
 				 */
 				public function getIndexForHashCode(string $hashCode)
 	{

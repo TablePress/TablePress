@@ -33,8 +33,10 @@ class CharacterConvert
 		return self::characterBoth($character, true);
 	}
 
-	/** @return array<mixed>|string
-				 * @param mixed $character */
+	/**
+				 * @return array<mixed>|string
+				 * @param mixed $character
+				 */
 				public static function characterUnicode($character)
 	{
 		if (is_array($character)) {
@@ -97,8 +99,10 @@ class CharacterConvert
 		return self::codeBoth(StringHelper::convertToString($characters, true, '', true), true);
 	}
 
-	/** @return array<mixed>|int|string
-				 * @param mixed $characters */
+	/**
+				 * @return array<mixed>|int|string
+				 * @param mixed $characters
+				 */
 				public static function codeUnicode($characters)
 	{
 		if (is_array($characters)) {

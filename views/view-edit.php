@@ -117,26 +117,26 @@ class TablePress_Edit_View extends TablePress_View {
 	public function add_screen_options_output( /* string */ $screen_settings, WP_Screen $screen ): string {
 		// Don't use a type hint for the `$screen_settings` argument as many WordPress plugins seem to be returning `null` in their filter hook handlers.
 
-		// Protect against other plugins not returning a string for the `$screen_settings` argument.
-		if ( ! is_string( $screen_settings ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
+		// Protect against other plugins not returning a string for the `$screen_settings` argument in their filter hook callbacks.
+		if ( ! is_string( $screen_settings ) ) {
 			$screen_settings = '';
 		}
 
-		$screen_settings = '<fieldset id="tablepress-screen-options" class="screen-options">';
+		$screen_settings .= '<fieldset id="tablepress-screen-options" class="screen-options">';
 		$screen_settings .= '<legend>' . __( 'Table editor settings', 'tablepress' ) . '</legend>';
 		$screen_settings .= '<p>' . __( 'Adjust the default size of the table cells in the table editor below.', 'tablepress' ) . ' ' . __( 'Cells with many lines of text will expand to their full height when they are edited.', 'tablepress' ) . '</p>';
 		$screen_settings .= '<p><em>' . __( 'Please note: These settings only influence the table editor view on this screen, but not the table that the site visitor sees!', 'tablepress' ) . '</em></p>';
-		$screen_settings .= '<div>';
-		$screen_settings .= '<label for="table_editor_column_width">' . __( 'Default column width:', 'tablepress' ) . '</label> ';
-		$input = '<input type="number" id="table_editor_column_width" class="small-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_column_width' ) ) . '" min="30" max="9999">';
+		$screen_settings .= '<div style="display: flex; gap: 0.5rem 3rem; flex-wrap: wrap;">';
+		$screen_settings .= '<label>' . __( 'Default column width:', 'tablepress' );
+		$input = ' <input type="number" id="table_editor_column_width" class="small-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_column_width' ) ) . '" min="30" max="9999" style="min-height: 32px;">';
 		/* translators: %s: Input field for the number of pixels */
 		$screen_settings .= sprintf( __( '%s pixels', 'tablepress' ), $input );
-		$screen_settings .= '</div>';
-		$screen_settings .= '<div style="margin-top: 6px;">';
-		$screen_settings .= '<label for="table_editor_line_clamp">' . __( 'Maximum visible lines of text:', 'tablepress' ) . '</label> ';
-		$input = '<input type="number" id="table_editor_line_clamp" class="tiny-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_line_clamp' ) ) . '" min="0" max="999">';
+		$screen_settings .= '</label> ';
+		$screen_settings .= '<label>' . __( 'Maximum visible lines of text:', 'tablepress' );
+		$input = ' <input type="number" id="table_editor_line_clamp" class="tiny-text" value="' . esc_attr( TablePress::$model_options->get( 'table_editor_line_clamp' ) ) . '" min="0" max="999" style="min-height: 32px;">';
 		/* translators: %s: Input field for the number of lines */
 		$screen_settings .= sprintf( __( '%s lines', 'tablepress' ), $input );
+		$screen_settings .= '</label>';
 		$screen_settings .= '</div>';
 		$screen_settings .= '</fieldset>';
 		return $screen_settings;
@@ -155,6 +155,7 @@ class TablePress_Edit_View extends TablePress_View {
 
 		?>
 		<div id="tablepress-page" class="wrap">
+		<div id="tablepress-edit-screen"></div>
 		<form>
 		<?php
 			$this->print_nav_tab_menu();
@@ -261,8 +262,6 @@ class TablePress_Edit_View extends TablePress_View {
 		echo "};\n";
 
 		echo "</script>\n";
-
-		echo '<div id="tablepress-edit-screen"></div>'; // React container.
 	}
 
 	/**
@@ -277,6 +276,7 @@ class TablePress_Edit_View extends TablePress_View {
 		echo '<div id="tablepress-table-information-section"></div>';
 
 		if ( ! TABLEPRESS_IS_PLAYGROUND_PREVIEW && tb_tp_fs()->is_free_plan() ) :
+			$in_promo_period = ( strtotime( '2026-11-22' ) < strtotime( 'today' ) && strtotime( 'today' ) < strtotime( '2026-12-01' ) );
 			?>
 			<div class="postbox premium-features">
 				<div>
@@ -298,8 +298,16 @@ class TablePress_Edit_View extends TablePress_View {
 						</div>
 					</div>
 					<div class="buttons">
-						<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen" class="tablepress-button">
-							<span><?php _e( 'Compare the TablePress premium versions', 'tablepress' ); ?></span>
+						<a href="https://tablepress.org/premium/?utm_source=plugin&utm_medium=textlink&utm_content=edit-screen<?php echo $in_promo_period ? '&utm_campaign=bfcm26' : ''; ?>" class="tablepress-button<?php echo $in_promo_period ? ' promo' : ''; ?>">
+							<span>
+								<?php
+								if ( $in_promo_period ) {
+									echo in_array( get_user_locale(), array( 'de_DE', 'de_AT', 'de_CH' ), true ) ? 'Premium: Spare zum Black Friday 25&#8239;%!' : 'Premium: 25% OFF for Black Friday!';
+								} else {
+									_e( 'Compare the TablePress premium versions', 'tablepress' );
+								}
+								?>
+							</span>
 							<span class="dashicons dashicons-arrow-right-alt"></span>
 						</a>
 					</div>
@@ -347,7 +355,6 @@ class TablePress_Edit_View extends TablePress_View {
 	 */
 	public function textbox_hidden_containers( array $data, array $box ): void {
 		?>
-<div id="tablepress-table-preview-section"></div>
 <div class="hidden-container">
 	<div id="advanced-editor">
 		<label id="advanced-editor-label" for="advanced-editor-content" class="screen-reader-text"><?php esc_html_e( 'Advanced Editor', 'tablepress' ); ?></label>

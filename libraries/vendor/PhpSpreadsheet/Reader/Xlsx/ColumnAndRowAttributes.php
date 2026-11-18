@@ -5,8 +5,8 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange;
 use TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\DefaultReadFilter;
+use TablePress\PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use TablePress\PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
-use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use SimpleXMLElement;
 
@@ -152,15 +152,14 @@ class ColumnAndRowAttributes extends BaseParserClass
 		foreach ($worksheetCols->col as $columnx) {
 			$column = $columnx->attributes();
 			if ($column !== null) {
-				$startColumn = Coordinate::stringFromColumnIndex((int) $column['min']);
-				$endColumn = Coordinate::stringFromColumnIndex((int) $column['max']);
-				StringHelper::stringIncrement($endColumn);
-				for ($columnAddress = $startColumn; $columnAddress !== $endColumn; StringHelper::stringIncrement($columnAddress)) {
+				$minCol = max((int) $column['min'], 1);
+				$maxCol = min((int) $column['max'], AddressRange::MAX_COLUMN_INT);
+				if ($minCol > $maxCol) {
+					throw new ReaderException('min col > max col');
+				}
+				for ($col = $minCol; $col <= $maxCol; ++$col) {
+					$columnAddress = Coordinate::stringFromColumnIndex($col);
 					$columnAttributes[$columnAddress] = $this->readColumnRangeAttributes($column, $readDataOnly);
-
-					if ((int) ($column['max']) === AddressRange::MAX_COLUMN_INT) {
-						break;
-					}
 				}
 			}
 		}

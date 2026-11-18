@@ -9,8 +9,10 @@ class ArrayArgumentProcessor
 {
 	private static ArrayArgumentHelper $arrayArgumentHelper;
 
-	/** @return mixed[]
-				 * @param mixed ...$arguments */
+	/**
+				 * @return mixed[]
+				 * @param mixed ...$arguments
+				 */
 				public static function processArguments(
 		ArrayArgumentHelper $arrayArgumentHelper,
 		callable $method,
@@ -142,8 +144,10 @@ class ArrayArgumentProcessor
 		return $result;
 	}
 
-	/** @return mixed[]
-				 * @param mixed ...$arguments */
+	/**
+				 * @return mixed[]
+				 * @param mixed ...$arguments
+				 */
 				private static function evaluateVectorPair(callable $method, int $rowIndex, int $columnIndex, ...$arguments): array
 	{
 		$rowVector = Functions::flattenArray($arguments[$rowIndex]);

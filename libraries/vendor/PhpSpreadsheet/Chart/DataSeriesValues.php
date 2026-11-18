@@ -344,7 +344,7 @@ class DataSeriesValues extends Properties
 
 	/**
 				 * Get line width for series.
-				 * @return null|float|int
+				 * @return float|int|null
 				 */
 				public function getLineWidth()
 	{
@@ -358,7 +358,7 @@ class DataSeriesValues extends Properties
 				 * Set line width for the series.
 				 *
 				 * @return $this
-				 * @param null|float|int $width
+				 * @param float|int|null $width
 				 */
 				public function setLineWidth($width)
 	{
@@ -442,7 +442,7 @@ class DataSeriesValues extends Properties
 		if ($this->dataSource !== null) {
 			$calcEngine = Calculation::getInstance($worksheet->getParent());
 			$newDataValues = Calculation::unwrapResult(
-				$calcEngine->_calculateFormulaValue(
+				$calcEngine->calculateFormulaValue(
 					'=' . $this->dataSource,
 					null,
 					$worksheet->getCell('A1')

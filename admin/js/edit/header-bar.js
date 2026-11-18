@@ -10,592 +10,381 @@
 /**
  * WordPress dependencies.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
-	Button,
-	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	Icon,
+	Button as LegacyButton,
 	KeyboardShortcuts,
-	Modal,
-	Spinner,
-	Tooltip,
-	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	withNotices,
 } from '@wordpress/components';
 import { useCopyToClipboard } from '@wordpress/compose';
 import { useDispatch } from '@wordpress/data';
-import { applyFilters } from '@wordpress/hooks';
-import { __, _n, sprintf } from '@wordpress/i18n';
-import { arrowUp, blockTable, box, copySmall, download, info, moreVertical, settings, shortcode, siteLogo, trash } from '@wordpress/icons';
+import { __, sprintf } from '@wordpress/i18n';
+import { arrowUp, blockTable, box, copy, download, info, moreVertical, settings, shortcode, siteLogo, trash } from '@wordpress/icons';
 import { displayShortcut, shortcutAriaLabel } from '@wordpress/keycodes';
 import { store as noticesStore } from '@wordpress/notices';
-import { Menu } from '@wordpress/ui';
+import {
+	// IconButton, // Due to compatibility issues with WP < 7.0, we use a custom `IconButton` component instead of the one from the `@wordpress/ui` package.
+	Menu,
+	Spinner,
+	Stack,
+	Text,
+} from '@wordpress/ui';
 
 /**
  * Internal dependencies.
  */
 import { initializeReactComponentInPortal } from '../common/react-loader';
-import processAjaxRequest from '../common/ajax-request';
-import { Notifications } from '../common/notifications';
-import { TablePressIconSimple } from '../../img/tablepress-icon';
+import { TablePressIconSimple } from '../../img/icons';
+import { ConfirmDeleteModal } from '../common/modals';
+import { IconButton } from '../common/icon-button';
+import { keyboardShortcutHelper, showNotice } from '../common/functions';
+import { NoticeUI } from '../common/notice-ui';
+import { saveTableChanges, showPreview } from './callbacks';
+import { useScreenSettings, useUpdateScreenSettings } from './context/screen-settings';
+import { useTableMeta, useUpdateTableMeta } from './context/table-meta';
+import { useTableOptions } from './context/table-options';
 
 /**
- * Saves the table changes to the server.
- *
- * @param {Object}   props                      Function parameters.
- * @param {Object}   props.screenData           Screen data.
- * @param {Function} props.updateScreenData     Callback to update the screen data.
- * @param {Object}   props.tableOptions         Table options.
- * @param {Object}   props.tableMeta            Table meta data.
- * @param {Function} props.updateTableMeta      Callback to update the table meta.
- * @param {Function} props.noticeOperations     Callbacks for working with notices.
- * @param {Object}   props.noticesStoreDispatch Dispatch function for the notices store. (Optional, only for notices created by keyboard shortcuts.)
+ * Scrolls the window to the top of the page with a smooth animation.
  */
-const saveTableChanges = ( { screenData, updateScreenData, tableOptions, tableMeta, updateTableMeta, noticeOperations, noticesStoreDispatch } ) => {
-	// Validate input fields.
-	if ( ! applyFilters( 'tablepress.optionsValidateFields', true, tableOptions ) ) {
+const scrollToTop = () => window.scrollTo( { left: 0, top: 0, behavior: 'smooth' } );
+
+/**
+ * Scrolls the window to the specified section of the page with a smooth animation.
+ *
+ * @param {string} section Section to scroll to.
+ */
+const scrollToSection = ( section ) => {
+	const element = document.getElementById( `tablepress_edit-${ section }` );
+	if ( ! element ) {
 		return;
 	}
 
-	// Collect information about hidden rows and columns.
-	tp.helpers.visibility.update();
-
-	// Prepare the data for the AJAX request.
-	const requestData = {
-		action: 'tablepress_save_table',
-		_ajax_nonce: tp.nonces.edit_table,
-		tablepress: {
-			id: tp.table.id,
-			new_id: tableMeta.id,
-			name: tableMeta.name,
-			description: tableMeta.description,
-			data: JSON.stringify( tp.editor.options.data ),
-			options: JSON.stringify( tableOptions ),
-			visibility: JSON.stringify( tp.table.visibility ),
-			number: {
-				rows: tp.editor.options.data.length,
-				columns: tp.editor.options.columns.length,
-			},
-		},
-	};
-
-	/**
-	 * Callback for handling specifics of a successful save on this screen.
-	 *
-	 * @param {Object} data
-	 */
-	const onSuccessfulRequest = ( data ) => {
-		// Saving was successful, so the original ID has changed to the (maybe) new ID -> we need to adjust all occurrences.
-		if ( tp.table.id !== data.table_id && window?.history?.pushState ) {
-			// Update URL, but only if the table ID changed, to not get dummy entries in the browser history.
-			window.history.pushState( '', '', window.location.href.replace( /table_id=[a-zA-Z0-9_-]+/gi, `table_id=${ data.table_id }` ) );
-		}
-
-		tp.table.id = data.table_id;
-
-		updateTableMeta( {
-			id: data.table_id,
-			lastModified: data.last_modified,
-			lastEditor: data.last_editor,
-		} );
-
-		// Update the nonces.
-		[ 'copy', 'delete', 'edit', 'preview' ].forEach( action => {
-			tp.nonces[ `${action}_table` ] = data[ `new_${action}_nonce` ];
-		} );
-
-		// Update the "Export", "Copy", "Delete", and "Preview" URLs in the screen data.
-		const updatedUrls = {};
-		updatedUrls.exportUrl = screenData.exportUrl.replace( /table_id=[a-zA-Z0-9_-]+/g, `table_id=${ data.table_id }` );
-		[ 'copy', 'delete', 'preview' ].forEach( ( action ) => {
-			updatedUrls[ `${ action }Url` ] = screenData[ `${ action }Url` ]
-				.replace( /item=[a-zA-Z0-9_-]+/g, `item=${ data.table_id }` ) // Updates both the "item" and the "return_item" parameters.
-				.replace( /&_wpnonce=[a-zA-Z0-9]+/g, `&_wpnonce=${ tp.nonces[ `${ action }_table` ] }` );
-		} );
-		updateScreenData( updatedUrls );
-
-		tp.helpers.unsaved_changes.unset();
-
-		const actionMessages = {};
-		actionMessages.success_save = __( 'The table was saved successfully.', 'tablepress' );
-		actionMessages.success_save_success_id_change = actionMessages.success_save + ' ' + __( 'The table ID was changed.', 'tablepress' );
-		actionMessages.success_save_error_id_change = actionMessages.success_save + ' ' + __( 'The table ID could not be changed, probably because the new ID is already in use!', 'tablepress' );
-
-		if ( 'success_save_error_id_change' === data.message && data.error_details ) {
-			const errorIntroduction = __( 'These errors were encountered:', 'tablepress' );
-			actionMessages.success_save_error_id_change = `<p>${ actionMessages.success_save_error_id_change }</p><p>${ errorIntroduction }</p><pre>${ data.error_details }</pre><p>`;
-		}
-
-		const notice = {
-			status: ( data.message.includes( 'error' ) ) ? 'error' : 'success',
-			content: actionMessages[ data.message ],
-			type: ( data.message.includes( 'error' ) ) ? 'notice' : 'snackbar',
-		};
-
-		return { notice };
-	};
-
-	const setBusyState = ( isBusy ) => updateScreenData( { isSaving: isBusy } );
-
-	processAjaxRequest( { requestData, onSuccessfulRequest, setBusyState, noticeOperations, noticesStoreDispatch } );
+	element.style.scrollMarginInlineStart = '200px'; // Ensure that we are scrolling to the left edge of the table editor.
+	element.scrollIntoView( { behavior: 'smooth', block: 'start', inline: 'start' } );
+	element.style.removeProperty( 'scroll-margin-inline-start' );
 };
 
 /**
- * Shows a preview of the table.
+ * Returns the Header Bar component's JSX markup.
  *
- * @param {Object}   props                  Function parameters.
- * @param {Function} props.updateScreenData Callback to update the screen data.
- * @param {Object}   props.tableOptions     Table options.
- * @param {Object}   props.tableMeta        Table meta data.
- * @param {Function} props.noticeOperations Callbacks for working with notices.
+ * @param {Object} props          Component props.
+ * @param {Array}  props.features The feature modules that are enabled on the site.
+ * @return {Object} Header Bar component.
  */
-const showPreview = ( { updateScreenData, tableOptions, tableMeta, noticeOperations } ) => {
-	// For tables without unsaved changes, directly show an externally rendered table from a URL in an iframe in a Modal.
-	if ( ! tp.made_changes ) {
-		updateScreenData( {
-			previewIsOpen: true,
-			previewSrcDoc: '',
-		} );
-		return;
-	}
-
-	/* For tables with unsaved changes, get the table preview HTML code for the iframe via AJAX. */
-
-	// Update information about hidden rows and columns.
-	tp.helpers.visibility.update();
-
-	// Prepare the data for the AJAX request.
-	const requestData = {
-		action: 'tablepress_preview_table',
-		_ajax_nonce: tp.nonces.preview_table,
-		tablepress: {
-			id: tp.table.id,
-			new_id: tableMeta.id,
-			name: tableMeta.name,
-			description: tableMeta.description,
-			data: JSON.stringify( tp.editor.options.data ),
-			options: JSON.stringify( tableOptions ),
-			visibility: JSON.stringify( tp.table.visibility ),
-			number: {
-				rows: tp.editor.options.data.length,
-				columns: tp.editor.options.columns.length,
-			},
-		},
-	};
-
-	/**
-	 * Callback for handling specifics of a successful save on this screen.
-	 *
-	 * @param {Object} data
-	 */
-	const onSuccessfulRequest = ( data ) => {
-		updateScreenData( {
-			previewIsOpen: true,
-			previewSrcDoc: `<!DOCTYPE html><html><head>${ data.head_html }</head><body>${ data.body_html }</body></html>`,
-		} );
-
-		return { notice: null };
-	};
-
-	const setBusyState = ( isBusy ) => updateScreenData( { previewIsLoading: isBusy } );
-
-	processAjaxRequest( { requestData, onSuccessfulRequest, setBusyState, noticeOperations } );
-};
-
-/**
- * Returns the Confirm Delete Modal component's JSX markup.
- *
- * @param {Object}   props                         Component props.
- * @param {string}   props.title                   Title of the modal.
- * @param {string}   props.deleteUrl               URL to delete the table.
- * @param {Function} props.closeConfirmDeleteModal Callback to close the Confirm Delete modal.
- * @return {Object} Confirm Delete Modal component.
- */
-const ConfirmDeleteModal = ( { title, deleteUrl, closeConfirmDeleteModal } ) => {
-	const cancelButtonRef = useRef();
-	const deleteButtonRef = useRef();
-
-	const handleEnter = useCallback(
-		( event ) => {
-			// Avoid triggering the action when a button is focused, as this can cause a double submission.
-			const isCancelOrDeleteButton =
-				event.target === cancelButtonRef.current ||
-				event.target === deleteButtonRef.current;
-
-			if ( ! isCancelOrDeleteButton && 'Enter' === event.key ) {
-				deleteButtonRef.current.click();
-			}
-		},
-		[],
-	);
-
-	return (
-		<Modal
-			size="small"
-			icon={ <Icon icon={ trash } size="36" style={ { display: 'flex' } } /> }
-			title={ title }
-			isDismissible={ false }
-			onKeyDown={ handleEnter }
-			onRequestClose={ closeConfirmDeleteModal }
-		>
-			<VStack spacing={ 8 }>
-				<span>
-					{ _n( 'Do you really want to delete this table?', 'Do you really want to delete these tables?', 1, 'tablepress' ) }
-					<br />
-					{ __( 'Deleting a table is permanent and can not be undone!', 'tablepress' ) }
-				</span>
-				<HStack alignment="right">
-					<Button
-						ref={ cancelButtonRef }
-						variant="tertiary"
-						text={ __( 'Cancel', 'tablepress' ) }
-						onClick={ closeConfirmDeleteModal }
-					/>
-					<Button
-						ref={ deleteButtonRef }
-						variant="primary"
-						isDestructive={ true }
-						href={ deleteUrl }
-						text={ __( 'Delete', 'tablepress' ) }
-						onClick={ () => {
-							// Prevent onunload warning, by calling the unset method.
-							tp.helpers.unsaved_changes.unset();
-							closeConfirmDeleteModal();
-						} }
-					/>
-				</HStack>
-			</VStack>
-		</Modal>
-	);
-};
-
-const HeaderBar = ( { noticeOperations, noticeUI, screenData, updateScreenData, tableOptions, tableMeta, updateTableMeta, features } ) => {
+const HeaderBar = ( { features } ) => {
 	const noticesStoreDispatch = useDispatch( noticesStore );
-	const { createSuccessNotice } = noticesStoreDispatch;
+
+	const { copyUrl, deleteUrl, exportUrl, fullscreenIsActive, isSaving, previewIsLoading, previewUrl } = useScreenSettings();
+	const updateScreenSettings = useUpdateScreenSettings();
+	const tableMeta = useTableMeta();
+	const updateTableMeta = useUpdateTableMeta();
+	const tableOptions = useTableOptions();
+	const [ quickNavigationDropdownIsOpen, setQuickNavigationDropdownIsOpen ] = useState( false );
+	const [ moreActionsMenuDropdownIsOpen, setMoreActionsMenuDropdownIsOpen ] = useState( false );
 	const [ confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen ] = useState( false );
 
 	// Copy shortcode to clipboard.
 	const shortcodeText = `[${ tp.table.shortcode } id=${ tableMeta.id } /]`;
 	const copyShortcodeButtonRef = useCopyToClipboard( shortcodeText, () => {
-		createSuccessNotice(
-			__( 'Copied Shortcode to clipboard.', 'tablepress' ),
+		showNotice(
 			{
+				status: 'success',
 				type: 'snackbar',
-				icon: <Icon icon={ TablePressIconSimple } />,
-			}
+				content: __( 'Copied Shortcode to clipboard.', 'tablepress' ),
+			},
+			noticesStoreDispatch
 		);
 	} );
 
-	const scrollToTop = () => window.scrollTo( { top: 0, behavior: 'smooth' } );
-
-	const featureModules = Object.keys( tp?.modules ?? {} )
-		.filter( ( module ) => features.includes( module ) )
-		.map( ( module ) => ( {
-			module,
-			name: tp.modules[ module ].name,
-		} ) )
-		.sort( ( a, b ) => a.name.localeCompare( b.name ) );
-
-	return (
-		<VStack>
-			<HStack className="tablepress-header-bar-wrapper">
-				<HStack alignment="left" spacing={ 3 } expanded={ false }>
-					{ /* Left side: Quick Navigation, Table ID, Table name */ }
-					<Menu.Root
-						modal={ false }
-						open={ screenData.quickNavigationDropdownIsOpen }
-						onOpenChange={ ( isOpen ) => updateScreenData( { quickNavigationDropdownIsOpen: isOpen } ) }
-					>
-						<Menu.Trigger
-							render={
-								<Button
-									icon={ TablePressIconSimple }
-									label={ __( 'Quick navigation', 'tablepress' ) }
-									onDoubleClick={ () => scrollToTop() } /* Scroll to Top on Double-click. (Double-click will also close the dropdown.) */
-									shortcut={ {
-										ariaLabel: shortcutAriaLabel.primary( 'j' ),
-										display: displayShortcut.primary( 'j' ),
-									} }
-								/>
-							}
-						/>
-						<Menu.Popup
-							positioner={ <Menu.Positioner sideOffset={ 12 } /> } // Increase the offset to not have the top border be right on top of the bottom border of the header bar.
-							style={
-								// Allow the menu to be higher than the default, so that more feature modules fit.
-								featureModules.length > 0 && {
-									maxHeight: 'min(var(--available-height), 80dvh)',
-								}
-							}
-						>
-							<Menu.Item
-								prefix={ <Menu.PrefixIcon icon={ arrowUp } /> }
-								onClick={ () => scrollToTop() }
-							>
-								<Menu.ItemLabel>
-									{ __( 'Scroll to Top', 'tablepress' ) }
-								</Menu.ItemLabel>
-							</Menu.Item>
-							<Menu.Separator />
-							<Menu.Group>
-								{ featureModules.length > 0 && (
-									<Menu.GroupLabel>
-										{ __( 'Common', 'tablepress' ) }
-									</Menu.GroupLabel>
-								) }
-								{
-										[
-											{ section: 'table-information', label: __( 'Table Information', 'tablepress' ), icon: info },
-											{ section: 'table-data', label: __( 'Table Content', 'tablepress' ), icon: blockTable },
-											{ section: 'table-options', label: __( 'Table Options', 'tablepress' ), icon: settings },
-											{ section: 'datatables-features', label: __( 'Table Features for Site Visitors', 'tablepress' ), icon: siteLogo },
-										].map( ( { section, label, icon } ) => (
-											<Menu.Item
-												key={ section }
-												prefix={ <Menu.PrefixIcon icon={ icon } /> }
-												onClick={ () => {
-													document.getElementById( `tablepress_edit-${section}` ).scrollIntoView( { behavior: 'smooth', block: 'start' } );
-												} }
-											>
-												<Menu.ItemLabel>
-													{ label }
-												</Menu.ItemLabel>
-											</Menu.Item>
-										) )
-									}
-							</Menu.Group>
-							{
-								featureModules.length > 0 && (
-									<>
-										<Menu.Separator />
-										<Menu.Group>
-											<Menu.GroupLabel>
-												{ __( 'Feature Modules', 'tablepress' ) }
-											</Menu.GroupLabel>
-											{ featureModules.map( ( { module, name } ) => (
-												<Menu.Item
-													key={ module }
-													prefix={ <Menu.PrefixIcon icon={ box } style={ { color: 'transparent' } } /> } // The icon is needed as a placeholder to align the labels.
-													onClick={ () => {
-														document.getElementById( `tablepress_edit-${module}` ).scrollIntoView( { behavior: 'smooth', block: 'start' } );
-													} }
-												>
-													<Menu.ItemLabel>
-														{ name }
-													</Menu.ItemLabel>
-												</Menu.Item>
-											) ) }
-										</Menu.Group>
-									</>
-								)
-							}
-						</Menu.Popup>
-					</Menu.Root>
-					<span
-						className="tablepress-header-table-id"
-						style={ { flexShrink: 0 } }>
-						{ sprintf( __( 'ID: %s', 'tablepress' ), tableMeta.id ) }
-					</span>
-					<Tooltip text={ sprintf( __( 'Table Name: %s', 'tablepress' ), tableMeta.name ) }>
-						<h2 className="tablepress-header-table-name">
-							{ tableMeta.name }
-						</h2>
-					</Tooltip>
-				</HStack>
-				<HStack alignment="right" spacing={ 3 } expanded={ false } style={ { flexShrink: 0 } }>
-					{ /* Right side: Spinner, Preview, Save Changes, Dropdown */ }
-					{
-						( screenData.isSaving || screenData.previewIsLoading ) && (
-							<Spinner style={ { margin: 0 } } />
-						)
-					}
-					{
-						tp.screenOptions.currentUserCanPreviewTable && (
-							<Button
-								variant="secondary"
-								href={ screenData.previewUrl }
-								text={ __( 'Preview', 'tablepress' ) }
-								shortcut={ screenData.previewIsLoading ? undefined :
-									{
-										ariaLabel: shortcutAriaLabel.primary( 'p' ),
-										display: displayShortcut.primary( 'p' ),
-									}
-								}
-								isBusy={ screenData.previewIsLoading }
-								disabled={ screenData.previewIsLoading }
-								accessibleWhenDisabled={ true }
-								onClick={ ( event ) => {
-									// Open the Preview Modal if the button is clicked, except if an unmodified preview in a new tab is requested.
-									if ( tp.made_changes || ! ( event.ctrlKey || event.metaKey || event.shiftKey ) ) {
-										event.preventDefault();
-										showPreview( { updateScreenData, tableOptions, tableMeta, noticeOperations } );
-									}
-								} }
-							/>
-						)
-					}
-					<Button
-						variant="primary"
-						text={ __( 'Save Changes', 'tablepress' ) }
-						shortcut={ screenData.isSaving ? undefined :
-							{
-								ariaLabel: shortcutAriaLabel.primary( 's' ),
-								display: displayShortcut.primary( 's' ),
-							}
-						}
-						isBusy={ screenData.isSaving }
-						disabled={ screenData.isSaving }
-						accessibleWhenDisabled={ true }
-						onClick={ () => saveTableChanges( { screenData, updateScreenData, tableOptions, tableMeta, updateTableMeta, noticeOperations, noticesStoreDispatch } ) }
-					/>
-					<Menu.Root modal={ false }>
-						<Menu.Trigger
-							render={
-								<Button
-									icon={ moreVertical }
-									label={ __( 'More actions', 'tablepress' ) }
-								/>
-							}
-						/>
-						<Menu.Popup
-							positioner={ <Menu.Positioner sideOffset={ 12 } /> } // Increase the offset to not have the top border be right on top of the bottom border of the header bar.
-						>
-							<Menu.Item
-								ref={ copyShortcodeButtonRef }
-								prefix={ <Menu.PrefixIcon icon={ shortcode } /> }
-							>
-								<Menu.ItemLabel>
-									{ __( 'Copy Shortcode', 'tablepress' ) }
-								</Menu.ItemLabel>
-								<Menu.ItemDescription>
-									{ shortcodeText }
-								</Menu.ItemDescription>
-							</Menu.Item>
-							{ ( tp.screenOptions.currentUserCanCopyTable || tp.screenOptions.currentUserCanExportTable ) && (
-								<>
-									<Menu.Separator />
-									{ tp.screenOptions.currentUserCanCopyTable && (
-										<Menu.LinkItem
-											prefix={ <Menu.PrefixIcon icon={ copySmall } /> }
-											href={ screenData.copyUrl }
-										>
-											<Menu.ItemLabel>
-												{ __( 'Copy Table', 'tablepress' ) }
-											</Menu.ItemLabel>
-										</Menu.LinkItem>
-									) }
-									{ tp.screenOptions.currentUserCanExportTable && (
-										<Menu.LinkItem
-											prefix={ <Menu.PrefixIcon icon={ download } /> }
-											href={ screenData.exportUrl }
-										>
-											<Menu.ItemLabel>
-												{ __( 'Export Table', 'tablepress' ) }
-											</Menu.ItemLabel>
-										</Menu.LinkItem>
-									) }
-								</>
-							) }
-							{ tp.screenOptions.currentUserCanDeleteTable && (
-								<>
-									<Menu.Separator />
-									<Menu.Item
-										prefix={ <Menu.PrefixIcon icon={ trash } style={ { color: '#cc1818' } } /> }
-										onClick={ () => setConfirmDeleteModalIsOpen( true ) }
-										style={ { color: '#cc1818' } }
-									>
-										<Menu.ItemLabel>
-											{ __( 'Delete table', 'tablepress' ) }
-										</Menu.ItemLabel>
-									</Menu.Item>
-								</>
-							) }
-						</Menu.Popup>
-					</Menu.Root>
-				</HStack>
-			</HStack>
-			{ noticeUI }
-			{ confirmDeleteModalIsOpen && (
-				<ConfirmDeleteModal
-					title={ sprintf( __( 'Delete “%1$s” (ID %2$s)', 'tablepress' ), tableMeta.name, tableMeta.id ) }
-					deleteUrl={ screenData.deleteUrl }
-					closeConfirmDeleteModal={ () => setConfirmDeleteModalIsOpen( false ) }
-				/>
-			) }
-		</VStack>
-	);
-};
-
-// A copy of the section to be used for the bottom buttons, with keyboard shortcuts.
-const HeaderBarWithKeyboardShortcutsWithNotices = withNotices( ( props ) => {
-	const noticesStoreDispatch = useDispatch( noticesStore );
-
-	const saveChangesCallback = ( event ) => {
-		event.preventDefault();
-		// Blur the focussed element to make sure that all `change` and `blur` events were triggered.
-		document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
-		// Don't save changes directly, but trigger a save on the next render.
-		props.updateScreenData( { triggerSaveChanges: true } );
-	};
-
-	/*
-	 * Save changes when the `triggerSaveChanges` screen data option is set.
-	 * This ensures that the save function receives the latest data, after all `change` and `blur` events were triggered.
+	/**
+	 * Toggles the Quick Navigation dropdown menu.
+	 *
+	 * @param {Event} event The keyboard event that triggered the callback.
 	 */
-	useEffect( () => {
-		if ( props.screenData.triggerSaveChanges ) {
-			props.updateScreenData( { triggerSaveChanges: false } );
-			saveTableChanges( { ...props, noticesStoreDispatch } );
-		}
-	}, [ props, noticesStoreDispatch ] );
-
-	const openNavigationDropdownCallback = ( event ) => {
+	const toggleNavigationDropdownCallback = ( event ) => {
 		event.preventDefault();
-		props.updateScreenData( { quickNavigationDropdownIsOpen: ! props.screenData.quickNavigationDropdownIsOpen } );
+		setQuickNavigationDropdownIsOpen( ! quickNavigationDropdownIsOpen );
 	};
 
-	const shortcuts = {
-		'mod+s': saveChangesCallback,
-		'mod+j': openNavigationDropdownCallback,
-	};
-
-	if ( tp.screenOptions.currentUserCanPreviewTable ) {
-		const showPreviewCallback = ( event ) => {
-			event.preventDefault();
-			// Blur the focussed element to make sure that all `change` and `blur` events were triggered.
-			document.activeElement.blur(); // eslint-disable-line @wordpress/no-global-active-element
-			// Don't load the preview directly, but trigger it on the next render.
-			props.updateScreenData( { triggerPreview: true } );
-		};
-
-		/*
-		* Trigger the preview when the `triggerPreview` screen data option is set.
-		* This ensures that the save function receives the latest data, after all `change` and `blur` events were triggered.
-		*/
-		useEffect( () => {
-			if ( props.screenData.triggerPreview ) {
-				props.updateScreenData( { triggerPreview: false } );
-				showPreview( props );
-			}
-		}, [ props ] );
-
-		shortcuts[ 'mod+p' ] = showPreviewCallback;
-	}
+	const featureModules = useMemo( () => (
+		Object.keys( tp?.modules ?? {} )
+			.filter( ( module ) => features.includes( module ) )
+			.map( ( module ) => ( {
+				module,
+				name: tp.modules[ module ].name,
+			} ) )
+			.sort( ( a, b ) => a.name.localeCompare( b.name ) )
+	), [ features ] );
 
 	return (
 		<>
-			<HeaderBar { ...props } />
+			<Stack direction="column">
+				<Stack
+					direction="row"
+					gap="md"
+					justify="space-between"
+					align="center"
+					wrap="wrap"
+					className="tablepress-header-bar-wrapper"
+				>
+					<Stack direction="row" gap="md" align="center">
+						{ /* Left side: Quick Navigation, Table ID, Table name */ }
+						<Menu.Root
+							modal={ false }
+							open={ ! fullscreenIsActive && quickNavigationDropdownIsOpen } // Force the dropdown to be closed in fullscreen mode as it would hover above the fullscreen overlay.
+							onOpenChange={ ( isOpen ) => setQuickNavigationDropdownIsOpen( isOpen ) }
+						>
+							<Menu.Trigger
+								render={
+									<IconButton
+										variant="minimal"
+										size="compact"
+										icon={ TablePressIconSimple }
+										label={ __( 'Quick navigation', 'tablepress' ) }
+										shortcut={ keyboardShortcutHelper( 'primary', 'j' ) }
+										onDoubleClick={ () => scrollToTop() } /* Scroll to Top on Double-click. (Double-click will also close the dropdown.) */
+										tone="neutral"
+									/>
+								}
+							/>
+							<Menu.Popup
+								positioner={ <Menu.Positioner sideOffset={ 12 } /> } // Increase the offset to not have the top border be right on top of the bottom border of the header bar.
+								style={
+									// Allow the menu to be higher than the default, so that more feature modules fit.
+									featureModules.length > 0 && {
+										maxHeight: 'min(var(--available-height), 80dvh)',
+									}
+								}
+							>
+								<Menu.Item
+									prefix={ <Menu.PrefixIcon icon={ arrowUp } /> }
+									onClick={ () => scrollToTop() }
+								>
+									<Menu.ItemLabel>
+										{ __( 'Scroll to Top', 'tablepress' ) }
+									</Menu.ItemLabel>
+								</Menu.Item>
+								<Menu.Separator />
+								<Menu.Group>
+									{ featureModules.length > 0 && (
+										<Menu.GroupLabel>
+											{ __( 'Common', 'tablepress' ) }
+										</Menu.GroupLabel>
+									) }
+									{
+											[
+												{ section: 'table-information', label: __( 'Table Information', 'tablepress' ), icon: info },
+												{ section: 'table-data', label: __( 'Table Content', 'tablepress' ), icon: blockTable },
+												{ section: 'table-options', label: __( 'Table Options', 'tablepress' ), icon: settings },
+												{ section: 'datatables-features', label: __( 'Table Features for Site Visitors', 'tablepress' ), icon: siteLogo },
+											].map( ( { section, label, icon } ) => (
+												<Menu.Item
+													key={ section }
+													prefix={ <Menu.PrefixIcon icon={ icon } /> }
+													onClick={ () => scrollToSection( section ) }
+												>
+													<Menu.ItemLabel>
+														{ label }
+													</Menu.ItemLabel>
+												</Menu.Item>
+											) )
+										}
+								</Menu.Group>
+								{
+									featureModules.length > 0 && (
+										<>
+											<Menu.Separator />
+											<Menu.Group>
+												<Menu.GroupLabel>
+													{ __( 'Feature Modules', 'tablepress' ) }
+												</Menu.GroupLabel>
+												{ featureModules.map( ( { module, name } ) => (
+													<Menu.Item
+														key={ module }
+														prefix={ <Menu.PrefixIcon icon={ box } style={ { color: 'transparent' } } /> } // The icon is needed as a placeholder to align the labels.
+														onClick={ () => scrollToSection( module ) }
+													>
+														<Menu.ItemLabel>
+															{ name }
+														</Menu.ItemLabel>
+													</Menu.Item>
+												) ) }
+											</Menu.Group>
+										</>
+									)
+								}
+							</Menu.Popup>
+						</Menu.Root>
+						<Text
+							className="tablepress-header-table-id"
+							style={ { flexShrink: 0 } }>
+							{ sprintf( __( 'ID: %s', 'tablepress' ), tableMeta.id ) }
+						</Text>
+						<h2 className="tablepress-header-table-name">
+							{ tableMeta.name }
+						</h2>
+					</Stack>
+					<Stack
+						direction="row"
+						gap="md"
+						align="center"
+						style={ {
+							marginInlineStart: '16px',
+						} }
+					>
+						{ /* Right side: Spinner, Preview, Save Changes, Dropdown */ }
+						{
+							( isSaving || previewIsLoading ) ? (
+								<Spinner />
+							) : (
+								<div style={ { width: '16px', flexShrink: 0 } } />
+							)
+						}
+						{
+							tp.screenOptions.currentUserCanPreviewTable && (
+								<LegacyButton
+									// This is a LegacyButton because the `@wordpress/ui` Button component does not support the "shortcut" prop.
+									variant="secondary"
+									href={ previewUrl }
+									shortcut={ previewIsLoading ? undefined :
+										{
+											ariaLabel: shortcutAriaLabel.primary( 'p' ),
+											display: displayShortcut.primary( 'p' ),
+										}
+									}
+									isBusy={ previewIsLoading }
+									disabled={ previewIsLoading }
+									accessibleWhenDisabled={ true }
+									onClick={ ( event ) => {
+										// Open the Preview Modal if the button is clicked, except if an unmodified preview in a new tab is requested.
+										if ( tp.made_changes || ! ( event.ctrlKey || event.metaKey || event.shiftKey ) ) {
+											event.preventDefault();
+											showPreview( { noticesStoreDispatch, tableOptions, tableMeta, updateScreenSettings } );
+										}
+									} }
+								>
+									{ __( 'Preview', 'tablepress' ) }
+								</LegacyButton>
+							)
+						}
+						<LegacyButton
+							// This is a LegacyButton because the `@wordpress/ui` Button component does not support the "shortcut" prop.
+							variant="primary"
+							shortcut={ isSaving ? undefined :
+								{
+									ariaLabel: shortcutAriaLabel.primary( 's' ),
+									display: displayShortcut.primary( 's' ),
+								}
+							}
+							isBusy={ isSaving }
+							disabled={ isSaving }
+							accessibleWhenDisabled={ true }
+							onClick={ () => saveTableChanges( { noticesStoreDispatch, tableMeta, tableOptions, updateScreenSettings, updateTableMeta } ) }
+						>
+							{ __( 'Save Changes', 'tablepress' ) }
+						</LegacyButton>
+						<Menu.Root
+							modal={ false }
+							open={ ! fullscreenIsActive && moreActionsMenuDropdownIsOpen } // Force the dropdown to be closed in fullscreen mode as it would hover above the fullscreen overlay.
+							onOpenChange={ ( isOpen ) => setMoreActionsMenuDropdownIsOpen( isOpen ) }
+						>
+							<Menu.Trigger
+								render={
+									<IconButton
+										variant="minimal"
+										size="compact"
+										icon={ moreVertical }
+										label={ __( 'More actions', 'tablepress' ) }
+										tone="neutral"
+									/>
+								}
+							/>
+							<Menu.Popup
+								positioner={ <Menu.Positioner sideOffset={ 12 } /> } // Increase the offset to not have the top border be right on top of the bottom border of the header bar.
+								className="tablepress-more-actions-menu"
+							>
+								<Menu.Item
+									ref={ copyShortcodeButtonRef }
+									prefix={ <Menu.PrefixIcon icon={ shortcode } /> }
+									className="shifted-description"
+								>
+									<Menu.ItemLabel>
+										{ __( 'Copy Shortcode', 'tablepress' ) }
+									</Menu.ItemLabel>
+									<Menu.ItemDescription>
+										{ shortcodeText }
+									</Menu.ItemDescription>
+								</Menu.Item>
+								{ ( tp.screenOptions.currentUserCanCopyTable || tp.screenOptions.currentUserCanExportTable ) && (
+									<>
+										<Menu.Separator />
+										{ tp.screenOptions.currentUserCanCopyTable && (
+											<Menu.LinkItem
+												prefix={ <Menu.PrefixIcon icon={ copy } /> }
+												href={ copyUrl }
+											>
+												<Menu.ItemLabel>
+													{ __( 'Copy Table', 'tablepress' ) }
+												</Menu.ItemLabel>
+											</Menu.LinkItem>
+										) }
+										{ tp.screenOptions.currentUserCanExportTable && (
+											<Menu.LinkItem
+												prefix={ <Menu.PrefixIcon icon={ download } /> }
+												href={ exportUrl }
+											>
+												<Menu.ItemLabel>
+													{ __( 'Export Table', 'tablepress' ) }
+												</Menu.ItemLabel>
+											</Menu.LinkItem>
+										) }
+									</>
+								) }
+								{ tp.screenOptions.currentUserCanDeleteTable && (
+									<>
+										<Menu.Separator />
+										<Menu.Item
+											prefix={ <Menu.PrefixIcon icon={ trash } style={ { color: '#cc1818' } } /> }
+											onClick={ () => setConfirmDeleteModalIsOpen( true ) }
+											style={ { color: '#cc1818' } }
+										>
+											<Menu.ItemLabel>
+												{ __( 'Delete table', 'tablepress' ) }
+											</Menu.ItemLabel>
+										</Menu.Item>
+									</>
+								) }
+							</Menu.Popup>
+						</Menu.Root>
+					</Stack>
+				</Stack>
+				{ ! fullscreenIsActive && (
+					<NoticeUI noticeType="default" />
+				) }
+				{ confirmDeleteModalIsOpen && (
+					<ConfirmDeleteModal
+						title={ sprintf( __( 'Delete “%1$s” (ID %2$s)', 'tablepress' ), tableMeta.name, tableMeta.id ) }
+						deleteUrl={ deleteUrl }
+						closeConfirmDeleteModal={ () => {
+							// Prevent onunload warning, by calling the unset method.
+							tp.helpers.unsaved_changes.unset();
+							setConfirmDeleteModalIsOpen( false );
+						} }
+					/>
+				) }
+			</Stack>
 			<KeyboardShortcuts
 				bindGlobal={ true }
-				shortcuts={ shortcuts }
+				shortcuts={ {
+					'mod+j': toggleNavigationDropdownCallback,
+				} }
 			/>
-			<Notifications />
 		</>
 	);
-} );
+};
 
 initializeReactComponentInPortal(
 	'header-bar',
 	'edit',
-	HeaderBarWithKeyboardShortcutsWithNotices,
+	HeaderBar,
 );

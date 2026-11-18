@@ -158,6 +158,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string HTML content of the cell.
+	 *
+	 * @phpstan-ignore method.childParameterType
 	 */
 	#[\Override]
 	protected function column_cb( /* array */ $item ): string {
@@ -204,6 +206,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string The table name.
+	 *
+	 * @phpstan-ignore method.childParameterType
 	 */
 	protected function get_primary_column_aria_label( /* array */ $item ): string {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.
@@ -336,6 +340,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 *
 	 * @param array<string, mixed> $item        Data item for the current row.
 	 * @param string               $column_name Current column name.
+	 *
+	 * @phpstan-ignore method.childParameterType
 	 */
 	#[\Override]
 	protected function column_default( /* array */ $item, /* string */ $column_name ): void {
@@ -363,6 +369,8 @@ class TablePress_All_Tables_List_Table extends WP_List_Table {
 	 * @param string                      $column_name Current column name.
 	 * @param string                      $primary     Primary column name.
 	 * @return string The row actions HTML, or an empty string if the current column is not the primary column.
+	 *
+	 * @phpstan-ignore method.childParameterType
 	 */
 	#[\Override]
 	protected function handle_row_actions( /* object|array */ $item, /* string */ $column_name, /* string */ $primary ): string {

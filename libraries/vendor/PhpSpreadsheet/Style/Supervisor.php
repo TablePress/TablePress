@@ -42,7 +42,7 @@ abstract class Supervisor implements IComparable
 				 * Bind parent. Only used for supervisor.
 				 *
 				 * @return $this
-				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet|$this $parent
+				 * @param mixed $parent
 				 */
 				public function bindParent($parent, ?string $parentPropertyName = null)
 	{

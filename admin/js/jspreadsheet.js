@@ -7622,6 +7622,16 @@
 	 */
 	jexcel.keyDownControls = function(e) {
 		if (jexcel.current) {
+			/*
+			 * TablePress:
+			 * Ctrl/cmd+K opens WordPress' "Command palette", so the editor must be cleared, to prevent focus issues.
+			 * Ctrl/cmd+Shift+J opens the "Jump to Row" modal, so the editor must be cleared, to prevent focus issues.
+			 */
+			if ( ( e.ctrlKey || e.metaKey ) && ( ( ! e.shiftKey && e.which == 75 ) || ( e.shiftKey && e.which == 74 ) ) ) {
+				jexcel.current = null; // This is necessary to prevent problems with the focus location.
+				return;
+			}
+
 			if (jexcel.current.edition) {
 				if (e.which == 27) {
 					// Escape
@@ -7761,10 +7771,13 @@
 							// Ctrl + A
 							jexcel.current.selectAll();
 							e.preventDefault();
+						// TablePress: The ctrl/cmd+S shortcut is used for Saving Changes.
+						/*
 						} else if (e.which == 83) {
 							// Ctrl + S
 							jexcel.current.download();
 							e.preventDefault();
+						*/
 						} else if (e.which == 89) {
 							// Ctrl + Y
 							jexcel.current.redo();
@@ -7789,6 +7802,9 @@
 							// Ctrl + V
 							jexcel.pasteControls();
 						}
+					// TablePress: Do nothing for cmd/ctrl+Shift+F, which is used in React for the fullscreen toggle.
+					} else if ( (e.ctrlKey || e.metaKey) && e.shiftKey && e.which == 70 ) {
+						// Do nothing.
 					} else {
 						if (jexcel.current.selectedCell) {
 							if (jexcel.current.options.editable == true) {
@@ -8282,6 +8298,10 @@
 					}
 				}
 			} else {
+				// TablePress: Add a check to ensure that the target has the getAttribute method before calling it, to prevent errors when hovering over non-element nodes.
+				if ( ! e?.target?.getAttribute ) {
+					return;
+				}
 				var x = e.target.getAttribute('data-x');
 				var y = e.target.getAttribute('data-y');
 				var rect = e.target.getBoundingClientRect();

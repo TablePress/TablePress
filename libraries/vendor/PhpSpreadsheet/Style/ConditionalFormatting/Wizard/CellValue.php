@@ -76,7 +76,8 @@ class CellValue extends WizardAbstract implements WizardInterface
 
 	/**
 				 * @param mixed $value value to be wrapped
-				 * @return float|int|string */
+				 * @return float|int|string
+				 */
 				protected function wrapValue($value, string $operandValueType)
 	{
 		if (!is_numeric($value) && !is_bool($value) && null !== $value) {

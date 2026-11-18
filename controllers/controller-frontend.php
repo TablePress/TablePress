@@ -409,6 +409,11 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				 */
 				$datatables_locale = apply_filters( 'tablepress_datatables_locale', $js_options['datatables_locale'], $table_id );
 
+				// Only allow locales in a proper format.
+				if ( ! preg_match( '#^[a-z]{2}[a-zA-Z_]*$#', $datatables_locale ) ) {
+					$datatables_locale = 'en_US';
+				}
+
 				// Only load each locale's language file once.
 				if ( ! isset( $datatables_language[ $datatables_locale ] ) ) {
 					$orig_language_file = TABLEPRESS_ABSPATH . "i18n/datatables/lang-{$datatables_locale}.php";
@@ -736,13 +741,22 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 				// Use the table's stored option value, if the Shortcode parameter was not set.
 				$render_options[ $key ] = $table['options'][ $key ];
 			} elseif ( is_string( $value ) ) {
-				// Convert strings 'true' or 'false' to boolean, keep others.
-				$value_lowercase = strtolower( $value );
-				if ( 'true' === $value_lowercase ) {
-					$render_options[ $key ] = true;
-				} elseif ( 'false' === $value_lowercase ) {
-					$render_options[ $key ] = false;
+				/*
+				 * If a boolean is expected for the parameter, convert strings 'true' or 'false' to boolean, and type-cast all other values to boolean.
+				 * Using get_table_template() would be more reliable, if table options somehow where incomplete, but adds overhead and hides the incomplete table options.
+				 * Incomplete table options would also already cause problems in the if check above.
+				 */
+				if ( ( is_null( $default_shortcode_atts[ $key ] ) && isset( $table['options'][ $key ] ) && is_bool( $table['options'][ $key ] ) ) || is_bool( $default_shortcode_atts[ $key ] ) ) {
+					$value_lowercase = strtolower( $value );
+					if ( 'true' === $value_lowercase ) {
+						$render_options[ $key ] = true;
+					} elseif ( 'false' === $value_lowercase ) {
+						$render_options[ $key ] = false;
+					} else {
+						$render_options[ $key ] = (bool) $value;
+					}
 				} else {
+					// All other values are kept as strings, with conversion to numbers having to be done at the place of consumption, if needed.
 					$render_options[ $key ] = $value;
 				}
 			} else {
@@ -1088,7 +1102,7 @@ class TablePress_Frontend_Controller extends TablePress_Controller {
 		global $wpdb;
 
 		// Protect against cases where `null` is somehow passed to the filter hook callback.
-		if ( ! is_string( $search_sql ) ) { // @phpstan-ignore function.alreadyNarrowedType (The `is_string()` check is needed as the input is coming from a filter hook.)
+		if ( ! is_string( $search_sql ) ) {
 			return '';
 		}
 

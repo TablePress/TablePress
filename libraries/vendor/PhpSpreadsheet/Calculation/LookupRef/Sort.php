@@ -205,8 +205,10 @@ class Sort extends LookupRefValidations
 		return $sortOrder;
 	}
 
-	/** @param mixed[] $sortIndex
-				 * @param mixed $sortOrder */
+	/**
+				 * @param mixed[] $sortIndex
+				 * @param mixed $sortOrder
+				 */
 				private static function validateArrayArgumentsForSort(array &$sortIndex, &$sortOrder, int $sortArraySize): void
 	{
 		// It doesn't matter if they're row or column vectors, it works either way

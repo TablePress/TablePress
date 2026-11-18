@@ -178,7 +178,7 @@ class ConditionalFormatting extends Xls
 				return;
 			}
 
-			$offset += $size2;
+			$offset += $size2; //* @phpstan-ignore assign.unused (code clarity)
 		}
 
 		$this->setCFRules($cellRangeAddresses, $type, $operator, $formula1, $formula2, $style, $noFormatSet, $xls);
@@ -317,9 +317,11 @@ class ConditionalFormatting extends Xls
 		}
 	}
 
-	/** @param string[] $cellRanges
-				 * @param null|float|int|string $formula1
-				 * @param null|float|int|string $formula2 */
+	/**
+				 * @param string[] $cellRanges
+				 * @param float|int|string|null $formula1
+				 * @param float|int|string|null $formula2
+				 */
 				private function setCFRules(array $cellRanges, string $type, string $operator, $formula1, $formula2, Style $style, bool $noFormatSet, Xls $xls): void
 	{
 		foreach ($cellRanges as $cellRange) {

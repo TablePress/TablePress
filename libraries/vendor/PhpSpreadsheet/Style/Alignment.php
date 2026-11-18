@@ -390,9 +390,6 @@ class Alignment extends Supervisor
 	 */
 	public function setWrapText(bool $wrapped)
 	{
-		if ($wrapped == '') {
-			$wrapped = false;
-		}
 		if ($this->isSupervisor) {
 			$styleArray = $this->getStyleArray(['wrapText' => $wrapped]);
 			$this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
@@ -422,9 +419,6 @@ class Alignment extends Supervisor
 	 */
 	public function setShrinkToFit(bool $shrink)
 	{
-		if ($shrink == '') {
-			$shrink = false;
-		}
 		if ($this->isSupervisor) {
 			$styleArray = $this->getStyleArray(['shrinkToFit' => $shrink]);
 			$this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);

@@ -29,7 +29,7 @@ class Conditional
 				 * @param mixed $range Data values, expect array
 				 * @param mixed $condition the criteria that defines which cells will be checked, expect null|mixed[]|string
 				 * @param mixed $averageRange Data values
-				 * @return null|int|float|string
+				 * @return float|int|string|null
 				 */
 				public static function AVERAGEIF($range, $condition, $averageRange = [])
 	{
@@ -60,7 +60,7 @@ class Conditional
 				 *        AVERAGEIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return null|int|float|string
+				 * @return float|int|string|null
 				 */
 				public static function AVERAGEIFS(...$args)
 	{
@@ -91,8 +91,8 @@ class Conditional
 				 *        COUNTIF(range,condition)
 				 *
 				 * @param mixed $range Data values, expect array
-				 * @param null|mixed[]|string $condition the criteria that defines which cells will be counted
-				 * @return string|int
+				 * @param null|bool|float|int|mixed[]|string $condition the criteria that defines which cells will be counted
+				 * @return int|string
 				 */
 				public static function COUNTIF($range, $condition)
 	{
@@ -153,7 +153,7 @@ class Conditional
 				 *        MAXIFS(max_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return null|float|string
+				 * @return float|string|null
 				 */
 				public static function MAXIFS(...$args)
 	{
@@ -176,7 +176,7 @@ class Conditional
 				 *        MINIFS(min_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return null|float|string
+				 * @return float|string|null
 				 */
 				public static function MINIFS(...$args)
 	{
@@ -200,7 +200,7 @@ class Conditional
 				 *
 				 * @param mixed $range Data values, expecting array
 				 * @param mixed $sumRange Data values, expecting array
-				 * @return null|float|string
+				 * @return float|string|null
 				 * @param mixed $condition
 				 */
 				public static function SUMIF($range, $condition, $sumRange = [])
@@ -234,7 +234,7 @@ class Conditional
 				 *        SUMIFS(average_range, criteria_range1, criteria1, [criteria_range2, criteria2]…)
 				 *
 				 * @param mixed $args Pairs of Ranges and Criteria
-				 * @return null|float|string
+				 * @return float|string|null
 				 */
 				public static function SUMIFS(...$args)
 	{

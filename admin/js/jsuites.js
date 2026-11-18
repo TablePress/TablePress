@@ -12852,7 +12852,7 @@ const Events = function() {
 	tooltip.classList.add('jtooltip');
 
 	const isWebcomponent = function(e) {
-		return e.shadowRoot || e.tagName.includes('-');
+		return e.shadowRoot || e.tagName?.includes('-'); // TablePress: Added ? check to ensure that it's a valid tag, to prevent errors when hovering over non-element nodes.
 	}
 
 	const getElement = function(e) {

@@ -39,7 +39,7 @@ class Coupons
 				 *                         2               Actual/360
 				 *                         3               Actual/365
 				 *                         4               European 30/360
-				 * @return string|int|float
+				 * @return float|int|string
 				 */
 				public static function COUPDAYBS(
 		$settlement,
@@ -99,7 +99,7 @@ class Coupons
 				 *                         2               Actual/360
 				 *                         3               Actual/365
 				 *                         4               European 30/360
-				 * @return string|int|float
+				 * @return float|int|string
 				 */
 				public static function COUPDAYS(
 		$settlement,
@@ -167,7 +167,7 @@ class Coupons
 				 *                         2               Actual/360
 				 *                         3               Actual/365
 				 *                         4               European 30/360
-				 * @return string|float
+				 * @return float|string
 				 */
 				public static function COUPDAYSNC(
 		$settlement,
@@ -281,7 +281,7 @@ class Coupons
 				 *                         2               Actual/360
 				 *                         3               Actual/365
 				 *                         4               European 30/360
-				 * @return string|int
+				 * @return int|string
 				 */
 				public static function COUPNUM(
 		$settlement,

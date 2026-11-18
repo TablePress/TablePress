@@ -146,6 +146,20 @@ class Sample
 		}
 	}
 
+	/**
+	 * Add end tags to page. The page will render correctly
+	 * without them, so this is optional, but the page will
+	 * not validate unless it is called.
+	 */
+	public function endWebPage(): void
+	{
+		if ($this->isCli() === false) {
+			// @codeCoverageIgnoreStart
+			echo '</div></body></html>';
+			// @codeCoverageIgnoreEnd
+		}
+	}
+
 	protected function isDirOrMkdir(string $folder): bool
 	{
 		return \is_dir($folder) || \mkdir($folder);
@@ -249,8 +263,10 @@ class Sample
 			: $this->log(sprintf('Function: %s() - %s.', rtrim($functionName, '()'), rtrim($description, '.')));
 	}
 
-	/** @param mixed[][] $matrix
-				 * @param null|bool|\TablePress\PhpOffice\PhpSpreadsheet\Helper\TextGridRightAlign $numbersRight */
+	/**
+				 * @param mixed[][] $matrix
+				 * @param bool|\TablePress\PhpOffice\PhpSpreadsheet\Helper\TextGridRightAlign|null $numbersRight
+				 */
 				public function displayGrid(array $matrix, $numbersRight = null): void
 	{
 		$renderer = new TextGrid($matrix, $this->isCli());

@@ -11,6 +11,8 @@ parameters:
 		- tablepress.php
 	scanDirectories:
 		- libraries/
+	scanFiles:
+		- .phpstan/polyfills.php
 	bootstrapFiles:
 		- .phpstan/symbols.php
 	dynamicConstantNames:
@@ -33,8 +35,20 @@ parameters:
 			paths:
 				- classes/class-evaluate-phpspreadsheet.php
 				- classes/class-import-phpspreadsheet.php
+	phpVersion:
+		min: 70400
+		max: 80600
 	WPCompat:
 		requiresAtLeast: '6.7'
+	strictRules:
+		booleansInConditions: false
+		uselessCast: false
+		disallowedEmpty: false
+		overwriteVariablesWithLoop: false
+		noVariableVariables: false
+	treatPhpDocTypesAsCertain: false
+
 includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 	- vendor/johnbillion/wp-compat/extension.neon
+	- vendor/phpstan/phpstan-strict-rules/rules.neon

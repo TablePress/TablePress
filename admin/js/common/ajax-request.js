@@ -10,17 +10,13 @@
 /**
  * WordPress dependencies.
  */
-import {
-	Icon,
-} from '@wordpress/components';
-import { RawHTML } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { buildQueryString } from '@wordpress/url';
 
 /**
  * Internal dependencies.
  */
-import { TablePressIconSimple } from '../../img/tablepress-icon';
+import { showNotice } from './functions';
 
 /**
  * Default callback for handling specifics of a successful request.
@@ -35,7 +31,7 @@ const onSuccessfulRequestDefault = ( data ) => {
 	const notice = {
 		status: ( data.message.includes( 'error' ) ) ? 'error' : 'success',
 		content: actionMessages[ data.message ],
-		type: ( data.message.includes( 'error' ) ) ? 'notice' : 'snackbar',
+		type: ( data.message.includes( 'error' ) ) ? 'default' : 'snackbar',
 	};
 
 	return { notice };
@@ -46,46 +42,11 @@ const onSuccessfulRequestDefault = ( data ) => {
  *
  * @param {Object}   props                      Function parameters.
  * @param {Object}   props.requestData          Request data.
- * @param {Function} props.onSuccessfulRequest  Callback for handling a successful save.
  * @param {Function} props.setBusyState         Callback for setting the busy state.
- * @param {Function} props.noticeOperations     Callbacks for working with notices.
- * @param {Function} props.noticesStoreDispatch Dispatch function for notices store. (Optional, only for "success" Snackbar notices.)
+ * @param {Function} props.noticesStoreDispatch Dispatch function for the notices store.
+ * @param {Function} props.onSuccessfulRequest  Callback for handling a successful save.
  */
-const processAjaxRequest = ( { requestData, onSuccessfulRequest = onSuccessfulRequestDefault, setBusyState, noticeOperations, noticesStoreDispatch } ) => {
-	/**
-	 * Shows a notice to the user.
-	 *
-	 * @param {Object} notice         Notice data.
-	 * @param {string} notice.status  Status of the notice (error, success, warning, info).
-	 * @param {string} notice.content Content of the notice.
-	 */
-	const showNotice = ( { status, content } ) => {
-		const id = `notice-${ Date.now() }`;
-		content = <>
-			{ /* Notices don't have a DOM ID, so add a custom span which has one, for the fade-out and removal. */ }
-			<span id={ id }></span>
-			<RawHTML>{ content }</RawHTML>
-		</>;
-		noticeOperations.createNotice( { id, status, content, isDismissible: ( 'error' === status ) } );
-
-		if ( 'error' !== status ) {
-			// Fade out non-error notices after 5 seconds and then remove them.
-			setTimeout( () => {
-				const notice = document.getElementById( id ).closest( '.components-notice' );
-				notice.addEventListener( 'transitionend', () => noticeOperations.removeNotice( id ) );
-				notice.style.opacity = 0;
-			}, 5000 );
-		} else {
-			// Scroll error notices into view.
-			setTimeout( () => {
-				const notice = document.getElementById( id ).closest( '.components-notice' );
-				if ( notice.getBoundingClientRect().bottom > ( window.innerHeight || document.documentElement.clientHeight ) ) {
-					notice.scrollIntoView( { behavior: 'smooth', block: 'end', inline: 'nearest' } );
-				}
-			}, 1 );
-		}
-	};
-
+const processAjaxRequest = ( { requestData, setBusyState, noticesStoreDispatch, onSuccessfulRequest = onSuccessfulRequestDefault } ) => {
 	// Put the screen into "is busy" mode.
 	setBusyState( true );
 	document.body.classList.add( 'wait' );
@@ -117,11 +78,11 @@ const processAjaxRequest = ( { requestData, onSuccessfulRequest = onSuccessfulRe
 			throw new Error( `<p>${ __( 'There was a problem with the request.', 'tablepress' ) }</p>${ debugHtml }` );
 		}
 
-		handleRequestSuccess( data );
+		handleRequestSuccess( data, noticesStoreDispatch );
 	} )
 	// Handle errors.
 	.catch( ( error ) => {
-		handleRequestError( error.message );
+		handleRequestError( error.message, noticesStoreDispatch );
 	} )
 	// Clean up.
 	.finally( () => {
@@ -138,19 +99,7 @@ const processAjaxRequest = ( { requestData, onSuccessfulRequest = onSuccessfulRe
 	const handleRequestSuccess = ( data ) => {
 		const { notice } = onSuccessfulRequest( data );
 		if ( notice ) {
-			if ( 'snackbar' === notice.type && 'undefined' !== typeof noticesStoreDispatch ) {
-				// Dispatch a Snackbar notice.
-				noticesStoreDispatch.createSuccessNotice(
-					notice.content,
-					{
-						type: 'snackbar',
-						icon: <Icon icon={ TablePressIconSimple } />,
-					}
-				);
-			} else {
-				// Show a normal notice.
-				showNotice( notice );
-			}
+			showNotice( notice, noticesStoreDispatch );
 		}
 	};
 
@@ -160,12 +109,16 @@ const processAjaxRequest = ( { requestData, onSuccessfulRequest = onSuccessfulRe
 	 * @param {string} message Error message.
 	 */
 	const handleRequestError = ( message ) => {
-		message = __( 'Attention: Unfortunately, an error occurred.', 'tablepress' ) + ' ' + message + '<br>' + sprintf( __( 'Please see the <a href="%s" target="_blank">TablePress FAQ page</a> for suggestions.', 'tablepress' ), 'https://tablepress.org/faq/common-errors/' );
+		const title = __( 'Attention: Unfortunately, an error occurred.', 'tablepress' );
+		message += '<br>' + sprintf( __( 'Please see the <a href="%s" target="_blank">TablePress FAQ page</a> for suggestions.', 'tablepress' ), 'https://tablepress.org/faq/common-errors/' );
+
 		const notice = {
 			status: 'error',
 			content: message,
+			details: title, // There is no dedicated `title` property for notices, so we repurpose the `details` property.
+			type: 'default',
 		};
-		showNotice( notice );
+		showNotice( notice, noticesStoreDispatch );
 	};
 };
 

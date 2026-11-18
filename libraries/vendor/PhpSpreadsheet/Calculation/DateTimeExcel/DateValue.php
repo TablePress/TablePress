@@ -52,7 +52,7 @@ class DateValue
 	/**
 				 * @return array<mixed>|DateTime|float|int|string Excel date/time serial value, PHP date/time serial value or PHP date/time object,
 				 *                        depending on the value of the ReturnDateType flag
-				 * @param null|string|int|bool|float $dateValue
+				 * @param bool|float|int|string|null $dateValue
 				 */
 				public static function fromString2($dateValue, ?int $calendar = null)
 	{

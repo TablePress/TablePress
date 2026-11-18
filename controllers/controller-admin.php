@@ -96,11 +96,29 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		 */
 		$admin_menu_entry_name = apply_filters( 'tablepress_admin_menu_entry_name', 'TablePress' );
 
+		if ( TablePress::$model_options->get( 'message_plugin_update' ) && ( strtotime( '2026-11-22' ) < strtotime( 'today' ) && strtotime( 'today' ) < strtotime( '2026-12-01' ) ) && ! tb_tp_fs()->is_paying() ) {
+			$admin_menu_entry_name .= ' <span class="menu-counter" style="background:#ff5e30" aria-hidden="true">%</span>';
+		}
+
 		$this->init_view_actions();
 		$min_access_cap = $this->view_actions['list']['required_cap'];
 
 		if ( TablePress::$controller->is_top_level_page ) {
-			$icon_url = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iLTMyIC0zMiA2NCA2NCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTAtMjUuODU0aC0yNS44NTR2NTEuNzA4aDUxLjcwOFYwSDIxdjIxaC00MnYtNDJIMFoiLz48cGF0aCBkPSJNLTE4LTE4aDEwdjEwaC0xMHpNLTE4LTVoMTBWNWgtMTB6TS01LTVINVY1SC01ek0tMTggOGgxMHYxMGgtMTB6TS01IDhINXYxMEgtNXpNOCA4aDEwdjEwSDh6TTUtMzFoNi4xOHY2LjE4SDV6TTE5LTI1aDYuMTh2Ni4xOEgxOXpNMC0xNWgzLjgydjMuODJIMHpNMTAtMjBoMy44MnYzLjgySDEwek0yNS0xMmgzLjgydjMuODJIMjV6TTgtMTNoMTB2MTBIOHoiLz48L3N2Zz4=';
+			// Depending on the WP version, use the Icon API or a base64-encoded SVG fallback for the menu icon. @todo Remove the check and fallback once the minimum required WP version is 7.2.
+			if ( version_compare( str_replace( '-src', '', wp_get_wp_version() ), '7.1.999', '>' ) ) {
+				wp_register_icon_collection( 'tablepress', array( 'label' => __( 'TablePress', 'tablepress' ) ) ); // @phpstan-ignore WPCompat.functionNotAvailable (Function use is guarded by a version check above.)
+				wp_register_icon( // @phpstan-ignore WPCompat.functionNotAvailable (Function use is guarded by a version check above.)
+					'tablepress/icon',
+					array(
+						'label'   => __( 'TablePress plugin logo', 'tablepress' ),
+						'content' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-40 -40 80 80" fill="currentColor"><path d="M0-25.854h-25.854v51.708h51.708V0H21v21h-42v-42H0Z"/><path d="M-18-18h10v10h-10zM-18-5h10V5h-10zM-5-5H5V5H-5zM-18 8h10v10h-10zM-5 8H5v10H-5zM8 8h10v10H8zM5-31h6.18v6.18H5zM19-25h6.18v6.18H19zM0-15h3.82v3.82H0zM10-20h3.82v3.82H10zM25-12h3.82v3.82H25zM8-13h10v10H8z"/></svg>',
+					)
+				);
+				$icon = 'tablepress/icon';
+			} else {
+				$icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iLTMyIC0zMiA2NCA2NCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTAtMjUuODU0aC0yNS44NTR2NTEuNzA4aDUxLjcwOFYwSDIxdjIxaC00MnYtNDJIMFoiLz48cGF0aCBkPSJNLTE4LTE4aDEwdjEwaC0xMHpNLTE4LTVoMTBWNWgtMTB6TS01LTVINVY1SC01ek0tMTggOGgxMHYxMGgtMTB6TS01IDhINXYxMEgtNXpNOCA4aDEwdjEwSDh6TTUtMzFoNi4xOHY2LjE4SDV6TTE5LTI1aDYuMTh2Ni4xOEgxOXpNMC0xNWgzLjgydjMuODJIMHpNMTAtMjBoMy44MnYzLjgySDEwek0yNS0xMmgzLjgydjMuODJIMjV6TTgtMTNoMTB2MTBIOHoiLz48L3N2Zz4=';
+			}
+
 			switch ( TablePress::$controller->parent_page ) {
 				case 'top':
 					$position = 3; // Position of Dashboard + 1.
@@ -117,7 +135,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			while ( isset( $GLOBALS['menu'][ $position ] ) ) {
 				++$position;
 			}
-			add_menu_page( 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback, $icon_url, $position ); // @phpstan-ignore argument.type
+			add_menu_page( 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback, $icon, $position ); // @phpstan-ignore argument.type
 			foreach ( $this->view_actions as $action => $entry ) {
 				if ( ! $entry['show_entry'] ) {
 					continue;
@@ -229,7 +247,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			if ( '' === trim( $table['name'] ) ) {
 				$table['name'] = __( '(no name)', 'tablepress' );
 			}
-			$tables[ $table_id ] = esc_html( $table['name'] );
+			$tables[ $table_id ] = $table['name'];
 		}
 
 		/**
@@ -270,6 +288,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$load_block_preview = apply_filters( 'tablepress_show_block_editor_preview', true );
 		$load_block_preview = (bool) $load_block_preview ? 'true' : 'false';
 
+		$is_old_wp = version_compare( str_replace( '-src', '', wp_get_wp_version() ), '7.1', '<' ); // Flag for loading necessary legacy CSS for the table selection dropdown in the `Placeholder` component.
+		$is_old_wp = $is_old_wp ? 'true' : 'false';
+
 		$url = '';
 		if ( current_user_can( 'tablepress_list_tables' ) ) {
 			$url = TablePress::url( array( 'action' => 'list' ) );
@@ -280,6 +301,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			window.tp = window.tp || {};
 			tp.url = '{$url}';
 			tp.load_block_preview = {$load_block_preview};
+			tp.is_old_wp = {$is_old_wp};
 			tp.table = {};
 			tp.table.shortcode = '{$shortcode}';
 			tp.table.template = JSON.parse( '{$template}' );
@@ -452,7 +474,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			<td colspan="<?php echo esc_attr( $GLOBALS['wp_list_table']->get_column_count() ); ?>" class="plugin-update colspanchange">
 				<div class="update-message notice inline notice-error notice-alt">
 					<?php
-					if ( tb_tp_fs()->is_free_plan() ) {
+					if ( ! tb_tp_fs()->is_paying() ) {
 						echo '<p style="font-size:14px;">';
 						_e( 'This TablePress Extension was retired.', 'tablepress' );
 						echo ' ';
@@ -628,13 +650,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 						continue;
 					}
 
+					if ( '' === trim( $table['name'] ) ) {
+						$table['name'] = __( '(no name)', 'tablepress' );
+					}
 					$data['tables'][ $table['id'] ] = $table['name'];
 				}
 				$data['table_ids'] = $table_ids; // Backward compatibility for the retired "Table Auto Update" Extension, which still relies on this variable name.
 				$data['tables_count'] = TablePress::$model_table->count_tables();
 				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
 				$data['import_type'] = ( ! empty( $_GET['import_type'] ) ) ? $_GET['import_type'] : 'add';
-				$data['import_existing_table'] = $_GET['import_existing_table'] ?? '';
+				$data['import_existing_table'] = $_GET['import_existing_table'] ?? null;
 				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
 				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? rawurldecode( wp_unslash( $_GET['import_url'] ) ) : 'https://';
 				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? rawurldecode( wp_unslash( $_GET['import_server'] ) ) : ABSPATH;

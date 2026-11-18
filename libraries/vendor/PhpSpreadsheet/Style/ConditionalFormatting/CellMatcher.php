@@ -138,8 +138,10 @@ class CellMatcher
 		return $this->wrapValue($this->cell->getCalculatedValue());
 	}
 
-	/** @param string[] $matches
-				 * @return float|int|string */
+	/**
+				 * @param string[] $matches
+				 * @return float|int|string
+				 */
 				protected function conditionCellAdjustment(array $matches)
 	{
 		$column = $matches[6];

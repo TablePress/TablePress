@@ -130,7 +130,7 @@ class TablePress_Post_Model extends TablePress_Model {
 		}
 
 		// In rare cases, `wp_insert_post()` returns 0 as the post ID, when an error happens, so it's converted to a WP_Error here.
-		if ( 0 === $post_id ) { // @phpstan-ignore identical.alwaysFalse (False-positive in the PHPStan WordPress stubs.)
+		if ( 0 === $post_id ) {
 			return new WP_Error( 'post_insert', '' );
 		}
 

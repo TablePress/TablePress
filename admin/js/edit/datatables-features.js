@@ -10,59 +10,95 @@
 /**
  * WordPress dependencies.
  */
-import { useState } from 'react';
-import {
-	CheckboxControl,
-	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	__experimentalNumberControl as NumberControl, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	TextareaControl,
-	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-} from '@wordpress/components';
+import { memo, useEffect, useState } from 'react';
 import { createInterpolateElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
+import {
+	CheckboxControl,
+	Link,
+	Stack,
+	Text,
+	TextareaControl,
+} from '@wordpress/ui';
 
 /**
  * Internal dependencies.
  */
 import { initializeReactComponentInPortal } from '../common/react-loader';
 import { Alert } from '../common/alert';
+import { NumberControl } from '../common/number-control';
+import { useTableOptions, useUpdateTableOptions } from './context/table-options';
 
-// Wrap the "Custom Commands" in a separate component, to keep internal states at a lower level.
-const CustomCommandsControl = ( { tableOptionCustomCommands, dataTablesEnabled, updateTableOptions } ) => {
-	const [ customCommands, setCustomCommands ] = useState( tableOptionCustomCommands );
-	const [ customCommandsExpanded, setCustomCommandsExpanded ] = useState( false );
+/**
+ * Returns the "Table Features for Site Visitors" section's JSX markup, optimized via memoization to avoid unnecessary re-renders.
+ * For this, only the actually used table options are passed to the Section component as props.
+ *
+ * @return {Object} "Table Features for Site Visitors" section component.
+ */
+const SectionWrapper = () => {
+	const { table_head, use_datatables, datatables_sort, datatables_filter, datatables_paginate, datatables_paginate_entries, datatables_lengthchange, datatables_info, datatables_scrollx, datatables_custom_commands } = useTableOptions();
+
+	return (
+		<Section
+			table_head={ table_head}
+			use_datatables={ use_datatables}
+			datatables_sort={ datatables_sort}
+			datatables_filter={ datatables_filter}
+			datatables_paginate={ datatables_paginate}
+			datatables_paginate_entries={ datatables_paginate_entries}
+			datatables_lengthchange={ datatables_lengthchange}
+			datatables_info={ datatables_info}
+			datatables_scrollx={ datatables_scrollx}
+			datatables_custom_commands={ datatables_custom_commands}
+		/>
+	);
+};
+
+/**
+ * Wraps the "Custom Commands" in a separate component, to keep internal states at a lower level.
+ *
+ * @param {Object}   props                Function parameters.
+ * @param {string}   props.customCommands The current value of the "Custom Commands" table option.
+ * @param {boolean}  props.disabled       Whether the control should be disabled or not.
+ * @param {Function} props.onChange       Function to update the external state.
+ * @return {Object} "Custom Commands" control component.
+ */
+const CustomCommandsControl = ( { customCommands, disabled, onChange } ) => {
+	const [ internalCustomCommands, setInternalCustomCommands ] = useState( customCommands );
+	const [ fieldExpanded, setFieldExpanded ] = useState( false );
 
 	/*
 	// Updating the state variable when the table option changes is not necessary, as it's never modified externally.
 	useEffect( () => {
-		setCustomCommands( tableOptionCustomCommands );
-	}, [ tableOptionCustomCommands ] );
+		setInternalCustomCommands( customCommands );
+	}, [ customCommands ] );
 	*/
 
 	return (
 		<TextareaControl
-			__nextHasNoMarginBottom
 			id="option-datatables_custom_commands"
+			label={ __( 'Custom Commands', 'tablepress' ) }
+			hideLabelFromVision={ true }
 			rows={
-				customCommandsExpanded && '' !== customCommands
-					? Math.min( 15, customCommands.split( '\n' ).length )
+				fieldExpanded && '' !== internalCustomCommands
+					? Math.min( 15, internalCustomCommands.split( '\n' ).length )
 					: 1
 			}
 			className="code"
-			value={ customCommands }
-			disabled={ ! dataTablesEnabled }
-			onChange={ ( newCustomCommands ) => setCustomCommands( newCustomCommands ) }
+			value={ internalCustomCommands }
+			disabled={ disabled }
+			onValueChange={ ( newInternalCustomCommands ) => setInternalCustomCommands( newInternalCustomCommands ) }
 			onBlur={ () => {
-				if ( customCommands !== tableOptionCustomCommands ) {
-					updateTableOptions( { datatables_custom_commands: customCommands } );
+				if ( internalCustomCommands !== customCommands ) {
+					onChange( internalCustomCommands );
 				}
 			} }
-			onFocus={ () => setCustomCommandsExpanded( true ) }
-			help={
+			onFocus={ () => setFieldExpanded( true ) }
+			description={
 				createInterpolateElement(
 					__( 'Additional parameters from the <a>DataTables documentation</a> to be added to the JS call.', 'tablepress' ) + ' ' + __( 'For advanced use only.', 'tablepress' ),
 					{
-						a: <a href="https://datatables.net/" />, // eslint-disable-line jsx-a11y/anchor-has-content
+						a: <Link href="https://datatables.net/" openInNewTab={ true } />,
 					},
 				)
 			}
@@ -70,22 +106,38 @@ const CustomCommandsControl = ( { tableOptionCustomCommands, dataTablesEnabled, 
 	);
 };
 
-const Section = ( { tableOptions, updateTableOptions } ) => {
+/**
+ * Returns the "Table Features for Site Visitors" section's JSX markup.
+ *
+ * The component is memoized to avoid unnecessary re-renders when the table options it uses have not changed.
+ *
+ * @return {Object} "Table Features for Site Visitors" section component.
+ */
+const Section = memo( ( { table_head, use_datatables, datatables_sort, datatables_filter, datatables_paginate, datatables_paginate_entries, datatables_lengthchange, datatables_info, datatables_scrollx, datatables_custom_commands } ) => {
+	const updateTableOptions = useUpdateTableOptions();
 	const [ alertEnableDataTablesMergedCellsIsShown, setAlertEnableDataTablesMergedCellsIsShown ] = useState( false );
 
-	const tableHeadEnabled = ( tableOptions.table_head > 0 );
-	const dataTablesEnabled = ( tableHeadEnabled && tableOptions.use_datatables );
+	const tableHeadEnabled = ( table_head > 0 );
+	const dataTablesEnabled = ( tableHeadEnabled && use_datatables );
+
+	// Turn off "Enable Visitor Features" if the table has merged cells.
+	useEffect( () => {
+		if ( use_datatables && tp.helpers.editor.has_merged_body_cells() ) {
+			updateTableOptions( { use_datatables: false } );
+		}
+	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps -- This should only run on the initial render, so no dependencies are needed.
 
 	return (
-		<VStack
-			spacing="16px"
+		<Stack
+			direction="column"
+			gap="lg"
 			style={ {
 				paddingTop: '6px',
 			} }
 		>
 			{
 				( ! tableHeadEnabled ) && (
-					<span>
+					<Text>
 						<em>
 							{
 								sprintf(
@@ -95,7 +147,7 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 								)
 							}
 						</em>
-					</span>
+					</Text>
 				)
 			}
 			<table className="tablepress-postbox-table fixed">
@@ -104,20 +156,19 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Enable Visitor Features', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Offer the following functions for site visitors with this table:', 'tablepress' ) }
-								checked={ tableOptions.use_datatables }
+								checked={ use_datatables }
 								disabled={ ! tableHeadEnabled }
-								onChange={ ( use_datatables ) => {
+								onCheckedChange={ ( new_use_datatables ) => {
 									// Don't turn on "Enable Visitor Features" if the table has merged cells.
-									if ( use_datatables ) {
+									if ( new_use_datatables ) {
 										tp.helpers.visibility.update(); // Update information about hidden rows and columns.
 										if ( tp.helpers.editor.has_merged_body_cells() ) {
 											setAlertEnableDataTablesMergedCellsIsShown( true );
 											return;
 										}
 									}
-									updateTableOptions( { use_datatables } );
+									updateTableOptions( { use_datatables: new_use_datatables } );
 								} }
 							/>
 							{ alertEnableDataTablesMergedCellsIsShown && (
@@ -136,11 +187,10 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Sorting', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Enable sorting of the table by the visitor.', 'tablepress' ) }
-								checked={ tableOptions.datatables_sort }
+								checked={ datatables_sort }
 								disabled={ ! dataTablesEnabled }
-								onChange={ ( datatables_sort ) => updateTableOptions( { datatables_sort } ) }
+								onCheckedChange={ ( new_datatables_sort ) => updateTableOptions( { datatables_sort: new_datatables_sort } ) }
 							/>
 						</td>
 					</tr>
@@ -148,11 +198,10 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Search/Filtering', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Enable the visitor to filter or search the table. Only rows with the search word in them are shown.', 'tablepress' ) }
-								checked={ tableOptions.datatables_filter }
+								checked={ datatables_filter }
 								disabled={ ! dataTablesEnabled }
-								onChange={ ( datatables_filter ) => updateTableOptions( { datatables_filter } ) }
+								onCheckedChange={ ( new_datatables_filter ) => updateTableOptions( { datatables_filter: new_datatables_filter } ) }
 							/>
 						</td>
 					</tr>
@@ -160,51 +209,49 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Pagination', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Enable pagination of the table (viewing only a certain number of rows at a time) by the visitor.', 'tablepress' ) }
-								checked={ tableOptions.datatables_paginate }
+								checked={ datatables_paginate }
 								disabled={ ! dataTablesEnabled }
-								onChange={ ( datatables_paginate ) => updateTableOptions( { datatables_paginate } ) }
+								onCheckedChange={ ( new_datatables_paginate ) => updateTableOptions( { datatables_paginate: new_datatables_paginate } ) }
 							/>
 						</td>
 					</tr>
 					<tr>
 						<th className="column-1" scope="row"></th>
 						<td className="column-2">
-							<label htmlFor="option-datatables_paginate_entries">
-								<HStack
-									alignment="left"
-									style={ {
-										paddingLeft: '24px',
-									} }
-								>
-									{
-										createInterpolateElement(
-											__( 'Show <input /> rows per page.', 'tablepress' ),
-											{
-												input: (
-													<NumberControl
-														size="compact"
-														id="option-datatables_paginate_entries"
-														title={ __( 'This field must contain a non-negative number.', 'tablepress' ) }
-														isDragEnabled={ false }
-														value={ tableOptions.datatables_paginate_entries }
-														disabled={ ! dataTablesEnabled || ! tableOptions.datatables_paginate }
-														onChange={ ( datatables_paginate_entries ) => {
-															datatables_paginate_entries = '' !== datatables_paginate_entries ? parseInt( datatables_paginate_entries, 10 ) : 1;
-															updateTableOptions( { datatables_paginate_entries } );
-														} }
-														min={ 1 }
-														required={ true }
-														style={ {
-															width: '65px',
-														} }
-													/>
-												),
-											},
-										)
-									}
-								</HStack>
+							<label
+								htmlFor="option-datatables_paginate_entries"
+								style={ {
+									display: 'inline-block',
+									marginInlineStart: '24px',
+								} }
+							>
+								{
+									createInterpolateElement(
+										__( 'Show <input /> rows per page.', 'tablepress' ),
+										{
+											input: (
+												<NumberControl
+													size="compact"
+													label={ __( 'Number of rows per page', 'tablepress' ) }
+													hideLabelFromVision={ true }
+													id="option-datatables_paginate_entries"
+													className="component-inline-flex"
+													title={ __( 'This field must contain a non-negative number.', 'tablepress' ) }
+													value={ datatables_paginate_entries }
+													disabled={ ! dataTablesEnabled || ! datatables_paginate }
+													onChange={ ( new_datatables_paginate_entries ) => {
+														new_datatables_paginate_entries = '' !== new_datatables_paginate_entries ? parseInt( new_datatables_paginate_entries, 10 ) : '';
+														updateTableOptions( { datatables_paginate_entries: new_datatables_paginate_entries } );
+													} }
+													min={ 1 }
+													required={ true }
+													digits={ 3 }
+												/>
+											),
+										},
+									)
+								}
 							</label>
 						</td>
 					</tr>
@@ -212,11 +259,10 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Pagination Length Change', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Allow the visitor to change the number of rows shown when using pagination.', 'tablepress' ) }
-								checked={ tableOptions.datatables_lengthchange }
-								disabled={ ! dataTablesEnabled || ! tableOptions.datatables_paginate }
-								onChange={ ( datatables_lengthchange ) => updateTableOptions( { datatables_lengthchange } ) }
+								checked={ datatables_lengthchange }
+								disabled={ ! dataTablesEnabled || ! datatables_paginate }
+								onCheckedChange={ ( new_datatables_lengthchange ) => updateTableOptions( { datatables_lengthchange: new_datatables_lengthchange } ) }
 							/>
 						</td>
 					</tr>
@@ -224,11 +270,10 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Info', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Enable the table information display, with information about the currently visible data, like the number of rows.', 'tablepress' ) }
-								checked={ tableOptions.datatables_info }
+								checked={ datatables_info }
 								disabled={ ! dataTablesEnabled }
-								onChange={ ( datatables_info ) => updateTableOptions( { datatables_info } ) }
+								onCheckedChange={ ( new_datatables_info ) => updateTableOptions( { datatables_info: new_datatables_info } ) }
 							/>
 						</td>
 					</tr>
@@ -236,11 +281,10 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 						<th className="column-1" scope="row">{ __( 'Horizontal Scrolling', 'tablepress' ) }:</th>
 						<td className="column-2">
 							<CheckboxControl
-								__nextHasNoMarginBottom
 								label={ __( 'Enable horizontal scrolling, to make viewing tables with many columns easier.', 'tablepress' ) }
-								checked={ tableOptions.datatables_scrollx }
+								checked={ datatables_scrollx }
 								disabled={ ! dataTablesEnabled }
-								onChange={ ( datatables_scrollx ) => updateTableOptions( { datatables_scrollx } ) }
+								onCheckedChange={ ( new_datatables_scrollx ) => updateTableOptions( { datatables_scrollx: new_datatables_scrollx } ) }
 							/>
 						</td>
 					</tr>
@@ -249,21 +293,21 @@ const Section = ( { tableOptions, updateTableOptions } ) => {
 							<th className="column-1 top-align" scope="row"><label htmlFor="option-datatables_custom_commands">{ __( 'Custom Commands', 'tablepress' ) }:</label></th>
 							<td className="column-2">
 								<CustomCommandsControl
-									tableOptionCustomCommands={ tableOptions.datatables_custom_commands }
-									updateTableOptions={ updateTableOptions }
-									dataTablesEnabled={ dataTablesEnabled }
+									customCommands={ datatables_custom_commands }
+									onChange={ ( newCustomCommands ) => updateTableOptions( { datatables_custom_commands: newCustomCommands } ) }
+									disabled={ ! dataTablesEnabled }
 								/>
 							</td>
 						</tr>
 					) }
 				</tbody>
 			</table>
-		</VStack>
+		</Stack>
 	);
-};
+} );
 
 initializeReactComponentInPortal(
 	'datatables-features',
 	'edit',
-	Section,
+	SectionWrapper,
 );

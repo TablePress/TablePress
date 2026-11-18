@@ -39,12 +39,12 @@ module.exports = function ( grunt ) {
 					// Exclude files that contain JSX from jshint checking.
 					'!admin/js/add.js',
 					'!admin/js/common/ajax-request.js',
+					'!admin/js/common/functions.js',
 					'!admin/js/common/react-loader.js',
 					'!admin/js/edit.js',
 					'!admin/js/edit/datatables-features.js',
 					'!admin/js/edit/header-bar.js',
 					'!admin/js/edit/table-information.js',
-					'!admin/js/edit/table-preview.js',
 					'!admin/js/edit/table-options.js',
 					'!admin/js/edit/toolbar.js',
 					'!admin/js/export.js',

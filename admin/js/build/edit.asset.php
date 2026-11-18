@@ -3,6 +3,7 @@
 		'react',
 		'react-dom',
 		'react-jsx-runtime',
+		'wp-a11y',
 		'wp-components',
 		'wp-compose',
 		'wp-data',
@@ -15,5 +16,5 @@
 		'wp-primitives',
 		'wp-url'
 	),
-	'version' => '47158e9900176cd30a8a'
+	'version' => '92a1901b5aeb1ced0dd7'
 );

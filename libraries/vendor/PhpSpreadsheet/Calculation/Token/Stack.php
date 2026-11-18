@@ -58,8 +58,10 @@ class Stack
 		$this->stack[$this->count++] = $stackItem;
 	}
 
-	/** @return array<mixed>
-				 * @param mixed $value */
+	/**
+				 * @return array<mixed>
+				 * @param mixed $value
+				 */
 				public function getStackItem(string $type, $value, ?string $reference = null): array
 	{
 		$stackItem = [

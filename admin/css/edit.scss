@@ -36,7 +36,7 @@ div#post-body.metabox-holder.columns-1 {
 
 /* Add space between the screen options fieldsets. */
 #tablepress-screen-options {
-	margin-top: 20px;
+	margin-top: 14px;
 }
 
 /* Move backdrop of the wpLink dialog above the "Advanced Editor" dialog. */
@@ -58,7 +58,7 @@ body[class*="branch-7-"] div#wp-link-wrap {
 /* Header Bar. */
 #tablepress-header-bar-section {
 	margin-bottom: 20px;
-	padding: 8px 12px;
+	padding: 5px 9px;
 	border: 1px solid #c3c4c7;
 	background: #ffffff;
 
@@ -70,38 +70,52 @@ body[class*="branch-7-"] div#wp-link-wrap {
 	}
 	/* Full width on smaller screens, to prevent the table editor from being visible near the right edge when scrolling. */
 	@media screen and (min-width: 601px) and (max-width: 782px) {
-		margin-left: -11px;
-		margin-right: -21px;
+		margin-inline: -11px -21px;
+	}
+
+	.tablepress-notice-list {
+		/* Compensate for the reduced padding of the parent div, to align notices with the other elements in the header bar. */
+		padding: 3px;
+		margin-top: 2px;
 	}
 
 	/* Fixed left header bar, taking into account the width of the admin menu. */
 	.tablepress-header-bar-wrapper {
 		max-width: 1000px;
+		width: 100%;
+
+		> div {
+			overflow: hidden;
+			padding: 3px; /* To prevent focus outlines from being cut off. */
+		}
 
 		body & {
 			position: sticky;
-			left: 172px;
+			inset-inline-start: 172px;
 		}
 		body.folded & {
-			left: 48px;
+			inset-inline-start: 48px;
 		}
 		body.auto-fold & {
 			@media only screen and (max-width: 960px) {
-				left: 48px;
+				inset-inline-start: 48px;
 			}
 			@media screen and (max-width: 782px) {
-				left: 0;
+				inset-inline-start: 0;
 			}
 		}
 	}
+}
+
+/* In the More Actions menu, move the Shortcode (the menu item description) to the right. */
+.tablepress-more-actions-menu .shifted-description > span:nth-child(2) {
+	grid-column: content-start / content-end;
 }
 
 /* Table name and ID display in header. */
 .tablepress-header-table-name,
 .tablepress-header-table-id {
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 /* Table Editor Toolbar. */
@@ -124,18 +138,18 @@ body[class*="branch-7-"] div#wp-link-wrap {
 	.tablepress-toolbar-scroll-wrapper {
 		body & {
 			position: sticky;
-			left: 172px;
+			inset-inline-start: 172px;
 			width: auto;
 		}
 		body.folded & {
-			left: 48px;
+			inset-inline-start: 48px;
 		}
 		body.auto-fold & {
 			@media only screen and (max-width: 960px) {
-				left: 48px;
+				inset-inline-start: 48px;
 			}
 			@media screen and (max-width: 782px) {
-				left: 0;
+				inset-inline-start: 0;
 			}
 		}
 	}
@@ -143,17 +157,9 @@ body[class*="branch-7-"] div#wp-link-wrap {
 	.tablepress-toolbar-button-text {
 		font-weight: normal;
 
-		@media screen and (max-width: 600px) {
+		@media screen and (max-width: 670px) {
 			display: none;
 		}
-	}
-}
-
-/* Background color for the readonly Shortcode text field. */
-#table-information-shortcode {
-	&,
-	+ .components-input-control__suffix {
-		background-color: #f0f0f1;
 	}
 }
 
@@ -210,6 +216,10 @@ body[class*="branch-7-"] div#wp-link-wrap {
 .jexcel > thead > tr > td {
 	text-align: center !important;
 	z-index: 22; /* Prevent drag corner from floating above fixed header. */
+
+	&.jexcel_selectall.jexcel_selectall {
+		z-index: 23; /* Above fixed header and fixed left column. */
+	}
 
 	/* Use custom sorting arrow icons. */
 	&:not(:first-child,.dragging,.dragging-left,.dragging-right) {
@@ -269,21 +279,22 @@ body[class*="branch-7-"] div#wp-link-wrap {
 }
 
 /* Fixed left column, taking into account the width of the admin menu. */
-.jexcel > tbody > tr > .jexcel_row {
+.jexcel > tbody > tr > .jexcel_row,
+.jexcel > thead > tr > .jexcel_selectall {
 	body & {
 		position: sticky;
 		z-index: 21; /* Prevent drag corner from floating above fixed left column. */
-		left: 160px;
+		inset-inline-start: 160px;
 	}
 	body.folded & {
-		left: 36px;
+		inset-inline-start: 36px;
 	}
 	body.auto-fold & {
 		@media only screen and (max-width: 960px) {
-			left: 36px;
+			inset-inline-start: 36px;
 		}
 		@media screen and (max-width: 782px) {
-			left: 0;
+			inset-inline-start: 0;
 		}
 	}
 }
@@ -332,12 +343,90 @@ body[class*="branch-7-"] div#wp-link-wrap {
 	line-height: 1 !important;
 }
 
-/* Fullscreen mode. */
-.admin-bar .jexcel_container.fullscreen .jexcel > thead > tr > td {
-	top: 0;
+#tablepress-page .components-snackbar-list {
+	padding: 0 32px;
+
+	body.tablepress-fullscreen & {
+		inset-inline-start: 0;
+
+		.components-snackbar-list__notice-container {
+			display: flex;
+			justify-content: center;
+		}
+	}
 }
-.jexcel_container.fullscreen {
-	z-index: 99999;
+
+/* Fullscreen mode. */
+
+body.tablepress-fullscreen {
+	.wp-pointer {
+		display: none !important;
+	}
+
+	#tablepress_edit-table-data {
+		#tablepress-table-editor-toolbar-section {
+			position: static;
+			margin: 0;
+			padding: 0;
+			border-bottom: 1px solid #cccccc;
+			overflow: hidden;
+			overscroll-behavior: contain;
+
+			.tablepress-toolbar-scroll-wrapper {
+				position: static;
+
+				@media screen and (max-width: 540px) {
+					position: sticky;
+					inset-inline-start: 0;
+					overflow-x: scroll;
+				}
+			}
+		}
+
+		.inside {
+			position: fixed;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #ffffff;
+			z-index: 99999;
+			margin: 0;
+			padding: 0;
+
+			.jexcel_container {
+				width: 100%;
+				height: 100%;
+				padding: 0;
+
+				.jexcel > thead > tr > td {
+					top: 0;
+					border-top: none;
+
+					&.jexcel_selectall {
+						top: 0;
+						inset-inline-start: 0;
+					}
+				}
+
+				.jexcel > tbody > tr > .jexcel_row {
+					inset-inline-start: 0;
+				}
+			}
+
+			.jexcel_content {
+				overflow: auto;
+				overscroll-behavior: contain;
+				width: 100%;
+				height: calc(100% - 49px); /* To account for the Table Editor Toolbar when scrolling vertically. */
+				padding: 0;
+
+				.jexcel {
+					border-top: none;
+					border-inline-start: none;
+				}
+			}
+		}
+	}
 }
 
 /* Context menu. */
@@ -349,6 +438,8 @@ body[class*="branch-7-"] div#wp-link-wrap {
 
 	> div {
 		padding: 4px 4px 4px 16px;
+		line-height: 24px;
+		margin-inline: 3px;
 		color: var(--wpds-color-foreground-interactive-neutral, #1e1e1e); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
 		font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
 
@@ -357,7 +448,13 @@ body[class*="branch-7-"] div#wp-link-wrap {
 		}
 
 		&:hover {
-			background-color: var(--wpds-color-background-interactive-brand-weak-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 12%, #ffffff)); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+			background-color: var(--wpds-color-background-interactive-brand-strong-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 93%, #000000)); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+			border-radius: 2px;
+
+			> a,
+			> span {
+				color: var(--wpds-color-foreground-interactive-brand-strong-active, #ffffff); /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+			}
 		}
 
 		a {
@@ -365,10 +462,12 @@ body[class*="branch-7-"] div#wp-link-wrap {
 			color: #1e1e1e;
 		}
 	}
-	> .jcontextmenu-disabled,
-	> .jcontextmenu-disabled a {
-		color: #999999;
-		cursor: default;
+	> .jcontextmenu-disabled {
+		> a,
+		> span {
+			color: var(--wpds-color-foreground-interactive-neutral-disabled, #8d8d8d) !important; /* stylelint-disable-line plugin-wpds/no-token-fallback-values */
+			cursor: default;
+		}
 	}
 	> div.jcontextmenu-disabled:hover {
 		background: transparent;

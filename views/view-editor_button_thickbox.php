@@ -34,6 +34,8 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 * Initializes the View class.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @phpstan-ignore constructor.missingParentCall (The parent constructor is intentionally not called to avoid executing code that is not needed for this view.)
 	 */
 	public function __construct() {
 		// Intentionally left empty, to void code from parent::__construct().

@@ -15,7 +15,6 @@ import './edit/table-information';
 import './edit/toolbar';
 import './edit/table-options';
 import './edit/datatables-features';
-import './edit/table-preview';
 
 /**
  * Load the non-React "Edit" screen JavaScript code, mostly for the table data editor.
@@ -29,8 +28,17 @@ import './edit/screen-options';
  */
 import { initializeReactComponent } from './common/react-loader';
 import Screen from './edit/screen';
+import { ScreenSettingsProvider } from './edit/context/screen-settings';
+import { TableMetaProvider } from './edit/context/table-meta';
+import { TableOptionsProvider } from './edit/context/table-options';
 
 initializeReactComponent(
 	'tablepress-edit-screen',
-	<Screen />,
+	<TableOptionsProvider>
+		<TableMetaProvider>
+			<ScreenSettingsProvider>
+				<Screen />
+			</ScreenSettingsProvider>
+		</TableMetaProvider>
+	</TableOptionsProvider>,
 );

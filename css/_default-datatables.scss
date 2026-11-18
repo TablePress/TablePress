@@ -14,7 +14,7 @@
 $direction: "ltr" !default;
 
 /* Import DataTables pagination code. */
-@use "default-datatables-pagination" with ($direction: $direction);
+@use "default-datatables-pagination";
 
 // Ensure that Unicode characters are embedded in ASCII-encoded form.
 @function unicode($str) {

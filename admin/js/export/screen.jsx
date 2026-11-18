@@ -12,15 +12,18 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import {
-	Button,
-	CheckboxControl,
-	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
-	Icon,
-	SelectControl,
-	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
+	SelectControl as LegacySelectControl,
 } from '@wordpress/components';
 import { info } from '@wordpress/icons';
 import { __, _x, sprintf } from '@wordpress/i18n';
+import {
+	Button,
+	CheckboxControl,
+	Icon,
+	SelectControl,
+	Stack,
+	Text,
+} from '@wordpress/ui';
 
 // Number of tables.
 const tablesCount = Object.keys( tp.export.tables ).length;
@@ -78,7 +81,7 @@ const Screen = () => {
 
 	/*
 	 * Set the size of the export tables dropdown to the number of tables, if ZIP file support is available.
-	 * `SelectControl` does not support the HTML `size` attribute, so that this has to be done manually with an effect.
+	 * `LegacySelectControl` does not support the HTML `size` attribute, so that this has to be done manually with an effect.
 	 */
 	useEffect( () => {
 		tablesExportListSelect.current.size = exportTablesSelectMultiple ? exportTablesSelectSize : 1;
@@ -89,20 +92,17 @@ const Screen = () => {
 			<tbody>
 				<tr>
 					<th className="column-1 top-align" scope="row">
-						<VStack
-							spacing="20px"
-						>
+						<Stack direction="column" gap="xl">
 							<label htmlFor="tables-export-list">
 								{ __( 'Tables to Export', 'tablepress' ) }:
 							</label>
 							{ exportTablesSelectMultiple &&
-								<VStack>
+								<Stack direction="column" gap="sm">
 									<CheckboxControl
 										// Show a "Select all" checkbox to select all entries in the export tables dropdown.
-										__nextHasNoMarginBottom
 										label={ __( 'Select all', 'tablepress' ) }
 										checked={ screenData.selectedTables.length === tablesCount }
-										onChange={ () => {
+										onCheckedChange={ () => {
 											const selectedTables = ( screenData.selectedTables.length === tablesCount ) ? [] : Object.keys( tp.export.tables );
 											updateScreenData( { selectedTables } );
 										} }
@@ -110,50 +110,49 @@ const Screen = () => {
 									{ tablesCount > maxExportTablesSelectSize &&
 										<CheckboxControl
 											// Show a "Reverse List" checkbox if more tables are shown than what the height of the export tables dropdown holds.
-											__nextHasNoMarginBottom
 											label={ __( 'Reverse list', 'tablepress' ) }
 											checked={ screenData.reverseList }
-											onChange={ ( reverseList ) => {
+											onCheckedChange={ ( reverseList ) => {
 												updateScreenData( { reverseList } );
 												tablesSelectOptions.reverse();
 											} }
 										/>
 									}
-								</VStack>
+								</Stack>
 							}
-						</VStack>
+						</Stack>
 					</th>
 					<td className="column-2">
-						<SelectControl
-							__nextHasNoMarginBottom
-							__next40pxDefaultSize
-							ref={ tablesExportListSelect }
-							id="tables-export-list"
-							// size={ exportTablesSelectMultiple ? exportTablesSelectSize : 1 } // Not supported by `SelectControl`, so done with an effect above.
-							multiple={ exportTablesSelectMultiple }
-							value={ exportTablesSelectMultiple ? screenData.selectedTables : ( screenData.selectedTables[0] ?? '' ) }
-							onChange={ ( selectedTables ) => {
-								if ( 'string' === typeof selectedTables ) {
-									selectedTables = [ selectedTables ];
-								}
-								updateScreenData( { selectedTables } );
-							} }
-							options={ tablesSelectOptions }
-						/>
-						{ exportTablesSelectMultiple &&
-							<HStack
-								alignment="left"
-							>
-								<Icon icon={ info } />
-								<span>
-									{ sprintf(
-										__( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ),
-										window?.navigator?.platform?.includes( 'Mac' ) ? _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : _x( 'Ctrl', 'keyboard key', 'tablepress' ),
-										_x( 'Shift', 'keyboard key', 'tablepress' ) )
+						<Stack direction="column" gap="xs">
+							<LegacySelectControl
+								__nextHasNoMarginBottom
+								__next40pxDefaultSize
+								ref={ tablesExportListSelect }
+								id="tables-export-list"
+								// size={ exportTablesSelectMultiple ? exportTablesSelectSize : 1 } // Not supported by `LegacySelectControl`, so done with an effect above.
+								multiple={ exportTablesSelectMultiple }
+								value={ exportTablesSelectMultiple ? screenData.selectedTables : ( screenData.selectedTables[0] ?? '' ) }
+								onChange={ ( selectedTables ) => {
+									if ( 'string' === typeof selectedTables ) {
+										selectedTables = [ selectedTables ];
 									}
-								</span>
-							</HStack>
-						}
+									updateScreenData( { selectedTables } );
+								} }
+								options={ tablesSelectOptions }
+							/>
+							{ exportTablesSelectMultiple &&
+								<Stack direction="row" gap="xs" align="center">
+									<Icon icon={ info } style={ { flexShrink: 0 } } />
+									<Text>
+										{ sprintf(
+											__( 'You can select multiple tables by holding down the “%1$s” key or the “%2$s” key for ranges.', 'tablepress' ),
+											window?.navigator?.platform?.includes( 'Mac' ) ? _x( '⌘', 'keyboard shortcut modifier key on a Mac keyboard', 'tablepress' ) : _x( 'Ctrl', 'keyboard key', 'tablepress' ),
+											_x( 'Shift', 'keyboard key', 'tablepress' ) )
+										}
+									</Text>
+								</Stack>
+							}
+						</Stack>
 					</td>
 				</tr>
 				<tr>
@@ -163,19 +162,17 @@ const Screen = () => {
 						</label>
 					</th>
 					<td className="column-2">
-						<HStack>
+						<Stack>
 							<SelectControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
 								id="tables-export-format"
 								name="export[format]"
-								value={ screenData.exportFormat }
 								label={ __( 'Export Format', 'tablepress' ) }
 								hideLabelFromVision={ true }
-								onChange={ ( exportFormat ) => updateScreenData( { exportFormat } ) }
-								options={ exportFormatsSelectOptions }
+								value={ exportFormatsSelectOptions.find( ( item ) => item.value === screenData.exportFormat ) }
+								onValueChange={ ( selectedItem ) => updateScreenData( { exportFormat: selectedItem.value } ) }
+								items={ exportFormatsSelectOptions }
 							/>
-						</HStack>
+						</Stack>
 					</td>
 				</tr>
 				<tr>
@@ -185,27 +182,23 @@ const Screen = () => {
 						</label>
 					</th>
 					<td className="column-2">
-						<HStack
-							alignment="left"
-						>
+						<Stack direction="row" gap="sm" align="center">
 							<SelectControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
 								id="tables-export-csv-delimiter"
 								name="export[csv_delimiter]"
-								value={ screenData.csvDelimiter }
 								label={ __( 'CSV Delimiter', 'tablepress' ) }
 								hideLabelFromVision={ true }
-								onChange={ ( csvDelimiter ) => updateScreenData( { csvDelimiter } ) }
-								options={ csvDelimitersSelectOptions }
+								value={ csvDelimitersSelectOptions.find( ( item ) => item.value === screenData.csvDelimiter ) }
+								onValueChange={ ( selectedItem ) => updateScreenData( { csvDelimiter: selectedItem.value } ) }
+								items={ csvDelimitersSelectOptions }
 								disabled={ 'csv' !== screenData.exportFormat }
 							/>
 							{ 'csv' !== screenData.exportFormat &&
-								<span>
+								<Text variant="body-sm">
 									{ __( '(Only needed for CSV export.)', 'tablepress' ) }
-								</span>
+								</Text>
 							}
-						</HStack>
+						</Stack>
 					</td>
 				</tr>
 				<tr className="bottom-border">
@@ -214,22 +207,19 @@ const Screen = () => {
 					</th>
 					<td className="column-2">
 						{ tp.export.zipSupportAvailable &&
-							<HStack
-								alignment="left"
-							>
+							<Stack direction="row" gap="xs" align="center">
 								<CheckboxControl
-									__nextHasNoMarginBottom
 									label={ __( 'Create a ZIP archive.', 'tablepress' ) }
 									checked={ screenData.createZipFile || zipFileRequired }
 									disabled={ zipFileRequired }
-									onChange={ ( createZipFile ) => updateScreenData( { createZipFile } ) }
+									onCheckedChange={ ( createZipFile ) => updateScreenData( { createZipFile } ) }
 								/>
 								{ zipFileRequired &&
-									<span>
+									<Text variant="body-sm">
 										{ __( '(Mandatory if more than one table is selected.)', 'tablepress' ) }
-									</span>
+									</Text>
 								}
-							</HStack>
+							</Stack>
 						}
 						{ ! tp.export.zipSupportAvailable &&
 							__( 'Note: Support for ZIP file creation seems not to be available on this server.', 'tablepress' )
@@ -252,11 +242,11 @@ const Screen = () => {
 							value={ screenData.createZipFile || zipFileRequired }
 						/>
 						<Button
-							variant="primary"
 							type="submit"
 							disabled={ 0 === screenData.selectedTables.length }
-							text={ __( 'Download Export File', 'tablepress' ) }
-						/>
+						>
+							{ __( 'Download Export File', 'tablepress' ) }
+						</Button>
 					</td>
 				</tr>
 			</tbody>

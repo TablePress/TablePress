@@ -2,6 +2,7 @@
 
 namespace TablePress\PhpOffice\PhpSpreadsheet\Calculation;
 
+use TablePress\Composer\Pcre\Preg;
 use TablePress\PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 
@@ -65,6 +66,15 @@ class BinaryComparison
 			return $operand2;
 		}
 
+		if (is_string($operand1) && is_string($operand2) && is_numeric($operand1) && is_numeric($operand2)) {
+			return self::numericStrings($operand1, $operand2, $operator);
+		}
+		$rank1 = self::typeRank($operand1);
+		$rank2 = self::typeRank($operand2);
+		if ($rank1 !== null && $rank2 !== null && $rank1 !== $rank2) {
+			return self::compareTypeRanks($rank1, $rank2, $operator);
+		}
+
 		// Use case-insensitive comparison if not OpenOffice mode
 		if (Functions::getCompatibilityMode() != Functions::COMPATIBILITY_OPENOFFICE) {
 			if (is_string($operand1)) {
@@ -80,6 +90,47 @@ class BinaryComparison
 			&& Functions::getCompatibilityMode() === Functions::COMPATIBILITY_OPENOFFICE;
 
 		return self::evaluateComparison($operand1, $operand2, $operator, $useLowercaseFirstComparison);
+	}
+
+	/**
+				 * Excel orders values of different types by type alone:
+				 * every number is less than every text, and every text is less than FALSE and TRUE.
+				 * So ="">0, ="a">1E+100 and =FALSE>"zzz" are all TRUE.
+				 * LibreOffice treats booleans as numbers, so only numbers and text are ranked there.
+				 * Null (an empty cell) and numeric strings keep their existing handling.
+				 * @param mixed $operand
+				 */
+				private static function typeRank($operand): ?int
+	{
+		if (is_bool($operand)) {
+			return Functions::getCompatibilityMode() === Functions::COMPATIBILITY_OPENOFFICE ? 0 : 2;
+		}
+		if (is_int($operand) || is_float($operand)) {
+			return 0;
+		}
+		if (is_string($operand) && !is_numeric($operand)) {
+			return 1;
+		}
+
+		return null;
+	}
+
+	private static function compareTypeRanks(int $rank1, int $rank2, string $operator): bool
+	{
+		switch ($operator) {
+									case '=':
+										return false;
+									case '<>':
+										return true;
+									case '>':
+									case '>=':
+										return $rank1 > $rank2;
+									case '<':
+									case '<=':
+										return $rank1 < $rank2;
+									default:
+										throw new Exception('Unsupported binary comparison operator');
+								}
 	}
 
 	/**
@@ -186,5 +237,58 @@ class BinaryComparison
 				private static function notEqual($operand1, $operand2): bool
 	{
 		return self::equal($operand1, $operand2) !== true;
+	}
+
+	private const EQUAL_COMPARES = ['=', '>=', '<='];
+	private const LESS_COMPARES = ['<', '<=', '<>'];
+	private const GREATER_COMPARES = ['>', '>=', '<>'];
+
+	private static function numericStrings(string $a, string $b, string $operator): bool
+	{
+		if (Functions::getCompatibilityMode() === Functions::COMPATIBILITY_OPENOFFICE) {
+			return self::numericStringsLibre($a, $b, $operator);
+		}
+		// special handling for numeric strings starting with -
+		$a = Preg::replace('/^-/', '', $a);
+		$b = Preg::replace('/^-/', '', $b);
+		$comp = strcmp($a, $b);
+		if ($comp === 0) {
+			return in_array($operator, self::EQUAL_COMPARES, true);
+		}
+		if ($comp > 0) {
+			return in_array($operator, self::GREATER_COMPARES, true);
+		}
+
+		return in_array($operator, self::LESS_COMPARES, true);
+	}
+
+	private static function numericStringsLibre(string $a2, string $b2, string $operator): bool
+	{
+		if (str_starts_with($a2, '+')) {
+			if (str_starts_with($b2, '+')) {
+				$comp = strcmp($a2, $b2);
+			} elseif (str_starts_with($b2, '-')) {
+				$comp = 1; // "+number1" is always > "-$number2"
+			} else {
+				$comp = -1; // "+number1" is always < "$number2" unsigned
+			}
+		} elseif (str_starts_with($b2, '+')) {
+			// $a2 can't start with + here
+			if (str_starts_with($a2, '-')) {
+				$comp = -1; // "-$number1" is always < "+$number2"
+			} else {
+				$comp = 1; // unsigned "$number1" is always > "+$number2"
+			}
+		} else {
+			$comp = strcmp($a2, $b2);
+		}
+		if ($comp === 0) {
+			return in_array($operator, self::EQUAL_COMPARES, true);
+		}
+		if ($comp > 0) {
+			return in_array($operator, self::GREATER_COMPARES, true);
+		}
+
+		return in_array($operator, self::LESS_COMPARES, true);
 	}
 }

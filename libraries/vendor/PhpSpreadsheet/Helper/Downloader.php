@@ -5,6 +5,7 @@ namespace TablePress\PhpOffice\PhpSpreadsheet\Helper;
 use DateTimeImmutable;
 use DateTimeZone;
 use TablePress\PhpOffice\PhpSpreadsheet\Exception;
+use TablePress\PhpOffice\PhpSpreadsheet\Writer;
 
 /**
  * Assist downloading files when samples are run in browser.
@@ -20,6 +21,10 @@ class Downloader
 
 	protected string $filetype;
 
+	protected ?Writer\IWriter $writer;
+
+	protected bool $oldIE;
+
 	protected const CONTENT_TYPES = [
 		'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 		'xls' => 'application/vnd.ms-excel',
@@ -29,28 +34,69 @@ class Downloader
 		'pdf' => 'application/pdf',
 	];
 
-	public function __construct(string $folder, string $filename, ?string $filetype = null)
+	/**
+				 * @param string|\TablePress\PhpOffice\PhpSpreadsheet\Writer\IWriter $folder
+				 */
+				public function __construct($folder, string $filename, ?string $filetype = null, bool $oldIE = false)
 	{
-		clearstatcache();
-		$filepath = realpath("{$folder}/{$filename}");
-		if ($filepath === false || !is_file($filepath) || !is_readable($filepath)) {
-			throw new Exception('File not found, or cannot be read');
+		if (is_string($folder)) {
+			$this->writer = null;
+			clearstatcache();
+			$filepath = realpath("{$folder}/{$filename}");
+			if ($filepath === false || !is_file($filepath) || !is_readable($filepath)) {
+				throw new Exception('File not found, or cannot be read');
+			}
+			$this->filepath = $filepath;
+			$this->filename = basename($this->filepath);
+		} else {
+			$this->writer = $folder;
+			switch (true) {
+													case $folder instanceof Writer\Pdf:
+														$filetype = 'pdf';
+														break;
+													case $folder instanceof Writer\Csv:
+														$filetype = 'csv';
+														break;
+													case $folder instanceof Writer\Html:
+														$filetype = 'html';
+														break;
+													case $folder instanceof Writer\Ods:
+														$filetype = 'ods';
+														break;
+													case $folder instanceof Writer\Xls:
+														$filetype = 'xls';
+														break;
+													case $folder instanceof Writer\Xlsx:
+														$filetype = 'xlsx';
+														break;
+													default:
+														$filetype = '';
+														break;
+												}
+			$this->filepath = $this->filename = $filename;
 		}
-		$this->filepath = $filepath;
-		$this->filename = basename($this->filepath);
 
 		$filetype ??= pathinfo($this->filename, PATHINFO_EXTENSION);
 		if (!array_key_exists(strtolower($filetype), self::CONTENT_TYPES)) {
 			throw new Exception('Invalid filetype: file cannot be downloaded');
 		}
 		$this->filetype = strtolower($filetype);
+		$dotfiletype = '.' . $this->filetype;
+		if (!str_ends_with($this->filename, $dotfiletype)) {
+			$this->filename .= $dotfiletype;
+		}
+		$this->oldIE = $oldIE;
 	}
 
 	public function download(): void
 	{
 		$this->headers();
 
-		readfile($this->filepath);
+		if ($this->writer === null) {
+			readfile($this->filepath);
+		} else {
+			$this->writer->save('php://output');
+		}
 	}
 
 	public function headers(): void
@@ -74,6 +120,7 @@ class Downloader
 	protected function contentType(): void
 	{
 		header('Content-Type: ' . self::CONTENT_TYPES[$this->filetype]);
+		header('X-Content-Type-Options: nosniff');
 	}
 
 	protected function contentDisposition(): void
@@ -83,20 +130,24 @@ class Downloader
 
 	protected function cacheHeaders(): void
 	{
-		header('Cache-Control: max-age=0');
-		// If you're serving to IE 9, then the following may be needed
-		header('Cache-Control: max-age=1');
+		$maxAge = 0;
+		if ($this->oldIE) {
+			// If you're serving to IE 9, then the following may be needed
+			$maxAge = 1;
 
-		// If you're serving to IE over SSL, then the following may be needed
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			// If you're serving to IE over SSL, then the following may be needed
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+		}
 		$dt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
 		header('Last-Modified: ' . $dt->format('D, d M Y H:i:s') . ' GMT'); // always modified
-		header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+		header("Cache-Control: cache, must-revalidate, max-age=$maxAge"); // HTTP/1.1
 		header('Pragma: public'); // HTTP/1.0
 	}
 
 	protected function fileSize(): void
 	{
-		header('Content-Length: ' . filesize($this->filepath));
+		if ($this->writer === null) {
+			header('Content-Length: ' . filesize($this->filepath));
+		}
 	}
 }

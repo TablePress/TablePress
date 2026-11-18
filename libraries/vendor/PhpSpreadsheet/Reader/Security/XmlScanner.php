@@ -27,7 +27,10 @@ class XmlScanner
 	 */
 	private static $shutdownRegistered = false;
 
-	public function __construct(string $pattern = '<!DOCTYPE')
+	public const HTML_PATTERN = '<!ENTITY';
+	public const XML_PATTERN = '<!DOCTYPE';
+
+	public function __construct(string $pattern = self::XML_PATTERN)
 	{
 		$this->pattern = $pattern;
 
@@ -42,7 +45,7 @@ class XmlScanner
 
 	public static function getInstance(Reader\IReader $reader): self
 	{
-		$pattern = ($reader instanceof Reader\Html) ? '<!ENTITY' : '<!DOCTYPE';
+		$pattern = ($reader instanceof Reader\Html) ? self::HTML_PATTERN : self::XML_PATTERN;
 
 		return new self($pattern);
 	}

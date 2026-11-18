@@ -11,6 +11,7 @@ use TablePress\PhpOffice\PhpSpreadsheet\Shared\CodePage;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher as SharedEscher;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Escher\DggContainer\BstoreContainer\BSE;
+use TablePress\PhpOffice\PhpSpreadsheet\Shared\Metafile;
 use TablePress\PhpOffice\PhpSpreadsheet\Shared\Xls as SharedXls;
 use TablePress\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TablePress\PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
@@ -539,9 +540,16 @@ class LoadSpreadsheet extends Xls
 								$BSE = $BSECollection[$BSEindex - 1];
 								$blipType = $BSE->getBlipType();
 
-								// need check because some blip types are not supported by Escher reader such as EMF
+								// need check because some blip types are not supported by Escher reader such as PICT
 								if ($blip = $BSE->getBlip()) {
-									$ih = imagecreatefromstring($blip->getData());
+									$blipData = $blip->getData();
+									if (Metafile::detect($blipData) !== null) {
+										// Windows Metafiles (WMF, EMF, EMF+) are rendered as PNG
+										$blipType = BSE::BLIPTYPE_PNG;
+										$ih = Metafile::tryToGdImage($blipData) ?? false;
+									} else {
+										$ih = imagecreatefromstring($blipData);
+									}
 									if ($ih !== false) {
 										$drawing = new MemoryDrawing();
 										$drawing->setImageResource($ih);
@@ -604,7 +612,7 @@ class LoadSpreadsheet extends Xls
 							$textObject = $xls->textObjects[$note];
 							$noteDetails['objTextData'] = $textObject;
 						} else {
-							$noteDetails['objTextData']['text'] = '';
+							$noteDetails['objTextData']['text'] = ''; //* @phpstan-ignore offsetAccess.nonOffsetAccessible (I don't know)
 						}
 					}
 					$cellAddress = str_replace('$', '', $noteDetails['cellRef']);

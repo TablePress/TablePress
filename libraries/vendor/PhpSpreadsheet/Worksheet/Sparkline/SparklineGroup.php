@@ -112,7 +112,7 @@ class SparklineGroup
 	/**
 				 * Convenience helper: create and add a sparkline from a location cell and
 				 * data range, returning this group for chaining.
-				 * @param \TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress|string $location
+				 * @param string|\TablePress\PhpOffice\PhpSpreadsheet\Cell\CellAddress $location
 				 */
 				public function createSparkline($location, string $dataRange): self
 	{

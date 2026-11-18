@@ -149,6 +149,8 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @param array<string, mixed> $item Data item for the current row.
 	 * @return string The table name.
+	 *
+	 * @phpstan-ignore method.childParameterType
 	 */
 	protected function get_primary_column_aria_label( /* array */ $item ): string {
 		// Don't use type hints in the method declaration to prevent PHP errors, as the method is inherited.

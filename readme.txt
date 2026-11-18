@@ -4,8 +4,8 @@ Donate link: https://tablepress.org/premium/?utm_source=wordpress.org&utm_medium
 Tags: table, spreadsheet, csv, excel, tables
 Requires at least: 6.7
 Requires PHP: 7.4
-Tested up to: 7.1
-Stable tag: 3.4.1
+Tested up to: 7.2
+Stable tag: 3.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,31 +144,20 @@ Priority email support is also included. [Check out the details on the TablePres
 
 Changes in recent versions are shown below. For earlier changes, please see the [changelog history](https://tablepress.org/info/#changelog).
 
-= Version 3.4.1 (October 12, 2026) =
+= Version 3.5 (November 19, 2026) =
 
-* Bugfix: Table data in the wrong internal data format is properly recognized and handled again.
-* Bugfix: Saving “Custom CSS” code no longer returns an unexpected error message.
-* Bugfix: An incompatibility where other plugins pass wrong data types to TablePress was solved.
-* Bugfix: The “[table-info]” Shortcode now properly returns the number of rows or columns without an error message again.
-* Bugfix: The position of the “Insert Link” dialog  on the “Edit” screen is correct again, even when other plugins interfere.
-* Bugfix: The TablePress integration into the WordPress Export functionality now works correctly when the WP-CLI tool is used.
-* Bugfix: TablePress now protects against the Elementor page builder sometimes not loading all necessary files for the integration in its editor.
-* Various code modernizations, removal of outdated legacy code, and optimizations for better performance and improved security.
-* Several minor bugs and inconsistencies have been fixed and improved!
-* Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
-* Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+TablePress 3.5 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
 
-= Version 3.4 (September 30, 2026) =
+**New features, enhancements, and fixes**
 
-TablePress 3.4 is a feature, stability, maintenance, and compatibility update. Here are the highlights:
-
-**New Table Editor Toolbar on the “Edit” Screen**
-
-The new Table Editor Toolbar makes all editing features available right where you need them. Your mouse’s scroll wheel can rest easy now: Gone are the days of going back and forth between the Table Content and Table Manipulation sections. We already can’t imagine living without it.
-
-* The toolbar will stick to the top of the screen so that it’s always available when your table is in view.
-* It also offers quick access to operations like Undo/Redo or Cut/Copy/Paste that have previously only been available through the right-click context menu.
-* Hovering over a button shows its name and keyboard shortcut for even quicker editing!
+* The new “Fullscreen view”, available from the Table Editor Toolbar and via a keyboard shortcut, allows you to focus on editing your table without distractions.
+* A new “Go to Row” feature in the toolbar lets you jump to a specific row in your table very quickly, making it much easier to work with large tables.
+* The “TablePress table” block in the block editor now allows selecting the desired table without first having to go to the sidebar.
+* The user interface control elements across TablePress were improved for better usability, accessibility, and right-to-left (RTL) language support.
+* In the “User Action Buttons” module’s section on the “Edit” screen, the configured buttons are shown in the correct order again. (TablePress Pro and Max only.)
+* TablePress now has better protection against wrong data types being passed in configuration parameters or from external integrations.
+* An issue with the focus behavior of the WordPress “Command Palette” has been resolved.
+* A Galician language file for the “Table Features for Site Visitors” was added.
 
 **Behind the scenes**
 
@@ -176,6 +165,7 @@ The new Table Editor Toolbar makes all editing features available right where yo
 * Several minor bugs and inconsistencies have been fixed and improved!
 * Cleaned up and simplified code, for easier future maintenance, to follow WordPress Coding Standards, and to offer helpful inline documentation.
 * Several external code libraries and build tools have been updated to benefit from enhancements and bug fixes.
+* Thanks for fruitful feedback and discussions about security improvements to Harry Nguyen, Santh, and the Patchstack team.
 
 **Premium versions**
 
@@ -183,8 +173,5 @@ The new Table Editor Toolbar makes all editing features available right where yo
 
 == Upgrade Notice ==
 
-= 3.4.1 =
-This update is a stability, maintenance, and compatibility release. Updating is highly recommended!
-
-= 3.4 =
+= 3.5 =
 This update is a feature, stability, maintenance, and compatibility release. Updating is highly recommended!

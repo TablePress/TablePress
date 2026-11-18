@@ -282,7 +282,7 @@ class XlsBase extends BaseReader
 				 * Reads first 8 bytes of a string and return IEEE 754 float.
 				 *
 				 * @param string $data Binary string that is at least 8 bytes long
-				 * @return int|float
+				 * @return float|int
 				 */
 				protected static function extractNumber(string $data)
 	{

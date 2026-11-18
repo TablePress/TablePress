@@ -43,14 +43,14 @@ export const initializeReactComponent = ( rootId, Component ) => {
  */
 export const initializeReactComponentInPortal = ( slug, screen, Component ) => {
 	addFilter(
-		`tablepress.${screen}ScreenFeatures`,
-		`tp/${slug}/${screen}-screen-feature`,
+		`tablepress.${ screen }ScreenFeatures`,
+		`tp/${ slug }/${ screen }-screen-feature`,
 		( features ) => ( [ ...features, slug ] ),
 	);
 
 	addFilter(
-		`tablepress.${screen}ScreenPortals`,
-		`tp/${slug}/${screen}-screen-portal`,
+		`tablepress.${ screen }ScreenPortals`,
+		`tp/${ slug }/${ screen }-screen-portal`,
 		( Portals ) => {
 			return ( props ) => (
 				<>
@@ -58,7 +58,7 @@ export const initializeReactComponentInPortal = ( slug, screen, Component ) => {
 					{
 						createPortal(
 							<Component { ...props } />,
-							document.getElementById( `tablepress-${slug}-section` ),
+							document.getElementById( `tablepress-${ slug }-section` ),
 						)
 					}
 				</>

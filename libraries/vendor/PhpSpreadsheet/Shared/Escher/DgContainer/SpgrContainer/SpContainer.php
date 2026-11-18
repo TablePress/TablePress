@@ -45,13 +45,13 @@ class SpContainer
 
 	/**
 				 * Horizontal offset of upper-left corner of shape measured in 1/1024 of column width.
-				 * @var int|float
+				 * @var float|int
 				 */
 				private $startOffsetX;
 
 	/**
 				 * Vertical offset of upper-left corner of shape measured in 1/256 of row height.
-				 * @var int|float
+				 * @var float|int
 				 */
 				private $startOffsetY;
 
@@ -62,13 +62,13 @@ class SpContainer
 
 	/**
 				 * Horizontal offset of bottom-right corner of shape measured in 1/1024 of column width.
-				 * @var int|float
+				 * @var float|int
 				 */
 				private $endOffsetX;
 
 	/**
 				 * Vertical offset of bottom-right corner of shape measured in 1/256 of row height.
-				 * @var int|float
+				 * @var float|int
 				 */
 				private $endOffsetY;
 
@@ -204,7 +204,7 @@ class SpContainer
 
 	/**
 				 * Set offset in x-direction of upper-left corner of shape measured in 1/1024 of column width.
-				 * @param int|float $startOffsetX
+				 * @param float|int $startOffsetX
 				 */
 				public function setStartOffsetX($startOffsetX): void
 	{
@@ -213,7 +213,7 @@ class SpContainer
 
 	/**
 				 * Get offset in x-direction of upper-left corner of shape measured in 1/1024 of column width.
-				 * @return int|float
+				 * @return float|int
 				 */
 				public function getStartOffsetX()
 	{
@@ -222,7 +222,7 @@ class SpContainer
 
 	/**
 				 * Set offset in y-direction of upper-left corner of shape measured in 1/256 of row height.
-				 * @param int|float $startOffsetY
+				 * @param float|int $startOffsetY
 				 */
 				public function setStartOffsetY($startOffsetY): void
 	{
@@ -231,7 +231,7 @@ class SpContainer
 
 	/**
 				 * Get offset in y-direction of upper-left corner of shape measured in 1/256 of row height.
-				 * @return int|float
+				 * @return float|int
 				 */
 				public function getStartOffsetY()
 	{
@@ -258,7 +258,7 @@ class SpContainer
 
 	/**
 				 * Set offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width.
-				 * @param int|float $endOffsetX
+				 * @param float|int $endOffsetX
 				 */
 				public function setEndOffsetX($endOffsetX): void
 	{
@@ -267,7 +267,7 @@ class SpContainer
 
 	/**
 				 * Get offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width.
-				 * @return int|float
+				 * @return float|int
 				 */
 				public function getEndOffsetX()
 	{
@@ -276,7 +276,7 @@ class SpContainer
 
 	/**
 				 * Set offset in y-direction of bottom-right corner of shape measured in 1/256 of row height.
-				 * @param int|float $endOffsetY
+				 * @param float|int $endOffsetY
 				 */
 				public function setEndOffsetY($endOffsetY): void
 	{
@@ -285,7 +285,7 @@ class SpContainer
 
 	/**
 				 * Get offset in y-direction of bottom-right corner of shape measured in 1/256 of row height.
-				 * @return int|float
+				 * @return float|int
 				 */
 				public function getEndOffsetY()
 	{

@@ -219,7 +219,7 @@ class CSV_Parser {
 		if ( false === $pref ) {
 			$pref = 9;
 		}
-		return $pref . $match . '.' . ( 99999 - $first );
+		return $pref . $match . '.' . ( 99999 - $first ); // @phpstan-ignore minus.rightNonNumeric (`$first` is set to an integer in the `foreach` loop above, if it's null.)
 	}
 
 	/**
@@ -278,9 +278,9 @@ class CSV_Parser {
 					for ( $x = ( $i + 1 ); isset( $data[ $x ] ) && '' === ltrim( $data[ $x ], $white_spaces ); $x++ ) { // phpcs:ignore Generic.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed,Generic.CodeAnalysis.EmptyStatement.DetectedFor
 						// Action is in iterator check.
 					}
-					if ( $data[ $x ] === $delimiter ) {
+					if ( $data[ $x ] === $delimiter ) { // @phpstan-ignore variable.undefined ($x is defined in the for loop above.)
 						$enclosed = false;
-						$i = $x;
+						$i = $x; // @phpstan-ignore variable.undefined ($x is defined in the for loop above.)
 					} else {
 						if ( $this->error < 1 ) {
 							$this->error = 1;

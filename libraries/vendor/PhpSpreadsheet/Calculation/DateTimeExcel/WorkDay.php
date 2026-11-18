@@ -74,7 +74,7 @@ class WorkDay
 				 * Use incrementing logic to determine Workday.
 				 *
 				 * @param array<mixed> $holidayArray
-				 * @return float|int|\DateTime
+				 * @return \DateTime|float|int
 				 */
 				private static function incrementing(float $startDate, int $endDays, array $holidayArray)
 	{
@@ -138,7 +138,7 @@ class WorkDay
 				 * Use decrementing logic to determine Workday.
 				 *
 				 * @param array<mixed> $holidayArray
-				 * @return float|int|\DateTime
+				 * @return \DateTime|float|int
 				 */
 				private static function decrementing(float $startDate, int $endDays, array $holidayArray)
 	{

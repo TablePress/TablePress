@@ -13,6 +13,7 @@
 /**
  * WordPress dependencies.
  */
+//import { doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
@@ -285,6 +286,8 @@ tp.callbacks.editor.onselection = function ( instance, x1, y1, x2, y2 /*, origin
 	for ( let col_idx = x1; col_idx <= x2; col_idx++ ) {
 		tp.helpers.selection.columns.push( col_idx );
 	}
+
+	//doAction( 'tablepress.selectionChanged', tp.helpers.selection );
 };
 
 /**
@@ -778,6 +781,11 @@ jQuery( '#textarea-insert-helper' ).on( 'change', tp.helpers.editor.insert_from_
 jQuery( () => {
 	// Fix issue with wpLink input fields not being usable, when called through the "Advanced Editor". They are immediately losing focus without this.
 	jQuery( '#wp-link' ).on( 'focus', 'input', ( event ) => ( event.stopPropagation() ) );
+
+	// When the wpLink dialog is closed, reselect the cell in the table editor, so that the user can continue editing it.
+	jQuery( document ).on( 'wplink-close', () => {
+		tp.editor.el.focus();
+	} );
 
 	// Fix issue with Media Library input fields in the sidebar not being usable, when called through the "Advanced Editor". They are immediately losing focus without this.
 	jQuery( 'body' ).on( 'focus', '.media-modal .media-frame-content input, .media-modal .media-frame-content textarea', ( event ) => ( event.stopPropagation() ) );

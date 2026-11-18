@@ -10,17 +10,6 @@
  * @since 3.0.0
  */
 
-/* Default toggle variable for LTR and RTL CSS. */
-$direction: "ltr" !default;
-
-/* Default variables for the LTR CSS. */
-$align-side: left;
-
-/* Variables for the RTL CSS. */
-@if "rtl" == $direction {
-	$align-side: right;
-}
-
 /* Pagination. */
 @mixin dt-paging {
 	.dt-paging {
@@ -30,7 +19,7 @@ $align-side: left;
 			min-width: 32px;
 			height: 32px;
 			padding: 0 5px;
-			margin-#{$align-side}: 2px;
+			margin-inline-start: 2px;
 			text-align: center;
 			vertical-align: middle;
 			text-decoration: none !important;
@@ -59,7 +48,7 @@ $align-side: left;
 		}
 
 		> .dt-paging-button:first-child {
-			margin-#{$align-side}: 0;
+			margin-inline-start: 0;
 		}
 
 		.ellipsis {

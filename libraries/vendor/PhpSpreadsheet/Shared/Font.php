@@ -328,13 +328,13 @@ class Font
 
 	/**
 				 * Pad amount for exact in pixels; use best guess if null.
-				 * @var null|float|int
+				 * @var float|int|null
 				 */
 				private static $paddingAmountExact = null;
 
 	/**
 				 * Set pad amount for exact in pixels; use best guess if null.
-				 * @param null|float|int $paddingAmountExact
+				 * @param float|int|null $paddingAmountExact
 				 */
 				public static function setPaddingAmountExact($paddingAmountExact): void
 	{
@@ -343,7 +343,7 @@ class Font
 
 	/**
 				 * Get pad amount for exact in pixels; or null if using best guess.
-				 * @return null|float|int
+				 * @return float|int|null
 				 */
 				public static function getPaddingAmountExact()
 	{
@@ -378,7 +378,7 @@ class Font
 			$lineTexts = explode("\n", $cellText);
 			$lineWidths = [];
 			foreach ($lineTexts as $lineText) {
-				$lineWidths[] = self::calculateColumnWidth($font, $lineText, $rotation = 0, $defaultFont, $filterAdjustment);
+				$lineWidths[] = self::calculateColumnWidth($font, $lineText, 0, $defaultFont, $filterAdjustment);
 			}
 
 			return max($lineWidths); // width of longest line in cell

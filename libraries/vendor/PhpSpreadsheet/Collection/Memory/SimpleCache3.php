@@ -70,7 +70,7 @@ class SimpleCache3 implements CacheInterface
 	}
 
 	/**
-				 * @param null|int|\DateInterval $ttl
+				 * @param \DateInterval|int|null $ttl
 				 * @param mixed $value
 				 */
 				public function set(string $key, $value, $ttl = null): bool
@@ -81,7 +81,7 @@ class SimpleCache3 implements CacheInterface
 	}
 
 	/**
-				 * @param null|int|\DateInterval $ttl
+				 * @param \DateInterval|int|null $ttl
 				 */
 				public function setMultiple(iterable $values, $ttl = null): bool
 	{

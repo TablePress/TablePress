@@ -15,5 +15,5 @@ import Screen from './add/screen';
 
 initializeReactComponent(
 	'tablepress-add-screen',
-	<Screen />
+	<Screen />,
 );
