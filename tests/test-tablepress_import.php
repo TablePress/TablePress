@@ -202,7 +202,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 				),
 			),
 			// Data in A1:C4, merged whole row A1:XFD1 (clipped), B6:E7 past the data (extends the table), G2:XFD2 (clipped to its top-left cell).
-			'merged cells beyond the data range' => array(
+			'merged cells beyond the data range'      => array(
 				'test-table-merged-cells-beyond-data.xlsx',
 				array(
 					array( 'Title', '#colspan#', '#colspan#', '#colspan#', '#colspan#', '#colspan#', '#colspan#' ),
@@ -215,7 +215,7 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 				),
 			),
 			// Data in A1:C4, merged whole column C2:C1048576 (clipped).
-			'merged whole column' => array(
+			'merged whole column'                     => array(
 				'test-table-merged-whole-column.xlsx',
 				array(
 					array( 'a1', 'b1', 'c1' ),

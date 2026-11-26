@@ -386,7 +386,7 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 			// Convert merged cells to trigger words, with the merged cell ranges clipped to the table size.
 			foreach ( $merged_cells as list( $first_cell, $last_cell ) ) {
-				// Skip ranges that start outside of the table. (PHPSpreadsheet creates the top-left cell of merged ranges, so this is only a safeguard.)
+				// Skip ranges that start outside of the table. PHPSpreadsheet creates the top-left cell of merged ranges, so this is only a safeguard.
 				if ( $first_cell[0] > $max_col_idx || $first_cell[1] > $max_row ) {
 					continue;
 				}
