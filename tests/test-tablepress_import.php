@@ -186,6 +186,70 @@ class TablePress_Test_TablePress_Import extends TablePress_TestCase {
 	}
 
 	/**
+	 * Provides test data for the XLSX import tests with column formatting and merged cells outside of the data range.
+	 *
+	 * @return array<string, array{0: string, 1: array<int, array<int, string>>}> Test data.
+	 */
+	public function data_table_import_server_xlsx_phpspreadsheet_table_size(): array {
+		return array(
+			// Data in A1:C3, and `<col min="4" max="16384">` from formatting whole columns.
+			'column formatting up to the last column' => array(
+				'test-table-column-formatting.xlsx',
+				array(
+					array( 'a1', 'b1', 'c1' ),
+					array( 'a2', 'b2', 'c2' ),
+					array( 'a3', 'b3', 'c3' ),
+				),
+			),
+			// Data in A1:C4, merged whole row A1:XFD1 (clipped), B6:E7 past the data (extends the table), G2:XFD2 (clipped to its top-left cell).
+			'merged cells beyond the data range' => array(
+				'test-table-merged-cells-beyond-data.xlsx',
+				array(
+					array( 'Title', '#colspan#', '#colspan#', '#colspan#', '#colspan#', '#colspan#', '#colspan#' ),
+					array( 'a2', 'b2', 'c2', '', '', '', '' ),
+					array( 'a3', 'b3', 'c3', '', '', '', '' ),
+					array( 'a4', 'b4', 'c4', '', '', '', '' ),
+					array( '', '', '', '', '', '', '' ),
+					array( '', '', '#colspan#', '#colspan#', '#colspan#', '', '' ),
+					array( '', '#rowspan#', '#span#', '#span#', '#span#', '', '' ),
+				),
+			),
+			// Data in A1:C4, merged whole column C2:C1048576 (clipped).
+			'merged whole column' => array(
+				'test-table-merged-whole-column.xlsx',
+				array(
+					array( 'a1', 'b1', 'c1' ),
+					array( 'a2', 'b2', 'C2 merged down' ),
+					array( 'a3', 'b3', '#rowspan#' ),
+					array( 'a4', 'b4', '#rowspan#' ),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Tests that the size of tables imported from XLSX files is determined by the cells and merged cells, and not by column/row formatting.
+	 *
+	 * @dataProvider data_table_import_server_xlsx_phpspreadsheet_table_size
+	 *
+	 * @param string                         $file                File name to import.
+	 * @param array<int, array<int, string>> $expected_table_data Expected table data.
+	 */
+	public function test_table_import_server_xlsx_phpspreadsheet_table_size( string $file, array $expected_table_data ): void {
+		$import_config = array(
+			'source'         => 'server',
+			'server'         => TABLEPRESS_TESTS_DATA_DIR . 'import/phpspreadsheet/' . $file,
+			'type'           => 'add',
+			'existing_table' => '',
+			'legacy_import'  => false, // Use PHPSpreadsheet.
+		);
+		$import = $this->importer->run( $import_config );
+		$imported_table_data = $import['tables'][0]['data'];
+
+		$this->assertSame( $expected_table_data, $imported_table_data );
+	}
+
+	/**
 	 * Provides test data for the XLS import from server tests for the PHPSpreadsheet import class.
 	 *
 	 * @since 2.0.0

@@ -239,8 +239,37 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 
 			$min_col = 'A';
 			$min_row = 1;
-			$max_col = $worksheet->getHighestColumn();
-			$max_row = $worksheet->getHighestRow();
+
+			/*
+			 * Determine the table size from the cells that exist in the file, and not from the worksheet's column and row dimensions.
+			 * Column or row formatting, e.g. `<col min="12" max="16384" style="3"/>` when whole columns are formatted in Excel,
+			 * would otherwise stretch the table to the last possible column or row of the worksheet.
+			 */
+			$highest_cell = $worksheet->getHighestRowAndColumn();
+			$max_col_idx = \TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString( $highest_cell['column'] );
+			$max_row = $highest_cell['row'];
+
+			/*
+			 * Extend the table to cover merged cell ranges that reach beyond the last cell, so that all rows have the same length.
+			 * Ranges that end in the last column or row of a spreadsheet application (e.g. merged whole rows or columns) are not used for this,
+			 * as they would again stretch the table to that size. They are clipped to the table size instead, when the trigger words are added.
+			 */
+			$merged_cells = array();
+			$sheet_limit_cols = array( 256, 1024, \TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange::MAX_COLUMN_INT ); // XLS (IV), older LibreOffice (AMJ), XLSX (XFD).
+			$sheet_limit_rows = array( 16384, 65536, \TablePress\PhpOffice\PhpSpreadsheet\Cell\AddressRange::MAX_ROW ); // XLS BIFF5, XLS BIFF8, XLSX.
+			foreach ( $worksheet->getMergeCells() as $merged_cells_range ) {
+				$range_boundaries = \TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate::rangeBoundaries( $merged_cells_range );
+				$merged_cells[] = $range_boundaries;
+				$range_end_col = $range_boundaries[1][0];
+				$range_end_row = $range_boundaries[1][1];
+				if ( ! in_array( $range_end_col, $sheet_limit_cols, true ) ) {
+					$max_col_idx = max( $max_col_idx, $range_end_col );
+				}
+				if ( ! in_array( $range_end_row, $sheet_limit_rows, true ) ) {
+					$max_row = max( $max_row, $range_end_row );
+				}
+			}
+			$max_col = \TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex( $max_col_idx );
 
 			// Adapted from \TablePress\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::rangeToArray().
 			\TablePress\PhpOffice\PhpSpreadsheet\Shared\StringHelper::stringIncrement( $max_col ); // Due to for-loop with characters for columns.
@@ -355,12 +384,14 @@ class TablePress_Import_PHPSpreadsheet extends TablePress_Import_Base {
 				$table['data'][] = $row_data;
 			}
 
-			// Convert merged cells to trigger words.
-			$merged_cells = $worksheet->getMergeCells();
-			foreach ( $merged_cells as $merged_cells_range ) {
-				$cells = explode( ':', $merged_cells_range );
-				$first_cell = \TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate::indexesFromString( $cells[0] );
-				$last_cell = \TablePress\PhpOffice\PhpSpreadsheet\Cell\Coordinate::indexesFromString( $cells[1] );
+			// Convert merged cells to trigger words, with the merged cell ranges clipped to the table size.
+			foreach ( $merged_cells as list( $first_cell, $last_cell ) ) {
+				// Skip ranges that start outside of the table. (PHPSpreadsheet creates the top-left cell of merged ranges, so this is only a safeguard.)
+				if ( $first_cell[0] > $max_col_idx || $first_cell[1] > $max_row ) {
+					continue;
+				}
+				$last_cell[0] = min( $last_cell[0], $max_col_idx );
+				$last_cell[1] = min( $last_cell[1], $max_row );
 				for ( $row_idx = $first_cell[1]; $row_idx <= $last_cell[1]; $row_idx++ ) {
 					for ( $column_idx = $first_cell[0]; $column_idx <= $last_cell[0]; $column_idx++ ) {
 						if ( $row_idx === $first_cell[1] && $column_idx === $first_cell[0] ) {
